@@ -84,7 +84,7 @@ namespace Dapper.Tests.Contrib
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        [Computed]
+        [OnlyQuery]
         public string Computed { get; set; }
     }
 

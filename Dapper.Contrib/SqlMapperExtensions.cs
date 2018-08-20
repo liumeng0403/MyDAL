@@ -11,11 +11,9 @@ using Dapper;
 using Dapper.Contrib.Adapter;
 using Dapper.Contrib.Attributes;
 
-#if NETSTANDARD1_3
-using DataException = System.InvalidOperationException;
-#else
+
 using System.Threading;
-#endif
+
 
 namespace Dapper.Contrib.Extensions
 {
@@ -79,7 +77,7 @@ namespace Dapper.Contrib.Extensions
                 return pi.ToList();
             }
 
-            var computedProperties = TypePropertiesCache(type).Where(p => p.GetCustomAttributes(true).Any(a => a is ComputedAttribute)).ToList();
+            var computedProperties = TypePropertiesCache(type).Where(p => p.GetCustomAttributes(true).Any(a => a is OnlyQueryAttribute)).ToList();
 
             ComputedProperties[type.TypeHandle] = computedProperties;
             return computedProperties;
@@ -696,39 +694,4 @@ namespace Dapper.Contrib.Extensions
     }
 
 
-
-
-
-
-
-    /// <summary>
-    /// Specifies whether a field is writable in the database.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
-    public class WriteAttribute : Attribute
-    {
-        /// <summary>
-        /// Specifies whether a field is writable in the database.
-        /// </summary>
-        /// <param name="write">Whether a field is writable in the database.</param>
-        public WriteAttribute(bool write)
-        {
-            Write = write;
-        }
-
-        /// <summary>
-        /// Whether a field is writable in the database.
-        /// </summary>
-        public bool Write { get; }
-    }
-
-    /// <summary>
-    /// Specifies that this is a computed column.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
-    public class ComputedAttribute : Attribute
-    {
-    }
 }
-
-

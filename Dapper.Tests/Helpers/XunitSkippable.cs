@@ -16,58 +16,71 @@ namespace Dapper.Tests
         }
     }
 
-    // Most of the below is a direct copy & port from the wonderful examples by Brad Wilson at
-    // https://github.com/xunit/samples.xunit/tree/master/DynamicSkipExample
-    public class SkippableFactDiscoverer : IXunitTestCaseDiscoverer
-    {
-        private readonly IMessageSink _diagnosticMessageSink;
+    //// Most of the below is a direct copy & port from the wonderful examples by Brad Wilson at
+    //// https://github.com/xunit/samples.xunit/tree/master/DynamicSkipExample
+    //public class SkippableFactDiscoverer : IXunitTestCaseDiscoverer
+    //{
+    //    private readonly IMessageSink _diagnosticMessageSink;
 
-        public SkippableFactDiscoverer(IMessageSink diagnosticMessageSink)
-        {
-            _diagnosticMessageSink = diagnosticMessageSink;
-        }
+    //    public SkippableFactDiscoverer(IMessageSink diagnosticMessageSink)
+    //    {
+    //        _diagnosticMessageSink = diagnosticMessageSink;
+    //    }
 
-        public IEnumerable<IXunitTestCase> Discover(ITestFrameworkDiscoveryOptions discoveryOptions, ITestMethod testMethod, IAttributeInfo factAttribute)
-        {
-            yield return new SkippableFactTestCase(_diagnosticMessageSink, discoveryOptions.MethodDisplayOrDefault(), testMethod);
-        }
-    }
+    //    public IEnumerable<IXunitTestCase> Discover(ITestFrameworkDiscoveryOptions discoveryOptions, ITestMethod testMethod, IAttributeInfo factAttribute)
+    //    {
+    //        yield return new SkippableFactTestCase(_diagnosticMessageSink, discoveryOptions.MethodDisplayOrDefault(), testMethod);
+    //    }
+    //}
 
-    public class SkippableFactTestCase : XunitTestCase
-    {
-        [Obsolete("Called by the de-serializer; should only be called by deriving classes for de-serialization purposes")]
-        public SkippableFactTestCase()
-        {
-        }
+    //public class SkippableFactTestCase : XunitTestCase
+    //{
+    //    //[Obsolete("Called by the de-serializer; should only be called by deriving classes for de-serialization purposes")]
+    //    //public SkippableFactTestCase()
+    //    //{
+    //    //}
+    //    public  SkippableFactTestCase()
+    //    {
+    //    }
 
-        public SkippableFactTestCase(IMessageSink diagnosticMessageSink, TestMethodDisplay defaultMethodDisplay, ITestMethod testMethod, object[] testMethodArguments = null)
-            : base(diagnosticMessageSink, defaultMethodDisplay, testMethod, testMethodArguments)
-        {
-        }
+    //    //public SkippableFactTestCase(IMessageSink diagnosticMessageSink, TestMethodDisplay defaultMethodDisplay, ITestMethod testMethod, object[] testMethodArguments = null)
+    //    //    : base(diagnosticMessageSink, defaultMethodDisplay, testMethod, testMethodArguments)
+    //    //{
+           
+    //    //}
 
-        public override async Task<RunSummary> RunAsync(
-            IMessageSink diagnosticMessageSink,
-            IMessageBus messageBus,
-            object[] constructorArguments,
-            ExceptionAggregator aggregator,
-            CancellationTokenSource cancellationTokenSource)
-        {
-            var skipMessageBus = new SkippableFactMessageBus(messageBus);
-            var result = await base.RunAsync(
-                diagnosticMessageSink,
-                skipMessageBus,
-                constructorArguments,
-                aggregator,
-                cancellationTokenSource).ConfigureAwait(false);
-            if (skipMessageBus.DynamicallySkippedTestCount > 0)
-            {
-                result.Failed -= skipMessageBus.DynamicallySkippedTestCount;
-                result.Skipped += skipMessageBus.DynamicallySkippedTestCount;
-            }
+    //    public SkippableFactTestCase(            
+    //        IMessageSink diagnosticMessageSink, 
+    //        TestMethodDisplay defaultMethodDisplay, 
+    //        TestMethodDisplayOptions defaultMethodDisplayOptions, 
+    //        ITestMethod testMethod, object[] testMethodArguments = null) 
+    //        : base(diagnosticMessageSink, defaultMethodDisplay, defaultMethodDisplayOptions, testMethod, testMethodArguments)
+    //    {
+    //    }
 
-            return result;
-        }
-    }
+    //    public override async Task<RunSummary> RunAsync(
+    //        IMessageSink diagnosticMessageSink,
+    //        IMessageBus messageBus,
+    //        object[] constructorArguments,
+    //        ExceptionAggregator aggregator,
+    //        CancellationTokenSource cancellationTokenSource)
+    //    {
+    //        var skipMessageBus = new SkippableFactMessageBus(messageBus);
+    //        var result = await base.RunAsync(
+    //            diagnosticMessageSink,
+    //            skipMessageBus,
+    //            constructorArguments,
+    //            aggregator,
+    //            cancellationTokenSource).ConfigureAwait(false);
+    //        if (skipMessageBus.DynamicallySkippedTestCount > 0)
+    //        {
+    //            result.Failed -= skipMessageBus.DynamicallySkippedTestCount;
+    //            result.Skipped += skipMessageBus.DynamicallySkippedTestCount;
+    //        }
+
+    //        return result;
+    //    }
+    //}
 
     public class SkippableFactMessageBus : IMessageBus
     {
