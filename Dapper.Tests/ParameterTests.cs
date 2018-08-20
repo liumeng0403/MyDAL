@@ -13,10 +13,7 @@ using System.Text.RegularExpressions;
 using System.Diagnostics;
 using Dapper.DynamicParameter;
 
-#if ENTITY_FRAMEWORK
-using System.Data.Entity.Spatial;
-using Microsoft.SqlServer.Types;
-#endif
+
 
 namespace Dapper.Tests
 {
@@ -32,7 +29,7 @@ namespace Dapper.Tests
                 parameters.Add(value);
             }
 
-            void IDynamicParameters.AddParameters(IDbCommand command, SqlMapper.Identity identity)
+            void IDynamicParameters.AddParameters(IDbCommand command, Identity identity)
             {
                 foreach (IDbDataParameter parameter in parameters)
                     command.Parameters.Add(parameter);
@@ -65,7 +62,7 @@ namespace Dapper.Tests
                 this.numbers = numbers;
             }
 
-            public void AddParameters(IDbCommand command, SqlMapper.Identity identity)
+            public void AddParameters(IDbCommand command, Identity identity)
             {
                 var sqlCommand = (SqlCommand)command;
                 sqlCommand.CommandType = CommandType.StoredProcedure;
@@ -309,7 +306,7 @@ namespace Dapper.Tests
                 this.numbers = numbers;
             }
 
-            public new void AddParameters(IDbCommand command, SqlMapper.Identity identity)
+            public new void AddParameters(IDbCommand command, Identity identity)
             {
                 base.AddParameters(command, identity);
 
@@ -610,7 +607,7 @@ namespace Dapper.Tests
                 this.parameterName = parameterName;
             }
 
-            public void AddParameters(IDbCommand command, SqlMapper.Identity identity)
+            public void AddParameters(IDbCommand command, Identity identity)
             {
                 Debug.WriteLine("> AddParameters");
                 var lazy = (SqlCommand)command;
@@ -636,99 +633,7 @@ namespace Dapper.Tests
         }
 #endif
 
-#if ENTITY_FRAMEWORK
-        private class HazGeo
-        {
-            public int Id { get; set; }
-            public DbGeography Geo { get; set; }
-            public DbGeometry Geometry { get; set; }
-        }
 
-        private class HazSqlGeo
-        {
-            public int Id { get; set; }
-            public SqlGeography Geo { get; set; }
-            public SqlGeometry Geometry { get; set; }
-        }
-
-        [Fact]
-        public void DBGeography_SO24405645_SO24402424()
-        {
-            EntityFramework.Handlers.Register();
-
-            connection.Execute("create table #Geo (id int, geo geography, geometry geometry)");
-
-            var obj = new HazGeo
-            {
-                Id = 1,
-                Geo = DbGeography.LineFromText("LINESTRING(-122.360 47.656, -122.343 47.656 )", 4326),
-                Geometry = DbGeometry.LineFromText("LINESTRING (100 100, 20 180, 180 180)", 0)
-            };
-            connection.Execute("insert #Geo(id, geo, geometry) values (@Id, @Geo, @Geometry)", obj);
-            var row = connection.Query<HazGeo>("select * from #Geo where id=1").SingleOrDefault();
-            Assert.NotNull(row);
-            Assert.Equal(1, row.Id);
-            Assert.NotNull(row.Geo);
-            Assert.NotNull(row.Geometry);
-        }
-
-        [Fact]
-        public void SqlGeography_SO25538154()
-        {
-            SqlMapper.ResetTypeHandlers();
-            connection.Execute("create table #SqlGeo (id int, geo geography, geometry geometry)");
-
-            var obj = new HazSqlGeo
-            {
-                Id = 1,
-                Geo = SqlGeography.STLineFromText(new SqlChars(new SqlString("LINESTRING(-122.360 47.656, -122.343 47.656 )")), 4326),
-                Geometry = SqlGeometry.STLineFromText(new SqlChars(new SqlString("LINESTRING (100 100, 20 180, 180 180)")), 0)
-            };
-            connection.Execute("insert #SqlGeo(id, geo, geometry) values (@Id, @Geo, @Geometry)", obj);
-            var row = connection.Query<HazSqlGeo>("select * from #SqlGeo where id=1").SingleOrDefault();
-            Assert.NotNull(row);
-            Assert.Equal(1, row.Id);
-            Assert.NotNull(row.Geo);
-            Assert.NotNull(row.Geometry);
-        }
-
-        [Fact]
-        public void NullableSqlGeometry()
-        {
-            SqlMapper.ResetTypeHandlers();
-            connection.Execute("create table #SqlNullableGeo (id int, geometry geometry null)");
-
-            var obj = new HazSqlGeo
-            {
-                Id = 1,
-                Geometry = null
-            };
-            connection.Execute("insert #SqlNullableGeo(id, geometry) values (@Id, @Geometry)", obj);
-            var row = connection.Query<HazSqlGeo>("select * from #SqlNullableGeo where id=1").SingleOrDefault();
-            Assert.NotNull(row);
-            Assert.Equal(1, row.Id);
-            Assert.Null(row.Geometry);
-        }
-
-        [Fact]
-        public void SqlHierarchyId_SO18888911()
-        {
-            SqlMapper.ResetTypeHandlers();
-            var row = connection.Query<HazSqlHierarchy>("select 3 as [Id], hierarchyid::Parse('/1/2/3/') as [Path]").Single();
-            Assert.Equal(3, row.Id);
-            Assert.NotEqual(default(SqlHierarchyId), row.Path);
-
-            var val = connection.Query<SqlHierarchyId>("select @Path", row).Single();
-            Assert.NotEqual(default(SqlHierarchyId), val);
-        }
-
-        public class HazSqlHierarchy
-        {
-            public int Id { get; set; }
-            public SqlHierarchyId Path { get; set; }
-        }
-
-#endif
 
         [Fact]
         public void TestCustomParameters()

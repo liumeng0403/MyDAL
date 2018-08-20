@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Data.SqlClient;
 using Xunit;
+using Dapper.DynamicParameter;
 
 namespace Dapper.Tests
 {

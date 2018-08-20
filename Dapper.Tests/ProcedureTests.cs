@@ -2,6 +2,7 @@
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Dapper.DynamicParameter;
 using Xunit;
 
 namespace Dapper.Tests

@@ -5,9 +5,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
-using Dapper.DynamicParameter;
+using System.Text;
 
-namespace Dapper
+namespace Dapper.DynamicParameter
 {
     /// <summary>
     /// A bag of parameters that can be passed to the Dapper Query and Execute methods
@@ -19,11 +19,21 @@ namespace Dapper
         private readonly Dictionary<string, ParamInfo> parameters = new Dictionary<string, ParamInfo>();
         private List<object> templates;
 
+        /// <summary>
+        /// If true, the command-text is inspected and only values that are clearly used are included on the connection
+        /// </summary>
+        public bool RemoveUnused { get; set; }
+
         object IParameterLookup.this[string name] =>
             parameters.TryGetValue(name, out ParamInfo param) ? param.Value : null;
 
         /// <summary>
-        /// construct a dynamic parameter bag
+        /// All the names of the param in the bag, use Get to yank them out
+        /// </summary>
+        public IEnumerable<string> ParameterNames => parameters.Select(p => p.Key);
+
+        /// <summary>
+        /// constructer
         /// </summary>
         public DynamicParameters()
         {
@@ -31,9 +41,9 @@ namespace Dapper
         }
 
         /// <summary>
-        /// construct a dynamic parameter bag
+        /// constructer
         /// </summary>
-        /// <param name="template">can be an anonymous type or a DynamicParameters bag</param>
+        /// <param name="template">匿名对象 or a DynamicParameters</param>
         public DynamicParameters(object template)
         {
             RemoveUnused = true;
@@ -44,7 +54,6 @@ namespace Dapper
         /// Append a whole object full of params to the dynamic
         /// EG: AddDynamicParams(new {A = 1, B = 2}) // will add property A and B to the dynamic
         /// </summary>
-        /// <param name="param"></param>
         public void AddDynamicParams(object param)
         {
             var obj = param;
@@ -99,7 +108,7 @@ namespace Dapper
         /// <param name="size">The size of the parameter.</param>
         public void Add(string name, object value, DbType? dbType, ParameterDirection? direction, int? size)
         {
-            parameters[Clean(name)] = new ParamInfo
+            parameters[CleanKeyStr(name)] = new ParamInfo
             {
                 Name = name,
                 Value = value,
@@ -121,7 +130,7 @@ namespace Dapper
         /// <param name="scale">The scale of the parameter.</param>
         public void Add(string name, object value = null, DbType? dbType = null, ParameterDirection? direction = null, int? size = null, byte? precision = null, byte? scale = null)
         {
-            parameters[Clean(name)] = new ParamInfo
+            parameters[CleanKeyStr(name)] = new ParamInfo
             {
                 Name = name,
                 Value = value,
@@ -133,7 +142,10 @@ namespace Dapper
             };
         }
 
-        private static string Clean(string name)
+        /// <summary>
+        /// 清理 key str 中的特殊字符
+        /// </summary>
+        private static string CleanKeyStr(string name)
         {
             if (!string.IsNullOrEmpty(name))
             {
@@ -152,11 +164,6 @@ namespace Dapper
         {
             AddParameters(command, identity);
         }
-
-        /// <summary>
-        /// If true, the command-text is inspected and only values that are clearly used are included on the connection
-        /// </summary>
-        public bool RemoveUnused { get; set; }
 
         /// <summary>
         /// Add all the parameters needed to the command just before it executes
@@ -225,7 +232,7 @@ namespace Dapper
 
                 var dbType = param.DbType;
                 var val = param.Value;
-                string name = Clean(param.Name);
+                string name = CleanKeyStr(param.Name);
                 var isCustomQueryParameter = val is SqlMapper.ICustomQueryParameter;
 
                 SqlMapper.ITypeHandler handler = null;
@@ -300,11 +307,6 @@ namespace Dapper
         }
 
         /// <summary>
-        /// All the names of the param in the bag, use Get to yank them out
-        /// </summary>
-        public IEnumerable<string> ParameterNames => parameters.Select(p => p.Key);
-
-        /// <summary>
         /// Get the value of a parameter
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -312,7 +314,7 @@ namespace Dapper
         /// <returns>The value, note DBNull.Value is not returned, instead the value is returned as null</returns>
         public T Get<T>(string name)
         {
-            var paramInfo = parameters[Clean(name)];
+            var paramInfo = parameters[CleanKeyStr(name)];
             var attachedParam = paramInfo.AttachedParam;
             object val = attachedParam == null ? paramInfo.Value : attachedParam.Value;
             if (val == DBNull.Value)

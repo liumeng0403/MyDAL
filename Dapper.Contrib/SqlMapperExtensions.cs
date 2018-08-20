@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Dapper.Contrib.Adapter;
 using Dapper.Contrib.Attributes;
 using Dapper.Contrib.Proxy;
+using Dapper.DynamicParameter;
 using Dapper.Extensions;
 
 namespace Dapper.Contrib.Extensions

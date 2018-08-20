@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
+using Dapper.DynamicParameter;
 using Dapper.Extensions;
 
 namespace Dapper

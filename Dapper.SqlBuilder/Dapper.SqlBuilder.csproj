@@ -5,7 +5,7 @@
     <Title>Dapper SqlBuilder component</Title>
     <Description>The Dapper SqlBuilder component, for building SQL queries dynamically.</Description>
     <Authors>Sam Saffron, Johan Danforth</Authors>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <!-- TODO: Docs -->
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>

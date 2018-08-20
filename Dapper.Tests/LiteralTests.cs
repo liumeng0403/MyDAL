@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Dapper.DynamicParameter;
 using Xunit;
 
 namespace Dapper.Tests
