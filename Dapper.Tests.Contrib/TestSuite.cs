@@ -5,11 +5,8 @@ using System.Linq;
 
 using Dapper.Contrib.Extensions;
 using Xunit;
-
-#if !NETCOREAPP1_0 && !NETCOREAPP2_0
 using System.Transactions;
-using System.Data.SqlServerCe;
-#endif
+//using System.Data.SqlServerCe;
 using FactAttribute = Dapper.Tests.Contrib.SkippableFactAttribute;
 
 namespace Dapper.Tests.Contrib
@@ -525,38 +522,38 @@ namespace Dapper.Tests.Contrib
             }
         }
 
-#if !NETCOREAPP1_0 && !NETCOREAPP2_0
-        [Fact(Skip = "Not parallel friendly - thinking about how to test this")]
-        public void InsertWithCustomDbType()
-        {
-            SqlMapperExtensions.GetDatabaseType = conn => "SQLiteConnection";
+//#if !NETCOREAPP1_0 && !NETCOREAPP2_0
+//        [Fact(Skip = "Not parallel friendly - thinking about how to test this")]
+//        public void InsertWithCustomDbType()
+//        {
+//            SqlMapperExtensions.GetDatabaseType = conn => "SQLiteConnection";
 
-            bool sqliteCodeCalled = false;
-            using (var connection = GetOpenConnection())
-            {
-                connection.DeleteAll<User>();
-                Assert.IsNull(connection.Get<User>(3));
-                try
-                {
-                    connection.Insert(new User { Name = "Adam", Age = 10 });
-                }
-                catch (SqlCeException ex)
-                {
-                    sqliteCodeCalled = ex.Message.IndexOf("There was an error parsing the query", StringComparison.OrdinalIgnoreCase) >= 0;
-                }
-                // ReSharper disable once EmptyGeneralCatchClause
-                catch (Exception)
-                {
-                }
-            }
-            SqlMapperExtensions.GetDatabaseType = null;
+//            bool sqliteCodeCalled = false;
+//            using (var connection = GetOpenConnection())
+//            {
+//                connection.DeleteAll<User>();
+//                Assert.IsNull(connection.Get<User>(3));
+//                try
+//                {
+//                    connection.Insert(new User { Name = "Adam", Age = 10 });
+//                }
+//                catch (SqlCeException ex)
+//                {
+//                    sqliteCodeCalled = ex.Message.IndexOf("There was an error parsing the query", StringComparison.OrdinalIgnoreCase) >= 0;
+//                }
+//                // ReSharper disable once EmptyGeneralCatchClause
+//                catch (Exception)
+//                {
+//                }
+//            }
+//            SqlMapperExtensions.GetDatabaseType = null;
 
-            if (!sqliteCodeCalled)
-            {
-                throw new Exception("Was expecting sqlite code to be called");
-            }
-        }
-#endif
+//            if (!sqliteCodeCalled)
+//            {
+//                throw new Exception("Was expecting sqlite code to be called");
+//            }
+//        }
+//#endif
 
         [Fact]
         public void InsertWithCustomTableNameMapper()
@@ -665,7 +662,7 @@ namespace Dapper.Tests.Contrib
 
                     txscope.Dispose();  //rollback
 
-                    Assert.IsNull(connection.Get<Car>(id));   //returns null - car with that id should not exist
+                    Assert.Null(connection.Get<Car>(id));   //returns null - car with that id should not exist
                 }
             }
         }
