@@ -18,6 +18,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
+using Dapper.DynamicParameter;
 using Dapper.Extensions;
 
 #if NETSTANDARD1_3
@@ -3103,9 +3104,7 @@ namespace Dapper
             int index = startBound;
             ConstructorInfo specializedConstructor = null;
 
-#if !NETSTANDARD1_3
             bool supportInitialize = false;
-#endif
             Dictionary<Type, LocalBuilder> structLocals = null;
             if (type.IsValueTypeX())
             {
@@ -3138,14 +3137,12 @@ namespace Dapper
 
                     il.Emit(OpCodes.Newobj, explicitConstr);
                     il.Emit(OpCodes.Stloc_1);
-#if !NETSTANDARD1_3
                     supportInitialize = typeof(ISupportInitialize).IsAssignableFrom(type);
                     if (supportInitialize)
                     {
                         il.Emit(OpCodes.Ldloc_1);
                         il.EmitCall(OpCodes.Callvirt, typeof(ISupportInitialize).GetMethod(nameof(ISupportInitialize.BeginInit)), null);
                     }
-#endif
                 }
                 else
                 {
@@ -3160,14 +3157,12 @@ namespace Dapper
                     {
                         il.Emit(OpCodes.Newobj, ctor);
                         il.Emit(OpCodes.Stloc_1);
-#if !NETSTANDARD1_3
                         supportInitialize = typeof(ISupportInitialize).IsAssignableFrom(type);
                         if (supportInitialize)
                         {
                             il.Emit(OpCodes.Ldloc_1);
                             il.EmitCall(OpCodes.Callvirt, typeof(ISupportInitialize).GetMethod(nameof(ISupportInitialize.BeginInit)), null);
                         }
-#endif
                     }
                     else
                     {
@@ -3377,13 +3372,11 @@ namespace Dapper
                     il.Emit(OpCodes.Newobj, specializedConstructor);
                 }
                 il.Emit(OpCodes.Stloc_1); // stack is empty
-#if !NETSTANDARD1_3
                 if (supportInitialize)
                 {
                     il.Emit(OpCodes.Ldloc_1);
                     il.EmitCall(OpCodes.Callvirt, typeof(ISupportInitialize).GetMethod(nameof(ISupportInitialize.EndInit)), null);
                 }
-#endif
             }
             il.MarkLabel(allDone);
             il.BeginCatchBlock(typeof(Exception)); // stack is Exception
@@ -3643,13 +3636,10 @@ namespace Dapper
         /// </summary>
         public static IEqualityComparer<string> ConnectionStringComparer
         {
-            get { return connectionStringComparer; }
-            set { connectionStringComparer = value ?? StringComparer.Ordinal; }
+            get { return Identity. ConnectionStringComparer; }
+            set { Identity. ConnectionStringComparer = value ?? StringComparer.Ordinal; }
         }
 
-        private static IEqualityComparer<string> connectionStringComparer = StringComparer.Ordinal;
-
-#if !NETSTANDARD1_3
         /// <summary>
         /// Key used to indicate the type name associated with a DataTable.
         /// </summary>
@@ -3685,7 +3675,6 @@ namespace Dapper
         /// <param name="table">The <see cref="DataTable"/> that has a type name associated with it.</param>
         public static string GetTypeName(this DataTable table) =>
             table?.ExtendedProperties[DataTableTypeNameKey] as string;
-#endif
 
         /// <summary>
         /// Used to pass a IEnumerable&lt;SqlDataRecord&gt; as a TableValuedParameter.

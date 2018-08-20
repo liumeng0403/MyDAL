@@ -5,24 +5,21 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
-
-#if NETSTANDARD1_3
-using ApplicationException = System.InvalidOperationException;
-#endif
+using Dapper.DynamicParameter;
 
 namespace Dapper
 {
     /// <summary>
     /// A bag of parameters that can be passed to the Dapper Query and Execute methods
     /// </summary>
-    public partial class DynamicParameters : SqlMapper.IDynamicParameters, SqlMapper.IParameterLookup, SqlMapper.IParameterCallbacks
+    public partial class DynamicParameters : IDynamicParameters, IParameterLookup, IParameterCallbacks
     {
         internal const DbType EnumerableMultiParameter = (DbType)(-1);
-        private static readonly Dictionary<SqlMapper.Identity, Action<IDbCommand, object>> paramReaderCache = new Dictionary<SqlMapper.Identity, Action<IDbCommand, object>>();
+        private static readonly Dictionary<Identity, Action<IDbCommand, object>> paramReaderCache = new Dictionary<Identity, Action<IDbCommand, object>>();
         private readonly Dictionary<string, ParamInfo> parameters = new Dictionary<string, ParamInfo>();
         private List<object> templates;
 
-        object SqlMapper.IParameterLookup.this[string name] =>
+        object IParameterLookup.this[string name] =>
             parameters.TryGetValue(name, out ParamInfo param) ? param.Value : null;
 
         /// <summary>
@@ -151,7 +148,7 @@ namespace Dapper
             return name;
         }
 
-        void SqlMapper.IDynamicParameters.AddParameters(IDbCommand command, SqlMapper.Identity identity)
+        void IDynamicParameters.AddParameters(IDbCommand command, Identity identity)
         {
             AddParameters(command, identity);
         }
@@ -166,7 +163,7 @@ namespace Dapper
         /// </summary>
         /// <param name="command">The raw command prior to execution</param>
         /// <param name="identity">Information about the query</param>
-        protected void AddParameters(IDbCommand command, SqlMapper.Identity identity)
+        protected void AddParameters(IDbCommand command, Identity identity)
         {
             var literals = SqlMapper.GetLiteralTokens(identity.sql);
 
@@ -493,7 +490,7 @@ namespace Dapper
 
         private List<Action> outputCallbacks;
 
-        void SqlMapper.IParameterCallbacks.OnCompleted()
+        void IParameterCallbacks.OnCompleted()
         {
             foreach (var param in from p in parameters select p.Value)
             {

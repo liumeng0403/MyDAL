@@ -11,6 +11,7 @@ using Xunit;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using Dapper.DynamicParameter;
 
 #if ENTITY_FRAMEWORK
 using System.Data.Entity.Spatial;
@@ -21,7 +22,7 @@ namespace Dapper.Tests
 {
     public class ParameterTests : TestBase
     {
-        public class DbParams : SqlMapper.IDynamicParameters, IEnumerable<IDbDataParameter>
+        public class DbParams : IDynamicParameters, IEnumerable<IDbDataParameter>
         {
             private readonly List<IDbDataParameter> parameters = new List<IDbDataParameter>();
             public IEnumerator<IDbDataParameter> GetEnumerator() { return parameters.GetEnumerator(); }
@@ -31,7 +32,7 @@ namespace Dapper.Tests
                 parameters.Add(value);
             }
 
-            void SqlMapper.IDynamicParameters.AddParameters(IDbCommand command, SqlMapper.Identity identity)
+            void IDynamicParameters.AddParameters(IDbCommand command, SqlMapper.Identity identity)
             {
                 foreach (IDbDataParameter parameter in parameters)
                     command.Parameters.Add(parameter);
@@ -56,7 +57,7 @@ namespace Dapper.Tests
             return number_list;
         }
 
-        private class IntDynamicParam : SqlMapper.IDynamicParameters
+        private class IntDynamicParam : IDynamicParameters
         {
             private readonly IEnumerable<int> numbers;
             public IntDynamicParam(IEnumerable<int> numbers)
@@ -300,7 +301,7 @@ namespace Dapper.Tests
             }
         }
 
-        private class DynamicParameterWithIntTVP : DynamicParameters, SqlMapper.IDynamicParameters
+        private class DynamicParameterWithIntTVP : DynamicParameters, IDynamicParameters
         {
             private readonly IEnumerable<int> numbers;
             public DynamicParameterWithIntTVP(IEnumerable<int> numbers)
@@ -600,7 +601,7 @@ namespace Dapper.Tests
             Assert.Equal(20, val);
         }
 
-        private class SO29596645_RuleTableValuedParameters : SqlMapper.IDynamicParameters
+        private class SO29596645_RuleTableValuedParameters : IDynamicParameters
         {
             private readonly string parameterName;
 

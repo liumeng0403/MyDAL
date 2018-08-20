@@ -3,11 +3,12 @@ using System.Data;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Threading;
+using Dapper.DynamicParameter;
 
 namespace Dapper
 {
     /// <summary>
-    /// Represents the key aspects of a sql operation
+    /// sql 操作定义
     /// </summary>
     public struct CommandDefinition
     {
@@ -25,7 +26,7 @@ namespace Dapper
 
         internal void OnCompleted()
         {
-            (Parameters as SqlMapper.IParameterCallbacks)?.OnCompleted();
+            (Parameters as IParameterCallbacks)?.OnCompleted();
         }
 
         /// <summary>

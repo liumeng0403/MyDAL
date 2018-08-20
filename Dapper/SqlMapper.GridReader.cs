@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Globalization;
+using Dapper.DynamicParameter;
+
 namespace Dapper
 {
     public static partial class SqlMapper
