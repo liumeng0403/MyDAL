@@ -8,6 +8,7 @@ using Xunit;
 using System.Transactions;
 //using System.Data.SqlServerCe;
 using FactAttribute = Dapper.Tests.Contrib.SkippableFactAttribute;
+using Dapper.Contrib.Attributes;
 
 namespace Dapper.Tests.Contrib
 {
@@ -37,7 +38,7 @@ namespace Dapper.Tests.Contrib
 
     public interface IUser
     {
-        [Key]
+        [PrimaryKey]
         int Id { get; set; }
         string Name { get; set; }
         int Age { get; set; }
@@ -52,7 +53,7 @@ namespace Dapper.Tests.Contrib
 
     public interface INullableDate
     {
-        [Key]
+        [PrimaryKey]
         int Id { get; set; }
         DateTime? DateValue { get; set; }
     }
@@ -72,7 +73,7 @@ namespace Dapper.Tests.Contrib
     [Table("Stuff")]
     public class Stuff
     {
-        [Key]
+        [PrimaryKey]
         public short TheId { get; set; }
         public string Name { get; set; }
         public DateTime? Created { get; set; }

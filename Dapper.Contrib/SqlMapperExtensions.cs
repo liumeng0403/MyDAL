@@ -9,6 +9,7 @@ using System.Reflection.Emit;
 
 using Dapper;
 using Dapper.Contrib.Adapter;
+using Dapper.Contrib.Attributes;
 
 #if NETSTANDARD1_3
 using DataException = System.InvalidOperationException;
@@ -105,7 +106,7 @@ namespace Dapper.Contrib.Extensions
             }
 
             var allProperties = TypePropertiesCache(type);
-            var keyProperties = allProperties.Where(p => p.GetCustomAttributes(true).Any(a => a is KeyAttribute)).ToList();
+            var keyProperties = allProperties.Where(p => p.GetCustomAttributes(true).Any(a => a is PrimaryKeyAttribute)).ToList();
 
             if (keyProperties.Count == 0)
             {
@@ -584,7 +585,7 @@ namespace Dapper.Contrib.Extensions
                 // Generate a field for each property, which implements the T
                 foreach (var property in typeof(T).GetProperties())
                 {
-                    var isId = property.GetCustomAttributes(true).Any(a => a is KeyAttribute);
+                    var isId = property.GetCustomAttributes(true).Any(a => a is PrimaryKeyAttribute);
                     CreateProperty<T>(typeBuilder, property.Name, property.PropertyType, setIsDirtyMethod, isId);
                 }
 
@@ -681,7 +682,7 @@ namespace Dapper.Contrib.Extensions
                 //TODO: Should copy all attributes defined by the interface?
                 if (isIdentity)
                 {
-                    var keyAttribute = typeof(KeyAttribute);
+                    var keyAttribute = typeof(PrimaryKeyAttribute);
                     var myConstructorInfo = keyAttribute.GetConstructor(new Type[] { });
                     var attributeBuilder = new CustomAttributeBuilder(myConstructorInfo, new object[] { });
                     property.SetCustomAttribute(attributeBuilder);
@@ -697,34 +698,9 @@ namespace Dapper.Contrib.Extensions
         }
     }
 
-    /// <summary>
-    /// DB 表名
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class)]
-    public class TableAttribute : Attribute
-    {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="tableName"></param>
-        public TableAttribute(string tableName)
-        {
-            Name = tableName;
-        }
 
-        /// <summary>
-        /// The name of the table in the database
-        /// </summary>
-        public string Name { get; set; }
-    }
 
-    /// <summary>
-    /// Specifies that this field is a primary key in the database
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
-    public class KeyAttribute : Attribute
-    {
-    }
+
 
     /// <summary>
     /// Specifies that this field is a explicitly set primary key in the database
