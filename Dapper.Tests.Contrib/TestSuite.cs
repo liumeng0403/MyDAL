@@ -9,6 +9,7 @@ using System.Transactions;
 //using System.Data.SqlServerCe;
 using FactAttribute = Dapper.Tests.Contrib.SkippableFactAttribute;
 using Dapper.Contrib.Attributes;
+using Dapper.Extensions;
 
 namespace Dapper.Tests.Contrib
 {
@@ -561,7 +562,7 @@ namespace Dapper.Tests.Contrib
         {
             SqlMapperExtensions.TableNameMapper = type =>
             {
-                switch (type.Name())
+                switch (type.NameX())
                 {
                     case "Person":
                         return "People";
@@ -571,7 +572,7 @@ namespace Dapper.Tests.Contrib
                             return tableattr.Name;
 
                         var name = type.Name + "s";
-                        if (type.IsInterface() && name.StartsWith("I"))
+                        if (type.IsInterfaceX() && name.StartsWith("I"))
                             return name.Substring(1);
                         return name;
                 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using Dapper.Extensions;
 
 namespace Dapper
 {
@@ -91,8 +92,8 @@ namespace Dapper
                         p.GetSetMethod(true) != null
                         && p.GetGetMethod(true) != null
                         && (p.PropertyType == typeof(string)
-                             || p.PropertyType.IsValueType()
-                             || (p.PropertyType.IsGenericType() && p.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)))
+                             || p.PropertyType.IsValueTypeX()
+                             || (p.PropertyType.IsGenericTypeX() && p.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)))
                         ).ToList();
             }
 

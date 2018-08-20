@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Data;
 using System.Collections.Concurrent;
-using System.Reflection;
-using System.Text;
+using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
+using System.Linq;
+using System.Reflection;
 using System.Reflection.Emit;
+using System.Text;
+using Dapper.Extensions;
 
 namespace Dapper
 {
@@ -252,7 +253,7 @@ namespace Dapper
             var il = dm.GetILGenerator();
 
             var setters = GetType().GetProperties()
-                .Where(p => p.PropertyType.IsGenericType() && tableTypes.Contains(p.PropertyType.GetGenericTypeDefinition()))
+                .Where(p => p.PropertyType.IsGenericTypeX() && tableTypes.Contains(p.PropertyType.GetGenericTypeDefinition()))
                 .Select(p => Tuple.Create(
                         p.GetSetMethod(true),
                         p.PropertyType.GetConstructor(new[] { typeof(TDatabase), typeof(string) }),

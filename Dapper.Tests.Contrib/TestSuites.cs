@@ -74,11 +74,11 @@ namespace Dapper.Tests.Contrib
 
         public override IDbConnection GetConnection()
         {
-            if (_skip) throw new SkipTestException("Skipping MySQL Tests - no server.");
+            //if (_skip) throw new SkipTestException("Skipping MySQL Tests - no server.");
             return new MySqlConnection(ConnectionString);
         }
 
-        private static readonly bool _skip;
+        //private static readonly bool _skip;
 
         static MySqlServerTestSuite()
         {
@@ -112,12 +112,12 @@ namespace Dapper.Tests.Contrib
                     connection.Execute("CREATE TABLE NullableDates (Id int not null AUTO_INCREMENT PRIMARY KEY, DateValue DateTime);");
                 }
             }
-            catch (MySqlException e)
+            catch 
             {
-                if (e.Message.Contains("Unable to connect"))
-                    _skip = true;
-                else
-                    throw;
+                //if (e.Message.Contains("Unable to connect"))
+                //    //_skip = true;
+                //else
+                //    throw;
             }
         }
     }

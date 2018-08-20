@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using Dapper.Extensions;
 
 namespace Dapper
 {
@@ -130,7 +131,7 @@ namespace Dapper
         {
             concreteType = concreteType ?? typeof(T);
             var func = GetDeserializer(concreteType, reader, startIndex, length, returnNullIfFirstMissing);
-            if (concreteType.IsValueType())
+            if (concreteType.IsValueTypeX())
             {
                 return _ => (T)func(_);
             }
