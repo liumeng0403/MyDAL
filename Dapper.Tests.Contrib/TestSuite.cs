@@ -15,7 +15,7 @@ namespace Dapper.Tests.Contrib
     [Table("ObjectX")]
     public class ObjectX
     {
-        [ExplicitKey]
+        [ManualPrimaryKey]
         public string ObjectXId { get; set; }
         public string Name { get; set; }
     }
@@ -23,7 +23,7 @@ namespace Dapper.Tests.Contrib
     [Table("ObjectY")]
     public class ObjectY
     {
-        [ExplicitKey]
+        [ManualPrimaryKey]
         public int ObjectYId { get; set; }
         public string Name { get; set; }
     }
@@ -31,7 +31,7 @@ namespace Dapper.Tests.Contrib
     [Table("ObjectZ")]
     public class ObjectZ
     {
-        [ExplicitKey]
+        [ManualPrimaryKey]
         public int Id { get; set; }
         public string Name { get; set; }
     }
@@ -99,7 +99,7 @@ namespace Dapper.Tests.Contrib
     [Table("GenericType")]
     public class GenericType<T>
     {
-        [ExplicitKey]
+        [ManualPrimaryKey]
         public string Id { get; set; }
         public string Name { get; set; }
     }
@@ -651,7 +651,7 @@ namespace Dapper.Tests.Contrib
             }
         }
 
-#if !NETCOREAPP1_0 && !NETCOREAPP2_0
+
         [Fact]
         public void TransactionScope()
         {
@@ -667,7 +667,7 @@ namespace Dapper.Tests.Contrib
                 }
             }
         }
-#endif
+
 
         [Fact]
         public void InsertCheckKey()

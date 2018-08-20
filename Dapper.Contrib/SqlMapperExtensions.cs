@@ -92,7 +92,7 @@ namespace Dapper.Contrib.Extensions
                 return pi.ToList();
             }
 
-            var explicitKeyProperties = TypePropertiesCache(type).Where(p => p.GetCustomAttributes(true).Any(a => a is ExplicitKeyAttribute)).ToList();
+            var explicitKeyProperties = TypePropertiesCache(type).Where(p => p.GetCustomAttributes(true).Any(a => a is ManualPrimaryKeyAttribute)).ToList();
 
             ExplicitKeyProperties[type.TypeHandle] = explicitKeyProperties;
             return explicitKeyProperties;
@@ -111,7 +111,7 @@ namespace Dapper.Contrib.Extensions
             if (keyProperties.Count == 0)
             {
                 var idProp = allProperties.Find(p => string.Equals(p.Name, "id", StringComparison.CurrentCultureIgnoreCase));
-                if (idProp != null && !idProp.GetCustomAttributes(true).Any(a => a is ExplicitKeyAttribute))
+                if (idProp != null && !idProp.GetCustomAttributes(true).Any(a => a is ManualPrimaryKeyAttribute))
                 {
                     keyProperties.Add(idProp);
                 }
@@ -589,11 +589,8 @@ namespace Dapper.Contrib.Extensions
                     CreateProperty<T>(typeBuilder, property.Name, property.PropertyType, setIsDirtyMethod, isId);
                 }
 
-#if NETSTANDARD1_3 || NETSTANDARD2_0
                 var generatedType = typeBuilder.CreateTypeInfo().AsType();
-#else
-                var generatedType = typeBuilder.CreateType();
-#endif
+
 
                 TypeCache.Add(typeOfT, generatedType);
                 return (T)Activator.CreateInstance(generatedType);
@@ -702,13 +699,7 @@ namespace Dapper.Contrib.Extensions
 
 
 
-    /// <summary>
-    /// Specifies that this field is a explicitly set primary key in the database
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
-    public class ExplicitKeyAttribute : Attribute
-    {
-    }
+
 
     /// <summary>
     /// Specifies whether a field is writable in the database.
