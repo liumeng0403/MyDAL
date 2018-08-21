@@ -114,7 +114,7 @@ namespace Dapper.Tests
             result = connection.Query<LocalDateResult>("SELECT @NotNullable AS NotNullable, @NullableNotNull AS NullableNotNull, @NullableIsNull AS NullableIsNull", param).Single();
         }
 
-        public class LocalDateHandler : SqlMapper.TypeHandler<LocalDate>
+        public class LocalDateHandler : TypeHandler<LocalDate>
         {
             private LocalDateHandler() { /* private constructor */ }
 
@@ -368,7 +368,7 @@ namespace Dapper.Tests
             public int Id { get; set; }
         }
 
-        public class RatingValueHandler : SqlMapper.TypeHandler<RatingValue>
+        public class RatingValueHandler : TypeHandler<RatingValue>
         {
             private RatingValueHandler()
             {
@@ -425,7 +425,7 @@ namespace Dapper.Tests
             Assert.Equal(200, foo.Value);
         }
 
-        public class StringListTypeHandler : SqlMapper.TypeHandler<List<string>>
+        public class StringListTypeHandler : TypeHandler<List<string>>
         {
             private StringListTypeHandler()
             {
@@ -478,7 +478,7 @@ namespace Dapper.Tests
             }
         }
 
-        public class RecordingTypeHandler<T> : SqlMapper.TypeHandler<T>
+        public class RecordingTypeHandler<T> : TypeHandler<T>
         {
             public override void SetValue(IDbDataParameter parameter, T value)
             {
@@ -694,7 +694,7 @@ namespace Dapper.Tests
             }
         }
 
-        private class Issue461_BlargHandler : SqlMapper.TypeHandler<Blarg>
+        private class Issue461_BlargHandler : TypeHandler<Blarg>
         {
             public override void SetValue(IDbDataParameter parameter, Blarg value)
             {
