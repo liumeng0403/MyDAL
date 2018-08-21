@@ -116,119 +116,7 @@ namespace Dapper
             var command = new CommandDefinition(sql, param, transaction, commandTimeout, commandType, CommandFlags.None);
             return QueryRowImpl<T>(cnn, Row.SingleOrDefault, ref command, typeof(T));
         }
-
-        /// <summary>
-        /// Executes a single-row query, returning the data typed as <paramref name="type"/>.
-        /// </summary>
-        /// <param name="cnn">The connection to query on.</param>
-        /// <param name="type">The type to return.</param>
-        /// <param name="sql">The SQL to execute for the query.</param>
-        /// <param name="param">The parameters to pass, if any.</param>
-        /// <param name="transaction">The transaction to use, if any.</param>
-        /// <param name="buffered">Whether to buffer results in memory.</param>
-        /// <param name="commandTimeout">The command timeout (in seconds).</param>
-        /// <param name="commandType">The type of command to execute.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="type"/> is <c>null</c>.</exception>
-        /// <returns>
-        /// A sequence of data of the supplied type; if a basic type (int, string, etc) is queried then the data from the first column in assumed, otherwise an instance is
-        /// created per row, and a direct column-name===member-name mapping is assumed (case insensitive).
-        /// </returns>
-        public static IEnumerable<object> Query(this IDbConnection cnn, Type type, string sql, object param = null, IDbTransaction transaction = null, bool buffered = true, int? commandTimeout = null, CommandType? commandType = null)
-        {
-            if (type == null) throw new ArgumentNullException(nameof(type));
-            var command = new CommandDefinition(sql, param, transaction, commandTimeout, commandType, buffered ? CommandFlags.Buffered : CommandFlags.None);
-            var data = QueryImpl<object>(cnn, command, type);
-            return command.Buffered ? data.ToList() : data;
-        }
-
-        /// <summary>
-        /// Executes a single-row query, returning the data typed as <paramref name="type"/>.
-        /// </summary>
-        /// <param name="cnn">The connection to query on.</param>
-        /// <param name="type">The type to return.</param>
-        /// <param name="sql">The SQL to execute for the query.</param>
-        /// <param name="param">The parameters to pass, if any.</param>
-        /// <param name="transaction">The transaction to use, if any.</param>
-        /// <param name="commandTimeout">The command timeout (in seconds).</param>
-        /// <param name="commandType">The type of command to execute.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="type"/> is <c>null</c>.</exception>
-        /// <returns>
-        /// A sequence of data of the supplied type; if a basic type (int, string, etc) is queried then the data from the first column in assumed, otherwise an instance is
-        /// created per row, and a direct column-name===member-name mapping is assumed (case insensitive).
-        /// </returns>
-        public static object QueryFirst(this IDbConnection cnn, Type type, string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
-        {
-            if (type == null) throw new ArgumentNullException(nameof(type));
-            var command = new CommandDefinition(sql, param, transaction, commandTimeout, commandType, CommandFlags.None);
-            return QueryRowImpl<object>(cnn, Row.First, ref command, type);
-        }
-
-        /// <summary>
-        /// Executes a single-row query, returning the data typed as <paramref name="type"/>.
-        /// </summary>
-        /// <param name="cnn">The connection to query on.</param>
-        /// <param name="type">The type to return.</param>
-        /// <param name="sql">The SQL to execute for the query.</param>
-        /// <param name="param">The parameters to pass, if any.</param>
-        /// <param name="transaction">The transaction to use, if any.</param>
-        /// <param name="commandTimeout">The command timeout (in seconds).</param>
-        /// <param name="commandType">The type of command to execute.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="type"/> is <c>null</c>.</exception>
-        /// <returns>
-        /// A sequence of data of the supplied type; if a basic type (int, string, etc) is queried then the data from the first column in assumed, otherwise an instance is
-        /// created per row, and a direct column-name===member-name mapping is assumed (case insensitive).
-        /// </returns>
-        public static object QueryFirstOrDefault(this IDbConnection cnn, Type type, string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
-        {
-            if (type == null) throw new ArgumentNullException(nameof(type));
-            var command = new CommandDefinition(sql, param, transaction, commandTimeout, commandType, CommandFlags.None);
-            return QueryRowImpl<object>(cnn, Row.FirstOrDefault, ref command, type);
-        }
-
-        /// <summary>
-        /// Executes a single-row query, returning the data typed as <paramref name="type"/>.
-        /// </summary>
-        /// <param name="cnn">The connection to query on.</param>
-        /// <param name="type">The type to return.</param>
-        /// <param name="sql">The SQL to execute for the query.</param>
-        /// <param name="param">The parameters to pass, if any.</param>
-        /// <param name="transaction">The transaction to use, if any.</param>
-        /// <param name="commandTimeout">The command timeout (in seconds).</param>
-        /// <param name="commandType">The type of command to execute.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="type"/> is <c>null</c>.</exception>
-        /// <returns>
-        /// A sequence of data of the supplied type; if a basic type (int, string, etc) is queried then the data from the first column in assumed, otherwise an instance is
-        /// created per row, and a direct column-name===member-name mapping is assumed (case insensitive).
-        /// </returns>
-        public static object QuerySingle(this IDbConnection cnn, Type type, string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
-        {
-            if (type == null) throw new ArgumentNullException(nameof(type));
-            var command = new CommandDefinition(sql, param, transaction, commandTimeout, commandType, CommandFlags.None);
-            return QueryRowImpl<object>(cnn, Row.Single, ref command, type);
-        }
-
-        /// <summary>
-        /// Executes a single-row query, returning the data typed as <paramref name="type"/>.
-        /// </summary>
-        /// <param name="cnn">The connection to query on.</param>
-        /// <param name="type">The type to return.</param>
-        /// <param name="sql">The SQL to execute for the query.</param>
-        /// <param name="param">The parameters to pass, if any.</param>
-        /// <param name="transaction">The transaction to use, if any.</param>
-        /// <param name="commandTimeout">The command timeout (in seconds).</param>
-        /// <param name="commandType">The type of command to execute.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="type"/> is <c>null</c>.</exception>
-        /// <returns>
-        /// A sequence of data of the supplied type; if a basic type (int, string, etc) is queried then the data from the first column in assumed, otherwise an instance is
-        /// created per row, and a direct column-name===member-name mapping is assumed (case insensitive).
-        /// </returns>
-        public static object QuerySingleOrDefault(this IDbConnection cnn, Type type, string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
-        {
-            if (type == null) throw new ArgumentNullException(nameof(type));
-            var command = new CommandDefinition(sql, param, transaction, commandTimeout, commandType, CommandFlags.None);
-            return QueryRowImpl<object>(cnn, Row.SingleOrDefault, ref command, type);
-        }
-
+        
         /// <summary>
         /// Executes a query, returning the data typed as <typeparamref name="T"/>.
         /// </summary>
@@ -343,8 +231,6 @@ namespace Dapper
             return buffered ? results.ToList() : results;
         }
 
-
-
         /// <summary>
         /// Execute a query asynchronously using .NET 4.5 Task.
         /// </summary>
@@ -413,90 +299,7 @@ namespace Dapper
         /// <param name="commandType">The type of command to execute.</param>
         public static Task<T> QuerySingleOrDefaultAsync<T>(this IDbConnection cnn, string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null) =>
             QueryRowAsync<T>(cnn, Row.SingleOrDefault, typeof(T), new CommandDefinition(sql, param, transaction, commandTimeout, commandType, CommandFlags.None, default(CancellationToken)));
-
-
-        /// <summary>
-        /// Execute a query asynchronously using .NET 4.5 Task.
-        /// </summary>
-        /// <param name="cnn">The connection to query on.</param>
-        /// <param name="type">The type to return.</param>
-        /// <param name="sql">The SQL to execute for the query.</param>
-        /// <param name="param">The parameters to pass, if any.</param>
-        /// <param name="transaction">The transaction to use, if any.</param>
-        /// <param name="commandTimeout">The command timeout (in seconds).</param>
-        /// <param name="commandType">The type of command to execute.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="type"/> is <c>null</c>.</exception>
-        public static Task<IEnumerable<object>> QueryAsync(this IDbConnection cnn, Type type, string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
-        {
-            if (type == null) throw new ArgumentNullException(nameof(type));
-            return QueryAsync<object>(cnn, type, new CommandDefinition(sql, param, transaction, commandTimeout, commandType, CommandFlags.Buffered, default(CancellationToken)));
-        }
-
-        /// <summary>
-        /// Execute a single-row query asynchronously using .NET 4.5 Task.
-        /// </summary>
-        /// <param name="cnn">The connection to query on.</param>
-        /// <param name="type">The type to return.</param>
-        /// <param name="sql">The SQL to execute for the query.</param>
-        /// <param name="param">The parameters to pass, if any.</param>
-        /// <param name="transaction">The transaction to use, if any.</param>
-        /// <param name="commandTimeout">The command timeout (in seconds).</param>
-        /// <param name="commandType">The type of command to execute.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="type"/> is <c>null</c>.</exception>
-        public static Task<object> QueryFirstAsync(this IDbConnection cnn, Type type, string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
-        {
-            if (type == null) throw new ArgumentNullException(nameof(type));
-            return QueryRowAsync<object>(cnn, Row.First, type, new CommandDefinition(sql, param, transaction, commandTimeout, commandType, CommandFlags.None, default(CancellationToken)));
-        }
-        /// <summary>
-        /// Execute a single-row query asynchronously using .NET 4.5 Task.
-        /// </summary>
-        /// <param name="cnn">The connection to query on.</param>
-        /// <param name="type">The type to return.</param>
-        /// <param name="sql">The SQL to execute for the query.</param>
-        /// <param name="param">The parameters to pass, if any.</param>
-        /// <param name="transaction">The transaction to use, if any.</param>
-        /// <param name="commandTimeout">The command timeout (in seconds).</param>
-        /// <param name="commandType">The type of command to execute.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="type"/> is <c>null</c>.</exception>
-        public static Task<object> QueryFirstOrDefaultAsync(this IDbConnection cnn, Type type, string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
-        {
-            if (type == null) throw new ArgumentNullException(nameof(type));
-            return QueryRowAsync<object>(cnn, Row.FirstOrDefault, type, new CommandDefinition(sql, param, transaction, commandTimeout, commandType, CommandFlags.None, default(CancellationToken)));
-        }
-        /// <summary>
-        /// Execute a single-row query asynchronously using .NET 4.5 Task.
-        /// </summary>
-        /// <param name="cnn">The connection to query on.</param>
-        /// <param name="type">The type to return.</param>
-        /// <param name="sql">The SQL to execute for the query.</param>
-        /// <param name="param">The parameters to pass, if any.</param>
-        /// <param name="transaction">The transaction to use, if any.</param>
-        /// <param name="commandTimeout">The command timeout (in seconds).</param>
-        /// <param name="commandType">The type of command to execute.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="type"/> is <c>null</c>.</exception>
-        public static Task<object> QuerySingleAsync(this IDbConnection cnn, Type type, string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
-        {
-            if (type == null) throw new ArgumentNullException(nameof(type));
-            return QueryRowAsync<object>(cnn, Row.Single, type, new CommandDefinition(sql, param, transaction, commandTimeout, commandType, CommandFlags.None, default(CancellationToken)));
-        }
-        /// <summary>
-        /// Execute a single-row query asynchronously using .NET 4.5 Task.
-        /// </summary>
-        /// <param name="cnn">The connection to query on.</param>
-        /// <param name="type">The type to return.</param>
-        /// <param name="sql">The SQL to execute for the query.</param>
-        /// <param name="param">The parameters to pass, if any.</param>
-        /// <param name="transaction">The transaction to use, if any.</param>
-        /// <param name="commandTimeout">The command timeout (in seconds).</param>
-        /// <param name="commandType">The type of command to execute.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="type"/> is <c>null</c>.</exception>
-        public static Task<object> QuerySingleOrDefaultAsync(this IDbConnection cnn, Type type, string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
-        {
-            if (type == null) throw new ArgumentNullException(nameof(type));
-            return QueryRowAsync<object>(cnn, Row.SingleOrDefault, type, new CommandDefinition(sql, param, transaction, commandTimeout, commandType, CommandFlags.None, default(CancellationToken)));
-        }
-
+        
         /// <summary>
         /// Execute a query asynchronously using .NET 4.5 Task.
         /// </summary>
@@ -509,25 +312,7 @@ namespace Dapper
         /// </returns>
         public static Task<IEnumerable<T>> QueryAsync<T>(this IDbConnection cnn, CommandDefinition command) =>
             QueryAsync<T>(cnn, typeof(T), command);
-
-        /// <summary>
-        /// Execute a query asynchronously using .NET 4.5 Task.
-        /// </summary>
-        /// <param name="cnn">The connection to query on.</param>
-        /// <param name="type">The type to return.</param>
-        /// <param name="command">The command used to query on this connection.</param>
-        public static Task<IEnumerable<object>> QueryAsync(this IDbConnection cnn, Type type, CommandDefinition command) =>
-            QueryAsync<object>(cnn, type, command);
-
-        /// <summary>
-        /// Execute a single-row query asynchronously using .NET 4.5 Task.
-        /// </summary>
-        /// <param name="cnn">The connection to query on.</param>
-        /// <param name="type">The type to return.</param>
-        /// <param name="command">The command used to query on this connection.</param>
-        public static Task<object> QueryFirstAsync(this IDbConnection cnn, Type type, CommandDefinition command) =>
-            QueryRowAsync<object>(cnn, Row.First, type, command);
-
+        
         /// <summary>
         /// Execute a single-row query asynchronously using .NET 4.5 Task.
         /// </summary>
@@ -536,16 +321,7 @@ namespace Dapper
         /// <param name="command">The command used to query on this connection.</param>
         public static Task<T> QueryFirstAsync<T>(this IDbConnection cnn, CommandDefinition command) =>
             QueryRowAsync<T>(cnn, Row.First, typeof(T), command);
-
-        /// <summary>
-        /// Execute a single-row query asynchronously using .NET 4.5 Task.
-        /// </summary>
-        /// <param name="cnn">The connection to query on.</param>
-        /// <param name="type">The type to return.</param>
-        /// <param name="command">The command used to query on this connection.</param>
-        public static Task<object> QueryFirstOrDefaultAsync(this IDbConnection cnn, Type type, CommandDefinition command) =>
-            QueryRowAsync<object>(cnn, Row.FirstOrDefault, type, command);
-
+        
         /// <summary>
         /// Execute a single-row query asynchronously using .NET 4.5 Task.
         /// </summary>
@@ -554,16 +330,7 @@ namespace Dapper
         /// <param name="command">The command used to query on this connection.</param>
         public static Task<T> QueryFirstOrDefaultAsync<T>(this IDbConnection cnn, CommandDefinition command) =>
             QueryRowAsync<T>(cnn, Row.FirstOrDefault, typeof(T), command);
-
-        /// <summary>
-        /// Execute a single-row query asynchronously using .NET 4.5 Task.
-        /// </summary>
-        /// <param name="cnn">The connection to query on.</param>
-        /// <param name="type">The type to return.</param>
-        /// <param name="command">The command used to query on this connection.</param>
-        public static Task<object> QuerySingleAsync(this IDbConnection cnn, Type type, CommandDefinition command) =>
-            QueryRowAsync<object>(cnn, Row.Single, type, command);
-
+        
         /// <summary>
         /// Execute a single-row query asynchronously using .NET 4.5 Task.
         /// </summary>
@@ -572,16 +339,7 @@ namespace Dapper
         /// <param name="command">The command used to query on this connection.</param>
         public static Task<T> QuerySingleAsync<T>(this IDbConnection cnn, CommandDefinition command) =>
             QueryRowAsync<T>(cnn, Row.Single, typeof(T), command);
-
-        /// <summary>
-        /// Execute a single-row query asynchronously using .NET 4.5 Task.
-        /// </summary>
-        /// <param name="cnn">The connection to query on.</param>
-        /// <param name="type">The type to return.</param>
-        /// <param name="command">The command used to query on this connection.</param>
-        public static Task<object> QuerySingleOrDefaultAsync(this IDbConnection cnn, Type type, CommandDefinition command) =>
-            QueryRowAsync<object>(cnn, Row.SingleOrDefault, type, command);
-
+        
         /// <summary>
         /// Execute a single-row query asynchronously using .NET 4.5 Task.
         /// </summary>

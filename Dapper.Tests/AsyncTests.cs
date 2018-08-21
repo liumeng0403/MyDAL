@@ -355,33 +355,7 @@ namespace Dapper.Tests
         {
             public string Value { get; set; }
         }
-
-        [Fact]
-        public async Task TypeBasedViaTypeAsync()
-        {
-            Type type = Common.GetSomeType();
-
-            dynamic actual = (await MarsConnection.QueryAsync(type, "select @A as [A], @B as [B]", new { A = 123, B = "abc" }).ConfigureAwait(false)).FirstOrDefault();
-            Assert.Equal(((object)actual).GetType(), type);
-            int a = actual.A;
-            string b = actual.B;
-            Assert.Equal(123, a);
-            Assert.Equal("abc", b);
-        }
-
-        [Fact]
-        public async Task TypeBasedViaTypeAsyncFirstOrDefault()
-        {
-            Type type = Common.GetSomeType();
-
-            dynamic actual = await MarsConnection.QueryFirstOrDefaultAsync(type, "select @A as [A], @B as [B]", new { A = 123, B = "abc" }).ConfigureAwait(false);
-            Assert.Equal(((object)actual).GetType(), type);
-            int a = actual.A;
-            string b = actual.B;
-            Assert.Equal(123, a);
-            Assert.Equal("abc", b);
-        }
-
+        
         [Fact]
         public async Task Issue22_ExecuteScalarAsync()
         {

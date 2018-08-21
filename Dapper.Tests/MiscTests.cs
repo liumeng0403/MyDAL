@@ -784,20 +784,7 @@ select * from @bar", new { foo }).Single();
             Assert.Equal(123, a);
             Assert.Equal("abc", b);
         }
-
-        [Fact]
-        public void TypeBasedViaType()
-        {
-            Type type = Common.GetSomeType();
-
-            dynamic actual = connection.Query(type, "select @A as [A], @B as [B]", new { A = 123, B = "abc" }).FirstOrDefault();
-            Assert.Equal(((object)actual).GetType(), type);
-            int a = actual.A;
-            string b = actual.B;
-            Assert.Equal(123, a);
-            Assert.Equal("abc", b);
-        }
-
+        
         private T CheetViaDynamic<T>(T template, string query, object args)
         {
             return connection.Query<T>(query, args).SingleOrDefault();
