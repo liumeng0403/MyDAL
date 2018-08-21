@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
+using Dapper.Parameter;
 
 namespace Dapper.DynamicParameter
 {
@@ -233,7 +234,7 @@ namespace Dapper.DynamicParameter
                 var dbType = param.DbType;
                 var val = param.Value;
                 string name = CleanKeyStr(param.Name);
-                var isCustomQueryParameter = val is SqlMapper.ICustomQueryParameter;
+                var isCustomQueryParameter = val is ICustomQueryParameter;
 
                 SqlMapper.ITypeHandler handler = null;
                 if (dbType == null && val != null && !isCustomQueryParameter)
@@ -244,7 +245,7 @@ namespace Dapper.DynamicParameter
                 }
                 if (isCustomQueryParameter)
                 {
-                    ((SqlMapper.ICustomQueryParameter)val).AddParameter(command, name);
+                    ((ICustomQueryParameter)val).AddParameter(command, name);
                 }
                 else if (dbType == EnumerableMultiParameter)
                 {

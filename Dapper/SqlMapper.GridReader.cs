@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Globalization;
 using Dapper.DynamicParameter;
+using Dapper.DataBase;
 
 namespace Dapper
 {

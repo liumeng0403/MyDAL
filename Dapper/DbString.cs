@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Data;
+using Dapper.Parameter;
 
 namespace Dapper
 {
     /// <summary>
     /// This class represents a SQL string, it can be used if you need to denote your parameter is a Char vs VarChar vs nVarChar vs nChar
     /// </summary>
-    public sealed class DbString : SqlMapper.ICustomQueryParameter
+    public sealed class DbString : ICustomQueryParameter
     {
         /// <summary>
         /// Default value for IsAnsi.

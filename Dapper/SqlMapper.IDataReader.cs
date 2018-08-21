@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using Dapper.DataBase;
 using Dapper.Extensions;
 
 namespace Dapper
@@ -22,7 +23,27 @@ namespace Dapper
                     yield return (T)deser(reader);
                 } while (reader.Read());
             }
+        }       
+        private static Func<IDataReader, object> GetDeserializer(Type type, IDataReader reader, int startBound, int length, bool returnNullIfFirstMissing)
+        {
+            // dynamic is passed in as Object ... by c# design
+            if (type == typeof(object) || type == typeof(DapperRow))
+            {
+                return GetDapperRowDeserializer(reader, startBound, length, returnNullIfFirstMissing);
+            }
+            Type underlyingType = null;
+            if (!(typeMap.ContainsKey(type) || type.IsEnumX() || type.FullName == LinqBinary
+                || (type.IsValueTypeX() && (underlyingType = Nullable.GetUnderlyingType(type)) != null && underlyingType.IsEnumX())))
+            {
+                if (typeHandlers.TryGetValue(type, out ITypeHandler handler))
+                {
+                    return GetHandlerDeserializer(handler, type, startBound);
+                }
+                return GetTypeDeserializer(type, reader, startBound, length, returnNullIfFirstMissing);
+            }
+            return GetStructDeserializer(type, underlyingType ?? type, startBound);
         }
+
 
         /// <summary>
         /// Parses a data reader to a sequence of data of the supplied type (as object). Used for deserializing a reader without a connection, etc.

@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Dapper.Parameter;
 
 namespace Dapper
 {
     /// <summary>
     /// Used to pass a IEnumerable&lt;SqlDataRecord&gt; as a SqlDataRecordListTVPParameter
     /// </summary>
-    internal sealed class SqlDataRecordListTVPParameter : SqlMapper.ICustomQueryParameter
+    internal sealed class SqlDataRecordListTVPParameter : ICustomQueryParameter
     {
         private readonly IEnumerable<Microsoft.SqlServer.Server.SqlDataRecord> data;
         private readonly string typeName;
@@ -22,7 +23,7 @@ namespace Dapper
             this.typeName = typeName;
         }
 
-        void SqlMapper.ICustomQueryParameter.AddParameter(IDbCommand command, string name)
+        void ICustomQueryParameter.AddParameter(IDbCommand command, string name)
         {
             var param = command.CreateParameter();
             param.ParameterName = name;

@@ -12,8 +12,7 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using Dapper.DynamicParameter;
-
-
+using Dapper.Parameter;
 
 namespace Dapper.Tests
 {
@@ -77,7 +76,7 @@ namespace Dapper.Tests
             }
         }
 
-        private class IntCustomParam : SqlMapper.ICustomQueryParameter
+        private class IntCustomParam : ICustomQueryParameter
         {
             private readonly IEnumerable<int> numbers;
             public IntCustomParam(IEnumerable<int> numbers)
@@ -100,17 +99,7 @@ namespace Dapper.Tests
             }
         }
 
-        /* TODO:
-         * 
-        public void TestMagicParam()
-        {
-            // magic params allow you to pass in single params without using an anon class
-            // this test fails for now, but I would like to support a single param by parsing the sql with regex and remapping. 
 
-            var first = connection.Query("select @a as a", 1).First();
-            Assert.Equal(first.a, 1);
-        }
-         * */
 
         [Fact]
         public void TestDoubleParam()

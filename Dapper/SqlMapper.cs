@@ -18,8 +18,10 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
+using Dapper.DataBase;
 using Dapper.DynamicParameter;
 using Dapper.Extensions;
+using Dapper.Parameter;
 
 #if NETSTANDARD1_3
 using DataException = System.InvalidOperationException;
@@ -1767,26 +1769,6 @@ namespace Dapper
             });
         }
 
-        private static Func<IDataReader, object> GetDeserializer(Type type, IDataReader reader, int startBound, int length, bool returnNullIfFirstMissing)
-        {
-            // dynamic is passed in as Object ... by c# design
-            if (type == typeof(object) || type == typeof(DapperRow))
-            {
-                return GetDapperRowDeserializer(reader, startBound, length, returnNullIfFirstMissing);
-            }
-            Type underlyingType = null;
-            if (!(typeMap.ContainsKey(type) || type.IsEnumX() || type.FullName == LinqBinary
-                || (type.IsValueTypeX() && (underlyingType = Nullable.GetUnderlyingType(type)) != null && underlyingType.IsEnumX())))
-            {
-                if (typeHandlers.TryGetValue(type, out ITypeHandler handler))
-                {
-                    return GetHandlerDeserializer(handler, type, startBound);
-                }
-                return GetTypeDeserializer(type, reader, startBound, length, returnNullIfFirstMissing);
-            }
-            return GetStructDeserializer(type, underlyingType ?? type, startBound);
-        }
-
         private static Func<IDataReader, object> GetHandlerDeserializer(ITypeHandler handler, Type type, int startBound)
         {
             return reader => handler.Parse(type, reader.GetValue(startBound));
@@ -1868,9 +1850,7 @@ namespace Dapper
         /// Internal use only.
         /// </summary>
         /// <param name="value">The object to convert to a character.</param>
-#if !NETSTANDARD1_3
         [Browsable(false)]
-#endif
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete(ObsoleteInternalUsageOnly, false)]
         public static char ReadChar(object value)
@@ -3685,7 +3665,7 @@ namespace Dapper
         // one per thread
         [ThreadStatic]
         private static StringBuilder perThreadStringBuilderCache;
-        private static StringBuilder GetStringBuilder()
+        internal static StringBuilder GetStringBuilder()
         {
             var tmp = perThreadStringBuilderCache;
             if (tmp != null)
@@ -3697,7 +3677,7 @@ namespace Dapper
             return new StringBuilder();
         }
 
-        private static string __ToStringRecycle(this StringBuilder obj)
+        internal static string __ToStringRecycle(this StringBuilder obj)
         {
             if (obj == null) return "";
             var s = obj.ToString();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Reflection;
+using Dapper.Parameter;
 
 #if !NETSTANDARD1_3
 namespace Dapper
@@ -8,7 +9,7 @@ namespace Dapper
     /// <summary>
     /// Used to pass a DataTable as a TableValuedParameter
     /// </summary>
-    internal sealed class TableValuedParameter : SqlMapper.ICustomQueryParameter
+    internal sealed class TableValuedParameter : ICustomQueryParameter
     {
         private readonly DataTable table;
         private readonly string typeName;
@@ -41,7 +42,7 @@ namespace Dapper
             }
         }
 
-        void SqlMapper.ICustomQueryParameter.AddParameter(IDbCommand command, string name)
+        void ICustomQueryParameter.AddParameter(IDbCommand command, string name)
         {
             var param = command.CreateParameter();
             param.ParameterName = name;
