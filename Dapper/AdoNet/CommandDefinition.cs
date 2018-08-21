@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Text;
 using System.Threading;
 using Dapper.DataStructure;
 using Dapper.DynamicParameter;
 
-namespace Dapper
+namespace Dapper.AdoNet
 {
     /// <summary>
     /// sql 操作定义

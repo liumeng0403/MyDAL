@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
+using Dapper.AdoNet;
 using Dapper.DataBase;
 using Dapper.DynamicParameter;
 using Dapper.Extensions;

@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using Xunit;
 using Dapper.DynamicParameter;
 using Dapper.Reader;
+using Dapper.AdoNet;
 
 namespace Dapper.Tests
 {

@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Dapper.AdoNet;
 using Dapper.DataBase;
 using Dapper.DynamicParameter;
 using Dapper.Reader;
