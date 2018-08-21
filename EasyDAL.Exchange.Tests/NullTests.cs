@@ -1,5 +1,7 @@
 ﻿using Xunit;
 using System.Linq;
+using EasyDAL.Exchange.MapperX;
+
 namespace EasyDAL.Exchange.Tests
 {
     [Collection(NonParallelDefinition.Name)]
@@ -19,10 +21,10 @@ namespace EasyDAL.Exchange.Tests
 
         private void TestNullable(bool applyNulls)
         {
-            bool oldSetting = SqlMapper.Settings.ApplyNullValues;
+            bool oldSetting = Settings.ApplyNullValues;
             try
             {
-                SqlMapper.Settings.ApplyNullValues = applyNulls;
+                Settings.ApplyNullValues = applyNulls;
                 SqlMapper.PurgeQueryCache();
 
                 var data = connection.Query<NullTestClass>(@"
@@ -62,7 +64,7 @@ select * from @data").ToDictionary(_ => _.Id);
             }
             finally
             {
-                SqlMapper.Settings.ApplyNullValues = oldSetting;
+                Settings.ApplyNullValues = oldSetting;
             }
         }
 

@@ -1,6 +1,9 @@
-﻿using System.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Text;
 
-namespace EasyDAL.Exchange
+namespace EasyDAL.Exchange.Reader
 {
     /// <summary>
     /// Describes a reader that controls the lifetime of both a command and a reader,

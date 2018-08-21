@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 using System.Diagnostics;
 using EasyDAL.Exchange.DynamicParameter;
 using EasyDAL.Exchange.Parameter;
+using EasyDAL.Exchange.MapperX;
 
 namespace EasyDAL.Exchange.Tests
 {
@@ -1005,10 +1006,10 @@ end");
 
         private void RunAllStringSplitTests(int stringSplit, int max = 150)
         {
-            int oldVal = SqlMapper.Settings.InListStringSplitCount;
+            int oldVal = Settings.InListStringSplitCount;
             try
             {
-                SqlMapper.Settings.InListStringSplitCount = stringSplit;
+                Settings.InListStringSplitCount = stringSplit;
                 try { connection.Execute("drop table #splits"); } catch { /* don't care */ }
                 int count = connection.QuerySingle<int>("create table #splits (i int not null);"
                     + string.Concat(Enumerable.Range(-max, max * 3).Select(i => $"insert #splits (i) values ({i});"))
@@ -1032,7 +1033,7 @@ end");
             }
             finally
             {
-                SqlMapper.Settings.InListStringSplitCount = oldVal;
+                Settings.InListStringSplitCount = oldVal;
             }
         }
 

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using EasyDAL.Exchange.Parameter;
+using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
-using EasyDAL.Exchange.Parameter;
+using System.Text;
 
-#if !NETSTANDARD1_3
-namespace EasyDAL.Exchange
+namespace EasyDAL.Exchange.DataBase
 {
     /// <summary>
     /// Used to pass a DataTable as a TableValuedParameter
@@ -67,4 +68,3 @@ namespace EasyDAL.Exchange
         }
     }
 }
-#endif

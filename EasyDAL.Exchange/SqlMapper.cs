@@ -20,6 +20,7 @@ using EasyDAL.Exchange.DynamicParameter;
 using EasyDAL.Exchange.Extensions;
 using EasyDAL.Exchange.Handler;
 using EasyDAL.Exchange.Map;
+using EasyDAL.Exchange.MapperX;
 using EasyDAL.Exchange.Parameter;
 using EasyDAL.Exchange.Reader;
 
@@ -1195,7 +1196,7 @@ namespace EasyDAL.Exchange
                 bool isDbString = value is IEnumerable<DbString>;
                 DbType dbType = 0;
 
-                int splitAt = SqlMapper.Settings.InListStringSplitCount;
+                int splitAt = Settings.InListStringSplitCount;
                 bool viaSplit = splitAt >= 0
                     && TryStringSplit(ref list, splitAt, namePrefix, command, byPosition);
 
@@ -2274,7 +2275,7 @@ namespace EasyDAL.Exchange
             return found;
         }
 
-        private static Func<IDataReader, object> GetTypeDeserializerImpl(
+        internal static Func<IDataReader, object> GetTypeDeserializerImpl(
             Type type, IDataReader reader, int startBound = 0, int length = -1, bool returnNullIfFirstMissing = false
         )
         {

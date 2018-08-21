@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Text;
 using EasyDAL.Exchange.AdoNet;
 using EasyDAL.Exchange.DataBase;
+using EasyDAL.Exchange.MapperX;
 
 namespace EasyDAL.Exchange
 {

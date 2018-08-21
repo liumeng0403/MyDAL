@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using EasyDAL.Exchange.AdoNet;
 using EasyDAL.Exchange.DataBase;
 using EasyDAL.Exchange.DynamicParameter;
+using EasyDAL.Exchange.MapperX;
 
 namespace EasyDAL.Exchange.Reader
 {
@@ -160,13 +161,13 @@ namespace EasyDAL.Exchange.Reader
             if (reader == null) throw new ObjectDisposedException(GetType().FullName, "The reader has been disposed; this can happen after all data has been consumed");
             if (IsConsumed) throw new InvalidOperationException("Query results must be consumed in the correct order, and each result can only be consumed once");
             var typedIdentity = identity.ForGrid(type, gridIndex);
-            SqlMapper. CacheInfo cache = SqlMapper. GetCacheInfo(typedIdentity, null, addToCache);
+            CacheInfo cache = SqlMapper. GetCacheInfo(typedIdentity, null, addToCache);
             var deserializer = cache.Deserializer;
 
             int hash =SqlMapper. GetColumnHash(reader);
             if (deserializer.Func == null || deserializer.Hash != hash)
             {
-                deserializer = new SqlMapper. DeserializerState(hash, SqlMapper. GetDeserializer(type, reader, 0, -1, false));
+                deserializer = new DeserializerState(hash, SqlMapper. GetDeserializer(type, reader, 0, -1, false));
                 cache.Deserializer = deserializer;
             }
             IsConsumed = true;
@@ -198,13 +199,13 @@ namespace EasyDAL.Exchange.Reader
             if (reader.Read() && reader.FieldCount != 0)
             {
                 var typedIdentity = identity.ForGrid(type, gridIndex);
-                SqlMapper. CacheInfo cache = SqlMapper. GetCacheInfo(typedIdentity, null, addToCache);
+                CacheInfo cache = SqlMapper. GetCacheInfo(typedIdentity, null, addToCache);
                 var deserializer = cache.Deserializer;
 
                 int hash = SqlMapper. GetColumnHash(reader);
                 if (deserializer.Func == null || deserializer.Hash != hash)
                 {
-                    deserializer = new SqlMapper. DeserializerState(hash, SqlMapper. GetDeserializer(type, reader, 0, -1, false));
+                    deserializer = new DeserializerState(hash, SqlMapper. GetDeserializer(type, reader, 0, -1, false));
                     cache.Deserializer = deserializer;
                 }
                 object val = deserializer.Func(reader);
@@ -309,13 +310,13 @@ namespace EasyDAL.Exchange.Reader
             if (await reader.ReadAsync(cancel).ConfigureAwait(false) && reader.FieldCount != 0)
             {
                 var typedIdentity = identity.ForGrid(type, gridIndex);
-                SqlMapper. CacheInfo cache =SqlMapper. GetCacheInfo(typedIdentity, null, addToCache);
+                CacheInfo cache =SqlMapper. GetCacheInfo(typedIdentity, null, addToCache);
                 var deserializer = cache.Deserializer;
 
                 int hash =SqlMapper. GetColumnHash(reader);
                 if (deserializer.Func == null || deserializer.Hash != hash)
                 {
-                    deserializer = new SqlMapper. DeserializerState(hash, SqlMapper. GetDeserializer(type, reader, 0, -1, false));
+                    deserializer = new DeserializerState(hash, SqlMapper. GetDeserializer(type, reader, 0, -1, false));
                     cache.Deserializer = deserializer;
                 }
                 result = (T)deserializer.Func(reader);

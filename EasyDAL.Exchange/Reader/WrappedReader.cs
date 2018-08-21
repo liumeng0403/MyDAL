@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Text;
 
-namespace EasyDAL.Exchange
+namespace EasyDAL.Exchange.Reader
 {
     internal class WrappedReader : IWrappedDataReader
     {

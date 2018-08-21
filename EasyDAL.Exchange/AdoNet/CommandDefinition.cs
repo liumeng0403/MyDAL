@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using EasyDAL.Exchange.DataStructure;
 using EasyDAL.Exchange.DynamicParameter;
+using EasyDAL.Exchange.MapperX;
 
 namespace EasyDAL.Exchange.AdoNet
 {
@@ -123,9 +124,9 @@ namespace EasyDAL.Exchange.AdoNet
             {
                 cmd.CommandTimeout = CommandTimeout.Value;
             }
-            else if (SqlMapper.Settings.CommandTimeout.HasValue)
+            else if (Settings.CommandTimeout.HasValue)
             {
-                cmd.CommandTimeout = SqlMapper.Settings.CommandTimeout.Value;
+                cmd.CommandTimeout = Settings.CommandTimeout.Value;
             }
             if (CommandType.HasValue)
                 cmd.CommandType = CommandType.Value;

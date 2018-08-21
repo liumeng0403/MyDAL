@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using EasyDAL.Exchange.AdoNet;
 using EasyDAL.Exchange.DataBase;
 using EasyDAL.Exchange.DynamicParameter;
+using EasyDAL.Exchange.MapperX;
 using EasyDAL.Exchange.Reader;
 
 namespace EasyDAL.Exchange
