@@ -7,6 +7,7 @@ using System.Threading;
 using System.Data.SqlClient;
 using Xunit;
 using Dapper.DynamicParameter;
+using Dapper.Reader;
 
 namespace Dapper.Tests
 {
@@ -205,7 +206,7 @@ namespace Dapper.Tests
         [Fact]
         public async Task TestMultiAsync()
         {
-            using (SqlMapper.GridReader multi = await connection.QueryMultipleAsync("select 1; select 2").ConfigureAwait(false))
+            using (GridReader multi = await connection.QueryMultipleAsync("select 1; select 2").ConfigureAwait(false))
             {
                 Assert.Equal(1, multi.ReadAsync<int>().Result.Single());
                 Assert.Equal(2, multi.ReadAsync<int>().Result.Single());
@@ -215,7 +216,7 @@ namespace Dapper.Tests
         [Fact]
         public async Task TestMultiAsyncViaFirstOrDefault()
         {
-            using (SqlMapper.GridReader multi = await connection.QueryMultipleAsync("select 1; select 2; select 3; select 4; select 5").ConfigureAwait(false))
+            using (GridReader multi = await connection.QueryMultipleAsync("select 1; select 2; select 3; select 4; select 5").ConfigureAwait(false))
             {
                 Assert.Equal(1, multi.ReadFirstOrDefaultAsync<int>().Result);
                 Assert.Equal(2, multi.ReadAsync<int>().Result.Single());
@@ -228,7 +229,7 @@ namespace Dapper.Tests
         [Fact]
         public async Task TestMultiClosedConnAsync()
         {
-            using (SqlMapper.GridReader multi = await connection.QueryMultipleAsync("select 1; select 2").ConfigureAwait(false))
+            using (GridReader multi = await connection.QueryMultipleAsync("select 1; select 2").ConfigureAwait(false))
             {
                 Assert.Equal(1, multi.ReadAsync<int>().Result.Single());
                 Assert.Equal(2, multi.ReadAsync<int>().Result.Single());
@@ -238,7 +239,7 @@ namespace Dapper.Tests
         [Fact]
         public async Task TestMultiClosedConnAsyncViaFirstOrDefault()
         {
-            using (SqlMapper.GridReader multi = await connection.QueryMultipleAsync("select 1; select 2; select 3; select 4; select 5;").ConfigureAwait(false))
+            using (GridReader multi = await connection.QueryMultipleAsync("select 1; select 2; select 3; select 4; select 5;").ConfigureAwait(false))
             {
                 Assert.Equal(1, multi.ReadFirstOrDefaultAsync<int>().Result);
                 Assert.Equal(2, multi.ReadAsync<int>().Result.Single());
@@ -404,8 +405,8 @@ namespace Dapper.Tests
                 int before = SqlMapper.GetCachedSQLCount();
                 using (var multi = MarsConnection.QueryMultiple(cmdDef))
                 {
-                    c = multi.Read<int>().Single();
-                    d = multi.Read<int>().Single();
+                    c = multi.ReadAsync<int>().GetAwaiter().GetResult().Single();
+                    d = multi.ReadAsync<int>().GetAwaiter().GetResult().Single();
                 }
                 int after = SqlMapper.GetCachedSQLCount();
                 Assert.Equal(0, before);

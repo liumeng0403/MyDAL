@@ -25,7 +25,7 @@ namespace Dapper
                 } while (reader.Read());
             }
         }       
-        private static Func<IDataReader, object> GetDeserializer(Type type, IDataReader reader, int startBound, int length, bool returnNullIfFirstMissing)
+        internal static Func<IDataReader, object> GetDeserializer(Type type, IDataReader reader, int startBound, int length, bool returnNullIfFirstMissing)
         {
             // dynamic is passed in as Object ... by c# design
             if (type == typeof(object) || type == typeof(DapperRow))

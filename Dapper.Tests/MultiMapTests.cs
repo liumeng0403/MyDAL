@@ -164,7 +164,7 @@ Order by p.Id";
 
                 var grid = connection.QueryMultiple(sql);
 
-                var post1 = grid.Read<Post>().ToList();
+                var post1 = grid.ReadAsync<Post>().GetAwaiter().GetResult().ToList();
 
                 var post2 = grid.Read<Post, User, Comment, Post>((post, user, comment) => { post.Owner = user; post.Comment = comment; return post; }).SingleOrDefault();
 

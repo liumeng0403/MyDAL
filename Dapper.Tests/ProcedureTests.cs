@@ -127,8 +127,8 @@ namespace Dapper.Tests
                 SELECT Top 0 1 Id, 'Bob' Name;
                 SELECT Top 0 'Billy Goat' Creature, 'Unicorn' SpiritAnimal, 'Rainbow' Location;");
             var query = connection.QueryMultiple("#TestEmptyResults", commandType: CommandType.StoredProcedure);
-            var result1 = query.Read<Issue327_Person>();
-            var result2 = query.Read<Issue327_Magic>();
+            var result1 = query.ReadAsync<Issue327_Person>().GetAwaiter().GetResult();
+            var result2 = query.ReadAsync<Issue327_Magic>().GetAwaiter().GetResult();
             Assert.False(result1.Any());
             Assert.False(result2.Any());
         }

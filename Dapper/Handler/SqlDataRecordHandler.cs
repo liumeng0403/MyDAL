@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using Dapper.Handler;
+using System.Text;
 
-namespace Dapper
+namespace Dapper.Handler
 {
     internal sealed class SqlDataRecordHandler : ITypeHandler
     {

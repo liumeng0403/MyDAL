@@ -14,10 +14,10 @@ namespace Dapper.Tests
         {
             using (var grid = connection.QueryMultiple("select 1; select 2; select @x; select 4", new { x = 3 }))
             {
-                var a = grid.Read<int>();
-                var b = grid.Read<int>();
-                var c = grid.Read<int>();
-                var d = grid.Read<int>();
+                var a = grid.ReadAsync<int>().GetAwaiter().GetResult();
+                var b = grid.ReadAsync<int>().GetAwaiter().GetResult();
+                var c = grid.ReadAsync<int>().GetAwaiter().GetResult();
+                var d = grid.ReadAsync<int>().GetAwaiter().GetResult();
 
                 Assert.Equal(1, a.Single());
                 Assert.Equal(2, b.Single());
@@ -31,10 +31,10 @@ namespace Dapper.Tests
         {
             using (var grid = connection.QueryMultiple("select 1; select 2; select @x; select 4", new { x = 3 }))
             {
-                var a = grid.Read<int>(false);
+                var a = grid.ReadAsync<int>(false).GetAwaiter().GetResult();
                 try
                 {
-                    var b = grid.Read<int>(false);
+                    var b = grid.ReadAsync<int>(false).GetAwaiter().GetResult();
                     throw new InvalidOperationException(); // should have thrown
                 }
                 catch (InvalidOperationException)
@@ -49,10 +49,10 @@ namespace Dapper.Tests
         {
             using (var grid = connection.QueryMultiple("select 1; select 2; select @x; select 4", new { x = 3 }))
             {
-                var a = grid.Read<int>(false).Single();
-                var b = grid.Read<int>(false).Single();
-                var c = grid.Read<int>(false).Single();
-                var d = grid.Read<int>(false).Single();
+                var a = grid.ReadAsync<int>(false).GetAwaiter().GetResult().Single();
+                var b = grid.ReadAsync<int>(false).GetAwaiter().GetResult().Single();
+                var c = grid.ReadAsync<int>(false).GetAwaiter().GetResult().Single();
+                var d = grid.ReadAsync<int>(false).GetAwaiter().GetResult().Single();
 
                 Assert.Equal(1, a);
                 Assert.Equal(2, b);
@@ -69,9 +69,9 @@ namespace Dapper.Tests
             string s;
             using (var multi = connection.QueryMultiple(sql))
             {
-                i = multi.Read<int>().First();
-                s = multi.Read<string>().Single();
-                j = multi.Read<int>().Sum();
+                i = multi.ReadAsync<int>().GetAwaiter().GetResult().First();
+                s = multi.ReadAsync<string>().GetAwaiter().GetResult().Single();
+                j = multi.ReadAsync<int>().GetAwaiter().GetResult().Sum();
             }
             Assert.Equal(1, i);
             Assert.Equal("abc", s);
@@ -100,8 +100,8 @@ namespace Dapper.Tests
 
                 var grid = connection.QueryMultiple(sql);
 
-                var users = grid.Read().ToList();
-                var posts = grid.Read().ToList();
+                var users = grid.ReadAsync().GetAwaiter().GetResult().ToList();
+                var posts = grid.ReadAsync().GetAwaiter().GetResult().ToList();
 
                 Assert.Equal(2, users.Count);
                 Assert.Equal(3, posts.Count);
@@ -131,7 +131,7 @@ end");
 
             using (var reader = connection.QueryMultiple("#TestProc268", p, commandType: CommandType.StoredProcedure))
             {
-                reader.Read();
+                reader.ReadAsync().GetAwaiter().GetResult();
             }
             var retVal = p.Get<int>("RetVal");
             Assert.Equal(3, retVal);
@@ -148,8 +148,8 @@ end");
             // using multi-reader API
             using (var reader = connection.QueryMultiple("select cast(42 as bigint); select cast(42 as bigint)"))
             {
-                Assert.Equal(42, reader.Read<int>().Single());
-                Assert.Equal(42, reader.ReadSingle<int>());
+                Assert.Equal(42, reader.ReadAsync<int>().GetAwaiter().GetResult().Single());
+                Assert.Equal(42, reader.ReadSingleAsync<int>().GetAwaiter().GetResult());
             }
         }
 
@@ -160,8 +160,8 @@ end");
             {
                 using (var multi = conn.QueryMultiple("select 1; select 'abc';"))
                 {
-                    Assert.Equal(1, multi.Read<int>().Single());
-                    Assert.Equal("abc", multi.Read<string>().Single());
+                    Assert.Equal(1, multi.ReadAsync<int>().GetAwaiter().GetResult().Single());
+                    Assert.Equal("abc", multi.ReadAsync<string>().GetAwaiter().GetResult().Single());
                 }
                 Assert.Equal(ConnectionState.Closed, conn.State);
             }
@@ -175,8 +175,8 @@ end");
                 Assert.Equal(ConnectionState.Closed, conn.State);
                 using (var multi = conn.QueryMultiple("select 1 select 2 select 3"))
                 {
-                    Assert.Equal(1, multi.Read<int>().Single());
-                    Assert.Equal(2, multi.Read<int>().Single());
+                    Assert.Equal(1, multi.ReadAsync<int>().GetAwaiter().GetResult().Single());
+                    Assert.Equal(2, multi.ReadAsync<int>().GetAwaiter().GetResult().Single());
                     // not reading 3 is intentional here
                 }
                 Assert.Equal(ConnectionState.Closed, conn.State);
@@ -191,7 +191,7 @@ end");
                 var items = new List<HazNameId>();
                 while (!reader.IsConsumed)
                 {
-                    items.AddRange(reader.Read<HazNameId>());
+                    items.AddRange(reader.ReadAsync<HazNameId>().GetAwaiter().GetResult());
                 }
                 Assert.Equal(3, items.Count);
                 Assert.Equal(1, items[0].Id);
@@ -220,13 +220,13 @@ end");
         {
             using (var reader = connection.QueryMultiple("select 1; select 2 where 1 = 0; select 3 where 1 = 0; select 4;"))
             {
-                var one = reader.Read<int>(buffered: buffered).ToArray();
-                var two = reader.Read<int>(buffered: buffered).ToArray();
-                var three = reader.Read<int>(buffered: buffered).ToArray();
-                var four = reader.Read<int>(buffered: buffered).ToArray();
+                var one = reader.ReadAsync<int>(buffered: buffered).GetAwaiter().GetResult().ToArray();
+                var two = reader.ReadAsync<int>(buffered: buffered).GetAwaiter().GetResult().ToArray();
+                var three = reader.ReadAsync<int>(buffered: buffered).GetAwaiter().GetResult().ToArray();
+                var four = reader.ReadAsync<int>(buffered: buffered).GetAwaiter().GetResult().ToArray();
                 try
                 { // only returned four grids; expect a fifth read to fail
-                    reader.Read<int>(buffered: buffered);
+                    reader.ReadAsync<int>(buffered: buffered).GetAwaiter().GetResult();
                     throw new InvalidOperationException("this should not have worked!");
                 }
                 catch (ObjectDisposedException ex)
@@ -252,8 +252,8 @@ end");
             using (var multi = connection.QueryMultiple("select @A as [A], @B as [B]; select @C as [A], @D as [B]",
                 new { A = 123, B = "abc", C = 456, D = "def" }))
             {
-                first = multi.Read(type).Single();
-                second = multi.Read(type).Single();
+                first = multi.ReadAsync(type).GetAwaiter().GetResult().Single();
+                second = multi.ReadAsync(type).GetAwaiter().GetResult().Single();
             }
             Assert.Equal(((object)first).GetType(), type);
             int a = first.A;

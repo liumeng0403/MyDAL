@@ -23,6 +23,7 @@ using Dapper.DynamicParameter;
 using Dapper.Extensions;
 using Dapper.Handler;
 using Dapper.Parameter;
+using Dapper.Reader;
 
 #if NETSTANDARD1_3
 using DataException = System.InvalidOperationException;
@@ -39,7 +40,7 @@ namespace Dapper
         {
             public int Compare(PropertyInfo x, PropertyInfo y) => string.CompareOrdinal(x.Name, y.Name);
         }
-        private static int GetColumnHash(IDataReader reader, int startBound = 0, int length = -1)
+        internal static int GetColumnHash(IDataReader reader, int startBound = 0, int length = -1)
         {
             unchecked
             {
@@ -1134,17 +1135,10 @@ namespace Dapper
             }
         }
 
-        [Flags]
-        internal enum Row
-        {
-            First = 0,
-            FirstOrDefault = 1, //  & FirstOrDefault != 0: allow zero rows
-            Single = 2, // & Single != 0: demand at least one row
-            SingleOrDefault = 3
-        }
+
 
         private static readonly int[] ErrTwoRows = new int[2], ErrZeroRows = new int[0];
-        private static void ThrowMultipleRows(Row row)
+        internal static void ThrowMultipleRows(Row row)
         {
             switch (row)
             {  // get the standard exception from the runtime
@@ -1154,7 +1148,7 @@ namespace Dapper
             }
         }
 
-        private static void ThrowZeroRows(Row row)
+        internal static void ThrowZeroRows(Row row)
         {
             switch (row)
             { // get the standard exception from the runtime
@@ -1407,7 +1401,7 @@ namespace Dapper
             return buffered ? results.ToList() : results;
         }
 
-        private static IEnumerable<TReturn> MultiMapImpl<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TReturn>(this IDbConnection cnn, CommandDefinition command, Delegate map, string splitOn, IDataReader reader, Identity identity, bool finalize)
+        internal static IEnumerable<TReturn> MultiMapImpl<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TReturn>(this IDbConnection cnn, CommandDefinition command, Delegate map, string splitOn, IDataReader reader, Identity identity, bool finalize)
         {
             object param = command.Parameters;
             identity = identity ?? new Identity(command.CommandText, command.CommandType, cnn, typeof(TFirst), param?.GetType(), new[] { typeof(TFirst), typeof(TSecond), typeof(TThird), typeof(TFourth), typeof(TFifth), typeof(TSixth), typeof(TSeventh) });
@@ -1472,7 +1466,7 @@ namespace Dapper
             return (close ? (@default | CommandBehavior.CloseConnection) : @default) & Settings.AllowedCommandBehaviors;
         }
 
-        private static IEnumerable<TReturn> MultiMapImpl<TReturn>(this IDbConnection cnn, CommandDefinition command, Type[] types, Func<object[], TReturn> map, string splitOn, IDataReader reader, Identity identity, bool finalize)
+        internal static IEnumerable<TReturn> MultiMapImpl<TReturn>(this IDbConnection cnn, CommandDefinition command, Type[] types, Func<object[], TReturn> map, string splitOn, IDataReader reader, Identity identity, bool finalize)
         {
             if (types.Length < 1)
             {
@@ -1680,7 +1674,7 @@ namespace Dapper
             throw MultiMapException(reader);
         }
 
-        private static CacheInfo GetCacheInfo(Identity identity, object exampleParameters, bool addToCache)
+        internal static CacheInfo GetCacheInfo(Identity identity, object exampleParameters, bool addToCache)
         {
             if (!TryGetQueryCache(identity, out CacheInfo info))
             {

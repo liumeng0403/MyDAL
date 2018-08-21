@@ -955,8 +955,8 @@ select 42
 select 17
 SET @AddressPersonId = @PersonId", p))
                 {
-                    x = multi.Read<int>().Single();
-                    y = multi.Read<int>().Single();
+                    x = multi.ReadAsync<int>().GetAwaiter().GetResult().Single();
+                    y = multi.ReadAsync<int>().GetAwaiter().GetResult().Single();
                 }
 
                 Assert.Equal("grillmaster", bob.Occupation);

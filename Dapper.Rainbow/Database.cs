@@ -9,6 +9,7 @@ using System.Reflection.Emit;
 using System.Text;
 using Dapper.DynamicParameter;
 using Dapper.Extensions;
+using Dapper.Reader;
 
 namespace Dapper
 {
@@ -460,7 +461,7 @@ namespace Dapper
         /// <param name="transaction">The transaction to use for this query.</param>
         /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
         /// <param name="commandType">Is it a stored proc or a batch?</param>
-        public SqlMapper.GridReader QueryMultiple(string sql, dynamic param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null) =>
+        public GridReader QueryMultiple(string sql, dynamic param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null) =>
             SqlMapper.QueryMultiple(_connection, sql, param, transaction, commandTimeout, commandType);
 
         /// <summary>

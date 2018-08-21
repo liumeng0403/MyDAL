@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Dapper.DataBase;
 using Dapper.DynamicParameter;
+using Dapper.Reader;
 
 namespace Dapper
 {
