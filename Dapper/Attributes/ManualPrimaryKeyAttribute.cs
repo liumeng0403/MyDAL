@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Dapper.Contrib.Attributes
+namespace Dapper.Attributes
 {
     /// <summary>
-    /// PK - 自动赋值
+    /// PK - 手动赋值
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    public class PrimaryKeyAttribute : Attribute
+    public class ManualPrimaryKeyAttribute : Attribute
     {
     }
 }

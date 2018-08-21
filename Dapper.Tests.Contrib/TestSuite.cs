@@ -8,8 +8,9 @@ using Xunit;
 using System.Transactions;
 //using System.Data.SqlServerCe;
 using FactAttribute = Dapper.Tests.Contrib.SkippableFactAttribute;
-using Dapper.Contrib.Attributes;
+//using Dapper.Contrib.Attributes;
 using Dapper.Extensions;
+using Dapper.Attributes;
 
 namespace Dapper.Tests.Contrib
 {

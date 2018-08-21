@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Dapper.Attributes;
 using Dapper.Extensions;
 
 namespace Dapper

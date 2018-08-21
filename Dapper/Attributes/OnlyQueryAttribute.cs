@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Dapper.Contrib.Attributes
+namespace Dapper.Attributes
 {
     /// <summary>
-    /// PK - 手动赋值
+    /// 仅对该字段从 DB 查询
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    public class ManualPrimaryKeyAttribute : Attribute
+    public class OnlyQueryAttribute : Attribute
     {
     }
 }

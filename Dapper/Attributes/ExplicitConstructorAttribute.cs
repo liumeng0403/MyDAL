@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Dapper
+namespace Dapper.Attributes
 {
     /// <summary>
     /// Tell Dapper to use an explicit constructor, passing nulls or 0s for all parameters

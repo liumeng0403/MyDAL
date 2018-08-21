@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Reflection;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Text;
 
 namespace Dapper.Extensions
 {
@@ -21,28 +22,28 @@ namespace Dapper.Extensions
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static bool IsValueTypeX(this Type type) =>type.IsValueType;
+        public static bool IsValueTypeX(this Type type) => type.IsValueType;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static bool IsEnumX(this Type type) =>type.IsEnum;
+        public static bool IsEnumX(this Type type) => type.IsEnum;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static bool IsGenericTypeX(this Type type) =>type.IsGenericType;
+        public static bool IsGenericTypeX(this Type type) => type.IsGenericType;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static bool IsInterfaceX(this Type type) =>type.IsInterface;
+        public static bool IsInterfaceX(this Type type) => type.IsInterface;
 
         /// <summary>
         /// 

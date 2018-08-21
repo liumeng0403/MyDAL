@@ -3,6 +3,7 @@ using System.Data;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Threading;
+using Dapper.DataStructure;
 using Dapper.DynamicParameter;
 
 namespace Dapper
@@ -130,13 +131,13 @@ namespace Dapper
             return cmd;
         }
 
-        private static SqlMapper.Link<Type, Action<IDbCommand>> commandInitCache;
+        private static Link<Type, Action<IDbCommand>> commandInitCache;
 
         private static Action<IDbCommand> GetInit(Type commandType)
         {
             if (commandType == null)
                 return null; // GIGO
-            if (SqlMapper.Link<Type, Action<IDbCommand>>.TryGet(commandInitCache, commandType, out Action<IDbCommand> action))
+            if (Link<Type, Action<IDbCommand>>.TryGet(commandInitCache, commandType, out Action<IDbCommand> action))
             {
                 return action;
             }
@@ -169,7 +170,7 @@ namespace Dapper
                 action = (Action<IDbCommand>)method.CreateDelegate(typeof(Action<IDbCommand>));
             }
             // cache it
-            SqlMapper.Link<Type, Action<IDbCommand>>.TryAdd(ref commandInitCache, commandType, ref action);
+            Link<Type, Action<IDbCommand>>.TryAdd(ref commandInitCache, commandType, ref action);
             return action;
         }
 

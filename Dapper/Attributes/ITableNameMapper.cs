@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Dapper.Contrib.Attributes
+namespace Dapper.Attributes
 {
     /// <summary>
     /// Defines a table name mapper for getting table names from types.
