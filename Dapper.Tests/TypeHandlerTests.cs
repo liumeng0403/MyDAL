@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Reflection;
+using Dapper.Handler;
 using Xunit;
 
 namespace Dapper.Tests
@@ -119,7 +120,7 @@ namespace Dapper.Tests
 
             // Make the field type ITypeHandler to ensure it cannot be used with SqlMapper.AddTypeHandler<T>(TypeHandler<T>)
             // by mistake.
-            public static readonly SqlMapper.ITypeHandler Default = new LocalDateHandler();
+            public static readonly ITypeHandler Default = new LocalDateHandler();
 
             public override LocalDate Parse(object value)
             {

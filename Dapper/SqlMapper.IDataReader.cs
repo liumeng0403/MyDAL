@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using Dapper.DataBase;
 using Dapper.Extensions;
+using Dapper.Handler;
 
 namespace Dapper
 {

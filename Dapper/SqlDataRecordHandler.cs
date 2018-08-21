@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using Dapper.Handler;
 
 namespace Dapper
 {
-    internal sealed class SqlDataRecordHandler : SqlMapper.ITypeHandler
+    internal sealed class SqlDataRecordHandler : ITypeHandler
     {
         public object Parse(Type destinationType, object value)
         {

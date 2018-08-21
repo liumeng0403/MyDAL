@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
+using Dapper.Handler;
 using Dapper.Parameter;
 
 namespace Dapper.DynamicParameter
@@ -236,7 +237,7 @@ namespace Dapper.DynamicParameter
                 string name = CleanKeyStr(param.Name);
                 var isCustomQueryParameter = val is ICustomQueryParameter;
 
-                SqlMapper.ITypeHandler handler = null;
+                ITypeHandler handler = null;
                 if (dbType == null && val != null && !isCustomQueryParameter)
                 {
 #pragma warning disable 618
@@ -474,7 +475,7 @@ namespace Dapper.DynamicParameter
                 {
                     dbType = (!dbType.HasValue)
 #pragma warning disable 618
-                    ? SqlMapper.LookupDbType(targetMemberType, targetMemberType?.Name, true, out SqlMapper.ITypeHandler handler)
+                    ? SqlMapper.LookupDbType(targetMemberType, targetMemberType?.Name, true, out ITypeHandler handler)
 #pragma warning restore 618
                     : dbType;
 

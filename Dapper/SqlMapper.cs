@@ -21,6 +21,7 @@ using System.Xml.Linq;
 using Dapper.DataBase;
 using Dapper.DynamicParameter;
 using Dapper.Extensions;
+using Dapper.Handler;
 using Dapper.Parameter;
 
 #if NETSTANDARD1_3
@@ -347,7 +348,7 @@ namespace Dapper
 
         internal const string LinqBinary = "System.Data.Linq.Binary";
 
-        private const string ObsoleteInternalUsageOnly = "This method is for internal use only";
+        internal const string ObsoleteInternalUsageOnly = "This method is for internal use only";
 
         /// <summary>
         /// Get the DbType that maps to a given value.
