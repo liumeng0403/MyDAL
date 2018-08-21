@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
+using System.Text;
 
-namespace Dapper
+namespace Dapper.Map
 {
     /// <summary>
     /// Represents simple member map for one of target parameter or property or field to source DataReader column
     /// </summary>
-    internal sealed class SimpleMemberMap : SqlMapper.IMemberMap
+    internal sealed class SimpleMemberMap : IMemberMap
     {
         /// <summary>
         /// Creates instance for simple property mapping

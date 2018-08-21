@@ -1,8 +1,4 @@
-﻿/*
- License: http://www.apache.org/licenses/LICENSE-2.0
- Home page: https://github.com/StackExchange/dapper-dot-net
- */
-
+﻿
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,12 +18,10 @@ using Dapper.DataBase;
 using Dapper.DynamicParameter;
 using Dapper.Extensions;
 using Dapper.Handler;
+using Dapper.Map;
 using Dapper.Parameter;
 using Dapper.Reader;
 
-#if NETSTANDARD1_3
-using DataException = System.InvalidOperationException;
-#endif
 
 namespace Dapper
 {
@@ -36,10 +30,7 @@ namespace Dapper
     /// </summary>
     public static partial class SqlMapper
     {
-        private class PropertyInfoByNameComparer : IComparer<PropertyInfo>
-        {
-            public int Compare(PropertyInfo x, PropertyInfo y) => string.CompareOrdinal(x.Name, y.Name);
-        }
+
         internal static int GetColumnHash(IDataReader reader, int startBound = 0, int length = -1)
         {
             unchecked
@@ -1860,9 +1851,7 @@ namespace Dapper
         /// Internal use only.
         /// </summary>
         /// <param name="value">The object to convert to a character.</param>
-#if !NETSTANDARD1_3
         [Browsable(false)]
-#endif
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete(ObsoleteInternalUsageOnly, false)]
         public static char? ReadNullableChar(object value)
@@ -1879,9 +1868,7 @@ namespace Dapper
         /// <param name="parameters">The parameter collection to search in.</param>
         /// <param name="command">The command for this fetch.</param>
         /// <param name="name">The name of the parameter to get.</param>
-#if !NETSTANDARD1_3
         [Browsable(false)]
-#endif
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete(ObsoleteInternalUsageOnly, true)]
         public static IDbDataParameter FindOrAddParameter(IDataParameterCollection parameters, IDbCommand command, string name)
@@ -1937,9 +1924,7 @@ namespace Dapper
         /// <param name="command">The command to pack parameters for.</param>
         /// <param name="namePrefix">The name prefix for these parameters.</param>
         /// <param name="value">The parameter value can be an <see cref="IEnumerable{T}"/></param>
-#if !NETSTANDARD1_3
         [Browsable(false)]
-#endif
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete(ObsoleteInternalUsageOnly, false)]
         public static void PackListParameters(IDbCommand command, string namePrefix, object value)

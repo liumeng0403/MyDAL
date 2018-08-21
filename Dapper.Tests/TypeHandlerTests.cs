@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 using Dapper.Handler;
+using Dapper.Map;
 using Xunit;
 
 namespace Dapper.Tests
