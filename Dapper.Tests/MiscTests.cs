@@ -857,22 +857,7 @@ select * from @bar", new { foo }).Single();
             }
         }
 
-        [Fact]
-        public void TestIssue131()
-        {
-            var results = connection.Query<dynamic, int, dynamic>(
-                "SELECT 1 Id, 'Mr' Title, 'John' Surname, 4 AddressCount",
-                (person, addressCount) => person,
-                splitOn: "AddressCount"
-            ).FirstOrDefault();
 
-            var asDict = (IDictionary<string, object>)results;
-
-            Assert.True(asDict.ContainsKey("Id"));
-            Assert.True(asDict.ContainsKey("Title"));
-            Assert.True(asDict.ContainsKey("Surname"));
-            Assert.False(asDict.ContainsKey("AddressCount"));
-        }
 
         // see https://stackoverflow.com/questions/13127886/dapper-returns-null-for-singleordefaultdatediff
         [Fact]

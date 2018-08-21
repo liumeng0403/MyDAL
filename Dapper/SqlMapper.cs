@@ -859,75 +859,7 @@ namespace Dapper
                 cmd?.Dispose();
             }
         }
-
-        private static IEnumerable<TReturn> MultiMap<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TReturn>(
-            this IDbConnection cnn, string sql, Delegate map, object param, IDbTransaction transaction, bool buffered, string splitOn, int? commandTimeout, CommandType? commandType)
-        {
-            var command = new CommandDefinition(sql, param, transaction, commandTimeout, commandType, buffered ? CommandFlags.Buffered : CommandFlags.None);
-            var results = MultiMapImpl<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TReturn>(cnn, command, map, splitOn, null, null, true);
-            return buffered ? results.ToList() : results;
-        }
-
-        internal static IEnumerable<TReturn> MultiMapImpl<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TReturn>(this IDbConnection cnn, CommandDefinition command, Delegate map, string splitOn, IDataReader reader, Identity identity, bool finalize)
-        {
-            object param = command.Parameters;
-            identity = identity ?? new Identity(command.CommandText, command.CommandType, cnn, typeof(TFirst), param?.GetType(), new[] { typeof(TFirst), typeof(TSecond), typeof(TThird), typeof(TFourth), typeof(TFifth), typeof(TSixth), typeof(TSeventh) });
-            CacheInfo cinfo = GetCacheInfo(identity, param, command.AddToCache);
-
-            IDbCommand ownedCommand = null;
-            IDataReader ownedReader = null;
-
-            bool wasClosed = cnn?.State == ConnectionState.Closed;
-            try
-            {
-                if (reader == null)
-                {
-                    ownedCommand = command.SetupCommand(cnn, cinfo.ParamReader);
-                    if (wasClosed) cnn.Open();
-                    ownedReader = ExecuteReaderWithFlagsFallback(ownedCommand, wasClosed, CommandBehavior.SequentialAccess | CommandBehavior.SingleResult);
-                    reader = ownedReader;
-                }
-                var deserializer = default(DeserializerState);
-                Func<IDataReader, object>[] otherDeserializers;
-
-                int hash = GetColumnHash(reader);
-                if ((deserializer = cinfo.Deserializer).Func == null || (otherDeserializers = cinfo.OtherDeserializers) == null || hash != deserializer.Hash)
-                {
-                    var deserializers = GenerateDeserializers(new[] { typeof(TFirst), typeof(TSecond), typeof(TThird), typeof(TFourth), typeof(TFifth), typeof(TSixth), typeof(TSeventh) }, splitOn, reader);
-                    deserializer = cinfo.Deserializer = new DeserializerState(hash, deserializers[0]);
-                    otherDeserializers = cinfo.OtherDeserializers = deserializers.Skip(1).ToArray();
-                    if (command.AddToCache) SetQueryCache(identity, cinfo);
-                }
-
-                Func<IDataReader, TReturn> mapIt = GenerateMapper<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TReturn>(deserializer.Func, otherDeserializers, map);
-
-                if (mapIt != null)
-                {
-                    while (reader.Read())
-                    {
-                        yield return mapIt(reader);
-                    }
-                    if (finalize)
-                    {
-                        while (reader.NextResult()) { /* ignore remaining result sets */ }
-                        command.OnCompleted();
-                    }
-                }
-            }
-            finally
-            {
-                try
-                {
-                    ownedReader?.Dispose();
-                }
-                finally
-                {
-                    ownedCommand?.Dispose();
-                    if (wasClosed) cnn.Close();
-                }
-            }
-        }
-
+        
         private static CommandBehavior GetBehavior(bool close, CommandBehavior @default)
         {
             return (close ? (@default | CommandBehavior.CloseConnection) : @default) & Settings.AllowedCommandBehaviors;
@@ -997,28 +929,7 @@ namespace Dapper
                 }
             }
         }
-
-        private static Func<IDataReader, TReturn> GenerateMapper<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TReturn>(Func<IDataReader, object> deserializer, Func<IDataReader, object>[] otherDeserializers, object map)
-        {
-            switch (otherDeserializers.Length)
-            {
-                case 1:
-                    return r => ((Func<TFirst, TSecond, TReturn>)map)((TFirst)deserializer(r), (TSecond)otherDeserializers[0](r));
-                case 2:
-                    return r => ((Func<TFirst, TSecond, TThird, TReturn>)map)((TFirst)deserializer(r), (TSecond)otherDeserializers[0](r), (TThird)otherDeserializers[1](r));
-                case 3:
-                    return r => ((Func<TFirst, TSecond, TThird, TFourth, TReturn>)map)((TFirst)deserializer(r), (TSecond)otherDeserializers[0](r), (TThird)otherDeserializers[1](r), (TFourth)otherDeserializers[2](r));
-                case 4:
-                    return r => ((Func<TFirst, TSecond, TThird, TFourth, TFifth, TReturn>)map)((TFirst)deserializer(r), (TSecond)otherDeserializers[0](r), (TThird)otherDeserializers[1](r), (TFourth)otherDeserializers[2](r), (TFifth)otherDeserializers[3](r));
-                case 5:
-                    return r => ((Func<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TReturn>)map)((TFirst)deserializer(r), (TSecond)otherDeserializers[0](r), (TThird)otherDeserializers[1](r), (TFourth)otherDeserializers[2](r), (TFifth)otherDeserializers[3](r), (TSixth)otherDeserializers[4](r));
-                case 6:
-                    return r => ((Func<TFirst, TSecond, TThird, TFourth, TFifth, TSixth, TSeventh, TReturn>)map)((TFirst)deserializer(r), (TSecond)otherDeserializers[0](r), (TThird)otherDeserializers[1](r), (TFourth)otherDeserializers[2](r), (TFifth)otherDeserializers[3](r), (TSixth)otherDeserializers[4](r), (TSeventh)otherDeserializers[5](r));
-                default:
-                    throw new NotSupportedException();
-            }
-        }
-
+        
         private static Func<IDataReader, TReturn> GenerateMapper<TReturn>(int length, Func<IDataReader, object> deserializer, Func<IDataReader, object>[] otherDeserializers, Func<object[], TReturn> map)
         {
             return r =>

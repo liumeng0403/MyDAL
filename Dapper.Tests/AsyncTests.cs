@@ -144,25 +144,7 @@ namespace Dapper.Tests
             var val = query.Result;
             Assert.Equal(1, val);
         }
-
-        [Fact]
-        public async Task TestMultiMapWithSplitAsync()
-        {
-            const string sql = "select 1 as id, 'abc' as name, 2 as id, 'def' as name";
-            var productQuery = await connection.QueryAsync<Product, Category, Product>(sql, (prod, cat) =>
-            {
-                prod.Category = cat;
-                return prod;
-            }).ConfigureAwait(false);
-
-            var product = productQuery.First();
-            // assertions
-            Assert.Equal(1, product.Id);
-            Assert.Equal("abc", product.Name);
-            Assert.Equal(2, product.Category.Id);
-            Assert.Equal("def", product.Category.Name);
-        }
-
+        
         [Fact]
         public async Task TestMultiMapArbitraryWithSplitAsync()
         {
@@ -181,28 +163,7 @@ namespace Dapper.Tests
             Assert.Equal(2, product.Category.Id);
             Assert.Equal("def", product.Category.Name);
         }
-
-        [Fact]
-        public async Task TestMultiMapWithSplitClosedConnAsync()
-        {
-            const string sql = "select 1 as id, 'abc' as name, 2 as id, 'def' as name";
-            using (var conn = GetClosedConnection())
-            {
-                var productQuery = await conn.QueryAsync<Product, Category, Product>(sql, (prod, cat) =>
-                {
-                    prod.Category = cat;
-                    return prod;
-                }).ConfigureAwait(false);
-
-                var product = productQuery.First();
-                // assertions
-                Assert.Equal(1, product.Id);
-                Assert.Equal("abc", product.Name);
-                Assert.Equal(2, product.Category.Id);
-                Assert.Equal("def", product.Category.Name);
-            }
-        }
-
+        
         [Fact]
         public async Task TestMultiAsync()
         {
