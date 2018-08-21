@@ -194,41 +194,7 @@ namespace Dapper.Tests
         {
             Assert.Equal(new[] { "a", "b" }, connection.Query<string>("select 'a' a union select 'b'"));
         }
-
-        // see https://stackoverflow.com/questions/16726709/string-format-with-sql-wildcard-causing-dapper-query-to-break
-        [Fact]
-        public void CheckComplexConcat()
-        {
-            const string end_wildcard = @"
-SELECT * FROM #users16726709
-WHERE (first_name LIKE CONCAT(@search_term, '%') OR last_name LIKE CONCAT(@search_term, '%'));";
-
-            const string both_wildcards = @"
-SELECT * FROM #users16726709
-WHERE (first_name LIKE CONCAT('%', @search_term, '%') OR last_name LIKE CONCAT('%', @search_term, '%'));";
-
-            const string formatted = @"
-SELECT * FROM #users16726709
-WHERE (first_name LIKE {0} OR last_name LIKE {0});";
-
-            const string use_end_only = "CONCAT(@search_term, '%')";
-            const string use_both = "CONCAT('%', @search_term, '%')";
-
-            // if true, slower query due to not being able to use indices, but will allow searching inside strings 
-            const bool allow_start_wildcards = false;
-
-            string query = string.Format(formatted, allow_start_wildcards ? use_both : use_end_only);
-            const string term = "F"; // the term the user searched for
-
-            connection.Execute(@"create table #users16726709 (first_name varchar(200), last_name varchar(200))
-insert #users16726709 values ('Fred','Bloggs') insert #users16726709 values ('Tony','Farcus') insert #users16726709 values ('Albert','TenoF')");
-
-            // Using Dapper
-            Assert.Equal(2, connection.Query(end_wildcard, new { search_term = term }).Count());
-            Assert.Equal(3, connection.Query(both_wildcards, new { search_term = term }).Count());
-            Assert.Equal(2, connection.Query(query, new { search_term = term }).Count());
-        }
-
+        
         [Fact]
         public void TestExtraFields()
         {
@@ -257,16 +223,7 @@ insert #users16726709 values ('Fred','Bloggs') insert #users16726709 values ('To
             Assert.Null(connection.Query<DateTime?>("select null").First());
         }
 
-        [Fact]
-        public void TestExpando()
-        {
-            var rows = connection.Query("select 1 A, 2 B union all select 3, 4").ToList();
 
-            Assert.Equal(1, (int)rows[0].A);
-            Assert.Equal(2, (int)rows[0].B);
-            Assert.Equal(3, (int)rows[1].A);
-            Assert.Equal(4, (int)rows[1].B);
-        }
 
         [Fact]
         public void TestStringList()
@@ -377,13 +334,7 @@ insert #users16726709 values ('Fred','Bloggs') insert #users16726709 values ('To
             Assert.Equal(10, connection.Query<TestObj>("select 10 as [Priv]").First()._priv);
         }
 
-        [Fact]
-        public void TestExpandWithNullableFields()
-        {
-            var row = connection.Query("select null A, 2 B").Single();
-            Assert.Null((int?)row.A);
-            Assert.Equal(2, (int?)row.B);
-        }
+
 
         [Fact]
         public void TestEnumeration()
@@ -411,34 +362,7 @@ insert #users16726709 values ('Fred','Bloggs') insert #users16726709 values ('To
 
             Assert.True(gotException);
         }
-
-        [Fact]
-        public void TestEnumerationDynamic()
-        {
-            var en = connection.Query("select 1 as one union all select 2 as one", buffered: false);
-            var i = en.GetEnumerator();
-            i.MoveNext();
-
-            bool gotException = false;
-            try
-            {
-                var x = connection.Query("select 1 as one", buffered: false).First();
-            }
-            catch (Exception)
-            {
-                gotException = true;
-            }
-
-            while (i.MoveNext())
-            {
-            }
-
-            // should not exception, since enumertated
-            en = connection.Query("select 1 as one", buffered: false);
-
-            Assert.True(gotException);
-        }
-
+        
         [Fact]
         public void TestNakedBigInt()
         {
@@ -532,28 +456,7 @@ select * from @bar", new { foo }).Single();
             Assert.Equal(4, (int)dt.Rows[0][1]);
         }
 #endif
-
-        [Fact]
-        public void TestDbString()
-        {
-            var obj = connection.Query("select datalength(@a) as a, datalength(@b) as b, datalength(@c) as c, datalength(@d) as d, datalength(@e) as e, datalength(@f) as f",
-                new
-                {
-                    a = new DbString { Value = "abcde", IsFixedLength = true, Length = 10, IsAnsi = true },
-                    b = new DbString { Value = "abcde", IsFixedLength = true, Length = 10, IsAnsi = false },
-                    c = new DbString { Value = "abcde", IsFixedLength = false, Length = 10, IsAnsi = true },
-                    d = new DbString { Value = "abcde", IsFixedLength = false, Length = 10, IsAnsi = false },
-                    e = new DbString { Value = "abcde", IsAnsi = true },
-                    f = new DbString { Value = "abcde", IsAnsi = false },
-                }).First();
-            Assert.Equal(10, (int)obj.a);
-            Assert.Equal(20, (int)obj.b);
-            Assert.Equal(5, (int)obj.c);
-            Assert.Equal(10, (int)obj.d);
-            Assert.Equal(5, (int)obj.e);
-            Assert.Equal(10, (int)obj.f);
-        }
-
+        
         [Fact]
         public void TestDefaultDbStringDbType()
         {
@@ -572,13 +475,7 @@ select * from @bar", new { foo }).Single();
             }
         }
 
-        [Fact]
-        public void TestFastExpandoSupportsIDictionary()
-        {
-            var row = connection.Query("select 1 A, 'two' B").First() as IDictionary<string, object>;
-            Assert.Equal(1, row["A"]);
-            Assert.Equal("two", row["B"]);
-        }
+
 
         [Fact]
         public void TestDapperSetsPrivates()
@@ -827,37 +724,7 @@ select * from @bar", new { foo }).Single();
                 Assert.Equal(ConnectionState.Closed, conn.State);
             }
         }
-
-        [Fact]
-        public void TestDynamicMutation()
-        {
-            var obj = connection.Query("select 1 as [a], 2 as [b], 3 as [c]").Single();
-            Assert.Equal(1, (int)obj.a);
-            IDictionary<string, object> dict = obj;
-            Assert.Equal(3, dict.Count);
-            Assert.True(dict.Remove("a"));
-            Assert.False(dict.Remove("d"));
-            Assert.Equal(2, dict.Count);
-            dict.Add("d", 4);
-            Assert.Equal(3, dict.Count);
-            Assert.Equal("b,c,d", string.Join(",", dict.Keys.OrderBy(x => x)));
-            Assert.Equal("2,3,4", string.Join(",", dict.OrderBy(x => x.Key).Select(x => x.Value)));
-
-            Assert.Equal(2, (int)obj.b);
-            Assert.Equal(3, (int)obj.c);
-            Assert.Equal(4, (int)obj.d);
-            try
-            {
-                Assert.Equal(1, (int)obj.a);
-                throw new InvalidOperationException("should have thrown");
-            }
-            catch (RuntimeBinderException)
-            {
-                // pass
-            }
-        }
-
-
+        
 
         // see https://stackoverflow.com/questions/13127886/dapper-returns-null-for-singleordefaultdatediff
         [Fact]
@@ -874,24 +741,7 @@ select * from @bar", new { foo }).Single();
             Assert.Equal(0, result); // zero rows; default of int over zero rows is zero
         }
 
-        [Fact]
-        public void TestDapperTableMetadataRetrieval()
-        {
-            // Test for a bug found in CS 51509960 where the following sequence would result in an InvalidOperationException being
-            // thrown due to an attempt to access a disposed of DataReader:
-            //
-            // - Perform a dynamic query that yields no results
-            // - Add data to the source of that query
-            // - Perform a the same query again
-            connection.Execute("CREATE TABLE #sut (value varchar(10) NOT NULL PRIMARY KEY)");
-            Assert.Equal(Enumerable.Empty<dynamic>(), connection.Query("SELECT value FROM #sut"));
 
-            Assert.Equal(1, connection.Execute("INSERT INTO #sut (value) VALUES ('test')"));
-            var result = connection.Query("SELECT value FROM #sut");
-
-            var first = result.First();
-            Assert.Equal("test", (string)first.value);
-        }
 
         [Fact]
         public void DbStringAnsi()
@@ -1054,42 +904,7 @@ select * from @bar", new { foo }).Single();
             var minutes = watch.ElapsedMilliseconds / 1000 / 60;
             Assert.True(minutes >= 0.95 && minutes <= 1.05);
         }
-
-        [Fact]
-        public void SO30435185_InvalidTypeOwner()
-        {
-            var ex = Assert.Throws<InvalidOperationException>(() =>
-            {
-                const string sql = @" INSERT INTO #XXX
-                        (XXXId, AnotherId, ThirdId, Value, Comment)
-                        VALUES
-                        (@XXXId, @AnotherId, @ThirdId, @Value, @Comment); select @@rowcount as [Foo]";
-
-                var command = new
-                {
-                    MyModels = new[]
-                    {
-                        new {XXXId = 1, AnotherId = 2, ThirdId = 3, Value = "abc", Comment = "def" }
-                    }
-                };
-                var parameters = command
-                    .MyModels
-                    .Select(model => new
-                    {
-                        XXXId = model.XXXId,
-                        AnotherId = model.AnotherId,
-                        ThirdId = model.ThirdId,
-                        Value = model.Value,
-                        Comment = model.Comment
-                    })
-                    .ToArray();
-
-                var rowcount = (int)connection.Query(sql, parameters).Single().Foo;
-                Assert.Equal(1, rowcount);
-            });
-            Assert.Equal("An enumerable sequence of parameters (arrays, lists, etc) is not allowed in this context", ex.Message);
-        }
-
+        
         [Fact]
         public async void SO35470588_WrongValuePidValue()
         {

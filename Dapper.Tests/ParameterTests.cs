@@ -148,35 +148,7 @@ namespace Dapper.Tests
             connection.Execute("set @c = @a + @b", p);
             Assert.Equal(3, p.Get<int>("@c"));
         }
-
-        [Fact]
-        public void GuidIn_SO_24177902()
-        {
-            // invent and populate
-            Guid a = Guid.NewGuid(), b = Guid.NewGuid(), c = Guid.NewGuid(), d = Guid.NewGuid();
-            connection.Execute("create table #foo (i int, g uniqueidentifier)");
-            connection.Execute("insert #foo(i,g) values(@i,@g)",
-                new[] { new { i = 1, g = a }, new { i = 2, g = b },
-                new { i = 3, g = c },new { i = 4, g = d }});
-
-            // check that rows 2&3 yield guids b&c
-            var guids = connection.Query<Guid>("select g from #foo where i in (2,3)").ToArray();
-            Assert.Equal(2, guids.Length);
-            Assert.DoesNotContain(a, guids);
-            Assert.Contains(b, guids);
-            Assert.Contains(c, guids);
-            Assert.DoesNotContain(d, guids);
-
-            // in query on the guids
-            var rows = connection.Query("select * from #foo where g in @guids order by i", new { guids })
-                .Select(row => new { i = (int)row.i, g = (Guid)row.g }).ToArray();
-            Assert.Equal(2, rows.Length);
-            Assert.Equal(2, rows[0].i);
-            Assert.Equal(b, rows[0].g);
-            Assert.Equal(3, rows[1].i);
-            Assert.Equal(c, rows[1].g);
-        }
-
+        
         [FactUnlessCaseSensitiveDatabase]
         public void TestParameterInclusionNotSensitiveToCurrentCulture()
         {
@@ -312,39 +284,6 @@ namespace Dapper.Tests
             }
         }
 
-        [Fact]
-        public void TestTVPWithAdditionalParams()
-        {
-            try
-            {
-                connection.Execute("CREATE TYPE int_list_type AS TABLE (n int NOT NULL PRIMARY KEY)");
-                connection.Execute("CREATE PROC get_values @ints int_list_type READONLY, @stringParam varchar(20), @dateParam datetime AS select i.*, @stringParam as stringParam, @dateParam as dateParam from @ints i");
-
-                var dynamicParameters = new DynamicParameterWithIntTVP(new int[] { 1, 2, 3 });
-                dynamicParameters.AddDynamicParams(new { stringParam = "stringParam", dateParam = new DateTime(2012, 1, 1) });
-
-                var results = connection.Query("get_values", dynamicParameters, commandType: CommandType.StoredProcedure).ToList();
-                Assert.Equal(3, results.Count);
-                for (int i = 0; i < results.Count; i++)
-                {
-                    var result = results[i];
-                    Assert.Equal(i + 1, result.n);
-                    Assert.Equal("stringParam", result.stringParam);
-                    Assert.Equal(new DateTime(2012, 1, 1), result.dateParam);
-                }
-            }
-            finally
-            {
-                try
-                {
-                    connection.Execute("DROP PROC get_values");
-                }
-                finally
-                {
-                    connection.Execute("DROP TYPE int_list_type");
-                }
-            }
-        }
 
         [Fact]
         public void TestSqlDataRecordListParametersWithAsTableValuedParameter()
@@ -623,21 +562,7 @@ namespace Dapper.Tests
 #endif
 
 
-
-        [Fact]
-        public void TestCustomParameters()
-        {
-            var args = new DbParams {
-                new SqlParameter("foo", 123),
-                new SqlParameter("bar", "abc")
-            };
-            var result = connection.Query("select Foo=@foo, Bar=@bar", args).Single();
-            int foo = result.Foo;
-            string bar = result.Bar;
-            Assert.Equal(123, foo);
-            Assert.Equal("abc", bar);
-        }
-
+        
         [Fact]
         public void TestDynamicParamNullSupport()
         {
@@ -648,55 +573,7 @@ namespace Dapper.Tests
 
             Assert.Null(p.Get<int?>("@b"));
         }
-
-        [Fact]
-        public void TestAppendingAnonClasses()
-        {
-            var p = new DynamicParameters();
-            p.AddDynamicParams(new { A = 1, B = 2 });
-            p.AddDynamicParams(new { C = 3, D = 4 });
-
-            var result = connection.Query("select @A a,@B b,@C c,@D d", p).Single();
-
-            Assert.Equal(1, (int)result.a);
-            Assert.Equal(2, (int)result.b);
-            Assert.Equal(3, (int)result.c);
-            Assert.Equal(4, (int)result.d);
-        }
-
-        [Fact]
-        public void TestAppendingADictionary()
-        {
-            var dictionary = new Dictionary<string, object>
-            {
-                ["A"] = 1,
-                ["B"] = "two"
-            };
-
-            var p = new DynamicParameters();
-            p.AddDynamicParams(dictionary);
-
-            var result = connection.Query("select @A a, @B b", p).Single();
-
-            Assert.Equal(1, (int)result.a);
-            Assert.Equal("two", (string)result.b);
-        }
-
-        [Fact]
-        public void TestAppendingAnExpandoObject()
-        {
-            dynamic expando = new ExpandoObject();
-            expando.A = 1;
-            expando.B = "two";
-
-            var p = new DynamicParameters();
-            p.AddDynamicParams(expando);
-
-            var result = connection.Query("select @A a, @B b", p).Single();
-
-            Assert.Equal(1, (int)result.a);
-            Assert.Equal("two", (string)result.b);
-        }
+        
 
         [Fact]
         public void TestAppendingAList()
@@ -1047,16 +924,7 @@ SELECT value FROM @table WHERE value IN @myIds";
             Assert.Equal(123, i);
         }
 
-        [Fact]
-        public void AllowIDictionaryParameters()
-        {
-            var parameters = new Dictionary<string, object>
-            {
-                ["param1"] = 0
-            };
 
-            connection.Query("SELECT @param1", parameters);
-        }
 
         [Fact]
         public void TestParameterWithIndexer()
@@ -1134,58 +1002,13 @@ end");
             public object Foo { get; set; }
         }
 
-        [Fact]
-        public void Issue151_ExpandoObjectArgsQuery()
-        {
-            dynamic args = new ExpandoObject();
-            args.Id = 123;
-            args.Name = "abc";
 
-            var row = connection.Query("select @Id as [Id], @Name as [Name]", (object)args).Single();
-            Assert.Equal(123, (int)row.Id);
-            Assert.Equal("abc", (string)row.Name);
-        }
 
-        [Fact]
-        public void Issue151_ExpandoObjectArgsExec()
-        {
-            dynamic args = new ExpandoObject();
-            args.Id = 123;
-            args.Name = "abc";
-            connection.Execute("create table #issue151 (Id int not null, Name nvarchar(20) not null)");
-            Assert.Equal(1, connection.Execute("insert #issue151 values(@Id, @Name)", (object)args));
-            var row = connection.Query("select Id, Name from #issue151").Single();
-            Assert.Equal(123, (int)row.Id);
-            Assert.Equal("abc", (string)row.Name);
-        }
+  
 
-        [Fact]
-        public void Issue192_InParameterWorksWithSimilarNames()
-        {
-            var rows = connection.Query(@"
-declare @Issue192 table (
-    Field INT NOT NULL PRIMARY KEY IDENTITY(1,1),
-    Field_1 INT NOT NULL);
-insert @Issue192(Field_1) values (1), (2), (3);
-SELECT * FROM @Issue192 WHERE Field IN @Field AND Field_1 IN @Field_1",
-    new { Field = new[] { 1, 2 }, Field_1 = new[] { 2, 3 } }).Single();
-            Assert.Equal(2, (int)rows.Field);
-            Assert.Equal(2, (int)rows.Field_1);
-        }
 
-        [Fact]
-        public void Issue192_InParameterWorksWithSimilarNamesWithUnicode()
-        {
-            var rows = connection.Query(@"
-declare @Issue192 table (
-    Field INT NOT NULL PRIMARY KEY IDENTITY(1,1),
-    Field_1 INT NOT NULL);
-insert @Issue192(Field_1) values (1), (2), (3);
-SELECT * FROM @Issue192 WHERE Field IN @µ AND Field_1 IN @µµ",
-    new { µ = new[] { 1, 2 }, µµ = new[] { 2, 3 } }).Single();
-            Assert.Equal(2, (int)rows.Field);
-            Assert.Equal(2, (int)rows.Field_1);
-        }
+
+
 
         [FactUnlessCaseSensitiveDatabase]
         public void Issue220_InParameterCanBeSpecifiedInAnyCase()
@@ -1267,80 +1090,7 @@ SELECT * FROM @Issue192 WHERE Field IN @µ AND Field_1 IN @µµ",
             var result = connection.QuerySingle<int>("select @æøå٦", new { æøå٦ = 42 });
             Assert.Equal(42, result);
         }
-
-        [Fact]
-        public void TestListExpansionPadding_Enabled() => TestListExpansionPadding(true);
-
-        [Fact]
-        public void TestListExpansionPadding_Disabled() => TestListExpansionPadding(false);
-
-        private void TestListExpansionPadding(bool enabled)
-        {
-            bool oldVal = SqlMapper.Settings.PadListExpansions;
-            try
-            {
-                SqlMapper.Settings.PadListExpansions = enabled;
-                Assert.Equal(4096, connection.ExecuteScalar<int>(@"
-create table #ListExpansion(id int not null identity(1,1), value int null);
-insert #ListExpansion (value) values (null);
-declare @loop int = 0;
-while (@loop < 12)
-begin -- double it
-	insert #ListExpansion (value) select value from #ListExpansion;
-	set @loop = @loop + 1;
-end
-
-select count(1) as [Count] from #ListExpansion"));
-
-                var list = new List<int>();
-                int nextId = 1, batchCount;
-                var rand = new Random(12345);
-                const int SQL_SERVER_MAX_PARAMS = 2095;
-                TestListForExpansion(list, enabled); // test while empty
-                while (list.Count < SQL_SERVER_MAX_PARAMS)
-                {
-                    try
-                    {
-                        if (list.Count <= 20) batchCount = 1;
-                        else if (list.Count <= 200) batchCount = rand.Next(1, 40);
-                        else batchCount = rand.Next(1, 100);
-
-                        for (int j = 0; j < batchCount && list.Count < SQL_SERVER_MAX_PARAMS; j++)
-                            list.Add(nextId++);
-
-                        TestListForExpansion(list, enabled);
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new InvalidOperationException($"Failure with {list.Count} items: {ex.Message}", ex);
-                    }
-                }
-            }
-            finally
-            {
-                SqlMapper.Settings.PadListExpansions = oldVal;
-            }
-        }
-
-        private void TestListForExpansion(List<int> list, bool enabled)
-        {
-            var row = connection.QuerySingle(@"
-declare @hits int, @misses int, @count int;
-select @count = count(1) from #ListExpansion;
-select @hits = count(1) from #ListExpansion where id in @ids ;
-select @misses = count(1) from #ListExpansion where not id in @ids ;
-declare @query nvarchar(max) = N' in @ids '; -- ok, I confess to being pleased with this hack ;p
-select @hits as [Hits], (@count - @misses) as [Misses], @query as [Query];
-", new { ids = list });
-            int hits = row.Hits, misses = row.Misses;
-            string query = row.Query;
-            int argCount = Regex.Matches(query, "@ids[0-9]").Count;
-            int expectedCount = GetExpectedListExpansionCount(list.Count, enabled);
-            Assert.Equal(hits, list.Count);
-            Assert.Equal(misses, list.Count);
-            Assert.Equal(argCount, expectedCount);
-        }
-
+        
         private static int GetExpectedListExpansionCount(int count, bool enabled)
         {
             if (!enabled) return count;

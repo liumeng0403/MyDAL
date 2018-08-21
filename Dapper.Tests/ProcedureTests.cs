@@ -56,36 +56,6 @@ namespace Dapper.Tests
             Assert.Equal(42, args.Get<int>("result"));
         }
 
-        [Fact]
-        public void TestIssue17648290()
-        {
-            var p = new DynamicParameters();
-            const int code = 1, getMessageControlId = 2;
-            p.Add("@Code", code);
-            p.Add("@MessageControlID", getMessageControlId);
-            p.Add("@SuccessCode", dbType: DbType.Int32, direction: ParameterDirection.Output);
-            p.Add("@ErrorDescription", dbType: DbType.String, direction: ParameterDirection.Output, size: 255);
-            connection.Execute(
-            @"CREATE PROCEDURE #up_MessageProcessed_get
-                @Code varchar(10),
-                @MessageControlID varchar(22),
-                @SuccessCode int OUTPUT,
-                @ErrorDescription varchar(255) OUTPUT
-            AS
-            BEGIN
-                Select 2 as MessageProcessID, 38349348 as StartNum, 3874900 as EndNum, GETDATE() as StartDate, GETDATE() as EndDate
-                SET @SuccessCode = 0
-                SET @ErrorDescription = 'Completed successfully'
-            END");
-            var result = connection.Query(sql: "#up_MessageProcessed_get", param: p, commandType: CommandType.StoredProcedure);
-            var row = result.Single();
-            Assert.Equal(2, (int)row.MessageProcessID);
-            Assert.Equal(38349348, (int)row.StartNum);
-            Assert.Equal(3874900, (int)row.EndNum);
-            DateTime startDate = row.StartDate, endDate = row.EndDate;
-            Assert.Equal(0, p.Get<int>("SuccessCode"));
-            Assert.Equal("Completed successfully", p.Get<string>("ErrorDescription"));
-        }
 
         [Fact]
         public void SO24605346_ProcsAndStrings()
@@ -258,25 +228,6 @@ namespace Dapper.Tests
         }
 
 
-        [Fact]
-        public async Task Issue591_NoResultsAsync()
-        {
-            const string tempSPName = "#" + nameof(Issue591_NoResultsAsync);
-
-            var result = await connection.QueryAsync(
-            $@"create proc {tempSPName}
-            as 
-            begin
-                -- basically a failed if statement, so the select is not happening and the stored proc return nothing
-                if 1=0
-                begin
-                    select 1 as Num
-                end
-            end
-            
-            exec {tempSPName}");
-
-            Assert.Empty(result);
-        }
+  
     }
 }
