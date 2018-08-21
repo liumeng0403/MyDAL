@@ -807,45 +807,7 @@ select 42", p, buffered: false).Single();
                 Assert.Equal(42, result);
             }
         }
-
-        [Fact]
-        public void TestSupportForDynamicParametersOutputExpressions_QueryMultiple()
-        {
-            using (var connection = GetOpenConnection())
-            {
-                var bob = new Person { Name = "bob", PersonId = 1, Address = new Address { PersonId = 2 } };
-
-                var p = new DynamicParameters(bob);
-                p.Output(bob, b => b.PersonId);
-                p.Output(bob, b => b.Occupation);
-                p.Output(bob, b => b.NumberOfLegs);
-                p.Output(bob, b => b.Address.Name);
-                p.Output(bob, b => b.Address.PersonId);
-
-                int x, y;
-                using (var multi = connection.QueryMultiple(@"
-SET @Occupation = 'grillmaster' 
-SET @PersonId = @PersonId + 1 
-SET @NumberOfLegs = @NumberOfLegs - 1
-SET @AddressName = 'bobs burgers'
-select 42
-select 17
-SET @AddressPersonId = @PersonId", p))
-                {
-                    x = multi.ReadAsync<int>().GetAwaiter().GetResult().Single();
-                    y = multi.ReadAsync<int>().GetAwaiter().GetResult().Single();
-                }
-
-                Assert.Equal("grillmaster", bob.Occupation);
-                Assert.Equal(2, bob.PersonId);
-                Assert.Equal(1, bob.NumberOfLegs);
-                Assert.Equal("bobs burgers", bob.Address.Name);
-                Assert.Equal(2, bob.Address.PersonId);
-                Assert.Equal(42, x);
-                Assert.Equal(17, y);
-            }
-        }
-
+        
         [Fact]
         public void TestSupportForExpandoObjectParameters()
         {

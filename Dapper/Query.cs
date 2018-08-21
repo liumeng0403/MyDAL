@@ -184,29 +184,6 @@ namespace Dapper
         /// </returns>
         public static T QuerySingleOrDefault<T>(this IDbConnection cnn, CommandDefinition command) =>
             QueryRowImpl<T>(cnn, Row.SingleOrDefault, ref command, typeof(T));
-
-        /// <summary>
-        /// Execute a command that returns multiple result sets, and access each in turn.
-        /// </summary>
-        /// <param name="cnn">The connection to query on.</param>
-        /// <param name="sql">The SQL to execute for this query.</param>
-        /// <param name="param">The parameters to use for this query.</param>
-        /// <param name="transaction">The transaction to use for this query.</param>
-        /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
-        /// <param name="commandType">Is it a stored proc or a batch?</param>
-        public static GridReader QueryMultiple(this IDbConnection cnn, string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
-        {
-            var command = new CommandDefinition(sql, param, transaction, commandTimeout, commandType, CommandFlags.Buffered);
-            return QueryMultipleImpl(cnn, ref command);
-        }
-
-        /// <summary>
-        /// Execute a command that returns multiple result sets, and access each in turn.
-        /// </summary>
-        /// <param name="cnn">The connection to query on.</param>
-        /// <param name="command">The command to execute for this query.</param>
-        public static GridReader QueryMultiple(this IDbConnection cnn, CommandDefinition command) =>
-            QueryMultipleImpl(cnn, ref command);
         
         /// <summary>
         /// Perform a multi-mapping query with an arbitrary number of input types. 

@@ -86,23 +86,7 @@ namespace Dapper.Tests
                 set { fTaxInvoiceNumber = value; }
             }
         }
-
-        [Fact]
-        public void Issue327_ReadEmptyProcedureResults()
-        {
-            // Actually testing for not erroring here on the mapping having no rows to map on in Read<T>();
-            connection.Execute(@"
-            CREATE PROCEDURE #TestEmptyResults
-            AS
-                SELECT Top 0 1 Id, 'Bob' Name;
-                SELECT Top 0 'Billy Goat' Creature, 'Unicorn' SpiritAnimal, 'Rainbow' Location;");
-            var query = connection.QueryMultiple("#TestEmptyResults", commandType: CommandType.StoredProcedure);
-            var result1 = query.ReadAsync<Issue327_Person>().GetAwaiter().GetResult();
-            var result2 = query.ReadAsync<Issue327_Magic>().GetAwaiter().GetResult();
-            Assert.False(result1.Any());
-            Assert.False(result2.Any());
-        }
-
+        
         private class Issue327_Person
         {
             public int Id { get; set; }

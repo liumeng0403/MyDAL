@@ -325,30 +325,7 @@ namespace Dapper.Tests
             private SqlConnection _marsConnection;
             private SqlConnection MarsConnection => _marsConnection ?? (_marsConnection = GetOpenConnection(true));
 
-            [Fact]
-            public void AssertNoCacheWorksForQueryMultiple()
-            {
-                const int a = 123, b = 456;
-                var cmdDef = new CommandDefinition("select @a; select @b;", new
-                {
-                    a,
-                    b
-                }, commandType: CommandType.Text, flags: CommandFlags.NoCache);
 
-                int c, d;
-                SqlMapper.PurgeQueryCache();
-                int before = SqlMapper.GetCachedSQLCount();
-                using (var multi = MarsConnection.QueryMultiple(cmdDef))
-                {
-                    c = multi.ReadAsync<int>().GetAwaiter().GetResult().Single();
-                    d = multi.ReadAsync<int>().GetAwaiter().GetResult().Single();
-                }
-                int after = SqlMapper.GetCachedSQLCount();
-                Assert.Equal(0, before);
-                Assert.Equal(0, after);
-                Assert.Equal(123, c);
-                Assert.Equal(456, d);
-            }
         }
 
         private class BasicType
