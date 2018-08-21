@@ -9,6 +9,7 @@ using Xunit;
 using EasyDAL.Exchange.DynamicParameter;
 using EasyDAL.Exchange.Reader;
 using EasyDAL.Exchange.AdoNet;
+using EasyDAL.Exchange.MapperX;
 
 namespace EasyDAL.Exchange.Tests
 {

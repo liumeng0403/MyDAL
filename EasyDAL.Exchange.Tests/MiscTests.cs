@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using Xunit;
+using EasyDAL.Exchange.DataBase;
 
 #if NETCOREAPP1_0
 using System.Collections;

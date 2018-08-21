@@ -2,6 +2,7 @@
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using EasyDAL.Exchange.DataBase;
 using EasyDAL.Exchange.DynamicParameter;
 using Xunit;
 

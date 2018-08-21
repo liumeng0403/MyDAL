@@ -7,6 +7,7 @@ using System.Reflection;
 using EasyDAL.Exchange.AdoNet;
 using EasyDAL.Exchange.Handler;
 using EasyDAL.Exchange.Map;
+using EasyDAL.Exchange.MapperX;
 using Xunit;
 
 namespace EasyDAL.Exchange.Tests

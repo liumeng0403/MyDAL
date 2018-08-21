@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EasyDAL.Exchange.MapperX;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;

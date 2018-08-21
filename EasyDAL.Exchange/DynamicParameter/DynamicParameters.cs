@@ -6,7 +6,9 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
+using EasyDAL.Exchange.DataBase;
 using EasyDAL.Exchange.Handler;
+using EasyDAL.Exchange.MapperX;
 using EasyDAL.Exchange.Parameter;
 
 namespace EasyDAL.Exchange.DynamicParameter

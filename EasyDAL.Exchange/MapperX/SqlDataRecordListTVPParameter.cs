@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using EasyDAL.Exchange.Parameter;
+using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using EasyDAL.Exchange.Parameter;
+using System.Text;
 
-namespace EasyDAL.Exchange
+namespace EasyDAL.Exchange.MapperX
 {
     /// <summary>
     /// Used to pass a IEnumerable&lt;SqlDataRecord&gt; as a SqlDataRecordListTVPParameter

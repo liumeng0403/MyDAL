@@ -14,6 +14,7 @@ using System.Diagnostics;
 using EasyDAL.Exchange.DynamicParameter;
 using EasyDAL.Exchange.Parameter;
 using EasyDAL.Exchange.MapperX;
+using EasyDAL.Exchange.DataBase;
 
 namespace EasyDAL.Exchange.Tests
 {

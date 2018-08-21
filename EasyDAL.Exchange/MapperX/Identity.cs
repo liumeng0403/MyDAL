@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 
-namespace EasyDAL.Exchange
+namespace EasyDAL.Exchange.MapperX
 {
     /// <summary>
     /// Identity of a cached query in Dapper, used for extensibility.
@@ -54,7 +54,7 @@ namespace EasyDAL.Exchange
                         hashCode = (hashCode * 23) + (t?.GetHashCode() ?? 0);
                     }
                 }
-                hashCode = (hashCode * 23) + (connectionString == null ? 0 : Identity. ConnectionStringComparer.GetHashCode(connectionString));
+                hashCode = (hashCode * 23) + (connectionString == null ? 0 : Identity.ConnectionStringComparer.GetHashCode(connectionString));
                 hashCode = (hashCode * 23) + (parametersType?.GetHashCode() ?? 0);
             }
         }
@@ -118,7 +118,7 @@ namespace EasyDAL.Exchange
                 && type == other.type
                 && sql == other.sql
                 && commandType == other.commandType
-                && Identity. ConnectionStringComparer.Equals(connectionString, other.connectionString)
+                && Identity.ConnectionStringComparer.Equals(connectionString, other.connectionString)
                 && parametersType == other.parametersType;
         }
     }
