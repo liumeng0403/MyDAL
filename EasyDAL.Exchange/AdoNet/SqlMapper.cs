@@ -25,7 +25,7 @@ using EasyDAL.Exchange.Parameter;
 using EasyDAL.Exchange.Reader;
 
 
-namespace EasyDAL.Exchange
+namespace EasyDAL.Exchange.AdoNet
 {
     /// <summary>
     /// Dapper, a light weight object mapper for ADO.NET
@@ -429,82 +429,6 @@ namespace EasyDAL.Exchange
         public static List<T> AsList<T>(this IEnumerable<T> source) =>
             (source == null || source is List<T>) ? (List<T>)source : source.ToList();
 
-        /// <summary>
-        /// Execute parameterized SQL.
-        /// </summary>
-        /// <param name="cnn">The connection to query on.</param>
-        /// <param name="sql">The SQL to execute for this query.</param>
-        /// <param name="param">The parameters to use for this query.</param>
-        /// <param name="transaction">The transaction to use for this query.</param>
-        /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
-        /// <param name="commandType">Is it a stored proc or a batch?</param>
-        /// <returns>The number of rows affected.</returns>
-        public static int Execute(this IDbConnection cnn, string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
-        {
-            var command = new CommandDefinition(sql, param, transaction, commandTimeout, commandType, CommandFlags.Buffered);
-            return ExecuteImpl(cnn, ref command);
-        }
-
-        /// <summary>
-        /// Execute parameterized SQL.
-        /// </summary>
-        /// <param name="cnn">The connection to execute on.</param>
-        /// <param name="command">The command to execute on this connection.</param>
-        /// <returns>The number of rows affected.</returns>
-        public static int Execute(this IDbConnection cnn, CommandDefinition command) => ExecuteImpl(cnn, ref command);
-
-        /// <summary>
-        /// Execute parameterized SQL that selects a single value.
-        /// </summary>
-        /// <param name="cnn">The connection to execute on.</param>
-        /// <param name="sql">The SQL to execute.</param>
-        /// <param name="param">The parameters to use for this command.</param>
-        /// <param name="transaction">The transaction to use for this command.</param>
-        /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
-        /// <param name="commandType">Is it a stored proc or a batch?</param>
-        /// <returns>The first cell selected as <see cref="object"/>.</returns>
-        public static object ExecuteScalar(this IDbConnection cnn, string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
-        {
-            var command = new CommandDefinition(sql, param, transaction, commandTimeout, commandType, CommandFlags.Buffered);
-            return ExecuteScalarImpl<object>(cnn, ref command);
-        }
-
-        /// <summary>
-        /// Execute parameterized SQL that selects a single value.
-        /// </summary>
-        /// <typeparam name="T">The type to return.</typeparam>
-        /// <param name="cnn">The connection to execute on.</param>
-        /// <param name="sql">The SQL to execute.</param>
-        /// <param name="param">The parameters to use for this command.</param>
-        /// <param name="transaction">The transaction to use for this command.</param>
-        /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
-        /// <param name="commandType">Is it a stored proc or a batch?</param>
-        /// <returns>The first cell returned, as <typeparamref name="T"/>.</returns>
-        public static T ExecuteScalar<T>(this IDbConnection cnn, string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
-        {
-            var command = new CommandDefinition(sql, param, transaction, commandTimeout, commandType, CommandFlags.Buffered);
-            return ExecuteScalarImpl<T>(cnn, ref command);
-        }
-
-        /// <summary>
-        /// Execute parameterized SQL that selects a single value.
-        /// </summary>
-        /// <param name="cnn">The connection to execute on.</param>
-        /// <param name="command">The command to execute.</param>
-        /// <returns>The first cell selected as <see cref="object"/>.</returns>
-        public static object ExecuteScalar(this IDbConnection cnn, CommandDefinition command) =>
-            ExecuteScalarImpl<object>(cnn, ref command);
-
-        /// <summary>
-        /// Execute parameterized SQL that selects a single value.
-        /// </summary>
-        /// <typeparam name="T">The type to return.</typeparam>
-        /// <param name="cnn">The connection to execute on.</param>
-        /// <param name="command">The command to execute.</param>
-        /// <returns>The first cell selected as <typeparamref name="T"/>.</returns>
-        public static T ExecuteScalar<T>(this IDbConnection cnn, CommandDefinition command) =>
-            ExecuteScalarImpl<T>(cnn, ref command);
-
         private static IEnumerable GetMultiExec(object param)
         {
             return (param is IEnumerable
@@ -513,170 +437,7 @@ namespace EasyDAL.Exchange
                       || param is IDynamicParameters)
                 ) ? (IEnumerable)param : null;
         }
-
-        private static int ExecuteImpl(this IDbConnection cnn, ref CommandDefinition command)
-        {
-            object param = command.Parameters;
-            IEnumerable multiExec = GetMultiExec(param);
-            Identity identity;
-            CacheInfo info = null;
-            if (multiExec != null)
-            {
-                if ((command.Flags & CommandFlags.Pipelined) != 0)
-                {
-                    // this includes all the code for concurrent/overlapped query
-                    return ExecuteMultiImplAsync(cnn, command, multiExec).Result;
-                }
-                bool isFirst = true;
-                int total = 0;
-                bool wasClosed = cnn.State == ConnectionState.Closed;
-                try
-                {
-                    if (wasClosed) cnn.Open();
-                    using (var cmd = command.SetupCommand(cnn, null))
-                    {
-                        string masterSql = null;
-                        foreach (var obj in multiExec)
-                        {
-                            if (isFirst)
-                            {
-                                masterSql = cmd.CommandText;
-                                isFirst = false;
-                                identity = new Identity(command.CommandText, cmd.CommandType, cnn, null, obj.GetType(), null);
-                                info = GetCacheInfo(identity, obj, command.AddToCache);
-                            }
-                            else
-                            {
-                                cmd.CommandText = masterSql; // because we do magic replaces on "in" etc
-                                cmd.Parameters.Clear(); // current code is Add-tastic
-                            }
-                            info.ParamReader(cmd, obj);
-                            total += cmd.ExecuteNonQuery();
-                        }
-                    }
-                    command.OnCompleted();
-                }
-                finally
-                {
-                    if (wasClosed) cnn.Close();
-                }
-                return total;
-            }
-
-            // nice and simple
-            if (param != null)
-            {
-                identity = new Identity(command.CommandText, command.CommandType, cnn, null, param.GetType(), null);
-                info = GetCacheInfo(identity, param, command.AddToCache);
-            }
-            return ExecuteCommand(cnn, ref command, param == null ? null : info.ParamReader);
-        }
-
-        /// <summary>
-        /// Execute parameterized SQL and return an <see cref="IDataReader"/>.
-        /// </summary>
-        /// <param name="cnn">The connection to execute on.</param>
-        /// <param name="sql">The SQL to execute.</param>
-        /// <param name="param">The parameters to use for this command.</param>
-        /// <param name="transaction">The transaction to use for this command.</param>
-        /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
-        /// <param name="commandType">Is it a stored proc or a batch?</param>
-        /// <returns>An <see cref="IDataReader"/> that can be used to iterate over the results of the SQL query.</returns>
-        /// <remarks>
-        /// This is typically used when the results of a query are not processed by Dapper, for example, used to fill a <see cref="DataTable"/>
-        /// or <see cref="T:DataSet"/>.
-        /// </remarks>
-        /// <example>
-        /// <code>
-        /// <![CDATA[
-        /// DataTable table = new DataTable("MyTable");
-        /// using (var reader = ExecuteReader(cnn, sql, param))
-        /// {
-        ///     table.Load(reader);
-        /// }
-        /// ]]>
-        /// </code>
-        /// </example>
-        public static IDataReader ExecuteReader(this IDbConnection cnn, string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
-        {
-            var command = new CommandDefinition(sql, param, transaction, commandTimeout, commandType, CommandFlags.Buffered);
-            var reader = ExecuteReaderImpl(cnn, ref command, CommandBehavior.Default, out IDbCommand dbcmd);
-            return new WrappedReader(dbcmd, reader);
-        }
-
-        /// <summary>
-        /// Execute parameterized SQL and return an <see cref="IDataReader"/>.
-        /// </summary>
-        /// <param name="cnn">The connection to execute on.</param>
-        /// <param name="command">The command to execute.</param>
-        /// <returns>An <see cref="IDataReader"/> that can be used to iterate over the results of the SQL query.</returns>
-        /// <remarks>
-        /// This is typically used when the results of a query are not processed by Dapper, for example, used to fill a <see cref="DataTable"/>
-        /// or <see cref="T:DataSet"/>.
-        /// </remarks>
-        public static IDataReader ExecuteReader(this IDbConnection cnn, CommandDefinition command)
-        {
-            var reader = ExecuteReaderImpl(cnn, ref command, CommandBehavior.Default, out IDbCommand dbcmd);
-            return new WrappedReader(dbcmd, reader);
-        }
-
-        /// <summary>
-        /// Execute parameterized SQL and return an <see cref="IDataReader"/>.
-        /// </summary>
-        /// <param name="cnn">The connection to execute on.</param>
-        /// <param name="command">The command to execute.</param>
-        /// <param name="commandBehavior">The <see cref="CommandBehavior"/> flags for this reader.</param>
-        /// <returns>An <see cref="IDataReader"/> that can be used to iterate over the results of the SQL query.</returns>
-        /// <remarks>
-        /// This is typically used when the results of a query are not processed by Dapper, for example, used to fill a <see cref="DataTable"/>
-        /// or <see cref="T:DataSet"/>.
-        /// </remarks>
-        public static IDataReader ExecuteReader(this IDbConnection cnn, CommandDefinition command, CommandBehavior commandBehavior)
-        {
-            var reader = ExecuteReaderImpl(cnn, ref command, commandBehavior, out IDbCommand dbcmd);
-            return new WrappedReader(dbcmd, reader);
-        }
-
-        private static GridReader QueryMultipleImpl(this IDbConnection cnn, ref CommandDefinition command)
-        {
-            object param = command.Parameters;
-            var identity = new Identity(command.CommandText, command.CommandType, cnn, typeof(GridReader), param?.GetType(), null);
-            CacheInfo info = GetCacheInfo(identity, param, command.AddToCache);
-
-            IDbCommand cmd = null;
-            IDataReader reader = null;
-            bool wasClosed = cnn.State == ConnectionState.Closed;
-            try
-            {
-                if (wasClosed) cnn.Open();
-                cmd = command.SetupCommand(cnn, info.ParamReader);
-                reader = ExecuteReaderWithFlagsFallback(cmd, wasClosed, CommandBehavior.SequentialAccess);
-
-                var result = new GridReader(cmd, reader, identity, command.Parameters as DynamicParameters, command.AddToCache);
-                cmd = null; // now owned by result
-                wasClosed = false; // *if* the connection was closed and we got this far, then we now have a reader
-                // with the CloseConnection flag, so the reader will deal with the connection; we
-                // still need something in the "finally" to ensure that broken SQL still results
-                // in the connection closing itself
-                return result;
-            }
-            catch
-            {
-                if (reader != null)
-                {
-                    if (!reader.IsClosed)
-                    {
-                        try { cmd?.Cancel(); }
-                        catch { /* don't spoil the existing exception */ }
-                    }
-                    reader.Dispose();
-                }
-                cmd?.Dispose();
-                if (wasClosed) cnn.Close();
-                throw;
-            }
-        }
-
+        
         private static IDataReader ExecuteReaderWithFlagsFallback(IDbCommand cmd, bool wasClosed, CommandBehavior behavior)
         {
             try
@@ -1566,16 +1327,7 @@ namespace EasyDAL.Exchange
             }
             return list.Count == 0 ? LiteralToken.None : list;
         }
-
-        /// <summary>
-        /// Internal use only.
-        /// </summary>
-        /// <param name="identity">The identity of the generator.</param>
-        /// <param name="checkForDuplicates">Whether to check for duplicates.</param>
-        /// <param name="removeUnused">Whether to remove unused parameters.</param>
-        public static Action<IDbCommand, object> CreateParamInfoGenerator(Identity identity, bool checkForDuplicates, bool removeUnused) =>
-            CreateParamInfoGenerator(identity, checkForDuplicates, removeUnused, GetLiteralTokens(identity.sql));
-
+        
         private static bool IsValueTuple(Type type) => type?.IsValueTypeX() == true && type.FullName.StartsWith("System.ValueTuple`", StringComparison.Ordinal);
 
         private static List<IMemberMap> GetValueTupleMembers(Type type, string[] names)
@@ -2068,49 +1820,7 @@ namespace EasyDAL.Exchange
             }
             return Parse<T>(result);
         }
-
-        private static IDataReader ExecuteReaderImpl(IDbConnection cnn, ref CommandDefinition command, CommandBehavior commandBehavior, out IDbCommand cmd)
-        {
-            Action<IDbCommand, object> paramReader = GetParameterReader(cnn, ref command);
-            cmd = null;
-            bool wasClosed = cnn.State == ConnectionState.Closed, disposeCommand = true;
-            try
-            {
-                cmd = command.SetupCommand(cnn, paramReader);
-                if (wasClosed) cnn.Open();
-                var reader = ExecuteReaderWithFlagsFallback(cmd, wasClosed, commandBehavior);
-                wasClosed = false; // don't dispose before giving it to them!
-                disposeCommand = false;
-                // note: command.FireOutputCallbacks(); would be useless here; parameters come at the **end** of the TDS stream
-                return reader;
-            }
-            finally
-            {
-                if (wasClosed) cnn.Close();
-                if (cmd != null && disposeCommand) cmd.Dispose();
-            }
-        }
-
-        private static Action<IDbCommand, object> GetParameterReader(IDbConnection cnn, ref CommandDefinition command)
-        {
-            object param = command.Parameters;
-            IEnumerable multiExec = GetMultiExec(param);
-            CacheInfo info = null;
-            if (multiExec != null)
-            {
-                throw new NotSupportedException("MultiExec is not supported by ExecuteReader");
-            }
-
-            // nice and simple
-            if (param != null)
-            {
-                var identity = new Identity(command.CommandText, command.CommandType, cnn, null, param.GetType(), null);
-                info = GetCacheInfo(identity, param, command.AddToCache);
-            }
-            var paramReader = info?.ParamReader;
-            return paramReader;
-        }
-
+        
         private static Func<IDataReader, object> GetStructDeserializer(Type type, Type effectiveType, int index)
         {
             // no point using special per-type handling here; it boils down to the same, plus not all are supported anyway (see: SqlDataReader.GetChar - not supported!)
@@ -2827,19 +2537,7 @@ namespace EasyDAL.Exchange
                     break;
             }
         }
-
-        /// <summary>
-        /// How should connection strings be compared for equivalence? Defaults to StringComparer.Ordinal.
-        /// Providing a custom implementation can be useful for allowing multi-tenancy databases with identical
-        /// schema to share strategies. Note that usual equivalence rules apply: any equivalent connection strings
-        /// <b>MUST</b> yield the same hash-code.
-        /// </summary>
-        public static IEqualityComparer<string> ConnectionStringComparer
-        {
-            get { return Identity. ConnectionStringComparer; }
-            set { Identity. ConnectionStringComparer = value ?? StringComparer.Ordinal; }
-        }
-
+        
         /// <summary>
         /// Key used to indicate the type name associated with a DataTable.
         /// </summary>
@@ -2906,5 +2604,26 @@ namespace EasyDAL.Exchange
             perThreadStringBuilderCache = perThreadStringBuilderCache ?? obj;
             return s;
         }
+
+        internal static Func<IDataReader, object> GetDeserializer(Type type, IDataReader reader, int startBound, int length, bool returnNullIfFirstMissing)
+        {
+            // dynamic is passed in as Object ... by c# design
+            if (type == typeof(object) || type == typeof(DapperRow))
+            {
+                return GetDapperRowDeserializer(reader, startBound, length, returnNullIfFirstMissing);
+            }
+            Type underlyingType = null;
+            if (!(typeMap.ContainsKey(type) || type.IsEnumX() || type.FullName == LinqBinary
+                || (type.IsValueTypeX() && (underlyingType = Nullable.GetUnderlyingType(type)) != null && underlyingType.IsEnumX())))
+            {
+                if (typeHandlers.TryGetValue(type, out ITypeHandler handler))
+                {
+                    return GetHandlerDeserializer(handler, type, startBound);
+                }
+                return GetTypeDeserializer(type, reader, startBound, length, returnNullIfFirstMissing);
+            }
+            return GetStructDeserializer(type, underlyingType ?? type, startBound);
+        }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using EasyDAL.Exchange.Parameter;
+﻿using EasyDAL.Exchange.AdoNet;
+using EasyDAL.Exchange.Parameter;
 using System;
 using System.Collections.Generic;
 using System.Data;

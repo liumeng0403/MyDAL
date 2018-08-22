@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using EasyDAL.Exchange.DynamicParameter;
 using Xunit;
+using EasyDAL.Exchange.AdoNet;
 
 namespace EasyDAL.Exchange.Tests
 {

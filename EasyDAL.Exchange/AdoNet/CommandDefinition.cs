@@ -16,17 +16,7 @@ namespace EasyDAL.Exchange.AdoNet
     /// </summary>
     public struct CommandDefinition
     {
-        internal static CommandDefinition ForCallback(object parameters)
-        {
-            if (parameters is DynamicParameters)
-            {
-                return new CommandDefinition(parameters);
-            }
-            else
-            {
-                return default(CommandDefinition);
-            }
-        }
+
 
         internal void OnCompleted()
         {
@@ -72,12 +62,7 @@ namespace EasyDAL.Exchange.AdoNet
         /// Additional state flags against this command
         /// </summary>
         public CommandFlags Flags { get; }
-
-        /// <summary>
-        /// Can async queries be pipelined?
-        /// </summary>
-        public bool Pipelined => (Flags & CommandFlags.Pipelined) != 0;
-
+        
         /// <summary>
         /// Initialize the command definition
         /// </summary>
@@ -102,10 +87,6 @@ namespace EasyDAL.Exchange.AdoNet
             CancellationToken = cancellationToken;
         }
 
-        private CommandDefinition(object parameters) : this()
-        {
-            Parameters = parameters;
-        }
 
         /// <summary>
         /// For asynchronous operations, the cancellation-token

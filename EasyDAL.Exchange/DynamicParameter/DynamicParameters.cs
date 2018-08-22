@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
+using EasyDAL.Exchange.AdoNet;
 using EasyDAL.Exchange.DataBase;
 using EasyDAL.Exchange.Handler;
 using EasyDAL.Exchange.MapperX;

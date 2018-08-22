@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using EasyDAL.Exchange.DataBase;
 using EasyDAL.Exchange.DynamicParameter;
 using Xunit;
+using EasyDAL.Exchange.AdoNet;
 
 namespace EasyDAL.Exchange.Tests
 {

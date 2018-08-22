@@ -1,5 +1,5 @@
 ﻿/.vs/EasyDAL.Exchange
-/EasyDAL.Exchange/bin/Debug/netstandard2.0
-/EasyDAL.Exchange/obj
-/EasyDAL.Exchange.Tests/bin/Debug/netcoreapp2.0
-/EasyDAL.Exchange.Tests/obj
+/EasyDAL.Exchange/bin/
+/EasyDAL.Exchange/obj/
+/EasyDAL.Exchange.Tests/bin/
+/EasyDAL.Exchange.Tests/obj/

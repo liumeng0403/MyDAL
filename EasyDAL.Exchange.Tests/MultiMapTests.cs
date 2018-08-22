@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Xunit;
+using EasyDAL.Exchange.AdoNet;
 
 namespace EasyDAL.Exchange.Tests
 {
@@ -176,90 +177,6 @@ namespace EasyDAL.Exchange.Tests
             }
         }
 
-//        [Fact]
-//        public void TestMultiMapGridReader()
-//        {
-//            const string createSql = @"
-//                create table #Users (Id int, Name varchar(20))
-//                create table #Posts (Id int, OwnerId int, Content varchar(20))
-
-//                insert #Users values(99, 'Sam')
-//                insert #Users values(2, 'I am')
-
-//                insert #Posts values(1, 99, 'Sams Post1')
-//                insert #Posts values(2, 99, 'Sams Post2')
-//                insert #Posts values(3, null, 'no ones post')
-//";
-//            connection.Execute(createSql);
-
-//            const string sql =
-//@"select p.*, u.Id, u.Name + '0' Name from #Posts p 
-//left join #Users u on u.Id = p.OwnerId 
-//Order by p.Id
-
-//select p.*, u.Id, u.Name + '1' Name from #Posts p 
-//left join #Users u on u.Id = p.OwnerId 
-//Order by p.Id
-//";
-
-//            var grid = connection.QueryMultiple(sql);
-
-//            for (int i = 0; i < 2; i++)
-//            {
-//                var data = grid.Read<Post, User, Post>((post, user) => { post.Owner = user; return post; }).ToList();
-//                var p = data[0];
-
-//                Assert.Equal("Sams Post1", p.Content);
-//                Assert.Equal(1, p.Id);
-//                Assert.Equal(p.Owner.Name, "Sam" + i);
-//                Assert.Equal(99, p.Owner.Id);
-
-//                Assert.Null(data[2].Owner);
-//            }
-
-//            connection.Execute("drop table #Users drop table #Posts");
-//        }
-
-//        [Fact]
-//        public void TestFlexibleMultiMapping()
-//        {
-//            const string sql =
-//@"select 
-//    1 as PersonId, 'bob' as Name, 
-//    2 as AddressId, 'abc street' as Name, 1 as PersonId,
-//    3 as Id, 'fred' as Name
-//    ";
-//            var personWithAddress = connection.Query<Person, Address, Extra, Tuple<Person, Address, Extra>>
-//                (sql, Tuple.Create, splitOn: "AddressId,Id").First();
-
-//            Assert.Equal(1, personWithAddress.Item1.PersonId);
-//            Assert.Equal("bob", personWithAddress.Item1.Name);
-//            Assert.Equal(2, personWithAddress.Item2.AddressId);
-//            Assert.Equal("abc street", personWithAddress.Item2.Name);
-//            Assert.Equal(1, personWithAddress.Item2.PersonId);
-//            Assert.Equal(3, personWithAddress.Item3.Id);
-//            Assert.Equal("fred", personWithAddress.Item3.Name);
-//        }
-
-        //[Fact]
-        //public void TestMultiMappingWithSplitOnSpaceBetweenCommas()
-        //{
-        //    const string sql = @"select 
-        //                1 as PersonId, 'bob' as Name, 
-        //                2 as AddressId, 'abc street' as Name, 1 as PersonId,
-        //                3 as Id, 'fred' as Name
-        //                ";
-        //    var personWithAddress = connection.Query<Person, Address, Extra, Tuple<Person, Address, Extra>>
-        //        (sql, Tuple.Create, splitOn: "AddressId, Id").First();
-
-        //    Assert.Equal(1, personWithAddress.Item1.PersonId);
-        //    Assert.Equal("bob", personWithAddress.Item1.Name);
-        //    Assert.Equal(2, personWithAddress.Item2.AddressId);
-        //    Assert.Equal("abc street", personWithAddress.Item2.Name);
-        //    Assert.Equal(1, personWithAddress.Item2.PersonId);
-        //    Assert.Equal(3, personWithAddress.Item3.Id);
-        //    Assert.Equal("fred", personWithAddress.Item3.Name);
-        //}
 
         private class Extra
         {
@@ -267,24 +184,7 @@ namespace EasyDAL.Exchange.Tests
             public string Name { get; set; }
         }
 
-        //[Fact]
-        //public void TestMultiMappingWithNonReturnedProperty()
-        //{
-        //    const string sql = @"select 
-        //                    1 as PostId, 'Title' as Title,
-        //                    2 as BlogId, 'Blog' as Title";
-        //    var postWithBlog = connection.Query<Post_DupeProp, Blog_DupeProp, Post_DupeProp>(sql,
-        //        (p, b) =>
-        //        {
-        //            p.Blog = b;
-        //            return p;
-        //        }, splitOn: "BlogId").First();
 
-        //    Assert.Equal(1, postWithBlog.PostId);
-        //    Assert.Equal("Title", postWithBlog.Title);
-        //    Assert.Equal(2, postWithBlog.Blog.BlogId);
-        //    Assert.Equal("Blog", postWithBlog.Blog.Title);
-        //}
 
         private class Post_DupeProp
         {
@@ -300,28 +200,7 @@ namespace EasyDAL.Exchange.Tests
             public string Title { get; set; }
         }
 
-        //// see https://stackoverflow.com/questions/16955357/issue-about-dapper
-        //[Fact]
-        //public void TestSplitWithMissingMembers()
-        //{
-        //    var result = connection.Query<Topic, Profile, Topic>(
-        //    @"select 123 as ID, 'abc' as Title,
-        //             cast('01 Feb 2013' as datetime) as CreateDate,
-        //             'ghi' as Name, 'def' as Phone",
-        //    (T, P) => { T.Author = P; return T; },
-        //    null, null, true, "ID,Name").Single();
 
-        //    Assert.Equal(123, result.ID);
-        //    Assert.Equal("abc", result.Title);
-        //    Assert.Equal(new DateTime(2013, 2, 1), result.CreateDate);
-        //    Assert.Null(result.Name);
-        //    Assert.Null(result.Content);
-
-        //    Assert.Equal("def", result.Author.Phone);
-        //    Assert.Equal("ghi", result.Author.Name);
-        //    Assert.Equal(0, result.Author.ID);
-        //    Assert.Null(result.Author.Address);
-        //}
 
         public class Profile
         {
@@ -345,26 +224,6 @@ namespace EasyDAL.Exchange.Tests
             //public Attachment Attach { get; set; }
         }
 
-        //[Fact]
-        //public void TestInvalidSplitCausesNiceError()
-        //{
-        //    try
-        //    {
-        //        connection.Query<User, User, User>("select 1 A, 2 B, 3 C", (x, y) => x);
-        //    }
-        //    catch (ArgumentException)
-        //    {
-        //        // expecting an app exception due to multi mapping being bodged 
-        //    }
 
-        //    try
-        //    {
-        //        connection.Query<dynamic, dynamic, dynamic>("select 1 A, 2 B, 3 C", (x, y) => x);
-        //    }
-        //    catch (ArgumentException)
-        //    {
-        //        // expecting an app exception due to multi mapping being bodged 
-        //    }
-        //}
     }
 }

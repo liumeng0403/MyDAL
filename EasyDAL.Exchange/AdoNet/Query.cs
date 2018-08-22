@@ -10,7 +10,7 @@ using EasyDAL.Exchange.DataBase;
 using EasyDAL.Exchange.MapperX;
 using EasyDAL.Exchange.Reader;
 
-namespace EasyDAL.Exchange
+namespace EasyDAL.Exchange.AdoNet
 {
     public static partial class SqlMapper
     {
@@ -326,6 +326,19 @@ namespace EasyDAL.Exchange
         /// <param name="command">The command used to query on this connection.</param>
         public static Task<T> QuerySingleOrDefaultAsync<T>(this IDbConnection cnn, CommandDefinition command) =>
             QueryRowAsync<T>(cnn, Row.SingleOrDefault, typeof(T), command);
+
+
+        /// <summary>
+        /// Execute a command that returns multiple result sets, and access each in turn.
+        /// </summary>
+        /// <param name="cnn">The connection to query on.</param>
+        /// <param name="sql">The SQL to execute for this query.</param>
+        /// <param name="param">The parameters to use for this query.</param>
+        /// <param name="transaction">The transaction to use for this query.</param>
+        /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
+        /// <param name="commandType">Is it a stored proc or a batch?</param>
+        public static Task<GridReader> QueryMultipleAsync(this IDbConnection cnn, string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null) =>
+            QueryMultipleAsync(cnn, new CommandDefinition(sql, param, transaction, commandTimeout, commandType, CommandFlags.Buffered));
 
 
     }

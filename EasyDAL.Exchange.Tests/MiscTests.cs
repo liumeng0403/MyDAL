@@ -9,35 +9,14 @@ using System.Linq;
 using Xunit;
 using EasyDAL.Exchange.DataBase;
 
-#if NETCOREAPP1_0
-using System.Collections;
-using System.Dynamic;
-using System.Data.SqlTypes;
-#else // net452
+
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-#endif
+using EasyDAL.Exchange.AdoNet;
 
-#if NETCOREAPP1_0
-namespace System
-{
-    public enum GenericUriParserOptions
-    {
-        Default
-    }
 
-    public class GenericUriParser
-    {
-        private readonly GenericUriParserOptions options;
 
-        public GenericUriParser(GenericUriParserOptions options)
-        {
-            this.options = options;
-        }
-    }
-}
-#endif
 
 namespace EasyDAL.Exchange.Tests
 {
@@ -443,20 +422,7 @@ select * from @bar", new { foo }).Single();
             Assert.Equal("Four", list.First().Base2);
         }
 
-#if !NETCOREAPP1_0
-        [Fact]
-        public void ExecuteReader()
-        {
-            var dt = new DataTable();
-            dt.Load(connection.ExecuteReader("select 3 as [three], 4 as [four]"));
-            Assert.Equal(2, dt.Columns.Count);
-            Assert.Equal("three", dt.Columns[0].ColumnName);
-            Assert.Equal("four", dt.Columns[1].ColumnName);
-            Assert.Equal(1, dt.Rows.Count);
-            Assert.Equal(3, (int)dt.Rows[0][0]);
-            Assert.Equal(4, (int)dt.Rows[0][1]);
-        }
-#endif
+
         
         [Fact]
         public void TestDefaultDbStringDbType()
@@ -839,35 +805,7 @@ select * from @bar", new { foo }).Single();
         {
             NotStarted = 1, Started = 2, Finished = 3
         }
-
-        [Fact]
-        public void Issue178_SqlServer()
-        {
-            const string sql = "select count(*) from Issue178";
-            try { connection.Execute("drop table Issue178"); }
-            catch { /* don't care */ }
-            try { connection.Execute("create table Issue178(id int not null)"); }
-            catch { /* don't care */ }
-            // raw ADO.net
-            var sqlCmd = new SqlCommand(sql, connection);
-            using (IDataReader reader1 = sqlCmd.ExecuteReader())
-            {
-                Assert.True(reader1.Read());
-                Assert.Equal(0, reader1.GetInt32(0));
-                Assert.False(reader1.Read());
-                Assert.False(reader1.NextResult());
-            }
-
-            // dapper
-            using (var reader2 = connection.ExecuteReader(sql))
-            {
-                Assert.True(reader2.Read());
-                Assert.Equal(0, reader2.GetInt32(0));
-                Assert.False(reader2.Read());
-                Assert.False(reader2.NextResult());
-            }
-        }
-
+        
         [Fact]
         public void QueryBasicWithoutQuery()
         {

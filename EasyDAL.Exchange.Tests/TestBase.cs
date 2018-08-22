@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
 using Xunit;
+using EasyDAL.Exchange.AdoNet;
 #if !NETCOREAPP1_0
 using System.Threading;
 #endif

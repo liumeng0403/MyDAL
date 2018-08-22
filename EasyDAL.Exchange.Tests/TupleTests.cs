@@ -1,5 +1,6 @@
 ﻿using System;
 using Xunit;
+using EasyDAL.Exchange.AdoNet;
 
 namespace EasyDAL.Exchange.Tests
 {

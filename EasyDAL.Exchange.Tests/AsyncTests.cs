@@ -121,25 +121,6 @@ namespace EasyDAL.Exchange.Tests
         }
         
         [Fact]
-        public async Task TestMultiMapArbitraryWithSplitAsync()
-        {
-            const string sql = "select 1 as id, 'abc' as name, 2 as id, 'def' as name";
-            var productQuery = await connection.QueryAsync<Product>(sql, new[] { typeof(Product), typeof(Category) }, (objects) =>
-            {
-                var prod = (Product)objects[0];
-                prod.Category = (Category)objects[1];
-                return prod;
-            }).ConfigureAwait(false);
-
-            var product = productQuery.First();
-            // assertions
-            Assert.Equal(1, product.Id);
-            Assert.Equal("abc", product.Name);
-            Assert.Equal(2, product.Category.Id);
-            Assert.Equal("def", product.Category.Name);
-        }
-        
-        [Fact]
         public async Task TestMultiAsync()
         {
             using (GridReader multi = await connection.QueryMultipleAsync("select 1; select 2").ConfigureAwait(false))
@@ -185,36 +166,7 @@ namespace EasyDAL.Exchange.Tests
             }
         }
 
-#if !NETCOREAPP1_0
-        [Fact]
-        public async Task ExecuteReaderOpenAsync()
-        {
-            var dt = new DataTable();
-            dt.Load(await connection.ExecuteReaderAsync("select 3 as [three], 4 as [four]").ConfigureAwait(false));
-            Assert.Equal(2, dt.Columns.Count);
-            Assert.Equal("three", dt.Columns[0].ColumnName);
-            Assert.Equal("four", dt.Columns[1].ColumnName);
-            Assert.Equal(1, dt.Rows.Count);
-            Assert.Equal(3, (int)dt.Rows[0][0]);
-            Assert.Equal(4, (int)dt.Rows[0][1]);
-        }
 
-        [Fact]
-        public async Task ExecuteReaderClosedAsync()
-        {
-            using (var conn = GetClosedConnection())
-            {
-                var dt = new DataTable();
-                dt.Load(await conn.ExecuteReaderAsync("select 3 as [three], 4 as [four]").ConfigureAwait(false));
-                Assert.Equal(2, dt.Columns.Count);
-                Assert.Equal("three", dt.Columns[0].ColumnName);
-                Assert.Equal("four", dt.Columns[1].ColumnName);
-                Assert.Equal(1, dt.Rows.Count);
-                Assert.Equal(3, (int)dt.Rows[0][0]);
-                Assert.Equal(4, (int)dt.Rows[0][1]);
-            }
-        }
-#endif
 
         [Fact]
         public async Task LiteralReplacementOpen()
@@ -286,22 +238,7 @@ namespace EasyDAL.Exchange.Tests
             Assert.Equal(2, count);
         }
 
-        [FactLongRunning]
-        public async Task RunSequentialVersusParallelAsync()
-        {
-            var ids = Enumerable.Range(1, 20000).Select(id => new { id }).ToArray();
-            await MarsConnection.ExecuteAsync(new CommandDefinition("select @id", ids.Take(5), flags: CommandFlags.None)).ConfigureAwait(false);
 
-            var watch = Stopwatch.StartNew();
-            await MarsConnection.ExecuteAsync(new CommandDefinition("select @id", ids, flags: CommandFlags.None)).ConfigureAwait(false);
-            watch.Stop();
-            Console.WriteLine("No pipeline: {0}ms", watch.ElapsedMilliseconds);
-
-            watch = Stopwatch.StartNew();
-            await MarsConnection.ExecuteAsync(new CommandDefinition("select @id", ids, flags: CommandFlags.Pipelined)).ConfigureAwait(false);
-            watch.Stop();
-            Console.WriteLine("Pipeline: {0}ms", watch.ElapsedMilliseconds);
-        }
 
         [FactLongRunning]
         public void RunSequentialVersusParallelSync()
@@ -583,91 +520,7 @@ SET @AddressPersonId = @PersonId", p).ConfigureAwait(false))
             }
         }
 
-        [Fact]
-        public async Task TestMultiMapArbitraryMapsAsync()
-        {
-            // please excuse the trite example, but it is easier to follow than a more real-world one
-            const string createSql = @"
-                create table #ReviewBoards (Id int, Name varchar(20), User1Id int, User2Id int, User3Id int, User4Id int, User5Id int, User6Id int, User7Id int, User8Id int, User9Id int)
-                create table #Users (Id int, Name varchar(20))
 
-                insert #Users values(1, 'User 1')
-                insert #Users values(2, 'User 2')
-                insert #Users values(3, 'User 3')
-                insert #Users values(4, 'User 4')
-                insert #Users values(5, 'User 5')
-                insert #Users values(6, 'User 6')
-                insert #Users values(7, 'User 7')
-                insert #Users values(8, 'User 8')
-                insert #Users values(9, 'User 9')
-
-                insert #ReviewBoards values(1, 'Review Board 1', 1, 2, 3, 4, 5, 6, 7, 8, 9)
-";
-            await connection.ExecuteAsync(createSql).ConfigureAwait(false);
-            try
-            {
-                const string sql = @"
-                select 
-                    rb.Id, rb.Name,
-                    u1.*, u2.*, u3.*, u4.*, u5.*, u6.*, u7.*, u8.*, u9.*
-                from #ReviewBoards rb
-                    inner join #Users u1 on u1.Id = rb.User1Id
-                    inner join #Users u2 on u2.Id = rb.User2Id
-                    inner join #Users u3 on u3.Id = rb.User3Id
-                    inner join #Users u4 on u4.Id = rb.User4Id
-                    inner join #Users u5 on u5.Id = rb.User5Id
-                    inner join #Users u6 on u6.Id = rb.User6Id
-                    inner join #Users u7 on u7.Id = rb.User7Id
-                    inner join #Users u8 on u8.Id = rb.User8Id
-                    inner join #Users u9 on u9.Id = rb.User9Id
-";
-
-                var types = new[] { typeof(ReviewBoard), typeof(User), typeof(User), typeof(User), typeof(User), typeof(User), typeof(User), typeof(User), typeof(User), typeof(User) };
-
-                Func<object[], ReviewBoard> mapper = (objects) =>
-                {
-                    var board = (ReviewBoard)objects[0];
-                    board.User1 = (User)objects[1];
-                    board.User2 = (User)objects[2];
-                    board.User3 = (User)objects[3];
-                    board.User4 = (User)objects[4];
-                    board.User5 = (User)objects[5];
-                    board.User6 = (User)objects[6];
-                    board.User7 = (User)objects[7];
-                    board.User8 = (User)objects[8];
-                    board.User9 = (User)objects[9];
-                    return board;
-                };
-
-                var data = (await connection.QueryAsync<ReviewBoard>(sql, types, mapper).ConfigureAwait(false)).ToList();
-
-                var p = data[0];
-                Assert.Equal(1, p.Id);
-                Assert.Equal("Review Board 1", p.Name);
-                Assert.Equal(1, p.User1.Id);
-                Assert.Equal(2, p.User2.Id);
-                Assert.Equal(3, p.User3.Id);
-                Assert.Equal(4, p.User4.Id);
-                Assert.Equal(5, p.User5.Id);
-                Assert.Equal(6, p.User6.Id);
-                Assert.Equal(7, p.User7.Id);
-                Assert.Equal(8, p.User8.Id);
-                Assert.Equal(9, p.User9.Id);
-                Assert.Equal("User 1", p.User1.Name);
-                Assert.Equal("User 2", p.User2.Name);
-                Assert.Equal("User 3", p.User3.Name);
-                Assert.Equal("User 4", p.User4.Name);
-                Assert.Equal("User 5", p.User5.Name);
-                Assert.Equal("User 6", p.User6.Name);
-                Assert.Equal("User 7", p.User7.Name);
-                Assert.Equal("User 8", p.User8.Name);
-                Assert.Equal("User 9", p.User9.Name);
-            }
-            finally
-            {
-                connection.Execute("drop table #Users drop table #ReviewBoards");
-            }
-        }
 
         [Fact]
         public async Task Issue157_ClosedReaderAsync()
@@ -695,18 +548,6 @@ SET @AddressPersonId = @PersonId", p).ConfigureAwait(false))
             Assert.Equal(2, id);
         }
 
-        [Fact]
-        public async Task Issue1281_DataReaderOutOfOrderAsync()
-        {
-            using (var reader = await connection.ExecuteReaderAsync("Select 0, 1, 2").ConfigureAwait(false))
-            {
-                Assert.True(reader.Read());
-                Assert.Equal(2, reader.GetInt32(2));
-                Assert.Equal(0, reader.GetInt32(0));
-                Assert.Equal(1, reader.GetInt32(1));
-                Assert.False(reader.Read());
-            }
-        }
 
         [Fact]
         public async Task Issue563_QueryAsyncShouldThrowException()

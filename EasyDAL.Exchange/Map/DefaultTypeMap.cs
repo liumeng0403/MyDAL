@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using EasyDAL.Exchange.AdoNet;
 using EasyDAL.Exchange.Attributes;
 using EasyDAL.Exchange.Extensions;
 

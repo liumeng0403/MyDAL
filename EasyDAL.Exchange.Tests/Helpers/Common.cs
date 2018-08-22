@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.Common;
 using EasyDAL.Exchange.DynamicParameter;
 using Xunit;
+using EasyDAL.Exchange.AdoNet;
 
 namespace EasyDAL.Exchange.Tests
 {

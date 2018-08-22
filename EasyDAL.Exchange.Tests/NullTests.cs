@@ -1,6 +1,7 @@
 ﻿using Xunit;
 using System.Linq;
 using EasyDAL.Exchange.MapperX;
+using EasyDAL.Exchange.AdoNet;
 
 namespace EasyDAL.Exchange.Tests
 {

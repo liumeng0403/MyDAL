@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 using Xunit;
+using EasyDAL.Exchange.AdoNet;
 
 namespace EasyDAL.Exchange.Tests
 {
@@ -9,9 +10,8 @@ namespace EasyDAL.Exchange.Tests
     {
         public FactLongRunningAttribute()
         {
-#if !LONG_RUNNING
             Skip = "Long running";
-#endif
+
         }
 
         public string Url { get; private set; }

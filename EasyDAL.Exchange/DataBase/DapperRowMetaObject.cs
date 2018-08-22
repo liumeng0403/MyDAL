@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using static EasyDAL.Exchange.SqlMapper;
+using static EasyDAL.Exchange.AdoNet.SqlMapper;
 
 namespace EasyDAL.Exchange.DataBase
 {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 using System.Threading;
-using static EasyDAL.Exchange.SqlMapper;
+using static EasyDAL.Exchange.AdoNet.SqlMapper;
 
 namespace EasyDAL.Exchange.MapperX
 {
