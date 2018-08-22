@@ -152,7 +152,7 @@ namespace EasyDAL.Exchange.Tests
             Assert.Equal(3, p.Get<int>("@c"));
         }
         
-        [FactUnlessCaseSensitiveDatabase]
+        //[FactUnlessCaseSensitiveDatabase]
         public void TestParameterInclusionNotSensitiveToCurrentCulture()
         {
             // note this might fail if your database server is case-sensitive
@@ -975,7 +975,7 @@ end");
 
 
 
-        [FactUnlessCaseSensitiveDatabase]
+        //[FactUnlessCaseSensitiveDatabase]
         public void Issue220_InParameterCanBeSpecifiedInAnyCase()
         {
             // note this might fail if your database server is case-sensitive

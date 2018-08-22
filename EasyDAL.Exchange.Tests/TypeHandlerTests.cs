@@ -510,8 +510,8 @@ namespace EasyDAL.Exchange.Tests
 
         public class Issue149_Person { public string Id { get; set; } }
 
-        [Fact]
-        public void Issue295_NullableDateTime_SqlServer() => Common.TestDateTime(connection);
+        //[Fact]
+        //public void Issue295_NullableDateTime_SqlServer() => Common.TestDateTime(connection);
 
         [Fact]
         public void SO29343103_UtcDates()

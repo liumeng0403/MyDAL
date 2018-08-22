@@ -10,13 +10,15 @@ using EasyDAL.Exchange.DynamicParameter;
 using EasyDAL.Exchange.Reader;
 using EasyDAL.Exchange.AdoNet;
 using EasyDAL.Exchange.MapperX;
+using EasyDAL.Exchange;
+using EasyDAL.Exchange.Tests.Entities;
 
 namespace EasyDAL.Exchange.Tests
 {
     public class Tests : TestBase
     {
         private SqlConnection _marsConnection;
-        private SqlConnection MarsConnection => _marsConnection ?? (_marsConnection = GetOpenConnection(true));
+        //private SqlConnection MarsConnection => _marsConnection ?? (_marsConnection = GetOpenConnection(true));
 
         [Fact]
         public async Task TestBasicStringUsageAsync()
@@ -240,28 +242,28 @@ namespace EasyDAL.Exchange.Tests
 
 
 
-        [FactLongRunning]
-        public void RunSequentialVersusParallelSync()
-        {
-            var ids = Enumerable.Range(1, 20000).Select(id => new { id }).ToArray();
-            MarsConnection.Execute(new CommandDefinition("select @id", ids.Take(5), flags: CommandFlags.None));
+        //[FactLongRunning]
+        //public void RunSequentialVersusParallelSync()
+        //{
+        //    var ids = Enumerable.Range(1, 20000).Select(id => new { id }).ToArray();
+        //    MarsConnection.Execute(new CommandDefinition("select @id", ids.Take(5), flags: CommandFlags.None));
 
-            var watch = Stopwatch.StartNew();
-            MarsConnection.Execute(new CommandDefinition("select @id", ids, flags: CommandFlags.None));
-            watch.Stop();
-            Console.WriteLine("No pipeline: {0}ms", watch.ElapsedMilliseconds);
+        //    var watch = Stopwatch.StartNew();
+        //    MarsConnection.Execute(new CommandDefinition("select @id", ids, flags: CommandFlags.None));
+        //    watch.Stop();
+        //    Console.WriteLine("No pipeline: {0}ms", watch.ElapsedMilliseconds);
 
-            watch = Stopwatch.StartNew();
-            MarsConnection.Execute(new CommandDefinition("select @id", ids, flags: CommandFlags.Pipelined));
-            watch.Stop();
-            Console.WriteLine("Pipeline: {0}ms", watch.ElapsedMilliseconds);
-        }
+        //    watch = Stopwatch.StartNew();
+        //    MarsConnection.Execute(new CommandDefinition("select @id", ids, flags: CommandFlags.Pipelined));
+        //    watch.Stop();
+        //    Console.WriteLine("Pipeline: {0}ms", watch.ElapsedMilliseconds);
+        //}
 
         [Collection(NonParallelDefinition.Name)]
         public class AsyncQueryCacheTests : TestBase
         {
             private SqlConnection _marsConnection;
-            private SqlConnection MarsConnection => _marsConnection ?? (_marsConnection = GetOpenConnection(true));
+            //private SqlConnection MarsConnection => _marsConnection ?? (_marsConnection = GetOpenConnection(true));
 
 
         }
@@ -289,6 +291,53 @@ namespace EasyDAL.Exchange.Tests
             int? k = await connection.ExecuteScalarAsync<int?>("select @i", new { i = default(int?) }).ConfigureAwait(false);
             Assert.Null(k);
         }
+
+        /***************************************************************************************************************/
+
+        [Fact]
+        public async Task CreateAsyncTest()
+        {
+            var conn = GetOpenConnection();
+            var m = new BodyFitRecord
+            {
+                Id = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"),
+                CreatedOn = DateTime.Now,
+                UserId = Guid.NewGuid(),
+                BodyMeasureProperty = "{xxx:yyy,mmm:nnn}"
+            };
+            var res = await conn.Creater().CreateAsync(m);
+
+            var xx = "";
+        }
+
+
+        [Fact]
+        public async Task UpdateAsyncTest()
+        {
+            var conn = GetOpenConnection();
+            // 
+            //
+            var m = new BodyFitRecord
+            {
+                Id = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"),
+                CreatedOn = DateTime.Now,
+                UserId = Guid.NewGuid(),
+                BodyMeasureProperty = "{xxx:yyy,mmm:nnn,zzz:aaa}"
+            };
+
+            var res = await conn
+                .Updater<BodyFitRecord>()
+                .Set(it => it.CreatedOn)
+                .Set(it => it.BodyMeasureProperty)
+                .Where(it=>it.Id)
+                .UpdateAsync(m);                
+
+            var xx = "";
+        }
+
+
+        /****************************************************************************/
+
 
         [Fact]
         public async Task Issue346_QueryAsyncConvert()

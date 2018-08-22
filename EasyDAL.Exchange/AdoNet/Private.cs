@@ -289,6 +289,76 @@ namespace EasyDAL.Exchange.AdoNet
             }
         }
 
+        /// <summary>
+        /// Execute a command that returns multiple result sets, and access each in turn.
+        /// </summary>
+        /// <param name="cnn">The connection to query on.</param>
+        /// <param name="command">The command to execute for this query.</param>
+        private static async Task<GridReader> QueryMultipleAsync(this IDbConnection cnn, CommandDefinition command)
+        {
+            object param = command.Parameters;
+            var identity = new Identity(command.CommandText, command.CommandType, cnn, typeof(GridReader), param?.GetType(), null);
+            CacheInfo info = GetCacheInfo(identity, param, command.AddToCache);
+
+            DbCommand cmd = null;
+            IDataReader reader = null;
+            bool wasClosed = cnn.State == ConnectionState.Closed;
+            try
+            {
+                if (wasClosed) await cnn.TryOpenAsync(command.CancellationToken).ConfigureAwait(false);
+                cmd = command.TrySetupAsyncCommand(cnn, info.ParamReader);
+                reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, wasClosed, CommandBehavior.SequentialAccess, command.CancellationToken).ConfigureAwait(false);
+
+                var result = new GridReader(cmd, reader, identity, command.Parameters as DynamicParameters, command.AddToCache, command.CancellationToken);
+                wasClosed = false; // *if* the connection was closed and we got this far, then we now have a reader
+                // with the CloseConnection flag, so the reader will deal with the connection; we
+                // still need something in the "finally" to ensure that broken SQL still results
+                // in the connection closing itself
+                return result;
+            }
+            catch
+            {
+                if (reader != null)
+                {
+                    if (!reader.IsClosed)
+                    {
+                        try { cmd.Cancel(); }
+                        catch
+                        { /* don't spoil the existing exception */
+                        }
+                    }
+                    reader.Dispose();
+                }
+                cmd?.Dispose();
+                if (wasClosed) cnn.Close();
+                throw;
+            }
+        }
+
+
+        /// <summary>
+        /// Execute a command asynchronously using .NET 4.5 Task.
+        /// </summary>
+        /// <param name="cnn">The connection to execute on.</param>
+        /// <param name="command">The command to execute on this connection.</param>
+        /// <returns>The number of rows affected.</returns>
+        private static Task<int> ExecuteAsync(this IDbConnection cnn, CommandDefinition command)
+        {
+            object param = command.Parameters;
+            IEnumerable multiExec = GetMultiExec(param);
+            if (multiExec != null)
+            {
+                return ExecuteMultiImplAsync(cnn, command, multiExec);
+            }
+            else
+            {
+                return ExecuteImplAsync(cnn, command, param);
+            }
+        }
+
+        /*
+         * ExecuteImpl
+         */
         private static int ExecuteImpl(this IDbConnection cnn, ref CommandDefinition command)
         {
             object param = command.Parameters;
@@ -346,26 +416,6 @@ namespace EasyDAL.Exchange.AdoNet
             }
             return ExecuteCommand(cnn, ref command, param == null ? null : info.ParamReader);
         }
-
-        /// <summary>
-        /// Execute a command asynchronously using .NET 4.5 Task.
-        /// </summary>
-        /// <param name="cnn">The connection to execute on.</param>
-        /// <param name="command">The command to execute on this connection.</param>
-        /// <returns>The number of rows affected.</returns>
-        private static Task<int> ExecuteAsync(this IDbConnection cnn, CommandDefinition command)
-        {
-            object param = command.Parameters;
-            IEnumerable multiExec = GetMultiExec(param);
-            if (multiExec != null)
-            {
-                return ExecuteMultiImplAsync(cnn, command, multiExec);
-            }
-            else
-            {
-                return ExecuteImplAsync(cnn, command, param);
-            }
-        }
         private static async Task<int> ExecuteImplAsync(IDbConnection cnn, CommandDefinition command, object param)
         {
             var identity = new Identity(command.CommandText, command.CommandType, cnn, null, param?.GetType(), null);
@@ -386,6 +436,37 @@ namespace EasyDAL.Exchange.AdoNet
                 }
             }
         }
+
+        /*
+         * ExecuteScalarImpl
+         */
+        private static T ExecuteScalarImpl<T>(IDbConnection cnn, ref CommandDefinition command)
+        {
+            Action<IDbCommand, object> paramReader = null;
+            object param = command.Parameters;
+            if (param != null)
+            {
+                var identity = new Identity(command.CommandText, command.CommandType, cnn, null, param.GetType(), null);
+                paramReader = GetCacheInfo(identity, command.Parameters, command.AddToCache).ParamReader;
+            }
+
+            IDbCommand cmd = null;
+            bool wasClosed = cnn.State == ConnectionState.Closed;
+            object result;
+            try
+            {
+                cmd = command.SetupCommand(cnn, paramReader);
+                if (wasClosed) cnn.Open();
+                result = cmd.ExecuteScalar();
+                command.OnCompleted();
+            }
+            finally
+            {
+                if (wasClosed) cnn.Close();
+                cmd?.Dispose();
+            }
+            return Parse<T>(result);
+        }
         private static async Task<T> ExecuteScalarImplAsync<T>(IDbConnection cnn, CommandDefinition command)
         {
             Action<IDbCommand, object> paramReader = null;
@@ -402,7 +483,10 @@ namespace EasyDAL.Exchange.AdoNet
             try
             {
                 cmd = command.TrySetupAsyncCommand(cnn, paramReader);
-                if (wasClosed) await cnn.TryOpenAsync(command.CancellationToken).ConfigureAwait(false);
+                if (wasClosed)
+                {
+                    await cnn.TryOpenAsync(command.CancellationToken).ConfigureAwait(false);
+                }
                 result = await cmd.ExecuteScalarAsync(command.CancellationToken).ConfigureAwait(false);
                 command.OnCompleted();
             }
@@ -413,6 +497,7 @@ namespace EasyDAL.Exchange.AdoNet
             }
             return Parse<T>(result);
         }
+
 
         private static async Task<int> ExecuteMultiImplAsync(IDbConnection cnn, CommandDefinition command, IEnumerable multiExec)
         {
@@ -523,52 +608,9 @@ namespace EasyDAL.Exchange.AdoNet
             }
         }
 
-        /// <summary>
-        /// Execute a command that returns multiple result sets, and access each in turn.
-        /// </summary>
-        /// <param name="cnn">The connection to query on.</param>
-        /// <param name="command">The command to execute for this query.</param>
-        private static async Task<GridReader> QueryMultipleAsync(this IDbConnection cnn, CommandDefinition command)
-        {
-            object param = command.Parameters;
-            var identity = new Identity(command.CommandText, command.CommandType, cnn, typeof(GridReader), param?.GetType(), null);
-            CacheInfo info = GetCacheInfo(identity, param, command.AddToCache);
-
-            DbCommand cmd = null;
-            IDataReader reader = null;
-            bool wasClosed = cnn.State == ConnectionState.Closed;
-            try
-            {
-                if (wasClosed) await cnn.TryOpenAsync(command.CancellationToken).ConfigureAwait(false);
-                cmd = command.TrySetupAsyncCommand(cnn, info.ParamReader);
-                reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, wasClosed, CommandBehavior.SequentialAccess, command.CancellationToken).ConfigureAwait(false);
-
-                var result = new GridReader(cmd, reader, identity, command.Parameters as DynamicParameters, command.AddToCache, command.CancellationToken);
-                wasClosed = false; // *if* the connection was closed and we got this far, then we now have a reader
-                // with the CloseConnection flag, so the reader will deal with the connection; we
-                // still need something in the "finally" to ensure that broken SQL still results
-                // in the connection closing itself
-                return result;
-            }
-            catch
-            {
-                if (reader != null)
-                {
-                    if (!reader.IsClosed)
-                    {
-                        try { cmd.Cancel(); }
-                        catch
-                        { /* don't spoil the existing exception */
-                        }
-                    }
-                    reader.Dispose();
-                }
-                cmd?.Dispose();
-                if (wasClosed) cnn.Close();
-                throw;
-            }
-        }
-
+        /*
+         * Common
+         */
         /// <summary>
         /// Attempts setup a <see cref="DbCommand"/> on a <see cref="DbConnection"/>, with a better error message for unsupported usages.
         /// </summary>
@@ -583,7 +625,6 @@ namespace EasyDAL.Exchange.AdoNet
                 throw new InvalidOperationException("Async operations require use of a DbConnection or an IDbConnection where .CreateCommand() returns a DbCommand");
             }
         }
-
         /// <summary>
         /// Attempts to open a connection asynchronously, with a better error message for unsupported usages.
         /// </summary>
@@ -598,7 +639,6 @@ namespace EasyDAL.Exchange.AdoNet
                 throw new InvalidOperationException("Async operations require use of a DbConnection or an already-open IDbConnection");
             }
         }
-
         private static Task<DbDataReader> ExecuteReaderWithFlagsFallbackAsync(DbCommand cmd, bool wasClosed, CommandBehavior behavior, CancellationToken cancellationToken)
         {
             var task = cmd.ExecuteReaderAsync(GetBehavior(wasClosed, behavior), cancellationToken);
@@ -607,6 +647,24 @@ namespace EasyDAL.Exchange.AdoNet
                 return cmd.ExecuteReaderAsync(GetBehavior(wasClosed, behavior), cancellationToken);
             }
             return task;
+        }
+        private static int ExecuteCommand(IDbConnection cnn, ref CommandDefinition command, Action<IDbCommand, object> paramReader)
+        {
+            IDbCommand cmd = null;
+            bool wasClosed = cnn.State == ConnectionState.Closed;
+            try
+            {
+                cmd = command.SetupCommand(cnn, paramReader);
+                if (wasClosed) cnn.Open();
+                int result = cmd.ExecuteNonQuery();
+                command.OnCompleted();
+                return result;
+            }
+            finally
+            {
+                if (wasClosed) cnn.Close();
+                cmd?.Dispose();
+            }
         }
 
     }

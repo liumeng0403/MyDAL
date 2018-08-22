@@ -43,34 +43,4 @@ namespace EasyDAL.Exchange.Tests
         }
     }
 
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-    public class FactUnlessCaseSensitiveDatabaseAttribute : FactAttribute
-    {
-        public FactUnlessCaseSensitiveDatabaseAttribute() : base()
-        {
-            if (IsCaseSensitive)
-            {
-                Skip = "Case sensitive database";
-            }
-        }
-
-        public static readonly bool IsCaseSensitive;
-        static FactUnlessCaseSensitiveDatabaseAttribute()
-        {
-            using (var conn = TestBase.GetOpenConnection())
-            {
-                try
-                {
-                    conn.Execute("declare @i int; set @I = 1;");
-                }
-                catch (SqlException s)
-                {
-                    if (s.Number == 137)
-                        IsCaseSensitive = true;
-                    else
-                        throw;
-                }
-            }
-        }
-    }
 }

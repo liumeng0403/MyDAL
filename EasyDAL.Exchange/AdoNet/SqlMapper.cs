@@ -1208,16 +1208,16 @@ namespace EasyDAL.Exchange.AdoNet
             literalTokens = new Regex(@"(?<![\p{L}\p{N}_])\{=([\p{L}\p{N}_]+)\}", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.CultureInvariant | RegexOptions.Compiled),
             pseudoPositional = new Regex(@"\?([\p{L}_][\p{L}\p{N}_]*)\?", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
-        /// <summary>
-        /// Replace all literal tokens with their text form.
-        /// </summary>
-        /// <param name="parameters">The parameter lookup to do replacements with.</param>
-        /// <param name="command">The command to repalce parameters in.</param>
-        public static void ReplaceLiterals(this IParameterLookup parameters, IDbCommand command)
-        {
-            var tokens = GetLiteralTokens(command.CommandText);
-            if (tokens.Count != 0) ReplaceLiterals(parameters, command, tokens);
-        }
+        ///// <summary>
+        ///// Replace all literal tokens with their text form.
+        ///// </summary>
+        ///// <param name="parameters">The parameter lookup to do replacements with.</param>
+        ///// <param name="command">The command to repalce parameters in.</param>
+        //public static void ReplaceLiterals(this IParameterLookup parameters, IDbCommand command)
+        //{
+        //    var tokens = GetLiteralTokens(command.CommandText);
+        //    if (tokens.Count != 0) ReplaceLiterals(parameters, command, tokens);
+        //}
 
         internal static readonly MethodInfo format = typeof(SqlMapper).GetMethod("Format", BindingFlags.Public | BindingFlags.Static);
 
@@ -1774,53 +1774,6 @@ namespace EasyDAL.Exchange.AdoNet
         private static readonly MethodInfo StringReplace = typeof(string).GetPublicInstanceMethodX(nameof(string.Replace), new Type[] { typeof(string), typeof(string) }),
             InvariantCulture = typeof(CultureInfo).GetProperty(nameof(CultureInfo.InvariantCulture), BindingFlags.Public | BindingFlags.Static).GetGetMethod();
 
-        private static int ExecuteCommand(IDbConnection cnn, ref CommandDefinition command, Action<IDbCommand, object> paramReader)
-        {
-            IDbCommand cmd = null;
-            bool wasClosed = cnn.State == ConnectionState.Closed;
-            try
-            {
-                cmd = command.SetupCommand(cnn, paramReader);
-                if (wasClosed) cnn.Open();
-                int result = cmd.ExecuteNonQuery();
-                command.OnCompleted();
-                return result;
-            }
-            finally
-            {
-                if (wasClosed) cnn.Close();
-                cmd?.Dispose();
-            }
-        }
-
-        private static T ExecuteScalarImpl<T>(IDbConnection cnn, ref CommandDefinition command)
-        {
-            Action<IDbCommand, object> paramReader = null;
-            object param = command.Parameters;
-            if (param != null)
-            {
-                var identity = new Identity(command.CommandText, command.CommandType, cnn, null, param.GetType(), null);
-                paramReader = GetCacheInfo(identity, command.Parameters, command.AddToCache).ParamReader;
-            }
-
-            IDbCommand cmd = null;
-            bool wasClosed = cnn.State == ConnectionState.Closed;
-            object result;
-            try
-            {
-                cmd = command.SetupCommand(cnn, paramReader);
-                if (wasClosed) cnn.Open();
-                result = cmd.ExecuteScalar();
-                command.OnCompleted();
-            }
-            finally
-            {
-                if (wasClosed) cnn.Close();
-                cmd?.Dispose();
-            }
-            return Parse<T>(result);
-        }
-        
         private static Func<IDataReader, object> GetStructDeserializer(Type type, Type effectiveType, int index)
         {
             // no point using special per-type handling here; it boils down to the same, plus not all are supported anyway (see: SqlDataReader.GetChar - not supported!)

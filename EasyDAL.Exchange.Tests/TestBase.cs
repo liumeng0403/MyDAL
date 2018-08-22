@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Globalization;
 using Xunit;
 using EasyDAL.Exchange.AdoNet;
+using MySql.Data.MySqlClient;
 #if !NETCOREAPP1_0
 using System.Threading;
 #endif
@@ -14,28 +15,31 @@ namespace EasyDAL.Exchange.Tests
     {
         protected static readonly bool IsAppVeyor = Environment.GetEnvironmentVariable("Appveyor")?.ToUpperInvariant() == "TRUE";
 
-        public static string ConnectionString =>
-            IsAppVeyor
-                ? @"Server=(local)\SQL2016;Database=tempdb;User ID=sa;Password=Password12!"
-                : "Data Source=.;Initial Catalog=tempdb;Integrated Security=True";
-
-        protected SqlConnection _connection;
-        protected SqlConnection connection => _connection ?? (_connection = GetOpenConnection());
-
-        public static SqlConnection GetOpenConnection(bool mars = false)
+        public static string ConnectionString
         {
-            var cs = ConnectionString;
-            if (mars)
+            get
             {
-                var scsb = new SqlConnectionStringBuilder(cs)
+                var builder = new MySqlConnectionStringBuilder
                 {
-                    MultipleActiveResultSets = true
+                    Server = "localhost",
+                    Database = "Rainbow_Test_DB20180817",
+                    UserID = "SkyUser",
+                    Password = "Sky@4321",
+                    SslMode = MySqlSslMode.None,
+                    CharacterSet = "utf8mb4"
                 };
-                cs = scsb.ConnectionString;
+                return builder.ConnectionString;
             }
-            var connection = new SqlConnection(cs);
-            connection.Open();
-            return connection;
+        }
+
+        protected IDbConnection _connection;
+        protected IDbConnection connection => _connection ?? (_connection = GetOpenConnection());
+
+        public static IDbConnection GetOpenConnection(bool mars = false)
+        {
+            var conn = new MySqlConnection("Server=localhost; Database=Rainbow_Test_DB20180817; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;");
+            conn.Open();
+            return conn;
         }
 
         public SqlConnection GetClosedConnection()
@@ -47,22 +51,14 @@ namespace EasyDAL.Exchange.Tests
 
         protected static CultureInfo ActiveCulture
         {
-#if NETCOREAPP1_0
-            get { return CultureInfo.CurrentCulture; }
-            set { CultureInfo.CurrentCulture = value; }
-#else
             get { return Thread.CurrentThread.CurrentCulture; }
             set { Thread.CurrentThread.CurrentCulture = value; }
-#endif
         }
 
         static TestBase()
         {
             Console.WriteLine("Dapper: " + typeof(SqlMapper).AssemblyQualifiedName);
             Console.WriteLine("Using Connectionstring: {0}", ConnectionString);
-#if NETCOREAPP1_0
-            Console.WriteLine("CoreCLR (netcoreapp1.0)");
-#else
             Console.WriteLine(".NET: " + Environment.Version);
             Console.Write("Loading native assemblies for SQL types...");
             try
@@ -75,7 +71,6 @@ namespace EasyDAL.Exchange.Tests
                 Console.WriteLine("failed.");
                 Console.Error.WriteLine(ex.Message);
             }
-#endif
         }
 
         public void Dispose()
