@@ -36,30 +36,7 @@ namespace EasyDAL.Exchange.Tests
             Assert.Equal(k, (int)AnEnum.B);
         }
 
-        public static void TestDateTime(DbConnection connection)
-        {
-            DateTime? now = DateTime.UtcNow;
-            try { connection.Execute("DROP TABLE Persons"); } catch { /* don't care */ }
-            connection.Execute("CREATE TABLE Persons (id int not null, dob datetime null)");
-            connection.Execute("INSERT Persons (id, dob) values (@id, @dob)",
-                 new { id = 7, dob = (DateTime?)null });
-            connection.Execute("INSERT Persons (id, dob) values (@id, @dob)",
-                 new { id = 42, dob = now });
 
-            var row = connection.QueryFirstOrDefault<NullableDatePerson>(
-                "SELECT id, dob, dob as dob2 FROM Persons WHERE id=@id", new { id = 7 });
-            Assert.NotNull(row);
-            Assert.Equal(7, row.Id);
-            Assert.Null(row.DoB);
-            Assert.Null(row.DoB2);
-
-            row = connection.QueryFirstOrDefault<NullableDatePerson>(
-                "SELECT id, dob FROM Persons WHERE id=@id", new { id = 42 });
-            Assert.NotNull(row);
-            Assert.Equal(42, row.Id);
-            row.DoB.Equals(now);
-            row.DoB2.Equals(now);
-        }
 
         private class NullableDatePerson
         {

@@ -97,45 +97,9 @@ namespace EasyDAL.Exchange.Tests
             connection.Query<byte[]>("select cast(1 as varbinary(4))").First().SequenceEqual(new byte[] { 1 });
         }
 
-        [Fact]
-        public void TestSchemaChanged()
-        {
-            connection.Execute("create table #dog(Age int, Name nvarchar(max)) insert #dog values(1, 'Alf')");
-            try
-            {
-                var d = connection.Query<Dog>("select * from #dog").Single();
-                Assert.Equal("Alf", d.Name);
-                Assert.Equal(1, d.Age);
-                connection.Execute("alter table #dog drop column Name");
-                d = connection.Query<Dog>("select * from #dog").Single();
-                Assert.Null(d.Name);
-                Assert.Equal(1, d.Age);
-            }
-            finally
-            {
-                connection.Execute("drop table #dog");
-            }
-        }
 
-        [Fact]
-        public void TestSchemaChangedViaFirstOrDefault()
-        {
-            connection.Execute("create table #dog(Age int, Name nvarchar(max)) insert #dog values(1, 'Alf')");
-            try
-            {
-                var d = connection.QueryFirstOrDefault<Dog>("select * from #dog");
-                Assert.Equal("Alf", d.Name);
-                Assert.Equal(1, d.Age);
-                connection.Execute("alter table #dog drop column Name");
-                d = connection.QueryFirstOrDefault<Dog>("select * from #dog");
-                Assert.Null(d.Name);
-                Assert.Equal(1, d.Age);
-            }
-            finally
-            {
-                connection.Execute("drop table #dog");
-            }
-        }
+
+
 
         [Fact]
         public void Test_Single_First_Default()
@@ -218,35 +182,9 @@ namespace EasyDAL.Exchange.Tests
             );
         }
 
-        [Fact]
-        public void TestExecuteCommand()
-        {
-            Assert.Equal(2, connection.Execute(@"
-    set nocount on 
-    create table #t(i int) 
-    set nocount off 
-    insert #t 
-    select @a a union all select @b 
-    set nocount on 
-    drop table #t", new { a = 1, b = 2 }));
-        }
 
-        [Fact]
-        public void TestExecuteMultipleCommand()
-        {
-            connection.Execute("create table #t(i int)");
-            try
-            {
-                int tally = connection.Execute("insert #t (i) values(@a)", new[] { new { a = 1 }, new { a = 2 }, new { a = 3 }, new { a = 4 } });
-                int sum = connection.Query<int>("select sum(i) from #t").First();
-                Assert.Equal(4, tally);
-                Assert.Equal(10, sum);
-            }
-            finally
-            {
-                connection.Execute("drop table #t");
-            }
-        }
+
+
 
         private class Student
         {
@@ -254,36 +192,9 @@ namespace EasyDAL.Exchange.Tests
             public int Age { get; set; }
         }
 
-        [Fact]
-        public void TestExecuteMultipleCommandStrongType()
-        {
-            connection.Execute("create table #t(Name nvarchar(max), Age int)");
-            try
-            {
-                int tally = connection.Execute("insert #t (Name,Age) values(@Name, @Age)", new List<Student>
-            {
-                new Student{Age = 1, Name = "sam"},
-                new Student{Age = 2, Name = "bob"}
-            });
-                int sum = connection.Query<int>("select sum(Age) from #t").First();
-                Assert.Equal(2, tally);
-                Assert.Equal(3, sum);
-            }
-            finally
-            {
-                connection.Execute("drop table #t");
-            }
-        }
 
-        [Fact]
-        public void TestExecuteMultipleCommandObjectArray()
-        {
-            connection.Execute("create table #t(i int)");
-            int tally = connection.Execute("insert #t (i) values(@a)", new object[] { new { a = 1 }, new { a = 2 }, new { a = 3 }, new { a = 4 } });
-            int sum = connection.Query<int>("select sum(i) from #t drop table #t").First();
-            Assert.Equal(4, tally);
-            Assert.Equal(10, sum);
-        }
+
+
 
         private class TestObj
         {
@@ -651,25 +562,9 @@ select * from @bar", new { foo }).Single();
             public bool Active { get; set; }
         }
 
-        [Fact]
-        public void ExecuteFromClosed()
-        {
-            using (var conn = GetClosedConnection())
-            {
-                conn.Execute("-- nop");
-                Assert.Equal(ConnectionState.Closed, conn.State);
-            }
-        }
 
-        [Fact]
-        public void ExecuteInvalidFromClosed()
-        {
-            using (var conn = GetClosedConnection())
-            {
-                var ex = Assert.ThrowsAny<Exception>(() => conn.Execute("nop"));
-                Assert.Equal(ConnectionState.Closed, conn.State);
-            }
-        }
+
+
 
         [Fact]
         public void QueryFromClosed()
@@ -831,32 +726,7 @@ select * from @bar", new { foo }).Single();
             Assert.True(minutes >= 0.95 && minutes <= 1.05);
         }
         
-        [Fact]
-        public async void SO35470588_WrongValuePidValue()
-        {
-            // nuke, rebuild, and populate the table
-            try { connection.Execute("drop table TPTable"); } catch { /* don't care */ }
-            connection.Execute(@"
-create table TPTable (Pid int not null primary key identity(1,1), Value int not null);
-insert TPTable (Value) values (2), (568)");
 
-            // fetch the data using the query in the question, then force to a dictionary
-            var rows = (await connection.QueryAsync<TPTable>("select * from TPTable").ConfigureAwait(false))
-                .ToDictionary(x => x.Pid);
-
-            // check the number of rows
-            Assert.Equal(2, rows.Count);
-
-            // check row 1
-            var row = rows[1];
-            Assert.Equal(1, row.Pid);
-            Assert.Equal(2, row.Value);
-
-            // check row 2
-            row = rows[2];
-            Assert.Equal(2, row.Pid);
-            Assert.Equal(568, row.Value);
-        }
 
         public class TPTable
         {

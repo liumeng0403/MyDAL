@@ -549,25 +549,7 @@ SET @AddressPersonId = @PersonId", p).ConfigureAwait(false))
 
         private class AsyncFoo2 { public int Id { get; set; } }
 
-        [Fact]
-        public async Task TestSchemaChangedViaFirstOrDefaultAsync()
-        {
-            await connection.ExecuteAsync("create table #dog(Age int, Name nvarchar(max)) insert #dog values(1, 'Alf')").ConfigureAwait(false);
-            try
-            {
-                var d = await connection.QueryFirstOrDefaultAsync<Dog>("select * from #dog").ConfigureAwait(false);
-                Assert.Equal("Alf", d.Name);
-                Assert.Equal(1, d.Age);
-                connection.Execute("alter table #dog drop column Name");
-                d = await connection.QueryFirstOrDefaultAsync<Dog>("select * from #dog").ConfigureAwait(false);
-                Assert.Null(d.Name);
-                Assert.Equal(1, d.Age);
-            }
-            finally
-            {
-                await connection.ExecuteAsync("drop table #dog").ConfigureAwait(false);
-            }
-        }
+
 
 
 

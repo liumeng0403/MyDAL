@@ -344,25 +344,7 @@ namespace EasyDAL.Exchange.Tests
             Assert.Equal(new[] { "Sam", "Kyro" }, foo.Names);
         }
 
-        [Fact]
-        public void Issue253_TestIEnumerableTypeHandlerSetParameterValue()
-        {
-            SqlMapper.ResetTypeHandlers();
-            SqlMapper.AddTypeHandler(StringListTypeHandler.Default);
 
-            connection.Execute("CREATE TABLE #Issue253 (Names VARCHAR(50) NOT NULL);");
-            try
-            {
-                const string names = "Sam,Kyro";
-                List<string> names_list = names.Split(',').ToList();
-                var foo = connection.Query<string>("INSERT INTO #Issue253 (Names) VALUES (@Names); SELECT Names FROM #Issue253;", new { Names = names_list }).Single();
-                Assert.Equal(foo, names);
-            }
-            finally
-            {
-                connection.Execute("DROP TABLE #Issue253;");
-            }
-        }
 
         public class RecordingTypeHandler<T> : TypeHandler<T>
         {
@@ -382,67 +364,9 @@ namespace EasyDAL.Exchange.Tests
             public bool ParseWasCalled { get; set; }
         }
 
-        [Fact]
-        public void Test_RemoveTypeMap()
-        {
-            SqlMapper.ResetTypeHandlers();
-            SqlMapper.RemoveTypeMap(typeof(DateTime));
 
-            var dateTimeHandler = new RecordingTypeHandler<DateTime>();
-            SqlMapper.AddTypeHandler(dateTimeHandler);
 
-            connection.Execute("CREATE TABLE #Test_RemoveTypeMap (x datetime NOT NULL);");
-
-            try
-            {
-                connection.Execute("INSERT INTO #Test_RemoveTypeMap VALUES (@Now)", new { DateTime.Now });
-                connection.Query<DateTime>("SELECT * FROM #Test_RemoveTypeMap");
-
-                Assert.True(dateTimeHandler.ParseWasCalled);
-                Assert.True(dateTimeHandler.SetValueWasCalled);
-            }
-            finally
-            {
-                connection.Execute("DROP TABLE #Test_RemoveTypeMap");
-                SqlMapper.AddTypeMap(typeof(DateTime), DbType.DateTime); // or an option to reset type map?
-            }
-        }
-
-        [Fact]
-        public void TestReaderWhenResultsChange()
-        {
-            try
-            {
-                connection.Execute("create table #ResultsChange (X int);create table #ResultsChange2 (Y int);insert #ResultsChange (X) values(1);insert #ResultsChange2 (Y) values(1);");
-
-                var obj1 = connection.Query<ResultsChangeType>("select * from #ResultsChange").Single();
-                Assert.Equal(1, obj1.X);
-                Assert.Equal(0, obj1.Y);
-                Assert.Equal(0, obj1.Z);
-
-                var obj2 = connection.Query<ResultsChangeType>("select * from #ResultsChange rc inner join #ResultsChange2 rc2 on rc2.Y=rc.X").Single();
-                Assert.Equal(1, obj2.X);
-                Assert.Equal(1, obj2.Y);
-                Assert.Equal(0, obj2.Z);
-
-                connection.Execute("alter table #ResultsChange add Z int null");
-                connection.Execute("update #ResultsChange set Z = 2");
-
-                var obj3 = connection.Query<ResultsChangeType>("select * from #ResultsChange").Single();
-                Assert.Equal(1, obj3.X);
-                Assert.Equal(0, obj3.Y);
-                Assert.Equal(2, obj3.Z);
-
-                var obj4 = connection.Query<ResultsChangeType>("select * from #ResultsChange rc inner join #ResultsChange2 rc2 on rc2.Y=rc.X").Single();
-                Assert.Equal(1, obj4.X);
-                Assert.Equal(1, obj4.Y);
-                Assert.Equal(2, obj4.Z);
-            }
-            finally
-            {
-                connection.Execute("drop table #ResultsChange;drop table #ResultsChange2;");
-            }
-        }
+     
 
         private class ResultsChangeType
         {
@@ -523,34 +447,7 @@ namespace EasyDAL.Exchange.Tests
             Assert.True(delta.TotalMilliseconds >= -10 && delta.TotalMilliseconds <= 10);
         }
 
-        [Fact]
-        public void Issue461_TypeHandlerWorksInConstructor()
-        {
-            SqlMapper.AddTypeHandler(new Issue461_BlargHandler());
-
-            connection.Execute(@"CREATE TABLE #Issue461 (
-                                      Id                int not null IDENTITY(1,1),
-                                      SomeValue         nvarchar(50),
-                                      SomeBlargValue    nvarchar(200),
-                                    )");
-            const string Expected = "abc123def";
-            var blarg = new Blarg(Expected);
-            connection.Execute(
-                "INSERT INTO #Issue461 (SomeValue, SomeBlargValue) VALUES (@value, @blarg)",
-                new { value = "what up?", blarg });
-
-            // test: without constructor
-            var parameterlessWorks = connection.QuerySingle<Issue461_ParameterlessTypeConstructor>("SELECT * FROM #Issue461");
-            Assert.Equal(1, parameterlessWorks.Id);
-            Assert.Equal("what up?", parameterlessWorks.SomeValue);
-            Assert.Equal(parameterlessWorks.SomeBlargValue.Value, Expected);
-
-            // test: via constructor
-            var parameterDoesNot = connection.QuerySingle<Issue461_ParameterisedTypeConstructor>("SELECT * FROM #Issue461");
-            Assert.Equal(1, parameterDoesNot.Id);
-            Assert.Equal("what up?", parameterDoesNot.SomeValue);
-            Assert.Equal(parameterDoesNot.SomeBlargValue.Value, Expected);
-        }
+  
 
         // I would usually expect this to be a struct; using a class
         // so that we can't pass unexpectedly due to forcing an unsafe cast - want

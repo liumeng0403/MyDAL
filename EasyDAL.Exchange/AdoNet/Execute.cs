@@ -12,34 +12,6 @@ namespace EasyDAL.Exchange.AdoNet
     public static partial class SqlMapper
     {
 
-
-
-        /// <summary>
-        /// Execute parameterized SQL.
-        /// </summary>
-        /// <param name="cnn">The connection to query on.</param>
-        /// <param name="sql">The SQL to execute for this query.</param>
-        /// <param name="param">The parameters to use for this query.</param>
-        /// <param name="transaction">The transaction to use for this query.</param>
-        /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
-        /// <param name="commandType">Is it a stored proc or a batch?</param>
-        /// <returns>The number of rows affected.</returns>
-        public static int Execute(this IDbConnection cnn, string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null)
-        {
-            var command = new CommandDefinition(sql, param, transaction, commandTimeout, commandType, CommandFlags.Buffered);
-            return ExecuteImpl(cnn, ref command);
-        }
-
-        /// <summary>
-        /// Execute parameterized SQL.
-        /// </summary>
-        /// <param name="cnn">The connection to execute on.</param>
-        /// <param name="command">The command to execute on this connection.</param>
-        /// <returns>The number of rows affected.</returns>
-        public static int Execute(this IDbConnection cnn, CommandDefinition command) => ExecuteImpl(cnn, ref command);
-
-
-
         /// <summary>
         /// Execute a command asynchronously using .NET 4.5 Task.
         /// </summary>
