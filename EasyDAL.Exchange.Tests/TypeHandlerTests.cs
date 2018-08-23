@@ -34,25 +34,7 @@ namespace EasyDAL.Exchange.Tests
             SqlMapper.AddTypeMap(typeof(string), DbType.String);  // Restore Default to Unicode String
         }
 
-        [Fact]
-        public void TestChangingDefaultStringTypeMappingToAnsiStringFirstOrDefault()
-        {
-            const string sql = "SELECT SQL_VARIANT_PROPERTY(CONVERT(sql_variant, @testParam),'BaseType') AS BaseType";
-            var param = new { testParam = "TestString" };
-
-            var result01 = connection.QueryFirstOrDefault<string>(sql, param);
-            Assert.Equal("nvarchar", result01);
-
-            SqlMapper.PurgeQueryCache();
-
-            SqlMapper.AddTypeMap(typeof(string), DbType.AnsiString);   // Change Default String Handling to AnsiString
-            var result02 = connection.QueryFirstOrDefault<string>(sql, param);
-            Assert.Equal("varchar", result02);
-
-            SqlMapper.PurgeQueryCache();
-            SqlMapper.AddTypeMap(typeof(string), DbType.String);  // Restore Default to Unicode String
-        }
-
+ 
         [Fact]
         public void TestCustomTypeMap()
         {

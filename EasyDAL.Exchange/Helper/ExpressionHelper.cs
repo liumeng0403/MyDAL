@@ -10,9 +10,9 @@ using System.Text;
 
 namespace EasyDAL.Exchange.Helper
 {
-    public class ExpressionHelper: ClassInstance<ExpressionHelper>
+    public class ExpressionHelper : ClassInstance<ExpressionHelper>
     {
-        private static ConcurrentDictionary<string, ConcurrentDictionary<Int32, String>> Cache =new ConcurrentDictionary<string, ConcurrentDictionary<Int32, String>>();
+        private static ConcurrentDictionary<string, ConcurrentDictionary<Int32, String>> Cache = new ConcurrentDictionary<string, ConcurrentDictionary<Int32, String>>();
 
         private string GetFieldName(ParameterExpression parameter, MemberExpression leftBody)
         {
@@ -30,13 +30,30 @@ namespace EasyDAL.Exchange.Helper
                 });
             return field;
         }
-        private OptionEnum GetOption(BinaryExpression exprB)
+        private OptionEnum GetOption(BinaryExpression be)
         {
             var option = OptionEnum.None;
-            if (exprB.NodeType == ExpressionType.Equal)
+            if (be.NodeType == ExpressionType.Equal)
             {
                 option = OptionEnum.Equal;
             }
+            if (be.NodeType == ExpressionType.LessThan)
+            {
+                option = OptionEnum.LessThan;
+            }
+            if (be.NodeType == ExpressionType.LessThanOrEqual)
+            {
+                option = OptionEnum.LessThanOrEqual;
+            }
+            if (be.NodeType == ExpressionType.GreaterThan)
+            {
+                option = OptionEnum.GreaterThan;
+            }
+            if (be.NodeType == ExpressionType.GreaterThanOrEqual)
+            {
+                option = OptionEnum.GreaterThanOrEqual;
+            }
+
             return option;
         }
 
@@ -45,7 +62,7 @@ namespace EasyDAL.Exchange.Helper
         /// </summary>
         /// <typeparam name="T">Field</typeparam>
         /// <param name="func">lambda expression like t=>t.colname</param>
-        public String GetFieldName<M,T>(Expression<Func<M, T>> func)
+        public String GetFieldName<M, T>(Expression<Func<M, T>> func)
         {
             if (func == null || func.Parameters == null || func.Parameters.Count == 0)
             {
@@ -73,70 +90,89 @@ namespace EasyDAL.Exchange.Helper
         /// <param name="func">lambda expression like t=>t.colname==5</param>
         public DicModel<string, string, OptionEnum> GetFieldName<M>(Expression<Func<M, bool>> func)
         {
-            if (func == null || func.Parameters == null || func.Parameters.Count == 0)
-            {
-                throw new Exception("Lambda expression is invalid.");
-            }
-
             var parameter = func.Parameters[0];
-            if (parameter == null)
+            switch (func.Body.NodeType)
             {
-                throw new Exception($"Lambda expression[{func.ToString()}] is invalid.");
-            }
-
-            var exprB = func.Body as BinaryExpression;  // NodeType : Equal , LessThanOrEqual 
-            if (exprB != null)
-            {
-                var leftBody = exprB.Left as MemberExpression;
-                var value = exprB.Right as ConstantExpression;  // NodeType : Constant 
-                if (value == null)
-                {
-                    var rightExpr = exprB.Right as MethodCallExpression;    // NodeType : Call 
-                    if(rightExpr==null)  // NodeType : MemberAccess 
+                case ExpressionType.Equal:
+                case ExpressionType.LessThan:
+                case ExpressionType.LessThanOrEqual:
+                case ExpressionType.GreaterThan:
+                case ExpressionType.GreaterThanOrEqual:
+                    var bodyB = func.Body as BinaryExpression;
+                    var leftBody = bodyB.Left as MemberExpression;
+                    var conVal = default(ConstantExpression);
+                    var memVal = default(string);
+                    switch (bodyB.Right.NodeType)
                     {
-                        var memExpr = exprB.Right as MemberExpression;
-                        
-                        PropertyInfo outerProp = (PropertyInfo)memExpr.Member;
-                        MemberExpression innerMember = (MemberExpression)memExpr.Expression;
-                        FieldInfo innerField = (FieldInfo)innerMember.Member;
-                        ConstantExpression ce = (ConstantExpression)innerMember.Expression;
-                        object innerObj = ce.Value;
-                        object outerObj = innerField.GetValue(innerObj);
-                        string valuexxx = (string)outerProp.GetValue(outerObj, null);
-
-
-
+                        case ExpressionType.Constant:
+                            conVal = bodyB.Right as ConstantExpression;
+                            break;
+                        case ExpressionType.Call:
+                            var rightExpr = bodyB.Right as MethodCallExpression;
+                            conVal = rightExpr.Arguments[0] as ConstantExpression;
+                            break;
+                        case ExpressionType.MemberAccess:
+                            var memExpr = bodyB.Right as MemberExpression;
+                            PropertyInfo outerProp = memExpr.Member as PropertyInfo;
+                            if (outerProp == null)
+                            {
+                                var memMem = memExpr.Member as FieldInfo;
+                                var memCon = memExpr.Expression as ConstantExpression;
+                                object memObj = memCon.Value;
+                                memVal = memMem.GetValue(memObj).ToString();
+                            }
+                            else
+                            {
+                                if (memExpr.Expression == null)
+                                {
+                                    var type = memExpr.Type as Type;
+                                    var instance = Activator.CreateInstance(type);
+                                    memVal = outerProp.GetValue(instance,null).ToString();
+                                }
+                                else
+                                {
+                                    MemberExpression innerMember = (MemberExpression)memExpr.Expression;
+                                    var innerField = (FieldInfo)innerMember.Member;
+                                    ConstantExpression ce = (ConstantExpression)innerMember.Expression;
+                                    object innerObj = ce.Value;
+                                    object outerObj = innerField.GetValue(innerObj);
+                                    if (outerProp.PropertyType == typeof(DateTime))
+                                    {
+                                        memVal = outerProp.GetValue(outerObj, null).ToString();
+                                    }
+                                    else
+                                    {
+                                        memVal = outerProp.GetValue(outerObj, null).ToString();
+                                    }
+                                }
+                            }
+                            break;
+                            return null;
                     }
-                    value = rightExpr.Arguments[0] as ConstantExpression;
-                }
-
-                if (leftBody == null)
-                {
-                    throw new Exception($"Lambda expression[{func.ToString()}] is invalid.");
-                }
-                return new DicModel<string, string, OptionEnum>
-                {
-                    key = GetFieldName(parameter, leftBody),
-                    Value = (string)(value.Value),
-                    Other = GetOption(exprB)
-                };
-            }
-            else
-            {
-                var expr = func.Body as MethodCallExpression;   // NodeType : Call 
-                var exprStr = expr.ToString();
-                if (exprStr.Contains(".Contains("))
-                {
-                    var mem = expr.Object as MemberExpression;
                     return new DicModel<string, string, OptionEnum>
                     {
-                        key = GetFieldName(parameter, mem),
-                        Value = (string)((expr.Arguments[0] as ConstantExpression).Value),
-                        Other = OptionEnum.Like
+                        key = GetFieldName(parameter, leftBody),
+                        Value = conVal != null ? (string)(conVal.Value) : memVal,
+                        Other = GetOption(bodyB)
                     };
-                }
-                return null;
+                    break;
+                case ExpressionType.Call:
+                    var bodyMC = func.Body as MethodCallExpression;
+                    var exprStr = bodyMC.ToString();
+                    if (exprStr.Contains(".Contains("))
+                    {
+                        var mem = bodyMC.Object as MemberExpression;
+                        return new DicModel<string, string, OptionEnum>
+                        {
+                            key = GetFieldName(parameter, mem),
+                            Value = (string)((bodyMC.Arguments[0] as ConstantExpression).Value),
+                            Other = OptionEnum.Like
+                        };
+                    }
+                    return null;
+                    break;
             }
+            return null;
         }
     }
 }

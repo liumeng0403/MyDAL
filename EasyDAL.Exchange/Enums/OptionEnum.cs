@@ -12,11 +12,37 @@ namespace EasyDAL.Exchange.Enums
         /// </summary>
         [Description("<<<<<")]
         None,
+
         /// <summary>
         /// =
         /// </summary>
         [Description("=")]
         Equal,
+
+        /// <summary>
+        /// &lt;
+        /// </summary>
+        [Description("<")]
+        LessThan,
+
+        /// <summary>
+        /// &lt;=
+        /// </summary>
+        [Description("<=")]
+        LessThanOrEqual,
+
+        /// <summary>
+        /// &gt;
+        /// </summary>
+        [Description(">")]
+        GreaterThan,
+
+        /// <summary>
+        /// &gt;=
+        /// </summary>
+        [Description(">=")]
+        GreaterThanOrEqual,
+
         /// <summary>
         /// like
         /// </summary>

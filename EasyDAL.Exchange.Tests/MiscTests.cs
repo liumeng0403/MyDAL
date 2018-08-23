@@ -97,41 +97,7 @@ namespace EasyDAL.Exchange.Tests
             connection.Query<byte[]>("select cast(1 as varbinary(4))").First().SequenceEqual(new byte[] { 1 });
         }
 
-
-
-
-
-        [Fact]
-        public void Test_Single_First_Default()
-        {
-            var sql = "select 0 where 1 = 0;"; // no rows
-
-            var ex = Assert.Throws<InvalidOperationException>(() => connection.QueryFirst<int>(sql));
-            Assert.Equal("Sequence contains no elements", ex.Message);
-
-            ex = Assert.Throws<InvalidOperationException>(() => connection.QuerySingle<int>(sql));
-            Assert.Equal("Sequence contains no elements", ex.Message);
-
-            Assert.Equal(0, connection.QueryFirstOrDefault<int>(sql));
-            Assert.Equal(0, connection.QuerySingleOrDefault<int>(sql));
-
-            sql = "select 1;"; // one row
-            Assert.Equal(1, connection.QueryFirst<int>(sql));
-            Assert.Equal(1, connection.QuerySingle<int>(sql));
-            Assert.Equal(1, connection.QueryFirstOrDefault<int>(sql));
-            Assert.Equal(1, connection.QuerySingleOrDefault<int>(sql));
-
-            sql = "select 2 union select 3 order by 1;"; // two rows
-            Assert.Equal(2, connection.QueryFirst<int>(sql));
-
-            ex = Assert.Throws<InvalidOperationException>(() => connection.QuerySingle<int>(sql));
-            Assert.Equal("Sequence contains more than one element", ex.Message);
-
-            Assert.Equal(2, connection.QueryFirstOrDefault<int>(sql));
-
-            ex = Assert.Throws<InvalidOperationException>(() => connection.QuerySingleOrDefault<int>(sql));
-            Assert.Equal("Sequence contains more than one element", ex.Message);
-        }
+        
 
         [Fact]
         public void TestStrings()
@@ -353,15 +319,6 @@ select * from @bar", new { foo }).Single();
             }
         }
 
-
-
-        [Fact]
-        public void TestDapperSetsPrivates()
-        {
-            Assert.Equal(1, connection.Query<PrivateDan>("select 'one' ShadowInDB").First().Shadow);
-
-            Assert.Equal(1, connection.QueryFirstOrDefault<PrivateDan>("select 'one' ShadowInDB").Shadow);
-        }
 
         private class PrivateDan
         {

@@ -60,10 +60,14 @@ namespace EasyDAL.Exchange.Base
                 switch (item.Other)
                 {
                     case OptionEnum.Equal:
+                    case OptionEnum.LessThan:
+                    case OptionEnum.LessThanOrEqual:
+                    case OptionEnum.GreaterThan:
+                    case OptionEnum.GreaterThanOrEqual:
                         str.Add($" `{item.key}`{item.Other.ToEnumDesc<OptionEnum>()}@{item.key} ");
                         break;
                     case OptionEnum.Like:
-                        str.Add($" `{item.key}`{item.Other.ToEnumDesc<OptionEnum>()}'%{item.Value}%' ");
+                        str.Add($" `{item.key}`{item.Other.ToEnumDesc<OptionEnum>()}CONCAT('%',@{item.key},'%') ");
                         break;
                     default:
                         throw new Exception("请联系 https://www.cnblogs.com/Meng-NET/ 博主!");

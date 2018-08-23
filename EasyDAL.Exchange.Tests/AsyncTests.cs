@@ -318,13 +318,20 @@ namespace EasyDAL.Exchange.Tests
         [Fact]
         public async Task QueryFirstOrDefaultAsyncTest()
         {
+            var testH = new BodyFitRecord
+            {
+                CreatedOn = DateTime.Now.AddDays(-10)
+            };
+
+            var xx0 = "";
+
             //  == Guid
             var res = await Conn
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.Id==Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"))
                 .QueryFirstOrDefaultAsync();
 
-            var xx0 = "";
+            var xx1 = "";
 
             // == DateTime
             var res2 = await Conn
@@ -332,7 +339,7 @@ namespace EasyDAL.Exchange.Tests
                 .Where(it => it.CreatedOn == Convert.ToDateTime("2018-08-23 13:36:58.981016"))
                 .QueryFirstOrDefaultAsync();
 
-            var xx1 = "";
+            var xx2 = "";
 
             // == string
             var res3 = await Conn
@@ -340,7 +347,7 @@ namespace EasyDAL.Exchange.Tests
                 .Where(it => it.BodyMeasureProperty == "xxxx")
                 .QueryFirstOrDefaultAsync();
 
-            var xx2 = "";
+            var xx3 = "";
 
             // like string
             var res4 = await Conn
@@ -348,13 +355,31 @@ namespace EasyDAL.Exchange.Tests
                 .Where(it => it.BodyMeasureProperty.Contains("xx"))
                 .QueryFirstOrDefaultAsync();
 
-            var xx3 = "";
+            var xx4 = "";
+
+            // >= obj.DateTime
+            var res5 = await Conn
+                .Selecter<BodyFitRecord>()
+                .Where(it => it.CreatedOn >= testH.CreatedOn)
+                .QueryFirstOrDefaultAsync();
+
+            var xx5 = "";
+
+            var dt = DateTime.Now.AddDays(-10);
+            // >= variable(DateTime)
+            var res6 = await Conn
+                .Selecter<BodyFitRecord>()
+                .Where(it => it.CreatedOn >= dt)
+                .QueryFirstOrDefaultAsync();
+
+            var xx6 = "";
 
             // <= DateTime
-            var res5 = await Conn
+            var res7 = await Conn
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.CreatedOn <= DateTime.Now)
                 .QueryFirstOrDefaultAsync();
+
 
 
             var xx = "";
