@@ -294,6 +294,8 @@ namespace EasyDAL.Exchange.Tests
 
         /***************************************************************************************************************/
 
+        
+        // 创建一个新对象
         [Fact]
         public async Task CreateAsyncTest()
         {
@@ -305,12 +307,12 @@ namespace EasyDAL.Exchange.Tests
                 UserId = Guid.NewGuid(),
                 BodyMeasureProperty = "{xxx:yyy,mmm:nnn}"
             };
-            var res = await conn.Creater().CreateAsync(m);
+            var res = await conn.Creater<BodyFitRecord>().CreateAsync(m);
 
             var xx = "";
         }
 
-
+        // 修改一个已有对象
         [Fact]
         public async Task UpdateAsyncTest()
         {
@@ -331,6 +333,29 @@ namespace EasyDAL.Exchange.Tests
                 .Set(it => it.BodyMeasureProperty)
                 .Where(it=>it.Id)
                 .UpdateAsync(m);                
+
+            var xx = "";
+        }
+
+        // 删除一个已有对象
+        [Fact]
+        public async Task DeleteAsyncTest()
+        {
+            var conn = GetOpenConnection();
+            // 
+            //
+            var m = new BodyFitRecord
+            {
+                Id = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"),
+                CreatedOn = DateTime.Now,
+                UserId = Guid.NewGuid(),
+                BodyMeasureProperty = "{xxx:yyy,mmm:nnn,zzz:aaa}"
+            };
+
+            var res = await conn
+                .Deleter<BodyFitRecord>()
+                .Where(it => it.Id)
+                .DeleteAsync(m);
 
             var xx = "";
         }

@@ -16,6 +16,7 @@ namespace EasyDAL.Exchange.Base
             AH = AttributeHelper.Instance;
             GH = GenericHelper.Instance;
             EH = ExpressionHelper.Instance;
+            Conditions = new List<string>();
         }
 
     }

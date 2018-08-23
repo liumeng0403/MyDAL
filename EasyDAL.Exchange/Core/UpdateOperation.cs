@@ -18,12 +18,10 @@ namespace EasyDAL.Exchange.Core
         {
             Fields = new List<string>();
             Changes = new List<string>();
-            Conditions = new List<string>();
         }
 
         private List<string> Fields { get; set; }
         private List<string > Changes { get; set; }
-        private List<string > Conditions { get; set; }
 
         public UpdateOperation<M> Set<T>(Expression<Func<M,T>> func)
         {

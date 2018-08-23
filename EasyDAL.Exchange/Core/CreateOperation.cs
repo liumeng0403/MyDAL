@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace EasyDAL.Exchange.Core
 {
-    public class CreateOperation : DbOperation
+    public class CreateOperation<M> : DbOperation
     {
         public CreateOperation(IDbConnection conn)
             : base(conn)
@@ -19,7 +19,7 @@ namespace EasyDAL.Exchange.Core
         }
 
 
-        public async Task<int> CreateAsync<M>(M m)
+        public async Task<int> CreateAsync(M m)
         {
             TryGetTableName(m, out var tableName);
 

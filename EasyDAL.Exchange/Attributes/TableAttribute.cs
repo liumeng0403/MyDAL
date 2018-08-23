@@ -13,6 +13,6 @@ namespace EasyDAL.Exchange.Attributes
         /// 表名
         /// </summary>
         public string Name { get; set; }
-        
+
     }
 }

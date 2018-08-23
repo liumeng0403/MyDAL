@@ -10,15 +10,15 @@ namespace EasyDAL.Exchange
     public static class DbExtension
     {
 
-        public static CreateOperation Creater(this IDbConnection connection)
+        public static CreateOperation<M> Creater<M>(this IDbConnection connection)
         {
-            var operation = new CreateOperation(connection);
+            var operation = new CreateOperation<M>(connection);
             return operation;
         }
 
-        public static DeleteOperation Delete(this IDbConnection connection)
+        public static DeleteOperation<M> Deleter<M>(this IDbConnection connection)
         {
-            var operation = new DeleteOperation(connection);
+            var operation = new DeleteOperation<M>(connection);
             return operation;
         }
 
@@ -28,9 +28,9 @@ namespace EasyDAL.Exchange
             return operation;
         }
 
-        public static QueryOperation Query(this IDbConnection connection)
+        public static SelectOperation<M> Selecter<M>(this IDbConnection connection)
         {
-            var operation = new QueryOperation(connection);
+            var operation = new SelectOperation<M>(connection);
             return operation;
         }
 

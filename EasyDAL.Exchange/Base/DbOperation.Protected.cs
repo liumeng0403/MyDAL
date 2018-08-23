@@ -1,5 +1,4 @@
 ﻿using EasyDAL.Exchange.Attributes;
-using EasyDAL.Exchange.DynamicParameter;
 using EasyDAL.Exchange.Helper;
 using System;
 using System.Collections.Concurrent;
@@ -8,7 +7,6 @@ using System.Data;
 using System.Dynamic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace EasyDAL.Exchange.Base
 {
@@ -21,6 +19,8 @@ namespace EasyDAL.Exchange.Base
         protected GenericHelper GH { get; private set; }
 
         protected ExpressionHelper EH { get; private set; }
+        
+        protected List<string> Conditions { get;private set; }
 
         protected static readonly ConcurrentDictionary<Type, List<PropertyInfo>> ModelPropertiesCache = new ConcurrentDictionary<Type, List<PropertyInfo>>();
 
