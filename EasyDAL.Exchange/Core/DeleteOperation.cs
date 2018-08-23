@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Linq.Expressions;
 using System.Linq;
 using EasyDAL.Exchange.AdoNet;
+using EasyDAL.Exchange.Common;
+using EasyDAL.Exchange.Enums;
 
 namespace EasyDAL.Exchange.Core
 {
@@ -20,7 +22,12 @@ namespace EasyDAL.Exchange.Core
         public DeleteOperation<M> Where<T>(Expression<Func<M, T>> func)
         {
             var field = EH.GetFieldName(func);
-            Conditions.Add(field);
+            Conditions.Add(new DicModel<string, string, OptionEnum>
+            {
+                key=field,
+                Value=null,
+                Other= OptionEnum.None
+            });
             return this;
         }
 
@@ -33,7 +40,7 @@ namespace EasyDAL.Exchange.Core
             {
                 throw new Exception("没有设置任何删除条件!");
             }
-            var whereFields = " where " + string.Join(" and ", Conditions.Select(p => $"`{p}`=@{p}"));
+            var whereFields = " where " + string.Join(" and ", Conditions.Select(p => $"`{p.key}`=@{p.key}"));
             var sql = $" delete from `{tableName}`{whereFields} ; ";
 
             return await SqlMapper.ExecuteAsync(Conn, sql, m);

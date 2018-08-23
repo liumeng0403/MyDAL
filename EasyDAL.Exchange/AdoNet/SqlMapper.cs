@@ -714,7 +714,10 @@ namespace EasyDAL.Exchange.AdoNet
                     }
                     info.ParamReader = reader;
                 }
-                if (addToCache) SetQueryCache(identity, info);
+                if (addToCache)
+                {
+                    SetQueryCache(identity, info);
+                }
             }
             return info;
         }

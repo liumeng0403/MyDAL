@@ -492,7 +492,10 @@ namespace EasyDAL.Exchange.AdoNet
             }
             finally
             {
-                if (wasClosed) cnn.Close();
+                if (wasClosed)
+                {
+                    cnn.Close();
+                }
                 cmd?.Dispose();
             }
             return Parse<T>(result);

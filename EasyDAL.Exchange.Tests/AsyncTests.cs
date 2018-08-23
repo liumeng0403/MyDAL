@@ -17,9 +17,6 @@ namespace EasyDAL.Exchange.Tests
 {
     public class Tests : TestBase
     {
-        private SqlConnection _marsConnection;
-        //private SqlConnection MarsConnection => _marsConnection ?? (_marsConnection = GetOpenConnection(true));
-
         [Fact]
         public async Task TestBasicStringUsageAsync()
         {
@@ -34,18 +31,7 @@ namespace EasyDAL.Exchange.Tests
             var str = await connection.QueryFirstAsync<string>(new CommandDefinition("select 'abc' as [Value] union all select @txt", new { txt = "def" })).ConfigureAwait(false);
             Assert.Equal("abc", str);
         }
-
-
-
-        [Fact]
-        public async Task TestBasicStringUsageQueryFirstOrDefaultAsync()
-        {
-            var str = await connection.QueryFirstOrDefaultAsync<string>(new CommandDefinition("select null as [Value] union all select @txt", new { txt = "def" })).ConfigureAwait(false);
-            Assert.Null(str);
-        }
-
-
-
+        
         [Fact]
         public async Task TestBasicStringUsageQuerySingleAsyncDynamic()
         {
@@ -240,34 +226,7 @@ namespace EasyDAL.Exchange.Tests
             Assert.Equal(2, count);
         }
 
-
-
-        //[FactLongRunning]
-        //public void RunSequentialVersusParallelSync()
-        //{
-        //    var ids = Enumerable.Range(1, 20000).Select(id => new { id }).ToArray();
-        //    MarsConnection.Execute(new CommandDefinition("select @id", ids.Take(5), flags: CommandFlags.None));
-
-        //    var watch = Stopwatch.StartNew();
-        //    MarsConnection.Execute(new CommandDefinition("select @id", ids, flags: CommandFlags.None));
-        //    watch.Stop();
-        //    Console.WriteLine("No pipeline: {0}ms", watch.ElapsedMilliseconds);
-
-        //    watch = Stopwatch.StartNew();
-        //    MarsConnection.Execute(new CommandDefinition("select @id", ids, flags: CommandFlags.Pipelined));
-        //    watch.Stop();
-        //    Console.WriteLine("Pipeline: {0}ms", watch.ElapsedMilliseconds);
-        //}
-
-        [Collection(NonParallelDefinition.Name)]
-        public class AsyncQueryCacheTests : TestBase
-        {
-            private SqlConnection _marsConnection;
-            //private SqlConnection MarsConnection => _marsConnection ?? (_marsConnection = GetOpenConnection(true));
-
-
-        }
-
+        
         private class BasicType
         {
             public string Value { get; set; }
@@ -299,7 +258,6 @@ namespace EasyDAL.Exchange.Tests
         [Fact]
         public async Task CreateAsyncTest()
         {
-            var conn = GetOpenConnection();
             var m = new BodyFitRecord
             {
                 Id = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"),
@@ -307,7 +265,7 @@ namespace EasyDAL.Exchange.Tests
                 UserId = Guid.NewGuid(),
                 BodyMeasureProperty = "{xxx:yyy,mmm:nnn}"
             };
-            var res = await conn.Creater<BodyFitRecord>().CreateAsync(m);
+            var res = await Conn.Creater<BodyFitRecord>().CreateAsync(m);
 
             var xx = "";
         }
@@ -316,8 +274,6 @@ namespace EasyDAL.Exchange.Tests
         [Fact]
         public async Task UpdateAsyncTest()
         {
-            var conn = GetOpenConnection();
-            // 
             //
             var m = new BodyFitRecord
             {
@@ -327,7 +283,7 @@ namespace EasyDAL.Exchange.Tests
                 BodyMeasureProperty = "{xxx:yyy,mmm:nnn,zzz:aaa}"
             };
 
-            var res = await conn
+            var res = await Conn
                 .Updater<BodyFitRecord>()
                 .Set(it => it.CreatedOn)
                 .Set(it => it.BodyMeasureProperty)
@@ -341,8 +297,6 @@ namespace EasyDAL.Exchange.Tests
         [Fact]
         public async Task DeleteAsyncTest()
         {
-            var conn = GetOpenConnection();
-            // 
             //
             var m = new BodyFitRecord
             {
@@ -352,10 +306,56 @@ namespace EasyDAL.Exchange.Tests
                 BodyMeasureProperty = "{xxx:yyy,mmm:nnn,zzz:aaa}"
             };
 
-            var res = await conn
+            var res = await Conn
                 .Deleter<BodyFitRecord>()
                 .Where(it => it.Id)
                 .DeleteAsync(m);
+
+            var xx = "";
+        }
+
+        // 查询一个已存在对象 单条件
+        [Fact]
+        public async Task QueryFirstOrDefaultAsyncTest()
+        {
+            //  == Guid
+            var res = await Conn
+                .Selecter<BodyFitRecord>()
+                .Where(it => it.Id==Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"))
+                .QueryFirstOrDefaultAsync();
+
+            var xx0 = "";
+
+            // == DateTime
+            var res2 = await Conn
+                .Selecter<BodyFitRecord>()
+                .Where(it => it.CreatedOn == Convert.ToDateTime("2018-08-23 13:36:58.981016"))
+                .QueryFirstOrDefaultAsync();
+
+            var xx1 = "";
+
+            // == string
+            var res3 = await Conn
+                .Selecter<BodyFitRecord>()
+                .Where(it => it.BodyMeasureProperty == "xxxx")
+                .QueryFirstOrDefaultAsync();
+
+            var xx2 = "";
+
+            // like string
+            var res4 = await Conn
+                .Selecter<BodyFitRecord>()
+                .Where(it => it.BodyMeasureProperty.Contains("xx"))
+                .QueryFirstOrDefaultAsync();
+
+            var xx3 = "";
+
+            // <= DateTime
+            var res5 = await Conn
+                .Selecter<BodyFitRecord>()
+                .Where(it => it.CreatedOn <= DateTime.Now)
+                .QueryFirstOrDefaultAsync();
+
 
             var xx = "";
         }

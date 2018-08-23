@@ -1,7 +1,10 @@
-﻿using EasyDAL.Exchange.Helper;
+﻿using EasyDAL.Exchange.Common;
+using EasyDAL.Exchange.Enums;
+using EasyDAL.Exchange.Helper;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace EasyDAL.Exchange.Base
@@ -16,7 +19,7 @@ namespace EasyDAL.Exchange.Base
             AH = AttributeHelper.Instance;
             GH = GenericHelper.Instance;
             EH = ExpressionHelper.Instance;
-            Conditions = new List<string>();
+            Conditions = new List<DicModel<string, string, OptionEnum>>();
         }
 
     }

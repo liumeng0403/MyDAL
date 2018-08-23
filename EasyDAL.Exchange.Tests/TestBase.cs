@@ -35,6 +35,7 @@ namespace EasyDAL.Exchange.Tests
         protected IDbConnection _connection;
         protected IDbConnection connection => _connection ?? (_connection = GetOpenConnection());
 
+        protected IDbConnection Conn = GetOpenConnection();
         public static IDbConnection GetOpenConnection(bool mars = false)
         {
             var conn = new MySqlConnection("Server=localhost; Database=Rainbow_Test_DB20180817; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;");

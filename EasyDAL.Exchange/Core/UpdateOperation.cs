@@ -1,6 +1,7 @@
 ﻿using EasyDAL.Exchange.AdoNet;
 using EasyDAL.Exchange.Base;
 using EasyDAL.Exchange.Common;
+using EasyDAL.Exchange.Enums;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -33,7 +34,12 @@ namespace EasyDAL.Exchange.Core
         public UpdateOperation<M> Where<T>(Expression<Func<M,T>> func)
         {
             var field = EH.GetFieldName(func);
-            Conditions.Add(field);
+            Conditions.Add(new DicModel<string, string, OptionEnum>
+            {
+                key = field,
+                Value = null,
+                Other =  OptionEnum.None
+            });
             return this;
         }
 
@@ -51,7 +57,7 @@ namespace EasyDAL.Exchange.Core
             }
 
             var updateFields = string.Join(",", Fields.Select(p => $"`{p}`=@{p}"));
-            var whereFields = " where " + string.Join(" and ", Conditions.Select(p => $"`{p}`=@{p}"));
+            var whereFields = " where " + string.Join(" and ", Conditions.Select(p => $"`{p.key}`=@{p.key}"));
 
 
             var sql = $" update `{tableName}` set {updateFields}{whereFields} ;";
