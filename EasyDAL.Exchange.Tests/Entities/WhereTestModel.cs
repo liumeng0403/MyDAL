@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EasyDAL.Exchange.Tests.Enums;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -13,5 +14,9 @@ namespace EasyDAL.Exchange.Tests.Entities
 
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
+
+        public AgentLevel AgentLevel { get; set; }
+
+        public string ContainStr { get; set; }
     }
 }

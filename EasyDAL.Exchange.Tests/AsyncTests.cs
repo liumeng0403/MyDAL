@@ -23,11 +23,12 @@ namespace EasyDAL.Exchange.Tests
         {
             CreatedOn = DateTime.Now.AddDays(-10),
             StartTime = DateTime.Now.AddDays(-10),
-            EndTime = DateTime.Now
+            EndTime = DateTime.Now,
+            AgentLevel = AgentLevel.DistiAgent,
+            ContainStr = "~00-d-3-1-"
         };
 
         
-
         [Fact]
         public async Task TestExecuteAsync()
         {
@@ -76,7 +77,9 @@ namespace EasyDAL.Exchange.Tests
                 UserId = Guid.NewGuid(),
                 BodyMeasureProperty = "{xxx:yyy,mmm:nnn}"
             };
-            var res = await Conn.Creater<BodyFitRecord>().CreateAsync(m);
+            var res = await Conn
+                .Creater<BodyFitRecord>()
+                .CreateAsync(m);
 
             var xx = "";
         }
@@ -101,7 +104,7 @@ namespace EasyDAL.Exchange.Tests
                 .Updater<BodyFitRecord>()
                 .Set(it => it.CreatedOn==m.CreatedOn)
                 .Set(it => it.BodyMeasureProperty==m.BodyMeasureProperty)
-                .Where(it=>it.Id==m.Id)
+                .Where(it=>it.Id==m.Id)                
                 .UpdateAsync();                
 
             var xx = "";
@@ -219,7 +222,21 @@ namespace EasyDAL.Exchange.Tests
             var xx = "";
         }
 
+        // 查询一个已存在对象 多条件
+        [Fact]
+        public async Task QueryFirstOrDefaultAsyncTest2()
+        {
+            var xx0 = "";
 
+            // where and
+            var res1 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.CreatedOn >= testH.StartTime)
+                .And(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
+                .QueryFirstOrDefaultAsync();
+
+            var xx = "";
+        }
 
         // 查询多个已存在对象 单条件
         [Fact]
@@ -227,10 +244,20 @@ namespace EasyDAL.Exchange.Tests
         {
             var xx0 = "";
 
-            var res = await Conn
+            var res1 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= testH.StartTime)
                 .QueryListAsync();
+
+            if (false)   // 枚举情况 bug 
+            {
+                var xx1 = "";
+
+                var res2 = await Conn
+                    .Selecter<Agent>()
+                    .Where(it => it.AgentLevel == testH.AgentLevel)
+                    .QueryListAsync();
+            }
 
             var xx = "";
         }
@@ -251,6 +278,38 @@ namespace EasyDAL.Exchange.Tests
             var xx = "";
         }
 
+
+        // 分页查询 多条件
+        [Fact]
+        public async Task QueryPagingListAsyncTest2()
+        {
+            if (false)  //  有 bug 
+            {
+                var xx0 = "";
+
+                // where and like 
+                var res1 = await Conn
+                    .Selecter<Agent>()
+                    .Where(it => it.CreatedOn >= testH.StartTime)
+                    .And(it => it.PathId.Contains(testH.ContainStr))
+                    .SetPageIndex(1)
+                    .SetPageSize(10)
+                    .QueryPagingListAsync();
+            }
+
+            var xx1 = "";
+
+            // where and like 
+            var res2 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.CreatedOn >= testH.StartTime)
+                .And(it => it.PathId.Contains("~00-d-3-1-"))
+                .SetPageIndex(1)
+                .SetPageSize(10)
+                .QueryPagingListAsync();
+
+            var xx = "";
+        }
 
         /****************************************************************************/
 
