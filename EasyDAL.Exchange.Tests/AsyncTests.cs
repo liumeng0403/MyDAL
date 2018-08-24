@@ -24,11 +24,11 @@ namespace EasyDAL.Exchange.Tests
             CreatedOn = DateTime.Now.AddDays(-10),
             StartTime = DateTime.Now.AddDays(-10),
             EndTime = DateTime.Now,
-            AgentLevel = AgentLevel.DistiAgent,
+            AgentLevelXX = AgentLevel.DistiAgent,
             ContainStr = "~00-d-3-1-"
         };
 
-        
+
         [Fact]
         public async Task TestExecuteAsync()
         {
@@ -43,7 +43,7 @@ namespace EasyDAL.Exchange.Tests
             var val = query.Result;
             Assert.Equal(1, val);
         }
-        
+
         [Fact]
         public async Task Issue22_ExecuteScalarAsync()
         {
@@ -65,7 +65,7 @@ namespace EasyDAL.Exchange.Tests
 
         /***************************************************************************************************************/
 
-        
+
         // 创建一个新对象
         [Fact]
         public async Task CreateAsyncTest()
@@ -102,10 +102,10 @@ namespace EasyDAL.Exchange.Tests
             // where
             var res1 = await Conn
                 .Updater<BodyFitRecord>()
-                .Set(it => it.CreatedOn==m.CreatedOn)
-                .Set(it => it.BodyMeasureProperty==m.BodyMeasureProperty)
-                .Where(it=>it.Id==m.Id)                
-                .UpdateAsync();                
+                .Set(it => it.CreatedOn == m.CreatedOn)
+                .Set(it => it.BodyMeasureProperty == m.BodyMeasureProperty)
+                .Where(it => it.Id == m.Id)
+                .UpdateAsync();
 
             var xx = "";
         }
@@ -120,7 +120,7 @@ namespace EasyDAL.Exchange.Tests
             var Id = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e");
             var res1 = await Conn
                 .Deleter<BodyFitRecord>()
-                .Where(it => it.Id==Id)
+                .Where(it => it.Id == Id)
                 .DeleteAsync();
 
             var xx1 = "";
@@ -165,7 +165,7 @@ namespace EasyDAL.Exchange.Tests
             //  == Guid
             var res = await Conn
                 .Selecter<BodyFitRecord>()
-                .Where(it => it.Id==Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"))
+                .Where(it => it.Id == Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"))
                 .QueryFirstOrDefaultAsync();
 
             var xx1 = "";
@@ -242,22 +242,29 @@ namespace EasyDAL.Exchange.Tests
         [Fact]
         public async Task QueryListAsyncTest()
         {
+            var testQ = new WhereTestModel
+            {
+                CreatedOn = DateTime.Now.AddDays(-10),
+                StartTime = DateTime.Now.AddDays(-10),
+                EndTime = DateTime.Now,
+                AgentLevelXX = AgentLevel.DistiAgent,
+                ContainStr = "~00-d-3-1-"
+            };
+
             var xx0 = "";
 
             var res1 = await Conn
                 .Selecter<Agent>()
-                .Where(it => it.CreatedOn >= testH.StartTime)
+                .Where(it => it.CreatedOn >= testQ.StartTime)
                 .QueryListAsync();
 
-            if (false)   // 枚举情况 bug 
-            {
-                var xx1 = "";
+            var xx1 = "";
 
-                var res2 = await Conn
-                    .Selecter<Agent>()
-                    .Where(it => it.AgentLevel == testH.AgentLevel)
-                    .QueryListAsync();
-            }
+            // 枚举情况 bug  已解决
+            var res2 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.AgentLevel == testQ.AgentLevelXX)
+                .QueryListAsync();
 
             var xx = "";
         }
@@ -283,7 +290,16 @@ namespace EasyDAL.Exchange.Tests
         [Fact]
         public async Task QueryPagingListAsyncTest2()
         {
-            if (false)  //  有 bug 
+            var testQ = new WhereTestModel
+            {
+                CreatedOn = DateTime.Now.AddDays(-10),
+                StartTime = DateTime.Now.AddDays(-10),
+                EndTime = DateTime.Now,
+                AgentLevelXX = AgentLevel.DistiAgent,
+                ContainStr = "~00-d-3-1-"
+            };
+
+            if (true)  //  有 bug 
             {
                 var xx0 = "";
 
@@ -371,6 +387,6 @@ select 42", p).ConfigureAwait(false));
             Assert.Equal(42, result);
         }
 
-        
+
     }
 }

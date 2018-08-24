@@ -15,7 +15,7 @@ namespace EasyDAL.Exchange.Tests.Entities
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
 
-        public AgentLevel AgentLevel { get; set; }
+        public AgentLevel AgentLevelXX { get; set; }
 
         public string ContainStr { get; set; }
     }
