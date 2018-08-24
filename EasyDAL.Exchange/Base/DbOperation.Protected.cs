@@ -11,6 +11,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using EasyDAL.Exchange.Extensions;
+using EasyDAL.Exchange.DynamicParameter;
 
 namespace EasyDAL.Exchange.Base
 {
@@ -99,6 +100,16 @@ namespace EasyDAL.Exchange.Base
 
             return true;
 
+        }
+
+        protected DynamicParameters GetParameters()
+        {
+            var paras = new DynamicParameters();
+            foreach (var item in Conditions)
+            {
+                paras.Add(item.key, item.Value);
+            }
+            return paras;
         }
     }
 }

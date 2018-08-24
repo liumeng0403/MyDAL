@@ -14,8 +14,7 @@ namespace EasyDAL.Exchange.AdoNet
 {
     public static partial class SqlMapper
     {
-        
-
+                
         /// <summary>
         /// Execute a query asynchronously using .NET 4.5 Task.
         /// </summary>
@@ -30,8 +29,8 @@ namespace EasyDAL.Exchange.AdoNet
         /// A sequence of data of <typeparamref name="T"/>; if a basic type (int, string, etc) is queried then the data from the first column in assumed, otherwise an instance is
         /// created per row, and a direct column-name===member-name mapping is assumed (case insensitive).
         /// </returns>
-        public static Task<IEnumerable<T>> QueryAsync<T>(this IDbConnection cnn, string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null) =>
-            QueryAsync<T>(cnn, typeof(T), new CommandDefinition(sql, param, transaction, commandTimeout, commandType, CommandFlags.Buffered, default(CancellationToken)));
+        internal static Task<IEnumerable<T>> QueryAsync<T>(IDbConnection cnn, string sql, object param = null) =>
+            QueryAsync<T>(cnn, typeof(T), new CommandDefinition(sql, param, null, null, null, CommandFlags.Buffered, default(CancellationToken)));
 
 
         /// <summary>

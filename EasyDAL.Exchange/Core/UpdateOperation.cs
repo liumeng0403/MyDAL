@@ -26,14 +26,14 @@ namespace EasyDAL.Exchange.Core
 
         public UpdateOperation<M> Set<T>(Expression<Func<M,T>> func)
         {
-            var field = EH.GetFieldName(func);
+            var field = EH.ExpressionHandle(func);
             Fields.Add(field);
             return this;
         }
 
         public UpdateOperation<M> Where<T>(Expression<Func<M,T>> func)
         {
-            var field = EH.GetFieldName(func);
+            var field = EH.ExpressionHandle(func);
             Conditions.Add(new DicModel<string, string, OptionEnum>
             {
                 key = field,

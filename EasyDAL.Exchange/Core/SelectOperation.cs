@@ -21,7 +21,7 @@ namespace EasyDAL.Exchange.Core
 
         public SelectOperation<M> Where(Expression<Func<M, bool>> func)
         {
-            var field = EH.GetFieldName(func);
+            var field = EH.ExpressionHandle(func);
             Conditions.Add(field);
             return this;
         }
@@ -37,13 +37,25 @@ namespace EasyDAL.Exchange.Core
 
             var wherePart = string.Join(" and ", GetWheres());
             var sql = $"SELECT * FROM `{tableName}` WHERE {wherePart} ; ";
-            var paras = new DynamicParameters();
-            foreach (var item in Conditions)
-            {
-                paras.Add(item.key, item.Value);
-            }
+            var paras = GetParameters();
 
             return await SqlMapper.QueryFirstOrDefaultAsync<M>(Conn, sql, paras);
+        }
+
+        public async Task<List<M>> QueryListAsync()
+        {
+            TryGetTableName<M>(out var tableName);
+
+            if(!Conditions.Any())
+            {
+                throw new Exception("没有设置任何查询条件!");
+            }
+
+            var wherePart = string.Join(" and ", GetWheres());
+            var sql = $"SELECT * FROM `{tableName}` WHERE {wherePart} ; ";
+            var paras = GetParameters();
+
+            return (await SqlMapper.QueryAsync<M>(Conn, sql, paras)).ToList();
         }
 
     }

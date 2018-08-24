@@ -30,6 +30,45 @@ namespace EasyDAL.Exchange.Helper
                 });
             return field;
         }
+        private string HandMemberVal(BinaryExpression bodyB)
+        {
+            var result = default(string);
+            var memExpr = bodyB.Right as MemberExpression;
+            PropertyInfo outerProp = memExpr.Member as PropertyInfo;
+            if (outerProp == null)
+            {
+                var memMem = memExpr.Member as FieldInfo;
+                var memCon = memExpr.Expression as ConstantExpression;
+                object memObj = memCon.Value;
+                result = memMem.GetValue(memObj).ToString();
+            }
+            else
+            {
+                if (memExpr.Expression == null)
+                {
+                    var type = memExpr.Type as Type;
+                    var instance = Activator.CreateInstance(type);
+                    result = outerProp.GetValue(instance, null).ToString();
+                }
+                else
+                {
+                    MemberExpression innerMember = (MemberExpression)memExpr.Expression;
+                    var innerField = (FieldInfo)innerMember.Member;
+                    ConstantExpression ce = (ConstantExpression)innerMember.Expression;
+                    object innerObj = ce.Value;
+                    object outerObj = innerField.GetValue(innerObj);
+                    if (outerProp.PropertyType == typeof(DateTime))
+                    {
+                        result = outerProp.GetValue(outerObj, null).ToString();
+                    }
+                    else
+                    {
+                        result = outerProp.GetValue(outerObj, null).ToString();
+                    }
+                }
+            }
+            return result;
+        }
         private OptionEnum GetOption(BinaryExpression be)
         {
             var option = OptionEnum.None;
@@ -62,7 +101,7 @@ namespace EasyDAL.Exchange.Helper
         /// </summary>
         /// <typeparam name="T">Field</typeparam>
         /// <param name="func">lambda expression like t=>t.colname</param>
-        public String GetFieldName<M, T>(Expression<Func<M, T>> func)
+        public String ExpressionHandle<M, T>(Expression<Func<M, T>> func)
         {
             if (func == null || func.Parameters == null || func.Parameters.Count == 0)
             {
@@ -88,8 +127,9 @@ namespace EasyDAL.Exchange.Helper
         /// Get the field name in table according to the name property in ColumnAttibute
         /// </summary>
         /// <param name="func">lambda expression like t=>t.colname==5</param>
-        public DicModel<string, string, OptionEnum> GetFieldName<M>(Expression<Func<M, bool>> func)
+        public DicModel<string, string, OptionEnum> ExpressionHandle<M>(Expression<Func<M, bool>> func)
         {
+            var result = default(DicModel<string, string, OptionEnum>);
             var parameter = func.Parameters[0];
             switch (func.Body.NodeType)
             {
@@ -112,44 +152,10 @@ namespace EasyDAL.Exchange.Helper
                             conVal = rightExpr.Arguments[0] as ConstantExpression;
                             break;
                         case ExpressionType.MemberAccess:
-                            var memExpr = bodyB.Right as MemberExpression;
-                            PropertyInfo outerProp = memExpr.Member as PropertyInfo;
-                            if (outerProp == null)
-                            {
-                                var memMem = memExpr.Member as FieldInfo;
-                                var memCon = memExpr.Expression as ConstantExpression;
-                                object memObj = memCon.Value;
-                                memVal = memMem.GetValue(memObj).ToString();
-                            }
-                            else
-                            {
-                                if (memExpr.Expression == null)
-                                {
-                                    var type = memExpr.Type as Type;
-                                    var instance = Activator.CreateInstance(type);
-                                    memVal = outerProp.GetValue(instance,null).ToString();
-                                }
-                                else
-                                {
-                                    MemberExpression innerMember = (MemberExpression)memExpr.Expression;
-                                    var innerField = (FieldInfo)innerMember.Member;
-                                    ConstantExpression ce = (ConstantExpression)innerMember.Expression;
-                                    object innerObj = ce.Value;
-                                    object outerObj = innerField.GetValue(innerObj);
-                                    if (outerProp.PropertyType == typeof(DateTime))
-                                    {
-                                        memVal = outerProp.GetValue(outerObj, null).ToString();
-                                    }
-                                    else
-                                    {
-                                        memVal = outerProp.GetValue(outerObj, null).ToString();
-                                    }
-                                }
-                            }
+                            memVal = HandMemberVal(bodyB);
                             break;
-                            return null;
                     }
-                    return new DicModel<string, string, OptionEnum>
+                    result = new DicModel<string, string, OptionEnum>
                     {
                         key = GetFieldName(parameter, leftBody),
                         Value = conVal != null ? (string)(conVal.Value) : memVal,
@@ -162,17 +168,24 @@ namespace EasyDAL.Exchange.Helper
                     if (exprStr.Contains(".Contains("))
                     {
                         var mem = bodyMC.Object as MemberExpression;
-                        return new DicModel<string, string, OptionEnum>
+                        result = new DicModel<string, string, OptionEnum>
                         {
                             key = GetFieldName(parameter, mem),
                             Value = (string)((bodyMC.Arguments[0] as ConstantExpression).Value),
                             Other = OptionEnum.Like
                         };
                     }
-                    return null;
+                    result = null;
                     break;
             }
-            return null;
+            if (result == null)
+            {
+                throw new Exception($"不支持的表达式:[{func.ToString()}]");
+            }
+            else
+            {
+                return result;
+            }
         }
     }
 }

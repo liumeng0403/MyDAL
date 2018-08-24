@@ -17,16 +17,15 @@ namespace EasyDAL.Exchange.Tests
 {
     public class Tests : TestBase
     {
-        [Fact]
-        public async Task TestBasicStringUsageAsync()
+
+        private WhereTestModel testH = new WhereTestModel
         {
-            var query = await connection.QueryAsync<string>("select 'abc' as [Value] union all select @txt", new { txt = "def" }).ConfigureAwait(false);
-            var arr = query.ToArray();
-            Assert.Equal(new[] { "abc", "def" }, arr);
-        }
+            CreatedOn = DateTime.Now.AddDays(-10),
+            StartTime = DateTime.Now.AddDays(-10),
+            EndTime = DateTime.Now
+        };
 
 
-        
         [Fact]
         public async Task TestBasicStringUsageQuerySingleAsyncDynamic()
         {
@@ -42,28 +41,7 @@ namespace EasyDAL.Exchange.Tests
             Assert.Null(str);
         }
 
-
-
-
-
-
-        [Fact]
-        public async Task TestBasicStringUsageClosedAsync()
-        {
-            var query = await connection.QueryAsync<string>("select 'abc' as [Value] union all select @txt", new { txt = "def" }).ConfigureAwait(false);
-            var arr = query.ToArray();
-            Assert.Equal(new[] { "abc", "def" }, arr);
-        }
-
-
-
-        [Fact]
-        public async Task TestClassWithStringUsageAsync()
-        {
-            var query = await connection.QueryAsync<BasicType>("select 'abc' as [Value] union all select @txt", new { txt = "def" }).ConfigureAwait(false);
-            var arr = query.ToArray();
-            Assert.Equal(new[] { "abc", "def" }, arr.Select(x => x.Value));
-        }
+        
 
         [Fact]
         public async Task TestExecuteAsync()
@@ -126,83 +104,8 @@ namespace EasyDAL.Exchange.Tests
             }
         }
 
-
-
-        [Fact]
-        public async Task LiteralReplacementOpen()
-        {
-            await LiteralReplacement(connection).ConfigureAwait(false);
-        }
-
-        [Fact]
-        public async Task LiteralReplacementClosed()
-        {
-            using (var conn = GetClosedConnection()) await LiteralReplacement(conn).ConfigureAwait(false);
-        }
-
-        private async Task LiteralReplacement(IDbConnection conn)
-        {
-            try
-            {
-                await conn.ExecuteAsync("drop table literal1").ConfigureAwait(false);
-            }
-            catch { /* don't care */ }
-            await conn.ExecuteAsync("create table literal1 (id int not null, foo int not null)").ConfigureAwait(false);
-            await conn.ExecuteAsync("insert literal1 (id,foo) values ({=id}, @foo)", new { id = 123, foo = 456 }).ConfigureAwait(false);
-            var rows = new[] { new { id = 1, foo = 2 }, new { id = 3, foo = 4 } };
-            await conn.ExecuteAsync("insert literal1 (id,foo) values ({=id}, @foo)", rows).ConfigureAwait(false);
-            var count = (await conn.QueryAsync<int>("select count(1) from literal1 where id={=foo}", new { foo = 123 }).ConfigureAwait(false)).Single();
-            Assert.Equal(1, count);
-            int sum = (await conn.QueryAsync<int>("select sum(id) + sum(foo) from literal1").ConfigureAwait(false)).Single();
-            Assert.Equal(sum, 123 + 456 + 1 + 2 + 3 + 4);
-        }
-
-        [Fact]
-        public async Task LiteralReplacementDynamicOpen()
-        {
-            await LiteralReplacementDynamic(connection).ConfigureAwait(false);
-        }
-
-        [Fact]
-        public async Task LiteralReplacementDynamicClosed()
-        {
-            using (var conn = GetClosedConnection()) await LiteralReplacementDynamic(conn).ConfigureAwait(false);
-        }
-
-        private async Task LiteralReplacementDynamic(IDbConnection conn)
-        {
-            var args = new DynamicParameters();
-            args.Add("id", 123);
-            try { await conn.ExecuteAsync("drop table literal2").ConfigureAwait(false); }
-            catch { /* don't care */ }
-            await conn.ExecuteAsync("create table literal2 (id int not null)").ConfigureAwait(false);
-            await conn.ExecuteAsync("insert literal2 (id) values ({=id})", args).ConfigureAwait(false);
-
-            args = new DynamicParameters();
-            args.Add("foo", 123);
-            var count = (await conn.QueryAsync<int>("select count(1) from literal2 where id={=foo}", args).ConfigureAwait(false)).Single();
-            Assert.Equal(1, count);
-        }
-
-        [Fact]
-        public async Task LiteralInAsync()
-        {
-            await connection.ExecuteAsync("create table #literalin(id int not null);").ConfigureAwait(false);
-            await connection.ExecuteAsync("insert #literalin (id) values (@id)", new[] {
-                new { id = 1 },
-                new { id = 2 },
-                new { id = 3 },
-            }).ConfigureAwait(false);
-            var count = (await connection.QueryAsync<int>("select count(1) from #literalin where id in {=ids}",
-                new { ids = new[] { 1, 3, 4 } }).ConfigureAwait(false)).Single();
-            Assert.Equal(2, count);
-        }
-
         
-        private class BasicType
-        {
-            public string Value { get; set; }
-        }
+ 
         
         [Fact]
         public async Task Issue22_ExecuteScalarAsync()
@@ -290,11 +193,6 @@ namespace EasyDAL.Exchange.Tests
         [Fact]
         public async Task QueryFirstOrDefaultAsyncTest()
         {
-            var testH = new BodyFitRecord
-            {
-                CreatedOn = DateTime.Now.AddDays(-10)
-            };
-
             var xx0 = "";
 
             //  == Guid
@@ -357,16 +255,24 @@ namespace EasyDAL.Exchange.Tests
             var xx = "";
         }
 
+        // 查询多个已存在对象 单条件
+        [Fact]
+        public async Task QueryListAsyncTest()
+        {
+            var xx0 = "";
+
+            var res = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.CreatedOn >= testH.StartTime)
+                .QueryListAsync();
+
+            var xx = "";
+        }
+
 
         /****************************************************************************/
 
 
-        [Fact]
-        public async Task Issue346_QueryAsyncConvert()
-        {
-            int i = (await connection.QueryAsync<int>("Select Cast(123 as bigint)").ConfigureAwait(false)).First();
-            Assert.Equal(123, i);
-        }
 
         [Fact]
         public async Task TestSupportForDynamicParametersOutputExpressionsAsync()
@@ -424,33 +330,7 @@ select 42", p).ConfigureAwait(false));
             Assert.Equal(42, result);
         }
 
-        [Fact]
-        public async Task TestSupportForDynamicParametersOutputExpressions_Query_Default()
-        {
-            var bob = new Person { Name = "bob", PersonId = 1, Address = new Address { PersonId = 2 } };
 
-            var p = new DynamicParameters(bob);
-            p.Output(bob, b => b.PersonId);
-            p.Output(bob, b => b.Occupation);
-            p.Output(bob, b => b.NumberOfLegs);
-            p.Output(bob, b => b.Address.Name);
-            p.Output(bob, b => b.Address.PersonId);
-
-            var result = (await connection.QueryAsync<int>(@"
-SET @Occupation = 'grillmaster' 
-SET @PersonId = @PersonId + 1 
-SET @NumberOfLegs = @NumberOfLegs - 1
-SET @AddressName = 'bobs burgers'
-SET @AddressPersonId = @PersonId
-select 42", p).ConfigureAwait(false)).Single();
-
-            Assert.Equal("grillmaster", bob.Occupation);
-            Assert.Equal(2, bob.PersonId);
-            Assert.Equal(1, bob.NumberOfLegs);
-            Assert.Equal("bobs burgers", bob.Address.Name);
-            Assert.Equal(2, bob.Address.PersonId);
-            Assert.Equal(42, result);
-        }
 
 
 
@@ -491,41 +371,7 @@ SET @AddressPersonId = @PersonId", p).ConfigureAwait(false))
             Assert.Equal(17, y);
         }
 
-
-
-        private class AsyncFoo0 { public int Id { get; set; } }
-
-        private class AsyncFoo1 { public int Id { get; set; } }
-
-        private class AsyncFoo2 { public int Id { get; set; } }
-
-
-
-
-
-
-
-        [Fact]
-        public async Task TestAtEscaping()
-        {
-            var id = (await connection.QueryAsync<int>(@"
-                declare @@Name int
-                select @@Name = @Id+1
-                select @@Name
-                ", new Product { Id = 1 }).ConfigureAwait(false)).Single();
-            Assert.Equal(2, id);
-        }
-
-
-        [Fact]
-        public async Task Issue563_QueryAsyncShouldThrowException()
-        {
-            try
-            {
-                var data = (await connection.QueryAsync<int>("select 1 union all select 2; RAISERROR('after select', 16, 1);").ConfigureAwait(false)).ToList();
-                Assert.True(false, "Expected Exception");
-            }
-            catch (SqlException ex) when (ex.Message == "after select") { /* swallow only this */ }
-        }
+        
+   
     }
 }
