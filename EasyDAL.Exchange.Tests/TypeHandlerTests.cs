@@ -15,49 +15,10 @@ namespace EasyDAL.Exchange.Tests
     [Collection(NonParallelDefinition.Name)]
     public class TypeHandlerTests : TestBase
     {
-        [Fact]
-        public void TestChangingDefaultStringTypeMappingToAnsiString()
-        {
-            const string sql = "SELECT SQL_VARIANT_PROPERTY(CONVERT(sql_variant, @testParam),'BaseType') AS BaseType";
-            var param = new { testParam = "TestString" };
 
-            var result01 = connection.Query<string>(sql, param).FirstOrDefault();
-            Assert.Equal("nvarchar", result01);
-
-            SqlMapper.PurgeQueryCache();
-
-            SqlMapper.AddTypeMap(typeof(string), DbType.AnsiString);   // Change Default String Handling to AnsiString
-            var result02 = connection.Query<string>(sql, param).FirstOrDefault();
-            Assert.Equal("varchar", result02);
-
-            SqlMapper.PurgeQueryCache();
-            SqlMapper.AddTypeMap(typeof(string), DbType.String);  // Restore Default to Unicode String
-        }
 
  
-        [Fact]
-        public void TestCustomTypeMap()
-        {
-            // default mapping
-            var item = connection.Query<TypeWithMapping>("Select 'AVal' as A, 'BVal' as B").Single();
-            Assert.Equal("AVal", item.A);
-            Assert.Equal("BVal", item.B);
 
-            // custom mapping
-            var map = new CustomPropertyTypeMap(typeof(TypeWithMapping),
-                (type, columnName) => type.GetProperties().FirstOrDefault(prop => GetDescriptionFromAttribute(prop) == columnName));
-            SqlMapper.SetTypeMap(typeof(TypeWithMapping), map);
-
-            item = connection.Query<TypeWithMapping>("Select 'AVal' as A, 'BVal' as B").Single();
-            Assert.Equal("BVal", item.A);
-            Assert.Equal("AVal", item.B);
-
-            // reset to default
-            SqlMapper.SetTypeMap(typeof(TypeWithMapping), null);
-            item = connection.Query<TypeWithMapping>("Select 'AVal' as A, 'BVal' as B").Single();
-            Assert.Equal("AVal", item.A);
-            Assert.Equal("BVal", item.B);
-        }
 
         private static string GetDescriptionFromAttribute(MemberInfo member)
         {
@@ -76,24 +37,7 @@ namespace EasyDAL.Exchange.Tests
             public string B { get; set; }
         }
 
-        [Fact]
-        public void Issue136_ValueTypeHandlers()
-        {
-            SqlMapper.ResetTypeHandlers();
-            SqlMapper.AddTypeHandler(typeof(LocalDate), LocalDateHandler.Default);
-            var param = new LocalDateResult
-            {
-                NotNullable = new LocalDate { Year = 2014, Month = 7, Day = 25 },
-                NullableNotNull = new LocalDate { Year = 2014, Month = 7, Day = 26 },
-                NullableIsNull = null,
-            };
 
-            var result = connection.Query<LocalDateResult>("SELECT @NotNullable AS NotNullable, @NullableNotNull AS NullableNotNull, @NullableIsNull AS NullableIsNull", param).Single();
-
-            SqlMapper.ResetTypeHandlers();
-            SqlMapper.AddTypeHandler(typeof(LocalDate?), LocalDateHandler.Default);
-            result = connection.Query<LocalDateResult>("SELECT @NotNullable AS NotNullable, @NullableNotNull AS NullableNotNull, @NullableIsNull AS NullableIsNull", param).Single();
-        }
 
         public class LocalDateHandler : TypeHandler<LocalDate>
         {
@@ -190,36 +134,9 @@ namespace EasyDAL.Exchange.Tests
 
 
         
-        private void TestBigIntForEverythingWorksGeneric<T>(T expected, string dbType)
-        {
-            var query = connection.Query<T>("select cast(1 as " + dbType + ")").Single();
-            Assert.Equal(query, expected);
 
-            var scalar = connection.ExecuteScalar<T>("select cast(1 as " + dbType + ")");
-            Assert.Equal(scalar, expected);
-        }
 
-        [Fact]
-        public void TestSubsequentQueriesSuccess()
-        {
-            var data0 = connection.Query<Fooz0>("select 1 as [Id] where 1 = 0").ToList();
-            Assert.Empty(data0);
 
-            var data1 = connection.Query<Fooz1>(new CommandDefinition("select 1 as [Id] where 1 = 0", flags: CommandFlags.Buffered)).ToList();
-            Assert.Empty(data1);
-
-            var data2 = connection.Query<Fooz2>(new CommandDefinition("select 1 as [Id] where 1 = 0", flags: CommandFlags.None)).ToList();
-            Assert.Empty(data2);
-
-            data0 = connection.Query<Fooz0>("select 1 as [Id] where 1 = 0").ToList();
-            Assert.Empty(data0);
-
-            data1 = connection.Query<Fooz1>(new CommandDefinition("select 1 as [Id] where 1 = 0", flags: CommandFlags.Buffered)).ToList();
-            Assert.Empty(data1);
-
-            data2 = connection.Query<Fooz2>(new CommandDefinition("select 1 as [Id] where 1 = 0", flags: CommandFlags.None)).ToList();
-            Assert.Empty(data2);
-        }
 
         private class Fooz0
         {
@@ -274,24 +191,9 @@ namespace EasyDAL.Exchange.Tests
             public RatingValue CategoryRating { get; set; }
         }
 
-        [Fact]
-        public void SO24740733_TestCustomValueHandler()
-        {
-            SqlMapper.AddTypeHandler(RatingValueHandler.Default);
-            var foo = connection.Query<MyResult>("SELECT 'Foo' AS CategoryName, 200 AS CategoryRating").Single();
 
-            Assert.Equal("Foo", foo.CategoryName);
-            Assert.Equal(200, foo.CategoryRating.Value);
-        }
 
-        [Fact]
-        public void SO24740733_TestCustomValueSingleColumn()
-        {
-            SqlMapper.AddTypeHandler(RatingValueHandler.Default);
-            var foo = connection.Query<RatingValue>("SELECT 200 AS CategoryRating").Single();
 
-            Assert.Equal(200, foo.Value);
-        }
 
         public class StringListTypeHandler : TypeHandler<List<string>>
         {
@@ -317,14 +219,7 @@ namespace EasyDAL.Exchange.Tests
             public List<string> Names { get; set; }
         }
 
-        [Fact]
-        public void Issue253_TestIEnumerableTypeHandlerParsing()
-        {
-            SqlMapper.ResetTypeHandlers();
-            SqlMapper.AddTypeHandler(StringListTypeHandler.Default);
-            var foo = connection.Query<MyObjectWithStringList>("SELECT 'Sam,Kyro' AS Names").Single();
-            Assert.Equal(new[] { "Sam", "Kyro" }, foo.Names);
-        }
+
 
 
 
@@ -365,38 +260,11 @@ namespace EasyDAL.Exchange.Tests
             public bool D { get; set; }
         }
 
-        [Fact]
-        public void TestWrongTypes_WithRightTypes()
-        {
-            var item = connection.Query<WrongTypes>("select 1 as A, cast(2.0 as float) as B, cast(3 as bigint) as C, cast(1 as bit) as D").Single();
-            Assert.Equal(1, item.A);
-            Assert.Equal(2.0, item.B);
-            Assert.Equal(3L, item.C);
-            Assert.True(item.D);
-        }
 
-        [Fact]
-        public void TestWrongTypes_WithWrongTypes()
-        {
-            var item = connection.Query<WrongTypes>("select cast(1.0 as float) as A, 2 as B, 3 as C, cast(1 as bigint) as D").Single();
-            Assert.Equal(1, item.A);
-            Assert.Equal(2.0, item.B);
-            Assert.Equal(3L, item.C);
-            Assert.True(item.D);
-        }
 
-        [Fact]
-        public void SO24607639_NullableBools()
-        {
-            var obj = connection.Query<HazBools>(
-                @"declare @vals table (A bit null, B bit null, C bit null);
-                insert @vals (A,B,C) values (1,0,null);
-                select * from @vals").Single();
-            Assert.NotNull(obj);
-            Assert.True(obj.A.Value);
-            Assert.False(obj.B.Value);
-            Assert.Null(obj.C);
-        }
+
+
+
 
         private class HazBools
         {
@@ -406,31 +274,11 @@ namespace EasyDAL.Exchange.Tests
         }
 
 
-        [Fact]
-        public void Issue149_TypeMismatch_SequentialAccess()
-        {
-            Guid guid = Guid.Parse("cf0ef7ac-b6fe-4e24-aeda-a2b45bb5654e");
-            var ex = Assert.ThrowsAny<Exception>(() => connection.Query<Issue149_Person>("select @guid as Id", new { guid }).First());
-            Assert.Equal("Error parsing column 0 (Id=cf0ef7ac-b6fe-4e24-aeda-a2b45bb5654e - Object)", ex.Message);
-        }
+
 
         public class Issue149_Person { public string Id { get; set; } }
 
-        //[Fact]
-        //public void Issue295_NullableDateTime_SqlServer() => Common.TestDateTime(connection);
-
-        [Fact]
-        public void SO29343103_UtcDates()
-        {
-            const string sql = "select @date";
-            var date = DateTime.UtcNow;
-            var returned = connection.Query<DateTime>(sql, new { date }).Single();
-            var delta = returned - date;
-            Assert.True(delta.TotalMilliseconds >= -10 && delta.TotalMilliseconds <= 10);
-        }
-
   
-
         // I would usually expect this to be a struct; using a class
         // so that we can't pass unexpectedly due to forcing an unsafe cast - want
         // to see an InvalidCastException if it is wrong

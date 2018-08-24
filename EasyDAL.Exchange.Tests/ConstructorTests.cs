@@ -9,81 +9,13 @@ namespace EasyDAL.Exchange.Tests
 {
     public class ConstructorTests : TestBase
     {
-        [Fact]
-        public void TestAbstractInheritance()
-        {
-            var order = connection.Query<AbstractInheritance.ConcreteOrder>("select 1 Internal,2 Protected,3 [Public],4 Concrete").First();
+ 
 
-            Assert.Equal(1, order.Internal);
-            Assert.Equal(2, order.ProtectedVal);
-            Assert.Equal(3, order.Public);
-            Assert.Equal(4, order.Concrete);
-        }
 
-        [Fact]
-        public void TestMultipleConstructors()
-        {
-            MultipleConstructors mult = connection.Query<MultipleConstructors>("select 0 A, 'Dapper' b").First();
-            Assert.Equal(0, mult.A);
-            Assert.Equal("Dapper", mult.B);
-        }
 
-        [Fact]
-        public void TestConstructorsWithAccessModifiers()
-        {
-            ConstructorsWithAccessModifiers value = connection.Query<ConstructorsWithAccessModifiers>("select 0 A, 'Dapper' b").First();
-            Assert.Equal(1, value.A);
-            Assert.Equal("Dapper!", value.B);
-        }
 
-        [Fact]
-        public void TestNoDefaultConstructor()
-        {
-            var guid = Guid.NewGuid();
-            NoDefaultConstructor nodef = connection.Query<NoDefaultConstructor>("select CAST(NULL AS integer) A1,  CAST(NULL AS integer) b1, CAST(NULL AS real) f1, 'Dapper' s1, G1 = @id", new { id = guid }).First();
-            Assert.Equal(0, nodef.A);
-            Assert.Null(nodef.B);
-            Assert.Equal(0, nodef.F);
-            Assert.Equal("Dapper", nodef.S);
-            Assert.Equal(nodef.G, guid);
-        }
 
-        [Fact]
-        public void TestNoDefaultConstructorWithChar()
-        {
-            const char c1 = 'ą';
-            const char c3 = 'ó';
-            NoDefaultConstructorWithChar nodef = connection.Query<NoDefaultConstructorWithChar>("select @c1 c1, @c2 c2, @c3 c3", new { c1 = c1, c2 = (char?)null, c3 = c3 }).First();
-            Assert.Equal(nodef.Char1, c1);
-            Assert.Null(nodef.Char2);
-            Assert.Equal(nodef.Char3, c3);
-        }
 
-        [Fact]
-        public void TestNoDefaultConstructorWithEnum()
-        {
-            NoDefaultConstructorWithEnum nodef = connection.Query<NoDefaultConstructorWithEnum>("select cast(2 as smallint) E1, cast(5 as smallint) n1, cast(null as smallint) n2").First();
-            Assert.Equal(ShortEnum.Two, nodef.E);
-            Assert.Equal(ShortEnum.Five, nodef.NE1);
-            Assert.Null(nodef.NE2);
-        }
-
-        [Fact]
-        public void ExplicitConstructors()
-        {
-            var rows = connection.Query<_ExplicitConstructors>(@"
-declare @ExplicitConstructors table (
-    Field INT NOT NULL PRIMARY KEY IDENTITY(1,1),
-    Field_1 INT NOT NULL);
-insert @ExplicitConstructors(Field_1) values (1);
-SELECT * FROM @ExplicitConstructors"
-).ToList();
-
-            Assert.Single(rows);
-            Assert.Equal(1, rows[0].Field);
-            Assert.Equal(1, rows[0].Field_1);
-            Assert.True(rows[0].GetWentThroughProperConstructor());
-        }
 
         private class _ExplicitConstructors
         {
@@ -209,11 +141,6 @@ SELECT * FROM @ExplicitConstructors"
             }
         }
 
-        [Fact]
-        public void TestWithNonPublicConstructor()
-        {
-            var output = connection.Query<WithPrivateConstructor>("select 1 as Foo").First();
-            Assert.Equal(1, output.Foo);
-        }
+
     }
 }

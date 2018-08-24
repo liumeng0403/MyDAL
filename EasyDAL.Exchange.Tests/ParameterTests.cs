@@ -104,73 +104,16 @@ namespace EasyDAL.Exchange.Tests
 
 
 
-        [Fact]
-        public void TestDoubleParam()
-        {
-            Assert.Equal(0.1d, connection.Query<double>("select @d", new { d = 0.1d }).First());
-        }
 
-        [Fact]
-        public void TestBoolParam()
-        {
-            Assert.False(connection.Query<bool>("select @b", new { b = false }).First());
-        }
+
 
         // http://code.google.com/p/dapper-dot-net/issues/detail?id=70
         // https://connect.microsoft.com/VisualStudio/feedback/details/381934/sqlparameter-dbtype-dbtype-time-sets-the-parameter-to-sqldbtype-datetime-instead-of-sqldbtype-time
 
-        [Fact]
-        public void TestTimeSpanParam()
-        {
-            Assert.Equal(connection.Query<TimeSpan>("select @ts", new { ts = TimeSpan.FromMinutes(42) }).First(), TimeSpan.FromMinutes(42));
-        }
-
-        [Fact]
-        public void PassInIntArray()
-        {
-            Assert.Equal(
-                new[] { 1, 2, 3 },
-                connection.Query<int>("select * from (select 1 as Id union all select 2 union all select 3) as X where Id in @Ids", new { Ids = new int[] { 1, 2, 3 }.AsEnumerable() })
-            );
-        }
-
-        [Fact]
-        public void PassInEmptyIntArray()
-        {
-            Assert.Equal(
-                new int[0],
-                connection.Query<int>("select * from (select 1 as Id union all select 2 union all select 3) as X where Id in @Ids", new { Ids = new int[0] })
-            );
-        }
 
 
-        
-        //[FactUnlessCaseSensitiveDatabase]
-        public void TestParameterInclusionNotSensitiveToCurrentCulture()
-        {
-            // note this might fail if your database server is case-sensitive
-            CultureInfo current = ActiveCulture;
-            try
-            {
-                ActiveCulture = new CultureInfo("tr-TR");
 
-                connection.Query<int>("select @pid", new { PId = 1 }).Single();
-            }
-            finally
-            {
-                ActiveCulture = current;
-            }
-        }
-
-        [Fact]
-        public void TestMassiveStrings()
-        {
-            var str = new string('X', 20000);
-            Assert.Equal(connection.Query<string>("select @a", new { a = str }).First(), str);
-        }
-
-
-        
+            
 
         private class DynamicParameterWithIntTVP : DynamicParameters, IDynamicParameters
         {
@@ -199,13 +142,7 @@ namespace EasyDAL.Exchange.Tests
 
         
 
-        [Fact]
-        public void SupportInit()
-        {
-            var obj = connection.Query<WithInit>("select 'abc' as Value").Single();
-            Assert.Equal("abc", obj.Value);
-            Assert.Equal(31, obj.Flags);
-        }
+
 
         public class WithInit : ISupportInitialize
         {
@@ -253,113 +190,8 @@ namespace EasyDAL.Exchange.Tests
         }
 
 
-
         
-
         
-
-        [Fact]
-        public void TestAppendingAList()
-        {
-            var p = new DynamicParameters();
-            var list = new int[] { 1, 2, 3 };
-            p.AddDynamicParams(new { list });
-
-            var result = connection.Query<int>("select * from (select 1 A union all select 2 union all select 3) X where A in @list", p).ToList();
-
-            Assert.Equal(1, result[0]);
-            Assert.Equal(2, result[1]);
-            Assert.Equal(3, result[2]);
-        }
-
-        [Fact]
-        public void TestAppendingAListAsDictionary()
-        {
-            var p = new DynamicParameters();
-            var list = new int[] { 1, 2, 3 };
-            var args = new Dictionary<string, object> { ["ids"] = list };
-            p.AddDynamicParams(args);
-
-            var result = connection.Query<int>("select * from (select 1 A union all select 2 union all select 3) X where A in @ids", p).ToList();
-
-            Assert.Equal(1, result[0]);
-            Assert.Equal(2, result[1]);
-            Assert.Equal(3, result[2]);
-        }
-
-        [Fact]
-        public void TestAppendingAListByName()
-        {
-            DynamicParameters p = new DynamicParameters();
-            var list = new int[] { 1, 2, 3 };
-            p.Add("ids", list);
-
-            var result = connection.Query<int>("select * from (select 1 A union all select 2 union all select 3) X where A in @ids", p).ToList();
-
-            Assert.Equal(1, result[0]);
-            Assert.Equal(2, result[1]);
-            Assert.Equal(3, result[2]);
-        }
-
-        [Fact]
-        public void ParameterizedInWithOptimizeHint()
-        {
-            const string sql = @"
-select count(1)
-from(
-    select 1 as x
-    union all select 2
-    union all select 5) y
-where y.x in @vals
-option (optimize for (@vals unKnoWn))";
-            int count = connection.Query<int>(sql, new { vals = new[] { 1, 2, 3, 4 } }).Single();
-            Assert.Equal(2, count);
-
-            count = connection.Query<int>(sql, new { vals = new[] { 1 } }).Single();
-            Assert.Equal(1, count);
-
-            count = connection.Query<int>(sql, new { vals = new int[0] }).Single();
-            Assert.Equal(0, count);
-        }
-
-
-
-        [Fact]
-        public void TestUniqueIdentifier()
-        {
-            var guid = Guid.NewGuid();
-            var result = connection.Query<Guid>("declare @foo uniqueidentifier set @foo = @guid select @foo", new { guid }).Single();
-            Assert.Equal(guid, result);
-        }
-
-        [Fact]
-        public void TestNullableUniqueIdentifierNonNull()
-        {
-            Guid? guid = Guid.NewGuid();
-            var result = connection.Query<Guid?>("declare @foo uniqueidentifier set @foo = @guid select @foo", new { guid }).Single();
-            Assert.Equal(guid, result);
-        }
-
-        [Fact]
-        public void TestNullableUniqueIdentifierNull()
-        {
-            Guid? guid = null;
-            var result = connection.Query<Guid?>("declare @foo uniqueidentifier set @foo = @guid select @foo", new { guid }).Single();
-            Assert.Equal(guid, result);
-        }
-
-        [Fact]
-        public void TestSupportForDynamicParameters()
-        {
-            var p = new DynamicParameters();
-            p.Add("name", "bob");
-            p.Add("age", dbType: DbType.Int32, direction: ParameterDirection.Output);
-
-            Assert.Equal("bob", connection.Query<string>("set @age = 11 select @name", p).First());
-            Assert.Equal(11, p.Get<int>("age"));
-        }
-
-
 
         [Fact]
         public void TestSupportForDynamicParametersOutputExpressions_Scalar()
@@ -392,77 +224,10 @@ select 42", p);
             }
         }
 
-        [Fact]
-        public void TestSupportForDynamicParametersOutputExpressions_Query_Buffered()
-        {
-            using (var connection = GetOpenConnection())
-            {
-                var bob = new Person { Name = "bob", PersonId = 1, Address = new Address { PersonId = 2 } };
 
-                var p = new DynamicParameters(bob);
-                p.Output(bob, b => b.PersonId);
-                p.Output(bob, b => b.Occupation);
-                p.Output(bob, b => b.NumberOfLegs);
-                p.Output(bob, b => b.Address.Name);
-                p.Output(bob, b => b.Address.PersonId);
 
-                var result = connection.Query<int>(@"
-SET @Occupation = 'grillmaster' 
-SET @PersonId = @PersonId + 1 
-SET @NumberOfLegs = @NumberOfLegs - 1
-SET @AddressName = 'bobs burgers'
-SET @AddressPersonId = @PersonId
-select 42", p, buffered: true).Single();
 
-                Assert.Equal("grillmaster", bob.Occupation);
-                Assert.Equal(2, bob.PersonId);
-                Assert.Equal(1, bob.NumberOfLegs);
-                Assert.Equal("bobs burgers", bob.Address.Name);
-                Assert.Equal(2, bob.Address.PersonId);
-                Assert.Equal(42, result);
-            }
-        }
 
-        [Fact]
-        public void TestSupportForDynamicParametersOutputExpressions_Query_NonBuffered()
-        {
-            using (var connection = GetOpenConnection())
-            {
-                var bob = new Person { Name = "bob", PersonId = 1, Address = new Address { PersonId = 2 } };
-
-                var p = new DynamicParameters(bob);
-                p.Output(bob, b => b.PersonId);
-                p.Output(bob, b => b.Occupation);
-                p.Output(bob, b => b.NumberOfLegs);
-                p.Output(bob, b => b.Address.Name);
-                p.Output(bob, b => b.Address.PersonId);
-
-                var result = connection.Query<int>(@"
-SET @Occupation = 'grillmaster' 
-SET @PersonId = @PersonId + 1 
-SET @NumberOfLegs = @NumberOfLegs - 1
-SET @AddressName = 'bobs burgers'
-SET @AddressPersonId = @PersonId
-select 42", p, buffered: false).Single();
-
-                Assert.Equal("grillmaster", bob.Occupation);
-                Assert.Equal(2, bob.PersonId);
-                Assert.Equal(1, bob.NumberOfLegs);
-                Assert.Equal("bobs burgers", bob.Address.Name);
-                Assert.Equal(2, bob.Address.PersonId);
-                Assert.Equal(42, result);
-            }
-        }
-        
-        [Fact]
-        public void TestSupportForExpandoObjectParameters()
-        {
-            dynamic p = new ExpandoObject();
-            p.name = "bob";
-            object parameters = p;
-            string result = connection.Query<string>("select @name", parameters).First();
-            Assert.Equal("bob", result);
-        }
 
 
 
@@ -471,52 +236,11 @@ select 42", p, buffered: false).Single();
             public string X { get; set; }
         }
 
-        [Fact]
-        public void SO25297173_DynamicIn()
-        {
-            const string query = @"
-declare @table table(value int not null);
-insert @table values(1);
-insert @table values(2);
-insert @table values(3);
-insert @table values(4);
-insert @table values(5);
-insert @table values(6);
-insert @table values(7);
-SELECT value FROM @table WHERE value IN @myIds";
-            var queryParams = new Dictionary<string, object>
-            {
-                ["myIds"] = new[] { 5, 6 }
-            };
 
-            var dynamicParams = new DynamicParameters(queryParams);
-            List<int> result = connection.Query<int>(query, dynamicParams).ToList();
-            Assert.Equal(2, result.Count);
-            Assert.Contains(5, result);
-            Assert.Contains(6, result);
-        }
 
-        [Fact]
-        public void Test_AddDynamicParametersRepeatedShouldWork()
-        {
-            var args = new DynamicParameters();
-            args.AddDynamicParams(new { Foo = 123 });
-            args.AddDynamicParams(new { Foo = 123 });
-            int i = connection.Query<int>("select @Foo", args).Single();
-            Assert.Equal(123, i);
-        }
 
-        [Fact]
-        public void Test_AddDynamicParametersRepeatedIfParamTypeIsDbStiringShouldWork()
-        {
-            var foo = new DbString() { Value = "123" };
 
-            var args = new DynamicParameters();
-            args.AddDynamicParams(new { Foo = foo });
-            args.AddDynamicParams(new { Foo = foo });
-            int i = connection.Query<int>("select @Foo", args).Single();
-            Assert.Equal(123, i);
-        }
+
 
 
 
@@ -532,14 +256,7 @@ SELECT value FROM @table WHERE value IN @myIds";
             }
         }
 
-        [Fact]
-        public void TestMultipleParametersWithIndexer()
-        {
-            var order = connection.Query<MultipleParametersWithIndexer>("select 1 A,2 B").First();
 
-            Assert.Equal(1, order.A);
-            Assert.Equal(2, order.B);
-        }
 
         public class MultipleParametersWithIndexer : MultipleParametersWithIndexerDeclaringType
         {
@@ -581,15 +298,7 @@ SELECT value FROM @table WHERE value IN @myIds";
 
 
 
-        //[FactUnlessCaseSensitiveDatabase]
-        public void Issue220_InParameterCanBeSpecifiedInAnyCase()
-        {
-            // note this might fail if your database server is case-sensitive
-            Assert.Equal(
-                new[] { 1 },
-                connection.Query<int>("select * from (select 1 as Id) as X where Id in @ids", new { Ids = new[] { 1 } })
-            );
-        }
+
 
         [Fact]
         public void SO30156367_DynamicParamsWithoutExec()

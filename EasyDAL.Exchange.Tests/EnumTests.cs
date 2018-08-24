@@ -7,46 +7,9 @@ namespace EasyDAL.Exchange.Tests
 {
     public class EnumTests : TestBase
     {
-        [Fact]
-        public void TestEnumWeirdness()
-        {
-            Assert.Null(connection.Query<TestEnumClass>("select null as [EnumEnum]").First().EnumEnum);
-            Assert.Equal(TestEnum.Bla, connection.Query<TestEnumClass>("select cast(1 as tinyint) as [EnumEnum]").First().EnumEnum);
-        }
 
-        [Fact]
-        public void TestEnumStrings()
-        {
-            Assert.Equal(TestEnum.Bla, connection.Query<TestEnumClassNoNull>("select 'BLA' as [EnumEnum]").First().EnumEnum);
-            Assert.Equal(TestEnum.Bla, connection.Query<TestEnumClassNoNull>("select 'bla' as [EnumEnum]").First().EnumEnum);
+ 
 
-            Assert.Equal(TestEnum.Bla, connection.Query<TestEnumClass>("select 'BLA' as [EnumEnum]").First().EnumEnum);
-            Assert.Equal(TestEnum.Bla, connection.Query<TestEnumClass>("select 'bla' as [EnumEnum]").First().EnumEnum);
-        }
-
-        [Fact]
-        public void TestEnumParamsWithNullable()
-        {
-            const EnumParam a = EnumParam.A;
-            EnumParam? b = EnumParam.B, c = null;
-            var obj = connection.Query<EnumParamObject>("select @a as A, @b as B, @c as C",
-                new { a, b, c }).Single();
-            Assert.Equal(EnumParam.A, obj.A);
-            Assert.Equal(EnumParam.B, obj.B);
-            Assert.Null(obj.C);
-        }
-
-        [Fact]
-        public void TestEnumParamsWithoutNullable()
-        {
-            const EnumParam a = EnumParam.A;
-            const EnumParam b = EnumParam.B, c = 0;
-            var obj = connection.Query<EnumParamObjectNonNullable>("select @a as A, @b as B, @c as C",
-                new { a, b, c }).Single();
-            Assert.Equal(EnumParam.A, obj.A);
-            Assert.Equal(EnumParam.B, obj.B);
-            Assert.Equal(obj.C, (EnumParam)0);
-        }
 
         private enum EnumParam : short
         {
@@ -120,11 +83,5 @@ namespace EasyDAL.Exchange.Tests
             public SO27024806Enum MyField { get; set; }
         }
 
-        [Fact]
-        public void SO27024806_TestVarcharEnumMemberWithExplicitConstructor()
-        {
-            var foo = connection.Query<SO27024806Class>("SELECT 'Foo' AS myField").Single();
-            Assert.Equal(SO27024806Enum.Foo, foo.MyField);
-        }
     }
 }

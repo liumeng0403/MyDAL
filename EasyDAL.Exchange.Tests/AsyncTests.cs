@@ -25,12 +25,7 @@ namespace EasyDAL.Exchange.Tests
             Assert.Equal(new[] { "abc", "def" }, arr);
         }
 
-        [Fact]
-        public async Task TestBasicStringUsageQueryFirstAsync()
-        {
-            var str = await connection.QueryFirstAsync<string>(new CommandDefinition("select 'abc' as [Value] union all select @txt", new { txt = "def" })).ConfigureAwait(false);
-            Assert.Equal("abc", str);
-        }
+
         
         [Fact]
         public async Task TestBasicStringUsageQuerySingleAsyncDynamic()
@@ -49,31 +44,8 @@ namespace EasyDAL.Exchange.Tests
 
 
 
-        [Fact]
-        public async Task TestBasicStringUsageAsyncNonBuffered()
-        {
-            var query = await connection.QueryAsync<string>(new CommandDefinition("select 'abc' as [Value] union all select @txt", new { txt = "def" }, flags: CommandFlags.None)).ConfigureAwait(false);
-            var arr = query.ToArray();
-            Assert.Equal(new[] { "abc", "def" }, arr);
-        }
 
-        [Fact]
-        public void TestLongOperationWithCancellation()
-        {
-            CancellationTokenSource cancel = new CancellationTokenSource(TimeSpan.FromSeconds(5));
-            var task = connection.QueryAsync<int>(new CommandDefinition("waitfor delay '00:00:10';select 1", cancellationToken: cancel.Token));
-            try
-            {
-                if (!task.Wait(TimeSpan.FromSeconds(7)))
-                {
-                    throw new TimeoutException(); // should have cancelled
-                }
-            }
-            catch (AggregateException agg)
-            {
-                Assert.True(agg.InnerException is SqlException);
-            }
-        }
+
 
         [Fact]
         public async Task TestBasicStringUsageClosedAsync()
@@ -365,11 +337,11 @@ namespace EasyDAL.Exchange.Tests
 
             var xx5 = "";
 
-            var dt = DateTime.Now.AddDays(-10);
+            var start = DateTime.Now.AddDays(-10);
             // >= variable(DateTime)
             var res6 = await Conn
                 .Selecter<BodyFitRecord>()
-                .Where(it => it.CreatedOn >= dt)
+                .Where(it => it.CreatedOn >= start)
                 .QueryFirstOrDefaultAsync();
 
             var xx6 = "";
@@ -480,61 +452,9 @@ select 42", p).ConfigureAwait(false)).Single();
             Assert.Equal(42, result);
         }
 
-        [Fact]
-        public async Task TestSupportForDynamicParametersOutputExpressions_Query_BufferedAsync()
-        {
-            var bob = new Person { Name = "bob", PersonId = 1, Address = new Address { PersonId = 2 } };
 
-            var p = new DynamicParameters(bob);
-            p.Output(bob, b => b.PersonId);
-            p.Output(bob, b => b.Occupation);
-            p.Output(bob, b => b.NumberOfLegs);
-            p.Output(bob, b => b.Address.Name);
-            p.Output(bob, b => b.Address.PersonId);
 
-            var result = (await connection.QueryAsync<int>(new CommandDefinition(@"
-SET @Occupation = 'grillmaster' 
-SET @PersonId = @PersonId + 1 
-SET @NumberOfLegs = @NumberOfLegs - 1
-SET @AddressName = 'bobs burgers'
-SET @AddressPersonId = @PersonId
-select 42", p, flags: CommandFlags.Buffered)).ConfigureAwait(false)).Single();
 
-            Assert.Equal("grillmaster", bob.Occupation);
-            Assert.Equal(2, bob.PersonId);
-            Assert.Equal(1, bob.NumberOfLegs);
-            Assert.Equal("bobs burgers", bob.Address.Name);
-            Assert.Equal(2, bob.Address.PersonId);
-            Assert.Equal(42, result);
-        }
-
-        [Fact]
-        public async Task TestSupportForDynamicParametersOutputExpressions_Query_NonBufferedAsync()
-        {
-            var bob = new Person { Name = "bob", PersonId = 1, Address = new Address { PersonId = 2 } };
-
-            var p = new DynamicParameters(bob);
-            p.Output(bob, b => b.PersonId);
-            p.Output(bob, b => b.Occupation);
-            p.Output(bob, b => b.NumberOfLegs);
-            p.Output(bob, b => b.Address.Name);
-            p.Output(bob, b => b.Address.PersonId);
-
-            var result = (await connection.QueryAsync<int>(new CommandDefinition(@"
-SET @Occupation = 'grillmaster' 
-SET @PersonId = @PersonId + 1 
-SET @NumberOfLegs = @NumberOfLegs - 1
-SET @AddressName = 'bobs burgers'
-SET @AddressPersonId = @PersonId
-select 42", p, flags: CommandFlags.None)).ConfigureAwait(false)).Single();
-
-            Assert.Equal("grillmaster", bob.Occupation);
-            Assert.Equal(2, bob.PersonId);
-            Assert.Equal(1, bob.NumberOfLegs);
-            Assert.Equal("bobs burgers", bob.Address.Name);
-            Assert.Equal(2, bob.Address.PersonId);
-            Assert.Equal(42, result);
-        }
 
         [Fact]
         public async Task TestSupportForDynamicParametersOutputExpressions_QueryMultipleAsync()
@@ -571,27 +491,7 @@ SET @AddressPersonId = @PersonId", p).ConfigureAwait(false))
             Assert.Equal(17, y);
         }
 
-        [Fact]
-        public async Task TestSubsequentQueriesSuccessAsync()
-        {
-            var data0 = (await connection.QueryAsync<AsyncFoo0>("select 1 as [Id] where 1 = 0").ConfigureAwait(false)).ToList();
-            Assert.Empty(data0);
 
-            var data1 = (await connection.QueryAsync<AsyncFoo1>(new CommandDefinition("select 1 as [Id] where 1 = 0", flags: CommandFlags.Buffered)).ConfigureAwait(false)).ToList();
-            Assert.Empty(data1);
-
-            var data2 = (await connection.QueryAsync<AsyncFoo2>(new CommandDefinition("select 1 as [Id] where 1 = 0", flags: CommandFlags.None)).ConfigureAwait(false)).ToList();
-            Assert.Empty(data2);
-
-            data0 = (await connection.QueryAsync<AsyncFoo0>("select 1 as [Id] where 1 = 0").ConfigureAwait(false)).ToList();
-            Assert.Empty(data0);
-
-            data1 = (await connection.QueryAsync<AsyncFoo1>(new CommandDefinition("select 1 as [Id] where 1 = 0", flags: CommandFlags.Buffered)).ConfigureAwait(false)).ToList();
-            Assert.Empty(data1);
-
-            data2 = (await connection.QueryAsync<AsyncFoo2>(new CommandDefinition("select 1 as [Id] where 1 = 0", flags: CommandFlags.None)).ConfigureAwait(false)).ToList();
-            Assert.Empty(data2);
-        }
 
         private class AsyncFoo0 { public int Id { get; set; } }
 
@@ -603,20 +503,7 @@ SET @AddressPersonId = @PersonId", p).ConfigureAwait(false))
 
 
 
-        [Fact]
-        public async Task Issue157_ClosedReaderAsync()
-        {
-            var args = new { x = 42 };
-            const string sql = "select 123 as [A], 'abc' as [B] where @x=42";
-            var row = (await connection.QueryAsync<SomeType>(new CommandDefinition(
-                sql, args, flags: CommandFlags.None)).ConfigureAwait(false)).Single();
-            Assert.NotNull(row);
-            Assert.Equal(123, row.A);
-            Assert.Equal("abc", row.B);
 
-            args = new { x = 5 };
-            Assert.False((await connection.QueryAsync<SomeType>(new CommandDefinition(sql, args, flags: CommandFlags.None)).ConfigureAwait(false)).Any());
-        }
 
         [Fact]
         public async Task TestAtEscaping()
