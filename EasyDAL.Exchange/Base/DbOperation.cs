@@ -1,4 +1,5 @@
 ﻿using EasyDAL.Exchange.Common;
+using EasyDAL.Exchange.Core;
 using EasyDAL.Exchange.Enums;
 using EasyDAL.Exchange.Helper;
 using System;
@@ -13,6 +14,7 @@ namespace EasyDAL.Exchange.Base
     {
 
         private DbOperation() { }
+
         public DbOperation(IDbConnection conn)
         {
             Conn = conn;
@@ -21,6 +23,7 @@ namespace EasyDAL.Exchange.Base
             EH = ExpressionHelper.Instance;
             Conditions = new List<DicModel<string, string>>();
         }
+
 
     }
 }

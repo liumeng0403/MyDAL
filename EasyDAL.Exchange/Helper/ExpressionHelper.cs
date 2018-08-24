@@ -14,58 +14,84 @@ namespace EasyDAL.Exchange.Helper
     {
         private static ConcurrentDictionary<string, ConcurrentDictionary<Int32, String>> Cache = new ConcurrentDictionary<string, ConcurrentDictionary<Int32, String>>();
 
-        private string GetFieldName(ParameterExpression parameter, MemberExpression leftBody)
+        private string GetFieldName(ParameterExpression parameter, Expression body)
         {
-            var info = parameter.Type.GetProperty(leftBody.Member.Name);
-            var field = Cache
-                .GetOrAdd($"{parameter.GetType().FullName}:{info.Module.GetHashCode()}", moduleKey => new ConcurrentDictionary<Int32, String>())
-                .GetOrAdd(info.MetadataToken, innnerKey =>
-                {
-                    if (info.IsDefined(typeof(ColumnAttribute), false))
+            var leftBody = body as MemberExpression;
+            if (leftBody == null)  // Convert
+            {
+                var exp = body as UnaryExpression;
+                return (exp.Operand as MemberExpression).Member.Name;
+            }
+            else  // MemberAccess
+            {
+                var info = parameter.Type.GetProperty(leftBody.Member.Name);
+                var field = Cache
+                    .GetOrAdd($"{parameter.GetType().FullName}:{info.Module.GetHashCode()}", moduleKey => new ConcurrentDictionary<Int32, String>())
+                    .GetOrAdd(info.MetadataToken, innnerKey =>
                     {
-                        var attr = (ColumnAttribute)info.GetCustomAttributes(typeof(ColumnAttribute), false)[0];
-                        return attr.Name;
-                    }
-                    return info.Name;
-                });
-            return field;
+                        if (info.IsDefined(typeof(ColumnAttribute), false))
+                        {
+                            var attr = (ColumnAttribute)info.GetCustomAttributes(typeof(ColumnAttribute), false)[0];
+                            return attr.Name;
+                        }
+                        return info.Name;
+                    });
+                return field;
+            }
         }
         private string HandMemberVal(BinaryExpression bodyB)
         {
             var result = default(string);
-            var memExpr = bodyB.Right as MemberExpression;
-            PropertyInfo outerProp = memExpr.Member as PropertyInfo;
-            if (outerProp == null)
+            if (bodyB.Right.NodeType == ExpressionType.MemberAccess)
             {
-                var memMem = memExpr.Member as FieldInfo;
-                var memCon = memExpr.Expression as ConstantExpression;
-                object memObj = memCon.Value;
-                result = memMem.GetValue(memObj).ToString();
-            }
-            else
-            {
-                if (memExpr.Expression == null)
+                var memExpr = bodyB.Right as MemberExpression;
+                PropertyInfo outerProp = memExpr.Member as PropertyInfo;
+                if (outerProp == null)
                 {
-                    var type = memExpr.Type as Type;
-                    var instance = Activator.CreateInstance(type);
-                    result = outerProp.GetValue(instance, null).ToString();
+                    var memMem = memExpr.Member as FieldInfo;
+                    var memCon = memExpr.Expression as ConstantExpression;
+                    object memObj = memCon.Value;
+                    result = memMem.GetValue(memObj).ToString();
                 }
                 else
                 {
-                    MemberExpression innerMember = (MemberExpression)memExpr.Expression;
-                    var innerField = (FieldInfo)innerMember.Member;
-                    ConstantExpression ce = (ConstantExpression)innerMember.Expression;
-                    object innerObj = ce.Value;
-                    object outerObj = innerField.GetValue(innerObj);
-                    if (outerProp.PropertyType == typeof(DateTime))
+                    if (memExpr.Expression == null)
                     {
-                        result = outerProp.GetValue(outerObj, null).ToString();
+                        var type = memExpr.Type as Type;
+                        var instance = Activator.CreateInstance(type);
+                        result = outerProp.GetValue(instance, null).ToString();
                     }
                     else
                     {
-                        result = outerProp.GetValue(outerObj, null).ToString();
+                        MemberExpression innerMember = (MemberExpression)memExpr.Expression;
+                        var innerField = (FieldInfo)innerMember.Member;
+                        ConstantExpression ce = (ConstantExpression)innerMember.Expression;
+                        object innerObj = ce.Value;
+                        object outerObj = innerField.GetValue(innerObj);
+                        if (outerProp.PropertyType == typeof(DateTime))
+                        {
+                            result = outerProp.GetValue(outerObj, null).ToString();
+                        }
+                        else
+                        {
+                            result = outerProp.GetValue(outerObj, null).ToString();
+                        }
                     }
                 }
+            }
+            else if (bodyB.Right.NodeType == ExpressionType.Convert)
+            {
+                var expr = bodyB.Right as UnaryExpression;
+                var exprExpr = expr.Operand as UnaryExpression;
+                var memExpr = exprExpr.Operand as MemberExpression;
+                var memCon = memExpr.Expression as ConstantExpression;
+                var memObj = memCon.Value;
+                var memFiled = memExpr.Member as FieldInfo;
+                result = memFiled.GetValue(memObj).ToString();
+            }
+            else
+            {
+                throw new Exception("请联系 https://www.cnblogs.com/Meng-NET/ 博主!");
             }
             return result;
         }
@@ -139,7 +165,7 @@ namespace EasyDAL.Exchange.Helper
                 case ExpressionType.GreaterThan:
                 case ExpressionType.GreaterThanOrEqual:
                     var bodyB = func.Body as BinaryExpression;
-                    var leftBody = bodyB.Left as MemberExpression;
+                    var leftBody = bodyB.Left;
                     var conVal = default(ConstantExpression);
                     var memVal = default(string);
                     switch (bodyB.Right.NodeType)
@@ -154,12 +180,18 @@ namespace EasyDAL.Exchange.Helper
                         case ExpressionType.MemberAccess:
                             memVal = HandMemberVal(bodyB);
                             break;
+                        case ExpressionType.Convert:
+                            memVal = HandMemberVal(bodyB);
+                            break;
+                        default:
+                            throw new Exception("请联系 https://www.cnblogs.com/Meng-NET/ 博主!");
                     }
                     result = new DicModel<string, string>
                     {
                         key = GetFieldName(parameter, leftBody),
-                        Value = conVal != null ? (string)(conVal.Value) : memVal,
-                        Option = GetOption(bodyB)
+                        Value = conVal != null ? conVal.Value.ToString() : memVal,
+                        Option = GetOption(bodyB),
+                        Action = ActionEnum.None
                     };
                     break;
                 case ExpressionType.Call:
@@ -172,11 +204,14 @@ namespace EasyDAL.Exchange.Helper
                         {
                             key = GetFieldName(parameter, mem),
                             Value = (string)((bodyMC.Arguments[0] as ConstantExpression).Value),
-                            Option = OptionEnum.Like
+                            Option = OptionEnum.Like,
+                            Action = ActionEnum.None
                         };
                     }
                     result = null;
                     break;
+                default:
+                    throw new Exception("请联系 https://www.cnblogs.com/Meng-NET/ 博主!");
             }
             if (result == null)
             {

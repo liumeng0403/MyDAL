@@ -19,31 +19,44 @@ namespace EasyDAL.Exchange.Core
         {
         }
 
-        public DeleteOperation<M> Where<T>(Expression<Func<M, T>> func)
+        public DeleteOperation<M> Where(Expression<Func<M, bool>> func)
         {
             var field = EH.ExpressionHandle(func);
-            Conditions.Add(new DicModel<string, string>
-            {
-                key=field,
-                Value=null,
-                Option= OptionEnum.None
-            });
+            field.Action = ActionEnum.Where;
+            Conditions.Add(field);
             return this;
         }
 
-        public async Task<int> DeleteAsync(M m)
+        public DeleteOperation<M> And(Expression<Func<M, bool>> func)
+        {
+            var field = EH.ExpressionHandle(func);
+            field.Action = ActionEnum.And;
+            Conditions.Add(field);
+            return this;
+        }
+
+        public DeleteOperation<M> Or(Expression<Func<M, bool>> func)
+        {
+            var field = EH.ExpressionHandle(func);
+            field.Action = ActionEnum.Or;
+            Conditions.Add(field);
+            return this;
+        }
+
+        public async Task<int> DeleteAsync()
         {
 
-            TryGetTableName(m, out var tableName);
+            TryGetTableName<M>(out var tableName);
 
             if (!Conditions.Any())
             {
                 throw new Exception("没有设置任何删除条件!");
             }
-            var whereFields = " where " + string.Join(" and ", Conditions.Select(p => $"`{p.key}`=@{p.key}"));
-            var sql = $" delete from `{tableName}`{whereFields} ; ";
+            var wherePart = GetWheres();
+            var sql = $" delete from `{tableName}` where {wherePart} ; ";
+            var paras = GetParameters();
 
-            return await SqlMapper.ExecuteAsync(Conn, sql, m);
+            return await SqlMapper.ExecuteAsync(Conn, sql, paras);
 
         }
 

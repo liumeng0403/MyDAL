@@ -24,28 +24,42 @@ namespace EasyDAL.Exchange.Core
         private List<string> Fields { get; set; }
         private List<string > Changes { get; set; }
 
-        public UpdateOperation<M> Set<T>(Expression<Func<M,T>> func)
+        public UpdateOperation<M> Set(Expression<Func<M,bool>> func)
         {
-            var field = EH.ExpressionHandle(func);
-            Fields.Add(field);
+            var field = EH.ExpressionHandle(func);  
+            Fields.Add(field.key);
+            field.Action = ActionEnum.Set;
+            Conditions.Add(field);
             return this;
         }
 
-        public UpdateOperation<M> Where<T>(Expression<Func<M,T>> func)
+        public UpdateOperation<M> Where(Expression<Func<M, bool>> func)
         {
             var field = EH.ExpressionHandle(func);
-            Conditions.Add(new DicModel<string, string>
-            {
-                key = field,
-                Value = null,
-                Option =  OptionEnum.None
-            });
+            field.Action = ActionEnum.Where;
+            Conditions.Add(field);
             return this;
         }
 
-        public async Task<int> UpdateAsync(M m)
+        public UpdateOperation<M> And(Expression<Func<M, bool>> func)
         {
-            TryGetTableName(m, out var tableName);
+            var field = EH.ExpressionHandle(func);
+            field.Action = ActionEnum.And;
+            Conditions.Add(field);
+            return this;
+        }
+
+        public UpdateOperation<M> Or(Expression<Func<M, bool>> func)
+        {
+            var field = EH.ExpressionHandle(func);
+            field.Action = ActionEnum.Or;
+            Conditions.Add(field);
+            return this;
+        }
+
+        public async Task<int> UpdateAsync()
+        {
+            TryGetTableName<M>(out var tableName);
 
             if (!Fields.Any())
             {
@@ -55,13 +69,12 @@ namespace EasyDAL.Exchange.Core
             {
                 throw new Exception("没有设置任何更新条件!");
             }
-
             var updateFields = string.Join(",", Fields.Select(p => $"`{p}`=@{p}"));
-            var whereFields = " where " + string.Join(" and ", Conditions.Select(p => $"`{p.key}`=@{p.key}"));
+            var wherePart = GetWheres();
+            var paras = GetParameters();
+            var sql = $" update `{tableName}` set {updateFields} where {wherePart} ;";
 
-
-            var sql = $" update `{tableName}` set {updateFields}{whereFields} ;";
-            return await SqlMapper.ExecuteAsync(Conn, sql, m);
+            return await SqlMapper.ExecuteAsync(Conn, sql, paras);
         }
 
     }

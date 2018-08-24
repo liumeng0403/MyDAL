@@ -1,6 +1,7 @@
 ﻿using EasyDAL.Exchange.AdoNet;
 using EasyDAL.Exchange.Base;
 using EasyDAL.Exchange.DynamicParameter;
+using EasyDAL.Exchange.Enums;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -25,6 +26,23 @@ namespace EasyDAL.Exchange.Core
         public SelectOperation<M> Where(Expression<Func<M, bool>> func)
         {
             var field = EH.ExpressionHandle(func);
+            field.Action = ActionEnum.Where;
+            Conditions.Add(field);
+            return this;
+        }
+
+        public SelectOperation<M> And(Expression<Func<M, bool>> func)
+        {
+            var field = EH.ExpressionHandle(func);
+            field.Action = ActionEnum.And;
+            Conditions.Add(field);
+            return this;
+        }
+
+        public SelectOperation<M> Or(Expression<Func<M, bool>> func)
+        {
+            var field = EH.ExpressionHandle(func);
+            field.Action = ActionEnum.Or;
             Conditions.Add(field);
             return this;
         }
@@ -50,7 +68,7 @@ namespace EasyDAL.Exchange.Core
                 throw new Exception("没有设置任何查询条件!");
             }
 
-            var wherePart = string.Join(" and ", GetWheres());
+            var wherePart = GetWheres();
             var sql = $"SELECT * FROM `{tableName}` WHERE {wherePart} ; ";
             var paras = GetParameters();
 
@@ -66,7 +84,7 @@ namespace EasyDAL.Exchange.Core
                 throw new Exception("没有设置任何查询条件!");
             }
 
-            var wherePart = string.Join(" and ", GetWheres());
+            var wherePart = GetWheres();
             var sql = $"SELECT * FROM `{tableName}` WHERE {wherePart} ; ";
             var paras = GetParameters();
 
@@ -82,7 +100,7 @@ namespace EasyDAL.Exchange.Core
                 throw new Exception("没有设置任何查询条件!");
             }
 
-            var wherePart = string.Join(" and ", GetWheres());
+            var wherePart = GetWheres();
             var totalSql = $"SELECT count(*) FROM `{tableName}` WHERE {wherePart} ; ";
             var dataSql = $"SELECT * FROM `{tableName}` WHERE {wherePart} limit {(PagingList.PageIndex - 1) * PagingList.PageSize},{PagingList.PageIndex * PagingList.PageSize}  ; ";
             var paras = GetParameters();

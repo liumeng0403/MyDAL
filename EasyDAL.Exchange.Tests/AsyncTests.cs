@@ -12,6 +12,7 @@ using EasyDAL.Exchange.AdoNet;
 using EasyDAL.Exchange.MapperX;
 using EasyDAL.Exchange;
 using EasyDAL.Exchange.Tests.Entities;
+using EasyDAL.Exchange.Tests.Enums;
 
 namespace EasyDAL.Exchange.Tests
 {
@@ -84,21 +85,24 @@ namespace EasyDAL.Exchange.Tests
         [Fact]
         public async Task UpdateAsyncTest()
         {
-            //
+            // DB data
             var m = new BodyFitRecord
             {
                 Id = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"),
-                CreatedOn = DateTime.Now,
+                CreatedOn = DateTime.Now,   // new value
                 UserId = Guid.NewGuid(),
-                BodyMeasureProperty = "{xxx:yyy,mmm:nnn,zzz:aaa}"
+                BodyMeasureProperty = "{xxx:yyy,mmm:nnn,zzz:aaa}"   // new value
             };
 
-            var res = await Conn
+            var xx0 = "";
+
+            // where
+            var res1 = await Conn
                 .Updater<BodyFitRecord>()
-                .Set(it => it.CreatedOn)
-                .Set(it => it.BodyMeasureProperty)
-                .Where(it=>it.Id)
-                .UpdateAsync(m);                
+                .Set(it => it.CreatedOn==m.CreatedOn)
+                .Set(it => it.BodyMeasureProperty==m.BodyMeasureProperty)
+                .Where(it=>it.Id==m.Id)
+                .UpdateAsync();                
 
             var xx = "";
         }
@@ -107,19 +111,44 @@ namespace EasyDAL.Exchange.Tests
         [Fact]
         public async Task DeleteAsyncTest()
         {
-            //
-            var m = new BodyFitRecord
-            {
-                Id = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"),
-                CreatedOn = DateTime.Now,
-                UserId = Guid.NewGuid(),
-                BodyMeasureProperty = "{xxx:yyy,mmm:nnn,zzz:aaa}"
-            };
+            var xx0 = "";
 
-            var res = await Conn
+            // where 
+            var Id = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e");
+            var res1 = await Conn
                 .Deleter<BodyFitRecord>()
-                .Where(it => it.Id)
-                .DeleteAsync(m);
+                .Where(it => it.Id==Id)
+                .DeleteAsync();
+
+            var xx1 = "";
+
+            // where and
+            var path = "~00-c-1-2-1-1-1-1-1-4-1-1-1-4-1-2-1-7";
+            var level = 2;
+            var res2 = await Conn
+                .Deleter<Agent>()
+                .Where(it => it.PathId == path)
+                .And(it => it.AgentLevel == (AgentLevel)level)
+                .DeleteAsync();
+
+            var xx2 = "";
+
+            // where or
+            var res3 = await Conn
+                .Deleter<Agent>()
+                .Where(it => it.PathId == path)
+                .Or(it => it.AgentLevel == (AgentLevel)level)
+                .DeleteAsync();
+
+            var xx3 = "";
+
+            // where and or
+            var res4 = await Conn
+                .Deleter<Agent>()
+                .Where(it => it.PathId == path)
+                .And(it => it.AgentLevel == (AgentLevel)level)
+                .Or(it => it.CreatedOn >= testH.StartTime)
+                .DeleteAsync();
 
             var xx = "";
         }
@@ -189,6 +218,8 @@ namespace EasyDAL.Exchange.Tests
 
             var xx = "";
         }
+
+
 
         // 查询多个已存在对象 单条件
         [Fact]

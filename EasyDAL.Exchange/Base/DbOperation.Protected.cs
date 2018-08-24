@@ -52,26 +52,35 @@ namespace EasyDAL.Exchange.Base
             return props.Select(x => x.Name).ToList();
         }
 
-        protected List<string> GetWheres()
+        protected string GetWheres()
         {
-            var str = new List<string>();
+            var str = string.Empty;
 
             foreach (var item in Conditions)
             {
-                switch (item.Option)
+                switch (item.Action)
                 {
-                    case OptionEnum.Equal:
-                    case OptionEnum.LessThan:
-                    case OptionEnum.LessThanOrEqual:
-                    case OptionEnum.GreaterThan:
-                    case OptionEnum.GreaterThanOrEqual:
-                        str.Add($" `{item.key}`{item.Option.ToEnumDesc<OptionEnum>()}@{item.key} ");
-                        break;
-                    case OptionEnum.Like:
-                        str.Add($" `{item.key}`{item.Option.ToEnumDesc<OptionEnum>()}CONCAT('%',@{item.key},'%') ");
+                    case ActionEnum.Where:
+                    case ActionEnum.And:
+                    case ActionEnum.Or:
+                        switch (item.Option)
+                        {
+                            case OptionEnum.Equal:
+                            case OptionEnum.LessThan:
+                            case OptionEnum.LessThanOrEqual:
+                            case OptionEnum.GreaterThan:
+                            case OptionEnum.GreaterThanOrEqual:
+                                str += $" {item.Action.ToEnumDesc<ActionEnum>()} `{item.key}`{item.Option.ToEnumDesc<OptionEnum>()}@{item.key} ";
+                                break;
+                            case OptionEnum.Like:
+                                str += $" {item.Action.ToEnumDesc<ActionEnum>()} `{item.key}`{item.Option.ToEnumDesc<OptionEnum>()}CONCAT('%',@{item.key},'%') ";
+                                break;
+                            default:
+                                throw new Exception("请联系 https://www.cnblogs.com/Meng-NET/ 博主!");
+                        }
                         break;
                     default:
-                        throw new Exception("请联系 https://www.cnblogs.com/Meng-NET/ 博主!");
+                        break;
                 }
             }
 
@@ -107,7 +116,15 @@ namespace EasyDAL.Exchange.Base
             var paras = new DynamicParameters();
             foreach (var item in Conditions)
             {
-                paras.Add(item.key, item.Value);
+                switch (item.Action)
+                {
+                    case ActionEnum.Set:
+                    case ActionEnum.Where:
+                    case ActionEnum.And:
+                    case ActionEnum.Or:
+                        paras.Add(item.key, item.Value);
+                        break;
+                }
             }
             return paras;
         }
