@@ -25,22 +25,6 @@ namespace EasyDAL.Exchange.Tests
             EndTime = DateTime.Now
         };
 
-
-        [Fact]
-        public async Task TestBasicStringUsageQuerySingleAsyncDynamic()
-        {
-            var str = await connection.QuerySingleAsync<string>(new CommandDefinition("select 'abc' as [Value]")).ConfigureAwait(false);
-            Assert.Equal("abc", str);
-        }
-
-
-        [Fact]
-        public async Task TestBasicStringUsageQuerySingleOrDefaultAsync()
-        {
-            var str = await connection.QuerySingleOrDefaultAsync<string>(new CommandDefinition("select null as [Value]")).ConfigureAwait(false);
-            Assert.Null(str);
-        }
-
         
 
         [Fact]
@@ -57,55 +41,6 @@ namespace EasyDAL.Exchange.Tests
             var val = query.Result;
             Assert.Equal(1, val);
         }
-        
-        [Fact]
-        public async Task TestMultiAsync()
-        {
-            using (GridReader multi = await connection.QueryMultipleAsync("select 1; select 2").ConfigureAwait(false))
-            {
-                Assert.Equal(1, multi.ReadAsync<int>().Result.Single());
-                Assert.Equal(2, multi.ReadAsync<int>().Result.Single());
-            }
-        }
-
-        [Fact]
-        public async Task TestMultiAsyncViaFirstOrDefault()
-        {
-            using (GridReader multi = await connection.QueryMultipleAsync("select 1; select 2; select 3; select 4; select 5").ConfigureAwait(false))
-            {
-                Assert.Equal(1, multi.ReadFirstOrDefaultAsync<int>().Result);
-                Assert.Equal(2, multi.ReadAsync<int>().Result.Single());
-                Assert.Equal(3, multi.ReadFirstOrDefaultAsync<int>().Result);
-                Assert.Equal(4, multi.ReadAsync<int>().Result.Single());
-                Assert.Equal(5, multi.ReadFirstOrDefaultAsync<int>().Result);
-            }
-        }
-
-        [Fact]
-        public async Task TestMultiClosedConnAsync()
-        {
-            using (GridReader multi = await connection.QueryMultipleAsync("select 1; select 2").ConfigureAwait(false))
-            {
-                Assert.Equal(1, multi.ReadAsync<int>().Result.Single());
-                Assert.Equal(2, multi.ReadAsync<int>().Result.Single());
-            }
-        }
-
-        [Fact]
-        public async Task TestMultiClosedConnAsyncViaFirstOrDefault()
-        {
-            using (GridReader multi = await connection.QueryMultipleAsync("select 1; select 2; select 3; select 4; select 5;").ConfigureAwait(false))
-            {
-                Assert.Equal(1, multi.ReadFirstOrDefaultAsync<int>().Result);
-                Assert.Equal(2, multi.ReadAsync<int>().Result.Single());
-                Assert.Equal(3, multi.ReadFirstOrDefaultAsync<int>().Result);
-                Assert.Equal(4, multi.ReadAsync<int>().Result.Single());
-                Assert.Equal(5, multi.ReadFirstOrDefaultAsync<int>().Result);
-            }
-        }
-
-        
- 
         
         [Fact]
         public async Task Issue22_ExecuteScalarAsync()
@@ -269,6 +204,22 @@ namespace EasyDAL.Exchange.Tests
             var xx = "";
         }
 
+        // 分页查询 单条件
+        [Fact]
+        public async Task QueryPagingListAsyncTest()
+        {
+            var xx0 = "";
+
+            var res1 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.CreatedOn >= testH.StartTime)
+                .SetPageIndex(1)
+                .SetPageSize(10)
+                .QueryPagingListAsync();
+
+            var xx = "";
+        }
+
 
         /****************************************************************************/
 
@@ -330,48 +281,6 @@ select 42", p).ConfigureAwait(false));
             Assert.Equal(42, result);
         }
 
-
-
-
-
-
-
-        [Fact]
-        public async Task TestSupportForDynamicParametersOutputExpressions_QueryMultipleAsync()
-        {
-            var bob = new Person { Name = "bob", PersonId = 1, Address = new Address { PersonId = 2 } };
-
-            var p = new DynamicParameters(bob);
-            p.Output(bob, b => b.PersonId);
-            p.Output(bob, b => b.Occupation);
-            p.Output(bob, b => b.NumberOfLegs);
-            p.Output(bob, b => b.Address.Name);
-            p.Output(bob, b => b.Address.PersonId);
-
-            int x, y;
-            using (var multi = await connection.QueryMultipleAsync(@"
-SET @Occupation = 'grillmaster' 
-SET @PersonId = @PersonId + 1 
-SET @NumberOfLegs = @NumberOfLegs - 1
-SET @AddressName = 'bobs burgers'
-select 42
-select 17
-SET @AddressPersonId = @PersonId", p).ConfigureAwait(false))
-            {
-                x = multi.ReadAsync<int>().Result.Single();
-                y = multi.ReadAsync<int>().Result.Single();
-            }
-
-            Assert.Equal("grillmaster", bob.Occupation);
-            Assert.Equal(2, bob.PersonId);
-            Assert.Equal(1, bob.NumberOfLegs);
-            Assert.Equal("bobs burgers", bob.Address.Name);
-            Assert.Equal(2, bob.Address.PersonId);
-            Assert.Equal(42, x);
-            Assert.Equal(17, y);
-        }
-
         
-   
     }
 }

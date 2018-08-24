@@ -14,9 +14,12 @@ namespace EasyDAL.Exchange.Core
 {
     public class SelectOperation<M> : DbOperation
     {
+        private PagingList<M> PagingList { get; set; }
+
         public SelectOperation(IDbConnection conn)
             : base(conn)
         {
+            PagingList = new PagingList<M>();
         }
 
         public SelectOperation<M> Where(Expression<Func<M, bool>> func)
@@ -26,11 +29,23 @@ namespace EasyDAL.Exchange.Core
             return this;
         }
 
+        public SelectOperation<M> SetPageSize(int pageSize)
+        {
+            PagingList.PageSize = pageSize;
+            return this;
+        }
+
+        public SelectOperation<M> SetPageIndex(int pageIndex)
+        {
+            PagingList.PageIndex = pageIndex;
+            return this;
+        }
+
         public async Task<M> QueryFirstOrDefaultAsync()
         {
             TryGetTableName<M>(out var tableName);
 
-            if(!Conditions.Any())
+            if (!Conditions.Any())
             {
                 throw new Exception("没有设置任何查询条件!");
             }
@@ -46,7 +61,7 @@ namespace EasyDAL.Exchange.Core
         {
             TryGetTableName<M>(out var tableName);
 
-            if(!Conditions.Any())
+            if (!Conditions.Any())
             {
                 throw new Exception("没有设置任何查询条件!");
             }
@@ -58,5 +73,24 @@ namespace EasyDAL.Exchange.Core
             return (await SqlMapper.QueryAsync<M>(Conn, sql, paras)).ToList();
         }
 
+        public async Task<PagingList<M>> QueryPagingListAsync()
+        {
+            TryGetTableName<M>(out var tableName);
+
+            if (!Conditions.Any())
+            {
+                throw new Exception("没有设置任何查询条件!");
+            }
+
+            var wherePart = string.Join(" and ", GetWheres());
+            var totalSql = $"SELECT count(*) FROM `{tableName}` WHERE {wherePart} ; ";
+            var dataSql = $"SELECT * FROM `{tableName}` WHERE {wherePart} limit {(PagingList.PageIndex - 1) * PagingList.PageSize},{PagingList.PageIndex * PagingList.PageSize}  ; ";
+            var paras = GetParameters();
+            PagingList.TotalCount = await SqlMapper.QuerySingleOrDefaultAsync<long>(Conn, totalSql, paras);
+            PagingList.Data = (await SqlMapper.QueryAsync<M>(Conn, dataSql, paras)).ToList();
+
+
+            return PagingList;
+        }
     }
 }

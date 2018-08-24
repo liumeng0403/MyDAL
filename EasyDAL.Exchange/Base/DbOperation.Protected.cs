@@ -25,7 +25,7 @@ namespace EasyDAL.Exchange.Base
 
         protected ExpressionHelper EH { get; private set; }
 
-        protected List<DicModel<string, string, OptionEnum>> Conditions { get; private set; }
+        protected List<DicModel<string, string>> Conditions { get; private set; }
 
         protected static readonly ConcurrentDictionary<Type, List<PropertyInfo>> ModelPropertiesCache = new ConcurrentDictionary<Type, List<PropertyInfo>>();
 
@@ -58,17 +58,17 @@ namespace EasyDAL.Exchange.Base
 
             foreach (var item in Conditions)
             {
-                switch (item.Other)
+                switch (item.Option)
                 {
                     case OptionEnum.Equal:
                     case OptionEnum.LessThan:
                     case OptionEnum.LessThanOrEqual:
                     case OptionEnum.GreaterThan:
                     case OptionEnum.GreaterThanOrEqual:
-                        str.Add($" `{item.key}`{item.Other.ToEnumDesc<OptionEnum>()}@{item.key} ");
+                        str.Add($" `{item.key}`{item.Option.ToEnumDesc<OptionEnum>()}@{item.key} ");
                         break;
                     case OptionEnum.Like:
-                        str.Add($" `{item.key}`{item.Other.ToEnumDesc<OptionEnum>()}CONCAT('%',@{item.key},'%') ");
+                        str.Add($" `{item.key}`{item.Option.ToEnumDesc<OptionEnum>()}CONCAT('%',@{item.key},'%') ");
                         break;
                     default:
                         throw new Exception("请联系 https://www.cnblogs.com/Meng-NET/ 博主!");

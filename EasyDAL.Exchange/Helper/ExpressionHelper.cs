@@ -127,9 +127,9 @@ namespace EasyDAL.Exchange.Helper
         /// Get the field name in table according to the name property in ColumnAttibute
         /// </summary>
         /// <param name="func">lambda expression like t=>t.colname==5</param>
-        public DicModel<string, string, OptionEnum> ExpressionHandle<M>(Expression<Func<M, bool>> func)
+        public DicModel<string, string> ExpressionHandle<M>(Expression<Func<M, bool>> func)
         {
-            var result = default(DicModel<string, string, OptionEnum>);
+            var result = default(DicModel<string, string>);
             var parameter = func.Parameters[0];
             switch (func.Body.NodeType)
             {
@@ -155,11 +155,11 @@ namespace EasyDAL.Exchange.Helper
                             memVal = HandMemberVal(bodyB);
                             break;
                     }
-                    result = new DicModel<string, string, OptionEnum>
+                    result = new DicModel<string, string>
                     {
                         key = GetFieldName(parameter, leftBody),
                         Value = conVal != null ? (string)(conVal.Value) : memVal,
-                        Other = GetOption(bodyB)
+                        Option = GetOption(bodyB)
                     };
                     break;
                 case ExpressionType.Call:
@@ -168,11 +168,11 @@ namespace EasyDAL.Exchange.Helper
                     if (exprStr.Contains(".Contains("))
                     {
                         var mem = bodyMC.Object as MemberExpression;
-                        result = new DicModel<string, string, OptionEnum>
+                        result = new DicModel<string, string>
                         {
                             key = GetFieldName(parameter, mem),
                             Value = (string)((bodyMC.Arguments[0] as ConstantExpression).Value),
-                            Other = OptionEnum.Like
+                            Option = OptionEnum.Like
                         };
                     }
                     result = null;

@@ -156,75 +156,7 @@ namespace EasyDAL.Exchange.AdoNet
                 cmd?.Dispose();
             }
         }
-
-        private static IEnumerable<T> QueryImpl<T>(this IDbConnection cnn, CommandDefinition command, Type effectiveType)
-        {
-            object param = command.Parameters;
-            var identity = new Identity(command.CommandText, command.CommandType, cnn, effectiveType, param?.GetType(), null);
-            var info = GetCacheInfo(identity, param, command.AddToCache);
-
-            IDbCommand cmd = null;
-            IDataReader reader = null;
-
-            bool wasClosed = cnn.State == ConnectionState.Closed;
-            try
-            {
-                cmd = command.SetupCommand(cnn, info.ParamReader);
-
-                if (wasClosed) cnn.Open();
-                reader = ExecuteReaderWithFlagsFallback(cmd, wasClosed, CommandBehavior.SequentialAccess | CommandBehavior.SingleResult);
-                wasClosed = false; // *if* the connection was closed and we got this far, then we now have a reader
-                // with the CloseConnection flag, so the reader will deal with the connection; we
-                // still need something in the "finally" to ensure that broken SQL still results
-                // in the connection closing itself
-                var tuple = info.Deserializer;
-                int hash = GetColumnHash(reader);
-                if (tuple.Func == null || tuple.Hash != hash)
-                {
-                    if (reader.FieldCount == 0) //https://code.google.com/p/dapper-dot-net/issues/detail?id=57
-                        yield break;
-                    tuple = info.Deserializer = new DeserializerState(hash, GetDeserializer(effectiveType, reader, 0, -1, false));
-                    if (command.AddToCache) SetQueryCache(identity, info);
-                }
-
-                var func = tuple.Func;
-                var convertToType = Nullable.GetUnderlyingType(effectiveType) ?? effectiveType;
-                while (reader.Read())
-                {
-                    object val = func(reader);
-                    if (val == null || val is T)
-                    {
-                        yield return (T)val;
-                    }
-                    else
-                    {
-                        yield return (T)Convert.ChangeType(val, convertToType, CultureInfo.InvariantCulture);
-                    }
-                }
-                while (reader.NextResult()) { /* ignore subsequent result sets */ }
-                // happy path; close the reader cleanly - no
-                // need for "Cancel" etc
-                reader.Dispose();
-                reader = null;
-
-                command.OnCompleted();
-            }
-            finally
-            {
-                if (reader != null)
-                {
-                    if (!reader.IsClosed)
-                    {
-                        try { cmd.Cancel(); }
-                        catch { /* don't spoil the existing exception */ }
-                    }
-                    reader.Dispose();
-                }
-                if (wasClosed) cnn.Close();
-                cmd?.Dispose();
-            }
-        }
-
+        
         private static async Task<IEnumerable<T>> QueryAsync<T>(this IDbConnection cnn, Type effectiveType, CommandDefinition command)
         {
             object param = command.Parameters;
@@ -359,63 +291,6 @@ namespace EasyDAL.Exchange.AdoNet
         /*
          * ExecuteImpl
          */
-        private static int ExecuteImpl(this IDbConnection cnn, ref CommandDefinition command)
-        {
-            object param = command.Parameters;
-            IEnumerable multiExec = GetMultiExec(param);
-            Identity identity;
-            CacheInfo info = null;
-            if (multiExec != null)
-            {
-                if ((command.Flags & CommandFlags.Pipelined) != 0)
-                {
-                    // this includes all the code for concurrent/overlapped query
-                    return ExecuteMultiImplAsync(cnn, command, multiExec).Result;
-                }
-                bool isFirst = true;
-                int total = 0;
-                bool wasClosed = cnn.State == ConnectionState.Closed;
-                try
-                {
-                    if (wasClosed) cnn.Open();
-                    using (var cmd = command.SetupCommand(cnn, null))
-                    {
-                        string masterSql = null;
-                        foreach (var obj in multiExec)
-                        {
-                            if (isFirst)
-                            {
-                                masterSql = cmd.CommandText;
-                                isFirst = false;
-                                identity = new Identity(command.CommandText, cmd.CommandType, cnn, null, obj.GetType(), null);
-                                info = GetCacheInfo(identity, obj, command.AddToCache);
-                            }
-                            else
-                            {
-                                cmd.CommandText = masterSql; // because we do magic replaces on "in" etc
-                                cmd.Parameters.Clear(); // current code is Add-tastic
-                            }
-                            info.ParamReader(cmd, obj);
-                            total += cmd.ExecuteNonQuery();
-                        }
-                    }
-                    command.OnCompleted();
-                }
-                finally
-                {
-                    if (wasClosed) cnn.Close();
-                }
-                return total;
-            }
-
-            // nice and simple
-            if (param != null)
-            {
-                identity = new Identity(command.CommandText, command.CommandType, cnn, null, param.GetType(), null);
-                info = GetCacheInfo(identity, param, command.AddToCache);
-            }
-            return ExecuteCommand(cnn, ref command, param == null ? null : info.ParamReader);
-        }
         private static async Task<int> ExecuteImplAsync(IDbConnection cnn, CommandDefinition command, object param)
         {
             var identity = new Identity(command.CommandText, command.CommandType, cnn, null, param?.GetType(), null);
@@ -650,24 +525,6 @@ namespace EasyDAL.Exchange.AdoNet
                 return cmd.ExecuteReaderAsync(GetBehavior(wasClosed, behavior), cancellationToken);
             }
             return task;
-        }
-        private static int ExecuteCommand(IDbConnection cnn, ref CommandDefinition command, Action<IDbCommand, object> paramReader)
-        {
-            IDbCommand cmd = null;
-            bool wasClosed = cnn.State == ConnectionState.Closed;
-            try
-            {
-                cmd = command.SetupCommand(cnn, paramReader);
-                if (wasClosed) cnn.Open();
-                int result = cmd.ExecuteNonQuery();
-                command.OnCompleted();
-                return result;
-            }
-            finally
-            {
-                if (wasClosed) cnn.Close();
-                cmd?.Dispose();
-            }
         }
 
     }

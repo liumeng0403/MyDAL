@@ -34,11 +34,11 @@ namespace EasyDAL.Exchange.Core
         public UpdateOperation<M> Where<T>(Expression<Func<M,T>> func)
         {
             var field = EH.ExpressionHandle(func);
-            Conditions.Add(new DicModel<string, string, OptionEnum>
+            Conditions.Add(new DicModel<string, string>
             {
                 key = field,
                 Value = null,
-                Other =  OptionEnum.None
+                Option =  OptionEnum.None
             });
             return this;
         }
