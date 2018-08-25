@@ -11,7 +11,6 @@ namespace EasyDAL.Exchange.Helper
     public class GenericHelper : ClassInstance<GenericHelper>
     {
 
-
         public RM GetPropertyValue<M, RM>(M m, string properyName)
         {
             try
@@ -46,6 +45,86 @@ namespace EasyDAL.Exchange.Helper
             {
                 throw new Exception("方法GetPropertyValue<M>出错:" + "请向方法 [GenericHelper.ConvertType] 中添加类型解析 " + ex.Message);
             }
+        }
+
+
+        public string GetTypeValue(Type valType, PropertyInfo outerProp, object outerObj)
+        {
+            var val = string.Empty;
+
+            if (valType == typeof(sbyte))
+            {
+                val = ((sbyte)outerProp.GetValue(outerObj, null)).ToString();
+            }
+            else if (valType == typeof(short))
+            {
+                val = ((short)outerProp.GetValue(outerObj, null)).ToString();
+            }
+            else if (valType == typeof(int))
+            {
+                val = ((int)outerProp.GetValue(outerObj, null)).ToString();
+            }
+            else if (valType == typeof(long))
+            {
+                val = ((long)outerProp.GetValue(outerObj, null)).ToString();
+            }
+            else if (valType == typeof(byte))
+            {
+                val = ((byte)outerProp.GetValue(outerObj, null)).ToString();
+            }
+            else if (valType == typeof(ushort))
+            {
+                val = ((ushort)outerProp.GetValue(outerObj, null)).ToString();
+            }
+            else if (valType == typeof(uint))
+            {
+                val = ((uint)outerProp.GetValue(outerObj, null)).ToString();
+            }
+            else if (valType == typeof(ulong))
+            {
+                val = ((ulong)outerProp.GetValue(outerObj, null)).ToString();
+            }
+            else if (valType == typeof(float))
+            {
+                val = ((float)outerProp.GetValue(outerObj, null)).ToString();
+            }
+            else if (valType == typeof(double))
+            {
+                val = ((double)outerProp.GetValue(outerObj, null)).ToString();
+            }
+            else if (valType == typeof(decimal))
+            {
+                val = ((decimal)outerProp.GetValue(outerObj, null)).ToString();
+            }
+            else if (valType == typeof(bool))
+            {
+                val = ((bool)outerProp.GetValue(outerObj, null)).ToString();
+            }
+            else if (valType == typeof(char))
+            {
+                val = ((char)outerProp.GetValue(outerObj, null)).ToString();
+            }
+            else if (valType == typeof(DateTime))
+            {
+                val = outerProp.GetValue(outerObj, null).ToString();
+            }
+            else if (valType == typeof(Guid))
+            {
+                val = outerProp.GetValue(outerObj, null).ToString();
+            }
+            else if (valType == typeof(string))
+            {
+                val = (outerProp.GetValue(outerObj, null)).ToString();
+            }
+            else if (valType.IsEnum) 
+            {
+                val = ((int)outerProp.GetValue(outerObj, null)).ToString();
+            }
+            else
+            {
+                val = outerProp.GetValue(outerObj, null).ToString();
+            }
+            return val;
         }
 
         public void SetPropertyValue<M>(M m, string propertyName, object value)

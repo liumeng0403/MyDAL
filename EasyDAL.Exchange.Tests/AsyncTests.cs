@@ -66,50 +66,6 @@ namespace EasyDAL.Exchange.Tests
         /***************************************************************************************************************/
 
 
-        // 创建一个新对象
-        [Fact]
-        public async Task CreateAsyncTest()
-        {
-            var m = new BodyFitRecord
-            {
-                Id = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"),
-                CreatedOn = DateTime.Now,
-                UserId = Guid.NewGuid(),
-                BodyMeasureProperty = "{xxx:yyy,mmm:nnn}"
-            };
-            var res = await Conn
-                .Creater<BodyFitRecord>()
-                .CreateAsync(m);
-
-            var xx = "";
-        }
-
-        // 修改一个已有对象
-        [Fact]
-        public async Task UpdateAsyncTest()
-        {
-            // DB data
-            var m = new BodyFitRecord
-            {
-                Id = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"),
-                CreatedOn = DateTime.Now,   // new value
-                UserId = Guid.NewGuid(),
-                BodyMeasureProperty = "{xxx:yyy,mmm:nnn,zzz:aaa}"   // new value
-            };
-
-            var xx0 = "";
-
-            // where
-            var res1 = await Conn
-                .Updater<BodyFitRecord>()
-                .Set(it => it.CreatedOn == m.CreatedOn)
-                .Set(it => it.BodyMeasureProperty == m.BodyMeasureProperty)
-                .Where(it => it.Id == m.Id)
-                .UpdateAsync();
-
-            var xx = "";
-        }
-
         // 删除一个已有对象
         [Fact]
         public async Task DeleteAsyncTest()
@@ -152,6 +108,50 @@ namespace EasyDAL.Exchange.Tests
                 .And(it => it.AgentLevel == (AgentLevel)level)
                 .Or(it => it.CreatedOn >= testH.StartTime)
                 .DeleteAsync();
+
+            var xx = "";
+        }
+
+        // 创建一个新对象
+        [Fact]
+        public async Task CreateAsyncTest()
+        {
+            var m = new BodyFitRecord
+            {
+                Id = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"),
+                CreatedOn = DateTime.Now,
+                UserId = Guid.NewGuid(),
+                BodyMeasureProperty = "{xxx:yyy,mmm:nnn}"
+            };
+            var res = await Conn
+                .Creater<BodyFitRecord>()
+                .CreateAsync(m);
+
+            var xx = "";
+        }
+
+        // 修改一个已有对象
+        [Fact]
+        public async Task UpdateAsyncTest()
+        {
+            // DB data
+            var m = new BodyFitRecord
+            {
+                Id = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"),
+                CreatedOn = DateTime.Now,   // new value
+                UserId = Guid.NewGuid(),
+                BodyMeasureProperty = "{xxx:yyy,mmm:nnn,zzz:aaa}"   // new value
+            };
+
+            var xx0 = "";
+
+            // where
+            var res1 = await Conn
+                .Updater<BodyFitRecord>()
+                .Set(it => it.CreatedOn == m.CreatedOn)
+                .Set(it => it.BodyMeasureProperty == m.BodyMeasureProperty)
+                .Where(it => it.Id == m.Id)
+                .UpdateAsync();
 
             var xx = "";
         }
@@ -260,7 +260,6 @@ namespace EasyDAL.Exchange.Tests
 
             var xx1 = "";
 
-            // 枚举情况 bug  已解决
             var res2 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.AgentLevel == testQ.AgentLevelXX)
@@ -299,19 +298,17 @@ namespace EasyDAL.Exchange.Tests
                 ContainStr = "~00-d-3-1-"
             };
 
-            if (true)  //  有 bug 
-            {
-                var xx0 = "";
 
-                // where and like 
-                var res1 = await Conn
-                    .Selecter<Agent>()
-                    .Where(it => it.CreatedOn >= testH.StartTime)
-                    .And(it => it.PathId.Contains(testH.ContainStr))
-                    .SetPageIndex(1)
-                    .SetPageSize(10)
-                    .QueryPagingListAsync();
-            }
+            var xx0 = "";
+
+            // where and like 
+            var res1 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.CreatedOn >= testH.StartTime)
+                .And(it => it.PathId.Contains(testH.ContainStr))   
+                .SetPageIndex(1)
+                .SetPageSize(10)
+                .QueryPagingListAsync();
 
             var xx1 = "";
 

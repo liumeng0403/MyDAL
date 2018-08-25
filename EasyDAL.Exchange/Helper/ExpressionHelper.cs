@@ -15,8 +15,10 @@ namespace EasyDAL.Exchange.Helper
     public class ExpressionHelper : ClassInstance<ExpressionHelper>
     {
         private static ConcurrentDictionary<string, ConcurrentDictionary<Int32, String>> Cache = new ConcurrentDictionary<string, ConcurrentDictionary<Int32, String>>();
+        private GenericHelper GH = GenericHelper.Instance;
 
-        private string GetKey01(ParameterExpression parameter, Expression body)
+        // -01-02- 
+        private string GetKey(ParameterExpression parameter, Expression body)
         {
             var leftBody = body as MemberExpression;
             if (leftBody == null)  // Convert
@@ -41,13 +43,14 @@ namespace EasyDAL.Exchange.Helper
                 return field;
             }
         }
-        private string GetMemExprVal02(Expression memExpre)
+        // -02-03-
+        private string GetMemExprVal(Expression memExpre)
         {
             var str = string.Empty;
 
             //
             var memExpr = memExpre as MemberExpression;
-            PropertyInfo outerProp = memExpr.Member as PropertyInfo;
+            var outerProp = memExpr.Member as PropertyInfo;
             if (outerProp == null)
             {
                 var memMem = memExpr.Member as FieldInfo;
@@ -69,62 +72,99 @@ namespace EasyDAL.Exchange.Helper
                     var innerField = (FieldInfo)innerMember.Member;
                     ConstantExpression ce = (ConstantExpression)innerMember.Expression;
                     object innerObj = ce.Value;
-                    object outerObj = innerField.GetValue(innerObj);
-                    if (outerProp.PropertyType == typeof(DateTime))
-                    {
-                        str = outerProp.GetValue(outerObj, null).ToString();
-                    }
-                    else if (outerProp.PropertyType.IsValueType)
-                    {
-                        str = ((int)outerProp.GetValue(outerObj, null)).ToString();
-                    }
-                    else
-                    {
-                        str = outerProp.GetValue(outerObj, null).ToString();
-                    }
+                    var outerObj = innerField.GetValue(innerObj);
+                    var valType = outerProp.PropertyType;
+                    str = GH.GetTypeValue(valType, outerProp, outerObj);
                 }
             }
 
-            if(string.IsNullOrWhiteSpace(str))
-            {
-                throw new Exception();
-            }
-            else
+            if (!string.IsNullOrWhiteSpace(str))
             {
                 return str;
             }
-        }
-        private string HandMember01(BinaryExpression bodyB)
-        {
-            var result = default(string);
-            if (bodyB.Right.NodeType == ExpressionType.MemberAccess)
+            else
             {
-                result = GetMemExprVal02(bodyB.Right);
+                throw new Exception();
             }
-            else if (bodyB.Right.NodeType == ExpressionType.Convert)
+        }
+        // 01
+        private DicModel<string, string> GetCallDicM(ParameterExpression parameter, Expression body)
+        {
+            var result = default(DicModel<string, string>);
+            var bodyMC = body as MethodCallExpression;
+            var exprStr = bodyMC.ToString();
+
+            if (exprStr.Contains(".Contains("))
             {
-                var expr = bodyB.Right as UnaryExpression;
-                if (expr.Operand.NodeType == ExpressionType.Convert)
+                var mem = bodyMC.Object as MemberExpression;
+                var pExpr = bodyMC.Arguments[0];
+                var key = GetKey(parameter, mem);
+                var val = string.Empty;
+                if (pExpr.NodeType == ExpressionType.Constant)
                 {
-                    var exprExpr = expr.Operand as UnaryExpression;
-                    var memExpr = exprExpr.Operand as MemberExpression;
-                    var memCon = memExpr.Expression as ConstantExpression;
-                    var memObj = memCon.Value;
-                    var memFiled = memExpr.Member as FieldInfo;
-                    result = memFiled.GetValue(memObj).ToString();
+                    val = (string)((pExpr as ConstantExpression).Value);
                 }
-                else if(expr.Operand.NodeType== ExpressionType.MemberAccess)
+                else if (pExpr.NodeType == ExpressionType.MemberAccess)
                 {
-                    result = GetMemExprVal02(expr.Operand);
+                    val = GetMemExprVal(pExpr);
                 }
+                else
+                {
+                    throw new Exception();
+                }
+                result = new DicModel<string, string>
+                {
+                    key = key,
+                    Value = val,
+                    Option = OptionEnum.Like,
+                    Action = ActionEnum.None
+                };
             }
             else
             {
-                throw new Exception("请联系 https://www.cnblogs.com/Meng-NET/ 博主!");
+                throw new Exception();
             }
             return result;
         }
-        private OptionEnum GetOption01(BinaryExpression be)
+        // 01
+        private DicModel<string,string> GetBinaryDicM(ParameterExpression parameter, Expression body)
+        {
+            var result = default(DicModel<string, string>);
+            var bodyB = body as BinaryExpression;
+            var leftBody = bodyB.Left;
+            var key = GetKey(parameter, leftBody);
+            var val = string.Empty;
+            var bRight = bodyB.Right;
+            switch (bRight.NodeType)
+            {
+                case ExpressionType.Constant:
+                    val = (bRight as ConstantExpression).Value.ToString();
+                    break;
+                case ExpressionType.Call:
+                    var rightExpr = bRight as MethodCallExpression;
+                    var conVal = rightExpr.Arguments[0] as ConstantExpression;
+                    val = conVal.Value.ToString();
+                    break;
+                case ExpressionType.MemberAccess:
+                    val = HandMember(bodyB);
+                    break;
+                case ExpressionType.Convert:
+                    val = HandMember(bodyB);
+                    break;
+                default:
+                    throw new Exception("请联系 https://www.cnblogs.com/Meng-NET/ 博主!");
+            }
+            result = new DicModel<string, string>
+            {
+                key = key,
+                Value = val,
+                Option = GetOption(bodyB),
+                Action = ActionEnum.None
+            };
+            return result;
+        }
+        // 02
+        private OptionEnum GetOption(BinaryExpression be)
         {
             var option = OptionEnum.None;
             if (be.NodeType == ExpressionType.Equal)
@@ -150,6 +190,37 @@ namespace EasyDAL.Exchange.Helper
 
             return option;
         }
+        // 02
+        private string HandMember(BinaryExpression bodyB)
+        {
+            var result = default(string);
+            if (bodyB.Right.NodeType == ExpressionType.MemberAccess)
+            {
+                result = GetMemExprVal(bodyB.Right);
+            }
+            else if (bodyB.Right.NodeType == ExpressionType.Convert)
+            {
+                var expr = bodyB.Right as UnaryExpression;
+                if (expr.Operand.NodeType == ExpressionType.Convert)
+                {
+                    var exprExpr = expr.Operand as UnaryExpression;
+                    var memExpr = exprExpr.Operand as MemberExpression;
+                    var memCon = memExpr.Expression as ConstantExpression;
+                    var memObj = memCon.Value;
+                    var memFiled = memExpr.Member as FieldInfo;
+                    result = memFiled.GetValue(memObj).ToString();
+                }
+                else if (expr.Operand.NodeType == ExpressionType.MemberAccess)
+                {
+                    result = GetMemExprVal(expr.Operand);
+                }
+            }
+            else
+            {
+                throw new Exception("请联系 https://www.cnblogs.com/Meng-NET/ 博主!");
+            }
+            return result;
+        }
 
         /// <summary>
         /// Get the field name in table according to the name property in ColumnAttibute
@@ -173,7 +244,7 @@ namespace EasyDAL.Exchange.Helper
             {
                 throw new Exception($"Lambda expression[{func.ToString()}] is invalid.");
             }
-            var fieldName = GetKey01(parameter, member);
+            var fieldName = GetKey(parameter, member);
 
             return fieldName;
         }
@@ -188,71 +259,32 @@ namespace EasyDAL.Exchange.Helper
             {
                 var result = default(DicModel<string, string>);
                 var parameter = func.Parameters[0];
-                switch (func.Body.NodeType)
+                var body = func.Body;
+                switch (body.NodeType)
                 {
                     case ExpressionType.Equal:
                     case ExpressionType.LessThan:
                     case ExpressionType.LessThanOrEqual:
                     case ExpressionType.GreaterThan:
                     case ExpressionType.GreaterThanOrEqual:
-                        var bodyB = func.Body as BinaryExpression;
-                        var leftBody = bodyB.Left;
-                        var conVal = default(ConstantExpression);
-                        var memVal = default(string);
-                        switch (bodyB.Right.NodeType)
-                        {
-                            case ExpressionType.Constant:
-                                conVal = bodyB.Right as ConstantExpression;
-                                break;
-                            case ExpressionType.Call:
-                                var rightExpr = bodyB.Right as MethodCallExpression;
-                                conVal = rightExpr.Arguments[0] as ConstantExpression;
-                                break;
-                            case ExpressionType.MemberAccess:
-                                memVal = HandMember01(bodyB);
-                                break;
-                            case ExpressionType.Convert:
-                                memVal = HandMember01(bodyB);
-                                break;
-                            default:
-                                throw new Exception("请联系 https://www.cnblogs.com/Meng-NET/ 博主!");
-                        }
-                        result = new DicModel<string, string>
-                        {
-                            key = GetKey01(parameter, leftBody),
-                            Value = conVal != null ? conVal.Value.ToString() : memVal,
-                            Option = GetOption01(bodyB),
-                            Action = ActionEnum.None
-                        };
+                        result = GetBinaryDicM(parameter, body);
                         break;
                     case ExpressionType.Call:
-                        var bodyMC = func.Body as MethodCallExpression;
-                        var exprStr = bodyMC.ToString();
-                        if (exprStr.Contains(".Contains("))
-                        {
-                            var mem = bodyMC.Object as MemberExpression;
-                            result = new DicModel<string, string>
-                            {
-                                key = GetKey01(parameter, mem),
-                                Value = (string)((bodyMC.Arguments[0] as ConstantExpression).Value),
-                                Option = OptionEnum.Like,
-                                Action = ActionEnum.None
-                            };
-                        }
+                        result = GetCallDicM(parameter, body);
                         break;
                     default:
-                        throw new Exception("请联系 https://www.cnblogs.com/Meng-NET/ 博主!");
+                        throw new Exception();
                 }
-                if (result == null)
-                {
-                    throw new Exception($"不支持的表达式:[{func.ToString()}]");
-                }
-                else
+                if (result != null)
                 {
                     return result;
                 }
+                else
+                {
+                    throw new Exception();
+                }
             }
-            catch
+            catch(Exception ex)
             {
                 throw new Exception($"不支持的表达式:[{func.ToString()}]");
             }
