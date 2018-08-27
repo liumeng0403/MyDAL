@@ -28,34 +28,6 @@ namespace EasyDAL.Exchange.AdoNet
         /// <summary>
         /// Execute parameterized SQL that selects a single value.
         /// </summary>
-        /// <param name="cnn">The connection to execute on.</param>
-        /// <param name="sql">The SQL to execute.</param>
-        /// <param name="param">The parameters to use for this command.</param>
-        /// <param name="transaction">The transaction to use for this command.</param>
-        /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
-        /// <param name="commandType">Is it a stored proc or a batch?</param>
-        /// <returns>The first cell returned, as <see cref="object"/>.</returns>
-        public static Task<object> ExecuteScalarAsync(this IDbConnection cnn, string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null) =>
-            ExecuteScalarImplAsync<object>(cnn, new CommandDefinition(sql, param, transaction, commandTimeout, commandType, CommandFlags.Buffered));
-
-        /// <summary>
-        /// Execute parameterized SQL that selects a single value.
-        /// </summary>
-        /// <typeparam name="T">The type to return.</typeparam>
-        /// <param name="cnn">The connection to execute on.</param>
-        /// <param name="sql">The SQL to execute.</param>
-        /// <param name="param">The parameters to use for this command.</param>
-        /// <param name="transaction">The transaction to use for this command.</param>
-        /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
-        /// <param name="commandType">Is it a stored proc or a batch?</param>
-        /// <returns>The first cell returned, as <typeparamref name="T"/>.</returns>
-        public static Task<T> ExecuteScalarAsync<T>(this IDbConnection cnn, string sql, object param = null, IDbTransaction transaction = null, int? commandTimeout = null, CommandType? commandType = null) =>
-            ExecuteScalarImplAsync<T>(cnn, new CommandDefinition(sql, param, transaction, commandTimeout, commandType, CommandFlags.Buffered));
-
-
-        /// <summary>
-        /// Execute parameterized SQL that selects a single value.
-        /// </summary>
         internal static Task<T> ExecuteScalarAsync<T>(IDbConnection cnn, string sql, object param = null) =>
             ExecuteScalarImplAsync<T>(cnn, new CommandDefinition(sql, param, null, null, null, CommandFlags.Buffered));
 

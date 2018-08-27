@@ -89,7 +89,7 @@ namespace EasyDAL.Exchange.Core
             var totalSql = $"SELECT count(*) FROM `{tableName}` WHERE {wherePart} ; ";
             var dataSql = $"SELECT * FROM `{tableName}` WHERE {wherePart} limit {(PagingList.PageIndex - 1) * PagingList.PageSize},{PagingList.PageIndex * PagingList.PageSize}  ; ";
             var paras = GetParameters();
-            PagingList.TotalCount = await SqlMapper.QuerySingleOrDefaultAsync<long>(DC.Conn, totalSql, paras);
+            PagingList.TotalCount = await SqlMapper.ExecuteScalarAsync<long>(DC.Conn, totalSql, paras);
             PagingList.Data = (await SqlMapper.QueryAsync<M>(DC.Conn, dataSql, paras)).ToList();
 
 
@@ -97,12 +97,5 @@ namespace EasyDAL.Exchange.Core
         }
 
 
-        ///*
-        // * 不需要实现的方法
-        // */
-        //public override Task<int> UpdateAsync()
-        //{
-        //    throw new NotImplementedException();
-        //}
     }
 }
