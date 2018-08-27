@@ -10,7 +10,7 @@ namespace EasyDAL.Exchange.Core.Update
 {
     public class Setter<M>: Operator
     {
-        public Setter(DbContext dc)
+        internal Setter(DbContext dc)
         {
             DC = dc;
         }

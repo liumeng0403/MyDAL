@@ -16,8 +16,8 @@ namespace EasyDAL.Exchange.Tests
             {
                 return new WhereTestModel
                 {
-                    CreatedOn = DateTime.Now.AddDays(-10),
-                    StartTime = DateTime.Now.AddDays(-10),
+                    CreatedOn = DateTime.Now.AddDays(-30),
+                    StartTime = DateTime.Now.AddDays(-30),
                     EndTime = DateTime.Now,
                     AgentLevelXX = AgentLevel.DistiAgent,
                     ContainStr = "~00-d-3-1-"

@@ -9,7 +9,7 @@ namespace EasyDAL.Exchange.Core.Sql
     public abstract class Operator
     {
 
-        protected DbContext DC { get; set; }
+        internal DbContext DC { get; set; }
 
         protected void WhereHandle<M>(Expression<Func<M, bool>> func)
         {

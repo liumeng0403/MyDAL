@@ -53,7 +53,7 @@ namespace EasyDAL.Exchange.Tests
             // 修改
             // where set 
             var res3 = await Conn
-                .Updater<BodyFitRecord>()                
+                .Updater<BodyFitRecord>()      
                 .Set(it => it.CreatedOn, m1.CreatedOn)
                 .Set(it => it.BodyMeasureProperty, m1.BodyMeasureProperty)
                 .Where(it => it.Id == m.Id)

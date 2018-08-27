@@ -11,7 +11,7 @@ namespace EasyDAL.Exchange.Core.Delete
 {
     public class DeleteFilter<M>:Operator
     {        
-        public DeleteFilter(DbContext dc)
+        internal DeleteFilter(DbContext dc)
         {
             DC = dc;
         }

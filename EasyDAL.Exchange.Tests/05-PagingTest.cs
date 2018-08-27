@@ -20,9 +20,7 @@ namespace EasyDAL.Exchange.Tests
             var res1 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= testH.StartTime)
-                .SetPageIndex(1)
-                .SetPageSize(10)
-                .QueryPagingListAsync();
+                .QueryPagingListAsync(1,10);
 
             var xx = "";
         }
@@ -49,9 +47,7 @@ namespace EasyDAL.Exchange.Tests
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= testH.StartTime)
                 .And(it => it.PathId.Contains(testH.ContainStr))
-                .SetPageIndex(1)
-                .SetPageSize(10)
-                .QueryPagingListAsync();
+                .QueryPagingListAsync(1,10);
 
             var xx1 = "";
 
@@ -60,9 +56,7 @@ namespace EasyDAL.Exchange.Tests
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= testH.StartTime)
                 .And(it => it.PathId.Contains("~00-d-3-1-"))
-                .SetPageIndex(1)
-                .SetPageSize(10)
-                .QueryPagingListAsync();
+                .QueryPagingListAsync(1,10);
 
             var xx = "";
         }

@@ -5,21 +5,20 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace EasyDAL.Exchange.Core.Delete
+namespace EasyDAL.Exchange.Core.Query
 {
-    public class Deleter<M>: Operator
+    public class Selecter<M>: Operator
     {
-        internal Deleter(DbContext dc)
+        internal Selecter(DbContext dc)
         {
             DC = dc;
         }
 
-        public DeleteFilter<M> Where(Expression<Func<M, bool>> func)
+        public QueryFilter<M> Where(Expression<Func<M, bool>> func)
         {
             WhereHandle(func);
-            return new DeleteFilter<M>(DC);
+            return new QueryFilter<M>(DC);
         }
-
 
     }
 }

@@ -11,7 +11,7 @@ namespace EasyDAL.Exchange.Core.Update
 {
     public class UpdateFilter<M>:Operator
     {        
-        public UpdateFilter(DbContext dc)
+        internal UpdateFilter(DbContext dc)
         {
             DC = dc;
         }

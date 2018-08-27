@@ -8,16 +8,23 @@ using System.Reflection;
 using EasyDAL.Exchange.Extensions;
 using EasyDAL.Exchange.DynamicParameter;
 using EasyDAL.Exchange.Core.Sql;
+using System.Data;
 
-namespace EasyDAL.Exchange.Base
+namespace EasyDAL.Exchange.Core
 {
-    public abstract partial class DbOperation
+    internal class DbOperation
     {
+        private DbOperation() { }
 
+        internal DbOperation(DbContext dc)
+        {
+            DC = dc;
+            DC.OP = this;
+        }
 
-        public DbContext DC { get; private set; }
+        internal DbContext DC { get; private set; }
 
-        protected List<string> GetProperties<M>(M m)
+        internal List<string> GetProperties<M>(M m)
         {
             if (m == null)
             {
@@ -40,7 +47,7 @@ namespace EasyDAL.Exchange.Base
             return props.Select(x => x.Name).ToList();
         }
 
-        public string GetWheres()
+        internal string GetWheres()
         {
             if (!DC.Conditions.Any(it => it.Action == ActionEnum.Where)
                 && !DC.Conditions.Any(it => it.Action == ActionEnum.And)
@@ -78,7 +85,7 @@ namespace EasyDAL.Exchange.Base
             return str;
         }
 
-        public string GetUpdates()
+        internal string GetUpdates()
         {
             if (!DC.Conditions.Any(it => it.Action == ActionEnum.Set)
                 && !DC.Conditions.Any(it => it.Action == ActionEnum.Change))
@@ -111,7 +118,7 @@ namespace EasyDAL.Exchange.Base
             return string.Join(",", list);
         }
 
-        public bool TryGetTableName<M>(M m, out string tableName)
+        internal bool TryGetTableName<M>(M m, out string tableName)
         {
 
             tableName = DC.AH.GetPropertyValue<M, TableAttribute>(m, a => a.Name);
@@ -123,7 +130,7 @@ namespace EasyDAL.Exchange.Base
             return true;
 
         }
-        public bool TryGetTableName<M>(out string tableName)
+        internal bool TryGetTableName<M>(out string tableName)
         {
             tableName = DC.AH.GetPropertyValue<M, TableAttribute>(Activator.CreateInstance<M>(), a => a.Name);
             if (string.IsNullOrWhiteSpace(tableName))
@@ -135,7 +142,7 @@ namespace EasyDAL.Exchange.Base
 
         }
 
-        public OptionEnum GetChangeOption(ChangeEnum change)
+        internal OptionEnum GetChangeOption(ChangeEnum change)
         {
             switch (change)
             {
@@ -148,7 +155,7 @@ namespace EasyDAL.Exchange.Base
             }
         }
 
-        public DynamicParameters GetParameters()
+        internal DynamicParameters GetParameters()
         {
             var paras = new DynamicParameters();
             foreach (var item in DC.Conditions)

@@ -17,9 +17,7 @@ using EasyDAL.Exchange.Tests.Enums;
 namespace EasyDAL.Exchange.Tests
 {
     public class QueryTest : TestBase
-    {
-
-        
+    {       
 
         // 查询一个已存在对象 单条件
         [Fact]
