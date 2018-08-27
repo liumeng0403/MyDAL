@@ -11,41 +11,6 @@ namespace EasyDAL.Exchange.Tests
  
 
 
-        private enum EnumParam : short
-        {
-            None = 0,
-            A = 1,
-            B = 2
-        }
-
-        private class EnumParamObject
-        {
-            public EnumParam A { get; set; }
-            public EnumParam? B { get; set; }
-            public EnumParam? C { get; set; }
-        }
-
-        private class EnumParamObjectNonNullable
-        {
-            public EnumParam A { get; set; }
-            public EnumParam? B { get; set; }
-            public EnumParam? C { get; set; }
-        }
-
-        private enum TestEnum : byte
-        {
-            Bla = 1
-        }
-
-        private class TestEnumClass
-        {
-            public TestEnum? EnumEnum { get; set; }
-        }
-
-        private class TestEnumClassNoNull
-        {
-            public TestEnum EnumEnum { get; set; }
-        }
 
         [Fact]
         public void AdoNetEnumValue()
@@ -64,8 +29,8 @@ namespace EasyDAL.Exchange.Tests
             }
         }
 
-        [Fact]
-        public void DapperEnumValue_SqlServer() => Common.DapperEnumValue(connection);
+        //[Fact]
+        //public void DapperEnumValue_SqlServer() => Common.DapperEnumValue(connection);
 
         private enum SO27024806Enum
         {

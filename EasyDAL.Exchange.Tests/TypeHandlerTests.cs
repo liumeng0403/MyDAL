@@ -67,70 +67,70 @@ namespace EasyDAL.Exchange.Tests
             public int Day { get; set; }
         }
 
-        public class LocalDateResult
-        {
-            public LocalDate NotNullable { get; set; }
-            public LocalDate? NullableNotNull { get; set; }
-            public LocalDate? NullableIsNull { get; set; }
-        }
+        //public class LocalDateResult
+        //{
+        //    public LocalDate NotNullable { get; set; }
+        //    public LocalDate? NullableNotNull { get; set; }
+        //    public LocalDate? NullableIsNull { get; set; }
+        //}
 
-        public class LotsOfNumerics
-        {
-            public enum E_Byte : byte { A = 0, B = 1 }
-            public enum E_SByte : sbyte { A = 0, B = 1 }
-            public enum E_Short : short { A = 0, B = 1 }
-            public enum E_UShort : ushort { A = 0, B = 1 }
-            public enum E_Int : int { A = 0, B = 1 }
-            public enum E_UInt : uint { A = 0, B = 1 }
-            public enum E_Long : long { A = 0, B = 1 }
-            public enum E_ULong : ulong { A = 0, B = 1 }
+        //public class LotsOfNumerics
+        //{
+        //    public enum E_Byte : byte { A = 0, B = 1 }
+        //    public enum E_SByte : sbyte { A = 0, B = 1 }
+        //    public enum E_Short : short { A = 0, B = 1 }
+        //    public enum E_UShort : ushort { A = 0, B = 1 }
+        //    public enum E_Int : int { A = 0, B = 1 }
+        //    public enum E_UInt : uint { A = 0, B = 1 }
+        //    public enum E_Long : long { A = 0, B = 1 }
+        //    public enum E_ULong : ulong { A = 0, B = 1 }
 
-            public E_Byte P_Byte { get; set; }
-            public E_SByte P_SByte { get; set; }
-            public E_Short P_Short { get; set; }
-            public E_UShort P_UShort { get; set; }
-            public E_Int P_Int { get; set; }
-            public E_UInt P_UInt { get; set; }
-            public E_Long P_Long { get; set; }
-            public E_ULong P_ULong { get; set; }
+        //    public E_Byte P_Byte { get; set; }
+        //    public E_SByte P_SByte { get; set; }
+        //    public E_Short P_Short { get; set; }
+        //    public E_UShort P_UShort { get; set; }
+        //    public E_Int P_Int { get; set; }
+        //    public E_UInt P_UInt { get; set; }
+        //    public E_Long P_Long { get; set; }
+        //    public E_ULong P_ULong { get; set; }
 
-            public bool N_Bool { get; set; }
-            public byte N_Byte { get; set; }
-            public sbyte N_SByte { get; set; }
-            public short N_Short { get; set; }
-            public ushort N_UShort { get; set; }
-            public int N_Int { get; set; }
-            public uint N_UInt { get; set; }
-            public long N_Long { get; set; }
-            public ulong N_ULong { get; set; }
+        //    public bool N_Bool { get; set; }
+        //    public byte N_Byte { get; set; }
+        //    public sbyte N_SByte { get; set; }
+        //    public short N_Short { get; set; }
+        //    public ushort N_UShort { get; set; }
+        //    public int N_Int { get; set; }
+        //    public uint N_UInt { get; set; }
+        //    public long N_Long { get; set; }
+        //    public ulong N_ULong { get; set; }
 
-            public float N_Float { get; set; }
-            public double N_Double { get; set; }
-            public decimal N_Decimal { get; set; }
+        //    public float N_Float { get; set; }
+        //    public double N_Double { get; set; }
+        //    public decimal N_Decimal { get; set; }
 
-            public E_Byte? N_P_Byte { get; set; }
-            public E_SByte? N_P_SByte { get; set; }
-            public E_Short? N_P_Short { get; set; }
-            public E_UShort? N_P_UShort { get; set; }
-            public E_Int? N_P_Int { get; set; }
-            public E_UInt? N_P_UInt { get; set; }
-            public E_Long? N_P_Long { get; set; }
-            public E_ULong? N_P_ULong { get; set; }
+        //    public E_Byte? N_P_Byte { get; set; }
+        //    public E_SByte? N_P_SByte { get; set; }
+        //    public E_Short? N_P_Short { get; set; }
+        //    public E_UShort? N_P_UShort { get; set; }
+        //    public E_Int? N_P_Int { get; set; }
+        //    public E_UInt? N_P_UInt { get; set; }
+        //    public E_Long? N_P_Long { get; set; }
+        //    public E_ULong? N_P_ULong { get; set; }
 
-            public bool? N_N_Bool { get; set; }
-            public byte? N_N_Byte { get; set; }
-            public sbyte? N_N_SByte { get; set; }
-            public short? N_N_Short { get; set; }
-            public ushort? N_N_UShort { get; set; }
-            public int? N_N_Int { get; set; }
-            public uint? N_N_UInt { get; set; }
-            public long? N_N_Long { get; set; }
-            public ulong? N_N_ULong { get; set; }
+        //    public bool? N_N_Bool { get; set; }
+        //    public byte? N_N_Byte { get; set; }
+        //    public sbyte? N_N_SByte { get; set; }
+        //    public short? N_N_Short { get; set; }
+        //    public ushort? N_N_UShort { get; set; }
+        //    public int? N_N_Int { get; set; }
+        //    public uint? N_N_UInt { get; set; }
+        //    public long? N_N_Long { get; set; }
+        //    public ulong? N_N_ULong { get; set; }
 
-            public float? N_N_Float { get; set; }
-            public double? N_N_Double { get; set; }
-            public decimal? N_N_Decimal { get; set; }
-        }
+        //    public float? N_N_Float { get; set; }
+        //    public double? N_N_Double { get; set; }
+        //    public decimal? N_N_Decimal { get; set; }
+        //}
 
 
         
@@ -138,20 +138,20 @@ namespace EasyDAL.Exchange.Tests
 
 
 
-        private class Fooz0
-        {
-            public int Id { get; set; }
-        }
+        //private class Fooz0
+        //{
+        //    public int Id { get; set; }
+        //}
 
-        private class Fooz1
-        {
-            public int Id { get; set; }
-        }
+        //private class Fooz1
+        //{
+        //    public int Id { get; set; }
+        //}
 
-        private class Fooz2
-        {
-            public int Id { get; set; }
-        }
+        //private class Fooz2
+        //{
+        //    public int Id { get; set; }
+        //}
 
         public class RatingValueHandler : TypeHandler<RatingValue>
         {
@@ -185,11 +185,11 @@ namespace EasyDAL.Exchange.Tests
             // ... some other properties etc ...
         }
 
-        public class MyResult
-        {
-            public string CategoryName { get; set; }
-            public RatingValue CategoryRating { get; set; }
-        }
+        //public class MyResult
+        //{
+        //    public string CategoryName { get; set; }
+        //    public RatingValue CategoryRating { get; set; }
+        //}
 
 
 
@@ -214,10 +214,10 @@ namespace EasyDAL.Exchange.Tests
             }
         }
 
-        public class MyObjectWithStringList
-        {
-            public List<string> Names { get; set; }
-        }
+        //public class MyObjectWithStringList
+        //{
+        //    public List<string> Names { get; set; }
+        //}
 
 
 
@@ -245,38 +245,38 @@ namespace EasyDAL.Exchange.Tests
 
      
 
-        private class ResultsChangeType
-        {
-            public int X { get; set; }
-            public int Y { get; set; }
-            public int Z { get; set; }
-        }
+        //private class ResultsChangeType
+        //{
+        //    public int X { get; set; }
+        //    public int Y { get; set; }
+        //    public int Z { get; set; }
+        //}
 
-        public class WrongTypes
-        {
-            public int A { get; set; }
-            public double B { get; set; }
-            public long C { get; set; }
-            public bool D { get; set; }
-        }
-
-
+        //public class WrongTypes
+        //{
+        //    public int A { get; set; }
+        //    public double B { get; set; }
+        //    public long C { get; set; }
+        //    public bool D { get; set; }
+        //}
 
 
 
 
 
-        private class HazBools
-        {
-            public bool? A { get; set; }
-            public bool? B { get; set; }
-            public bool? C { get; set; }
-        }
+
+
+        //private class HazBools
+        //{
+        //    public bool? A { get; set; }
+        //    public bool? B { get; set; }
+        //    public bool? C { get; set; }
+        //}
 
 
 
 
-        public class Issue149_Person { public string Id { get; set; } }
+        //public class Issue149_Person { public string Id { get; set; } }
 
   
         // I would usually expect this to be a struct; using a class
@@ -306,13 +306,13 @@ namespace EasyDAL.Exchange.Tests
             }
         }
 
-        private class Issue461_ParameterlessTypeConstructor
-        {
-            public int Id { get; set; }
+        //private class Issue461_ParameterlessTypeConstructor
+        //{
+        //    public int Id { get; set; }
 
-            public string SomeValue { get; set; }
-            public Blarg SomeBlargValue { get; set; }
-        }
+        //    public string SomeValue { get; set; }
+        //    public Blarg SomeBlargValue { get; set; }
+        //}
 
         private class Issue461_ParameterisedTypeConstructor
         {

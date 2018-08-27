@@ -30,17 +30,17 @@ namespace EasyDAL.Exchange.Tests
 
         public const int SqlServer2016 = 130;
         public static readonly int DetectedLevel;
-        static FactRequiredCompatibilityLevelAttribute()
-        {
-            using (var conn = TestBase.GetOpenConnection())
-            {
-                try
-                {
-                    DetectedLevel = conn.QuerySingle<int>("SELECT compatibility_level FROM sys.databases where name = DB_NAME()");
-                }
-                catch { /* don't care */ }
-            }
-        }
+        //static FactRequiredCompatibilityLevelAttribute()
+        //{
+        //    using (var conn = TestBase.GetOpenConnection())
+        //    {
+        //        try
+        //        {
+        //            DetectedLevel = conn.QuerySingle<int>("SELECT compatibility_level FROM sys.databases where name = DB_NAME()");
+        //        }
+        //        catch { /* don't care */ }
+        //    }
+        //}
     }
 
 }

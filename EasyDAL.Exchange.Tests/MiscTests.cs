@@ -306,13 +306,13 @@ namespace EasyDAL.Exchange.Tests
             public int Value { get; set; }
         }
 
-        [Fact]
-        public void GetOnlyProperties()
-        {
-            var obj = connection.QuerySingle<HazGetOnly>("select 42 as [Id], 'def' as [Name];");
-            Assert.Equal(42, obj.Id);
-            Assert.Equal("def", obj.Name);
-        }
+        //[Fact]
+        //public void GetOnlyProperties()
+        //{
+        //    var obj = connection.QuerySingle<HazGetOnly>("select 42 as [Id], 'def' as [Name];");
+        //    Assert.Equal(42, obj.Id);
+        //    Assert.Equal("def", obj.Name);
+        //}
 
         private class HazGetOnly
         {
