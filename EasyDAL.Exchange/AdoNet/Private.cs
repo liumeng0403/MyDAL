@@ -16,7 +16,7 @@ using EasyDAL.Exchange.Reader;
 
 namespace EasyDAL.Exchange.AdoNet
 {
-    public static partial class SqlMapper
+    internal static partial class SqlMapper
     {
 
         /// <summary>

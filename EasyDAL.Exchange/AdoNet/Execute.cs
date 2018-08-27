@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EasyDAL.Exchange.AdoNet
 {
-    public static partial class SqlMapper
+    internal static partial class SqlMapper
     {
         
         /// <summary>

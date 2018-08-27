@@ -1,19 +1,14 @@
 ﻿using EasyDAL.Exchange.AdoNet;
-using EasyDAL.Exchange.Attributes;
 using EasyDAL.Exchange.Base;
-using EasyDAL.Exchange.Helper;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EasyDAL.Exchange.Core
 {
     public class CreateOperation<M> : DbOperation
     {
-        public CreateOperation(IDbConnection conn)
+         public CreateOperation(IDbConnection conn)
             : base(conn)
         {
         }

@@ -7,7 +7,7 @@ namespace EasyDAL.Exchange.Common
     /// <summary>
     ///     Object 实例
     /// </summary>
-    public class ClassInstance<T>
+    internal class ClassInstance<T>
         where T : class, new()
     {
         /// <summary>

@@ -12,7 +12,7 @@ using EasyDAL.Exchange.Reader;
 
 namespace EasyDAL.Exchange.AdoNet
 {
-    public static partial class SqlMapper
+    internal static partial class SqlMapper
     {
                 
         /// <summary>
@@ -43,21 +43,7 @@ namespace EasyDAL.Exchange.AdoNet
         /// <param name="commandTimeout">The command timeout (in seconds).</param>
         /// <param name="commandType">The type of command to execute.</param>
         internal static Task<T> QueryFirstOrDefaultAsync<T>(IDbConnection cnn, string sql, object param = null) =>
-            QueryRowAsync<T>(cnn, Row.FirstOrDefault, typeof(T), new CommandDefinition(sql, param, null, null, null, CommandFlags.None, default(CancellationToken)));
-        
-        /// <summary>
-        /// Execute a single-row query asynchronously using .NET 4.5 Task.
-        /// </summary>
-        /// <typeparam name="T">The type to return.</typeparam>
-        /// <param name="cnn">The connection to query on.</param>
-        /// <param name="sql">The SQL to execute for the query.</param>
-        /// <param name="param">The parameters to pass, if any.</param>
-        /// <param name="transaction">The transaction to use, if any.</param>
-        /// <param name="commandTimeout">The command timeout (in seconds).</param>
-        /// <param name="commandType">The type of command to execute.</param>
-        internal static Task<T> QuerySingleOrDefaultAsync<T>(IDbConnection cnn, string sql, object param = null) =>
-            QueryRowAsync<T>(cnn, Row.SingleOrDefault, typeof(T), new CommandDefinition(sql, param, null, null, null, CommandFlags.None, default(CancellationToken)));
-        
+            QueryRowAsync<T>(cnn, Row.FirstOrDefault, typeof(T), new CommandDefinition(sql, param, null, null, null, CommandFlags.None, default(CancellationToken)));       
         
     }
 }

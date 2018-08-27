@@ -30,7 +30,7 @@ namespace EasyDAL.Exchange.AdoNet
     /// <summary>
     /// Dapper, a light weight object mapper for ADO.NET
     /// </summary>
-    public static partial class SqlMapper
+    internal static partial class SqlMapper
     {
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace EasyDAL.Exchange.AdoNet
                 return hash;
             }
         }
-        
+
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<Identity, CacheInfo> _queryCache = new System.Collections.Concurrent.ConcurrentDictionary<Identity, CacheInfo>();
         private static void SetQueryCache(Identity key, CacheInfo value)
         {
@@ -96,7 +96,7 @@ namespace EasyDAL.Exchange.AdoNet
             value = null;
             return false;
         }
-        
+
         private static Dictionary<Type, DbType> typeMap;
 
         static SqlMapper()
@@ -143,7 +143,7 @@ namespace EasyDAL.Exchange.AdoNet
             };
             ResetTypeHandlers(false);
         }
-        
+
         private static void ResetTypeHandlers(bool clone)
         {
             typeHandlers = new Dictionary<Type, ITypeHandler>();
@@ -165,7 +165,7 @@ namespace EasyDAL.Exchange.AdoNet
         {
             AddTypeHandlerImpl(typeof(IEnumerable<Microsoft.SqlServer.Server.SqlDataRecord>), new SqlDataRecordHandler(), clone);
         }
-        
+
         internal static bool HasTypeHandler(Type type) => typeHandlers.ContainsKey(type);
 
         /// <summary>
@@ -218,7 +218,7 @@ namespace EasyDAL.Exchange.AdoNet
             }
             typeHandlers = newCopy;
         }
-        
+
         private static Dictionary<Type, ITypeHandler> typeHandlers;
 
         internal const string LinqBinary = "System.Data.Linq.Binary";
@@ -293,7 +293,7 @@ namespace EasyDAL.Exchange.AdoNet
                 throw new NotSupportedException($"The member {name} of type {type.FullName} cannot be used as a parameter value");
             return DbType.Object;
         }
-        
+
         private static IEnumerable GetMultiExec(object param)
         {
             return (param is IEnumerable
@@ -302,7 +302,7 @@ namespace EasyDAL.Exchange.AdoNet
                       || param is IDynamicParameters)
                 ) ? (IEnumerable)param : null;
         }
-        
+
         private static IDataReader ExecuteReaderWithFlagsFallback(IDbCommand cmd, bool wasClosed, CommandBehavior behavior)
         {
             try
@@ -345,8 +345,8 @@ namespace EasyDAL.Exchange.AdoNet
             }
         }
 
-    
-        
+
+
         private static CommandBehavior GetBehavior(bool close, CommandBehavior @default)
         {
             return (close ? (@default | CommandBehavior.CloseConnection) : @default) & Settings.AllowedCommandBehaviors;
@@ -416,7 +416,7 @@ namespace EasyDAL.Exchange.AdoNet
                 }
             }
         }
-        
+
         private static Func<IDataReader, TReturn> GenerateMapper<TReturn>(int length, Func<IDataReader, object> deserializer, Func<IDataReader, object>[] otherDeserializers, Func<object[], TReturn> map)
         {
             return r =>
@@ -1195,7 +1195,7 @@ namespace EasyDAL.Exchange.AdoNet
             }
             return list.Count == 0 ? LiteralToken.None : list;
         }
-        
+
         private static bool IsValueTuple(Type type) => type?.IsValueTypeX() == true && type.FullName.StartsWith("System.ValueTuple`", StringComparison.Ordinal);
 
         private static List<IMemberMap> GetValueTupleMembers(Type type, string[] names)
@@ -1742,7 +1742,7 @@ namespace EasyDAL.Exchange.AdoNet
 
         // use Hashtable to get free lockless reading
         private static readonly Hashtable _typeMaps = new Hashtable();
-        
+
         /// <summary>
         /// Internal use only
         /// </summary>
@@ -1822,23 +1822,16 @@ namespace EasyDAL.Exchange.AdoNet
                     types[i - startBound] = reader.GetFieldType(i);
                 }
 
-                var explicitConstr = typeMap.FindExplicitConstructor();
-                if (explicitConstr != null)
+                var ctor = typeMap.FindConstructor(names, types);
+                if (ctor == null)
                 {
-                    var consPs = explicitConstr.GetParameters();
-                    foreach (var p in consPs)
-                    {
-                        if (!p.ParameterType.IsValueTypeX())
-                        {
-                            il.Emit(OpCodes.Ldnull);
-                        }
-                        else
-                        {
-                            GetTempLocal(il, ref structLocals, p.ParameterType, true);
-                        }
-                    }
+                    string proposedTypes = "(" + string.Join(", ", types.Select((t, i) => t.FullName + " " + names[i]).ToArray()) + ")";
+                    throw new InvalidOperationException($"A parameterless default constructor or one matching signature {proposedTypes} is required for {type.FullName} materialization");
+                }
 
-                    il.Emit(OpCodes.Newobj, explicitConstr);
+                if (ctor.GetParameters().Length == 0)
+                {
+                    il.Emit(OpCodes.Newobj, ctor);
                     il.Emit(OpCodes.Stloc_1);
                     supportInitialize = typeof(ISupportInitialize).IsAssignableFrom(type);
                     if (supportInitialize)
@@ -1849,29 +1842,9 @@ namespace EasyDAL.Exchange.AdoNet
                 }
                 else
                 {
-                    var ctor = typeMap.FindConstructor(names, types);
-                    if (ctor == null)
-                    {
-                        string proposedTypes = "(" + string.Join(", ", types.Select((t, i) => t.FullName + " " + names[i]).ToArray()) + ")";
-                        throw new InvalidOperationException($"A parameterless default constructor or one matching signature {proposedTypes} is required for {type.FullName} materialization");
-                    }
-
-                    if (ctor.GetParameters().Length == 0)
-                    {
-                        il.Emit(OpCodes.Newobj, ctor);
-                        il.Emit(OpCodes.Stloc_1);
-                        supportInitialize = typeof(ISupportInitialize).IsAssignableFrom(type);
-                        if (supportInitialize)
-                        {
-                            il.Emit(OpCodes.Ldloc_1);
-                            il.EmitCall(OpCodes.Callvirt, typeof(ISupportInitialize).GetMethod(nameof(ISupportInitialize.BeginInit)), null);
-                        }
-                    }
-                    else
-                    {
-                        specializedConstructor = ctor;
-                    }
+                    specializedConstructor = ctor;
                 }
+
             }
 
             il.BeginExceptionBlock();
@@ -2330,19 +2303,19 @@ namespace EasyDAL.Exchange.AdoNet
                     break;
             }
         }
-        
+
         /// <summary>
         /// Key used to indicate the type name associated with a DataTable.
         /// </summary>
         private const string DataTableTypeNameKey = "dapper:TypeName";
-        
+
         /// <summary>
         /// Fetch the type name associated with a <see cref="DataTable"/>.
         /// </summary>
         /// <param name="table">The <see cref="DataTable"/> that has a type name associated with it.</param>
         public static string GetTypeName(this DataTable table) =>
             table?.ExtendedProperties[DataTableTypeNameKey] as string;
-        
+
         // one per thread
         [ThreadStatic]
         private static StringBuilder perThreadStringBuilderCache;

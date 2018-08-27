@@ -1,4 +1,4 @@
-﻿using EasyDAL.Exchange.Attributes;
+﻿
 using EasyDAL.Exchange.Common;
 using EasyDAL.Exchange.Enums;
 using System;
@@ -7,12 +7,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-//using System.Reflection.Metadata;
-using System.Text;
 
 namespace EasyDAL.Exchange.Helper
 {
-    public class ExpressionHelper : ClassInstance<ExpressionHelper>
+    internal class ExpressionHelper : ClassInstance<ExpressionHelper>
     {
         private static ConcurrentDictionary<string, ConcurrentDictionary<Int32, String>> Cache = new ConcurrentDictionary<string, ConcurrentDictionary<Int32, String>>();
         private GenericHelper GH = GenericHelper.Instance;

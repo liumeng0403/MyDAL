@@ -1,8 +1,6 @@
-﻿using EasyDAL.Exchange.Attributes;
+﻿
 using EasyDAL.Exchange.Tests.Enums;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace EasyDAL.Exchange.Tests.Entities
 {

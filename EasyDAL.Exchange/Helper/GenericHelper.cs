@@ -8,7 +8,7 @@ using System.Text;
 
 namespace EasyDAL.Exchange.Helper
 {
-    public class GenericHelper : ClassInstance<GenericHelper>
+    internal class GenericHelper : ClassInstance<GenericHelper>
     {
 
         public RM GetPropertyValue<M, RM>(M m, string properyName)

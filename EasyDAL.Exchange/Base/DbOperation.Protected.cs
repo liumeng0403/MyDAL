@@ -1,14 +1,9 @@
-﻿using EasyDAL.Exchange.Attributes;
-using EasyDAL.Exchange.Common;
+﻿
 using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.Helper;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Data;
 using System.Dynamic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 using EasyDAL.Exchange.Extensions;
 using EasyDAL.Exchange.DynamicParameter;

@@ -12,7 +12,7 @@ namespace EasyDAL.Exchange.AdoNet
     /// <summary>
     /// sql 操作定义
     /// </summary>
-    public struct CommandDefinition
+    internal struct CommandDefinition
     {
 
 

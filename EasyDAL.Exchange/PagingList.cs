@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EasyDAL.Exchange.AdoNet
+namespace EasyDAL.Exchange
 {
     /// <summary>
     ///     分页列表

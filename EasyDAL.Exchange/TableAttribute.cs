@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.Attributes
+namespace EasyDAL.Exchange
 {
-    public class ColumnAttribute: Attribute
+
+    [AttributeUsage(AttributeTargets.Class)]
+    public class TableAttribute : Attribute
     {
+
         /// <summary>
-        /// 列名
+        /// 表名
         /// </summary>
         public string Name { get; set; }
 

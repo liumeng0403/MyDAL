@@ -1,11 +1,9 @@
-﻿using System;
+﻿using EasyDAL.Exchange.AdoNet;
+using EasyDAL.Exchange.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using EasyDAL.Exchange.AdoNet;
-using EasyDAL.Exchange.Attributes;
-using EasyDAL.Exchange.Extensions;
 
 namespace EasyDAL.Exchange.Map
 {
@@ -103,21 +101,21 @@ namespace EasyDAL.Exchange.Map
             return null;
         }
 
-        /// <summary>
-        /// Returns the constructor, if any, that has the ExplicitConstructorAttribute on it.
-        /// </summary>
-        public ConstructorInfo FindExplicitConstructor()
-        {
-            var constructors = _type.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-            var withAttr = constructors.Where(c => c.GetCustomAttributes(typeof(ExplicitConstructorAttribute), true).Length > 0).ToList();
+        ///// <summary>
+        ///// Returns the constructor, if any, that has the ExplicitConstructorAttribute on it.
+        ///// </summary>
+        //public ConstructorInfo FindExplicitConstructor()
+        //{
+        //    var constructors = _type.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        //    var withAttr = constructors.Where(c => c.GetCustomAttributes(typeof(ExplicitConstructorAttribute), true).Length > 0).ToList();
 
-            if (withAttr.Count == 1)
-            {
-                return withAttr[0];
-            }
+        //    if (withAttr.Count == 1)
+        //    {
+        //        return withAttr[0];
+        //    }
 
-            return null;
-        }
+        //    return null;
+        //}
 
         /// <summary>
         /// Gets mapping for constructor parameter

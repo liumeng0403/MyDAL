@@ -7,7 +7,7 @@ using System.Text;
 
 namespace EasyDAL.Exchange.Helper
 {
-    public class AttributeHelper: ClassInstance<AttributeHelper>
+    internal class AttributeHelper: ClassInstance<AttributeHelper>
     {
         /// <summary>
         /// Cache Data
