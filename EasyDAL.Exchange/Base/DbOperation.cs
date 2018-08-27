@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace EasyDAL.Exchange.Base
 {
@@ -18,12 +19,10 @@ namespace EasyDAL.Exchange.Base
 
         public DbOperation(IDbConnection conn)
         {
-            AH = AttributeHelper.Instance;
-            GH = GenericHelper.Instance;
-            EH = ExpressionHelper.Instance;
             DC = new DbContext(conn);
+            DC.OP = this;
         }
 
-
+        //public abstract Task<int> UpdateAsync();
     }
 }

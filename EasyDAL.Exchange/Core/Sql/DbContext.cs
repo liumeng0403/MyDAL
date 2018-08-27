@@ -1,4 +1,6 @@
-﻿using EasyDAL.Exchange.Common;
+﻿using EasyDAL.Exchange.Base;
+using EasyDAL.Exchange.Common;
+using EasyDAL.Exchange.Helper;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -12,6 +14,11 @@ namespace EasyDAL.Exchange.Core.Sql
     {
 
         private static readonly ConcurrentDictionary<Type, List<PropertyInfo>> _modelPropertiesCache = new ConcurrentDictionary<Type, List<PropertyInfo>>();
+        public AttributeHelper AH { get; private set; }
+
+        public GenericHelper GH { get; private set; }
+
+        public ExpressionHelper EH { get; private set; }
         public ConcurrentDictionary<Type, List<PropertyInfo>> ModelPropertiesCache
         {
             get
@@ -24,10 +31,15 @@ namespace EasyDAL.Exchange.Core.Sql
 
         public IDbConnection Conn { get; private set; }
 
+        public DbOperation OP { get; set; }
+
         public DbContext(IDbConnection conn)
         {
             Conn = conn;
             Conditions = new List<DicModel<string, string>>();
+            AH = AttributeHelper.Instance;
+            GH = GenericHelper.Instance;
+            EH = ExpressionHelper.Instance;
         }
 
     }

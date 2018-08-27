@@ -25,7 +25,7 @@ namespace EasyDAL.Exchange.Core
 
         public SelectOperation<M> Where(Expression<Func<M, bool>> func)
         {
-            var field = EH.ExpressionHandle(func);
+            var field = DC.EH.ExpressionHandle(func);
             field.Action = ActionEnum.Where;
             DC.Conditions.Add(field);
             return this;
@@ -33,7 +33,7 @@ namespace EasyDAL.Exchange.Core
 
         public SelectOperation<M> And(Expression<Func<M, bool>> func)
         {
-            var field = EH.ExpressionHandle(func);
+            var field = DC.EH.ExpressionHandle(func);
             field.Action = ActionEnum.And;
             DC.Conditions.Add(field);
             return this;
@@ -41,7 +41,7 @@ namespace EasyDAL.Exchange.Core
 
         public SelectOperation<M> Or(Expression<Func<M, bool>> func)
         {
-            var field = EH.ExpressionHandle(func);
+            var field = DC.EH.ExpressionHandle(func);
             field.Action = ActionEnum.Or;
             DC.Conditions.Add(field);
             return this;
@@ -95,5 +95,14 @@ namespace EasyDAL.Exchange.Core
 
             return PagingList;
         }
+
+
+        ///*
+        // * 不需要实现的方法
+        // */
+        //public override Task<int> UpdateAsync()
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

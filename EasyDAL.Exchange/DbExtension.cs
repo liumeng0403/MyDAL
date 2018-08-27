@@ -22,10 +22,10 @@ namespace EasyDAL.Exchange
             return operation;
         }
 
-        public static UpdateOperation<M> Updater<M>(this IDbConnection connection)
+        public static Core.Update.Setter<M> Updater<M>(this IDbConnection connection)
         {
             var operation = new UpdateOperation<M>(connection);
-            return operation;
+            return new Core.Update.Setter<M>(operation.DC);
         }
 
         public static SelectOperation<M> Selecter<M>(this IDbConnection connection)

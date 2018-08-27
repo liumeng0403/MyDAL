@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using EasyDAL.Exchange.Extensions;
 
 namespace EasyDAL.Exchange.Tests
 {
@@ -52,7 +53,7 @@ namespace EasyDAL.Exchange.Tests
             // 修改
             // where set 
             var res3 = await Conn
-                .Updater<BodyFitRecord>()
+                .Updater<BodyFitRecord>()                
                 .Set(it => it.CreatedOn, m1.CreatedOn)
                 .Set(it => it.BodyMeasureProperty, m1.BodyMeasureProperty)
                 .Where(it => it.Id == m.Id)
@@ -62,12 +63,22 @@ namespace EasyDAL.Exchange.Tests
 
             var m2 = 10;
             var id2 = Guid.Parse("0ce552c0-2f5e-4c22-b26d-01654443b30e");
-            // where change
-            var res = await Conn
+            // where change and 
+            var res4 = await Conn
                 .Updater<AgentInventoryRecord>()
                 .Change(it => it.LockedCount, m2, ChangeEnum.Add)
                 .Where(it => it.AgentId == id2)
                 .And(it => it.ProductId == Guid.Parse("85ce17c1-10d9-4784-b054-016551e5e109"))
+                .UpdateAsync();
+
+            var xx4 = "";
+
+            // where set or 
+            var res5 = await Conn
+                .Updater<AgentInventoryRecord>()
+                .Set(it => it.LockedCount, 100)
+                .Where(it => it.AgentId == id2)
+                .Or(it => it.CreatedOn == Convert.ToDateTime("2018-08-19 11:34:42.577074"))
                 .UpdateAsync();
 
             var xx = "";

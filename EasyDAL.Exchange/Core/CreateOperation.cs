@@ -32,5 +32,12 @@ namespace EasyDAL.Exchange.Core
 
         }
 
+        ///*
+        // * 不需要实现的方法
+        // */
+        //public override Task<int> UpdateAsync()
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }
