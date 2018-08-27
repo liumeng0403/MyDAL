@@ -19,31 +19,7 @@ namespace EasyDAL.Exchange.Tests
     public class Tests : TestBase
     {
 
-        private WhereTestModel testH = new WhereTestModel
-        {
-            CreatedOn = DateTime.Now.AddDays(-10),
-            StartTime = DateTime.Now.AddDays(-10),
-            EndTime = DateTime.Now,
-            AgentLevelXX = AgentLevel.DistiAgent,
-            ContainStr = "~00-d-3-1-"
-        };
-
-
-        [Fact]
-        public async Task TestExecuteAsync()
-        {
-            var val = await connection.ExecuteAsync("declare @foo table(id int not null); insert @foo values(@id);", new { id = 1 }).ConfigureAwait(false);
-            Assert.Equal(1, val);
-        }
-
-        [Fact]
-        public void TestExecuteClosedConnAsyncInner()
-        {
-            var query = connection.ExecuteAsync("declare @foo table(id int not null); insert @foo values(@id);", new { id = 1 });
-            var val = query.Result;
-            Assert.Equal(1, val);
-        }
-
+         
         [Fact]
         public async Task Issue22_ExecuteScalarAsync()
         {
@@ -66,51 +42,7 @@ namespace EasyDAL.Exchange.Tests
         /***************************************************************************************************************/
 
 
-        // 删除 已存在对象
-        [Fact]
-        public async Task DeleteAsyncTest()
-        {
-            var xx0 = "";
 
-            // where 
-            var Id = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e");
-            var res1 = await Conn
-                .Deleter<BodyFitRecord>()
-                .Where(it => it.Id == Id)
-                .DeleteAsync();
-
-            var xx1 = "";
-
-            // where and
-            var path = "~00-c-1-2-1-1-1-1-1-4-1-1-1-4-1-2-1-7";
-            var level = 2;
-            var res2 = await Conn
-                .Deleter<Agent>()
-                .Where(it => it.PathId == path)
-                .And(it => it.AgentLevel == (AgentLevel)level)
-                .DeleteAsync();
-
-            var xx2 = "";
-
-            // where or
-            var res3 = await Conn
-                .Deleter<Agent>()
-                .Where(it => it.PathId == path)
-                .Or(it => it.AgentLevel == (AgentLevel)level)
-                .DeleteAsync();
-
-            var xx3 = "";
-
-            // where and or
-            var res4 = await Conn
-                .Deleter<Agent>()
-                .Where(it => it.PathId == path)
-                .And(it => it.AgentLevel == (AgentLevel)level)
-                .Or(it => it.CreatedOn >= testH.StartTime)
-                .DeleteAsync();
-
-            var xx = "";
-        }
 
         // 创建一个新对象
         [Fact]
@@ -302,33 +234,7 @@ namespace EasyDAL.Exchange.Tests
 
 
 
-        [Fact]
-        public async Task TestSupportForDynamicParametersOutputExpressionsAsync()
-        {
-            {
-                var bob = new Person { Name = "bob", PersonId = 1, Address = new Address { PersonId = 2 } };
-
-                var p = new DynamicParameters(bob);
-                p.Output(bob, b => b.PersonId);
-                p.Output(bob, b => b.Occupation);
-                p.Output(bob, b => b.NumberOfLegs);
-                p.Output(bob, b => b.Address.Name);
-                p.Output(bob, b => b.Address.PersonId);
-
-                await connection.ExecuteAsync(@"
-SET @Occupation = 'grillmaster' 
-SET @PersonId = @PersonId + 1 
-SET @NumberOfLegs = @NumberOfLegs - 1
-SET @AddressName = 'bobs burgers'
-SET @AddressPersonId = @PersonId", p).ConfigureAwait(false);
-
-                Assert.Equal("grillmaster", bob.Occupation);
-                Assert.Equal(2, bob.PersonId);
-                Assert.Equal(1, bob.NumberOfLegs);
-                Assert.Equal("bobs burgers", bob.Address.Name);
-                Assert.Equal(2, bob.Address.PersonId);
-            }
-        }
+ 
 
         [Fact]
         public async Task TestSupportForDynamicParametersOutputExpressions_ScalarAsync()

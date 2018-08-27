@@ -16,10 +16,10 @@ namespace EasyDAL.Exchange
             return operation;
         }
 
-        public static DeleteOperation<M> Deleter<M>(this IDbConnection connection)
+        public static Core.Delete.Deleter<M> Deleter<M>(this IDbConnection connection)
         {
             var operation = new DeleteOperation<M>(connection);
-            return operation;
+            return new Core.Delete.Deleter<M>(operation.DC);
         }
 
         public static Core.Update.Setter<M> Updater<M>(this IDbConnection connection)

@@ -3,7 +3,8 @@ using System.Data;
 using Xunit;
 using EasyDAL.Exchange.AdoNet;
 using MySql.Data.MySqlClient;
-
+using EasyDAL.Exchange.Tests.Entities;
+using EasyDAL.Exchange.Tests.Enums;
 
 namespace EasyDAL.Exchange.Tests
 {
@@ -11,6 +12,20 @@ namespace EasyDAL.Exchange.Tests
     {
         protected static readonly bool IsAppVeyor = Environment.GetEnvironmentVariable("Appveyor")?.ToUpperInvariant() == "TRUE";
 
+        public WhereTestModel testH
+        {
+            get
+            {
+                return new WhereTestModel
+                {
+                    CreatedOn = DateTime.Now.AddDays(-10),
+                    StartTime = DateTime.Now.AddDays(-10),
+                    EndTime = DateTime.Now,
+                    AgentLevelXX = AgentLevel.DistiAgent,
+                    ContainStr = "~00-d-3-1-"
+                };
+            }
+        }
 
 
         protected IDbConnection _connection;

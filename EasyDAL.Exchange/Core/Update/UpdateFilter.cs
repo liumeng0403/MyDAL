@@ -7,33 +7,28 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.Core
+namespace EasyDAL.Exchange.Core.Update
 {
-    public class Filter<M>
-    {
-        private DbContext DC { get; set; }
-
-        public Filter(DbContext dc)
+    public class UpdateFilter<M>:Operator
+    {        
+        public UpdateFilter(DbContext dc)
         {
             DC = dc;
         }
 
-        public Filter<M> And(Expression<Func<M, bool>> func)
+        public UpdateFilter<M> And(Expression<Func<M, bool>> func)
         {
-            var field = DC.EH.ExpressionHandle(func);
-            field.Action = ActionEnum.And;
-            DC.Conditions.Add(field);
+            AndHandle(func);
             return this;
         }
 
-        public Filter<M> Or(Expression<Func<M, bool>> func)
+
+        public UpdateFilter<M> Or(Expression<Func<M, bool>> func)
         {
-            var field = DC.EH.ExpressionHandle(func);
-            field.Action = ActionEnum.Or;
-            DC.Conditions.Add(field);
+            OrHandle(func);
             return this;
         }
-
+        
         public async Task<int> UpdateAsync()
         {
             DC.OP.TryGetTableName<M>(out var tableName);

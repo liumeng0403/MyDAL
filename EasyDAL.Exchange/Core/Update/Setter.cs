@@ -8,10 +8,8 @@ using System.Text;
 
 namespace EasyDAL.Exchange.Core.Update
 {
-    public class Setter<M>
+    public class Setter<M>: Operator
     {
-        private DbContext DC { get; set; }
-        
         public Setter(DbContext dc)
         {
             DC = dc;
@@ -20,7 +18,6 @@ namespace EasyDAL.Exchange.Core.Update
         public Setter<M> Set<F>(Expression<Func<M, F>> func, F newVal)
         {
             var key = DC.EH.ExpressionHandle(func);
-            //Fields.Add(key);
             DC.Conditions.Add(new DicModel<string, string>
             {
                 key = key,
@@ -45,12 +42,10 @@ namespace EasyDAL.Exchange.Core.Update
         }
 
 
-        public Filter<M> Where(Expression<Func<M, bool>> func)
+        public UpdateFilter<M> Where(Expression<Func<M, bool>> func)
         {
-            var field = DC.EH.ExpressionHandle(func);
-            field.Action = ActionEnum.Where;
-            DC.Conditions.Add(field);
-            return new Filter<M>(DC);
+            WhereHandle(func);
+            return new UpdateFilter<M>(DC);
         }
 
 

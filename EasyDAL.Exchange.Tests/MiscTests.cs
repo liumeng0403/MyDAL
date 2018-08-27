@@ -248,30 +248,7 @@ namespace EasyDAL.Exchange.Tests
             public int Value { get; set; }
         }
 
-
-
-
-
-
-        [Fact]
-        public void Issue22_ExecuteScalar()
-        {
-            int i = connection.ExecuteScalar<int>("select 123");
-            Assert.Equal(123, i);
-
-            i = connection.ExecuteScalar<int>("select cast(123 as bigint)");
-            Assert.Equal(123, i);
-
-            long j = connection.ExecuteScalar<long>("select 123");
-            Assert.Equal(123L, j);
-
-            j = connection.ExecuteScalar<long>("select cast(123 as bigint)");
-            Assert.Equal(123L, j);
-
-            int? k = connection.ExecuteScalar<int?>("select @i", new { i = default(int?) });
-            Assert.Null(k);
-        }
-
+         
 
         public class Issue142_Status
         {

@@ -69,12 +69,24 @@ namespace EasyDAL.Exchange.Helper
                 else
                 {
                     MemberExpression innerMember = (MemberExpression)memExpr.Expression;
-                    var innerField = (FieldInfo)innerMember.Member;
-                    ConstantExpression ce = (ConstantExpression)innerMember.Expression;
-                    object innerObj = ce.Value;
-                    var outerObj = innerField.GetValue(innerObj);
-                    var valType = outerProp.PropertyType;
-                    str = GH.GetTypeValue(valType, outerProp, outerObj);
+                    var innerField = innerMember.Member as FieldInfo;
+                    if (innerField == null)
+                    {
+                        var innerFieldX = innerMember.Member as PropertyInfo;
+                        ConstantExpression ce = (ConstantExpression)innerMember.Expression;
+                        object innerObj = ce.Value;
+                        var outerObj = innerFieldX.GetValue(innerObj);
+                        var valType = outerProp.PropertyType;
+                        str = GH.GetTypeValue(valType, outerProp, outerObj);
+                    }
+                    else
+                    {
+                        ConstantExpression ce = (ConstantExpression)innerMember.Expression;
+                        object innerObj = ce.Value;
+                        var outerObj = innerField.GetValue(innerObj);
+                        var valType = outerProp.PropertyType;
+                        str = GH.GetTypeValue(valType, outerProp, outerObj);
+                    }
                 }
             }
 
@@ -127,7 +139,7 @@ namespace EasyDAL.Exchange.Helper
             return result;
         }
         // 01
-        private DicModel<string,string> GetBinaryDicM(ParameterExpression parameter, Expression body)
+        private DicModel<string, string> GetBinaryDicM(ParameterExpression parameter, Expression body)
         {
             var result = default(DicModel<string, string>);
             var bodyB = body as BinaryExpression;
@@ -233,7 +245,7 @@ namespace EasyDAL.Exchange.Helper
                 var body = func.Body as MemberExpression;
                 return GetKey(parameter, body);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception($"不支持的表达式:[{func.ToString()}]");
             }
@@ -273,7 +285,7 @@ namespace EasyDAL.Exchange.Helper
                     throw new Exception();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception($"不支持的表达式:[{func.ToString()}]");
             }
