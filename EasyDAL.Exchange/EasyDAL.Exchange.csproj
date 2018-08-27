@@ -9,5 +9,8 @@
   <ItemGroup>
     <PackageReference Update="SourceLink.Create.GitHub" Version="2.8.3" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Outer\" />
+  </ItemGroup>
 
 </Project>

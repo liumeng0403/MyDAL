@@ -54,17 +54,7 @@ namespace EasyDAL.Exchange.AdoNet
                 return hash;
             }
         }
-
-        /// <summary>
-        /// Called if the query cache is purged via PurgeQueryCache
-        /// </summary>
-        public static event EventHandler QueryCachePurged;
-        private static void OnQueryCachePurged()
-        {
-            var handler = QueryCachePurged;
-            handler?.Invoke(null, EventArgs.Empty);
-        }
-
+        
         private static readonly System.Collections.Concurrent.ConcurrentDictionary<Identity, CacheInfo> _queryCache = new System.Collections.Concurrent.ConcurrentDictionary<Identity, CacheInfo>();
         private static void SetQueryCache(Identity key, CacheInfo value)
         {
@@ -106,72 +96,7 @@ namespace EasyDAL.Exchange.AdoNet
             value = null;
             return false;
         }
-
-        /// <summary>
-        /// Purge the query cache
-        /// </summary>
-        public static void PurgeQueryCache()
-        {
-            _queryCache.Clear();
-            TypeDeserializerCache.Purge();
-            OnQueryCachePurged();
-        }
-
-        private static void PurgeQueryCacheByType(Type type)
-        {
-            foreach (var entry in _queryCache)
-            {
-                if (entry.Key.type == type)
-                    _queryCache.TryRemove(entry.Key, out CacheInfo cache);
-            }
-            TypeDeserializerCache.Purge(type);
-        }
-
-        /// <summary>
-        /// Return a count of all the cached queries by Dapper
-        /// </summary>
-        /// <returns></returns>
-        public static int GetCachedSQLCount()
-        {
-            return _queryCache.Count;
-        }
-
-        /// <summary>
-        /// Return a list of all the queries cached by Dapper
-        /// </summary>
-        /// <param name="ignoreHitCountAbove"></param>
-        /// <returns></returns>
-        public static IEnumerable<Tuple<string, string, int>> GetCachedSQL(int ignoreHitCountAbove = int.MaxValue)
-        {
-            var data = _queryCache.Select(pair => Tuple.Create(pair.Key.connectionString, pair.Key.sql, pair.Value.GetHitCount()));
-            return (ignoreHitCountAbove < int.MaxValue)
-                    ? data.Where(tuple => tuple.Item3 <= ignoreHitCountAbove)
-                    : data;
-        }
-
-        /// <summary>
-        /// Deep diagnostics only: find any hash collisions in the cache
-        /// </summary>
-        /// <returns></returns>
-        public static IEnumerable<Tuple<int, int>> GetHashCollissions()
-        {
-            var counts = new Dictionary<int, int>();
-            foreach (var key in _queryCache.Keys)
-            {
-                if (!counts.TryGetValue(key.hashCode, out int count))
-                {
-                    counts.Add(key.hashCode, 1);
-                }
-                else
-                {
-                    counts[key.hashCode] = count + 1;
-                }
-            }
-            return from pair in counts
-                   where pair.Value > 1
-                   select Tuple.Create(pair.Key, pair.Value);
-        }
-
+        
         private static Dictionary<Type, DbType> typeMap;
 
         static SqlMapper()
@@ -218,12 +143,7 @@ namespace EasyDAL.Exchange.AdoNet
             };
             ResetTypeHandlers(false);
         }
-
-        /// <summary>
-        /// Clear the registered type handlers.
-        /// </summary>
-        public static void ResetTypeHandlers() => ResetTypeHandlers(true);
-
+        
         private static void ResetTypeHandlers(bool clone)
         {
             typeHandlers = new Dictionary<Type, ITypeHandler>();
@@ -245,46 +165,7 @@ namespace EasyDAL.Exchange.AdoNet
         {
             AddTypeHandlerImpl(typeof(IEnumerable<Microsoft.SqlServer.Server.SqlDataRecord>), new SqlDataRecordHandler(), clone);
         }
-
-        /// <summary>
-        /// Configure the specified type to be mapped to a given db-type.
-        /// </summary>
-        /// <param name="type">The type to map from.</param>
-        /// <param name="dbType">The database type to map to.</param>
-        public static void AddTypeMap(Type type, DbType dbType)
-        {
-            // use clone, mutate, replace to avoid threading issues
-            var snapshot = typeMap;
-
-            if (snapshot.TryGetValue(type, out DbType oldValue) && oldValue == dbType) return; // nothing to do
-
-            typeMap = new Dictionary<Type, DbType>(snapshot) { [type] = dbType };
-        }
-
-        /// <summary>
-        /// Removes the specified type from the Type/DbType mapping table.
-        /// </summary>
-        /// <param name="type">The type to remove from the current map.</param>
-        public static void RemoveTypeMap(Type type)
-        {
-            // use clone, mutate, replace to avoid threading issues
-            var snapshot = typeMap;
-
-            if (!snapshot.ContainsKey(type)) return; // nothing to do
-
-            var newCopy = new Dictionary<Type, DbType>(snapshot);
-            newCopy.Remove(type);
-
-            typeMap = newCopy;
-        }
-
-        /// <summary>
-        /// Configure the specified type to be processed by a custom handler.
-        /// </summary>
-        /// <param name="type">The type to handle.</param>
-        /// <param name="handler">The handler to process the <paramref name="type"/>.</param>
-        public static void AddTypeHandler(Type type, ITypeHandler handler) => AddTypeHandlerImpl(type, handler, true);
-
+        
         internal static bool HasTypeHandler(Type type) => typeHandlers.ContainsKey(type);
 
         /// <summary>
@@ -337,14 +218,7 @@ namespace EasyDAL.Exchange.AdoNet
             }
             typeHandlers = newCopy;
         }
-
-        /// <summary>
-        /// Configure the specified type to be processed by a custom handler.
-        /// </summary>
-        /// <typeparam name="T">The type to handle.</typeparam>
-        /// <param name="handler">The handler for the type <typeparamref name="T"/>.</param>
-        public static void AddTypeHandler<T>(TypeHandler<T> handler) => AddTypeHandlerImpl(typeof(T), handler, true);
-
+        
         private static Dictionary<Type, ITypeHandler> typeHandlers;
 
         internal const string LinqBinary = "System.Data.Linq.Binary";
@@ -419,16 +293,7 @@ namespace EasyDAL.Exchange.AdoNet
                 throw new NotSupportedException($"The member {name} of type {type.FullName} cannot be used as a parameter value");
             return DbType.Object;
         }
-
-        /// <summary>
-        /// Obtains the data as a list; if it is *already* a list, the original object is returned without
-        /// any duplication; otherwise, ToList() is invoked.
-        /// </summary>
-        /// <typeparam name="T">The type of element in the list.</typeparam>
-        /// <param name="source">The enumerable to return as a list.</param>
-        public static List<T> AsList<T>(this IEnumerable<T> source) =>
-            (source == null || source is List<T>) ? (List<T>)source : source.ToList();
-
+        
         private static IEnumerable GetMultiExec(object param)
         {
             return (param is IEnumerable
@@ -1877,35 +1742,7 @@ namespace EasyDAL.Exchange.AdoNet
 
         // use Hashtable to get free lockless reading
         private static readonly Hashtable _typeMaps = new Hashtable();
-
-        /// <summary>
-        /// Set custom mapping for type deserializers
-        /// </summary>
-        /// <param name="type">Entity type to override</param>
-        /// <param name="map">Mapping rules impementation, null to remove custom map</param>
-        public static void SetTypeMap(Type type, ITypeMap map)
-        {
-            if (type == null)
-                throw new ArgumentNullException(nameof(type));
-
-            if (map == null || map is DefaultTypeMap)
-            {
-                lock (_typeMaps)
-                {
-                    _typeMaps.Remove(type);
-                }
-            }
-            else
-            {
-                lock (_typeMaps)
-                {
-                    _typeMaps[type] = map;
-                }
-            }
-
-            PurgeQueryCacheByType(type);
-        }
-
+        
         /// <summary>
         /// Internal use only
         /// </summary>
@@ -2498,46 +2335,14 @@ namespace EasyDAL.Exchange.AdoNet
         /// Key used to indicate the type name associated with a DataTable.
         /// </summary>
         private const string DataTableTypeNameKey = "dapper:TypeName";
-
-        /// <summary>
-        /// Used to pass a DataTable as a <see cref="TableValuedParameter"/>.
-        /// </summary>
-        /// <param name="table">The <see cref="DataTable"/> to create this parameter for.</param>
-        /// <param name="typeName">The name of the type this parameter is for.</param>
-        public static ICustomQueryParameter AsTableValuedParameter(this DataTable table, string typeName = null) =>
-            new TableValuedParameter(table, typeName);
-
-        /// <summary>
-        /// Associate a DataTable with a type name.
-        /// </summary>
-        /// <param name="table">The <see cref="DataTable"/> that does with the <paramref name="typeName"/>.</param>
-        /// <param name="typeName">The name of the type this table is for.</param>
-        public static void SetTypeName(this DataTable table, string typeName)
-        {
-            if (table != null)
-            {
-                if (string.IsNullOrEmpty(typeName))
-                    table.ExtendedProperties.Remove(DataTableTypeNameKey);
-                else
-                    table.ExtendedProperties[DataTableTypeNameKey] = typeName;
-            }
-        }
-
+        
         /// <summary>
         /// Fetch the type name associated with a <see cref="DataTable"/>.
         /// </summary>
         /// <param name="table">The <see cref="DataTable"/> that has a type name associated with it.</param>
         public static string GetTypeName(this DataTable table) =>
             table?.ExtendedProperties[DataTableTypeNameKey] as string;
-
-        /// <summary>
-        /// Used to pass a IEnumerable&lt;SqlDataRecord&gt; as a TableValuedParameter.
-        /// </summary>
-        /// <param name="list">The list of records to convert to TVPs.</param>
-        /// <param name="typeName">The sql parameter type name.</param>
-        public static ICustomQueryParameter AsTableValuedParameter(this IEnumerable<Microsoft.SqlServer.Server.SqlDataRecord> list, string typeName = null) =>
-            new SqlDataRecordListTVPParameter(list, typeName);
-
+        
         // one per thread
         [ThreadStatic]
         private static StringBuilder perThreadStringBuilderCache;
