@@ -23,7 +23,7 @@ namespace EasyDAL.Exchange.Core
         {
             var field = EH.ExpressionHandle(func);
             field.Action = ActionEnum.Where;
-            Conditions.Add(field);
+            DC.Conditions.Add(field);
             return this;
         }
 
@@ -31,7 +31,7 @@ namespace EasyDAL.Exchange.Core
         {
             var field = EH.ExpressionHandle(func);
             field.Action = ActionEnum.And;
-            Conditions.Add(field);
+            DC.Conditions.Add(field);
             return this;
         }
 
@@ -39,7 +39,7 @@ namespace EasyDAL.Exchange.Core
         {
             var field = EH.ExpressionHandle(func);
             field.Action = ActionEnum.Or;
-            Conditions.Add(field);
+            DC.Conditions.Add(field);
             return this;
         }
 
@@ -47,16 +47,12 @@ namespace EasyDAL.Exchange.Core
         {
 
             TryGetTableName<M>(out var tableName);
-
-            if (!Conditions.Any())
-            {
-                throw new Exception("没有设置任何删除条件!");
-            }
+            
             var wherePart = GetWheres();
             var sql = $" delete from `{tableName}` where {wherePart} ; ";
             var paras = GetParameters();
 
-            return await SqlMapper.ExecuteAsync(Conn, sql, paras);
+            return await SqlMapper.ExecuteAsync(DC.Conn, sql, paras);
 
         }
 

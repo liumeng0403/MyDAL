@@ -47,6 +47,24 @@ namespace EasyDAL.Exchange.Enums
         /// like
         /// </summary>
         [Description(" like ")]
-        Like
+        Like,
+
+        /// <summary>
+        /// +
+        /// </summary>
+        [Description("+")]
+        ChangeAdd,
+
+        /// <summary>
+        /// -
+        /// </summary>
+        [Description("-")]
+        ChangeMinus,
+
+        /// <summary>
+        /// =
+        /// </summary>
+        [Description("=")]
+        Set
     }
 }

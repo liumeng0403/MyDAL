@@ -20,6 +20,12 @@ namespace EasyDAL.Exchange.Enums
         Set,
 
         /// <summary>
+        /// ""
+        /// </summary>
+        [Description("")]
+        Change,
+
+        /// <summary>
         /// " "
         /// </summary>
         [Description(" ")]

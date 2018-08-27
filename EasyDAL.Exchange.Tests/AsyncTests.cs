@@ -130,32 +130,6 @@ namespace EasyDAL.Exchange.Tests
             var xx = "";
         }
 
-        // 修改一个已有对象
-        [Fact]
-        public async Task UpdateAsyncTest()
-        {
-            // DB data
-            var m = new BodyFitRecord
-            {
-                Id = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"),
-                CreatedOn = DateTime.Now,   // new value
-                UserId = Guid.NewGuid(),
-                BodyMeasureProperty = "{xxx:yyy,mmm:nnn,zzz:aaa}"   // new value
-            };
-
-            var xx0 = "";
-
-            // where
-            var res1 = await Conn
-                .Updater<BodyFitRecord>()
-                .Set(it => it.CreatedOn == m.CreatedOn)
-                .Set(it => it.BodyMeasureProperty == m.BodyMeasureProperty)
-                .Where(it => it.Id == m.Id)
-                .UpdateAsync();
-
-            var xx = "";
-        }
-
         // 查询一个已存在对象 单条件
         [Fact]
         public async Task QueryFirstOrDefaultAsyncTest()

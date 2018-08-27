@@ -12,22 +12,19 @@ using System.Linq.Expressions;
 using System.Reflection;
 using EasyDAL.Exchange.Extensions;
 using EasyDAL.Exchange.DynamicParameter;
+using EasyDAL.Exchange.Core.Sql;
 
 namespace EasyDAL.Exchange.Base
 {
     public abstract partial class DbOperation
     {
-        protected IDbConnection Conn { get; private set; }
-
         protected AttributeHelper AH { get; private set; }
 
         protected GenericHelper GH { get; private set; }
 
         protected ExpressionHelper EH { get; private set; }
 
-        protected List<DicModel<string, string>> Conditions { get; private set; }
-
-        protected static readonly ConcurrentDictionary<Type, List<PropertyInfo>> ModelPropertiesCache = new ConcurrentDictionary<Type, List<PropertyInfo>>();
+        protected DbContext DC { get; private set; }
 
         protected List<string> GetProperties<M>(M m)
         {
@@ -43,10 +40,10 @@ namespace EasyDAL.Exchange.Base
 
 
             var props = default(List<PropertyInfo>);
-            if (!ModelPropertiesCache.TryGetValue(m.GetType(), out props))
+            if (!DC.ModelPropertiesCache.TryGetValue(m.GetType(), out props))
             {
                 props = GH.GetPropertyInfos(m);
-                ModelPropertiesCache[m.GetType()] = props;
+                DC.ModelPropertiesCache[m.GetType()] = props;
             }
 
             return props.Select(x => x.Name).ToList();
@@ -54,9 +51,16 @@ namespace EasyDAL.Exchange.Base
 
         protected string GetWheres()
         {
+            if (!DC.Conditions.Any(it => it.Action == ActionEnum.Where)
+                && !DC.Conditions.Any(it => it.Action == ActionEnum.And)
+                && !DC.Conditions.Any(it => it.Action == ActionEnum.Or))
+            {
+                throw new Exception("没有设置任何条件!");
+            }
+
             var str = string.Empty;
 
-            foreach (var item in Conditions)
+            foreach (var item in DC.Conditions)
             {
                 switch (item.Action)
                 {
@@ -75,16 +79,45 @@ namespace EasyDAL.Exchange.Base
                             case OptionEnum.Like:
                                 str += $" {item.Action.ToEnumDesc<ActionEnum>()} `{item.key}`{item.Option.ToEnumDesc<OptionEnum>()}CONCAT('%',@{item.key},'%') ";
                                 break;
-                            default:
-                                throw new Exception("请联系 https://www.cnblogs.com/Meng-NET/ 博主!");
                         }
-                        break;
-                    default:
                         break;
                 }
             }
 
             return str;
+        }
+
+        protected string GetUpdates()
+        {
+            if (!DC.Conditions.Any(it => it.Action == ActionEnum.Set)
+                && !DC.Conditions.Any(it => it.Action == ActionEnum.Change))
+            {
+                throw new Exception("没有设置任何要更新的字段!");
+            }
+
+            var list = new List<string>();
+
+            foreach (var item in DC.Conditions)
+            {
+                switch (item.Action)
+                {
+                    case ActionEnum.Set:
+                    case ActionEnum.Change:
+                        switch (item.Option)
+                        {
+                            case OptionEnum.ChangeAdd:
+                            case OptionEnum.ChangeMinus:
+                                list.Add($" `{item.key}`=`{item.key}`{item.Option.ToEnumDesc<OptionEnum>()}@{item.key} ");
+                                break;
+                            case OptionEnum.Set:
+                                list.Add($" `{item.key}`{item.Option.ToEnumDesc<OptionEnum>()}@{item.key} ");
+                                break;
+                        }
+                        break;
+                }
+            }
+
+            return string.Join(",", list);
         }
 
         protected bool TryGetTableName<M>(M m, out string tableName)
@@ -111,14 +144,28 @@ namespace EasyDAL.Exchange.Base
 
         }
 
+        protected OptionEnum GetChangeOption(ChangeEnum change)
+        {
+            switch (change)
+            {
+                case ChangeEnum.Add:
+                    return OptionEnum.ChangeAdd;
+                case ChangeEnum.Minus:
+                    return OptionEnum.ChangeMinus;
+                default:
+                    return OptionEnum.ChangeAdd;
+            }
+        }
+
         protected DynamicParameters GetParameters()
         {
             var paras = new DynamicParameters();
-            foreach (var item in Conditions)
+            foreach (var item in DC.Conditions)
             {
                 switch (item.Action)
                 {
                     case ActionEnum.Set:
+                    case ActionEnum.Change:
                     case ActionEnum.Where:
                     case ActionEnum.And:
                     case ActionEnum.Or:

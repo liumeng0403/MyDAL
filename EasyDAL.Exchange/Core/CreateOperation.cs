@@ -28,7 +28,7 @@ namespace EasyDAL.Exchange.Core
             var paras = string.Join(",", properties.Select(p => "@" + p));
             var sql = $" insert into `{tableName}` ({columns}) values ({paras}) ;";
 
-            return await SqlMapper.ExecuteScalarAsync<int>(Conn,sql, m);
+            return await SqlMapper.ExecuteScalarAsync<int>(DC.Conn,sql, m);
 
         }
 

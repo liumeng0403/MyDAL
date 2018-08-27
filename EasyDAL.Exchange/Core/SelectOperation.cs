@@ -27,7 +27,7 @@ namespace EasyDAL.Exchange.Core
         {
             var field = EH.ExpressionHandle(func);
             field.Action = ActionEnum.Where;
-            Conditions.Add(field);
+            DC.Conditions.Add(field);
             return this;
         }
 
@@ -35,7 +35,7 @@ namespace EasyDAL.Exchange.Core
         {
             var field = EH.ExpressionHandle(func);
             field.Action = ActionEnum.And;
-            Conditions.Add(field);
+            DC.Conditions.Add(field);
             return this;
         }
 
@@ -43,7 +43,7 @@ namespace EasyDAL.Exchange.Core
         {
             var field = EH.ExpressionHandle(func);
             field.Action = ActionEnum.Or;
-            Conditions.Add(field);
+            DC.Conditions.Add(field);
             return this;
         }
 
@@ -63,49 +63,34 @@ namespace EasyDAL.Exchange.Core
         {
             TryGetTableName<M>(out var tableName);
 
-            if (!Conditions.Any())
-            {
-                throw new Exception("没有设置任何查询条件!");
-            }
-
             var wherePart = GetWheres();
             var sql = $"SELECT * FROM `{tableName}` WHERE {wherePart} ; ";
             var paras = GetParameters();
 
-            return await SqlMapper.QueryFirstOrDefaultAsync<M>(Conn, sql, paras);
+            return await SqlMapper.QueryFirstOrDefaultAsync<M>(DC.Conn, sql, paras);
         }
 
         public async Task<List<M>> QueryListAsync()
         {
             TryGetTableName<M>(out var tableName);
 
-            if (!Conditions.Any())
-            {
-                throw new Exception("没有设置任何查询条件!");
-            }
-
             var wherePart = GetWheres();
             var sql = $"SELECT * FROM `{tableName}` WHERE {wherePart} ; ";
             var paras = GetParameters();
 
-            return (await SqlMapper.QueryAsync<M>(Conn, sql, paras)).ToList();
+            return (await SqlMapper.QueryAsync<M>(DC.Conn, sql, paras)).ToList();
         }
 
         public async Task<PagingList<M>> QueryPagingListAsync()
         {
             TryGetTableName<M>(out var tableName);
-
-            if (!Conditions.Any())
-            {
-                throw new Exception("没有设置任何查询条件!");
-            }
-
+            
             var wherePart = GetWheres();
             var totalSql = $"SELECT count(*) FROM `{tableName}` WHERE {wherePart} ; ";
             var dataSql = $"SELECT * FROM `{tableName}` WHERE {wherePart} limit {(PagingList.PageIndex - 1) * PagingList.PageSize},{PagingList.PageIndex * PagingList.PageSize}  ; ";
             var paras = GetParameters();
-            PagingList.TotalCount = await SqlMapper.QuerySingleOrDefaultAsync<long>(Conn, totalSql, paras);
-            PagingList.Data = (await SqlMapper.QueryAsync<M>(Conn, dataSql, paras)).ToList();
+            PagingList.TotalCount = await SqlMapper.QuerySingleOrDefaultAsync<long>(DC.Conn, totalSql, paras);
+            PagingList.Data = (await SqlMapper.QueryAsync<M>(DC.Conn, dataSql, paras)).ToList();
 
 
             return PagingList;

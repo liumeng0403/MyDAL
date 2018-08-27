@@ -17,19 +17,38 @@ namespace EasyDAL.Exchange.Core
         public UpdateOperation(IDbConnection conn) 
             : base(conn)
         {
-            Fields = new List<string>();
-            Changes = new List<string>();
+            //Fields = new List<string>();
+            //Changes = new List<string>();
         }
 
-        private List<string> Fields { get; set; }
-        private List<string > Changes { get; set; }
+        //private List<string> Fields { get; set; }
+        //private List<string > Changes { get; set; }
 
-        public UpdateOperation<M> Set(Expression<Func<M,bool>> func)
+        public UpdateOperation<M> Set<F>(Expression<Func<M,F>> func,F newVal)
         {
-            var field = EH.ExpressionHandle(func);  
-            Fields.Add(field.key);
-            field.Action = ActionEnum.Set;
-            Conditions.Add(field);
+            var key = EH.ExpressionHandle(func);  
+            //Fields.Add(key);
+            DC.Conditions.Add(new DicModel<string, string>
+            {
+                key= key,
+                Value=GH.GetTypeValue(newVal.GetType(),newVal),
+                Option= OptionEnum.Set,
+                Action= ActionEnum.Set
+            });
+            return this;
+        }
+
+        public UpdateOperation<M> Change<F>(Expression<Func<M, F>> func, F modifyVal, ChangeEnum change)
+        {
+            var key = EH.ExpressionHandle(func);
+            //Fields.Add(key);
+            DC.Conditions.Add(new DicModel<string, string>
+            {
+                key = key,
+                Value = GH.GetTypeValue(modifyVal.GetType(), modifyVal),
+                Option = GetChangeOption(change),
+                Action = ActionEnum.Change
+            });
             return this;
         }
 
@@ -37,7 +56,7 @@ namespace EasyDAL.Exchange.Core
         {
             var field = EH.ExpressionHandle(func);
             field.Action = ActionEnum.Where;
-            Conditions.Add(field);
+            DC.Conditions.Add(field);
             return this;
         }
 
@@ -45,7 +64,7 @@ namespace EasyDAL.Exchange.Core
         {
             var field = EH.ExpressionHandle(func);
             field.Action = ActionEnum.And;
-            Conditions.Add(field);
+            DC.Conditions.Add(field);
             return this;
         }
 
@@ -53,7 +72,7 @@ namespace EasyDAL.Exchange.Core
         {
             var field = EH.ExpressionHandle(func);
             field.Action = ActionEnum.Or;
-            Conditions.Add(field);
+            DC.Conditions.Add(field);
             return this;
         }
 
@@ -61,20 +80,12 @@ namespace EasyDAL.Exchange.Core
         {
             TryGetTableName<M>(out var tableName);
 
-            if (!Fields.Any())
-            {
-                throw new Exception("没有设置任何要更新的字段!");
-            }
-            if (!Conditions.Any())
-            {
-                throw new Exception("没有设置任何更新条件!");
-            }
-            var updateFields = string.Join(",", Fields.Select(p => $"`{p}`=@{p}"));
+            var updateFields = GetUpdates();
             var wherePart = GetWheres();
             var paras = GetParameters();
             var sql = $" update `{tableName}` set {updateFields} where {wherePart} ;";
 
-            return await SqlMapper.ExecuteAsync(Conn, sql, paras);
+            return await SqlMapper.ExecuteAsync(DC.Conn, sql, paras);
         }
 
     }

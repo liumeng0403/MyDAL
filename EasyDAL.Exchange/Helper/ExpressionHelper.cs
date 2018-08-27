@@ -223,36 +223,25 @@ namespace EasyDAL.Exchange.Helper
         }
 
         /// <summary>
-        /// Get the field name in table according to the name property in ColumnAttibute
+        /// 获取表达式信息
         /// </summary>
-        /// <typeparam name="T">Field</typeparam>
-        /// <param name="func">lambda expression like t=>t.colname</param>
-        public String ExpressionHandle<M, T>(Expression<Func<M, T>> func)
+        public string ExpressionHandle<M, F>(Expression<Func<M, F>> func)
         {
-            if (func == null || func.Parameters == null || func.Parameters.Count == 0)
+            try
             {
-                throw new Exception("Lambda expression is invalid.");
+                var parameter = func.Parameters[0];
+                var body = func.Body as MemberExpression;
+                return GetKey(parameter, body);
             }
-
-            var parameter = func.Parameters[0];
-            if (parameter == null)
+            catch(Exception ex)
             {
-                throw new Exception($"Lambda expression[{func.ToString()}] is invalid.");
+                throw new Exception($"不支持的表达式:[{func.ToString()}]");
             }
-            var member = func.Body as MemberExpression;
-            if (member == null)
-            {
-                throw new Exception($"Lambda expression[{func.ToString()}] is invalid.");
-            }
-            var fieldName = GetKey(parameter, member);
-
-            return fieldName;
         }
 
         /// <summary>
-        /// Get the field name in table according to the name property in ColumnAttibute
+        /// 获取表达式信息
         /// </summary>
-        /// <param name="func">lambda expression like t=>t.colname==5</param>
         public DicModel<string, string> ExpressionHandle<M>(Expression<Func<M, bool>> func)
         {
             try

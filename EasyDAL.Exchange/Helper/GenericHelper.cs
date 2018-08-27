@@ -126,7 +126,84 @@ namespace EasyDAL.Exchange.Helper
             }
             return val;
         }
+        public string GetTypeValue(Type valType, object objVal)
+        {
+            var val = string.Empty;
 
+            if (valType == typeof(sbyte))
+            {
+                val = objVal.ToString();
+            }
+            else if (valType == typeof(short))
+            {
+                val = objVal.ToString();
+            }
+            else if (valType == typeof(int))
+            {
+                val = objVal.ToString();
+            }
+            else if (valType == typeof(long))
+            {
+                val = objVal.ToString();
+            }
+            else if (valType == typeof(byte))
+            {
+                val = objVal.ToString();
+            }
+            else if (valType == typeof(ushort))
+            {
+                val = objVal.ToString();
+            }
+            else if (valType == typeof(uint))
+            {
+                val = objVal.ToString();
+            }
+            else if (valType == typeof(ulong))
+            {
+                val = objVal.ToString();
+            }
+            else if (valType == typeof(float))
+            {
+                val = objVal.ToString();
+            }
+            else if (valType == typeof(double))
+            {
+                val = objVal.ToString();
+            }
+            else if (valType == typeof(decimal))
+            {
+                val = objVal.ToString();
+            }
+            else if (valType == typeof(bool))
+            {
+                val = objVal.ToString();
+            }
+            else if (valType == typeof(char))
+            {
+                val = objVal.ToString();
+            }
+            else if (valType == typeof(DateTime))
+            {
+                val = objVal.ToString();
+            }
+            else if (valType == typeof(Guid))
+            {
+                val = objVal.ToString();
+            }
+            else if (valType == typeof(string))
+            {
+                val = objVal.ToString();
+            }
+            else if (valType.IsEnum)
+            {
+                val = ((int)objVal).ToString();
+            }
+            else
+            {
+                val = objVal.ToString();
+            }
+            return val;
+        }
         public void SetPropertyValue<M>(M m, string propertyName, object value)
         {
             try
