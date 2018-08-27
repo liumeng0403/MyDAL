@@ -2,7 +2,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace EasyDAL.Exchange.DataBase
@@ -78,11 +80,7 @@ namespace EasyDAL.Exchange.DataBase
             return sb.Append('}').__ToStringRecycle();
         }
 
-        System.Dynamic.DynamicMetaObject System.Dynamic.IDynamicMetaObjectProvider.GetMetaObject(
-            System.Linq.Expressions.Expression parameter)
-        {
-            return new DapperRowMetaObject(parameter, System.Dynamic.BindingRestrictions.Empty, this);
-        }
+
 
         public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
         {
@@ -226,6 +224,11 @@ namespace EasyDAL.Exchange.DataBase
         {
             int index = table.IndexOfName(key);
             return index >= 0 && index < values.Length && !(values[index] is DeadValue);
+        }
+
+        public DynamicMetaObject GetMetaObject(Expression parameter)
+        {
+            throw new NotImplementedException();
         }
 
         object IReadOnlyDictionary<string, object>.this[string key]

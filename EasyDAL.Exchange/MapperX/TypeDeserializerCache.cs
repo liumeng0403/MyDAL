@@ -16,21 +16,7 @@ namespace EasyDAL.Exchange.MapperX
 
         private static readonly Hashtable byType = new Hashtable();
         private readonly Type type;
-        internal static void Purge(Type type)
-        {
-            lock (byType)
-            {
-                byType.Remove(type);
-            }
-        }
-
-        internal static void Purge()
-        {
-            lock (byType)
-            {
-                byType.Clear();
-            }
-        }
+       
 
         internal static Func<IDataReader, object> GetReader(Type type, IDataReader reader, int startBound, int length, bool returnNullIfFirstMissing)
         {

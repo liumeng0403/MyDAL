@@ -10,6 +10,10 @@ namespace EasyDAL.Exchange.Reader
         private IDataReader reader;
         private IDbCommand cmd;
 
+        public object this[int i] => throw new NotImplementedException();
+
+        public object this[string name] => throw new NotImplementedException();
+
         public IDataReader Reader
         {
             get
@@ -19,6 +23,14 @@ namespace EasyDAL.Exchange.Reader
                 return tmp;
             }
         }
+
+        public int Depth => throw new NotImplementedException();
+
+        public bool IsClosed => throw new NotImplementedException();
+
+        public int RecordsAffected => throw new NotImplementedException();
+
+        public int FieldCount => throw new NotImplementedException();
 
         IDbCommand IWrappedDataReader.Command
         {
@@ -30,25 +42,135 @@ namespace EasyDAL.Exchange.Reader
             }
         }
 
-        public WrappedReader(IDbCommand cmd, IDataReader reader)
+        public void Close()
         {
-            this.cmd = cmd;
-            this.reader = reader;
+            throw new NotImplementedException();
         }
 
-        void IDataReader.Close() => reader?.Close();
+        public bool GetBoolean(int i)
+        {
+            throw new NotImplementedException();
+        }
 
-        int IDataReader.Depth => Reader.Depth;
+        public byte GetByte(int i)
+        {
+            throw new NotImplementedException();
+        }
 
-        DataTable IDataReader.GetSchemaTable() => Reader.GetSchemaTable();
+        public long GetBytes(int i, long fieldOffset, byte[] buffer, int bufferoffset, int length)
+        {
+            throw new NotImplementedException();
+        }
 
-        bool IDataReader.IsClosed => reader?.IsClosed ?? true;
+        public char GetChar(int i)
+        {
+            throw new NotImplementedException();
+        }
 
-        bool IDataReader.NextResult() => Reader.NextResult();
+        public long GetChars(int i, long fieldoffset, char[] buffer, int bufferoffset, int length)
+        {
+            throw new NotImplementedException();
+        }
 
-        bool IDataReader.Read() => Reader.Read();
+        public IDataReader GetData(int i)
+        {
+            throw new NotImplementedException();
+        }
 
-        int IDataReader.RecordsAffected => Reader.RecordsAffected;
+        public string GetDataTypeName(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DateTime GetDateTime(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public decimal GetDecimal(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public double GetDouble(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Type GetFieldType(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public float GetFloat(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Guid GetGuid(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public short GetInt16(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetInt32(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public long GetInt64(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetName(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetOrdinal(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DataTable GetSchemaTable()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetString(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object GetValue(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetValues(object[] values)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsDBNull(int i)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool NextResult()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Read()
+        {
+            throw new NotImplementedException();
+        }
 
         void IDisposable.Dispose()
         {
@@ -58,57 +180,6 @@ namespace EasyDAL.Exchange.Reader
             cmd?.Dispose();
             cmd = null;
         }
-
-        int IDataRecord.FieldCount => Reader.FieldCount;
-
-        bool IDataRecord.GetBoolean(int i) => Reader.GetBoolean(i);
-
-        byte IDataRecord.GetByte(int i) => Reader.GetByte(i);
-
-        long IDataRecord.GetBytes(int i, long fieldOffset, byte[] buffer, int bufferoffset, int length) =>
-            Reader.GetBytes(i, fieldOffset, buffer, bufferoffset, length);
-
-        char IDataRecord.GetChar(int i) => Reader.GetChar(i);
-
-        long IDataRecord.GetChars(int i, long fieldoffset, char[] buffer, int bufferoffset, int length) =>
-            Reader.GetChars(i, fieldoffset, buffer, bufferoffset, length);
-
-        IDataReader IDataRecord.GetData(int i) => Reader.GetData(i);
-
-        string IDataRecord.GetDataTypeName(int i) => Reader.GetDataTypeName(i);
-
-        DateTime IDataRecord.GetDateTime(int i) => Reader.GetDateTime(i);
-
-        decimal IDataRecord.GetDecimal(int i) => Reader.GetDecimal(i);
-
-        double IDataRecord.GetDouble(int i) => Reader.GetDouble(i);
-
-        Type IDataRecord.GetFieldType(int i) => Reader.GetFieldType(i);
-
-        float IDataRecord.GetFloat(int i) => Reader.GetFloat(i);
-
-        Guid IDataRecord.GetGuid(int i) => Reader.GetGuid(i);
-
-        short IDataRecord.GetInt16(int i) => Reader.GetInt16(i);
-
-        int IDataRecord.GetInt32(int i) => Reader.GetInt32(i);
-
-        long IDataRecord.GetInt64(int i) => Reader.GetInt64(i);
-
-        string IDataRecord.GetName(int i) => Reader.GetName(i);
-
-        int IDataRecord.GetOrdinal(string name) => Reader.GetOrdinal(name);
-
-        string IDataRecord.GetString(int i) => Reader.GetString(i);
-
-        object IDataRecord.GetValue(int i) => Reader.GetValue(i);
-
-        int IDataRecord.GetValues(object[] values) => Reader.GetValues(values);
-
-        bool IDataRecord.IsDBNull(int i) => Reader.IsDBNull(i);
-
-        object IDataRecord.this[string name] => Reader[name];
-
-        object IDataRecord.this[int i] => Reader[i];
+        
     }
 }

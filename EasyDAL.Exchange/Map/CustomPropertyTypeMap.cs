@@ -13,16 +13,7 @@ namespace EasyDAL.Exchange.Map
         private readonly Type _type;
         private readonly Func<Type, string, PropertyInfo> _propertySelector;
 
-        /// <summary>
-        /// Creates custom property mapping
-        /// </summary>
-        /// <param name="type">Target entity type</param>
-        /// <param name="propertySelector">Property selector based on target type and DataReader column name</param>
-        public CustomPropertyTypeMap(Type type, Func<Type, string, PropertyInfo> propertySelector)
-        {
-            _type = type ?? throw new ArgumentNullException(nameof(type));
-            _propertySelector = propertySelector ?? throw new ArgumentNullException(nameof(propertySelector));
-        }
+
 
         /// <summary>
         /// Always returns default constructor
@@ -32,13 +23,7 @@ namespace EasyDAL.Exchange.Map
         /// <returns>Default constructor</returns>
         public ConstructorInfo FindConstructor(string[] names, Type[] types) =>
             _type.GetConstructor(new Type[0]);
-
-        /// <summary>
-        /// Always returns null
-        /// </summary>
-        /// <returns></returns>
-        public ConstructorInfo FindExplicitConstructor() => null;
-
+        
         /// <summary>
         /// Not implemented as far as default constructor used for all cases
         /// </summary>

@@ -10,12 +10,6 @@ namespace EasyDAL.Exchange.Extensions
     /// </summary>
     public static class TypeExtensionsX
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public static string NameX(this Type type) => type.Name;
 
         /// <summary>
         /// 
@@ -30,21 +24,7 @@ namespace EasyDAL.Exchange.Extensions
         /// <param name="type"></param>
         /// <returns></returns>
         public static bool IsEnumX(this Type type) => type.IsEnum;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public static bool IsGenericTypeX(this Type type) => type.IsGenericType;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public static bool IsInterfaceX(this Type type) => type.IsInterface;
-
+        
         /// <summary>
         /// 
         /// </summary>

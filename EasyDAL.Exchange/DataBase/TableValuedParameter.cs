@@ -15,13 +15,7 @@ namespace EasyDAL.Exchange.DataBase
     {
         private readonly DataTable table;
         private readonly string typeName;
-
-        /// <summary>
-        /// Create a new instance of <see cref="TableValuedParameter"/>.
-        /// </summary>
-        /// <param name="table">The <see cref="DataTable"/> to create this parameter for</param>
-        public TableValuedParameter(DataTable table) : this(table, null) { /* run base */ }
-
+        
         /// <summary>
         /// Create a new instance of <see cref="TableValuedParameter"/>.
         /// </summary>
