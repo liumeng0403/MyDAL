@@ -31,7 +31,7 @@ namespace EasyDAL.Exchange.Core.Sql
         internal IDbConnection Conn { get; private set; }
 
         internal MySqlProvider SqlProvider { get; set; }
-
+        
         internal DbContext(IDbConnection conn)
         {
             Conn = conn;
@@ -41,6 +41,6 @@ namespace EasyDAL.Exchange.Core.Sql
             EH = ExpressionHelper.Instance;
             SqlProvider = new MySqlProvider(this);
         }
-
+        
     }
 }

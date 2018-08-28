@@ -183,26 +183,15 @@ namespace EasyDAL.Exchange.Core
             return paras;
         }
 
-        internal List<string> GetSQL<M>(SqlTypeEnum type, M m = default(M), PagingList<M> pager=default(PagingList<M>))
+        internal List<string> GetSQL<M>(SqlTypeEnum type, PagingList<M> pager = default(PagingList<M>))
         {
             var list = new List<string>();
 
             //
-            var tableName = string.Empty;
-            if (!default(M).Equals(m))
-            {
-                DC.SqlProvider.TryGetTableName(m, out tableName);
-            }
-            else
-            {
-                DC.SqlProvider.TryGetTableName<M>(out tableName);
-            }
-
-            //
+            DC.SqlProvider.TryGetTableName<M>(out var tableName);            
             switch (type)
             {
                 case SqlTypeEnum.CreateAsync:
-                    DC.SqlProvider.GetProperties(m);
                     list.Add($" insert into `{tableName}` {DC.SqlProvider.GetColumns()} values {DC.SqlProvider.GetValues()} ;");
                     break;
                 case SqlTypeEnum.DeleteAsync:
@@ -219,7 +208,7 @@ namespace EasyDAL.Exchange.Core
                     break;
                 case SqlTypeEnum.QueryPagingListAsync:
                     var wherePart = DC.SqlProvider.GetWheres();
-                    list.Add( $"SELECT count(*) FROM `{tableName}` WHERE {wherePart} ; ");
+                    list.Add($"SELECT count(*) FROM `{tableName}` WHERE {wherePart} ; ");
                     list.Add($"SELECT * FROM `{tableName}` WHERE {wherePart} limit {(pager.PageIndex - 1) * pager.PageSize},{pager.PageIndex * pager.PageSize}  ; ");
                     break;
             }

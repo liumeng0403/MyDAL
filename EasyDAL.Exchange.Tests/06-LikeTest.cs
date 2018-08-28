@@ -1,4 +1,5 @@
-﻿using EasyDAL.Exchange.Tests.Entities;
+﻿using EasyDAL.Exchange.Core.Sql;
+using EasyDAL.Exchange.Tests.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,10 +14,10 @@ namespace EasyDAL.Exchange.Tests
         [Fact]
         public async Task QueryFirstOrDefaultAsyncTest()
         {
-            var xx3 = "";
+            var xx1 = "";
 
-            // like string
-            var res4 = await Conn
+            // 默认 "%"+"xx"+"%"
+            var res1 = await Conn
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.BodyMeasureProperty.Contains("xx"))
                 .QueryFirstOrDefaultAsync();
@@ -27,23 +28,28 @@ namespace EasyDAL.Exchange.Tests
         [Fact]
         public async Task QueryPagingListAsyncTest()
         {
-            var xx0 = "";
+            var xx1 = "";
 
-            // where and like 
-            var res1 = await Conn
+            // testH.ContainStr="~00-d-3-1-"
+            // 默认 "%"+testH.ContainStr+"%"
+            var res1 = await Conn.OpenHint()
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= testH.StartTime)
                 .And(it => it.PathId.Contains(testH.ContainStr))
                 .QueryPagingListAsync(1, 10);
 
-            var xx1 = "";
+            var sql1 = (Hints.SQL, Hints.Parameters);
 
-            // where and like 
+            var xx2 = "";
+
+            // 默认 "%"+"~00-d-3-1-"+"%"
             var res2 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= testH.StartTime)
                 .And(it => it.PathId.Contains("~00-d-3-1-"))
                 .QueryPagingListAsync(1, 10);
+
+            var sql2 = (Hints.SQL, Hints.Parameters);
 
             var xx = "";
         }
