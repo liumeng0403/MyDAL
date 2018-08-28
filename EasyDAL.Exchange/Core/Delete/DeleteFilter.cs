@@ -32,15 +32,10 @@ namespace EasyDAL.Exchange.Core.Delete
 
         public async Task<int> DeleteAsync()
         {
-
-            DC.OP.TryGetTableName<M>(out var tableName);
-
-            var wherePart = DC.OP.GetWheres();
-            var sql = $" delete from `{tableName}` where {wherePart} ; ";
-            var paras = DC.OP.GetParameters();
-
-            return await SqlMapper.ExecuteAsync(DC.Conn, sql, paras);
-
+            return await SqlMapper.ExecuteAsync(
+                DC.Conn, 
+                DC.SqlProvider.GetSQL<M>( SqlTypeEnum.DeleteAsync)[0],
+                DC.SqlProvider.GetParameters());
         }
 
     }

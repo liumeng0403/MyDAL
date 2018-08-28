@@ -59,14 +59,6 @@ namespace EasyDAL.Exchange.Tests
                 .Where(it => it.BodyMeasureProperty == "xxxx")
                 .QueryFirstOrDefaultAsync();
 
-            var xx3 = "";
-
-            // like string
-            var res4 = await Conn
-                .Selecter<BodyFitRecord>()
-                .Where(it => it.BodyMeasureProperty.Contains("xx"))
-                .QueryFirstOrDefaultAsync();
-
             var xx4 = "";
 
             // >= obj.DateTime

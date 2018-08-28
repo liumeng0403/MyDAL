@@ -31,14 +31,10 @@ namespace EasyDAL.Exchange.Core.Update
         
         public async Task<int> UpdateAsync()
         {
-            DC.OP.TryGetTableName<M>(out var tableName);
-
-            var updateFields = DC.OP.GetUpdates();
-            var wherePart = DC.OP.GetWheres();
-            var paras = DC.OP.GetParameters();
-            var sql = $" update `{tableName}` set {updateFields} where {wherePart} ;";
-
-            return await SqlMapper.ExecuteAsync(DC.Conn, sql, paras);
+            return await SqlMapper.ExecuteAsync(
+                DC.Conn, 
+                DC.SqlProvider.GetSQL<M>( SqlTypeEnum.UpdateAsync)[0],
+                DC.SqlProvider.GetParameters());
         }
 
     }

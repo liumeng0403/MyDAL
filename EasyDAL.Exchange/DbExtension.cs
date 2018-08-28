@@ -28,5 +28,11 @@ namespace EasyDAL.Exchange
             return new Core.Query.Selecter<M>(new DbContext(connection));
         }
 
+        public static IDbConnection OpenHint(this IDbConnection connection)
+        {
+            Hints.Hint = true;
+            return connection;
+        }
+
     }
 }

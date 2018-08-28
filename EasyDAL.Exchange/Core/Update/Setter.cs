@@ -35,7 +35,7 @@ namespace EasyDAL.Exchange.Core.Update
             {
                 key = key,
                 Value = DC.GH.GetTypeValue(modifyVal.GetType(), modifyVal),
-                Option = DC.OP.GetChangeOption(change),
+                Option = DC.SqlProvider.GetChangeOption(change),
                 Action = ActionEnum.Change
             });
             return this;

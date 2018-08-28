@@ -14,6 +14,12 @@ namespace EasyDAL.Exchange.Enums
         None,
 
         /// <summary>
+        /// ""
+        /// </summary>
+        [Description("")]
+        Insert,
+
+        /// <summary>
         /// =
         /// </summary>
         [Description("=")]

@@ -1,4 +1,5 @@
-﻿using EasyDAL.Exchange.Tests.Entities;
+﻿using EasyDAL.Exchange.Core.Sql;
+using EasyDAL.Exchange.Tests.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,9 +24,12 @@ namespace EasyDAL.Exchange.Tests
                 BodyMeasureProperty = "{xxx:yyy,mmm:nnn}"
             };
             // 新建
-            var res0 = await Conn
+            var res0 = await Conn.OpenHint()
                 .Creater<BodyFitRecord>()
                 .CreateAsync(m);
+
+            var sql = Hints.SQL;
+            var paras = Hints.Parameters;
 
             // 清除数据
             var xx1 = "";

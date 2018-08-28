@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace EasyDAL.Exchange.Core.Query
 {
-    public class QueryFilter<M>: Operator
+    public class QueryFilter<M> : Operator
     {
         internal QueryFilter(DbContext dc)
         {
@@ -33,25 +33,19 @@ namespace EasyDAL.Exchange.Core.Query
 
         public async Task<M> QueryFirstOrDefaultAsync()
         {
-            DC.OP.TryGetTableName<M>(out var tableName);
-
-            var wherePart = DC.OP.GetWheres();
-            var sql = $"SELECT * FROM `{tableName}` WHERE {wherePart} ; ";
-            var paras = DC.OP.GetParameters();
-
-            return await SqlMapper.QueryFirstOrDefaultAsync<M>(DC.Conn, sql, paras);
+            return await SqlMapper.QueryFirstOrDefaultAsync<M>(
+                DC.Conn,
+                DC.SqlProvider.GetSQL<M>(SqlTypeEnum.QueryFirstOrDefaultAsync)[0],
+                DC.SqlProvider.GetParameters());
         }
 
 
         public async Task<List<M>> QueryListAsync()
         {
-            DC.OP.TryGetTableName<M>(out var tableName);
-
-            var wherePart = DC.OP.GetWheres();
-            var sql = $"SELECT * FROM `{tableName}` WHERE {wherePart} ; ";
-            var paras = DC.OP.GetParameters();
-
-            return (await SqlMapper.QueryAsync<M>(DC.Conn, sql, paras)).ToList();
+            return (await SqlMapper.QueryAsync<M>(
+                DC.Conn, 
+                DC.SqlProvider.GetSQL<M>(SqlTypeEnum.QueryListAsync)[0],
+                DC.SqlProvider.GetParameters())).ToList();
         }
 
 
@@ -60,17 +54,10 @@ namespace EasyDAL.Exchange.Core.Query
             var result = new PagingList<M>();
             result.PageIndex = pageIndex;
             result.PageSize = pageSize;
-
-            DC.OP.TryGetTableName<M>(out var tableName);
-
-            var wherePart = DC.OP.GetWheres();
-            var totalSql = $"SELECT count(*) FROM `{tableName}` WHERE {wherePart} ; ";
-            var dataSql = $"SELECT * FROM `{tableName}` WHERE {wherePart} limit {(pageIndex - 1) * pageSize},{pageIndex * pageSize}  ; ";
-            var paras = DC.OP.GetParameters();
-            result.TotalCount = await SqlMapper.ExecuteScalarAsync<long>(DC.Conn, totalSql, paras);
-            result.Data = (await SqlMapper.QueryAsync<M>(DC.Conn, dataSql, paras)).ToList();
-
-
+            var paras = DC.SqlProvider.GetParameters();
+            var sql = DC.SqlProvider.GetSQL<M>(SqlTypeEnum.QueryPagingListAsync, default(M), result);
+            result.TotalCount = await SqlMapper.ExecuteScalarAsync<long>(DC.Conn, sql[0], paras);
+            result.Data = (await SqlMapper.QueryAsync<M>(DC.Conn, sql[1], paras)).ToList();            
             return result;
         }
 

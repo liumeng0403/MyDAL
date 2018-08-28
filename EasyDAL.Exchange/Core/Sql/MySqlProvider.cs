@@ -9,34 +9,24 @@ using EasyDAL.Exchange.Extensions;
 using EasyDAL.Exchange.DynamicParameter;
 using EasyDAL.Exchange.Core.Sql;
 using System.Data;
+using EasyDAL.Exchange.Common;
 
 namespace EasyDAL.Exchange.Core
 {
-    internal class DbOperation
+    internal class MySqlProvider
     {
-        private DbOperation() { }
+        private MySqlProvider() { }
 
-        internal DbOperation(DbContext dc)
+        internal MySqlProvider(DbContext dc)
         {
             DC = dc;
-            DC.OP = this;
+            DC.SqlProvider = this;
         }
 
         internal DbContext DC { get; private set; }
 
-        internal List<string> GetProperties<M>(M m)
+        internal void GetProperties<M>(M m)
         {
-            if (m == null)
-            {
-                return new List<string>();
-            }
-
-            if (m is ExpandoObject)
-            {
-                return ((IDictionary<string, object>)m).Keys.ToList();
-            }
-
-
             var props = default(List<PropertyInfo>);
             if (!DC.ModelPropertiesCache.TryGetValue(m.GetType(), out props))
             {
@@ -44,7 +34,16 @@ namespace EasyDAL.Exchange.Core
                 DC.ModelPropertiesCache[m.GetType()] = props;
             }
 
-            return props.Select(x => x.Name).ToList();
+            foreach (var prop in props)
+            {
+                DC.Conditions.Add(new DicModel<string, string>
+                {
+                    key = prop.Name,
+                    Value = DC.GH.GetTypeValue(prop.PropertyType, prop, m),
+                    Action = ActionEnum.Insert,
+                    Option = OptionEnum.Insert
+                });
+            }
         }
 
         internal string GetWheres()
@@ -118,6 +117,15 @@ namespace EasyDAL.Exchange.Core
             return string.Join(",", list);
         }
 
+        internal string GetColumns()
+        {
+            return $" ({ string.Join(",", DC.Conditions.Select(it => $"`{it.key}`"))}) ";
+        }
+        internal string GetValues()
+        {
+            return $" ({ string.Join(",", DC.Conditions.Select(it => $"@{it.key}"))}) ";
+        }
+
         internal bool TryGetTableName<M>(M m, out string tableName)
         {
 
@@ -162,6 +170,7 @@ namespace EasyDAL.Exchange.Core
             {
                 switch (item.Action)
                 {
+                    case ActionEnum.Insert:
                     case ActionEnum.Set:
                     case ActionEnum.Change:
                     case ActionEnum.Where:
@@ -172,6 +181,58 @@ namespace EasyDAL.Exchange.Core
                 }
             }
             return paras;
+        }
+
+        internal List<string> GetSQL<M>(SqlTypeEnum type, M m = default(M), PagingList<M> pager=default(PagingList<M>))
+        {
+            var list = new List<string>();
+
+            //
+            var tableName = string.Empty;
+            if (!default(M).Equals(m))
+            {
+                DC.SqlProvider.TryGetTableName(m, out tableName);
+            }
+            else
+            {
+                DC.SqlProvider.TryGetTableName<M>(out tableName);
+            }
+
+            //
+            switch (type)
+            {
+                case SqlTypeEnum.CreateAsync:
+                    DC.SqlProvider.GetProperties(m);
+                    list.Add($" insert into `{tableName}` {DC.SqlProvider.GetColumns()} values {DC.SqlProvider.GetValues()} ;");
+                    break;
+                case SqlTypeEnum.DeleteAsync:
+                    list.Add($" delete from `{tableName}` where {DC.SqlProvider.GetWheres()} ; ");
+                    break;
+                case SqlTypeEnum.UpdateAsync:
+                    list.Add($" update `{tableName}` set {DC.SqlProvider.GetUpdates()} where {DC.SqlProvider.GetWheres()} ;");
+                    break;
+                case SqlTypeEnum.QueryFirstOrDefaultAsync:
+                    list.Add($"SELECT * FROM `{tableName}` WHERE {DC.SqlProvider.GetWheres()} ; ");
+                    break;
+                case SqlTypeEnum.QueryListAsync:
+                    list.Add($"SELECT * FROM `{tableName}` WHERE {DC.SqlProvider.GetWheres()} ; ");
+                    break;
+                case SqlTypeEnum.QueryPagingListAsync:
+                    var wherePart = DC.SqlProvider.GetWheres();
+                    list.Add( $"SELECT count(*) FROM `{tableName}` WHERE {wherePart} ; ");
+                    list.Add($"SELECT * FROM `{tableName}` WHERE {wherePart} limit {(pager.PageIndex - 1) * pager.PageSize},{pager.PageIndex * pager.PageSize}  ; ");
+                    break;
+            }
+
+            //
+            if (Hints.Hint)
+            {
+                Hints.SQL = list;
+                Hints.Parameters = DC.Conditions.Select(it => $"key:{it.key};val:{it.Value}.").ToList();
+            }
+
+            //
+            return list;
         }
     }
 }

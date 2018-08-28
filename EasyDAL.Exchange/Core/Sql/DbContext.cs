@@ -16,9 +16,9 @@ namespace EasyDAL.Exchange.Core.Sql
         internal AttributeHelper AH { get; private set; }
 
         internal GenericHelper GH { get; private set; }
-
+        internal Hints Hint { get; set; }
         internal ExpressionHelper EH { get; private set; }
-        public ConcurrentDictionary<Type, List<PropertyInfo>> ModelPropertiesCache
+        internal ConcurrentDictionary<Type, List<PropertyInfo>> ModelPropertiesCache
         {
             get
             {
@@ -30,7 +30,7 @@ namespace EasyDAL.Exchange.Core.Sql
 
         internal IDbConnection Conn { get; private set; }
 
-        internal DbOperation OP { get; set; }
+        internal MySqlProvider SqlProvider { get; set; }
 
         internal DbContext(IDbConnection conn)
         {
@@ -39,7 +39,7 @@ namespace EasyDAL.Exchange.Core.Sql
             AH = AttributeHelper.Instance;
             GH = GenericHelper.Instance;
             EH = ExpressionHelper.Instance;
-            OP = new DbOperation(this);
+            SqlProvider = new MySqlProvider(this);
         }
 
     }

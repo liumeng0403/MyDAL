@@ -40,24 +40,6 @@ namespace EasyDAL.Exchange.Tests
             };
 
 
-            var xx0 = "";
-
-            // where and like 
-            var res1 = await Conn
-                .Selecter<Agent>()
-                .Where(it => it.CreatedOn >= testH.StartTime)
-                .And(it => it.PathId.Contains(testH.ContainStr))
-                .QueryPagingListAsync(1,10);
-
-            var xx1 = "";
-
-            // where and like 
-            var res2 = await Conn
-                .Selecter<Agent>()
-                .Where(it => it.CreatedOn >= testH.StartTime)
-                .And(it => it.PathId.Contains("~00-d-3-1-"))
-                .QueryPagingListAsync(1,10);
-
             var xx = "";
         }
 
