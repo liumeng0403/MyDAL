@@ -40,12 +40,7 @@ namespace EasyDAL.Exchange.AdoNet
         /// Should data be buffered before returning?
         /// </summary>
         public bool Buffered => (Flags & CommandFlags.Buffered) != 0;
-
-        /// <summary>
-        /// Should the plan for this query be cached?
-        /// </summary>
-        internal bool AddToCache => (Flags & CommandFlags.NoCache) == 0;
-
+        
         /// <summary>
         /// Additional state flags against this command
         /// </summary>
@@ -71,74 +66,15 @@ namespace EasyDAL.Exchange.AdoNet
             Flags = flags;
         }
 
-        internal IDbCommand SetupCommand(IDbConnection cnn, Action<IDbCommand, object> paramReader)
+        internal IDbCommand SetupCommand(IDbConnection cnn, Action<IDbCommand, DynamicParameters> paramReader)
         {
-            var cmd = cnn.CreateCommand();
-            var init = GetInit(cmd.GetType());
-            init?.Invoke(cmd);
-
+            var cmd = cnn.CreateCommand();            
             cmd.CommandText = CommandText;
-
-            cmd.CommandTimeout = Configs.CommandTimeout;
-
-
+            cmd.CommandTimeout = Configs.CommandTimeout;      
             cmd.CommandType = CommandType;
-
             paramReader?.Invoke(cmd, Parameters);
             return cmd;
         }
-
-        private static Link<Type, Action<IDbCommand>> commandInitCache;
-
-        private static Action<IDbCommand> GetInit(Type commandType)
-        {
-            if (commandType == null)
-                return null; // GIGO
-            if (Link<Type, Action<IDbCommand>>.TryGet(commandInitCache, commandType, out Action<IDbCommand> action))
-            {
-                return action;
-            }
-            var bindByName = GetBasicPropertySetter(commandType, "BindByName", typeof(bool));
-            var initialLongFetchSize = GetBasicPropertySetter(commandType, "InitialLONGFetchSize", typeof(int));
-
-            action = null;
-            if (bindByName != null || initialLongFetchSize != null)
-            {
-                var method = new DynamicMethod(commandType.Name + "_init", null, new Type[] { typeof(IDbCommand) });
-                var il = method.GetILGenerator();
-
-                if (bindByName != null)
-                {
-                    // .BindByName = true
-                    il.Emit(OpCodes.Ldarg_0);
-                    il.Emit(OpCodes.Castclass, commandType);
-                    il.Emit(OpCodes.Ldc_I4_1);
-                    il.EmitCall(OpCodes.Callvirt, bindByName, null);
-                }
-                if (initialLongFetchSize != null)
-                {
-                    // .InitialLONGFetchSize = -1
-                    il.Emit(OpCodes.Ldarg_0);
-                    il.Emit(OpCodes.Castclass, commandType);
-                    il.Emit(OpCodes.Ldc_I4_M1);
-                    il.EmitCall(OpCodes.Callvirt, initialLongFetchSize, null);
-                }
-                il.Emit(OpCodes.Ret);
-                action = (Action<IDbCommand>)method.CreateDelegate(typeof(Action<IDbCommand>));
-            }
-            // cache it
-            Link<Type, Action<IDbCommand>>.TryAdd(ref commandInitCache, commandType, ref action);
-            return action;
-        }
-
-        private static MethodInfo GetBasicPropertySetter(Type declaringType, string name, Type expectedType)
-        {
-            var prop = declaringType.GetProperty(name, BindingFlags.Public | BindingFlags.Instance);
-            if (prop?.CanWrite == true && prop.PropertyType == expectedType && prop.GetIndexParameters().Length == 0)
-            {
-                return prop.GetSetMethod();
-            }
-            return null;
-        }
+        
     }
 }

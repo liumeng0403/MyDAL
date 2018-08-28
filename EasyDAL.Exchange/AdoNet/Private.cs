@@ -25,7 +25,7 @@ namespace EasyDAL.Exchange.AdoNet
         {
             DynamicParameters param = command.Parameters;
             var identity = new Identity(command.CommandText, command.CommandType, cnn, effectiveType, param?.GetType(), null);
-            var info = GetCacheInfo(identity, param, command.AddToCache);
+            var info = GetCacheInfo(identity, param);
             bool wasClosed = cnn.State == ConnectionState.Closed;
             //var cancel = command.CancellationToken;
             using (var cmd = command.TrySetupAsyncCommand(cnn, info.ParamReader))
@@ -49,7 +49,10 @@ namespace EasyDAL.Exchange.AdoNet
                         if (tuple.Func == null || tuple.Hash != hash)
                         {
                             tuple = info.Deserializer = new DeserializerState(hash, GetDeserializer(effectiveType, reader, 0, -1, false));
-                            if (command.AddToCache) SetQueryCache(identity, info);
+                            //if (command.AddToCache)
+                            //{
+                            //    SetQueryCache(identity, info);
+                            //}
                         }
 
                         var func = tuple.Func;
@@ -86,12 +89,12 @@ namespace EasyDAL.Exchange.AdoNet
                 }
             }
         }
-        
+
         private static async Task<IEnumerable<T>> QueryAsync<T>(this IDbConnection cnn, Type effectiveType, CommandDefinition command)
         {
             DynamicParameters param = command.Parameters;
             var identity = new Identity(command.CommandText, command.CommandType, cnn, effectiveType, param?.GetType(), null);
-            var info = GetCacheInfo(identity, param, command.AddToCache);
+            var info = GetCacheInfo(identity, param);
             bool wasClosed = cnn.State == ConnectionState.Closed;
             //var cancel = command.CancellationToken;
             using (var cmd = command.TrySetupAsyncCommand(cnn, info.ParamReader))
@@ -112,7 +115,7 @@ namespace EasyDAL.Exchange.AdoNet
                         if (reader.FieldCount == 0)
                             return Enumerable.Empty<T>();
                         tuple = info.Deserializer = new DeserializerState(hash, GetDeserializer(effectiveType, reader, 0, -1, false));
-                        if (command.AddToCache) SetQueryCache(identity, info);
+      
                     }
 
                     var func = tuple.Func;
@@ -154,7 +157,7 @@ namespace EasyDAL.Exchange.AdoNet
                 }
             }
         }
-        
+
         /// <summary>
         /// Execute a command asynchronously using .NET 4.5 Task.
         /// </summary>
@@ -164,15 +167,7 @@ namespace EasyDAL.Exchange.AdoNet
         private static Task<int> ExecuteAsync(this IDbConnection cnn, CommandDefinition command)
         {
             DynamicParameters param = command.Parameters;
-            //IEnumerable multiExec = GetMultiExec(param);
-            //if (multiExec != null)
-            //{
-            //    return ExecuteMultiImplAsync(cnn, command, multiExec);
-            //}
-            //else
-            //{
-                return ExecuteImplAsync(cnn, command, param);
-            //}
+            return ExecuteImplAsync(cnn, command, param);
         }
 
         /*
@@ -181,7 +176,7 @@ namespace EasyDAL.Exchange.AdoNet
         private static async Task<int> ExecuteImplAsync(IDbConnection cnn, CommandDefinition command, DynamicParameters param)
         {
             var identity = new Identity(command.CommandText, command.CommandType, cnn, null, param?.GetType(), null);
-            var info = GetCacheInfo(identity, param, command.AddToCache);
+            var info = GetCacheInfo(identity, param);
             bool wasClosed = cnn.State == ConnectionState.Closed;
             using (var cmd = command.TrySetupAsyncCommand(cnn, info.ParamReader))
             {
@@ -204,15 +199,15 @@ namespace EasyDAL.Exchange.AdoNet
                 }
             }
         }
-        
+
         private static async Task<T> ExecuteScalarImplAsync<T>(IDbConnection cnn, CommandDefinition command)
         {
-            Action<IDbCommand, object> paramReader = null;
+            Action<IDbCommand, DynamicParameters> paramReader = null;
             object param = command.Parameters;
             if (param != null)
             {
                 var identity = new Identity(command.CommandText, command.CommandType, cnn, null, param.GetType(), null);
-                paramReader = GetCacheInfo(identity, command.Parameters, command.AddToCache).ParamReader;
+                paramReader = GetCacheInfo(identity, command.Parameters).ParamReader;
             }
 
             DbCommand cmd = null;
@@ -239,7 +234,7 @@ namespace EasyDAL.Exchange.AdoNet
             return Parse<T>(result);
         }
 
-        
+
         private static IEnumerable<T> ExecuteReaderSync<T>(IDataReader reader, Func<IDataReader, object> func, object parameters)
         {
             using (reader)
@@ -259,7 +254,7 @@ namespace EasyDAL.Exchange.AdoNet
         /// <summary>
         /// Attempts setup a <see cref="DbCommand"/> on a <see cref="DbConnection"/>, with a better error message for unsupported usages.
         /// </summary>
-        private static DbCommand TrySetupAsyncCommand(this CommandDefinition command, IDbConnection cnn, Action<IDbCommand, object> paramReader)
+        private static DbCommand TrySetupAsyncCommand(this CommandDefinition command, IDbConnection cnn, Action<IDbCommand, DynamicParameters> paramReader)
         {
             if (command.SetupCommand(cnn, paramReader) is DbCommand dbCommand)
             {
@@ -288,7 +283,7 @@ namespace EasyDAL.Exchange.AdoNet
         {
             var task = cmd.ExecuteReaderAsync(GetBehavior(wasClosed, behavior), cancellationToken);
             if (task.Status == TaskStatus.Faulted && Settings.DisableCommandBehaviorOptimizations(behavior, task.Exception.InnerException))
-            { 
+            {
                 // we can retry; this time it will have different flags
                 return cmd.ExecuteReaderAsync(GetBehavior(wasClosed, behavior), cancellationToken);
             }

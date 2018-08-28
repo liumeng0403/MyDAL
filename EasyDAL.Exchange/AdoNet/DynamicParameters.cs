@@ -19,7 +19,7 @@ namespace EasyDAL.Exchange
     /// <summary>
     /// A bag of parameters that can be passed to the Dapper Query and Execute methods
     /// </summary>
-    public partial class DynamicParameters : IDynamicParameters
+    internal class DynamicParameters : IDynamicParameters
     {
         internal const DbType EnumerableMultiParameter = (DbType)(-1);
         private static readonly Dictionary<Identity, Action<IDbCommand, object>> paramReaderCache = new Dictionary<Identity, Action<IDbCommand, object>>();
@@ -170,7 +170,7 @@ namespace EasyDAL.Exchange
         /// </summary>
         /// <param name="command">The raw command prior to execution</param>
         /// <param name="identity">Information about the query</param>
-        protected void AddParameters(IDbCommand command, Identity identity)
+        public void AddParameters(IDbCommand command, Identity identity)
         {
             var literals = SqlMapper.GetLiteralTokens(identity.sql);
 

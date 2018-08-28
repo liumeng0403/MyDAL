@@ -53,47 +53,13 @@ namespace EasyDAL.Exchange.AdoNet
             }
         }
 
-        private static readonly System.Collections.Concurrent.ConcurrentDictionary<Identity, CacheInfo> _queryCache = new System.Collections.Concurrent.ConcurrentDictionary<Identity, CacheInfo>();
-        private static void SetQueryCache(Identity key, CacheInfo value)
-        {
-            if (Interlocked.Increment(ref collect) == COLLECT_PER_ITEMS)
-            {
-                CollectCacheGarbage();
-            }
-            _queryCache[key] = value;
-        }
+        private static System.Collections.Concurrent.ConcurrentDictionary<Identity, CacheInfo> _queryCache { get; } = new System.Collections.Concurrent.ConcurrentDictionary<Identity, CacheInfo>();
 
-        private static void CollectCacheGarbage()
-        {
-            try
-            {
-                foreach (var pair in _queryCache)
-                {
-                    if (pair.Value.GetHitCount() <= COLLECT_HIT_COUNT_MIN)
-                    {
-                        _queryCache.TryRemove(pair.Key, out CacheInfo cache);
-                    }
-                }
-            }
 
-            finally
-            {
-                Interlocked.Exchange(ref collect, 0);
-            }
-        }
 
         private const int COLLECT_PER_ITEMS = 1000, COLLECT_HIT_COUNT_MIN = 0;
         private static int collect;
-        private static bool TryGetQueryCache(Identity key, out CacheInfo value)
-        {
-            if (_queryCache.TryGetValue(key, out value))
-            {
-                value.RecordHit();
-                return true;
-            }
-            value = null;
-            return false;
-        }
+
 
         private static Dictionary<Type, DbType> typeMap;
 
@@ -155,7 +121,7 @@ namespace EasyDAL.Exchange.AdoNet
             AddTypeHandlerImpl(typeof(XDocument), new XDocumentHandler(), clone);
             AddTypeHandlerImpl(typeof(XElement), new XElementHandler(), clone);
         }
-        
+
         internal static bool HasTypeHandler(Type type) => typeHandlers.ContainsKey(type);
 
         /// <summary>
@@ -311,47 +277,12 @@ namespace EasyDAL.Exchange.AdoNet
             return (close ? (@default | CommandBehavior.CloseConnection) : @default) & Settings.AllowedCommandBehaviors;
         }
 
-        internal static CacheInfo GetCacheInfo(Identity identity, DynamicParameters exampleParameters, bool addToCache)
+        internal static CacheInfo GetCacheInfo(Identity identity, DynamicParameters exampleParameters)
         {
-            if (!TryGetQueryCache(identity, out CacheInfo info))
-            {
-                info = new CacheInfo();
-                if (identity.parametersType != null)
-                {
-                    Action<IDbCommand, object> reader;
-                    if (exampleParameters is IDynamicParameters)
-                    {
-                        reader = (cmd, obj) => ((IDynamicParameters)obj).AddParameters(cmd, identity);
-                    }
-                    else if (exampleParameters is IEnumerable<KeyValuePair<string, object>>)
-                    {
-                        reader = (cmd, obj) =>
-                        {
-                            IDynamicParameters mapped = new DynamicParameters(obj);
-                            mapped.AddParameters(cmd, identity);
-                        };
-                    }
-                    else
-                    {
-                        var literals = GetLiteralTokens(identity.sql);
-                        reader = CreateParamInfoGenerator(identity, false, true, literals);
-                    }
-                    if (( identity.commandType == CommandType.Text) && ShouldPassByPosition(identity.sql))
-                    {
-                        var tail = reader;
-                        reader = (cmd, obj) =>
-                        {
-                            tail(cmd, obj);
-                            PassByPosition(cmd);
-                        };
-                    }
-                    info.ParamReader = reader;
-                }
-                if (addToCache)
-                {
-                    SetQueryCache(identity, info);
-                }
-            }
+            var info = new CacheInfo();
+            Action<IDbCommand, DynamicParameters> reader = (cmd, paras) => paras.AddParameters(cmd, identity);
+            info.ParamReader = reader;
+
             return info;
         }
 
@@ -359,47 +290,7 @@ namespace EasyDAL.Exchange.AdoNet
         {
             return sql?.IndexOf('?') >= 0 && pseudoPositional.IsMatch(sql);
         }
-
-        private static void PassByPosition(IDbCommand cmd)
-        {
-            if (cmd.Parameters.Count == 0) return;
-
-            Dictionary<string, IDbDataParameter> parameters = new Dictionary<string, IDbDataParameter>(StringComparer.Ordinal);
-
-            foreach (IDbDataParameter param in cmd.Parameters)
-            {
-                if (!string.IsNullOrEmpty(param.ParameterName)) parameters[param.ParameterName] = param;
-            }
-            HashSet<string> consumed = new HashSet<string>(StringComparer.Ordinal);
-            bool firstMatch = true;
-            cmd.CommandText = pseudoPositional.Replace(cmd.CommandText, match =>
-            {
-                string key = match.Groups[1].Value;
-                if (!consumed.Add(key))
-                {
-                    throw new InvalidOperationException("When passing parameters by position, each parameter can only be referenced once");
-                }
-                else if (parameters.TryGetValue(key, out IDbDataParameter param))
-                {
-                    if (firstMatch)
-                    {
-                        firstMatch = false;
-                        cmd.Parameters.Clear(); // only clear if we are pretty positive that we've found this pattern successfully
-                    }
-                    // if found, return the anonymous token "?"
-                    cmd.Parameters.Add(param);
-                    parameters.Remove(key);
-                    consumed.Add(key);
-                    return "?";
-                }
-                else
-                {
-                    // otherwise, leave alone for simple debugging
-                    return match.Value;
-                }
-            });
-        }
-
+        
         private static Func<IDataReader, object> GetHandlerDeserializer(ITypeHandler handler, Type type, int startBound)
         {
             return reader => handler.Parse(type, reader.GetValue(startBound));
@@ -1610,7 +1501,7 @@ namespace EasyDAL.Exchange.AdoNet
                     EmitInt32(il, index); // stack is now [target][target][reader][index]
                     il.Emit(OpCodes.Dup);// stack is now [target][target][reader][index][index]
                     il.Emit(OpCodes.Stloc_0);// stack is now [target][target][reader][index]
-                    il.Emit(OpCodes.Callvirt, Settings. GetItem); // stack is now [target][target][value-as-object]
+                    il.Emit(OpCodes.Callvirt, Settings.GetItem); // stack is now [target][target][value-as-object]
                     il.Emit(OpCodes.Dup); // stack is now [target][target][value-as-object][value-as-object]
                     StoreLocal(il, valueCopyLocal);
                     Type colType = reader.GetFieldType(index);
