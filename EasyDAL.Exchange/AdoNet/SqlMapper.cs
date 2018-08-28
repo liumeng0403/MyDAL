@@ -1,4 +1,12 @@
 ﻿
+using EasyDAL.Exchange.Cache;
+using EasyDAL.Exchange.DataBase;
+using EasyDAL.Exchange.DynamicParameter;
+using EasyDAL.Exchange.Extensions;
+using EasyDAL.Exchange.Handler;
+using EasyDAL.Exchange.Map;
+using EasyDAL.Exchange.MapperX;
+using EasyDAL.Exchange.Parameter;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,21 +16,11 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
-using EasyDAL.Exchange.AdoNet;
-using EasyDAL.Exchange.DataBase;
-using EasyDAL.Exchange.DynamicParameter;
-using EasyDAL.Exchange.Extensions;
-using EasyDAL.Exchange.Handler;
-using EasyDAL.Exchange.Map;
-using EasyDAL.Exchange.MapperX;
-using EasyDAL.Exchange.Parameter;
-using EasyDAL.Exchange.Reader;
 
 
 namespace EasyDAL.Exchange.AdoNet
@@ -157,13 +155,7 @@ namespace EasyDAL.Exchange.AdoNet
             AddTypeHandlerImpl(typeof(XDocument), new XDocumentHandler(), clone);
             AddTypeHandlerImpl(typeof(XElement), new XElementHandler(), clone);
         }
-
-        //[MethodImpl(MethodImplOptions.NoInlining)]
-        //private static void AddSqlDataRecordsTypeHandler(bool clone)
-        //{
-        //    AddTypeHandlerImpl(typeof(IEnumerable<Microsoft.SqlServer.Server.SqlDataRecord>), new SqlDataRecordHandler(), clone);
-        //}
-
+        
         internal static bool HasTypeHandler(Type type) => typeHandlers.ContainsKey(type);
 
         /// <summary>
@@ -219,8 +211,6 @@ namespace EasyDAL.Exchange.AdoNet
 
         private static Dictionary<Type, ITypeHandler> typeHandlers;
 
-        internal const string LinqBinary = "System.Data.Linq.Binary";
-
         internal const string ObsoleteInternalUsageOnly = "This method is for internal use only";
 
         /// <summary>
@@ -260,7 +250,7 @@ namespace EasyDAL.Exchange.AdoNet
             {
                 return dbType;
             }
-            if (type.FullName == LinqBinary)
+            if (type.FullName == Settings.LinqBinary)
             {
                 return DbType.Binary;
             }
@@ -292,35 +282,6 @@ namespace EasyDAL.Exchange.AdoNet
             return DbType.Object;
         }
 
-        private static IEnumerable GetMultiExec(object param)
-        {
-            return (param is IEnumerable
-                    && !(param is string
-                      || param is IEnumerable<KeyValuePair<string, object>>
-                      || param is IDynamicParameters)
-                ) ? (IEnumerable)param : null;
-        }
-
-        private static IDataReader ExecuteReaderWithFlagsFallback(IDbCommand cmd, bool wasClosed, CommandBehavior behavior)
-        {
-            try
-            {
-                return cmd.ExecuteReader(GetBehavior(wasClosed, behavior));
-            }
-            catch (ArgumentException ex)
-            { // thanks, Sqlite!
-                if (Settings.DisableCommandBehaviorOptimizations(behavior, ex))
-                {
-                    // we can retry; this time it will have different flags
-                    return cmd.ExecuteReader(GetBehavior(wasClosed, behavior));
-                }
-                throw;
-            }
-        }
-
-
-
-
 
         private static readonly int[] ErrTwoRows = new int[2], ErrZeroRows = new int[0];
         internal static void ThrowMultipleRows(Row row)
@@ -350,201 +311,10 @@ namespace EasyDAL.Exchange.AdoNet
             return (close ? (@default | CommandBehavior.CloseConnection) : @default) & Settings.AllowedCommandBehaviors;
         }
 
-        internal static IEnumerable<TReturn> MultiMapImpl<TReturn>(this IDbConnection cnn, CommandDefinition command, Type[] types, Func<object[], TReturn> map, string splitOn, IDataReader reader, Identity identity, bool finalize)
-        {
-            if (types.Length < 1)
-            {
-                throw new ArgumentException("you must provide at least one type to deserialize");
-            }
-
-            object param = command.Parameters;
-            identity = identity ?? new Identity(command.CommandText, command.CommandType, cnn, types[0], param?.GetType(), types);
-            CacheInfo cinfo = GetCacheInfo(identity, param, command.AddToCache);
-
-            IDbCommand ownedCommand = null;
-            IDataReader ownedReader = null;
-
-            bool wasClosed = cnn?.State == ConnectionState.Closed;
-            try
-            {
-                if (reader == null)
-                {
-                    ownedCommand = command.SetupCommand(cnn, cinfo.ParamReader);
-                    if (wasClosed) cnn.Open();
-                    ownedReader = ExecuteReaderWithFlagsFallback(ownedCommand, wasClosed, CommandBehavior.SequentialAccess | CommandBehavior.SingleResult);
-                    reader = ownedReader;
-                }
-                DeserializerState deserializer;
-                Func<IDataReader, object>[] otherDeserializers;
-
-                int hash = GetColumnHash(reader);
-                if ((deserializer = cinfo.Deserializer).Func == null || (otherDeserializers = cinfo.OtherDeserializers) == null || hash != deserializer.Hash)
-                {
-                    var deserializers = GenerateDeserializers(types, splitOn, reader);
-                    deserializer = cinfo.Deserializer = new DeserializerState(hash, deserializers[0]);
-                    otherDeserializers = cinfo.OtherDeserializers = deserializers.Skip(1).ToArray();
-                    SetQueryCache(identity, cinfo);
-                }
-
-                Func<IDataReader, TReturn> mapIt = GenerateMapper(types.Length, deserializer.Func, otherDeserializers, map);
-
-                if (mapIt != null)
-                {
-                    while (reader.Read())
-                    {
-                        yield return mapIt(reader);
-                    }
-                    if (finalize)
-                    {
-                        while (reader.NextResult()) { /* ignore subsequent result sets */ }
-                        command.OnCompleted();
-                    }
-                }
-            }
-            finally
-            {
-                try
-                {
-                    ownedReader?.Dispose();
-                }
-                finally
-                {
-                    ownedCommand?.Dispose();
-                    if (wasClosed) cnn.Close();
-                }
-            }
-        }
-
-        private static Func<IDataReader, TReturn> GenerateMapper<TReturn>(int length, Func<IDataReader, object> deserializer, Func<IDataReader, object>[] otherDeserializers, Func<object[], TReturn> map)
-        {
-            return r =>
-            {
-                var objects = new object[length];
-                objects[0] = deserializer(r);
-
-                for (var i = 1; i < length; ++i)
-                {
-                    objects[i] = otherDeserializers[i - 1](r);
-                }
-
-                return map(objects);
-            };
-        }
-
-        private static Func<IDataReader, object>[] GenerateDeserializers(Type[] types, string splitOn, IDataReader reader)
-        {
-            var deserializers = new List<Func<IDataReader, object>>();
-            var splits = splitOn.Split(',').Select(s => s.Trim()).ToArray();
-            bool isMultiSplit = splits.Length > 1;
-            if (types[0] == typeof(object))
-            {
-                // we go left to right for dynamic multi-mapping so that the madness of TestMultiMappingVariations
-                // is supported
-                bool first = true;
-                int currentPos = 0;
-                int splitIdx = 0;
-                string currentSplit = splits[splitIdx];
-                foreach (var type in types)
-                {
-                    if (type == typeof(DontMap))
-                    {
-                        break;
-                    }
-
-                    int splitPoint = GetNextSplitDynamic(currentPos, currentSplit, reader);
-                    if (isMultiSplit && splitIdx < splits.Length - 1)
-                    {
-                        currentSplit = splits[++splitIdx];
-                    }
-                    deserializers.Add(GetDeserializer(type, reader, currentPos, splitPoint - currentPos, !first));
-                    currentPos = splitPoint;
-                    first = false;
-                }
-            }
-            else
-            {
-                // in this we go right to left through the data reader in order to cope with properties that are
-                // named the same as a subsequent primary key that we split on
-                int currentPos = reader.FieldCount;
-                int splitIdx = splits.Length - 1;
-                var currentSplit = splits[splitIdx];
-                for (var typeIdx = types.Length - 1; typeIdx >= 0; --typeIdx)
-                {
-                    var type = types[typeIdx];
-                    if (type == typeof(DontMap))
-                    {
-                        continue;
-                    }
-
-                    int splitPoint = 0;
-                    if (typeIdx > 0)
-                    {
-                        splitPoint = GetNextSplit(currentPos, currentSplit, reader);
-                        if (isMultiSplit && splitIdx > 0)
-                        {
-                            currentSplit = splits[--splitIdx];
-                        }
-                    }
-
-                    deserializers.Add(GetDeserializer(type, reader, splitPoint, currentPos - splitPoint, typeIdx > 0));
-                    currentPos = splitPoint;
-                }
-
-                deserializers.Reverse();
-            }
-
-            return deserializers.ToArray();
-        }
-
-        private static int GetNextSplitDynamic(int startIdx, string splitOn, IDataReader reader)
-        {
-            if (startIdx == reader.FieldCount)
-            {
-                throw MultiMapException(reader);
-            }
-
-            if (splitOn == "*")
-            {
-                return ++startIdx;
-            }
-
-            for (var i = startIdx + 1; i < reader.FieldCount; ++i)
-            {
-                if (string.Equals(splitOn, reader.GetName(i), StringComparison.OrdinalIgnoreCase))
-                {
-                    return i;
-                }
-            }
-
-            return reader.FieldCount;
-        }
-
-        private static int GetNextSplit(int startIdx, string splitOn, IDataReader reader)
-        {
-            if (splitOn == "*")
-            {
-                return --startIdx;
-            }
-
-            for (var i = startIdx - 1; i > 0; --i)
-            {
-                if (string.Equals(splitOn, reader.GetName(i), StringComparison.OrdinalIgnoreCase))
-                {
-                    return i;
-                }
-            }
-
-            throw MultiMapException(reader);
-        }
-
-        internal static CacheInfo GetCacheInfo(Identity identity, object exampleParameters, bool addToCache)
+        internal static CacheInfo GetCacheInfo(Identity identity, DynamicParameters exampleParameters, bool addToCache)
         {
             if (!TryGetQueryCache(identity, out CacheInfo info))
             {
-                if (GetMultiExec(exampleParameters) != null)
-                {
-                    throw new InvalidOperationException("An enumerable sequence of parameters (arrays, lists, etc) is not allowed in this context");
-                }
                 info = new CacheInfo();
                 if (identity.parametersType != null)
                 {
@@ -566,7 +336,7 @@ namespace EasyDAL.Exchange.AdoNet
                         var literals = GetLiteralTokens(identity.sql);
                         reader = CreateParamInfoGenerator(identity, false, true, literals);
                     }
-                    if ((identity.commandType == null || identity.commandType == CommandType.Text) && ShouldPassByPosition(identity.sql))
+                    if (( identity.commandType == CommandType.Text) && ShouldPassByPosition(identity.sql))
                     {
                         var tail = reader;
                         reader = (cmd, obj) =>
@@ -1129,39 +899,12 @@ namespace EasyDAL.Exchange.AdoNet
                     case TypeCode.Decimal:
                         return ((decimal)value).ToString(CultureInfo.InvariantCulture);
                     default:
-                        var multiExec = GetMultiExec(value);
-                        if (multiExec != null)
-                        {
-                            StringBuilder sb = null;
-                            bool first = true;
-                            foreach (object subval in multiExec)
-                            {
-                                if (first)
-                                {
-                                    sb = GetStringBuilder().Append('(');
-                                    first = false;
-                                }
-                                else
-                                {
-                                    sb.Append(',');
-                                }
-                                sb.Append(Format(subval));
-                            }
-                            if (first)
-                            {
-                                return "(select null where 1=0)";
-                            }
-                            else
-                            {
-                                return sb.Append(')').__ToStringRecycle();
-                            }
-                        }
                         throw new NotSupportedException(value.GetType().Name);
                 }
             }
         }
 
-        internal static void ReplaceLiterals(IParameterLookup parameters, IDbCommand command, IList<LiteralToken> tokens)
+        internal static void ReplaceLiterals(IDynamicParameters parameters, IDbCommand command, IList<LiteralToken> tokens)
         {
             var sql = command.CommandText;
             foreach (var token in tokens)
@@ -1227,7 +970,7 @@ namespace EasyDAL.Exchange.AdoNet
             }
 
             bool filterParams = false;
-            if (removeUnused && identity.commandType.GetValueOrDefault(CommandType.Text) == CommandType.Text)
+            if (removeUnused && identity.commandType == CommandType.Text)
             {
                 filterParams = !smellsLikeOleDb.IsMatch(identity.sql);
             }
@@ -1480,7 +1223,7 @@ namespace EasyDAL.Exchange.AdoNet
                         il.MarkLabel(lenDone);
                         il.Emit(OpCodes.Stloc_1); // [string]
                     }
-                    if (prop.PropertyType.FullName == LinqBinary)
+                    if (prop.PropertyType.FullName == Settings.LinqBinary)
                     {
                         il.EmitCall(OpCodes.Callvirt, prop.PropertyType.GetMethod("ToArray", BindingFlags.Public | BindingFlags.Instance), null);
                     }
@@ -1626,15 +1369,10 @@ namespace EasyDAL.Exchange.AdoNet
             return (Action<IDbCommand, object>)dm.CreateDelegate(typeof(Action<IDbCommand, object>));
         }
 
-        private static readonly Dictionary<TypeCode, MethodInfo> toStrings = new[]
-        {
-            typeof(bool), typeof(sbyte), typeof(byte), typeof(ushort), typeof(short),
-            typeof(uint), typeof(int), typeof(ulong), typeof(long), typeof(float), typeof(double), typeof(decimal)
-        }.ToDictionary(x => TypeExtensionsX.GetTypeCodeX(x), x => x.GetPublicInstanceMethodX(nameof(object.ToString), new[] { typeof(IFormatProvider) }));
 
         private static MethodInfo GetToString(TypeCode typeCode)
         {
-            return toStrings.TryGetValue(typeCode, out MethodInfo method) ? method : null;
+            return Settings.ToStrings.TryGetValue(typeCode, out MethodInfo method) ? method : null;
         }
 
         private static readonly MethodInfo StringReplace = typeof(string).GetPublicInstanceMethodX(nameof(string.Replace), new Type[] { typeof(string), typeof(string) }),
@@ -1652,7 +1390,7 @@ namespace EasyDAL.Exchange.AdoNet
             {
                 return r => ReadNullableChar(r.GetValue(index));
             }
-            if (type.FullName == LinqBinary)
+            if (type.FullName == Settings.LinqBinary)
             {
                 return r => Activator.CreateInstance(type, r.GetValue(index));
             }
@@ -1705,12 +1443,6 @@ namespace EasyDAL.Exchange.AdoNet
             }
             return (T)Convert.ChangeType(value, type, CultureInfo.InvariantCulture);
         }
-
-        private static readonly MethodInfo
-                    enumParse = typeof(Enum).GetMethod(nameof(Enum.Parse), new Type[] { typeof(Type), typeof(string), typeof(bool) }),
-                    getItem = typeof(IDataRecord).GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                        .Where(p => p.GetIndexParameters().Length > 0 && p.GetIndexParameters()[0].ParameterType == typeof(int))
-                        .Select(p => p.GetGetMethod()).First();
 
         /// <summary>
         /// Gets type-map for the given <see cref="Type"/>.
@@ -1878,7 +1610,7 @@ namespace EasyDAL.Exchange.AdoNet
                     EmitInt32(il, index); // stack is now [target][target][reader][index]
                     il.Emit(OpCodes.Dup);// stack is now [target][target][reader][index][index]
                     il.Emit(OpCodes.Stloc_0);// stack is now [target][target][reader][index]
-                    il.Emit(OpCodes.Callvirt, getItem); // stack is now [target][target][value-as-object]
+                    il.Emit(OpCodes.Callvirt, Settings. GetItem); // stack is now [target][target][value-as-object]
                     il.Emit(OpCodes.Dup); // stack is now [target][target][value-as-object][value-as-object]
                     StoreLocal(il, valueCopyLocal);
                     Type colType = reader.GetFieldType(index);
@@ -1915,7 +1647,7 @@ namespace EasyDAL.Exchange.AdoNet
                                 il.EmitCall(OpCodes.Call, typeof(Type).GetMethod(nameof(Type.GetTypeFromHandle)), null);// stack is now [target][target][enum-type]
                                 LoadLocal(il, enumDeclareLocal); // stack is now [target][target][enum-type][string]
                                 il.Emit(OpCodes.Ldc_I4_1); // stack is now [target][target][enum-type][string][true]
-                                il.EmitCall(OpCodes.Call, enumParse, null); // stack is now [target][target][enum-as-object]
+                                il.EmitCall(OpCodes.Call, Settings.EnumParse, null); // stack is now [target][target][enum-as-object]
                                 il.Emit(OpCodes.Unbox_Any, unboxType); // stack is now [target][target][typed-value]
                             }
                             else
@@ -1928,7 +1660,7 @@ namespace EasyDAL.Exchange.AdoNet
                                 il.Emit(OpCodes.Newobj, memberType.GetConstructor(new[] { nullUnderlyingType })); // stack is now [target][target][typed-value]
                             }
                         }
-                        else if (memberType.FullName == LinqBinary)
+                        else if (memberType.FullName == Settings.LinqBinary)
                         {
                             il.Emit(OpCodes.Unbox_Any, typeof(byte[])); // stack is now [target][target][byte-array]
                             il.Emit(OpCodes.Newobj, memberType.GetConstructor(new Type[] { typeof(byte[]) }));// stack is now [target][target][binary]
@@ -2197,28 +1929,6 @@ namespace EasyDAL.Exchange.AdoNet
             }
         }
 
-        private static void StoreLocal(ILGenerator il, int index)
-        {
-            if (index < 0 || index >= short.MaxValue) throw new ArgumentNullException(nameof(index));
-            switch (index)
-            {
-                case 0: il.Emit(OpCodes.Stloc_0); break;
-                case 1: il.Emit(OpCodes.Stloc_1); break;
-                case 2: il.Emit(OpCodes.Stloc_2); break;
-                case 3: il.Emit(OpCodes.Stloc_3); break;
-                default:
-                    if (index <= 255)
-                    {
-                        il.Emit(OpCodes.Stloc_S, (byte)index);
-                    }
-                    else
-                    {
-                        il.Emit(OpCodes.Stloc, (short)index);
-                    }
-                    break;
-            }
-        }
-
         private static void LoadLocalAddress(ILGenerator il, int index)
         {
             if (index < 0 || index >= short.MaxValue) throw new ArgumentNullException(nameof(index));
@@ -2345,7 +2055,7 @@ namespace EasyDAL.Exchange.AdoNet
                 return GetDapperRowDeserializer(reader, startBound, length, returnNullIfFirstMissing);
             }
             Type underlyingType = null;
-            if (!(typeMap.ContainsKey(type) || type.IsEnumX() || type.FullName == LinqBinary
+            if (!(typeMap.ContainsKey(type) || type.IsEnumX() || type.FullName == Settings.LinqBinary
                 || (type.IsValueTypeX() && (underlyingType = Nullable.GetUnderlyingType(type)) != null && underlyingType.IsEnumX())))
             {
                 if (typeHandlers.TryGetValue(type, out ITypeHandler handler))
@@ -2356,6 +2066,10 @@ namespace EasyDAL.Exchange.AdoNet
             }
             return GetStructDeserializer(type, underlyingType ?? type, startBound);
         }
+
+        /******************************************************************************************/
+
+
 
     }
 }

@@ -1,18 +1,17 @@
-﻿using System;
+﻿using EasyDAL.Exchange.Cache;
+using EasyDAL.Exchange.DataBase;
+using EasyDAL.Exchange.DynamicParameter;
+using EasyDAL.Exchange.MapperX;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Globalization;
 using System.Linq;
-using System.Text;
+using System.Reflection.Emit;
 using System.Threading;
 using System.Threading.Tasks;
-using EasyDAL.Exchange.AdoNet;
-using EasyDAL.Exchange.DataBase;
-using EasyDAL.Exchange.DynamicParameter;
-using EasyDAL.Exchange.MapperX;
-using EasyDAL.Exchange.Reader;
 
 namespace EasyDAL.Exchange.AdoNet
 {
@@ -24,7 +23,7 @@ namespace EasyDAL.Exchange.AdoNet
         /// </summary>
         private static async Task<T> QueryRowAsync<T>(this IDbConnection cnn, Row row, Type effectiveType, CommandDefinition command)
         {
-            object param = command.Parameters;
+            DynamicParameters param = command.Parameters;
             var identity = new Identity(command.CommandText, command.CommandType, cnn, effectiveType, param?.GetType(), null);
             var info = GetCacheInfo(identity, param, command.AddToCache);
             bool wasClosed = cnn.State == ConnectionState.Closed;
@@ -90,7 +89,7 @@ namespace EasyDAL.Exchange.AdoNet
         
         private static async Task<IEnumerable<T>> QueryAsync<T>(this IDbConnection cnn, Type effectiveType, CommandDefinition command)
         {
-            object param = command.Parameters;
+            DynamicParameters param = command.Parameters;
             var identity = new Identity(command.CommandText, command.CommandType, cnn, effectiveType, param?.GetType(), null);
             var info = GetCacheInfo(identity, param, command.AddToCache);
             bool wasClosed = cnn.State == ConnectionState.Closed;
@@ -164,22 +163,22 @@ namespace EasyDAL.Exchange.AdoNet
         /// <returns>The number of rows affected.</returns>
         private static Task<int> ExecuteAsync(this IDbConnection cnn, CommandDefinition command)
         {
-            object param = command.Parameters;
-            IEnumerable multiExec = GetMultiExec(param);
-            if (multiExec != null)
-            {
-                return ExecuteMultiImplAsync(cnn, command, multiExec);
-            }
-            else
-            {
+            DynamicParameters param = command.Parameters;
+            //IEnumerable multiExec = GetMultiExec(param);
+            //if (multiExec != null)
+            //{
+            //    return ExecuteMultiImplAsync(cnn, command, multiExec);
+            //}
+            //else
+            //{
                 return ExecuteImplAsync(cnn, command, param);
-            }
+            //}
         }
 
         /*
          * ExecuteImpl
          */
-        private static async Task<int> ExecuteImplAsync(IDbConnection cnn, CommandDefinition command, object param)
+        private static async Task<int> ExecuteImplAsync(IDbConnection cnn, CommandDefinition command, DynamicParameters param)
         {
             var identity = new Identity(command.CommandText, command.CommandType, cnn, null, param?.GetType(), null);
             var info = GetCacheInfo(identity, param, command.AddToCache);
@@ -198,7 +197,10 @@ namespace EasyDAL.Exchange.AdoNet
                 }
                 finally
                 {
-                    if (wasClosed) cnn.Close();
+                    if (wasClosed)
+                    {
+                        cnn.Close();
+                    }
                 }
             }
         }
@@ -237,106 +239,7 @@ namespace EasyDAL.Exchange.AdoNet
             return Parse<T>(result);
         }
 
-
-        private static async Task<int> ExecuteMultiImplAsync(IDbConnection cnn, CommandDefinition command, IEnumerable multiExec)
-        {
-            bool isFirst = true;
-            int total = 0;
-            bool wasClosed = cnn.State == ConnectionState.Closed;
-            try
-            {
-                if (wasClosed)
-                {
-                    await cnn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
-                }
-
-                CacheInfo info = null;
-                string masterSql = null;
-                if ((command.Flags & CommandFlags.Pipelined) != 0)
-                {
-                    const int MAX_PENDING = 100;
-                    var pending = new Queue<AsyncExecState>(MAX_PENDING);
-                    DbCommand cmd = null;
-                    try
-                    {
-                        foreach (var obj in multiExec)
-                        {
-                            if (isFirst)
-                            {
-                                isFirst = false;
-                                cmd = command.TrySetupAsyncCommand(cnn, null);
-                                masterSql = cmd.CommandText;
-                                var identity = new Identity(command.CommandText, cmd.CommandType, cnn, null, obj.GetType(), null);
-                                info = GetCacheInfo(identity, obj, command.AddToCache);
-                            }
-                            else if (pending.Count >= MAX_PENDING)
-                            {
-                                var recycled = pending.Dequeue();
-                                total += await recycled.Task.ConfigureAwait(false);
-                                cmd = recycled.Command;
-                                cmd.CommandText = masterSql; // because we do magic replaces on "in" etc
-                                cmd.Parameters.Clear(); // current code is Add-tastic
-                            }
-                            else
-                            {
-                                cmd = command.TrySetupAsyncCommand(cnn, null);
-                            }
-                            info.ParamReader(cmd, obj);
-
-                            var task = cmd.ExecuteNonQueryAsync(default(CancellationToken));
-                            pending.Enqueue(new AsyncExecState(cmd, task));
-                            cmd = null; // note the using in the finally: this avoids a double-dispose
-                        }
-                        while (pending.Count != 0)
-                        {
-                            var pair = pending.Dequeue();
-                            using (pair.Command) { /* dispose commands */ }
-                            total += await pair.Task.ConfigureAwait(false);
-                        }
-                    }
-                    finally
-                    {
-                        // this only has interesting work to do if there are failures
-                        using (cmd) { /* dispose commands */ }
-                        while (pending.Count != 0)
-                        { // dispose tasks even in failure
-                            using (pending.Dequeue().Command) { /* dispose commands */ }
-                        }
-                    }
-                }
-                else
-                {
-                    using (var cmd = command.TrySetupAsyncCommand(cnn, null))
-                    {
-                        foreach (var obj in multiExec)
-                        {
-                            if (isFirst)
-                            {
-                                masterSql = cmd.CommandText;
-                                isFirst = false;
-                                var identity = new Identity(command.CommandText, cmd.CommandType, cnn, null, obj.GetType(), null);
-                                info = GetCacheInfo(identity, obj, command.AddToCache);
-                            }
-                            else
-                            {
-                                cmd.CommandText = masterSql; // because we do magic replaces on "in" etc
-                                cmd.Parameters.Clear(); // current code is Add-tastic
-                            }
-                            info.ParamReader(cmd, obj);
-                            total += await cmd.ExecuteNonQueryAsync(default(CancellationToken)).ConfigureAwait(false);
-                        }
-                    }
-                }
-
-                command.OnCompleted();
-            }
-            finally
-            {
-                if (wasClosed) cnn.Close();
-            }
-            return total;
-        }
-
+        
         private static IEnumerable<T> ExecuteReaderSync<T>(IDataReader reader, Func<IDataReader, object> func, object parameters)
         {
             using (reader)
@@ -346,7 +249,7 @@ namespace EasyDAL.Exchange.AdoNet
                     yield return (T)func(reader);
                 }
                 while (reader.NextResult()) { /* ignore subsequent result sets */ }
-                (parameters as IParameterCallbacks)?.OnCompleted();
+                (parameters as IDynamicParameters)?.OnCompleted();
             }
         }
 
@@ -385,10 +288,33 @@ namespace EasyDAL.Exchange.AdoNet
         {
             var task = cmd.ExecuteReaderAsync(GetBehavior(wasClosed, behavior), cancellationToken);
             if (task.Status == TaskStatus.Faulted && Settings.DisableCommandBehaviorOptimizations(behavior, task.Exception.InnerException))
-            { // we can retry; this time it will have different flags
+            { 
+                // we can retry; this time it will have different flags
                 return cmd.ExecuteReaderAsync(GetBehavior(wasClosed, behavior), cancellationToken);
             }
             return task;
+        }
+
+        private static void StoreLocal(ILGenerator il, int index)
+        {
+            if (index < 0 || index >= short.MaxValue) throw new ArgumentNullException(nameof(index));
+            switch (index)
+            {
+                case 0: il.Emit(OpCodes.Stloc_0); break;
+                case 1: il.Emit(OpCodes.Stloc_1); break;
+                case 2: il.Emit(OpCodes.Stloc_2); break;
+                case 3: il.Emit(OpCodes.Stloc_3); break;
+                default:
+                    if (index <= 255)
+                    {
+                        il.Emit(OpCodes.Stloc_S, (byte)index);
+                    }
+                    else
+                    {
+                        il.Emit(OpCodes.Stloc, (short)index);
+                    }
+                    break;
+            }
         }
 
     }

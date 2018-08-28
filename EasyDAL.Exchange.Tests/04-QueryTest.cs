@@ -1,18 +1,8 @@
-﻿using System.Linq;
-using System.Data;
-using System.Diagnostics;
+﻿using EasyDAL.Exchange.Tests.Entities;
+using EasyDAL.Exchange.Tests.Enums;
 using System;
 using System.Threading.Tasks;
-using System.Threading;
-using System.Data.SqlClient;
 using Xunit;
-using EasyDAL.Exchange.DynamicParameter;
-using EasyDAL.Exchange.Reader;
-using EasyDAL.Exchange.AdoNet;
-using EasyDAL.Exchange.MapperX;
-using EasyDAL.Exchange;
-using EasyDAL.Exchange.Tests.Entities;
-using EasyDAL.Exchange.Tests.Enums;
 
 namespace EasyDAL.Exchange.Tests
 {

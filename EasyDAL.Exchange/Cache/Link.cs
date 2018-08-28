@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-namespace EasyDAL.Exchange.DataStructure
+namespace EasyDAL.Exchange.Cache
 {
     /// <summary>
     /// 一个小型缓存; 

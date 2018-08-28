@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EasyDAL.Exchange.MapperX
+namespace EasyDAL.Exchange.Cache
 {
     /// <summary>
     /// Represents a placeholder for a value that should be replaced as a literal value in the resulting sql

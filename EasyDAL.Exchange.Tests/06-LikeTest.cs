@@ -8,7 +8,7 @@ using Xunit;
 
 namespace EasyDAL.Exchange.Tests
 {
-    public class LikeTest:TestBase
+    public class LikeTest : TestBase
     {
 
         [Fact]

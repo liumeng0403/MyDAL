@@ -7,17 +7,19 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
 using EasyDAL.Exchange.AdoNet;
+using EasyDAL.Exchange.Cache;
 using EasyDAL.Exchange.DataBase;
+using EasyDAL.Exchange.DynamicParameter;
 using EasyDAL.Exchange.Handler;
 using EasyDAL.Exchange.MapperX;
 using EasyDAL.Exchange.Parameter;
 
-namespace EasyDAL.Exchange.DynamicParameter
+namespace EasyDAL.Exchange
 {
     /// <summary>
     /// A bag of parameters that can be passed to the Dapper Query and Execute methods
     /// </summary>
-    public partial class DynamicParameters : IDynamicParameters, IParameterLookup, IParameterCallbacks
+    public partial class DynamicParameters : IDynamicParameters
     {
         internal const DbType EnumerableMultiParameter = (DbType)(-1);
         private static readonly Dictionary<Identity, Action<IDbCommand, object>> paramReaderCache = new Dictionary<Identity, Action<IDbCommand, object>>();
@@ -29,12 +31,10 @@ namespace EasyDAL.Exchange.DynamicParameter
         /// </summary>
         public bool RemoveUnused { get; set; }
 
-        object IParameterLookup.this[string name] =>
+        object IDynamicParameters.this[string name] =>
             parameters.TryGetValue(name, out ParamInfo param) ? param.Value : null;
         
-        /// <summary>
-        /// constructer
-        /// </summary>
+        // used
         public DynamicParameters()
         {
             RemoveUnused = true;
@@ -308,7 +308,7 @@ namespace EasyDAL.Exchange.DynamicParameter
 
         private List<Action> outputCallbacks;
 
-        void IParameterCallbacks.OnCompleted()
+        void IDynamicParameters.OnCompleted()
         {
             foreach (var param in from p in parameters select p.Value)
             {

@@ -1,11 +1,11 @@
-﻿using System;
+﻿using EasyDAL.Exchange.Cache;
+using EasyDAL.Exchange.Core.Sql;
+using EasyDAL.Exchange.DynamicParameter;
+using EasyDAL.Exchange.MapperX;
+using System;
 using System.Data;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Threading;
-using EasyDAL.Exchange.DataStructure;
-using EasyDAL.Exchange.DynamicParameter;
-using EasyDAL.Exchange.MapperX;
 
 namespace EasyDAL.Exchange.AdoNet
 {
@@ -18,7 +18,7 @@ namespace EasyDAL.Exchange.AdoNet
 
         internal void OnCompleted()
         {
-            (Parameters as IParameterCallbacks)?.OnCompleted();
+            (Parameters as IDynamicParameters)?.OnCompleted();
         }
 
         /// <summary>
@@ -29,17 +29,12 @@ namespace EasyDAL.Exchange.AdoNet
         /// <summary>
         /// The parameters associated with the command
         /// </summary>
-        public object Parameters { get; }
-        
-        /// <summary>
-        /// The effective timeout for the command
-        /// </summary>
-        public int? CommandTimeout { get; }
+        public DynamicParameters Parameters { get; }
 
         /// <summary>
         /// The type of command that the command-text represents
         /// </summary>
-        public CommandType? CommandType { get; }
+        public CommandType CommandType { get; }
 
         /// <summary>
         /// Should data be buffered before returning?
@@ -55,7 +50,7 @@ namespace EasyDAL.Exchange.AdoNet
         /// Additional state flags against this command
         /// </summary>
         public CommandFlags Flags { get; }
-        
+
         /// <summary>
         /// Initialize the command definition
         /// </summary>
@@ -66,35 +61,29 @@ namespace EasyDAL.Exchange.AdoNet
         /// <param name="commandType">The <see cref="CommandType"/> for this command.</param>
         /// <param name="flags">The behavior flags for this command.</param>
         /// <param name="cancellationToken">The cancellation token for this command.</param>
-        public CommandDefinition(string commandText, object parameters = null,  int? commandTimeout = null,
-                                 CommandType? commandType = null, CommandFlags flags = CommandFlags.Buffered                                 
+        public CommandDefinition(string commandText, DynamicParameters parameters,
+                                 CommandType commandType, CommandFlags flags = CommandFlags.Buffered
             )
         {
             CommandText = commandText;
             Parameters = parameters;
-            CommandTimeout = commandTimeout;
             CommandType = commandType;
             Flags = flags;
         }
-        
+
         internal IDbCommand SetupCommand(IDbConnection cnn, Action<IDbCommand, object> paramReader)
         {
             var cmd = cnn.CreateCommand();
             var init = GetInit(cmd.GetType());
             init?.Invoke(cmd);
-            //if (Transaction != null)
-            //    cmd.Transaction = Transaction;
+
             cmd.CommandText = CommandText;
-            if (CommandTimeout.HasValue)
-            {
-                cmd.CommandTimeout = CommandTimeout.Value;
-            }
-            else if (Settings.CommandTimeout.HasValue)
-            {
-                cmd.CommandTimeout = Settings.CommandTimeout.Value;
-            }
-            if (CommandType.HasValue)
-                cmd.CommandType = CommandType.Value;
+
+            cmd.CommandTimeout = Configs.CommandTimeout;
+
+
+            cmd.CommandType = CommandType;
+
             paramReader?.Invoke(cmd, Parameters);
             return cmd;
         }

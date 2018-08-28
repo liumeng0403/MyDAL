@@ -1,6 +1,9 @@
-﻿using System;
+﻿using EasyDAL.Exchange.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace EasyDAL.Exchange.MapperX
@@ -8,7 +11,7 @@ namespace EasyDAL.Exchange.MapperX
     /// <summary>
     /// Permits specifying certain SqlMapper values globally.
     /// </summary>
-    public static class Settings
+    internal static class Settings
     {
         // disable single result by default; prevents errors AFTER the select being detected properly
         private const CommandBehavior DefaultAllowedCommandBehaviors = ~CommandBehavior.SingleResult;
@@ -39,12 +42,6 @@ namespace EasyDAL.Exchange.MapperX
 
 
 
-
-        /// <summary>
-        /// Specifies the default Command Timeout for all Queries
-        /// </summary>
-        public static int? CommandTimeout { get; set; }
-
         /// <summary>
         /// Indicates whether nulls in data are silently ignored (default) vs actively applied and assigned to members
         /// </summary>
@@ -67,5 +64,39 @@ namespace EasyDAL.Exchange.MapperX
         /// operation if there are more than this many elements. Note that this feautre requires SQL Server 2016 / compatibility level 130 (or above).
         /// </summary>
         public static int InListStringSplitCount { get; set; } = -1;
+
+
+        internal static string LinqBinary { get; } = "System.Data.Linq.Binary";
+
+        internal static Dictionary<TypeCode, MethodInfo> ToStrings { get; } = new[]
+        {
+            typeof(bool),
+            typeof(sbyte),
+            typeof(byte),
+            typeof(ushort),
+            typeof(short),
+            typeof(uint),
+            typeof(int),
+            typeof(ulong),
+            typeof(long),
+            typeof(float),
+            typeof(double),
+            typeof(decimal)
+        }.ToDictionary(
+            x => TypeExtensionsX.GetTypeCodeX(x),
+            x => x.GetPublicInstanceMethodX(
+                nameof(object.ToString),
+                new[]
+                {
+                    typeof(IFormatProvider)
+                }));
+
+
+        internal static MethodInfo EnumParse { get; } = typeof(Enum).GetMethod(nameof(Enum.Parse), new Type[] { typeof(Type), typeof(string), typeof(bool) });
+        internal static MethodInfo GetItem { get; } = typeof(IDataRecord).GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                        .Where(p => p.GetIndexParameters().Length > 0 && p.GetIndexParameters()[0].ParameterType == typeof(int))
+                        .Select(p => p.GetGetMethod()).First();
+
+
     }
 }

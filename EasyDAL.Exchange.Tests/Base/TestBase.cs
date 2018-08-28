@@ -5,6 +5,7 @@ using EasyDAL.Exchange.AdoNet;
 using MySql.Data.MySqlClient;
 using EasyDAL.Exchange.Tests.Entities;
 using EasyDAL.Exchange.Tests.Enums;
+using EasyDAL.Exchange.Core.Sql;
 
 namespace EasyDAL.Exchange.Tests
 {
@@ -40,6 +41,7 @@ namespace EasyDAL.Exchange.Tests
             */
             var conn = new MySqlConnection("Server=localhost; Database=Rainbow_Test_DB20180817; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;");
             conn.Open();
+            //Hints.Hint = true;  // 全局 Hint 配置, 生产环境不要开启 
             return conn;
         }
 

@@ -1,9 +1,5 @@
-﻿using EasyDAL.Exchange.MapperX;
-using System;
-using System.Collections.Generic;
+﻿using EasyDAL.Exchange.Cache;
 using System.Data;
-using System.Text;
-using static EasyDAL.Exchange.AdoNet.SqlMapper;
 
 namespace EasyDAL.Exchange.DynamicParameter
 {
@@ -18,5 +14,16 @@ namespace EasyDAL.Exchange.DynamicParameter
         /// <param name="command">The raw command prior to execution</param>
         /// <param name="identity">Information about the query</param>
         void AddParameters(IDbCommand command, Identity identity);
+
+        /// <summary>
+        /// Get the value of the specified parameter (return null if not found)
+        /// </summary>
+        /// <param name="name">The name of the parameter to get.</param>
+        object this[string name] { get; }
+
+        /// <summary>
+        /// Invoked when the command has executed
+        /// </summary>
+        void OnCompleted();
     }
 }

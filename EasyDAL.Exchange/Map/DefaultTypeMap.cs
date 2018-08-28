@@ -1,5 +1,6 @@
 ﻿using EasyDAL.Exchange.AdoNet;
 using EasyDAL.Exchange.Extensions;
+using EasyDAL.Exchange.MapperX;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -82,7 +83,7 @@ namespace EasyDAL.Exchange.Map
                 {
                     if (!string.Equals(ctorParameters[i].Name, names[i], StringComparison.OrdinalIgnoreCase))
                         break;
-                    if (types[i] == typeof(byte[]) && ctorParameters[i].ParameterType.FullName == SqlMapper.LinqBinary)
+                    if (types[i] == typeof(byte[]) && ctorParameters[i].ParameterType.FullName == Settings.LinqBinary)
                         continue;
                     var unboxedType = Nullable.GetUnderlyingType(ctorParameters[i].ParameterType) ?? ctorParameters[i].ParameterType;
                     if ((unboxedType != types[i] && !SqlMapper.HasTypeHandler(unboxedType))

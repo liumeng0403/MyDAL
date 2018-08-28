@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 
-namespace EasyDAL.Exchange.MapperX
+namespace EasyDAL.Exchange.Cache
 {
     /// <summary>
     /// Identity of a cached query in Dapper, used for extensibility.
@@ -23,11 +23,11 @@ namespace EasyDAL.Exchange.MapperX
         public Identity ForDynamicParameters(Type type) =>
             new Identity(sql, commandType, connectionString, this.type, type, null, -1);
 
-        internal Identity(string sql, CommandType? commandType, IDbConnection connection, Type type, Type parametersType, Type[] otherTypes)
+        internal Identity(string sql, CommandType commandType, IDbConnection connection, Type type, Type parametersType, Type[] otherTypes)
             : this(sql, commandType, connection.ConnectionString, type, parametersType, otherTypes, 0)
         {  }
 
-        private Identity(string sql, CommandType? commandType, string connectionString, Type type, Type parametersType, Type[] otherTypes, int gridIndex)
+        private Identity(string sql, CommandType commandType, string connectionString, Type type, Type parametersType, Type[] otherTypes, int gridIndex)
         {
             this.sql = sql;
             this.commandType = commandType;
@@ -68,7 +68,7 @@ namespace EasyDAL.Exchange.MapperX
         /// <summary>
         /// The SQL command type.
         /// </summary>
-        public readonly CommandType? commandType;
+        public readonly CommandType commandType;
 
         /// <summary>
         /// The hash code of this Identity.
