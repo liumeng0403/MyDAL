@@ -15,12 +15,6 @@ namespace EasyDAL.Exchange.AdoNet
     internal struct CommandDefinition
     {
 
-
-        internal void OnCompleted()
-        {
-            (Parameters as IDynamicParameters)?.OnCompleted();
-        }
-
         /// <summary>
         /// The command (sql or a stored-procedure name) to execute
         /// </summary>
@@ -40,7 +34,7 @@ namespace EasyDAL.Exchange.AdoNet
         /// Should data be buffered before returning?
         /// </summary>
         public bool Buffered => (Flags & CommandFlags.Buffered) != 0;
-        
+
         /// <summary>
         /// Additional state flags against this command
         /// </summary>
@@ -56,9 +50,7 @@ namespace EasyDAL.Exchange.AdoNet
         /// <param name="commandType">The <see cref="CommandType"/> for this command.</param>
         /// <param name="flags">The behavior flags for this command.</param>
         /// <param name="cancellationToken">The cancellation token for this command.</param>
-        public CommandDefinition(string commandText, DynamicParameters parameters,
-                                 CommandType commandType, CommandFlags flags = CommandFlags.Buffered
-            )
+        public CommandDefinition(string commandText, DynamicParameters parameters, CommandType commandType, CommandFlags flags = CommandFlags.Buffered)
         {
             CommandText = commandText;
             Parameters = parameters;
@@ -68,13 +60,13 @@ namespace EasyDAL.Exchange.AdoNet
 
         internal IDbCommand SetupCommand(IDbConnection cnn, Action<IDbCommand, DynamicParameters> paramReader)
         {
-            var cmd = cnn.CreateCommand();            
+            var cmd = cnn.CreateCommand();
             cmd.CommandText = CommandText;
-            cmd.CommandTimeout = Configs.CommandTimeout;      
+            cmd.CommandTimeout = Configs.CommandTimeout;
             cmd.CommandType = CommandType;
             paramReader?.Invoke(cmd, Parameters);
             return cmd;
         }
-        
+
     }
 }

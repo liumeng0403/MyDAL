@@ -13,18 +13,7 @@ namespace EasyDAL.Exchange.MapperX
         private static readonly FeatureSupport
             Default = new FeatureSupport(false),
             Postgres = new FeatureSupport(true);
-
-        /// <summary>
-        /// Gets the feature set based on the passed connection
-        /// </summary>
-        /// <param name="connection">The connection to get supported features for.</param>
-        public static FeatureSupport Get(IDbConnection connection)
-        {
-            string name = connection?.GetType().Name;
-            if (string.Equals(name, "npgsqlconnection", StringComparison.OrdinalIgnoreCase)) return Postgres;
-            return Default;
-        }
-
+        
         private FeatureSupport(bool arrays)
         {
             Arrays = arrays;

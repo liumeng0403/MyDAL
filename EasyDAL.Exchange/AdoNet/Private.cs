@@ -24,10 +24,9 @@ namespace EasyDAL.Exchange.AdoNet
         private static async Task<T> QueryRowAsync<T>(this IDbConnection cnn, Row row, Type effectiveType, CommandDefinition command)
         {
             DynamicParameters param = command.Parameters;
-            var identity = new Identity(command.CommandText, command.CommandType, cnn, effectiveType, param?.GetType(), null);
-            var info = GetCacheInfo(identity, param);
+            var identity = new Identity(command.CommandText, command.CommandType, cnn, effectiveType, param?.GetType());
+            var info = GetCacheInfo(identity);
             bool wasClosed = cnn.State == ConnectionState.Closed;
-            //var cancel = command.CancellationToken;
             using (var cmd = command.TrySetupAsyncCommand(cnn, info.ParamReader))
             {
                 DbDataReader reader = null;
@@ -49,10 +48,6 @@ namespace EasyDAL.Exchange.AdoNet
                         if (tuple.Func == null || tuple.Hash != hash)
                         {
                             tuple = info.Deserializer = new DeserializerState(hash, GetDeserializer(effectiveType, reader, 0, -1, false));
-                            //if (command.AddToCache)
-                            //{
-                            //    SetQueryCache(identity, info);
-                            //}
                         }
 
                         var func = tuple.Func;
@@ -93,8 +88,8 @@ namespace EasyDAL.Exchange.AdoNet
         private static async Task<IEnumerable<T>> QueryAsync<T>(this IDbConnection cnn, Type effectiveType, CommandDefinition command)
         {
             DynamicParameters param = command.Parameters;
-            var identity = new Identity(command.CommandText, command.CommandType, cnn, effectiveType, param?.GetType(), null);
-            var info = GetCacheInfo(identity, param);
+            var identity = new Identity(command.CommandText, command.CommandType, cnn, effectiveType, param?.GetType());
+            var info = GetCacheInfo(identity);
             bool wasClosed = cnn.State == ConnectionState.Closed;
             //var cancel = command.CancellationToken;
             using (var cmd = command.TrySetupAsyncCommand(cnn, info.ParamReader))
@@ -138,7 +133,6 @@ namespace EasyDAL.Exchange.AdoNet
                         }
                         while (await reader.NextResultAsync(default(CancellationToken)).ConfigureAwait(false))
                         { /* ignore subsequent result sets */ }
-                        command.OnCompleted();
                         return buffer;
                     }
                     else
@@ -175,8 +169,8 @@ namespace EasyDAL.Exchange.AdoNet
          */
         private static async Task<int> ExecuteImplAsync(IDbConnection cnn, CommandDefinition command, DynamicParameters param)
         {
-            var identity = new Identity(command.CommandText, command.CommandType, cnn, null, param?.GetType(), null);
-            var info = GetCacheInfo(identity, param);
+            var identity = new Identity(command.CommandText, command.CommandType, cnn, null, param?.GetType());
+            var info = GetCacheInfo(identity);
             bool wasClosed = cnn.State == ConnectionState.Closed;
             using (var cmd = command.TrySetupAsyncCommand(cnn, info.ParamReader))
             {
@@ -187,7 +181,6 @@ namespace EasyDAL.Exchange.AdoNet
                         await cnn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
                     }
                     var result = await cmd.ExecuteNonQueryAsync(default(CancellationToken)).ConfigureAwait(false);
-                    command.OnCompleted();
                     return result;
                 }
                 finally
@@ -206,8 +199,8 @@ namespace EasyDAL.Exchange.AdoNet
             object param = command.Parameters;
             if (param != null)
             {
-                var identity = new Identity(command.CommandText, command.CommandType, cnn, null, param.GetType(), null);
-                paramReader = GetCacheInfo(identity, command.Parameters).ParamReader;
+                var identity = new Identity(command.CommandText, command.CommandType, cnn, null, param.GetType());
+                paramReader = GetCacheInfo(identity).ParamReader;
             }
 
             DbCommand cmd = null;
@@ -221,7 +214,6 @@ namespace EasyDAL.Exchange.AdoNet
                     await cnn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
                 }
                 result = await cmd.ExecuteScalarAsync(default(CancellationToken)).ConfigureAwait(false);
-                command.OnCompleted();
             }
             finally
             {
@@ -243,8 +235,10 @@ namespace EasyDAL.Exchange.AdoNet
                 {
                     yield return (T)func(reader);
                 }
-                while (reader.NextResult()) { /* ignore subsequent result sets */ }
-                (parameters as IDynamicParameters)?.OnCompleted();
+                while (reader.NextResult())
+                {
+                    /* ignore subsequent result sets */
+                }
             }
         }
 

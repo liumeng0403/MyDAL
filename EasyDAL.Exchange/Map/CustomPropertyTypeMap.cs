@@ -12,9 +12,7 @@ namespace EasyDAL.Exchange.Map
     {
         private readonly Type _type;
         private readonly Func<Type, string, PropertyInfo> _propertySelector;
-
-
-
+        
         /// <summary>
         /// Always returns default constructor
         /// </summary>

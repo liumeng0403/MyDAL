@@ -21,9 +21,6 @@ namespace EasyDAL.Exchange.DynamicParameter
         /// <param name="name">The name of the parameter to get.</param>
         object this[string name] { get; }
 
-        /// <summary>
-        /// Invoked when the command has executed
-        /// </summary>
-        void OnCompleted();
+
     }
 }

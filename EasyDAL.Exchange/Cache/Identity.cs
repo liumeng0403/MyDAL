@@ -21,13 +21,13 @@ namespace EasyDAL.Exchange.Cache
         /// <param name="type">The parameters type to create an <see cref="Identity"/> for.</param>
         /// <returns></returns>
         public Identity ForDynamicParameters(Type type) =>
-            new Identity(sql, commandType, connectionString, this.type, type, null, -1);
+            new Identity(sql, commandType, connectionString, this.type, type, -1);
 
-        internal Identity(string sql, CommandType commandType, IDbConnection connection, Type type, Type parametersType, Type[] otherTypes)
-            : this(sql, commandType, connection.ConnectionString, type, parametersType, otherTypes, 0)
+        internal Identity(string sql, CommandType commandType, IDbConnection connection, Type type, Type parametersType)
+            : this(sql, commandType, connection.ConnectionString, type, parametersType, 0)
         {  }
 
-        private Identity(string sql, CommandType commandType, string connectionString, Type type, Type parametersType, Type[] otherTypes, int gridIndex)
+        private Identity(string sql, CommandType commandType, string connectionString, Type type, Type parametersType, int gridIndex)
         {
             this.sql = sql;
             this.commandType = commandType;
@@ -42,13 +42,6 @@ namespace EasyDAL.Exchange.Cache
                 hashCode = (hashCode * 23) + gridIndex.GetHashCode();
                 hashCode = (hashCode * 23) + (sql?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 23) + (type?.GetHashCode() ?? 0);
-                if (otherTypes != null)
-                {
-                    foreach (var t in otherTypes)
-                    {
-                        hashCode = (hashCode * 23) + (t?.GetHashCode() ?? 0);
-                    }
-                }
                 hashCode = (hashCode * 23) + (connectionString == null ? 0 : Identity.ConnectionStringComparer.GetHashCode(connectionString));
                 hashCode = (hashCode * 23) + (parametersType?.GetHashCode() ?? 0);
             }
@@ -63,12 +56,12 @@ namespace EasyDAL.Exchange.Cache
         /// <summary>
         /// The raw SQL command.
         /// </summary>
-        public readonly string sql;
+        public string sql { get; }
 
         /// <summary>
         /// The SQL command type.
         /// </summary>
-        public readonly CommandType commandType;
+        public CommandType commandType { get; }
 
         /// <summary>
         /// The hash code of this Identity.
@@ -78,22 +71,22 @@ namespace EasyDAL.Exchange.Cache
         /// <summary>
         /// The grid index (position in the reader) of this Identity.
         /// </summary>
-        public readonly int gridIndex;
+        public int gridIndex { get; }
 
         /// <summary>
         /// This <see cref="Type"/> of this Identity.
         /// </summary>
-        public readonly Type type;
+        public Type type { get; }
 
         /// <summary>
         /// The connection string for this Identity.
         /// </summary>
-        public readonly string connectionString;
+        public string connectionString { get; }
 
         /// <summary>
         /// The type of the parameters object for this Identity.
         /// </summary>
-        public readonly Type parametersType;
+        public  Type parametersType { get; }
 
         /// <summary>
         /// Gets the hash code for this identity.

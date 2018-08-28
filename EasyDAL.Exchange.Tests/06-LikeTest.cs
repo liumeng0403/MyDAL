@@ -14,6 +14,19 @@ namespace EasyDAL.Exchange.Tests
         [Fact]
         public async Task QueryFirstOrDefaultAsyncTest()
         {
+            // 造数据
+            var m = new BodyFitRecord
+            {
+                Id = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"),
+                CreatedOn = DateTime.Now,
+                UserId = Guid.NewGuid(),
+                BodyMeasureProperty = "{xxx:yyy,mmm:nnn}"
+            };
+            // 新建
+            var res0 = await Conn.OpenHint()
+                .Creater<BodyFitRecord>()
+                .CreateAsync(m);
+
             var xx1 = "";
 
             // 默认 "%"+"xx"+"%"
@@ -23,6 +36,16 @@ namespace EasyDAL.Exchange.Tests
                 .QueryFirstOrDefaultAsync();
 
             var xx = "";
+
+            // 清理数据
+            var resx1 = await Conn
+                .Selecter<BodyFitRecord>()
+                .Where(it => it.Id == m.Id)
+                .QueryFirstOrDefaultAsync();
+            var resx2 = await Conn
+                .Deleter<BodyFitRecord>()
+                .Where(it => it.Id == res1.Id)
+                .DeleteAsync();
         }
 
         [Fact]

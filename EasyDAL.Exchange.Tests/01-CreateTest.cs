@@ -33,11 +33,14 @@ namespace EasyDAL.Exchange.Tests
 
             // 清除数据
             var xx1 = "";
+
             var res1 = await Conn
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.Id == m.Id)
                 .QueryFirstOrDefaultAsync();
+
             var xx2 = "";
+
             var res2 = await Conn
                 .Deleter<BodyFitRecord>()
                 .Where(it => it.Id == res1.Id)
