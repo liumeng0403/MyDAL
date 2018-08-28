@@ -18,16 +18,12 @@ namespace EasyDAL.Exchange.Tests
         {
             var xx0 = "";
 
-            // 删除 
+            // 造数据 
             var Id = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e");
             var res1 = await Conn
                 .Deleter<BodyFitRecord>()
                 .Where(it => it.Id == Id)
-                .DeleteAsync();
-
-            var xx1 = "";
-
-            // 新建
+                .DeleteAsync();           
             var m = new BodyFitRecord
             {
                 Id = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"),
@@ -82,6 +78,12 @@ namespace EasyDAL.Exchange.Tests
                 .UpdateAsync();
 
             var xx = "";
+
+            // 清理数据
+            var resd = await Conn
+                .Deleter<BodyFitRecord>()
+                .Where(it => it.Id == Id)
+                .DeleteAsync();
         }
 
     }

@@ -15,12 +15,6 @@ namespace EasyDAL.Exchange.MapperX
         /// </summary>
         public static IEqualityComparer<string> ConnectionStringComparer = StringComparer.Ordinal;
 
-        internal Identity ForGrid(Type primaryType, int gridIndex) =>
-            new Identity(sql, commandType, connectionString, primaryType, parametersType, null, gridIndex);
-
-        internal Identity ForGrid(Type primaryType, Type[] otherTypes, int gridIndex) =>
-            new Identity(sql, commandType, connectionString, primaryType, parametersType, otherTypes, gridIndex);
-
         /// <summary>
         /// Create an identity for use with DynamicParameters, internal use only.
         /// </summary>

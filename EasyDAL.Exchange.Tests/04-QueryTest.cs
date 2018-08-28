@@ -23,6 +23,18 @@ namespace EasyDAL.Exchange.Tests
         [Fact]
         public async Task QueryFirstOrDefaultAsyncTest()
         {
+            var m = new BodyFitRecord
+            {
+                Id = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"),
+                CreatedOn = Convert.ToDateTime("2018-08-23 13:36:58.981016"),
+                UserId = Guid.NewGuid(),
+                BodyMeasureProperty = "xxxx"
+            };
+            // 造数据
+            var resc = await Conn
+                .Creater<BodyFitRecord>()
+                .CreateAsync(m);
+
             var xx0 = "";
 
             //  == Guid
@@ -83,6 +95,12 @@ namespace EasyDAL.Exchange.Tests
 
 
             var xx = "";
+
+            // 清理数据
+            var resd = await Conn
+                .Deleter<BodyFitRecord>()
+                .Where(it => it.Id == m.Id)
+                .DeleteAsync();
         }
 
         // 查询一个已存在对象 多条件

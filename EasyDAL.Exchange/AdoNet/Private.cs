@@ -80,82 +80,82 @@ namespace EasyDAL.Exchange.AdoNet
             }
         }
 
-        private static T QueryRowImpl<T>(IDbConnection cnn, Row row, ref CommandDefinition command, Type effectiveType)
-        {
-            object param = command.Parameters;
-            var identity = new Identity(command.CommandText, command.CommandType, cnn, effectiveType, param?.GetType(), null);
-            var info = GetCacheInfo(identity, param, command.AddToCache);
+        //private static T QueryRowImpl<T>(IDbConnection cnn, Row row, ref CommandDefinition command, Type effectiveType)
+        //{
+        //    object param = command.Parameters;
+        //    var identity = new Identity(command.CommandText, command.CommandType, cnn, effectiveType, param?.GetType(), null);
+        //    var info = GetCacheInfo(identity, param, command.AddToCache);
 
-            IDbCommand cmd = null;
-            IDataReader reader = null;
+        //    IDbCommand cmd = null;
+        //    IDataReader reader = null;
 
-            bool wasClosed = cnn.State == ConnectionState.Closed;
-            try
-            {
-                cmd = command.SetupCommand(cnn, info.ParamReader);
+        //    bool wasClosed = cnn.State == ConnectionState.Closed;
+        //    try
+        //    {
+        //        cmd = command.SetupCommand(cnn, info.ParamReader);
 
-                if (wasClosed) cnn.Open();
-                reader = ExecuteReaderWithFlagsFallback(cmd, wasClosed, (row & Row.Single) != 0
-                    ? CommandBehavior.SequentialAccess | CommandBehavior.SingleResult // need to allow multiple rows, to check fail condition
-                    : CommandBehavior.SequentialAccess | CommandBehavior.SingleResult | CommandBehavior.SingleRow);
-                wasClosed = false; // *if* the connection was closed and we got this far, then we now have a reader
+        //        if (wasClosed) cnn.Open();
+        //        reader = ExecuteReaderWithFlagsFallback(cmd, wasClosed, (row & Row.Single) != 0
+        //            ? CommandBehavior.SequentialAccess | CommandBehavior.SingleResult // need to allow multiple rows, to check fail condition
+        //            : CommandBehavior.SequentialAccess | CommandBehavior.SingleResult | CommandBehavior.SingleRow);
+        //        wasClosed = false; // *if* the connection was closed and we got this far, then we now have a reader
 
-                T result = default(T);
-                if (reader.Read() && reader.FieldCount != 0)
-                {
-                    // with the CloseConnection flag, so the reader will deal with the connection; we
-                    // still need something in the "finally" to ensure that broken SQL still results
-                    // in the connection closing itself
-                    var tuple = info.Deserializer;
-                    int hash = GetColumnHash(reader);
-                    if (tuple.Func == null || tuple.Hash != hash)
-                    {
-                        tuple = info.Deserializer = new DeserializerState(hash, GetDeserializer(effectiveType, reader, 0, -1, false));
-                        if (command.AddToCache) SetQueryCache(identity, info);
-                    }
+        //        T result = default(T);
+        //        if (reader.Read() && reader.FieldCount != 0)
+        //        {
+        //            // with the CloseConnection flag, so the reader will deal with the connection; we
+        //            // still need something in the "finally" to ensure that broken SQL still results
+        //            // in the connection closing itself
+        //            var tuple = info.Deserializer;
+        //            int hash = GetColumnHash(reader);
+        //            if (tuple.Func == null || tuple.Hash != hash)
+        //            {
+        //                tuple = info.Deserializer = new DeserializerState(hash, GetDeserializer(effectiveType, reader, 0, -1, false));
+        //                if (command.AddToCache) SetQueryCache(identity, info);
+        //            }
 
-                    var func = tuple.Func;
-                    object val = func(reader);
-                    if (val == null || val is T)
-                    {
-                        result = (T)val;
-                    }
-                    else
-                    {
-                        var convertToType = Nullable.GetUnderlyingType(effectiveType) ?? effectiveType;
-                        result = (T)Convert.ChangeType(val, convertToType, CultureInfo.InvariantCulture);
-                    }
-                    if ((row & Row.Single) != 0 && reader.Read()) ThrowMultipleRows(row);
-                    while (reader.Read()) { /* ignore subsequent rows */ }
-                }
-                else if ((row & Row.FirstOrDefault) == 0) // demanding a row, and don't have one
-                {
-                    ThrowZeroRows(row);
-                }
-                while (reader.NextResult()) { /* ignore subsequent result sets */ }
-                // happy path; close the reader cleanly - no
-                // need for "Cancel" etc
-                reader.Dispose();
-                reader = null;
+        //            var func = tuple.Func;
+        //            object val = func(reader);
+        //            if (val == null || val is T)
+        //            {
+        //                result = (T)val;
+        //            }
+        //            else
+        //            {
+        //                var convertToType = Nullable.GetUnderlyingType(effectiveType) ?? effectiveType;
+        //                result = (T)Convert.ChangeType(val, convertToType, CultureInfo.InvariantCulture);
+        //            }
+        //            if ((row & Row.Single) != 0 && reader.Read()) ThrowMultipleRows(row);
+        //            while (reader.Read()) { /* ignore subsequent rows */ }
+        //        }
+        //        else if ((row & Row.FirstOrDefault) == 0) // demanding a row, and don't have one
+        //        {
+        //            ThrowZeroRows(row);
+        //        }
+        //        while (reader.NextResult()) { /* ignore subsequent result sets */ }
+        //        // happy path; close the reader cleanly - no
+        //        // need for "Cancel" etc
+        //        reader.Dispose();
+        //        reader = null;
 
-                command.OnCompleted();
-                return result;
-            }
-            finally
-            {
-                if (reader != null)
-                {
-                    if (!reader.IsClosed)
-                    {
-                        try { cmd.Cancel(); }
-                        catch { /* don't spoil the existing exception */ }
-                    }
-                    reader.Dispose();
-                }
-                if (wasClosed) cnn.Close();
-                cmd?.Dispose();
-            }
-        }
+        //        command.OnCompleted();
+        //        return result;
+        //    }
+        //    finally
+        //    {
+        //        if (reader != null)
+        //        {
+        //            if (!reader.IsClosed)
+        //            {
+        //                try { cmd.Cancel(); }
+        //                catch { /* don't spoil the existing exception */ }
+        //            }
+        //            reader.Dispose();
+        //        }
+        //        if (wasClosed) cnn.Close();
+        //        cmd?.Dispose();
+        //    }
+        //}
         
         private static async Task<IEnumerable<T>> QueryAsync<T>(this IDbConnection cnn, Type effectiveType, CommandDefinition command)
         {
@@ -221,51 +221,51 @@ namespace EasyDAL.Exchange.AdoNet
             }
         }
 
-        /// <summary>
-        /// Execute a command that returns multiple result sets, and access each in turn.
-        /// </summary>
-        /// <param name="cnn">The connection to query on.</param>
-        /// <param name="command">The command to execute for this query.</param>
-        private static async Task<GridReader> QueryMultipleAsync(this IDbConnection cnn, CommandDefinition command)
-        {
-            object param = command.Parameters;
-            var identity = new Identity(command.CommandText, command.CommandType, cnn, typeof(GridReader), param?.GetType(), null);
-            CacheInfo info = GetCacheInfo(identity, param, command.AddToCache);
+        ///// <summary>
+        ///// Execute a command that returns multiple result sets, and access each in turn.
+        ///// </summary>
+        ///// <param name="cnn">The connection to query on.</param>
+        ///// <param name="command">The command to execute for this query.</param>
+        //private static async Task<GridReader> QueryMultipleAsync(this IDbConnection cnn, CommandDefinition command)
+        //{
+        //    object param = command.Parameters;
+        //    var identity = new Identity(command.CommandText, command.CommandType, cnn, typeof(GridReader), param?.GetType(), null);
+        //    CacheInfo info = GetCacheInfo(identity, param, command.AddToCache);
 
-            DbCommand cmd = null;
-            IDataReader reader = null;
-            bool wasClosed = cnn.State == ConnectionState.Closed;
-            try
-            {
-                if (wasClosed) await cnn.TryOpenAsync(command.CancellationToken).ConfigureAwait(false);
-                cmd = command.TrySetupAsyncCommand(cnn, info.ParamReader);
-                reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, wasClosed, CommandBehavior.SequentialAccess, command.CancellationToken).ConfigureAwait(false);
+        //    DbCommand cmd = null;
+        //    IDataReader reader = null;
+        //    bool wasClosed = cnn.State == ConnectionState.Closed;
+        //    try
+        //    {
+        //        if (wasClosed) await cnn.TryOpenAsync(command.CancellationToken).ConfigureAwait(false);
+        //        cmd = command.TrySetupAsyncCommand(cnn, info.ParamReader);
+        //        reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, wasClosed, CommandBehavior.SequentialAccess, command.CancellationToken).ConfigureAwait(false);
 
-                var result = new GridReader(cmd, reader, identity, command.Parameters as DynamicParameters, command.AddToCache, command.CancellationToken);
-                wasClosed = false; // *if* the connection was closed and we got this far, then we now have a reader
-                // with the CloseConnection flag, so the reader will deal with the connection; we
-                // still need something in the "finally" to ensure that broken SQL still results
-                // in the connection closing itself
-                return result;
-            }
-            catch
-            {
-                if (reader != null)
-                {
-                    if (!reader.IsClosed)
-                    {
-                        try { cmd.Cancel(); }
-                        catch
-                        { /* don't spoil the existing exception */
-                        }
-                    }
-                    reader.Dispose();
-                }
-                cmd?.Dispose();
-                if (wasClosed) cnn.Close();
-                throw;
-            }
-        }
+        //        var result = new GridReader(cmd, reader, identity, command.Parameters as DynamicParameters, command.AddToCache, command.CancellationToken);
+        //        wasClosed = false; // *if* the connection was closed and we got this far, then we now have a reader
+        //        // with the CloseConnection flag, so the reader will deal with the connection; we
+        //        // still need something in the "finally" to ensure that broken SQL still results
+        //        // in the connection closing itself
+        //        return result;
+        //    }
+        //    catch
+        //    {
+        //        if (reader != null)
+        //        {
+        //            if (!reader.IsClosed)
+        //            {
+        //                try { cmd.Cancel(); }
+        //                catch
+        //                { /* don't spoil the existing exception */
+        //                }
+        //            }
+        //            reader.Dispose();
+        //        }
+        //        cmd?.Dispose();
+        //        if (wasClosed) cnn.Close();
+        //        throw;
+        //    }
+        //}
 
 
         /// <summary>
@@ -312,36 +312,37 @@ namespace EasyDAL.Exchange.AdoNet
             }
         }
 
-        /*
-         * ExecuteScalarImpl
-         */
-        private static T ExecuteScalarImpl<T>(IDbConnection cnn, ref CommandDefinition command)
-        {
-            Action<IDbCommand, object> paramReader = null;
-            object param = command.Parameters;
-            if (param != null)
-            {
-                var identity = new Identity(command.CommandText, command.CommandType, cnn, null, param.GetType(), null);
-                paramReader = GetCacheInfo(identity, command.Parameters, command.AddToCache).ParamReader;
-            }
+        ///*
+        // * ExecuteScalarImpl
+        // */
+        //private static T ExecuteScalarImpl<T>(IDbConnection cnn, ref CommandDefinition command)
+        //{
+        //    Action<IDbCommand, object> paramReader = null;
+        //    object param = command.Parameters;
+        //    if (param != null)
+        //    {
+        //        var identity = new Identity(command.CommandText, command.CommandType, cnn, null, param.GetType(), null);
+        //        paramReader = GetCacheInfo(identity, command.Parameters, command.AddToCache).ParamReader;
+        //    }
 
-            IDbCommand cmd = null;
-            bool wasClosed = cnn.State == ConnectionState.Closed;
-            object result;
-            try
-            {
-                cmd = command.SetupCommand(cnn, paramReader);
-                if (wasClosed) cnn.Open();
-                result = cmd.ExecuteScalar();
-                command.OnCompleted();
-            }
-            finally
-            {
-                if (wasClosed) cnn.Close();
-                cmd?.Dispose();
-            }
-            return Parse<T>(result);
-        }
+        //    IDbCommand cmd = null;
+        //    bool wasClosed = cnn.State == ConnectionState.Closed;
+        //    object result;
+        //    try
+        //    {
+        //        cmd = command.SetupCommand(cnn, paramReader);
+        //        if (wasClosed) cnn.Open();
+        //        result = cmd.ExecuteScalar();
+        //        command.OnCompleted();
+        //    }
+        //    finally
+        //    {
+        //        if (wasClosed) cnn.Close();
+        //        cmd?.Dispose();
+        //    }
+        //    return Parse<T>(result);
+        //}
+
         private static async Task<T> ExecuteScalarImplAsync<T>(IDbConnection cnn, CommandDefinition command)
         {
             Action<IDbCommand, object> paramReader = null;

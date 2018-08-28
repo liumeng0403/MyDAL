@@ -305,7 +305,7 @@ namespace EasyDAL.Exchange.DynamicParameter
             // note: most non-priveleged implementations would use: this.ReplaceLiterals(command);
             if (literals.Count != 0) SqlMapper.ReplaceLiterals(this, command, literals);
         }
-        
+
         private List<Action> outputCallbacks;
 
         void IParameterCallbacks.OnCompleted()

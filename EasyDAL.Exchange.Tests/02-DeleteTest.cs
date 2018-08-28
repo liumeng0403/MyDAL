@@ -16,6 +16,7 @@ namespace EasyDAL.Exchange.Tests
         {
             var xx0 = "";
 
+            // 造数据 
             var m = new BodyFitRecord
             {
                 Id = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"),
@@ -39,12 +40,11 @@ namespace EasyDAL.Exchange.Tests
 
             var path = "~00-c-1-2-1-1-1-1-1-4-1-1-1-4-1-2-1-7";
             var level = 2;
-            // where and or
-            var res2= await Conn
+            // where or
+            var res2 = await Conn
                 .Deleter<Agent>()
                 .Where(it => it.PathId == path)
-                .And(it => it.AgentLevel == (AgentLevel)level)
-                .Or(it => it.CreatedOn >= testH.StartTime)
+                .Or(it => it.AgentLevel == (AgentLevel)level)
                 .DeleteAsync();
 
             var xx3 = "";
@@ -57,11 +57,12 @@ namespace EasyDAL.Exchange.Tests
 
             var xx4 = "";
 
-            // where or
+            // where and or
             var res4 = await Conn
                 .Deleter<Agent>()
                 .Where(it => it.PathId == path)
-                .Or(it => it.AgentLevel == (AgentLevel)level)
+                .And(it => it.AgentLevel == (AgentLevel)level)
+                .Or(it => it.CreatedOn >= testH.StartTime)
                 .DeleteAsync();
 
             var xx = "";
