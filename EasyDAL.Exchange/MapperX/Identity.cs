@@ -24,7 +24,8 @@ namespace EasyDAL.Exchange.MapperX
             new Identity(sql, commandType, connectionString, this.type, type, null, -1);
 
         internal Identity(string sql, CommandType? commandType, IDbConnection connection, Type type, Type parametersType, Type[] otherTypes)
-            : this(sql, commandType, connection.ConnectionString, type, parametersType, otherTypes, 0) { /* base call */ }
+            : this(sql, commandType, connection.ConnectionString, type, parametersType, otherTypes, 0)
+        {  }
 
         private Identity(string sql, CommandType? commandType, string connectionString, Type type, Type parametersType, Type[] otherTypes, int gridIndex)
         {

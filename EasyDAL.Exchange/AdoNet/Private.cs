@@ -28,19 +28,22 @@ namespace EasyDAL.Exchange.AdoNet
             var identity = new Identity(command.CommandText, command.CommandType, cnn, effectiveType, param?.GetType(), null);
             var info = GetCacheInfo(identity, param, command.AddToCache);
             bool wasClosed = cnn.State == ConnectionState.Closed;
-            var cancel = command.CancellationToken;
+            //var cancel = command.CancellationToken;
             using (var cmd = command.TrySetupAsyncCommand(cnn, info.ParamReader))
             {
                 DbDataReader reader = null;
                 try
                 {
-                    if (wasClosed) await cnn.TryOpenAsync(cancel).ConfigureAwait(false);
+                    if (wasClosed)
+                    {
+                        await cnn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
+                    }
                     reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, wasClosed, (row & Row.Single) != 0
                     ? CommandBehavior.SequentialAccess | CommandBehavior.SingleResult // need to allow multiple rows, to check fail condition
-                    : CommandBehavior.SequentialAccess | CommandBehavior.SingleResult | CommandBehavior.SingleRow, cancel).ConfigureAwait(false);
+                    : CommandBehavior.SequentialAccess | CommandBehavior.SingleResult | CommandBehavior.SingleRow, default(CancellationToken)).ConfigureAwait(false);
 
                     T result = default(T);
-                    if (await reader.ReadAsync(cancel).ConfigureAwait(false) && reader.FieldCount != 0)
+                    if (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false) && reader.FieldCount != 0)
                     {
                         var tuple = info.Deserializer;
                         int hash = GetColumnHash(reader);
@@ -62,14 +65,19 @@ namespace EasyDAL.Exchange.AdoNet
                             var convertToType = Nullable.GetUnderlyingType(effectiveType) ?? effectiveType;
                             result = (T)Convert.ChangeType(val, convertToType, CultureInfo.InvariantCulture);
                         }
-                        if ((row & Row.Single) != 0 && await reader.ReadAsync(cancel).ConfigureAwait(false)) ThrowMultipleRows(row);
-                        while (await reader.ReadAsync(cancel).ConfigureAwait(false)) { /* ignore rows after the first */ }
+                        if ((row & Row.Single) != 0 && await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
+                        {
+                            ThrowMultipleRows(row);
+                        }
+                        while (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
+                        { /* ignore rows after the first */ }
                     }
                     else if ((row & Row.FirstOrDefault) == 0) // demanding a row, and don't have one
                     {
                         ThrowZeroRows(row);
                     }
-                    while (await reader.NextResultAsync(cancel).ConfigureAwait(false)) { /* ignore result sets after the first */ }
+                    while (await reader.NextResultAsync(default(CancellationToken)).ConfigureAwait(false))
+                    { /* ignore result sets after the first */ }
                     return result;
                 }
                 finally
@@ -79,83 +87,6 @@ namespace EasyDAL.Exchange.AdoNet
                 }
             }
         }
-
-        //private static T QueryRowImpl<T>(IDbConnection cnn, Row row, ref CommandDefinition command, Type effectiveType)
-        //{
-        //    object param = command.Parameters;
-        //    var identity = new Identity(command.CommandText, command.CommandType, cnn, effectiveType, param?.GetType(), null);
-        //    var info = GetCacheInfo(identity, param, command.AddToCache);
-
-        //    IDbCommand cmd = null;
-        //    IDataReader reader = null;
-
-        //    bool wasClosed = cnn.State == ConnectionState.Closed;
-        //    try
-        //    {
-        //        cmd = command.SetupCommand(cnn, info.ParamReader);
-
-        //        if (wasClosed) cnn.Open();
-        //        reader = ExecuteReaderWithFlagsFallback(cmd, wasClosed, (row & Row.Single) != 0
-        //            ? CommandBehavior.SequentialAccess | CommandBehavior.SingleResult // need to allow multiple rows, to check fail condition
-        //            : CommandBehavior.SequentialAccess | CommandBehavior.SingleResult | CommandBehavior.SingleRow);
-        //        wasClosed = false; // *if* the connection was closed and we got this far, then we now have a reader
-
-        //        T result = default(T);
-        //        if (reader.Read() && reader.FieldCount != 0)
-        //        {
-        //            // with the CloseConnection flag, so the reader will deal with the connection; we
-        //            // still need something in the "finally" to ensure that broken SQL still results
-        //            // in the connection closing itself
-        //            var tuple = info.Deserializer;
-        //            int hash = GetColumnHash(reader);
-        //            if (tuple.Func == null || tuple.Hash != hash)
-        //            {
-        //                tuple = info.Deserializer = new DeserializerState(hash, GetDeserializer(effectiveType, reader, 0, -1, false));
-        //                if (command.AddToCache) SetQueryCache(identity, info);
-        //            }
-
-        //            var func = tuple.Func;
-        //            object val = func(reader);
-        //            if (val == null || val is T)
-        //            {
-        //                result = (T)val;
-        //            }
-        //            else
-        //            {
-        //                var convertToType = Nullable.GetUnderlyingType(effectiveType) ?? effectiveType;
-        //                result = (T)Convert.ChangeType(val, convertToType, CultureInfo.InvariantCulture);
-        //            }
-        //            if ((row & Row.Single) != 0 && reader.Read()) ThrowMultipleRows(row);
-        //            while (reader.Read()) { /* ignore subsequent rows */ }
-        //        }
-        //        else if ((row & Row.FirstOrDefault) == 0) // demanding a row, and don't have one
-        //        {
-        //            ThrowZeroRows(row);
-        //        }
-        //        while (reader.NextResult()) { /* ignore subsequent result sets */ }
-        //        // happy path; close the reader cleanly - no
-        //        // need for "Cancel" etc
-        //        reader.Dispose();
-        //        reader = null;
-
-        //        command.OnCompleted();
-        //        return result;
-        //    }
-        //    finally
-        //    {
-        //        if (reader != null)
-        //        {
-        //            if (!reader.IsClosed)
-        //            {
-        //                try { cmd.Cancel(); }
-        //                catch { /* don't spoil the existing exception */ }
-        //            }
-        //            reader.Dispose();
-        //        }
-        //        if (wasClosed) cnn.Close();
-        //        cmd?.Dispose();
-        //    }
-        //}
         
         private static async Task<IEnumerable<T>> QueryAsync<T>(this IDbConnection cnn, Type effectiveType, CommandDefinition command)
         {
@@ -163,14 +94,17 @@ namespace EasyDAL.Exchange.AdoNet
             var identity = new Identity(command.CommandText, command.CommandType, cnn, effectiveType, param?.GetType(), null);
             var info = GetCacheInfo(identity, param, command.AddToCache);
             bool wasClosed = cnn.State == ConnectionState.Closed;
-            var cancel = command.CancellationToken;
+            //var cancel = command.CancellationToken;
             using (var cmd = command.TrySetupAsyncCommand(cnn, info.ParamReader))
             {
                 DbDataReader reader = null;
                 try
                 {
-                    if (wasClosed) await cnn.TryOpenAsync(cancel).ConfigureAwait(false);
-                    reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, wasClosed, CommandBehavior.SequentialAccess | CommandBehavior.SingleResult, cancel).ConfigureAwait(false);
+                    if (wasClosed)
+                    {
+                        await cnn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
+                    }
+                    reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, wasClosed, CommandBehavior.SequentialAccess | CommandBehavior.SingleResult, default(CancellationToken)).ConfigureAwait(false);
 
                     var tuple = info.Deserializer;
                     int hash = GetColumnHash(reader);
@@ -188,7 +122,7 @@ namespace EasyDAL.Exchange.AdoNet
                     {
                         var buffer = new List<T>();
                         var convertToType = Nullable.GetUnderlyingType(effectiveType) ?? effectiveType;
-                        while (await reader.ReadAsync(cancel).ConfigureAwait(false))
+                        while (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
                         {
                             object val = func(reader);
                             if (val == null || val is T)
@@ -200,7 +134,8 @@ namespace EasyDAL.Exchange.AdoNet
                                 buffer.Add((T)Convert.ChangeType(val, convertToType, CultureInfo.InvariantCulture));
                             }
                         }
-                        while (await reader.NextResultAsync(cancel).ConfigureAwait(false)) { /* ignore subsequent result sets */ }
+                        while (await reader.NextResultAsync(default(CancellationToken)).ConfigureAwait(false))
+                        { /* ignore subsequent result sets */ }
                         command.OnCompleted();
                         return buffer;
                     }
@@ -220,54 +155,7 @@ namespace EasyDAL.Exchange.AdoNet
                 }
             }
         }
-
-        ///// <summary>
-        ///// Execute a command that returns multiple result sets, and access each in turn.
-        ///// </summary>
-        ///// <param name="cnn">The connection to query on.</param>
-        ///// <param name="command">The command to execute for this query.</param>
-        //private static async Task<GridReader> QueryMultipleAsync(this IDbConnection cnn, CommandDefinition command)
-        //{
-        //    object param = command.Parameters;
-        //    var identity = new Identity(command.CommandText, command.CommandType, cnn, typeof(GridReader), param?.GetType(), null);
-        //    CacheInfo info = GetCacheInfo(identity, param, command.AddToCache);
-
-        //    DbCommand cmd = null;
-        //    IDataReader reader = null;
-        //    bool wasClosed = cnn.State == ConnectionState.Closed;
-        //    try
-        //    {
-        //        if (wasClosed) await cnn.TryOpenAsync(command.CancellationToken).ConfigureAwait(false);
-        //        cmd = command.TrySetupAsyncCommand(cnn, info.ParamReader);
-        //        reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, wasClosed, CommandBehavior.SequentialAccess, command.CancellationToken).ConfigureAwait(false);
-
-        //        var result = new GridReader(cmd, reader, identity, command.Parameters as DynamicParameters, command.AddToCache, command.CancellationToken);
-        //        wasClosed = false; // *if* the connection was closed and we got this far, then we now have a reader
-        //        // with the CloseConnection flag, so the reader will deal with the connection; we
-        //        // still need something in the "finally" to ensure that broken SQL still results
-        //        // in the connection closing itself
-        //        return result;
-        //    }
-        //    catch
-        //    {
-        //        if (reader != null)
-        //        {
-        //            if (!reader.IsClosed)
-        //            {
-        //                try { cmd.Cancel(); }
-        //                catch
-        //                { /* don't spoil the existing exception */
-        //                }
-        //            }
-        //            reader.Dispose();
-        //        }
-        //        cmd?.Dispose();
-        //        if (wasClosed) cnn.Close();
-        //        throw;
-        //    }
-        //}
-
-
+        
         /// <summary>
         /// Execute a command asynchronously using .NET 4.5 Task.
         /// </summary>
@@ -300,8 +188,11 @@ namespace EasyDAL.Exchange.AdoNet
             {
                 try
                 {
-                    if (wasClosed) await cnn.TryOpenAsync(command.CancellationToken).ConfigureAwait(false);
-                    var result = await cmd.ExecuteNonQueryAsync(command.CancellationToken).ConfigureAwait(false);
+                    if (wasClosed)
+                    {
+                        await cnn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
+                    }
+                    var result = await cmd.ExecuteNonQueryAsync(default(CancellationToken)).ConfigureAwait(false);
                     command.OnCompleted();
                     return result;
                 }
@@ -311,38 +202,7 @@ namespace EasyDAL.Exchange.AdoNet
                 }
             }
         }
-
-        ///*
-        // * ExecuteScalarImpl
-        // */
-        //private static T ExecuteScalarImpl<T>(IDbConnection cnn, ref CommandDefinition command)
-        //{
-        //    Action<IDbCommand, object> paramReader = null;
-        //    object param = command.Parameters;
-        //    if (param != null)
-        //    {
-        //        var identity = new Identity(command.CommandText, command.CommandType, cnn, null, param.GetType(), null);
-        //        paramReader = GetCacheInfo(identity, command.Parameters, command.AddToCache).ParamReader;
-        //    }
-
-        //    IDbCommand cmd = null;
-        //    bool wasClosed = cnn.State == ConnectionState.Closed;
-        //    object result;
-        //    try
-        //    {
-        //        cmd = command.SetupCommand(cnn, paramReader);
-        //        if (wasClosed) cnn.Open();
-        //        result = cmd.ExecuteScalar();
-        //        command.OnCompleted();
-        //    }
-        //    finally
-        //    {
-        //        if (wasClosed) cnn.Close();
-        //        cmd?.Dispose();
-        //    }
-        //    return Parse<T>(result);
-        //}
-
+        
         private static async Task<T> ExecuteScalarImplAsync<T>(IDbConnection cnn, CommandDefinition command)
         {
             Action<IDbCommand, object> paramReader = null;
@@ -361,9 +221,9 @@ namespace EasyDAL.Exchange.AdoNet
                 cmd = command.TrySetupAsyncCommand(cnn, paramReader);
                 if (wasClosed)
                 {
-                    await cnn.TryOpenAsync(command.CancellationToken).ConfigureAwait(false);
+                    await cnn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
                 }
-                result = await cmd.ExecuteScalarAsync(command.CancellationToken).ConfigureAwait(false);
+                result = await cmd.ExecuteScalarAsync(default(CancellationToken)).ConfigureAwait(false);
                 command.OnCompleted();
             }
             finally
@@ -385,7 +245,10 @@ namespace EasyDAL.Exchange.AdoNet
             bool wasClosed = cnn.State == ConnectionState.Closed;
             try
             {
-                if (wasClosed) await cnn.TryOpenAsync(command.CancellationToken).ConfigureAwait(false);
+                if (wasClosed)
+                {
+                    await cnn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
+                }
 
                 CacheInfo info = null;
                 string masterSql = null;
@@ -420,7 +283,7 @@ namespace EasyDAL.Exchange.AdoNet
                             }
                             info.ParamReader(cmd, obj);
 
-                            var task = cmd.ExecuteNonQueryAsync(command.CancellationToken);
+                            var task = cmd.ExecuteNonQueryAsync(default(CancellationToken));
                             pending.Enqueue(new AsyncExecState(cmd, task));
                             cmd = null; // note the using in the finally: this avoids a double-dispose
                         }
@@ -460,7 +323,7 @@ namespace EasyDAL.Exchange.AdoNet
                                 cmd.Parameters.Clear(); // current code is Add-tastic
                             }
                             info.ParamReader(cmd, obj);
-                            total += await cmd.ExecuteNonQueryAsync(command.CancellationToken).ConfigureAwait(false);
+                            total += await cmd.ExecuteNonQueryAsync(default(CancellationToken)).ConfigureAwait(false);
                         }
                     }
                 }

@@ -30,7 +30,7 @@ namespace EasyDAL.Exchange.AdoNet
         /// created per row, and a direct column-name===member-name mapping is assumed (case insensitive).
         /// </returns>
         internal static Task<IEnumerable<T>> QueryAsync<T>(IDbConnection cnn, string sql, object param = null) =>
-            QueryAsync<T>(cnn, typeof(T), new CommandDefinition(sql, param, null, null, null, CommandFlags.Buffered, default(CancellationToken)));
+            QueryAsync<T>(cnn, typeof(T), new CommandDefinition(sql, param, null, null, CommandFlags.Buffered));
         
         /// <summary>
         /// Execute a single-row query asynchronously using .NET 4.5 Task.
@@ -43,7 +43,7 @@ namespace EasyDAL.Exchange.AdoNet
         /// <param name="commandTimeout">The command timeout (in seconds).</param>
         /// <param name="commandType">The type of command to execute.</param>
         internal static Task<T> QueryFirstOrDefaultAsync<T>(IDbConnection cnn, string sql, object param = null) =>
-            QueryRowAsync<T>(cnn, Row.FirstOrDefault, typeof(T), new CommandDefinition(sql, param, null, null, null, CommandFlags.None, default(CancellationToken)));       
+            QueryRowAsync<T>(cnn, Row.FirstOrDefault, typeof(T), new CommandDefinition(sql, param, null, null, CommandFlags.None));       
         
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace EasyDAL.Exchange.Enums
 {
-    public enum OptionEnum
+    internal enum OptionEnum
     {
         /// <summary>
         /// none

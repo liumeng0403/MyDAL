@@ -23,13 +23,13 @@ namespace EasyDAL.Exchange.AdoNet
         /// <param name="commandType">Is it a stored proc or a batch?</param>
         /// <returns>The number of rows affected.</returns>
         internal static Task<int> ExecuteAsync(IDbConnection cnn, string sql, object param = null) =>
-            ExecuteAsync(cnn, new CommandDefinition(sql, param, null, null, null, CommandFlags.Buffered, default(CancellationToken)));
+            ExecuteAsync(cnn, new CommandDefinition(sql, param, null, null, CommandFlags.Buffered));
         
         /// <summary>
         /// Execute parameterized SQL that selects a single value.
         /// </summary>
         internal static Task<T> ExecuteScalarAsync<T>(IDbConnection cnn, string sql, object param = null) =>
-            ExecuteScalarImplAsync<T>(cnn, new CommandDefinition(sql, param, null, null, null, CommandFlags.Buffered));
+            ExecuteScalarImplAsync<T>(cnn, new CommandDefinition(sql, param, null, null, CommandFlags.Buffered));
 
 
     }

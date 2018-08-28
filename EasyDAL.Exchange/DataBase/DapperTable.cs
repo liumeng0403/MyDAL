@@ -49,7 +49,7 @@ namespace EasyDAL.Exchange.DataBase
             return oldLen;
         }
 
-        internal bool FieldExists(string key) => key != null && fieldNameLookup.ContainsKey(key);
+        //internal bool FieldExists(string key) => key != null && fieldNameLookup.ContainsKey(key);
 
         public int FieldCount => fieldNames.Length;
     }

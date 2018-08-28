@@ -147,24 +147,22 @@ namespace EasyDAL.Exchange.AdoNet
         private static void ResetTypeHandlers(bool clone)
         {
             typeHandlers = new Dictionary<Type, ITypeHandler>();
-#if !NETSTANDARD1_3
-            AddTypeHandlerImpl(typeof(DataTable), new DataTableHandler(), clone);
-#endif
-            try
-            {
-                AddSqlDataRecordsTypeHandler(clone);
-            }
-            catch { /* https://github.com/StackExchange/dapper-dot-net/issues/424 */ }
+            //AddTypeHandlerImpl(typeof(DataTable), new DataTableHandler(), clone);
+            //try
+            //{
+            //    AddSqlDataRecordsTypeHandler(clone);
+            //}
+            //catch { /* https://github.com/StackExchange/dapper-dot-net/issues/424 */ }
             AddTypeHandlerImpl(typeof(XmlDocument), new XmlDocumentHandler(), clone);
             AddTypeHandlerImpl(typeof(XDocument), new XDocumentHandler(), clone);
             AddTypeHandlerImpl(typeof(XElement), new XElementHandler(), clone);
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        private static void AddSqlDataRecordsTypeHandler(bool clone)
-        {
-            AddTypeHandlerImpl(typeof(IEnumerable<Microsoft.SqlServer.Server.SqlDataRecord>), new SqlDataRecordHandler(), clone);
-        }
+        //[MethodImpl(MethodImplOptions.NoInlining)]
+        //private static void AddSqlDataRecordsTypeHandler(bool clone)
+        //{
+        //    AddTypeHandlerImpl(typeof(IEnumerable<Microsoft.SqlServer.Server.SqlDataRecord>), new SqlDataRecordHandler(), clone);
+        //}
 
         internal static bool HasTypeHandler(Type type) => typeHandlers.ContainsKey(type);
 

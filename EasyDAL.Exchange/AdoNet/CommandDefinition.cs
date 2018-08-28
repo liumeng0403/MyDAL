@@ -30,12 +30,7 @@ namespace EasyDAL.Exchange.AdoNet
         /// The parameters associated with the command
         /// </summary>
         public object Parameters { get; }
-
-        /// <summary>
-        /// The active transaction for the command
-        /// </summary>
-        public IDbTransaction Transaction { get; }
-
+        
         /// <summary>
         /// The effective timeout for the command
         /// </summary>
@@ -71,33 +66,24 @@ namespace EasyDAL.Exchange.AdoNet
         /// <param name="commandType">The <see cref="CommandType"/> for this command.</param>
         /// <param name="flags">The behavior flags for this command.</param>
         /// <param name="cancellationToken">The cancellation token for this command.</param>
-        public CommandDefinition(string commandText, object parameters = null, IDbTransaction transaction = null, int? commandTimeout = null,
-                                 CommandType? commandType = null, CommandFlags flags = CommandFlags.Buffered
-                                 , CancellationToken cancellationToken = default(CancellationToken)
+        public CommandDefinition(string commandText, object parameters = null,  int? commandTimeout = null,
+                                 CommandType? commandType = null, CommandFlags flags = CommandFlags.Buffered                                 
             )
         {
             CommandText = commandText;
             Parameters = parameters;
-            Transaction = transaction;
             CommandTimeout = commandTimeout;
             CommandType = commandType;
             Flags = flags;
-            CancellationToken = cancellationToken;
         }
-
-
-        /// <summary>
-        /// For asynchronous operations, the cancellation-token
-        /// </summary>
-        public CancellationToken CancellationToken { get; }
-
+        
         internal IDbCommand SetupCommand(IDbConnection cnn, Action<IDbCommand, object> paramReader)
         {
             var cmd = cnn.CreateCommand();
             var init = GetInit(cmd.GetType());
             init?.Invoke(cmd);
-            if (Transaction != null)
-                cmd.Transaction = Transaction;
+            //if (Transaction != null)
+            //    cmd.Transaction = Transaction;
             cmd.CommandText = CommandText;
             if (CommandTimeout.HasValue)
             {
