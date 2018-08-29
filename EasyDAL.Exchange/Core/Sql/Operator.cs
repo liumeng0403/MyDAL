@@ -19,21 +19,21 @@ namespace EasyDAL.Exchange.Core.Sql
         {
             var field = DC.EH.ExpressionHandle(func);
             field.Action = ActionEnum.Where;
-            DC.Conditions.Add(field);
+            DC.AddConditions(field);
         }
 
         protected void AndHandle<T>(Expression<Func<T, bool>> func)
         {
             var field = DC.EH.ExpressionHandle(func);
             field.Action = ActionEnum.And;
-            DC.Conditions.Add(field);
+            DC.AddConditions(field);
         }
 
         protected void OrHandle<T>(Expression<Func<T, bool>> func)
         {
             var field = DC.EH.ExpressionHandle(func);
             field.Action = ActionEnum.Or;
-            DC.Conditions.Add(field);
+            DC.AddConditions(field);
         }
     }
 }

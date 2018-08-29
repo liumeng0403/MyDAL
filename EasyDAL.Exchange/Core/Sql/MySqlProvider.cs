@@ -25,27 +25,29 @@ namespace EasyDAL.Exchange.Core
 
         internal DbContext DC { get; private set; }
 
-        internal void GetProperties<M>(M m)
+        private string LikeStrHandle(DicModel<string, string> dic)
         {
-            var props = default(List<PropertyInfo>);
-            if (!DC.ModelPropertiesCache.TryGetValue(m.GetType(), out props))
+            var name = dic.Param;
+            var value = dic.Value;
+            if (!value.Contains("%")
+                && !value.Contains("_"))
             {
-                props = DC.GH.GetPropertyInfos(m);
-                DC.ModelPropertiesCache[m.GetType()] = props;
+                return $"CONCAT('%',@{name},'%')";
+            }
+            else if ((value.Contains("%") || value.Contains("_"))
+                && !value.Contains("/%")
+                && !value.Contains("/_"))
+            {
+                return $"@{name}";
+            }
+            else if (value.Contains("/%")
+                || value.Contains("/_"))
+            {
+                return $"@{name} escape '/' ";
             }
 
-            foreach (var prop in props)
-            {
-                DC.Conditions.Add(new DicModel<string, string>
-                {
-                    key = prop.Name,
-                    Value = DC.GH.GetTypeValue(prop.PropertyType, prop, m),
-                    Action = ActionEnum.Insert,
-                    Option = OptionEnum.Insert
-                });
-            }
+            throw new Exception(value);
         }
-
         internal string GetWheres()
         {
             if (!DC.Conditions.Any(it => it.Action == ActionEnum.Where)
@@ -71,10 +73,10 @@ namespace EasyDAL.Exchange.Core
                             case OptionEnum.LessThanOrEqual:
                             case OptionEnum.GreaterThan:
                             case OptionEnum.GreaterThanOrEqual:
-                                str += $" {item.Action.ToEnumDesc<ActionEnum>()} `{item.key}`{item.Option.ToEnumDesc<OptionEnum>()}@{item.key} ";
+                                str += $" {item.Action.ToEnumDesc<ActionEnum>()} `{item.key}`{item.Option.ToEnumDesc<OptionEnum>()}@{item.Param} ";
                                 break;
                             case OptionEnum.Like:
-                                str += $" {item.Action.ToEnumDesc<ActionEnum>()} `{item.key}`{item.Option.ToEnumDesc<OptionEnum>()}CONCAT('%',@{item.key},'%') ";
+                                str += $" {item.Action.ToEnumDesc<ActionEnum>()} `{item.key}`{item.Option.ToEnumDesc<OptionEnum>()}{LikeStrHandle(item)} ";
                                 break;
                         }
                         break;
@@ -104,10 +106,10 @@ namespace EasyDAL.Exchange.Core
                         {
                             case OptionEnum.ChangeAdd:
                             case OptionEnum.ChangeMinus:
-                                list.Add($" `{item.key}`=`{item.key}`{item.Option.ToEnumDesc<OptionEnum>()}@{item.key} ");
+                                list.Add($" `{item.key}`=`{item.key}`{item.Option.ToEnumDesc<OptionEnum>()}@{item.Param} ");
                                 break;
                             case OptionEnum.Set:
-                                list.Add($" `{item.key}`{item.Option.ToEnumDesc<OptionEnum>()}@{item.key} ");
+                                list.Add($" `{item.key}`{item.Option.ToEnumDesc<OptionEnum>()}@{item.Param} ");
                                 break;
                         }
                         break;
@@ -123,7 +125,7 @@ namespace EasyDAL.Exchange.Core
         }
         internal string GetValues()
         {
-            return $" ({ string.Join(",", DC.Conditions.Select(it => $"@{it.key}"))}) ";
+            return $" ({ string.Join(",", DC.Conditions.Select(it => $"@{it.Param}"))}) ";
         }
 
         internal bool TryGetTableName<M>(M m, out string tableName)
@@ -176,7 +178,7 @@ namespace EasyDAL.Exchange.Core
                     case ActionEnum.Where:
                     case ActionEnum.And:
                     case ActionEnum.Or:
-                        paras.Add(item.key, item.Value);
+                        paras.Add(item.Param, item.Value);
                         break;
                 }
             }
@@ -217,7 +219,7 @@ namespace EasyDAL.Exchange.Core
             if (Hints.Hint)
             {
                 Hints.SQL = list;
-                Hints.Parameters = DC.Conditions.Select(it => $"key:{it.key};val:{it.Value}.").ToList();
+                Hints.Parameters = DC.Conditions.Select(it => $"key:【{it.Param}】;val:【{it.Value}】.").ToList();
             }
 
             //

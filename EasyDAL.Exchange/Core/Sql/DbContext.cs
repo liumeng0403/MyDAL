@@ -1,10 +1,12 @@
 ﻿
 using EasyDAL.Exchange.Common;
+using EasyDAL.Exchange.Enums;
 using EasyDAL.Exchange.Helper;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Reflection;
 
 namespace EasyDAL.Exchange.Core.Sql
@@ -31,7 +33,43 @@ namespace EasyDAL.Exchange.Core.Sql
         internal IDbConnection Conn { get; private set; }
 
         internal MySqlProvider SqlProvider { get; set; }
-        
+
+        internal void AddConditions(DicModel<string, string> dic)
+        {
+            if (Conditions.Any(it => it.Param.Equals(dic.Param, StringComparison.OrdinalIgnoreCase)))
+            {
+                dic.Param += "R";
+                AddConditions(dic);
+            }
+            else
+            {
+                Conditions.Add(dic);
+            }
+        }
+
+        internal void GetProperties<M>(M m)
+        {
+            var props = default(List<PropertyInfo>);
+            if (!ModelPropertiesCache.TryGetValue(m.GetType(), out props))
+            {
+                props = GH.GetPropertyInfos(m);
+                ModelPropertiesCache[m.GetType()] = props;
+            }
+
+            foreach (var prop in props)
+            {
+                AddConditions(new DicModel<string, string>
+                {
+                    key = prop.Name,
+                    Param=prop.Name,
+                    Value = GH.GetTypeValue(prop.PropertyType, prop, m),
+                    Action = ActionEnum.Insert,
+                    Option = OptionEnum.Insert
+                });
+            }
+        }
+
+
         internal DbContext(IDbConnection conn)
         {
             Conn = conn;
@@ -41,6 +79,6 @@ namespace EasyDAL.Exchange.Core.Sql
             EH = ExpressionHelper.Instance;
             SqlProvider = new MySqlProvider(this);
         }
-        
+
     }
 }

@@ -18,7 +18,7 @@ namespace EasyDAL.Exchange.Core.Create
 
         public async Task<int> CreateAsync(M m)
         {
-            DC.SqlProvider.GetProperties(m);
+            DC.GetProperties(m);
             return await SqlMapper.ExecuteAsync(
                 DC.Conn, 
                 DC.SqlProvider.GetSQL<M>( SqlTypeEnum.CreateAsync)[0],

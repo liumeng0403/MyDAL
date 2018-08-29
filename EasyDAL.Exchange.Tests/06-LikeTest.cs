@@ -77,5 +77,86 @@ namespace EasyDAL.Exchange.Tests
             var xx = "";
         }
 
+
+        [Fact]
+        public async Task QueryListAsyncTest()
+        {
+            // 造数据
+            var resx1 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.Id == Guid.Parse("014c55c3-b371-433c-abc0-016544491da8"))
+                .QueryFirstOrDefaultAsync();
+            var resx2 = await Conn
+                .Updater<Agent>()
+                .Set(it => it.Name, "刘%华")
+                .Where(it => it.Id == resx1.Id)
+                .UpdateAsync();
+            var resx3 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.Id == Guid.Parse("018a1855-e238-4fb7-82d6-0165442fd654"))
+                .QueryFirstOrDefaultAsync();
+            var resx4 = await Conn
+                .Updater<Agent>()
+                .Set(it => it.Name, "何_伟")
+                .Where(it => it.Id == resx3.Id)
+                .UpdateAsync();
+
+            var xx0 = "";
+
+            // 无通配符 -- "陈" -- "%"+"陈"+"%"
+            var res0 = await Conn.OpenHint()
+                .Selecter<Agent>()
+                .Where(it => it.Name.Contains(LikeTest.无通配符))
+                .QueryListAsync();
+
+            var sql0 = (Hints.SQL, Hints.Parameters);
+
+            var xx1 = "";
+
+            // 百分号 -- "陈%" -- "陈%"
+            var res1 = await Conn.OpenHint()
+                .Selecter<Agent>()
+                .Where(it => it.Name.Contains(LikeTest.百分号))
+                .QueryListAsync();
+
+            var sql1 = (Hints.SQL, Hints.Parameters);
+
+            var xx2 = "";
+
+            // 下划线 -- "王_" -- "王_" 
+            var res2 = await Conn.OpenHint()
+                .Selecter<Agent>()
+                .Where(it => it.Name.Contains(LikeTest.下划线))
+                .QueryListAsync();
+
+            var sql2 = (Hints.SQL, Hints.Parameters);
+
+            var xx3 = "";
+
+            // 百分号转义 -- "刘/%_" -- "刘/%_"
+            var res3 = await Conn.OpenHint()
+                .Selecter<Agent>()
+                .Where(it => it.Name.Contains(LikeTest.百分号转义))
+                .And (it=>it.Id==resx1.Id)
+                .And (it=>it.Name.Contains("%华"))
+                .And(it=>it.Name.Contains("%/%%"))
+                .QueryListAsync();
+
+            var sql3 = (Hints.SQL, Hints.Parameters);
+
+            var xx4 = "";
+
+            // 下划线转义 -- "何/__" -- "何/__"
+            var res4 = await Conn.OpenHint()
+                .Selecter<Agent>()
+                .Where(it => it.Name.Contains(LikeTest.下划线转义))
+                .QueryListAsync();
+
+            var sql4 = (Hints.SQL, Hints.Parameters);
+
+            var xx = "";
+
+        }
+
     }
 }

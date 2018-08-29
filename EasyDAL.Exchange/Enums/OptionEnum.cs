@@ -50,7 +50,7 @@ namespace EasyDAL.Exchange.Enums
         GreaterThanOrEqual,
 
         /// <summary>
-        /// like
+        /// " like "
         /// </summary>
         [Description(" like ")]
         Like,

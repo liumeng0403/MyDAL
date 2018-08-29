@@ -6,10 +6,11 @@ using MySql.Data.MySqlClient;
 using EasyDAL.Exchange.Tests.Entities;
 using EasyDAL.Exchange.Tests.Enums;
 using EasyDAL.Exchange.Core.Sql;
+using EasyDAL.Exchange.Tests.TestModels;
 
 namespace EasyDAL.Exchange.Tests
 {
-    public abstract class TestBase:IDisposable
+    public abstract class TestBase : IDisposable
     {
         protected WhereTestModel testH
         {
@@ -26,11 +27,26 @@ namespace EasyDAL.Exchange.Tests
             }
         }
 
+        protected LikeTestModel LikeTest
+        {
+            get
+            {
+                return new LikeTestModel
+                {
+                    无通配符 = "陈",
+                    百分号 = "陈%",
+                    下划线 = "王_",
+                    百分号转义 = "刘/%_",
+                    下划线转义 = "何/__"
+                };
+            }
+        }
+
         protected IDbConnection Conn
         {
             get
             {
-               return GetOpenConnection();
+                return GetOpenConnection();
             }
         }
 

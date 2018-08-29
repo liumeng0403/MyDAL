@@ -125,6 +125,7 @@ namespace EasyDAL.Exchange.Helper
                 result = new DicModel<string, string>
                 {
                     key = key,
+                    Param=key,
                     Value = val,
                     Option = OptionEnum.Like,
                     Action = ActionEnum.None
@@ -167,6 +168,7 @@ namespace EasyDAL.Exchange.Helper
             result = new DicModel<string, string>
             {
                 key = key,
+                Param=key,
                 Value = val,
                 Option = GetOption(bodyB),
                 Action = ActionEnum.None
