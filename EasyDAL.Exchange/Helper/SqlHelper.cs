@@ -3,7 +3,6 @@ using EasyDAL.Exchange.AdoNet.Interfaces;
 using EasyDAL.Exchange.Cache;
 using EasyDAL.Exchange.Enums;
 using EasyDAL.Exchange.Extensions;
-using EasyDAL.Exchange.Handler;
 using EasyDAL.Exchange.MapperX;
 using System;
 using System.Collections;
@@ -15,7 +14,6 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,7 +26,7 @@ namespace EasyDAL.Exchange.Helper
         /// Gets type-map for the given type
         /// </summary>
         /// <returns>Type map instance, default is to create new instance of DefaultTypeMap</returns>
-        public static Func<Type, ITypeMap> TypeMapProvider { get; } = (Type type) => new DefaultTypeMap(type);
+        internal static Func<Type, ITypeMap> TypeMapProvider { get; } = (Type type) => new DefaultTypeMap(type);
 
         internal static int GetColumnHash(IDataReader reader, int startBound = 0, int length = -1)
         {
@@ -100,9 +98,9 @@ namespace EasyDAL.Exchange.Helper
         /// <param name="handler">The handler for <paramref name="type"/>.</param>
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static DbType LookupDbType(Type type, string name, bool demand, out ITypeHandler handler)
+        public static DbType LookupDbType(Type type, string name, bool demand/*, out ITypeHandler handler*/)
         {
-            handler = null;
+            //handler = null;
             var nullUnderlyingType = Nullable.GetUnderlyingType(type);
             if (nullUnderlyingType != null)
             {
@@ -125,7 +123,9 @@ namespace EasyDAL.Exchange.Helper
                 return DynamicParameters.EnumerableMultiParameter;
             }
             if (demand)
+            {
                 throw new NotSupportedException($"The member {name} of type {type.FullName} cannot be used as a parameter value");
+            }
             return DbType.Object;
         }
 
@@ -206,28 +206,7 @@ namespace EasyDAL.Exchange.Helper
 
             return value;
         }
-
-        private static List<IMemberMap> GetValueTupleMembers(Type type, string[] names)
-        {
-            var fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance);
-            var result = new List<IMemberMap>(names.Length);
-            for (int i = 0; i < names.Length; i++)
-            {
-                FieldInfo field = null;
-                string name = "Item" + (i + 1).ToString(CultureInfo.InvariantCulture);
-                foreach (var test in fields)
-                {
-                    if (test.Name == name)
-                    {
-                        field = test;
-                        break;
-                    }
-                }
-                result.Add(field == null ? null : new SimpleMemberMap(string.IsNullOrWhiteSpace(names[i]) ? name : names[i], field));
-            }
-            return result;
-        }
-
+        
         private static T Parse<T>(object value)
         {
             if (value == null || value is DBNull) return default(T);

@@ -2,9 +2,7 @@
 using EasyDAL.Exchange.Cache;
 using EasyDAL.Exchange.Core.Sql;
 using EasyDAL.Exchange.DynamicParameter;
-using EasyDAL.Exchange.Handler;
 using EasyDAL.Exchange.Helper;
-using System;
 using System.Collections.Generic;
 using System.Data;
 
@@ -93,11 +91,11 @@ namespace EasyDAL.Exchange.AdoNet
                 var val = param.Value;
                 string name = CleanKeyStr(param.Name);
 
-                ITypeHandler handler = null;
+                //ITypeHandler handler = null;
                 if (dbType == null && val != null)
                 {
 #pragma warning disable 618
-                    dbType = SqlHelper.LookupDbType(val.GetType(), name, true, out handler);
+                    dbType = SqlHelper.LookupDbType(val.GetType(), name, true/*, out handler*/);
 #pragma warning disable 618
                 }
 
@@ -114,8 +112,8 @@ namespace EasyDAL.Exchange.AdoNet
                 }
 
                 p.Direction = param.ParameterDirection;
-                if (handler == null)
-                {
+                //if (handler == null)
+                //{
 #pragma warning disable 0618
                     p.Value = SqlHelper.SanitizeParameterValue(val);
 #pragma warning restore 0618
@@ -131,15 +129,7 @@ namespace EasyDAL.Exchange.AdoNet
                     if (param.Size != null) p.Size = param.Size.Value;
                     if (param.Precision != null) p.Precision = param.Precision.Value;
                     if (param.Scale != null) p.Scale = param.Scale.Value;
-                }
-                else
-                {
-                    if (dbType != null) p.DbType = dbType.Value;
-                    if (param.Size != null) p.Size = param.Size.Value;
-                    if (param.Precision != null) p.Precision = param.Precision.Value;
-                    if (param.Scale != null) p.Scale = param.Scale.Value;
-                    handler.SetValue(p, val ?? DBNull.Value);
-                }
+                //}
 
                 if (add)
                 {

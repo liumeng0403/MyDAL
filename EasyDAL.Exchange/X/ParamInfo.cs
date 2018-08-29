@@ -13,9 +13,7 @@ namespace EasyDAL.Exchange.DynamicParameter
         public DbType? DbType { get; set; }
         public int? Size { get; set; }
         public IDbDataParameter AttachedParam { get; set; }
-
-        internal bool CameFromTemplate { get; set; }
-
+        
         public byte? Precision { get; set; }
         public byte? Scale { get; set; }
     }
