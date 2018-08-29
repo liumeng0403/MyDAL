@@ -1,5 +1,6 @@
 ﻿using EasyDAL.Exchange.AdoNet.Interfaces;
 using EasyDAL.Exchange.Cache;
+using EasyDAL.Exchange.Core.Sql;
 using EasyDAL.Exchange.DynamicParameter;
 using EasyDAL.Exchange.Handler;
 using EasyDAL.Exchange.Helper;
@@ -123,9 +124,9 @@ namespace EasyDAL.Exchange.AdoNet
                         p.DbType = dbType.Value;
                     }
                     var s = val as string;
-                    if (s?.Length <= DbString.DefaultLength)
+                    if (s?.Length <= Configs.StringDefaultLength)
                     {
-                        p.Size = DbString.DefaultLength;
+                        p.Size = Configs.StringDefaultLength;
                     }
                     if (param.Size != null) p.Size = param.Size.Value;
                     if (param.Precision != null) p.Precision = param.Precision.Value;

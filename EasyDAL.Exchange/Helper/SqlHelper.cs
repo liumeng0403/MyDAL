@@ -90,7 +90,7 @@ namespace EasyDAL.Exchange.Helper
                 [typeof(object)] = DbType.Object
             };
         }
-        
+
         /// <summary>
         /// OBSOLETE: For internal usage only. Lookup the DbType and handler for a given Type and member
         /// </summary>
@@ -207,8 +207,6 @@ namespace EasyDAL.Exchange.Helper
             return value;
         }
 
-        private static bool IsValueTuple(Type type) => type?.IsValueTypeX() == true && type.FullName.StartsWith("System.ValueTuple`", StringComparison.Ordinal);
-
         private static List<IMemberMap> GetValueTupleMembers(Type type, string[] names)
         {
             var fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance);
@@ -254,7 +252,10 @@ namespace EasyDAL.Exchange.Helper
         /// <returns>Type map implementation, DefaultTypeMap instance if no override present</returns>
         public static ITypeMap GetTypeMap(Type type)
         {
-            if (type == null) throw new ArgumentNullException(nameof(type));
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
             var map = (ITypeMap)_typeMaps[type];
             if (map == null)
             {
@@ -310,13 +311,12 @@ namespace EasyDAL.Exchange.Helper
         }
 
         // dr --> m
-        internal static Func<IDataReader, object> GetTypeDeserializerImpl(Type type, IDataReader reader, int startBound = 0, int length = -1, bool returnNullIfFirstMissing = false)
+        internal static Func<IDataReader, object> GetTypeDeserializerImpl(Type mType, IDataReader reader, int startBound = 0, int length = -1, bool returnNullIfFirstMissing = false)
         {
-            var returnType = type.IsValueTypeX() ? typeof(object) : type;
-            var dm = new DynamicMethod("Deserialize" + Guid.NewGuid().ToString(), returnType, new[] { typeof(IDataReader) }, type, true);
+            var dm = new DynamicMethod("Deserialize" + Guid.NewGuid().ToString(), mType, new[] { typeof(IDataReader) }, mType, true);
             var il = dm.GetILGenerator();
             il.DeclareLocal(typeof(int));
-            il.DeclareLocal(type);
+            il.DeclareLocal(mType);
             il.Emit(OpCodes.Ldc_I4_0);
             il.Emit(OpCodes.Stloc_0);
 
@@ -327,7 +327,7 @@ namespace EasyDAL.Exchange.Helper
 
             var names = Enumerable.Range(startBound, length).Select(i => reader.GetName(i)).ToArray();
 
-            ITypeMap typeMap = GetTypeMap(type);
+            ITypeMap typeMap = GetTypeMap(mType);
 
             int index = startBound;
             ConstructorInfo specializedConstructor = null;
@@ -344,14 +344,14 @@ namespace EasyDAL.Exchange.Helper
             if (ctor == null)
             {
                 string proposedTypes = "(" + string.Join(", ", types.Select((t, i) => t.FullName + " " + names[i]).ToArray()) + ")";
-                throw new InvalidOperationException($"A parameterless default constructor or one matching signature {proposedTypes} is required for {type.FullName} materialization");
+                throw new InvalidOperationException($"A parameterless default constructor or one matching signature {proposedTypes} is required for {mType.FullName} materialization");
             }
 
             if (ctor.GetParameters().Length == 0)
             {
                 il.Emit(OpCodes.Newobj, ctor);
                 il.Emit(OpCodes.Stloc_1);
-                supportInitialize = typeof(ISupportInitialize).IsAssignableFrom(type);
+                supportInitialize = typeof(ISupportInitialize).IsAssignableFrom(mType);
                 if (supportInitialize)
                 {
                     il.Emit(OpCodes.Ldloc_1);
@@ -366,18 +366,14 @@ namespace EasyDAL.Exchange.Helper
             //}
 
             il.BeginExceptionBlock();
-            if (type.IsValueTypeX())
-            {
-                il.Emit(OpCodes.Ldloca_S, (byte)1);// [target]
-            }
-            else if (specializedConstructor == null)
+            if (specializedConstructor == null)
             {
                 il.Emit(OpCodes.Ldloc_1);// [target]
             }
 
-            var members = IsValueTuple(type) ? GetValueTupleMembers(type, names) : ((specializedConstructor != null
+            var members = (specializedConstructor != null
                 ? names.Select(n => typeMap.GetConstructorParameter(specializedConstructor, n))
-                : names.Select(n => typeMap.GetMember(n))).ToList());
+                : names.Select(n => typeMap.GetMember(n))).ToList();
 
             // stack is now [target]
 
@@ -475,7 +471,7 @@ namespace EasyDAL.Exchange.Helper
                         // Store the value in the property/field
                         if (item.Property != null)
                         {
-                            il.Emit(type.IsValueTypeX() ? OpCodes.Call : OpCodes.Callvirt, DefaultTypeMap.GetPropertySetter(item.Property, type));
+                            il.Emit( OpCodes.Callvirt, DefaultTypeMap.GetPropertySetter(item.Property, mType));
                         }
                         else
                         {
@@ -517,7 +513,7 @@ namespace EasyDAL.Exchange.Helper
                         // Store the value in the property/field
                         if (item.Property != null)
                         {
-                            il.Emit(type.IsValueTypeX() ? OpCodes.Call : OpCodes.Callvirt, DefaultTypeMap.GetPropertySetter(item.Property, type));
+                            il.Emit( OpCodes.Callvirt, DefaultTypeMap.GetPropertySetter(item.Property, mType));
                             // stack is now [target]
                         }
                         else
@@ -567,7 +563,7 @@ namespace EasyDAL.Exchange.Helper
             il.Emit(OpCodes.Ldloc_1); // stack is [rval]
             il.Emit(OpCodes.Ret);
 
-            var funcType = System.Linq.Expressions.Expression.GetFuncType(typeof(IDataReader), returnType);
+            var funcType = System.Linq.Expressions.Expression.GetFuncType(typeof(IDataReader), mType);
             return (Func<IDataReader, object>)dm.CreateDelegate(funcType);
         }
 
@@ -778,10 +774,6 @@ namespace EasyDAL.Exchange.Helper
                     break;
             }
         }
-
-        // one per thread
-        [ThreadStatic]
-        private static StringBuilder perThreadStringBuilderCache;
 
         internal static Func<IDataReader, object> GetDeserializer(Type type, IDataReader reader, int startBound, int length, bool returnNullIfFirstMissing)
         {
