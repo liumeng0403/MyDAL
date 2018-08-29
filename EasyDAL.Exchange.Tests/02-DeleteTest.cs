@@ -63,7 +63,7 @@ namespace EasyDAL.Exchange.Tests
                 .Deleter<Agent>()
                 .Where(it => it.PathId == path)
                 .And(it => it.AgentLevel == (AgentLevel)level)
-                .Or(it => it.CreatedOn >= testH.StartTime)
+                .Or(it => it.CreatedOn >= WhereTest.DateTime_大于等于)
                 .DeleteAsync();
 
             var xx = "";

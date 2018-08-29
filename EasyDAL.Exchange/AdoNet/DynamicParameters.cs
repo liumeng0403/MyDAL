@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Reflection.Emit;
-using System.Text;
-using EasyDAL.Exchange.AdoNet;
+﻿using EasyDAL.Exchange.AdoNet.Interfaces;
 using EasyDAL.Exchange.Cache;
-using EasyDAL.Exchange.DataBase;
 using EasyDAL.Exchange.DynamicParameter;
 using EasyDAL.Exchange.Handler;
-using EasyDAL.Exchange.MapperX;
-using EasyDAL.Exchange.Parameter;
+using EasyDAL.Exchange.Helper;
+using System;
+using System.Collections.Generic;
+using System.Data;
 
-namespace EasyDAL.Exchange
+namespace EasyDAL.Exchange.AdoNet
 {
     /// <summary>
     /// A bag of parameters that can be passed to the Dapper Query and Execute methods
@@ -103,7 +96,7 @@ namespace EasyDAL.Exchange
                 if (dbType == null && val != null)
                 {
 #pragma warning disable 618
-                    dbType = SqlMapper.LookupDbType(val.GetType(), name, true, out handler);
+                    dbType = SqlHelper.LookupDbType(val.GetType(), name, true, out handler);
 #pragma warning disable 618
                 }
 
@@ -123,7 +116,7 @@ namespace EasyDAL.Exchange
                 if (handler == null)
                 {
 #pragma warning disable 0618
-                    p.Value = SqlMapper.SanitizeParameterValue(val);
+                    p.Value = SqlHelper.SanitizeParameterValue(val);
 #pragma warning restore 0618
                     if (dbType != null && p.DbType != dbType)
                     {

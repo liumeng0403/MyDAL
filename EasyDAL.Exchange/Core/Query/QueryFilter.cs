@@ -1,6 +1,7 @@
 ﻿using EasyDAL.Exchange.AdoNet;
 using EasyDAL.Exchange.Core.Sql;
 using EasyDAL.Exchange.Enums;
+using EasyDAL.Exchange.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +35,7 @@ namespace EasyDAL.Exchange.Core.Query
 
         public async Task<M> QueryFirstOrDefaultAsync()
         {
-            return await SqlMapper.QueryFirstOrDefaultAsync<M>(
+            return await SqlHelper.QueryFirstOrDefaultAsync<M>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(SqlTypeEnum.QueryFirstOrDefaultAsync)[0],
                 DC.SqlProvider.GetParameters());
@@ -43,7 +44,7 @@ namespace EasyDAL.Exchange.Core.Query
 
         public async Task<List<M>> QueryListAsync()
         {
-            return (await SqlMapper.QueryAsync<M>(
+            return (await SqlHelper.QueryAsync<M>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(SqlTypeEnum.QueryListAsync)[0],
                 DC.SqlProvider.GetParameters())).ToList();
@@ -57,8 +58,8 @@ namespace EasyDAL.Exchange.Core.Query
             result.PageSize = pageSize;
             var paras = DC.SqlProvider.GetParameters();
             var sql = DC.SqlProvider.GetSQL<M>(SqlTypeEnum.QueryPagingListAsync, result);
-            result.TotalCount = await SqlMapper.ExecuteScalarAsync<long>(DC.Conn, sql[0], paras);
-            result.Data = (await SqlMapper.QueryAsync<M>(DC.Conn, sql[1], paras)).ToList();
+            result.TotalCount = await SqlHelper.ExecuteScalarAsync<long>(DC.Conn, sql[0], paras);
+            result.Data = (await SqlHelper.QueryAsync<M>(DC.Conn, sql[1], paras)).ToList();
             return result;
         }
 

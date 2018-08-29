@@ -1,7 +1,7 @@
 ﻿using EasyDAL.Exchange.Cache;
 using System.Data;
 
-namespace EasyDAL.Exchange.DynamicParameter
+namespace EasyDAL.Exchange.AdoNet.Interfaces
 {
     /// <summary>
     /// Implement this interface to pass an arbitrary db specific set of parameters to Dapper

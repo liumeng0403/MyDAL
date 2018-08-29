@@ -163,7 +163,7 @@ namespace EasyDAL.Exchange.Helper
                     val = HandMember(bodyB);
                     break;
                 default:
-                    throw new Exception("请联系 https://www.cnblogs.com/Meng-NET/ 博主!");
+                    throw new Exception();
             }
             result = new DicModel<string, string>
             {
@@ -229,7 +229,7 @@ namespace EasyDAL.Exchange.Helper
             }
             else
             {
-                throw new Exception("请联系 https://www.cnblogs.com/Meng-NET/ 博主!");
+                throw new Exception();
             }
             return result;
         }
@@ -247,7 +247,14 @@ namespace EasyDAL.Exchange.Helper
             }
             catch (Exception ex)
             {
-                throw new Exception($"不支持的表达式:[{func.ToString()}]");
+                if (!string.IsNullOrWhiteSpace(ex.Message))
+                {
+                    throw ex;
+                }
+                else
+                {
+                    throw new Exception($"不支持的表达式:[{func.ToString()}]");
+                }
             }
         }
 
@@ -287,7 +294,14 @@ namespace EasyDAL.Exchange.Helper
             }
             catch (Exception ex)
             {
-                throw new Exception($"不支持的表达式:[{func.ToString()}]");
+                if (!string.IsNullOrWhiteSpace(ex.Message))
+                {
+                    throw ex;
+                }
+                else
+                {
+                    throw new Exception($"不支持的表达式:[{func.ToString()}]");
+                }
             }
         }
 

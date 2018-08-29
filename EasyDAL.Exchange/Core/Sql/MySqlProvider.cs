@@ -10,6 +10,7 @@ using EasyDAL.Exchange.DynamicParameter;
 using EasyDAL.Exchange.Core.Sql;
 using System.Data;
 using EasyDAL.Exchange.Common;
+using EasyDAL.Exchange.AdoNet;
 
 namespace EasyDAL.Exchange.Core
 {

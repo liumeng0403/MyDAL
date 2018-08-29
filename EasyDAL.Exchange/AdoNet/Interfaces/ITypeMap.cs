@@ -1,9 +1,10 @@
-﻿using System;
+﻿using EasyDAL.Exchange.AdoNet.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-namespace EasyDAL.Exchange.Map
+namespace EasyDAL.Exchange.AdoNet.Interfaces
 {
     /// <summary>
     /// Implement this interface to change default mapping of reader columns to type members

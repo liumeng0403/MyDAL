@@ -1,9 +1,10 @@
-﻿using System;
+﻿using EasyDAL.Exchange.AdoNet.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-namespace EasyDAL.Exchange.Map
+namespace EasyDAL.Exchange.AdoNet
 {
     /// <summary>
     /// Represents simple member map for one of target parameter or property or field to source DataReader column

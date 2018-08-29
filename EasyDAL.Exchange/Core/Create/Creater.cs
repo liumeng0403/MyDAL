@@ -1,6 +1,7 @@
 ﻿using EasyDAL.Exchange.AdoNet;
 using EasyDAL.Exchange.Core.Sql;
 using EasyDAL.Exchange.Enums;
+using EasyDAL.Exchange.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace EasyDAL.Exchange.Core.Create
         public async Task<int> CreateAsync(M m)
         {
             DC.GetProperties(m);
-            return await SqlMapper.ExecuteAsync(
+            return await SqlHelper.ExecuteAsync(
                 DC.Conn, 
                 DC.SqlProvider.GetSQL<M>( SqlTypeEnum.CreateAsync)[0],
                 DC.SqlProvider.GetParameters());

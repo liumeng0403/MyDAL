@@ -1,4 +1,5 @@
 ﻿using EasyDAL.Exchange.AdoNet;
+using EasyDAL.Exchange.Helper;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -125,22 +126,32 @@ namespace EasyDAL.Exchange.MapperX
 
         private Func<IDataReader, object> GetReader(IDataReader reader, int startBound, int length, bool returnNullIfFirstMissing)
         {
-            if (length < 0) length = reader.FieldCount - startBound;
-            int hash = SqlMapper. GetColumnHash(reader, startBound, length);
-            if (returnNullIfFirstMissing) hash *= -27;
+            if (length < 0)
+            {
+                length = reader.FieldCount - startBound;
+            }
+            int hash = SqlHelper. GetColumnHash(reader, startBound, length);
+            if (returnNullIfFirstMissing)
+            {
+                hash *= -27;
+            }
             // get a cheap key first: false means don't copy the values down
             var key = new DeserializerKey(hash, startBound, length, returnNullIfFirstMissing, reader, false);
             Func<IDataReader, object> deser;
             lock (readers)
             {
-                if (readers.TryGetValue(key, out deser)) return deser;
+                if (readers.TryGetValue(key, out deser))
+                {
+                    return deser;
+                }
             }
-            deser = SqlMapper. GetTypeDeserializerImpl(type, reader, startBound, length, returnNullIfFirstMissing);
+            deser = SqlHelper. GetTypeDeserializerImpl(type, reader, startBound, length, returnNullIfFirstMissing);
             // get a more expensive key: true means copy the values down so it can be used as a key later
             key = new DeserializerKey(hash, startBound, length, returnNullIfFirstMissing, reader, true);
             lock (readers)
             {
-                return readers[key] = deser;
+                readers[key] = deser;
+                return deser;
             }
         }
     }

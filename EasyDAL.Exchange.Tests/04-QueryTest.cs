@@ -54,7 +54,7 @@ namespace EasyDAL.Exchange.Tests
             // >= obj.DateTime
             var res5 = await Conn
                 .Selecter<BodyFitRecord>()
-                .Where(it => it.CreatedOn >= testH.CreatedOn)
+                .Where(it => it.CreatedOn >= WhereTest.CreatedOn)
                 .QueryFirstOrDefaultAsync();
 
             var xx5 = "";
@@ -94,7 +94,7 @@ namespace EasyDAL.Exchange.Tests
             // where and
             var res1 = await Conn
                 .Selecter<Agent>()
-                .Where(it => it.CreatedOn >= testH.StartTime)
+                .Where(it => it.CreatedOn >= WhereTest.DateTime_大于等于)
                 .And(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
                 .QueryFirstOrDefaultAsync();
 
@@ -108,7 +108,7 @@ namespace EasyDAL.Exchange.Tests
             var testQ = new WhereTestModel
             {
                 CreatedOn = DateTime.Now.AddDays(-30),
-                StartTime = DateTime.Now.AddDays(-30),
+                DateTime_大于等于 = DateTime.Now.AddDays(-30),
                 EndTime = DateTime.Now,
                 AgentLevelXX = AgentLevel.DistiAgent,
                 ContainStr = "~00-d-3-1-"
@@ -118,7 +118,7 @@ namespace EasyDAL.Exchange.Tests
 
             var res1 = await Conn
                 .Selecter<Agent>()
-                .Where(it => it.CreatedOn >= testQ.StartTime)
+                .Where(it => it.CreatedOn >= testQ.DateTime_大于等于)
                 .QueryListAsync();
 
             var xx1 = "";

@@ -1,12 +1,14 @@
 ﻿using EasyDAL.Exchange.AdoNet;
+using EasyDAL.Exchange.AdoNet.Interfaces;
 using EasyDAL.Exchange.Extensions;
+using EasyDAL.Exchange.Helper;
 using EasyDAL.Exchange.MapperX;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace EasyDAL.Exchange.Map
+namespace EasyDAL.Exchange.AdoNet
 {
     /// <summary>
     /// 默认类型映射策略
@@ -86,7 +88,7 @@ namespace EasyDAL.Exchange.Map
                     if (types[i] == typeof(byte[]) && ctorParameters[i].ParameterType.FullName == Settings.LinqBinary)
                         continue;
                     var unboxedType = Nullable.GetUnderlyingType(ctorParameters[i].ParameterType) ?? ctorParameters[i].ParameterType;
-                    if ((unboxedType != types[i] && !SqlMapper.HasTypeHandler(unboxedType))
+                    if (unboxedType != types[i] 
                         && !(unboxedType.IsEnumX() && Enum.GetUnderlyingType(unboxedType) == types[i])
                         && !(unboxedType == typeof(char) && types[i] == typeof(string))
                         && !(unboxedType.IsEnumX() && types[i] == typeof(string)))

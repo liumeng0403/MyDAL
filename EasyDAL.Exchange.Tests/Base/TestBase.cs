@@ -12,14 +12,14 @@ namespace EasyDAL.Exchange.Tests
 {
     public abstract class TestBase : IDisposable
     {
-        protected WhereTestModel testH
+        protected WhereTestModel WhereTest
         {
             get
             {
                 return new WhereTestModel
                 {
                     CreatedOn = DateTime.Now.AddDays(-30),
-                    StartTime = DateTime.Now.AddDays(-30),
+                    DateTime_大于等于 = DateTime.Now.AddDays(-30),
                     EndTime = DateTime.Now,
                     AgentLevelXX = AgentLevel.DistiAgent,
                     ContainStr = "~00-d-3-1-"

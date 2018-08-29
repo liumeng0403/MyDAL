@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EasyDAL.Exchange.DataBase
+namespace EasyDAL.Exchange.Enums
 {
     [Flags]
-    internal enum Row
+    internal enum RowEnum
     {
         First = 0,
         FirstOrDefault = 1, //  & FirstOrDefault != 0: allow zero rows

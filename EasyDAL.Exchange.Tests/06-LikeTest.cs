@@ -57,8 +57,8 @@ namespace EasyDAL.Exchange.Tests
             // 默认 "%"+testH.ContainStr+"%"
             var res1 = await Conn.OpenHint()
                 .Selecter<Agent>()
-                .Where(it => it.CreatedOn >= testH.StartTime)
-                .And(it => it.PathId.Contains(testH.ContainStr))
+                .Where(it => it.CreatedOn >= WhereTest.DateTime_大于等于)
+                .And(it => it.PathId.Contains(WhereTest.ContainStr))
                 .QueryPagingListAsync(1, 10);
 
             var sql1 = (Hints.SQL, Hints.Parameters);
@@ -68,7 +68,7 @@ namespace EasyDAL.Exchange.Tests
             // 默认 "%"+"~00-d-3-1-"+"%"
             var res2 = await Conn
                 .Selecter<Agent>()
-                .Where(it => it.CreatedOn >= testH.StartTime)
+                .Where(it => it.CreatedOn >= WhereTest.DateTime_大于等于)
                 .And(it => it.PathId.Contains("~00-d-3-1-"))
                 .QueryPagingListAsync(1, 10);
 
@@ -81,6 +81,8 @@ namespace EasyDAL.Exchange.Tests
         [Fact]
         public async Task QueryListAsyncTest()
         {
+            var xxx = "";
+
             // 造数据
             var resx1 = await Conn
                 .Selecter<Agent>()

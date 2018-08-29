@@ -19,7 +19,7 @@ namespace EasyDAL.Exchange.Tests
 
             var res1 = await Conn
                 .Selecter<Agent>()
-                .Where(it => it.CreatedOn >= testH.StartTime)
+                .Where(it => it.CreatedOn >= WhereTest.DateTime_大于等于)
                 .QueryPagingListAsync(1,10);
 
             var xx = "";
@@ -33,7 +33,7 @@ namespace EasyDAL.Exchange.Tests
             var testQ = new WhereTestModel
             {
                 CreatedOn = DateTime.Now.AddDays(-10),
-                StartTime = DateTime.Now.AddDays(-10),
+                DateTime_大于等于 = DateTime.Now.AddDays(-10),
                 EndTime = DateTime.Now,
                 AgentLevelXX = AgentLevel.DistiAgent,
                 ContainStr = "~00-d-3-1-"

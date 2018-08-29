@@ -1,6 +1,7 @@
 ﻿using EasyDAL.Exchange.AdoNet;
 using EasyDAL.Exchange.Core.Sql;
 using EasyDAL.Exchange.Enums;
+using EasyDAL.Exchange.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -32,7 +33,7 @@ namespace EasyDAL.Exchange.Core.Delete
 
         public async Task<int> DeleteAsync()
         {
-            return await SqlMapper.ExecuteAsync(
+            return await SqlHelper.ExecuteAsync(
                 DC.Conn, 
                 DC.SqlProvider.GetSQL<M>( SqlTypeEnum.DeleteAsync)[0],
                 DC.SqlProvider.GetParameters());

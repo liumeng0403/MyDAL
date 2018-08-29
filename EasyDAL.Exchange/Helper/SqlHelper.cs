@@ -1,34 +1,27 @@
-﻿
+﻿using EasyDAL.Exchange.AdoNet;
+using EasyDAL.Exchange.AdoNet.Interfaces;
 using EasyDAL.Exchange.Cache;
-using EasyDAL.Exchange.DataBase;
-using EasyDAL.Exchange.DynamicParameter;
+using EasyDAL.Exchange.Enums;
 using EasyDAL.Exchange.Extensions;
 using EasyDAL.Exchange.Handler;
-using EasyDAL.Exchange.Map;
 using EasyDAL.Exchange.MapperX;
-using EasyDAL.Exchange.Parameter;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Common;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
-using System.Xml;
-using System.Xml.Linq;
+using System.Threading.Tasks;
 
-
-namespace EasyDAL.Exchange.AdoNet
+namespace EasyDAL.Exchange.Helper
 {
-    /// <summary>
-    /// Dapper, a light weight object mapper for ADO.NET
-    /// </summary>
-    internal static partial class SqlMapper
+    internal static class SqlHelper
     {
 
         /// <summary>
@@ -54,7 +47,7 @@ namespace EasyDAL.Exchange.AdoNet
 
         private static Dictionary<Type, DbType> typeMap { get; set; }
 
-        static SqlMapper()
+        static SqlHelper()
         {
             typeMap = new Dictionary<Type, DbType>
             {
@@ -96,78 +89,8 @@ namespace EasyDAL.Exchange.AdoNet
                 [typeof(TimeSpan?)] = DbType.Time,
                 [typeof(object)] = DbType.Object
             };
-            ResetTypeHandlers(false);
         }
-
-        private static void ResetTypeHandlers(bool clone)
-        {
-            typeHandlers = new Dictionary<Type, ITypeHandler>();
-            //AddTypeHandlerImpl(typeof(DataTable), new DataTableHandler(), clone);
-            //try
-            //{
-            //    AddSqlDataRecordsTypeHandler(clone);
-            //}
-            //catch { /* https://github.com/StackExchange/dapper-dot-net/issues/424 */ }
-            AddTypeHandlerImpl(typeof(XmlDocument), new XmlDocumentHandler(), clone);
-            AddTypeHandlerImpl(typeof(XDocument), new XDocumentHandler(), clone);
-            AddTypeHandlerImpl(typeof(XElement), new XElementHandler(), clone);
-        }
-
-        internal static bool HasTypeHandler(Type type) => typeHandlers.ContainsKey(type);
-
-        /// <summary>
-        /// Configure the specified type to be processed by a custom handler.
-        /// </summary>
-        /// <param name="type">The type to handle.</param>
-        /// <param name="handler">The handler to process the <paramref name="type"/>.</param>
-        /// <param name="clone">Whether to clone the current type handler map.</param>
-        public static void AddTypeHandlerImpl(Type type, ITypeHandler handler, bool clone)
-        {
-            if (type == null) throw new ArgumentNullException(nameof(type));
-
-            Type secondary = null;
-            if (type.IsValueTypeX())
-            {
-                var underlying = Nullable.GetUnderlyingType(type);
-                if (underlying == null)
-                {
-                    secondary = typeof(Nullable<>).MakeGenericType(type); // the Nullable<T>
-                    // type is already the T
-                }
-                else
-                {
-                    secondary = type; // the Nullable<T>
-                    type = underlying; // the T
-                }
-            }
-
-            var snapshot = typeHandlers;
-            if (snapshot.TryGetValue(type, out ITypeHandler oldValue) && handler == oldValue) return; // nothing to do
-
-            var newCopy = clone ? new Dictionary<Type, ITypeHandler>(snapshot) : snapshot;
-
-#pragma warning disable 618
-            typeof(TypeHandlerCache<>).MakeGenericType(type).GetMethod(nameof(TypeHandlerCache<int>.SetHandler), BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, new object[] { handler });
-            if (secondary != null)
-            {
-                typeof(TypeHandlerCache<>).MakeGenericType(secondary).GetMethod(nameof(TypeHandlerCache<int>.SetHandler), BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, new object[] { handler });
-            }
-#pragma warning restore 618
-            if (handler == null)
-            {
-                newCopy.Remove(type);
-                if (secondary != null) newCopy.Remove(secondary);
-            }
-            else
-            {
-                newCopy[type] = handler;
-                if (secondary != null) newCopy[secondary] = handler;
-            }
-            typeHandlers = newCopy;
-        }
-
-        private static Dictionary<Type, ITypeHandler> typeHandlers { get; set; }
-
+        
         /// <summary>
         /// OBSOLETE: For internal usage only. Lookup the DbType and handler for a given Type and member
         /// </summary>
@@ -197,29 +120,10 @@ namespace EasyDAL.Exchange.AdoNet
             {
                 return DbType.Binary;
             }
-            if (typeHandlers.TryGetValue(type, out handler))
-            {
-                return DbType.Object;
-            }
             if (typeof(IEnumerable).IsAssignableFrom(type))
             {
                 return DynamicParameters.EnumerableMultiParameter;
             }
-
-#if !NETSTANDARD1_3 && !NETSTANDARD2_0
-            switch (type.FullName)
-            {
-                case "Microsoft.SqlServer.Types.SqlGeography":
-                    AddTypeHandler(type, handler = new UdtTypeHandler("geography"));
-                    return DbType.Object;
-                case "Microsoft.SqlServer.Types.SqlGeometry":
-                    AddTypeHandler(type, handler = new UdtTypeHandler("geometry"));
-                    return DbType.Object;
-                case "Microsoft.SqlServer.Types.SqlHierarchyId":
-                    AddTypeHandler(type, handler = new UdtTypeHandler("hierarchyid"));
-                    return DbType.Object;
-            }
-#endif
             if (demand)
                 throw new NotSupportedException($"The member {name} of type {type.FullName} cannot be used as a parameter value");
             return DbType.Object;
@@ -227,22 +131,22 @@ namespace EasyDAL.Exchange.AdoNet
 
         private static int[] ErrTwoRows { get; } = new int[2];
         private static int[] ErrZeroRows { get; } = new int[0];
-        internal static void ThrowMultipleRows(Row row)
+        internal static void ThrowMultipleRows(RowEnum row)
         {
             switch (row)
             {  // get the standard exception from the runtime
-                case Row.Single: ErrTwoRows.Single(); break;
-                case Row.SingleOrDefault: ErrTwoRows.SingleOrDefault(); break;
+                case RowEnum.Single: ErrTwoRows.Single(); break;
+                case RowEnum.SingleOrDefault: ErrTwoRows.SingleOrDefault(); break;
                 default: throw new InvalidOperationException();
             }
         }
 
-        internal static void ThrowZeroRows(Row row)
+        internal static void ThrowZeroRows(RowEnum row)
         {
             switch (row)
             { // get the standard exception from the runtime
-                case Row.First: ErrZeroRows.First(); break;
-                case Row.Single: ErrZeroRows.Single(); break;
+                case RowEnum.First: ErrZeroRows.First(); break;
+                case RowEnum.Single: ErrZeroRows.Single(); break;
                 default: throw new InvalidOperationException();
             }
         }
@@ -261,83 +165,6 @@ namespace EasyDAL.Exchange.AdoNet
             return info;
         }
 
-        private static Func<IDataReader, object> GetHandlerDeserializer(ITypeHandler handler, Type type, int startBound)
-        {
-            return reader => handler.Parse(type, reader.GetValue(startBound));
-        }
-
-        private static Exception MultiMapException(IDataRecord reader)
-        {
-            bool hasFields = false;
-            try { hasFields = reader != null && reader.FieldCount != 0; }
-            catch { /* don't throw when trying to throw */ }
-            if (hasFields)
-                return new ArgumentException("When using the multi-mapping APIs ensure you set the splitOn param if you have keys other than Id", "splitOn");
-            else
-                return new InvalidOperationException("No columns were selected");
-        }
-
-        internal static Func<IDataReader, object> GetDapperRowDeserializer(IDataRecord reader, int startBound, int length, bool returnNullIfFirstMissing)
-        {
-            var fieldCount = reader.FieldCount;
-            if (length == -1)
-            {
-                length = fieldCount - startBound;
-            }
-
-            if (fieldCount <= startBound)
-            {
-                throw MultiMapException(reader);
-            }
-
-            var effectiveFieldCount = Math.Min(fieldCount - startBound, length);
-
-            DapperTable table = null;
-
-            return
-                r =>
-                {
-                    if (table == null)
-                    {
-                        string[] names = new string[effectiveFieldCount];
-                        for (int i = 0; i < effectiveFieldCount; i++)
-                        {
-                            names[i] = r.GetName(i + startBound);
-                        }
-                        table = new DapperTable(names);
-                    }
-
-                    var values = new object[effectiveFieldCount];
-
-                    if (returnNullIfFirstMissing)
-                    {
-                        values[0] = r.GetValue(startBound);
-                        if (values[0] is DBNull)
-                        {
-                            return null;
-                        }
-                    }
-
-                    if (startBound == 0)
-                    {
-                        for (int i = 0; i < values.Length; i++)
-                        {
-                            object val = r.GetValue(i);
-                            values[i] = val is DBNull ? null : val;
-                        }
-                    }
-                    else
-                    {
-                        var begin = returnNullIfFirstMissing ? 1 : 0;
-                        for (var iter = begin; iter < effectiveFieldCount; ++iter)
-                        {
-                            object obj = r.GetValue(iter + startBound);
-                            values[iter] = obj is DBNull ? null : obj;
-                        }
-                    }
-                    return new DapperRow(table, values);
-                };
-        }
         /// <summary>
         /// Internal use only.
         /// </summary>
@@ -379,7 +206,7 @@ namespace EasyDAL.Exchange.AdoNet
 
             return value;
         }
-        
+
         private static bool IsValueTuple(Type type) => type?.IsValueTypeX() == true && type.FullName.StartsWith("System.ValueTuple`", StringComparison.Ordinal);
 
         private static List<IMemberMap> GetValueTupleMembers(Type type, string[] names)
@@ -403,54 +230,6 @@ namespace EasyDAL.Exchange.AdoNet
             return result;
         }
 
-        private static readonly MethodInfo StringReplace = typeof(string).GetPublicInstanceMethodX(nameof(string.Replace), new Type[] { typeof(string), typeof(string) }),
-            InvariantCulture = typeof(CultureInfo).GetProperty(nameof(CultureInfo.InvariantCulture), BindingFlags.Public | BindingFlags.Static).GetGetMethod();
-
-        private static Func<IDataReader, object> GetStructDeserializer(Type type, Type effectiveType, int index)
-        {
-            // no point using special per-type handling here; it boils down to the same, plus not all are supported anyway (see: SqlDataReader.GetChar - not supported!)
-#pragma warning disable 618
-            if (type == typeof(char))
-            { // this *does* need special handling, though
-                return r => ReadChar(r.GetValue(index));
-            }
-            if (type == typeof(char?))
-            {
-                return r => ReadNullableChar(r.GetValue(index));
-            }
-            if (type.FullName == Settings.LinqBinary)
-            {
-                return r => Activator.CreateInstance(type, r.GetValue(index));
-            }
-#pragma warning restore 618
-
-            if (effectiveType.IsEnumX())
-            {   // assume the value is returned as the correct type (int/byte/etc), but box back to the typed enum
-                return r =>
-                {
-                    var val = r.GetValue(index);
-                    if (val is float || val is double || val is decimal)
-                    {
-                        val = Convert.ChangeType(val, Enum.GetUnderlyingType(effectiveType), CultureInfo.InvariantCulture);
-                    }
-                    return val is DBNull ? null : Enum.ToObject(effectiveType, val);
-                };
-            }
-            if (typeHandlers.TryGetValue(type, out ITypeHandler handler))
-            {
-                return r =>
-                {
-                    var val = r.GetValue(index);
-                    return val is DBNull ? null : handler.Parse(type, val);
-                };
-            }
-            return r =>
-            {
-                var val = r.GetValue(index);
-                return val is DBNull ? null : val;
-            };
-        }
-
         private static T Parse<T>(object value)
         {
             if (value == null || value is DBNull) return default(T);
@@ -464,10 +243,6 @@ namespace EasyDAL.Exchange.AdoNet
                     value = Convert.ChangeType(value, Enum.GetUnderlyingType(type), CultureInfo.InvariantCulture);
                 }
                 return (T)Enum.ToObject(type, value);
-            }
-            if (typeHandlers.TryGetValue(type, out ITypeHandler handler))
-            {
-                return (T)handler.Parse(type, value);
             }
             return (T)Convert.ChangeType(value, type, CultureInfo.InvariantCulture);
         }
@@ -510,9 +285,7 @@ namespace EasyDAL.Exchange.AdoNet
         /// <param name="length"></param>
         /// <param name="returnNullIfFirstMissing"></param>
         /// <returns></returns>
-        public static Func<IDataReader, object> GetTypeDeserializer(
-            Type type, IDataReader reader, int startBound = 0, int length = -1, bool returnNullIfFirstMissing = false
-        )
+        public static Func<IDataReader, object> GetTypeDeserializer(Type type, IDataReader reader, int startBound = 0, int length = -1, bool returnNullIfFirstMissing = false)
         {
             return TypeDeserializerCache.GetReader(type, reader, startBound, length, returnNullIfFirstMissing);
         }
@@ -536,9 +309,8 @@ namespace EasyDAL.Exchange.AdoNet
             return found;
         }
 
-        internal static Func<IDataReader, object> GetTypeDeserializerImpl(
-            Type type, IDataReader reader, int startBound = 0, int length = -1, bool returnNullIfFirstMissing = false
-        )
+        // dr --> m
+        internal static Func<IDataReader, object> GetTypeDeserializerImpl(Type type, IDataReader reader, int startBound = 0, int length = -1, bool returnNullIfFirstMissing = false)
         {
             var returnType = type.IsValueTypeX() ? typeof(object) : type;
             var dm = new DynamicMethod("Deserialize" + Guid.NewGuid().ToString(), returnType, new[] { typeof(IDataReader) }, type, true);
@@ -553,11 +325,6 @@ namespace EasyDAL.Exchange.AdoNet
                 length = reader.FieldCount - startBound;
             }
 
-            if (reader.FieldCount <= startBound)
-            {
-                throw MultiMapException(reader);
-            }
-
             var names = Enumerable.Range(startBound, length).Select(i => reader.GetName(i)).ToArray();
 
             ITypeMap typeMap = GetTypeMap(type);
@@ -567,43 +334,36 @@ namespace EasyDAL.Exchange.AdoNet
 
             bool supportInitialize = false;
             Dictionary<Type, LocalBuilder> structLocals = null;
-            if (type.IsValueTypeX())
+            var types = new Type[length];
+            for (int i = startBound; i < startBound + length; i++)
             {
-                il.Emit(OpCodes.Ldloca_S, (byte)1);
-                il.Emit(OpCodes.Initobj, type);
+                types[i - startBound] = reader.GetFieldType(i);
+            }
+
+            var ctor = typeMap.FindConstructor(names, types);
+            if (ctor == null)
+            {
+                string proposedTypes = "(" + string.Join(", ", types.Select((t, i) => t.FullName + " " + names[i]).ToArray()) + ")";
+                throw new InvalidOperationException($"A parameterless default constructor or one matching signature {proposedTypes} is required for {type.FullName} materialization");
+            }
+
+            if (ctor.GetParameters().Length == 0)
+            {
+                il.Emit(OpCodes.Newobj, ctor);
+                il.Emit(OpCodes.Stloc_1);
+                supportInitialize = typeof(ISupportInitialize).IsAssignableFrom(type);
+                if (supportInitialize)
+                {
+                    il.Emit(OpCodes.Ldloc_1);
+                    il.EmitCall(OpCodes.Callvirt, typeof(ISupportInitialize).GetMethod(nameof(ISupportInitialize.BeginInit)), null);
+                }
             }
             else
             {
-                var types = new Type[length];
-                for (int i = startBound; i < startBound + length; i++)
-                {
-                    types[i - startBound] = reader.GetFieldType(i);
-                }
-
-                var ctor = typeMap.FindConstructor(names, types);
-                if (ctor == null)
-                {
-                    string proposedTypes = "(" + string.Join(", ", types.Select((t, i) => t.FullName + " " + names[i]).ToArray()) + ")";
-                    throw new InvalidOperationException($"A parameterless default constructor or one matching signature {proposedTypes} is required for {type.FullName} materialization");
-                }
-
-                if (ctor.GetParameters().Length == 0)
-                {
-                    il.Emit(OpCodes.Newobj, ctor);
-                    il.Emit(OpCodes.Stloc_1);
-                    supportInitialize = typeof(ISupportInitialize).IsAssignableFrom(type);
-                    if (supportInitialize)
-                    {
-                        il.Emit(OpCodes.Ldloc_1);
-                        il.EmitCall(OpCodes.Callvirt, typeof(ISupportInitialize).GetMethod(nameof(ISupportInitialize.BeginInit)), null);
-                    }
-                }
-                else
-                {
-                    specializedConstructor = ctor;
-                }
-
+                specializedConstructor = ctor;
             }
+
+            //}
 
             il.BeginExceptionBlock();
             if (type.IsValueTypeX())
@@ -646,8 +406,8 @@ namespace EasyDAL.Exchange.AdoNet
 
                     if (memberType == typeof(char) || memberType == typeof(char?))
                     {
-                        il.EmitCall(OpCodes.Call, typeof(SqlMapper).GetMethod(
-                            memberType == typeof(char) ? nameof(SqlMapper.ReadChar) : nameof(SqlMapper.ReadNullableChar), BindingFlags.Static | BindingFlags.Public), null); // stack is now [target][target][typed-value]
+                        il.EmitCall(OpCodes.Call, typeof(SqlHelper).GetMethod(
+                            memberType == typeof(char) ? nameof(SqlHelper.ReadChar) : nameof(SqlHelper.ReadNullableChar), BindingFlags.Static | BindingFlags.Public), null); // stack is now [target][target][typed-value]
                     }
                     else
                     {
@@ -688,27 +448,16 @@ namespace EasyDAL.Exchange.AdoNet
                                 il.Emit(OpCodes.Newobj, memberType.GetConstructor(new[] { nullUnderlyingType })); // stack is now [target][target][typed-value]
                             }
                         }
-                        else if (memberType.FullName == Settings.LinqBinary)
-                        {
-                            il.Emit(OpCodes.Unbox_Any, typeof(byte[])); // stack is now [target][target][byte-array]
-                            il.Emit(OpCodes.Newobj, memberType.GetConstructor(new Type[] { typeof(byte[]) }));// stack is now [target][target][binary]
-                        }
                         else
                         {
-                            TypeCode dataTypeCode = TypeExtensionsX.GetTypeCodeX(colType), unboxTypeCode = TypeExtensionsX.GetTypeCodeX(unboxType);
-                            bool hasTypeHandler;
-                            if ((hasTypeHandler = typeHandlers.ContainsKey(unboxType)) || colType == unboxType || dataTypeCode == unboxTypeCode || dataTypeCode == TypeExtensionsX.GetTypeCodeX(nullUnderlyingType))
+                            TypeCode dataTypeCode = TypeExtensionsX.GetTypeCodeX(colType);
+                            TypeCode unboxTypeCode = TypeExtensionsX.GetTypeCodeX(unboxType);
+                            if (colType == unboxType
+                                || dataTypeCode == unboxTypeCode
+                                || dataTypeCode == TypeExtensionsX.GetTypeCodeX(nullUnderlyingType))
                             {
-                                if (hasTypeHandler)
-                                {
-#pragma warning disable 618
-                                    il.EmitCall(OpCodes.Call, typeof(TypeHandlerCache<>).MakeGenericType(unboxType).GetMethod(nameof(TypeHandlerCache<int>.Parse)), null); // stack is now [target][target][typed-value]
-#pragma warning restore 618
-                                }
-                                else
-                                {
-                                    il.Emit(OpCodes.Unbox_Any, unboxType); // stack is now [target][target][typed-value]
-                                }
+                                il.Emit(OpCodes.Unbox_Any, unboxType); // stack is now [target][target][typed-value]
+                                //}
                             }
                             else
                             {
@@ -795,36 +544,27 @@ namespace EasyDAL.Exchange.AdoNet
                 first = false;
                 index++;
             }
-            if (type.IsValueTypeX())
+
+            if (specializedConstructor != null)
             {
-                il.Emit(OpCodes.Pop);
+                il.Emit(OpCodes.Newobj, specializedConstructor);
             }
-            else
+            il.Emit(OpCodes.Stloc_1); // stack is empty
+            if (supportInitialize)
             {
-                if (specializedConstructor != null)
-                {
-                    il.Emit(OpCodes.Newobj, specializedConstructor);
-                }
-                il.Emit(OpCodes.Stloc_1); // stack is empty
-                if (supportInitialize)
-                {
-                    il.Emit(OpCodes.Ldloc_1);
-                    il.EmitCall(OpCodes.Callvirt, typeof(ISupportInitialize).GetMethod(nameof(ISupportInitialize.EndInit)), null);
-                }
+                il.Emit(OpCodes.Ldloc_1);
+                il.EmitCall(OpCodes.Callvirt, typeof(ISupportInitialize).GetMethod(nameof(ISupportInitialize.EndInit)), null);
             }
+            //}
             il.MarkLabel(allDone);
             il.BeginCatchBlock(typeof(Exception)); // stack is Exception
             il.Emit(OpCodes.Ldloc_0); // stack is Exception, index
             il.Emit(OpCodes.Ldarg_0); // stack is Exception, index, reader
             LoadLocal(il, valueCopyLocal); // stack is Exception, index, reader, value
-            il.EmitCall(OpCodes.Call, typeof(SqlMapper).GetMethod(nameof(SqlMapper.ThrowDataException)), null);
+            il.EmitCall(OpCodes.Call, typeof(SqlHelper).GetMethod(nameof(SqlHelper.ThrowDataException)), null);
             il.EndExceptionBlock();
 
             il.Emit(OpCodes.Ldloc_1); // stack is [rval]
-            if (type.IsValueTypeX())
-            {
-                il.Emit(OpCodes.Box, type);
-            }
             il.Emit(OpCodes.Ret);
 
             var funcType = System.Linq.Expressions.Expression.GetFuncType(typeof(IDataReader), returnType);
@@ -1039,62 +779,347 @@ namespace EasyDAL.Exchange.AdoNet
             }
         }
 
-        /// <summary>
-        /// Key used to indicate the type name associated with a DataTable.
-        /// </summary>
-        private static string DataTableTypeNameKey { get; } = "dapper:TypeName";
-
-        /// <summary>
-        /// Fetch the type name associated with a <see cref="DataTable"/>.
-        /// </summary>
-        /// <param name="table">The <see cref="DataTable"/> that has a type name associated with it.</param>
-        public static string GetTypeName(this DataTable table) =>
-            table?.ExtendedProperties[DataTableTypeNameKey] as string;
-
         // one per thread
         [ThreadStatic]
         private static StringBuilder perThreadStringBuilderCache;
-        internal static StringBuilder GetStringBuilder()
-        {
-            var tmp = perThreadStringBuilderCache;
-            if (tmp != null)
-            {
-                perThreadStringBuilderCache = null;
-                tmp.Length = 0;
-                return tmp;
-            }
-            return new StringBuilder();
-        }
-
-        internal static string __ToStringRecycle(this StringBuilder obj)
-        {
-            if (obj == null) return "";
-            var s = obj.ToString();
-            perThreadStringBuilderCache = perThreadStringBuilderCache ?? obj;
-            return s;
-        }
 
         internal static Func<IDataReader, object> GetDeserializer(Type type, IDataReader reader, int startBound, int length, bool returnNullIfFirstMissing)
         {
-            // dynamic is passed in as Object ... by c# design
-            if (type == typeof(object) || type == typeof(DapperRow))
-            {
-                return GetDapperRowDeserializer(reader, startBound, length, returnNullIfFirstMissing);
-            }
-            Type underlyingType = null;
-            if (!(typeMap.ContainsKey(type) || type.IsEnumX() || type.FullName == Settings.LinqBinary
-                || (type.IsValueTypeX() && (underlyingType = Nullable.GetUnderlyingType(type)) != null && underlyingType.IsEnumX())))
-            {
-                if (typeHandlers.TryGetValue(type, out ITypeHandler handler))
-                {
-                    return GetHandlerDeserializer(handler, type, startBound);
-                }
-                return GetTypeDeserializer(type, reader, startBound, length, returnNullIfFirstMissing);
-            }
-            return GetStructDeserializer(type, underlyingType ?? type, startBound);
+            //Type underlyingType = null;
+            //if (!(typeMap.ContainsKey(type) || type.IsEnumX() || type.FullName == Settings.LinqBinary
+            //    || (type.IsValueTypeX() && (underlyingType = Nullable.GetUnderlyingType(type)) != null && underlyingType.IsEnumX())))  
+            //{
+            return GetTypeDeserializer(type, reader, startBound, length, returnNullIfFirstMissing);
+            //}
         }
 
         /******************************************************************************************/
+
+
+
+        /// <summary>
+        /// 查询单行
+        /// </summary>
+        private static async Task<T> QueryRowAsync<T>(this IDbConnection cnn, RowEnum row, Type effectiveType, CommandDefinition command)
+        {
+            DynamicParameters param = command.Parameters;
+            var identity = new Identity(command.CommandText, command.CommandType, cnn, effectiveType, param?.GetType());
+            var info = GetCacheInfo(identity);
+            bool needClose = cnn.State == ConnectionState.Closed;
+            using (var cmd = command.TrySetupAsyncCommand(cnn, info.ParamReader))
+            {
+                DbDataReader reader = null;
+                try
+                {
+                    if (needClose)
+                    {
+                        await cnn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
+                    }
+                    reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, (row & RowEnum.Single) != 0
+                    ? CommandBehavior.SequentialAccess | CommandBehavior.SingleResult // need to allow multiple rows, to check fail condition
+                    : CommandBehavior.SequentialAccess | CommandBehavior.SingleResult | CommandBehavior.SingleRow, default(CancellationToken)).ConfigureAwait(false);
+
+                    T result = default(T);
+                    if (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false) && reader.FieldCount != 0)
+                    {
+                        var tuple = info.Deserializer;
+                        int hash = GetColumnHash(reader);
+                        if (tuple.Func == null || tuple.Hash != hash)
+                        {
+                            tuple = info.Deserializer = new DeserializerState(hash, GetDeserializer(effectiveType, reader, 0, -1, false));
+                        }
+
+                        var func = tuple.Func;
+
+                        object val = func(reader);
+                        if (val == null || val is T)
+                        {
+                            result = (T)val;
+                        }
+                        else
+                        {
+                            var convertToType = Nullable.GetUnderlyingType(effectiveType) ?? effectiveType;
+                            result = (T)Convert.ChangeType(val, convertToType, CultureInfo.InvariantCulture);
+                        }
+                        if ((row & RowEnum.Single) != 0 && await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
+                        {
+                            ThrowMultipleRows(row);
+                        }
+                        while (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
+                        { /* ignore rows after the first */ }
+                    }
+                    else if ((row & RowEnum.FirstOrDefault) == 0) // demanding a row, and don't have one
+                    {
+                        ThrowZeroRows(row);
+                    }
+                    while (await reader.NextResultAsync(default(CancellationToken)).ConfigureAwait(false))
+                    { /* ignore result sets after the first */ }
+                    return result;
+                }
+                finally
+                {
+                    using (reader)
+                    { /* dispose if non-null */ }
+                    if (needClose)
+                    {
+                        cnn.Close();
+                    }
+                }
+            }
+        }
+
+        private static async Task<IEnumerable<T>> QueryAsync<T>(this IDbConnection cnn, Type effectiveType, CommandDefinition command)
+        {
+            DynamicParameters param = command.Parameters;
+            var identity = new Identity(command.CommandText, command.CommandType, cnn, effectiveType, param?.GetType());
+            var info = GetCacheInfo(identity);
+            bool needClose = cnn.State == ConnectionState.Closed;
+            using (var cmd = command.TrySetupAsyncCommand(cnn, info.ParamReader))
+            {
+                DbDataReader reader = null;
+                try
+                {
+                    if (needClose)
+                    {
+                        await cnn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
+                    }
+                    reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, CommandBehavior.SequentialAccess | CommandBehavior.SingleResult, default(CancellationToken)).ConfigureAwait(false);
+
+                    var tuple = info.Deserializer;
+                    int hash = GetColumnHash(reader);
+                    if (tuple.Func == null || tuple.Hash != hash)
+                    {
+                        if (reader.FieldCount == 0)
+                        {
+                            return Enumerable.Empty<T>();
+                        }
+                        info.Deserializer = new DeserializerState(hash, GetDeserializer(effectiveType, reader, 0, -1, false));
+                        tuple = info.Deserializer;
+                    }
+
+                    var func = tuple.Func;
+
+                    if (command.Buffered)
+                    {
+                        var buffer = new List<T>();
+                        var convertToType = Nullable.GetUnderlyingType(effectiveType) ?? effectiveType;
+                        while (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
+                        {
+                            object val = func(reader);
+                            if (val == null || val is T)
+                            {
+                                buffer.Add((T)val);
+                            }
+                            else
+                            {
+                                buffer.Add((T)Convert.ChangeType(val, convertToType, CultureInfo.InvariantCulture));
+                            }
+                        }
+                        while (await reader.NextResultAsync(default(CancellationToken)).ConfigureAwait(false))
+                        { /* ignore subsequent result sets */ }
+                        return buffer;
+                    }
+                    else
+                    {
+                        // can't use ReadAsync / cancellation; but this will have to do
+                        needClose = false; // don't close if handing back an open reader; rely on the command-behavior
+                        var deferred = ExecuteReaderSync<T>(reader, func, command.Parameters);
+                        reader = null; // to prevent it being disposed before the caller gets to see it
+                        return deferred;
+                    }
+                }
+                finally
+                {
+                    using (reader) { /* dispose if non-null */ }
+                    if (needClose)
+                    {
+                        cnn.Close();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Execute a command asynchronously using .NET 4.5 Task.
+        /// </summary>
+        /// <param name="cnn">The connection to execute on.</param>
+        /// <param name="command">The command to execute on this connection.</param>
+        /// <returns>The number of rows affected.</returns>
+        private static Task<int> ExecuteAsync(this IDbConnection cnn, CommandDefinition command)
+        {
+            DynamicParameters param = command.Parameters;
+            return ExecuteImplAsync(cnn, command, param);
+        }
+
+        /*
+         * ExecuteImpl
+         */
+        private static async Task<int> ExecuteImplAsync(IDbConnection cnn, CommandDefinition command, DynamicParameters param)
+        {
+            var identity = new Identity(command.CommandText, command.CommandType, cnn, null, param?.GetType());
+            var info = GetCacheInfo(identity);
+            bool needClose = cnn.State == ConnectionState.Closed;
+            using (var cmd = command.TrySetupAsyncCommand(cnn, info.ParamReader))
+            {
+                try
+                {
+                    if (needClose)
+                    {
+                        await cnn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
+                    }
+                    var result = await cmd.ExecuteNonQueryAsync(default(CancellationToken)).ConfigureAwait(false);
+                    return result;
+                }
+                finally
+                {
+                    if (needClose)
+                    {
+                        cnn.Close();
+                    }
+                }
+            }
+        }
+
+        private static async Task<T> ExecuteScalarImplAsync<T>(IDbConnection cnn, CommandDefinition command)
+        {
+            Action<IDbCommand, DynamicParameters> paramReader = null;
+            object param = command.Parameters;
+            if (param != null)
+            {
+                var identity = new Identity(command.CommandText, command.CommandType, cnn, null, param.GetType());
+                paramReader = GetCacheInfo(identity).ParamReader;
+            }
+
+            DbCommand cmd = null;
+            bool needClose = cnn.State == ConnectionState.Closed;
+            object result;
+            try
+            {
+                cmd = command.TrySetupAsyncCommand(cnn, paramReader);
+                if (needClose)
+                {
+                    await cnn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
+                }
+                result = await cmd.ExecuteScalarAsync(default(CancellationToken)).ConfigureAwait(false);
+            }
+            finally
+            {
+                if (needClose)
+                {
+                    cnn.Close();
+                }
+                cmd?.Dispose();
+            }
+            return Parse<T>(result);
+        }
+
+
+        private static IEnumerable<T> ExecuteReaderSync<T>(IDataReader reader, Func<IDataReader, object> func, object parameters)
+        {
+            using (reader)
+            {
+                while (reader.Read())
+                {
+                    yield return (T)func(reader);
+                }
+                while (reader.NextResult())
+                {
+                    /* ignore subsequent result sets */
+                }
+            }
+        }
+
+        /*
+         * Common
+         */
+        /// <summary>
+        /// Attempts setup a <see cref="DbCommand"/> on a <see cref="DbConnection"/>, with a better error message for unsupported usages.
+        /// </summary>
+        private static DbCommand TrySetupAsyncCommand(this CommandDefinition command, IDbConnection cnn, Action<IDbCommand, DynamicParameters> paramReader)
+        {
+            if (command.SetupCommand(cnn, paramReader) is DbCommand dbCommand)
+            {
+                return dbCommand;
+            }
+            else
+            {
+                throw new InvalidOperationException("Async operations require use of a DbConnection or an IDbConnection where .CreateCommand() returns a DbCommand");
+            }
+        }
+        /// <summary>
+        /// Attempts to open a connection asynchronously, with a better error message for unsupported usages.
+        /// </summary>
+        private static Task TryOpenAsync(this IDbConnection cnn, CancellationToken cancel)
+        {
+            if (cnn is DbConnection dbConn)
+            {
+                return dbConn.OpenAsync(cancel);
+            }
+            else
+            {
+                throw new InvalidOperationException("Async operations require use of a DbConnection or an already-open IDbConnection");
+            }
+        }
+        private static Task<DbDataReader> ExecuteReaderWithFlagsFallbackAsync(DbCommand cmd, bool wasClosed, CommandBehavior behavior, CancellationToken cancellationToken)
+        {
+            var task = cmd.ExecuteReaderAsync(GetBehavior(wasClosed, behavior), cancellationToken);
+            if (task.Status == TaskStatus.Faulted && Settings.DisableCommandBehaviorOptimizations(behavior, task.Exception.InnerException))
+            {
+                // we can retry; this time it will have different flags
+                return cmd.ExecuteReaderAsync(GetBehavior(wasClosed, behavior), cancellationToken);
+            }
+            return task;
+        }
+
+        private static void StoreLocal(ILGenerator il, int index)
+        {
+            if (index < 0 || index >= short.MaxValue) throw new ArgumentNullException(nameof(index));
+            switch (index)
+            {
+                case 0: il.Emit(OpCodes.Stloc_0); break;
+                case 1: il.Emit(OpCodes.Stloc_1); break;
+                case 2: il.Emit(OpCodes.Stloc_2); break;
+                case 3: il.Emit(OpCodes.Stloc_3); break;
+                default:
+                    if (index <= 255)
+                    {
+                        il.Emit(OpCodes.Stloc_S, (byte)index);
+                    }
+                    else
+                    {
+                        il.Emit(OpCodes.Stloc, (short)index);
+                    }
+                    break;
+            }
+        }
+
+        /******************************************************************************************/
+
+
+
+        /// <summary>
+        /// Execute a query asynchronously
+        /// </summary>
+        internal static Task<IEnumerable<T>> QueryAsync<T>(IDbConnection cnn, string sql, DynamicParameters param) =>
+            QueryAsync<T>(cnn, typeof(T), new CommandDefinition(sql, param, CommandType.Text, CommandFlags.Buffered));
+
+        /// <summary>
+        /// Execute a single-row query asynchronously
+        /// </summary>
+        internal static Task<T> QueryFirstOrDefaultAsync<T>(IDbConnection cnn, string sql, DynamicParameters param) =>
+            QueryRowAsync<T>(cnn, RowEnum.FirstOrDefault, typeof(T), new CommandDefinition(sql, param, CommandType.Text, CommandFlags.None));
+
+        /// <summary>
+        /// Execute a command asynchronously
+        /// </summary>
+        internal static Task<int> ExecuteAsync(IDbConnection cnn, string sql, DynamicParameters param) =>
+            ExecuteAsync(cnn, new CommandDefinition(sql, param, CommandType.Text, CommandFlags.Buffered));
+
+        /// <summary>
+        /// Execute parameterized SQL that selects a single value.
+        /// </summary>
+        internal static Task<T> ExecuteScalarAsync<T>(IDbConnection cnn, string sql, DynamicParameters param) =>
+            ExecuteScalarImplAsync<T>(cnn, new CommandDefinition(sql, param, CommandType.Text, CommandFlags.Buffered));
 
 
 

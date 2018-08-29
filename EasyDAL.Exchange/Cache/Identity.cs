@@ -13,16 +13,8 @@ namespace EasyDAL.Exchange.Cache
         /// <summary>
         /// 
         /// </summary>
-        public static IEqualityComparer<string> ConnectionStringComparer = StringComparer.Ordinal;
-
-        /// <summary>
-        /// Create an identity for use with DynamicParameters, internal use only.
-        /// </summary>
-        /// <param name="type">The parameters type to create an <see cref="Identity"/> for.</param>
-        /// <returns></returns>
-        public Identity ForDynamicParameters(Type type) =>
-            new Identity(sql, commandType, connectionString, this.type, type, -1);
-
+        public static IEqualityComparer<string> ConnectionStringComparer { get; } = StringComparer.Ordinal;
+        
         internal Identity(string sql, CommandType commandType, IDbConnection connection, Type type, Type parametersType)
             : this(sql, commandType, connection.ConnectionString, type, parametersType, 0)
         {  }
@@ -66,7 +58,7 @@ namespace EasyDAL.Exchange.Cache
         /// <summary>
         /// The hash code of this Identity.
         /// </summary>
-        public readonly int hashCode;
+        public int hashCode { get; }
 
         /// <summary>
         /// The grid index (position in the reader) of this Identity.

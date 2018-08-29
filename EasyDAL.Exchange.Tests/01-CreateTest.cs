@@ -24,7 +24,7 @@ namespace EasyDAL.Exchange.Tests
                 BodyMeasureProperty = "{xxx:yyy,mmm:nnn}"
             };
             // 新建
-            var res0 = await Conn.OpenHint()
+            var res0 = await Conn
                 .Creater<BodyFitRecord>()
                 .CreateAsync(m);
 
