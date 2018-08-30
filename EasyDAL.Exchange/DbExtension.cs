@@ -23,9 +23,14 @@ namespace EasyDAL.Exchange
             return new Core.Update.Setter<M>(new DbContext(connection));
         }
 
-        public static Core.Query. Selecter<M> Selecter<M>(this IDbConnection connection)
+        public static Core.Query.Selecter<M> Selecter<M>(this IDbConnection connection)
         {
             return new Core.Query.Selecter<M>(new DbContext(connection));
+        }
+
+        public static Core.Join.FromX Joiner(this IDbConnection connection)
+        {
+            return new Core.Join.FromX(new DbContext(connection));
         }
 
         public static IDbConnection OpenHint(this IDbConnection connection)

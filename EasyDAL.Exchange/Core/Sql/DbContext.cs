@@ -28,15 +28,16 @@ namespace EasyDAL.Exchange.Core.Sql
             }
         }
 
-        internal List<DicModel<string, string>> Conditions { get; private set; }
+        internal List<DicModel> Conditions { get; private set; }
 
         internal IDbConnection Conn { get; private set; }
 
         internal MySqlProvider SqlProvider { get; set; }
 
-        internal void AddConditions(DicModel<string, string> dic)
+        internal void AddConditions(DicModel dic)
         {
-            if (Conditions.Any(it => it.Param.Equals(dic.Param, StringComparison.OrdinalIgnoreCase)))
+            if (!string.IsNullOrWhiteSpace(dic.Param)
+                && Conditions.Any(it => it.Param.Equals(dic.Param, StringComparison.OrdinalIgnoreCase)))
             {
                 dic.Param += "R";
                 AddConditions(dic);
@@ -58,9 +59,9 @@ namespace EasyDAL.Exchange.Core.Sql
 
             foreach (var prop in props)
             {
-                AddConditions(new DicModel<string, string>
+                AddConditions(new DicModel
                 {
-                    key = prop.Name,
+                    KeyOne = prop.Name,
                     Param=prop.Name,
                     Value = GH.GetTypeValue(prop.PropertyType, prop, m),
                     Action = ActionEnum.Insert,
@@ -73,7 +74,7 @@ namespace EasyDAL.Exchange.Core.Sql
         internal DbContext(IDbConnection conn)
         {
             Conn = conn;
-            Conditions = new List<DicModel<string, string>>();
+            Conditions = new List<DicModel>();
             AH = AttributeHelper.Instance;
             GH = GenericHelper.Instance;
             EH = ExpressionHelper.Instance;

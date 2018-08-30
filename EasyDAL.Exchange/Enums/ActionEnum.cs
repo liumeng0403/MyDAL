@@ -32,6 +32,30 @@ namespace EasyDAL.Exchange.Enums
         Change,
 
         /// <summary>
+        /// ""
+        /// </summary>
+        [Description("")]
+        From,
+
+        /// <summary>
+        /// " inner join "
+        /// </summary>
+        [Description(" inner join ")]
+        InnerJoin,
+
+        /// <summary>
+        /// " left join "
+        /// </summary>
+        [Description(" left join ")]
+        LeftJoin,
+
+        /// <summary>
+        /// " on "
+        /// </summary>
+        [Description(" on ")]
+        On,
+
+        /// <summary>
         /// " "
         /// </summary>
         [Description(" ")]

@@ -19,14 +19,14 @@ namespace EasyDAL.Exchange.Core.Update
 
         public UpdateFilter<M> And(Expression<Func<M, bool>> func)
         {
-            AndHandle(func);
+            AndHandle(func,CrudTypeEnum.Update);
             return this;
         }
 
 
         public UpdateFilter<M> Or(Expression<Func<M, bool>> func)
         {
-            OrHandle(func);
+            OrHandle(func, CrudTypeEnum.Update);
             return this;
         }
         

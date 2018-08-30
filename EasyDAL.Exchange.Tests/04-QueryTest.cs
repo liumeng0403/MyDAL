@@ -1,4 +1,5 @@
-﻿using EasyDAL.Exchange.Tests.Entities;
+﻿using EasyDAL.Exchange.Core.Sql;
+using EasyDAL.Exchange.Tests.Entities;
 using EasyDAL.Exchange.Tests.Enums;
 using System;
 using System.Threading.Tasks;
@@ -69,12 +70,12 @@ namespace EasyDAL.Exchange.Tests
             var xx6 = "";
 
             // <= DateTime
-            var res7 = await Conn
+            var res7 = await Conn.OpenHint()
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.CreatedOn <= DateTime.Now)
                 .QueryFirstOrDefaultAsync();
 
-
+            var tuple = (Hints.SQL, Hints.Parameters);
 
             var xx = "";
 

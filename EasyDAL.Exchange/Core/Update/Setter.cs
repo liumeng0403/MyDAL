@@ -18,13 +18,14 @@ namespace EasyDAL.Exchange.Core.Update
         public Setter<M> Set<F>(Expression<Func<M, F>> func, F newVal)
         {
             var key = DC.EH.ExpressionHandle(func);
-            DC.AddConditions(new DicModel<string, string>
+            DC.AddConditions(new DicModel
             {
-                key = key,
+                KeyOne = key,
                 Param=key,
                 Value = DC.GH.GetTypeValue(newVal.GetType(), newVal),
                 Option = OptionEnum.Set,
-                Action = ActionEnum.Set
+                Action = ActionEnum.Set,
+                Crud= CrudTypeEnum.Update
             });
             return this;
         }
@@ -32,13 +33,14 @@ namespace EasyDAL.Exchange.Core.Update
         public Setter<M> Change<F>(Expression<Func<M, F>> func, F modifyVal, ChangeEnum change)
         {
             var key = DC.EH.ExpressionHandle(func);
-            DC.AddConditions(new DicModel<string, string>
+            DC.AddConditions(new DicModel
             {
-                key = key,
+                KeyOne = key,
                 Param=key,
                 Value = DC.GH.GetTypeValue(modifyVal.GetType(), modifyVal),
                 Option = DC.SqlProvider.GetChangeOption(change),
-                Action = ActionEnum.Change
+                Action = ActionEnum.Change,
+                Crud= CrudTypeEnum.Update
             });
             return this;
         }
@@ -46,7 +48,7 @@ namespace EasyDAL.Exchange.Core.Update
 
         public UpdateFilter<M> Where(Expression<Func<M, bool>> func)
         {
-            WhereHandle(func);
+            WhereHandle(func,CrudTypeEnum.Update);
             return new UpdateFilter<M>(DC);
         }
 

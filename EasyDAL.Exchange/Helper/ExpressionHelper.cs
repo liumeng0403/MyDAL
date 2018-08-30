@@ -98,49 +98,59 @@ namespace EasyDAL.Exchange.Helper
             }
         }
         // 01
-        private DicModel<string, string> GetCallDicM(ParameterExpression parameter, Expression body)
+        private string GetCallVal(Expression expr)
         {
-            var result = default(DicModel<string, string>);
-            var bodyMC = body as MethodCallExpression;
-            var exprStr = bodyMC.ToString();
+            var val = string.Empty;
 
-            if (exprStr.Contains(".Contains("))
+            //
+            var bodyMC = expr as MethodCallExpression;
+            var pExpr = bodyMC.Arguments[0];
+            if (pExpr.NodeType == ExpressionType.Constant)
             {
-                var mem = bodyMC.Object as MemberExpression;
-                var pExpr = bodyMC.Arguments[0];
-                var key = GetKey(parameter, mem);
-                var val = string.Empty;
-                if (pExpr.NodeType == ExpressionType.Constant)
+                var type = bodyMC.Type;
+                if (type == typeof(DateTime))
                 {
-                    val = (string)((pExpr as ConstantExpression).Value);
-                }
-                else if (pExpr.NodeType == ExpressionType.MemberAccess)
-                {
-                    val = GetMemExprVal(pExpr);
+                    var obj = Convert.ToDateTime(GetMemExprVal(bodyMC.Object));
+                    var method = bodyMC.Method.Name;
+                    var args = new List<object>();
+                    foreach (var arg in bodyMC.Arguments)
+                    {
+                        if (arg.NodeType == ExpressionType.Constant)
+                        {
+                            var carg = arg as ConstantExpression;
+                            args.Add(carg.Value);
+                        }
+                    }
+                    val = (type.InvokeMember(method, BindingFlags.Default | BindingFlags.InvokeMethod, null, obj, args.ToArray())).ToString();
                 }
                 else
                 {
-                    throw new Exception();
+                    val = (string)((pExpr as ConstantExpression).Value);
                 }
-                result = new DicModel<string, string>
-                {
-                    key = key,
-                    Param=key,
-                    Value = val,
-                    Option = OptionEnum.Like,
-                    Action = ActionEnum.None
-                };
+            }
+            else if (pExpr.NodeType == ExpressionType.MemberAccess)
+            {
+                val = GetMemExprVal(pExpr);
+            }
+            else
+            {
+                val = string.Empty;
+            }
+
+            //
+            if (!string.IsNullOrWhiteSpace(val))
+            {
+                return val;
             }
             else
             {
                 throw new Exception();
             }
-            return result;
         }
         // 01
-        private DicModel<string, string> GetBinaryDicM(ParameterExpression parameter, Expression body)
+        private DicModel GetBinaryDicM(ParameterExpression parameter, Expression body)
         {
-            var result = default(DicModel<string, string>);
+            var result = default(DicModel);
             var bodyB = body as BinaryExpression;
             var leftBody = bodyB.Left;
             var key = GetKey(parameter, leftBody);
@@ -165,16 +175,23 @@ namespace EasyDAL.Exchange.Helper
                 default:
                     throw new Exception();
             }
-            result = new DicModel<string, string>
+            result = new DicModel
             {
-                key = key,
-                Param=key,
+                KeyOne = key,
+                Param = key,
                 Value = val,
-                Option = GetOption(bodyB),
-                Action = ActionEnum.None
+                Option = GetOption(bodyB)
             };
             return result;
         }
+        // 01
+        private (string key, string alias) GetMemKeyAlias(Expression expr)
+        {
+            var memExpr = expr as MemberExpression;
+            var mMemExpr = memExpr.Expression as MemberExpression;
+            return (memExpr.Member.Name, mMemExpr.Member.Name);
+        }
+
         // 02
         private OptionEnum GetOption(BinaryExpression be)
         {
@@ -261,11 +278,11 @@ namespace EasyDAL.Exchange.Helper
         /// <summary>
         /// 获取表达式信息
         /// </summary>
-        public DicModel<string, string> ExpressionHandle<M>(Expression<Func<M, bool>> func)
+        public DicModel ExpressionHandle<M>(Expression<Func<M, bool>> func)
         {
             try
             {
-                var result = default(DicModel<string, string>);
+                var result = default(DicModel);
                 var parameter = func.Parameters[0];
                 var body = func.Body;
                 switch (body.NodeType)
@@ -278,11 +295,104 @@ namespace EasyDAL.Exchange.Helper
                         result = GetBinaryDicM(parameter, body);
                         break;
                     case ExpressionType.Call:
-                        result = GetCallDicM(parameter, body);
+                        var bodyMC = body as MethodCallExpression;
+                        var exprStr = bodyMC.ToString();
+                        if (exprStr.Contains(".Contains("))
+                        {
+                            var mem = bodyMC.Object as MemberExpression;
+                            var key = GetKey(parameter, mem);
+                            var val = GetCallVal(body);
+                            result = new DicModel
+                            {
+                                KeyOne = key,
+                                Param = key,
+                                Value = val,
+                                Option = OptionEnum.Like
+                            };
+                        }
                         break;
                     default:
                         throw new Exception();
                 }
+                if (result != null)
+                {
+                    return result;
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                if (!string.IsNullOrWhiteSpace(ex.Message))
+                {
+                    throw ex;
+                }
+                else
+                {
+                    throw new Exception($"不支持的表达式:[{func.ToString()}]");
+                }
+            }
+        }
+
+        public DicModel ExpressionHandle(Expression<Func<bool>> func, ActionEnum action)
+        {
+            try
+            {
+                var result = default(DicModel);
+                var body = func.Body;
+                switch (body.NodeType)
+                {
+                    case ExpressionType.Equal:
+                    case ExpressionType.LessThan:
+                    case ExpressionType.LessThanOrEqual:
+                    case ExpressionType.GreaterThan:
+                    case ExpressionType.GreaterThanOrEqual:
+                        var bExpr = body as BinaryExpression;
+                        if (action == ActionEnum.On)
+                        {
+                            var tuple1 = GetMemKeyAlias(bExpr.Left);
+                            var tuple2 = GetMemKeyAlias(bExpr.Right);
+                            result = new DicModel
+                            {
+                                KeyOne = tuple1.key,
+                                AliasOne = tuple1.alias,
+                                KeyTwo = tuple2.key,
+                                AliasTwo = tuple2.alias,
+                                Param = string.Empty,
+                                Action = action,
+                                Option = GetOption(bExpr)
+                            };
+                        }
+                        else if (action == ActionEnum.Where
+                            || action == ActionEnum.And)
+                        {
+                            var tuple = GetMemKeyAlias(bExpr.Left);
+                            var val = string.Empty;
+                            switch (bExpr.Right.NodeType)
+                            {
+                                case ExpressionType.Call:
+                                    val = GetCallVal(bExpr.Right);
+                                    break;
+                            }
+                            if (string.IsNullOrWhiteSpace(val))
+                            {
+                                throw new Exception();
+                            }
+                            result = new DicModel
+                            {
+                                KeyOne = tuple.key,
+                                AliasOne = tuple.alias,
+                                Value = val,
+                                Param = tuple.key,
+                                Action = action,
+                                Option = GetOption(bExpr)
+                            };
+                        }
+                        break;
+                }
+
                 if (result != null)
                 {
                     return result;

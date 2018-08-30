@@ -16,7 +16,7 @@ namespace EasyDAL.Exchange.Core.Delete
 
         public DeleteFilter<M> Where(Expression<Func<M, bool>> func)
         {
-            WhereHandle(func);
+            WhereHandle(func, CrudTypeEnum.Delete);
             return new DeleteFilter<M>(DC);
         }
 

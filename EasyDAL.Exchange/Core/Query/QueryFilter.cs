@@ -22,13 +22,13 @@ namespace EasyDAL.Exchange.Core.Query
 
         public QueryFilter<M> And(Expression<Func<M, bool>> func)
         {
-            AndHandle(func);
+            AndHandle(func,CrudTypeEnum.Query);
             return this;
         }
 
         public QueryFilter<M> Or(Expression<Func<M, bool>> func)
         {
-            OrHandle(func);
+            OrHandle(func, CrudTypeEnum.Query);
             return this;
         }
 

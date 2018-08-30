@@ -16,7 +16,7 @@ namespace EasyDAL.Exchange.Core.Query
 
         public QueryFilter<M> Where(Expression<Func<M, bool>> func)
         {
-            WhereHandle(func);
+            WhereHandle(func,CrudTypeEnum.Query);
             return new QueryFilter<M>(DC);
         }
 

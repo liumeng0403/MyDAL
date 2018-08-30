@@ -19,14 +19,14 @@ namespace EasyDAL.Exchange.Core.Delete
 
         public DeleteFilter<M> And(Expression<Func<M, bool>> func)
         {
-            AndHandle(func);
+            AndHandle(func,CrudTypeEnum.Delete);
             return this;
         }
 
 
         public DeleteFilter<M> Or(Expression<Func<M, bool>> func)
         {
-            OrHandle(func);
+            OrHandle(func, CrudTypeEnum.Delete);
             return this;
         }
 

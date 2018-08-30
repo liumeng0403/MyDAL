@@ -26,7 +26,7 @@ namespace EasyDAL.Exchange.Core
 
         internal DbContext DC { get; private set; }
 
-        private string LikeStrHandle(DicModel<string, string> dic)
+        private string LikeStrHandle(DicModel dic)
         {
             var name = dic.Param;
             var value = dic.Value;
@@ -49,6 +49,36 @@ namespace EasyDAL.Exchange.Core
 
             throw new Exception(value);
         }
+
+        internal string GetJoins()
+        {
+            var str = string.Empty;
+
+            foreach (var item in DC.Conditions)
+            {
+                if (item.Crud != CrudTypeEnum.Join)
+                {
+                    continue;
+                }
+
+                switch (item.Action)
+                {
+                    case ActionEnum.From:
+                        str += $" `{item.TableOne}` as {item.AliasOne} ";
+                        break;
+                    case ActionEnum.InnerJoin:
+                    case ActionEnum.LeftJoin:
+                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} `{item.TableOne}` as {item.AliasOne} ";
+                        break;
+                    case ActionEnum.On:
+                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.AliasOne}.`{item.KeyOne}`={item.AliasTwo}.`{item.KeyTwo}` ";
+                        break;
+                }
+            }
+
+            return str;
+        }
+
         internal string GetWheres()
         {
             if (!DC.Conditions.Any(it => it.Action == ActionEnum.Where)
@@ -74,10 +104,30 @@ namespace EasyDAL.Exchange.Core
                             case OptionEnum.LessThanOrEqual:
                             case OptionEnum.GreaterThan:
                             case OptionEnum.GreaterThanOrEqual:
-                                str += $" {item.Action.ToEnumDesc<ActionEnum>()} `{item.key}`{item.Option.ToEnumDesc<OptionEnum>()}@{item.Param} ";
+                                switch (item.Crud)
+                                {
+                                    case CrudTypeEnum.Join:
+                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.AliasOne}.`{item.KeyOne}`{item.Option.ToEnumDesc<OptionEnum>()}@{item.Param} ";
+                                        break;
+                                    case CrudTypeEnum.Delete:
+                                    case CrudTypeEnum.Update:
+                                    case CrudTypeEnum.Query:
+                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} `{item.KeyOne}`{item.Option.ToEnumDesc<OptionEnum>()}@{item.Param} ";
+                                        break;
+                                }
                                 break;
                             case OptionEnum.Like:
-                                str += $" {item.Action.ToEnumDesc<ActionEnum>()} `{item.key}`{item.Option.ToEnumDesc<OptionEnum>()}{LikeStrHandle(item)} ";
+                                switch (item.Crud)
+                                {
+                                    case CrudTypeEnum.Join:
+                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.AliasOne}.`{item.KeyOne}`{item.Option.ToEnumDesc<OptionEnum>()}{LikeStrHandle(item)} ";
+                                        break;
+                                    case CrudTypeEnum.Delete:
+                                    case CrudTypeEnum.Update:
+                                    case CrudTypeEnum.Query:
+                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} `{item.KeyOne}`{item.Option.ToEnumDesc<OptionEnum>()}{LikeStrHandle(item)} ";
+                                        break;
+                                }
                                 break;
                         }
                         break;
@@ -107,10 +157,10 @@ namespace EasyDAL.Exchange.Core
                         {
                             case OptionEnum.ChangeAdd:
                             case OptionEnum.ChangeMinus:
-                                list.Add($" `{item.key}`=`{item.key}`{item.Option.ToEnumDesc<OptionEnum>()}@{item.Param} ");
+                                list.Add($" `{item.KeyOne}`=`{item.KeyOne}`{item.Option.ToEnumDesc<OptionEnum>()}@{item.Param} ");
                                 break;
                             case OptionEnum.Set:
-                                list.Add($" `{item.key}`{item.Option.ToEnumDesc<OptionEnum>()}@{item.Param} ");
+                                list.Add($" `{item.KeyOne}`{item.Option.ToEnumDesc<OptionEnum>()}@{item.Param} ");
                                 break;
                         }
                         break;
@@ -122,23 +172,23 @@ namespace EasyDAL.Exchange.Core
 
         internal string GetColumns()
         {
-            return $" ({ string.Join(",", DC.Conditions.Select(it => $"`{it.key}`"))}) ";
+            return $" ({ string.Join(",", DC.Conditions.Select(it => $"`{it.KeyOne}`"))}) ";
         }
         internal string GetValues()
         {
             return $" ({ string.Join(",", DC.Conditions.Select(it => $"@{it.Param}"))}) ";
         }
 
-        internal bool TryGetTableName<M>(M m, out string tableName)
+        internal string GetTableName<M>(M m)
         {
 
-            tableName = DC.AH.GetPropertyValue<M, TableAttribute>(m, a => a.Name);
+            var tableName = DC.AH.GetPropertyValue<M, TableAttribute>(m, a => a.Name);
             if (string.IsNullOrWhiteSpace(tableName))
             {
                 throw new Exception("DB Entity 缺少 TableAttribute 指定的表名!");
             }
 
-            return true;
+            return tableName;
 
         }
         internal bool TryGetTableName<M>(out string tableName)
@@ -191,28 +241,35 @@ namespace EasyDAL.Exchange.Core
             var list = new List<string>();
 
             //
-            DC.SqlProvider.TryGetTableName<M>(out var tableName);            
+            var tableName = string.Empty;
+            if (type != SqlTypeEnum.JoinQueryListAsync)
+            {
+                TryGetTableName<M>(out tableName);
+            }
             switch (type)
             {
                 case SqlTypeEnum.CreateAsync:
                     list.Add($" insert into `{tableName}` {DC.SqlProvider.GetColumns()} values {DC.SqlProvider.GetValues()} ;");
                     break;
                 case SqlTypeEnum.DeleteAsync:
-                    list.Add($" delete from `{tableName}` where {DC.SqlProvider.GetWheres()} ; ");
+                    list.Add($" delete from `{tableName}` where {GetWheres()} ; ");
                     break;
                 case SqlTypeEnum.UpdateAsync:
-                    list.Add($" update `{tableName}` set {DC.SqlProvider.GetUpdates()} where {DC.SqlProvider.GetWheres()} ;");
+                    list.Add($" update `{tableName}` set {DC.SqlProvider.GetUpdates()} where {GetWheres()} ;");
                     break;
                 case SqlTypeEnum.QueryFirstOrDefaultAsync:
-                    list.Add($"SELECT * FROM `{tableName}` WHERE {DC.SqlProvider.GetWheres()} ; ");
+                    list.Add($"SELECT * FROM `{tableName}` WHERE {GetWheres()} ; ");
                     break;
                 case SqlTypeEnum.QueryListAsync:
-                    list.Add($"SELECT * FROM `{tableName}` WHERE {DC.SqlProvider.GetWheres()} ; ");
+                    list.Add($"SELECT * FROM `{tableName}` WHERE {GetWheres()} ; ");
                     break;
                 case SqlTypeEnum.QueryPagingListAsync:
-                    var wherePart = DC.SqlProvider.GetWheres();
+                    var wherePart = GetWheres();
                     list.Add($"SELECT count(*) FROM `{tableName}` WHERE {wherePart} ; ");
                     list.Add($"SELECT * FROM `{tableName}` WHERE {wherePart} limit {(pager.PageIndex - 1) * pager.PageSize},{pager.PageIndex * pager.PageSize}  ; ");
+                    break;
+                case SqlTypeEnum.JoinQueryListAsync:
+                    list.Add($" select * from {GetJoins()} where {GetWheres()} ; ");
                     break;
             }
 
