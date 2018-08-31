@@ -29,6 +29,11 @@ namespace EasyDAL.Exchange.Core.Update
             });
             return this;
         }
+        public Setter<M> Set(object mSet)
+        {
+            DynamicSetHandle<M>(mSet);
+            return this;
+        }
 
         public Setter<M> Change<F>(Expression<Func<M, F>> func, F modifyVal, ChangeEnum change)
         {
