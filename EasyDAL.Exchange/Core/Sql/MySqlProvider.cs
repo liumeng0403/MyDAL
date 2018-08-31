@@ -234,21 +234,28 @@ namespace EasyDAL.Exchange.Core
             }
         }
 
+        private bool IsParameter(DicModel item)
+        {
+            switch (item.Action)
+            {
+                case ActionEnum.Insert:
+                case ActionEnum.Set:
+                case ActionEnum.Change:
+                case ActionEnum.Where:
+                case ActionEnum.And:
+                case ActionEnum.Or:
+                    return true;
+            }
+            return false;
+        }
         internal DynamicParameters GetParameters()
         {
             var paras = new DynamicParameters();
             foreach (var item in DC.Conditions)
             {
-                switch (item.Action)
+                if (IsParameter(item))
                 {
-                    case ActionEnum.Insert:
-                    case ActionEnum.Set:
-                    case ActionEnum.Change:
-                    case ActionEnum.Where:
-                    case ActionEnum.And:
-                    case ActionEnum.Or:
-                        paras.Add(item.Param, item.Value);
-                        break;
+                    paras.Add(item.Param, item.Value);
                 }
             }
             return paras;
@@ -298,7 +305,14 @@ namespace EasyDAL.Exchange.Core
             if (Hints.Hint)
             {
                 Hints.SQL = list;
-                Hints.Parameters = DC.Conditions.Select(it => $"key:【{it.Param}】;val:【{it.Value}】.").ToList();
+                Hints.Parameters = DC
+                    .Conditions
+                    .Where(it => IsParameter(it))
+                    .Select(it =>
+                    {
+                        return $"key:【{it.Param}】;val:【{it.Value}】.";
+                    })
+                    .ToList();
             }
 
             //

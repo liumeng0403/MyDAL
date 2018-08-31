@@ -2,6 +2,7 @@
 using EasyDAL.Exchange.Core;
 using EasyDAL.Exchange.Core.Sql;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace EasyDAL.Exchange
 {

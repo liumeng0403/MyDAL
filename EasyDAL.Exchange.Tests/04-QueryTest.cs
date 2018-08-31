@@ -137,7 +137,7 @@ namespace EasyDAL.Exchange.Tests
         {
             var xx0 = "";
 
-            //  like "陈%"
+            // count(id)  like "陈%"
             var res0 = await Conn.OpenHint()
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains(LikeTest.百分号))
