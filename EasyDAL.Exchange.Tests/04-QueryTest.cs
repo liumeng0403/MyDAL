@@ -23,8 +23,8 @@ namespace EasyDAL.Exchange.Tests
             };
             // 造数据
             var resc = await Conn
-                .Creater<BodyFitRecord>()
-                .CreateAsync(m);
+                .CreateAsync<BodyFitRecord>(m);
+                //.CreateAsync(m);
 
             var xx0 = "";
 
@@ -143,6 +143,35 @@ namespace EasyDAL.Exchange.Tests
                 .Where(it => it.Name.Contains(LikeTest.百分号))
                 .Count(it => it.Id)
                 .QuerySingleValueAsync<long>();
+
+            var tuple = (Hints.SQL, Hints.Parameters);
+
+            var xx = "";
+        }
+
+        [Fact]
+        public async Task ExistAsyncTest()
+        {
+            var xx1 = "";
+
+            var res1 = await Conn.OpenHint()
+                .Selecter<Agent>()
+                .Where(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
+                .ExistAsync();
+
+            var tuple = (Hints.SQL, Hints.Parameters);
+
+            var xx = "";
+        }
+
+        [Fact]
+        public async Task QueryAllAsyncTest()
+        {
+            var xx1 = "";
+
+            var res1 = await Conn.OpenHint()
+                .Selecter<Agent>()
+                .QueryAllAsync();
 
             var tuple = (Hints.SQL, Hints.Parameters);
 

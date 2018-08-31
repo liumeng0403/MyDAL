@@ -13,6 +13,8 @@ namespace EasyDAL.Exchange.Enums
         QueryListAsync,
         JoinQueryListAsync,
         QueryPagingListAsync,
-        QuerySingleValueAsync
+        QuerySingleValueAsync,
+        ExistAsync,
+        QueryAllAsync
     }
 }
