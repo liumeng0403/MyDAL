@@ -90,7 +90,7 @@ namespace EasyDAL.Exchange.Tests
         [Fact]
         public async Task QueryFirstOrDefaultAsyncTest2()
         {
-            var xx0 = "";
+            var xx1 = "";
 
             // where and
             var res1 = await Conn
@@ -98,6 +98,8 @@ namespace EasyDAL.Exchange.Tests
                 .Where(it => it.CreatedOn >= WhereTest.DateTime_大于等于)
                 .And(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
                 .QueryFirstOrDefaultAsync();
+
+            var xx2 = "";
 
             var xx = "";
         }
@@ -115,19 +117,29 @@ namespace EasyDAL.Exchange.Tests
                 ContainStr = "~00-d-3-1-"
             };
 
-            var xx0 = "";
+            var xx1 = "";
 
             var res1 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= testQ.DateTime_大于等于)
                 .QueryListAsync();
 
-            var xx1 = "";
+            var xx2 = "";
 
             var res2 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.AgentLevel == testQ.AgentLevelXX)
                 .QueryListAsync();
+
+            var xx3 = "";
+
+            // .Where(a => a.Name.Length > 0)
+            var res3 = await Conn.OpenHint()
+                .Selecter<Agent>()
+                .Where(it => it.Name.Length > 2)
+                .QueryListAsync();
+
+            var tuple3 = (Hints.SQL, Hints.Parameters);
 
             var xx = "";
         }

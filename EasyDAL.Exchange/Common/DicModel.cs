@@ -18,5 +18,7 @@ namespace EasyDAL.Exchange.Common
         public OptionEnum Option { get; set; }
         public ActionEnum Action { get; set; }
         public CrudTypeEnum Crud { get; set; }
+
+        public OptionEnum FuncSupplement { get; set; }
     }
 }

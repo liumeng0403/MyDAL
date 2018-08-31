@@ -62,6 +62,12 @@ namespace EasyDAL.Exchange.Enums
         Count,
 
         /// <summary>
+        /// " char_length"
+        /// </summary>
+        [Description(" char_length")]
+        CharLength,
+
+        /// <summary>
         /// +
         /// </summary>
         [Description("+")]
