@@ -16,7 +16,7 @@ namespace EasyDAL.Exchange.Helper
         private GenericHelper GH = GenericHelper.Instance;
 
         // -01-02- 
-        private string GetKey(ParameterExpression parameter, Expression body)
+        private string GetKey(ParameterExpression parameter, Expression body,OptionEnum option)
         {
             var leftBody = body as MemberExpression;
             if (leftBody == null)  // Convert
@@ -26,7 +26,16 @@ namespace EasyDAL.Exchange.Helper
             }
             else  // MemberAccess
             {
-                var info = parameter.Type.GetProperty(leftBody.Member.Name);
+                var info = default(PropertyInfo);
+                if (option == OptionEnum.CharLength)
+                {
+                    var clMemExpr = leftBody.Expression as MemberExpression;
+                    info = parameter.Type.GetProperty(clMemExpr.Member.Name);
+                }
+                else
+                {
+                    info = parameter.Type.GetProperty(leftBody.Member.Name);
+                }
                 var field = Cache
                     .GetOrAdd($"{parameter.GetType().FullName}:{info.Module.GetHashCode()}", moduleKey => new ConcurrentDictionary<Int32, String>())
                     .GetOrAdd(info.MetadataToken, innnerKey =>
@@ -148,13 +157,12 @@ namespace EasyDAL.Exchange.Helper
             }
         }
         // 01
-        private DicModel GetBinaryDicM(ParameterExpression parameter, Expression body)
+        private string GetBinaryVal(Expression body)
         {
-            var result = default(DicModel);
-            var bodyB = body as BinaryExpression;
-            var leftBody = bodyB.Left;
-            var key = GetKey(parameter, leftBody);
             var val = string.Empty;
+
+            //
+            var bodyB = body as BinaryExpression;
             var bRight = bodyB.Right;
             switch (bRight.NodeType)
             {
@@ -175,14 +183,9 @@ namespace EasyDAL.Exchange.Helper
                 default:
                     throw new Exception();
             }
-            result = new DicModel
-            {
-                KeyOne = key,
-                Param = key,
-                Value = val,
-                Option = GetOption(bodyB)
-            };
-            return result;
+
+            //
+            return val;
         }
         // 01
         private (string key, string alias) GetMemKeyAlias(Expression expr)
@@ -260,7 +263,7 @@ namespace EasyDAL.Exchange.Helper
             {
                 var parameter = func.Parameters[0];
                 var body = func.Body as MemberExpression;
-                return GetKey(parameter, body);
+                return GetKey(parameter, body,OptionEnum.None);
             }
             catch (Exception ex)
             {
@@ -285,6 +288,9 @@ namespace EasyDAL.Exchange.Helper
                 var result = default(DicModel);
                 var parameter = func.Parameters[0];
                 var body = func.Body;
+                var key = string.Empty;
+                var val = string.Empty;
+                var option = OptionEnum.None;
                 switch (body.NodeType)
                 {
                     case ExpressionType.Equal:
@@ -292,7 +298,37 @@ namespace EasyDAL.Exchange.Helper
                     case ExpressionType.LessThanOrEqual:
                     case ExpressionType.GreaterThan:
                     case ExpressionType.GreaterThanOrEqual:
-                        result = GetBinaryDicM(parameter, body);
+                        var binExpr = body as BinaryExpression;
+                        var leftBin = binExpr.Left;
+                        var rightBin = binExpr.Right;
+                        val = GetBinaryVal(body);
+                        var leftStr = leftBin.ToString();
+                        if (leftStr.Contains(".Length")
+                            && leftStr.IndexOf(".")<leftStr.LastIndexOf("."))
+                        {
+                            option = OptionEnum.CharLength;
+                            key = GetKey(parameter, leftBin,option);
+                            result = new DicModel
+                            {
+                                KeyOne = key,
+                                Param = key,
+                                Value = val,
+                                Option = option,
+                                FuncSupplement= GetOption(binExpr)
+                            };
+                        }
+                        else
+                        {
+                            option = GetOption(binExpr);
+                            key = GetKey(parameter, leftBin,option);
+                            result = new DicModel
+                            {
+                                KeyOne = key,
+                                Param = key,
+                                Value = val,
+                                Option = option
+                            };
+                        }
                         break;
                     case ExpressionType.Call:
                         var bodyMC = body as MethodCallExpression;
@@ -300,14 +336,15 @@ namespace EasyDAL.Exchange.Helper
                         if (exprStr.Contains(".Contains("))
                         {
                             var mem = bodyMC.Object as MemberExpression;
-                            var key = GetKey(parameter, mem);
-                            var val = GetCallVal(body);
+                            option = OptionEnum.Like;
+                            key = GetKey(parameter, mem,option);
+                            val = GetCallVal(body);
                             result = new DicModel
                             {
                                 KeyOne = key,
                                 Param = key,
                                 Value = val,
-                                Option = OptionEnum.Like
+                                Option = option
                             };
                         }
                         break;

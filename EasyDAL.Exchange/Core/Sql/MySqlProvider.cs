@@ -148,6 +148,9 @@ namespace EasyDAL.Exchange.Core
                                         break;
                                 }
                                 break;
+                            case OptionEnum.CharLength:
+                                str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.Option.ToEnumDesc<OptionEnum>()}(`{item.KeyOne}`){item.FuncSupplement.ToEnumDesc<OptionEnum>()}@{item.Param} ";
+                                break;
                         }
                         break;
                 }
