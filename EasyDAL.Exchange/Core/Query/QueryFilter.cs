@@ -1,4 +1,5 @@
 ﻿using EasyDAL.Exchange.AdoNet;
+using EasyDAL.Exchange.Common;
 using EasyDAL.Exchange.Core.Sql;
 using EasyDAL.Exchange.Enums;
 using EasyDAL.Exchange.Helper;
@@ -32,6 +33,20 @@ namespace EasyDAL.Exchange.Core.Query
             return this;
         }
 
+        public SingleFilter<M> Count<F>(Expression<Func<M,F>> func)
+        {
+            var field = DC.EH.ExpressionHandle(func);
+            DC.AddConditions(new DicModel
+            {
+                KeyOne = field,
+                Param = field,
+                Action = ActionEnum.Select,
+                Option = OptionEnum.Count,
+                Crud = CrudTypeEnum.Query
+            });
+            return new SingleFilter<M>(DC);
+        }
+            
 
         public async Task<M> QueryFirstOrDefaultAsync()
         {

@@ -132,5 +132,22 @@ namespace EasyDAL.Exchange.Tests
             var xx = "";
         }
 
+        [Fact]
+        public async Task QuerySingleValueAsyncTest()
+        {
+            var xx0 = "";
+
+            //  like "陈%"
+            var res0 = await Conn.OpenHint()
+                .Selecter<Agent>()
+                .Where(it => it.Name.Contains(LikeTest.百分号))
+                .Count(it => it.Id)
+                .QuerySingleValueAsync<long>();
+
+            var tuple = (Hints.SQL, Hints.Parameters);
+
+            var xx = "";
+        }
+
     }
 }

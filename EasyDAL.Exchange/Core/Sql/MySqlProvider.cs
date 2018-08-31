@@ -50,6 +50,23 @@ namespace EasyDAL.Exchange.Core
             throw new Exception(value);
         }
 
+        internal string GetSingleValuePart()
+        {
+            var str = string.Empty;
+
+            foreach (var item in DC.Conditions)
+            {
+                switch (item.Option)
+                {
+                    case OptionEnum.Count:
+                        str += $" {item.Option.ToEnumDesc<OptionEnum>()}(`{item.KeyOne}`) ";
+                        break;
+                }
+            }
+
+            return str;
+        }
+
         internal string GetJoins()
         {
             var str = string.Empty;
@@ -270,6 +287,9 @@ namespace EasyDAL.Exchange.Core
                     break;
                 case SqlTypeEnum.JoinQueryListAsync:
                     list.Add($" select * from {GetJoins()} where {GetWheres()} ; ");
+                    break;
+                case SqlTypeEnum.QuerySingleValueAsync:
+                    list.Add($" select {GetSingleValuePart()} from `{tableName}` where {GetWheres()} ; ");
                     break;
             }
 

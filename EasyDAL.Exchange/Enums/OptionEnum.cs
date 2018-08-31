@@ -56,6 +56,12 @@ namespace EasyDAL.Exchange.Enums
         Like,
 
         /// <summary>
+        /// " count"
+        /// </summary>
+        [Description(" count")]
+        Count,
+
+        /// <summary>
         /// +
         /// </summary>
         [Description("+")]
