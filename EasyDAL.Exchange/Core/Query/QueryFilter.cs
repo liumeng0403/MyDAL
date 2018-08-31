@@ -24,7 +24,7 @@ namespace EasyDAL.Exchange.Core.Query
 
         public QueryFilter<M> And(Expression<Func<M, bool>> func)
         {
-            AndHandle(func,CrudTypeEnum.Query);
+            AndHandle(func, CrudTypeEnum.Query);
             return this;
         }
 
@@ -34,7 +34,7 @@ namespace EasyDAL.Exchange.Core.Query
             return this;
         }
 
-        public SingleFilter<M> Count<F>(Expression<Func<M,F>> func)
+        public SingleFilter<M> Count<F>(Expression<Func<M, F>> func)
         {
             var field = DC.EH.ExpressionHandle(func);
             DC.AddConditions(new DicModel
@@ -47,7 +47,23 @@ namespace EasyDAL.Exchange.Core.Query
             });
             return new SingleFilter<M>(DC);
         }
-            
+
+        public async Task<bool> ExistAsync()
+        {
+            var count = await SqlHelper.ExecuteScalarAsync<long>(
+                DC.Conn,
+                DC.SqlProvider.GetSQL<M>(SqlTypeEnum.ExistAsync)[0],
+                DC.SqlProvider.GetParameters());
+            if (count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
 
         public async Task<M> QueryFirstOrDefaultAsync()
         {

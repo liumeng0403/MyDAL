@@ -200,15 +200,13 @@ namespace EasyDAL.Exchange.Core
 
         internal string GetTableName<M>(M m)
         {
-
-            var tableName = DC.AH.GetPropertyValue<M, TableAttribute>(m, a => a.Name);
+            var tableName = string.Empty;
+            tableName = DC.AH.GetPropertyValue<M, TableAttribute>(m, a => a.Name);
             if (string.IsNullOrWhiteSpace(tableName))
             {
                 throw new Exception("DB Entity 缺少 TableAttribute 指定的表名!");
             }
-
-            return tableName;
-
+            return $"`{tableName}`";
         }
         internal bool TryGetTableName<M>(out string tableName)
         {
@@ -217,9 +215,8 @@ namespace EasyDAL.Exchange.Core
             {
                 throw new Exception("DB Entity 缺少 TableAttribute 指定的表名!");
             }
-
+            tableName = $"`{tableName}`";
             return true;
-
         }
 
         internal OptionEnum GetChangeOption(ChangeEnum change)
@@ -275,30 +272,36 @@ namespace EasyDAL.Exchange.Core
             switch (type)
             {
                 case SqlTypeEnum.CreateAsync:
-                    list.Add($" insert into `{tableName}` {DC.SqlProvider.GetColumns()} values {DC.SqlProvider.GetValues()} ;");
+                    list.Add($" insert into {tableName} {DC.SqlProvider.GetColumns()} values {DC.SqlProvider.GetValues()} ;");
                     break;
                 case SqlTypeEnum.DeleteAsync:
-                    list.Add($" delete from `{tableName}` where {GetWheres()} ; ");
+                    list.Add($" delete from {tableName} where {GetWheres()} ; ");
                     break;
                 case SqlTypeEnum.UpdateAsync:
-                    list.Add($" update `{tableName}` set {DC.SqlProvider.GetUpdates()} where {GetWheres()} ;");
+                    list.Add($" update {tableName} set {DC.SqlProvider.GetUpdates()} where {GetWheres()} ;");
                     break;
                 case SqlTypeEnum.QueryFirstOrDefaultAsync:
-                    list.Add($"SELECT * FROM `{tableName}` WHERE {GetWheres()} ; ");
+                    list.Add($"SELECT * FROM {tableName} WHERE {GetWheres()} ; ");
                     break;
                 case SqlTypeEnum.QueryListAsync:
-                    list.Add($"SELECT * FROM `{tableName}` WHERE {GetWheres()} ; ");
+                    list.Add($"SELECT * FROM {tableName} WHERE {GetWheres()} ; ");
                     break;
                 case SqlTypeEnum.QueryPagingListAsync:
                     var wherePart = GetWheres();
-                    list.Add($"SELECT count(*) FROM `{tableName}` WHERE {wherePart} ; ");
-                    list.Add($"SELECT * FROM `{tableName}` WHERE {wherePart} limit {(pager.PageIndex - 1) * pager.PageSize},{pager.PageIndex * pager.PageSize}  ; ");
+                    list.Add($"SELECT count(*) FROM {tableName} WHERE {wherePart} ; ");
+                    list.Add($"SELECT * FROM {tableName} WHERE {wherePart} limit {(pager.PageIndex - 1) * pager.PageSize},{pager.PageIndex * pager.PageSize}  ; ");
                     break;
                 case SqlTypeEnum.JoinQueryListAsync:
                     list.Add($" select * from {GetJoins()} where {GetWheres()} ; ");
                     break;
                 case SqlTypeEnum.QuerySingleValueAsync:
-                    list.Add($" select {GetSingleValuePart()} from `{tableName}` where {GetWheres()} ; ");
+                    list.Add($" select {GetSingleValuePart()} from {tableName} where {GetWheres()} ; ");
+                    break;
+                case SqlTypeEnum.ExistAsync:
+                    list.Add($" select count(*) from {tableName} where {GetWheres()} ; ");
+                    break;
+                case SqlTypeEnum.QueryAllAsync:
+                    list.Add($" select * from {tableName} ; ");
                     break;
             }
 
