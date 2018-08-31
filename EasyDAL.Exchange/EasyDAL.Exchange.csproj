@@ -1,18 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>0.0.1</Version>
+    <Version>0.0.2</Version>
     <Authors>Meng.NET</Authors>
     <Company></Company>
     <Product>EasyDAL.Exchange</Product>
-    <Description>The fastest and best ORM lite on .NET Core for MySQL ! -- 友好, 轻量, 极致性能, 无任何第三方依赖, 持续演进~~</Description>
-    <Copyright>2018</Copyright>
+    <Description>The fastest and best ORM lite on .NET Core for MySQL ! 
+        -- 友好, 轻量, 极致性能, 无任何第三方依赖, 持续演进~~</Description>
+    <Copyright>2018 myself</Copyright>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <PackageProjectUrl>https://www.cnblogs.com/Meng-NET/p/8963476.html</PackageProjectUrl>
     <RepositoryUrl>https://github.com/liumeng0403/EasyDAL.Exchange</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>easy,easydal,exchange,orm,ormlite,mysql,mysqlorm</PackageTags>
-    <PackageReleaseNotes>由一个开发项目中的 idea 演变,产生与实现!</PackageReleaseNotes>
+    <PackageReleaseNotes>由一个开发项目中的 idea 演变,产生与实现!
+       -- https://www.cnblogs.com/Meng-NET/p/8963476.html</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.3.0" />
