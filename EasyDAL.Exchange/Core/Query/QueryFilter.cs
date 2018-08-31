@@ -2,6 +2,7 @@
 using EasyDAL.Exchange.Core.Sql;
 using EasyDAL.Exchange.Enums;
 using EasyDAL.Exchange.Helper;
+using Rainbow.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,7 +59,7 @@ namespace EasyDAL.Exchange.Core.Query
             result.PageSize = pageSize;
             var paras = DC.SqlProvider.GetParameters();
             var sql = DC.SqlProvider.GetSQL<M>(SqlTypeEnum.QueryPagingListAsync, result);
-            result.TotalCount = await SqlHelper.ExecuteScalarAsync<long>(DC.Conn, sql[0], paras);
+            result.TotalCount = (int)(await SqlHelper.ExecuteScalarAsync<long>(DC.Conn, sql[0], paras));
             result.Data = (await SqlHelper.QueryAsync<M>(DC.Conn, sql[1], paras)).ToList();
             return result;
         }

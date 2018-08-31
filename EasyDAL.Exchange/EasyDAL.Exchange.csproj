@@ -17,6 +17,7 @@
        -- https://www.cnblogs.com/Meng-NET/p/8963476.html</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Rainbow.Core" Version="1.0.0" />
     <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>

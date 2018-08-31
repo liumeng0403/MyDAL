@@ -11,6 +11,7 @@ using EasyDAL.Exchange.Core.Sql;
 using System.Data;
 using EasyDAL.Exchange.Common;
 using EasyDAL.Exchange.AdoNet;
+using Rainbow.Core;
 
 namespace EasyDAL.Exchange.Core
 {
