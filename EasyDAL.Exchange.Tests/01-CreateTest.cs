@@ -1,5 +1,6 @@
 ﻿using EasyDAL.Exchange.Core.Sql;
 using EasyDAL.Exchange.Tests.Entities;
+using EasyDAL.Exchange.Tests.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,7 +9,7 @@ using Xunit;
 
 namespace EasyDAL.Exchange.Tests
 {
-    public class CreateTest:TestBase
+    public class CreateTest : TestBase
     {
         private async Task PreCreate(BodyFitRecord m)
         {
@@ -41,10 +42,10 @@ namespace EasyDAL.Exchange.Tests
             };
             await PreCreate(m);
 
-            var xx0 = "";
+            var xx1 = "";
 
             // 新建
-            var res0 = await Conn.OpenHint()
+            var res1 = await Conn.OpenHint()
                 .CreateAsync<BodyFitRecord>(m);
             //.CreateAsync(m);
 
@@ -52,5 +53,37 @@ namespace EasyDAL.Exchange.Tests
 
             var xx = "";
         }
+
+        // 创建一个具有可空属性字段的对象
+        [Fact]
+        public async Task CreateAsyncTest2()
+        {
+
+            var m1 = new Agent
+            {
+                Id = Guid.NewGuid(),
+                CreatedOn = DateTime.Now,
+                UserId = Guid.NewGuid(),
+                PathId = "x-xx-xxx-xxxx",
+                Name = "张三",
+                Phone = "18088889999",
+                IdCardNo = "No.12345",
+                CrmUserId = "yyyyy",
+                AgentLevel = AgentLevel.DistiAgent,
+                ActivedOn = null,   // DateTime?
+                ActiveOrderId  = null,  // Guid?
+                DirectorStarCount = 5
+            };
+
+            var xx1 = "";
+
+            var res1 = await Conn.OpenHint()
+                .CreateAsync(m1);
+
+            var tuple = (Hints.SQL, Hints.Parameters);
+
+            var xx = "";
+        }
+
     }
 }
