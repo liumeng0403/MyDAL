@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EasyDAL.Exchange.Tests.Entities
 {
@@ -18,7 +19,7 @@ namespace EasyDAL.Exchange.Tests.Entities
      * PRIMARY KEY (`Id`)
      * ) ENGINE=InnoDB DEFAULT CHARSET=utf8
      */
-    [Table(Name = "AgentInventoryRecord")]
+    [Table("AgentInventoryRecord")]
     public class AgentInventoryRecord 
     {
 

@@ -11,6 +11,7 @@ using EasyDAL.Exchange.Core.Sql;
 using System.Data;
 using EasyDAL.Exchange.Common;
 using EasyDAL.Exchange.AdoNet;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EasyDAL.Exchange.Core
 {

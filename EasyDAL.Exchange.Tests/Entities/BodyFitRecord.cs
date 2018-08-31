@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EasyDAL.Exchange.Tests.Entities
 {
@@ -14,7 +15,7 @@ namespace EasyDAL.Exchange.Tests.Entities
      * ) ENGINE=InnoDB DEFAULT CHARSET=utf8
      */
 
-    [Table(Name = "BodyFitRecord")]
+    [Table("BodyFitRecord")]
     public class BodyFitRecord
     {
         public Guid Id { get; set; }
