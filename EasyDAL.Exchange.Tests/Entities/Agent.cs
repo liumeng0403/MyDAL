@@ -1,6 +1,7 @@
 ﻿
 using EasyDAL.Exchange.Tests.Enums;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EasyDAL.Exchange.Tests.Entities
 {
@@ -21,7 +22,7 @@ namespace EasyDAL.Exchange.Tests.Entities
      * PRIMARY KEY (`Id`)
      * ) ENGINE=InnoDB DEFAULT CHARSET=utf8
      */
-    [Table(Name = "Agent")]
+    [Table("Agent")]
     public class Agent 
     {
         public Guid Id { get; set; }

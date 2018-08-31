@@ -12,6 +12,7 @@ using System.Data;
 using EasyDAL.Exchange.Common;
 using EasyDAL.Exchange.AdoNet;
 using Rainbow.Core;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EasyDAL.Exchange.Core
 {
