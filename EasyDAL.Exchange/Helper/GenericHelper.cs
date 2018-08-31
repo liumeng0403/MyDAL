@@ -56,67 +56,69 @@ namespace EasyDAL.Exchange.Helper
             {
                 val = ((sbyte)outerProp.GetValue(outerObj, null)).ToString();
             }
-            else if (valType == typeof(short))
-            {
-                val = ((short)outerProp.GetValue(outerObj, null)).ToString();
-            }
-            else if (valType == typeof(int))
-            {
-                val = ((int)outerProp.GetValue(outerObj, null)).ToString();
-            }
-            else if (valType == typeof(long))
-            {
-                val = ((long)outerProp.GetValue(outerObj, null)).ToString();
-            }
             else if (valType == typeof(byte))
             {
                 val = ((byte)outerProp.GetValue(outerObj, null)).ToString();
-            }
-            else if (valType == typeof(ushort))
-            {
-                val = ((ushort)outerProp.GetValue(outerObj, null)).ToString();
-            }
-            else if (valType == typeof(uint))
-            {
-                val = ((uint)outerProp.GetValue(outerObj, null)).ToString();
-            }
-            else if (valType == typeof(ulong))
-            {
-                val = ((ulong)outerProp.GetValue(outerObj, null)).ToString();
-            }
-            else if (valType == typeof(float))
-            {
-                val = ((float)outerProp.GetValue(outerObj, null)).ToString();
-            }
-            else if (valType == typeof(double))
-            {
-                val = ((double)outerProp.GetValue(outerObj, null)).ToString();
-            }
-            else if (valType == typeof(decimal))
-            {
-                val = ((decimal)outerProp.GetValue(outerObj, null)).ToString();
-            }
-            else if (valType == typeof(bool))
-            {
-                val = ((bool)outerProp.GetValue(outerObj, null)).ToString();
             }
             else if (valType == typeof(char))
             {
                 val = ((char)outerProp.GetValue(outerObj, null)).ToString();
             }
-            else if (valType == typeof(DateTime))
+            else if (valType == typeof(bool))
+            {
+                val = ((bool)outerProp.GetValue(outerObj, null)).ToString();
+            }
+            else if (valType == typeof(short)
+                || valType == typeof(int)
+                || valType == typeof(long))
             {
                 val = outerProp.GetValue(outerObj, null).ToString();
             }
-            else if (valType == typeof(Guid))
+            else if (valType == typeof(ushort)
+                || valType == typeof(uint)
+                || valType == typeof(ulong))
             {
                 val = outerProp.GetValue(outerObj, null).ToString();
             }
-            else if (valType == typeof(string))
+            else if (valType == typeof(float)
+                || valType == typeof(decimal)
+                || valType == typeof(double))
             {
-                val = (outerProp.GetValue(outerObj, null)).ToString();
+                val = outerProp.GetValue(outerObj, null).ToString();
             }
-            else if (valType.IsEnum) 
+            else if (valType == typeof(DateTime)
+                || valType == typeof(Guid)
+                || valType == typeof(string))
+            {
+                val = outerProp.GetValue(outerObj, null).ToString();
+            }
+            else if (valType == typeof(sbyte?)
+                || valType == typeof(byte?)
+                || valType == typeof(char?)
+                || valType == typeof(bool?)
+                || valType == typeof(short?)
+                || valType == typeof(int?)
+                || valType == typeof(long?)
+                || valType == typeof(ushort?)
+                || valType == typeof(uint?)
+                || valType == typeof(ulong?)
+                || valType == typeof(float?)
+                || valType == typeof(decimal?)
+                || valType == typeof(double?)
+                || valType == typeof(DateTime?)
+                || valType == typeof(Guid?))
+            {
+                var obj = outerProp.GetValue(outerObj, null);
+                if (obj == null)
+                {
+                    val = null;
+                }
+                else
+                {
+                    val = obj.ToString();
+                }
+            }
+            else if (valType.IsEnum)
             {
                 val = ((int)outerProp.GetValue(outerObj, null)).ToString();
             }
