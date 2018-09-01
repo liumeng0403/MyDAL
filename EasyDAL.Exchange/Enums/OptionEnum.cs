@@ -26,6 +26,12 @@ namespace EasyDAL.Exchange.Enums
         Equal,
 
         /// <summary>
+        /// <>
+        /// </summary>
+        [Description("<>")]
+        NotEqual,
+
+        /// <summary>
         /// &lt;
         /// </summary>
         [Description("<")]
@@ -66,6 +72,12 @@ namespace EasyDAL.Exchange.Enums
         /// </summary>
         [Description(" char_length")]
         CharLength,
+
+        /// <summary>
+        /// ""
+        /// </summary>
+        [Description("")]
+        OneEqualOne,
 
         /// <summary>
         /// +

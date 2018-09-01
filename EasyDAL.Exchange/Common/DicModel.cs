@@ -15,6 +15,7 @@ namespace EasyDAL.Exchange.Common
         public string AliasTwo { get; set; }
         public string Param { get; set; }
         public string Value { get; set; }
+        public ValueTypeEnum ValueType { get; set; }
         public OptionEnum Option { get; set; }
         public ActionEnum Action { get; set; }
         public CrudTypeEnum Crud { get; set; }

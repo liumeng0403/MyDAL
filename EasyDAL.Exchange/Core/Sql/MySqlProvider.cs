@@ -119,6 +119,7 @@ namespace EasyDAL.Exchange.Core
                         switch (item.Option)
                         {
                             case OptionEnum.Equal:
+                            case OptionEnum.NotEqual:
                             case OptionEnum.LessThan:
                             case OptionEnum.LessThanOrEqual:
                             case OptionEnum.GreaterThan:
@@ -150,6 +151,9 @@ namespace EasyDAL.Exchange.Core
                                 break;
                             case OptionEnum.CharLength:
                                 str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.Option.ToEnumDesc<OptionEnum>()}(`{item.KeyOne}`){item.FuncSupplement.ToEnumDesc<OptionEnum>()}@{item.Param} ";
+                                break;
+                            case OptionEnum.OneEqualOne:
+                                str += $" {item.Action.ToEnumDesc<ActionEnum>()} @{item.Param} ";
                                 break;
                         }
                         break;
@@ -256,7 +260,15 @@ namespace EasyDAL.Exchange.Core
             {
                 if (IsParameter(item))
                 {
-                    paras.Add(item.Param, item.Value);
+                    switch(item.ValueType)
+                    {
+                        case ValueTypeEnum.Bool:
+                            paras.Add(item.Param, item.Value.ToBool(), DbType.Boolean);
+                            break;
+                        case ValueTypeEnum.None:
+                            paras.Add(item.Param, item.Value);
+                            break;
+                    }
                 }
             }
             return paras;
