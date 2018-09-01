@@ -17,6 +17,29 @@ namespace EasyDAL.Exchange.Core.Sql
 
         internal DbContext DC { get; set; }
 
+        internal void SetChangeHandle<M, F>(Expression<Func<M, F>> func, F modVal, ActionEnum action, OptionEnum option)
+        {
+            var key = DC.EH.ExpressionHandle(func);
+            var val = string.Empty;
+            if (modVal == null)
+            {
+                val = null;
+            }
+            else
+            {
+                val = DC.GH.GetTypeValue(modVal.GetType(), modVal);
+            }
+            DC.AddConditions(new DicModel
+            {
+                KeyOne = key,
+                Param = key,
+                Value = val,
+                Option = option,
+                Action = action,
+                Crud = CrudTypeEnum.Update
+            });
+        }
+
         protected void DynamicSetHandle<M>(object mSet)
         {
             var list = new List<string>();

@@ -17,16 +17,7 @@ namespace EasyDAL.Exchange.Core.Update
 
         public Setter<M> Set<F>(Expression<Func<M, F>> func, F newVal)
         {
-            var key = DC.EH.ExpressionHandle(func);
-            DC.AddConditions(new DicModel
-            {
-                KeyOne = key,
-                Param=key,
-                Value = DC.GH.GetTypeValue(newVal.GetType(), newVal),
-                Option = OptionEnum.Set,
-                Action = ActionEnum.Set,
-                Crud= CrudTypeEnum.Update
-            });
+            SetChangeHandle<M, F>(func, newVal, ActionEnum.Set, OptionEnum.Set);
             return this;
         }
         public Setter<M> Set(object mSet)
@@ -37,16 +28,7 @@ namespace EasyDAL.Exchange.Core.Update
 
         public Setter<M> Change<F>(Expression<Func<M, F>> func, F modifyVal, ChangeEnum change)
         {
-            var key = DC.EH.ExpressionHandle(func);
-            DC.AddConditions(new DicModel
-            {
-                KeyOne = key,
-                Param=key,
-                Value = DC.GH.GetTypeValue(modifyVal.GetType(), modifyVal),
-                Option = DC.SqlProvider.GetChangeOption(change),
-                Action = ActionEnum.Change,
-                Crud= CrudTypeEnum.Update
-            });
+            SetChangeHandle<M, F>(func, modifyVal, ActionEnum.Change, DC.SqlProvider.GetChangeOption(change));
             return this;
         }
 
