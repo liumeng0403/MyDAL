@@ -203,19 +203,23 @@ namespace EasyDAL.Exchange.Helper
             {
                 option = OptionEnum.Equal;
             }
-            if (be.NodeType == ExpressionType.LessThan)
+            else if (be.NodeType == ExpressionType.NotEqual)
+            {
+                option = OptionEnum.NotEqual;
+            }
+            else if (be.NodeType == ExpressionType.LessThan)
             {
                 option = OptionEnum.LessThan;
             }
-            if (be.NodeType == ExpressionType.LessThanOrEqual)
+            else if (be.NodeType == ExpressionType.LessThanOrEqual)
             {
                 option = OptionEnum.LessThanOrEqual;
             }
-            if (be.NodeType == ExpressionType.GreaterThan)
+            else if (be.NodeType == ExpressionType.GreaterThan)
             {
                 option = OptionEnum.GreaterThan;
             }
-            if (be.NodeType == ExpressionType.GreaterThanOrEqual)
+            else if (be.NodeType == ExpressionType.GreaterThanOrEqual)
             {
                 option = OptionEnum.GreaterThanOrEqual;
             }
@@ -294,6 +298,7 @@ namespace EasyDAL.Exchange.Helper
                 switch (body.NodeType)
                 {
                     case ExpressionType.Equal:
+                    case ExpressionType.NotEqual:
                     case ExpressionType.LessThan:
                     case ExpressionType.LessThanOrEqual:
                     case ExpressionType.GreaterThan:
@@ -345,6 +350,20 @@ namespace EasyDAL.Exchange.Helper
                                 Param = key,
                                 Value = val,
                                 Option = option
+                            };
+                        }
+                        break;
+                    case ExpressionType.Constant:
+                        var bodyC = body as ConstantExpression;
+                        if(bodyC.Type==typeof(bool))
+                        {
+                            result = new DicModel
+                            {
+                                KeyOne= "OneEqualOne",
+                                Param = "OneEqualOne",
+                                Value = bodyC.Value.ToString(),
+                                ValueType= ValueTypeEnum.Bool,
+                                Option = OptionEnum.OneEqualOne
                             };
                         }
                         break;

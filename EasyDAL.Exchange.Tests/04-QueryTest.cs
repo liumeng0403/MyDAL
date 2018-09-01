@@ -173,6 +173,16 @@ namespace EasyDAL.Exchange.Tests
 
             var tuple = (Hints.SQL, Hints.Parameters);
 
+            var xx2 = "";
+
+            // where 1=1
+            var res2 = await Conn.OpenHint()
+                .Selecter<Agent>()
+                .Where(it => false) // true  false
+                .QueryListAsync();
+
+            var tuple2 = (Hints.SQL, Hints.Parameters);
+
             var xx = "";
         }
 
