@@ -72,6 +72,8 @@ namespace EasyDAL.Exchange.Tests
                 .UpdateAsync();
 
 
+            var xx2 = "";
+
             // set field 2
             var res2 = await Conn
                 .Updater<AgentInventoryRecord>()
@@ -80,7 +82,7 @@ namespace EasyDAL.Exchange.Tests
                 .Or(it => it.CreatedOn == Convert.ToDateTime("2018-08-19 11:34:42.577074"))
                 .UpdateAsync();
 
-            var xx2 = "";
+            var xx3 = "";
 
             // set dynamic
             var res3 = await Conn.OpenHint()
@@ -96,7 +98,7 @@ namespace EasyDAL.Exchange.Tests
             var tuple = (Hints.SQL, Hints.Parameters);
 
 
-            var xx3 = "";
+            var xx4 = "";
 
             dynamic obj = new ExpandoObject();
             obj.TotalSaleCount = 2000;
@@ -110,7 +112,7 @@ namespace EasyDAL.Exchange.Tests
 
             tuple = (Hints.SQL, Hints.Parameters);
 
-            var xx4 = "";
+            var xx5 = "";
 
             // where change
             var res5 = await Conn
@@ -120,7 +122,20 @@ namespace EasyDAL.Exchange.Tests
                 .And(it => it.ProductId == Guid.Parse("85ce17c1-10d9-4784-b054-016551e5e109"))
                 .UpdateAsync();
 
-            var xx5 = "";
+            var xx6 = "";
+
+            var resx6 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
+                .QueryFirstOrDefaultAsync();
+            resx6.ActivedOn = null;
+
+            // update set null
+            var res6 = await Conn
+                .Updater<Agent>()
+                .Set(it => it.ActivedOn, resx6.ActivedOn)
+                .Where(it => it.Id == resx6.Id)
+                .UpdateAsync();
 
             var xx = "";
         }
