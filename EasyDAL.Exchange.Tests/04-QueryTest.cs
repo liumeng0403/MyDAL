@@ -141,9 +141,35 @@ namespace EasyDAL.Exchange.Tests
 
             var tuple3 = (Hints.SQL, Hints.Parameters);
 
+            var xx4 = "";
+
+            // where 1=1
+            var res4 = await Conn.OpenHint()
+                .Selecter<Agent>()
+                .Where(it => false) // true  false
+                .QueryListAsync();
+
+            var tuple4 = (Hints.SQL, Hints.Parameters);
+
+            var xx5 = "";
+
+            // where object
+            var res5 = await Conn.OpenHint()
+                .Selecter<Agent>()
+                .Where(new
+                {
+                    Id=Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"),
+                    Name= "樊士芹",
+                    xxx="xxx"
+                })
+                .QueryListAsync();
+
+            var tuple5 = (Hints.SQL, Hints.Parameters);
+
             var xx = "";
         }
 
+        // 查询 单值
         [Fact]
         public async Task QuerySingleValueAsyncTest()
         {
@@ -161,6 +187,7 @@ namespace EasyDAL.Exchange.Tests
             var xx = "";
         }
 
+        // 查询 是否存在
         [Fact]
         public async Task ExistAsyncTest()
         {
@@ -173,19 +200,10 @@ namespace EasyDAL.Exchange.Tests
 
             var tuple = (Hints.SQL, Hints.Parameters);
 
-            var xx2 = "";
-
-            // where 1=1
-            var res2 = await Conn.OpenHint()
-                .Selecter<Agent>()
-                .Where(it => false) // true  false
-                .QueryListAsync();
-
-            var tuple2 = (Hints.SQL, Hints.Parameters);
-
             var xx = "";
         }
 
+        // 查询 所有
         [Fact]
         public async Task QueryAllAsyncTest()
         {

@@ -23,6 +23,12 @@ namespace EasyDAL.Exchange.Core.Query
             return new QueryFilter<M>(DC);
         }
 
+        public QueryFilter<M> Where(object mWhere)
+        {
+            DynamicWhereHandle<M>(mWhere);
+            return new QueryFilter<M>(DC);
+        }
+
         public async Task<List<M>> QueryAllAsync()
         {
             return (await SqlHelper.QueryAsync<M>(
