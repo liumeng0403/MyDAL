@@ -31,10 +31,11 @@ namespace EasyDAL.Exchange.Core.Query
 
         public async Task<List<M>> QueryAllAsync()
         {
-            return (await SqlHelper.QueryAsync<M>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(SqlTypeEnum.QueryAllAsync)[0],
-                DC.SqlProvider.GetParameters())).ToList();
+            return await QueryAllAsyncHandle<M, M>();
+        }
+        public async Task<List<VM>> QueryAllAsync<VM>()
+        {
+            return await QueryAllAsyncHandle<M, VM>();
         }
 
     }

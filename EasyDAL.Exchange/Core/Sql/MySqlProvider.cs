@@ -259,7 +259,7 @@ namespace EasyDAL.Exchange.Core
             {
                 if (IsParameter(item))
                 {
-                    switch(item.ValueType)
+                    switch (item.ValueType)
                     {
                         case ValueTypeEnum.Bool:
                             paras.Add(item.Param, item.Value.ToBool(), DbType.Boolean);
@@ -273,7 +273,7 @@ namespace EasyDAL.Exchange.Core
             return paras;
         }
 
-        internal List<string> GetSQL<M>(SqlTypeEnum type, PagingList<M> pager = default(PagingList<M>))
+        internal List<string> GetSQL<M>(SqlTypeEnum type, int? pageIndex = null, int? pageSize = null)
         {
             var list = new List<string>();
 
@@ -303,7 +303,7 @@ namespace EasyDAL.Exchange.Core
                 case SqlTypeEnum.QueryPagingListAsync:
                     var wherePart = GetWheres();
                     list.Add($"SELECT count(*) FROM {tableName} WHERE {wherePart} ; ");
-                    list.Add($"SELECT * FROM {tableName} WHERE {wherePart} limit {(pager.PageIndex - 1) * pager.PageSize},{pager.PageIndex * pager.PageSize}  ; ");
+                    list.Add($"SELECT * FROM {tableName} WHERE {wherePart} limit {(pageIndex - 1) * pageSize},{pageIndex * pageSize}  ; ");
                     break;
                 case SqlTypeEnum.JoinQueryListAsync:
                     list.Add($" select * from {GetJoins()} where {GetWheres()} ; ");

@@ -1,6 +1,7 @@
 ﻿using EasyDAL.Exchange.Core.Sql;
 using EasyDAL.Exchange.Tests.Entities;
 using EasyDAL.Exchange.Tests.Enums;
+using EasyDAL.Exchange.Tests.ViewModels;
 using System;
 using System.Threading.Tasks;
 using Xunit;
@@ -104,6 +105,19 @@ namespace EasyDAL.Exchange.Tests
             var xx = "";
         }
 
+        [Fact]
+        public async Task QueryFirstOrDefaultAsyncVMTest()
+        {
+            var xx1 = "";
+
+            var res1 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
+                .QueryFirstOrDefaultAsync<AgentVM>();
+
+            var xx = "";
+        }
+
         // 查询多个已存在对象 单条件
         [Fact]
         public async Task QueryListAsyncTest()
@@ -112,7 +126,7 @@ namespace EasyDAL.Exchange.Tests
             {
                 CreatedOn = DateTime.Now.AddDays(-30),
                 DateTime_大于等于 = DateTime.Now.AddDays(-30),
-                EndTime = DateTime.Now,
+                DateTime_小于等于 = DateTime.Now,
                 AgentLevelXX = AgentLevel.DistiAgent,
                 ContainStr = "~00-d-3-1-"
             };
@@ -169,6 +183,28 @@ namespace EasyDAL.Exchange.Tests
             var xx = "";
         }
 
+        [Fact]
+        public async Task QueryListAsyncVMTest()
+        {
+            var testQ = new WhereTestModel
+            {
+                CreatedOn = DateTime.Now.AddDays(-30),
+                DateTime_大于等于 = DateTime.Now.AddDays(-30),
+                DateTime_小于等于 = DateTime.Now,
+                AgentLevelXX = AgentLevel.DistiAgent,
+                ContainStr = "~00-d-3-1-"
+            };
+
+            var xx1 = "";
+
+            var res1 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.CreatedOn >= testQ.DateTime_大于等于)
+                .QueryListAsync<AgentVM>();
+            
+            var xx = "";
+        }
+
         // 查询 单值
         [Fact]
         public async Task QuerySingleValueAsyncTest()
@@ -212,6 +248,20 @@ namespace EasyDAL.Exchange.Tests
             var res1 = await Conn.OpenHint()
                 .Selecter<Agent>()
                 .QueryAllAsync();
+
+            var tuple = (Hints.SQL, Hints.Parameters);
+
+            var xx = "";
+        }
+
+        [Fact]
+        public async Task QueryAllAsyncVMTest()
+        {
+            var xx1 = "";
+
+            var res1 = await Conn.OpenHint()
+                .Selecter<Agent>()
+                .QueryAllAsync<AgentVM>();
 
             var tuple = (Hints.SQL, Hints.Parameters);
 
