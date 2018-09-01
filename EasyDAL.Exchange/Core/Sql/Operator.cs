@@ -1,10 +1,14 @@
 ﻿using EasyDAL.Exchange.Common;
 using EasyDAL.Exchange.Enums;
+using EasyDAL.Exchange.Helper;
+using Rainbow.Core;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace EasyDAL.Exchange.Core.Sql
 {
@@ -161,6 +165,42 @@ namespace EasyDAL.Exchange.Core.Sql
             field.Action = ActionEnum.Or;
             field.Crud = crud;
             DC.AddConditions(field);
+        }
+
+        protected async Task<VM> QueryFirstOrDefaultAsyncHandle<DM,VM>()
+        {
+            return await SqlHelper.QueryFirstOrDefaultAsync<VM>(
+                DC.Conn,
+                DC.SqlProvider.GetSQL<DM>(SqlTypeEnum.QueryFirstOrDefaultAsync)[0],
+                DC.SqlProvider.GetParameters());
+        }
+
+        protected async Task<List<VM>> QueryListAsyncHandle<DM,VM>()
+        {
+            return (await SqlHelper.QueryAsync<VM>(
+                DC.Conn,
+                DC.SqlProvider.GetSQL<DM>(SqlTypeEnum.QueryListAsync)[0],
+                DC.SqlProvider.GetParameters())).ToList();
+        }
+
+        protected async Task<PagingList<VM>> QueryPagingListAsyncHandle<DM,VM>(int pageIndex, int pageSize)
+        {
+            var result = new PagingList<VM>();
+            result.PageIndex = pageIndex;
+            result.PageSize = pageSize;
+            var paras = DC.SqlProvider.GetParameters();
+            var sql = DC.SqlProvider.GetSQL<DM>(SqlTypeEnum.QueryPagingListAsync, result.PageIndex, result.PageSize);
+            result.TotalCount = await SqlHelper.ExecuteScalarAsync<int>(DC.Conn, sql[0], paras);
+            result.Data = (await SqlHelper.QueryAsync<VM>(DC.Conn, sql[1], paras)).ToList();
+            return result;
+        }
+
+        protected async Task<List<VM>> QueryAllAsyncHandle<DM,VM>()
+        {
+            return (await SqlHelper.QueryAsync<VM>(
+                DC.Conn,
+                DC.SqlProvider.GetSQL<DM>(SqlTypeEnum.QueryAllAsync)[0],
+                DC.SqlProvider.GetParameters())).ToList();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using EasyDAL.Exchange.Tests.Entities;
 using EasyDAL.Exchange.Tests.Enums;
+using EasyDAL.Exchange.Tests.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,7 +9,7 @@ using Xunit;
 
 namespace EasyDAL.Exchange.Tests
 {
-    public class PagingTest:TestBase
+    public class PagingTest : TestBase
     {
 
         // 分页查询 单条件
@@ -20,7 +21,7 @@ namespace EasyDAL.Exchange.Tests
             var res1 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= WhereTest.DateTime_大于等于)
-                .QueryPagingListAsync(1,10);
+                .QueryPagingListAsync(1, 10);
 
             var xx = "";
         }
@@ -28,17 +29,14 @@ namespace EasyDAL.Exchange.Tests
 
         // 分页查询 多条件
         [Fact]
-        public async Task QueryPagingListAsyncTest2()
+        public async Task QueryPagingListAsyncVMTest()
         {
-            var testQ = new WhereTestModel
-            {
-                CreatedOn = DateTime.Now.AddDays(-10),
-                DateTime_大于等于 = DateTime.Now.AddDays(-10),
-                EndTime = DateTime.Now,
-                AgentLevelXX = AgentLevel.DistiAgent,
-                ContainStr = "~00-d-3-1-"
-            };
+            var xx1 = "";
 
+            var res1 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.CreatedOn >= WhereTest.DateTime_大于等于)
+                .QueryPagingListAsync<AgentVM>(1, 10);
 
             var xx = "";
         }

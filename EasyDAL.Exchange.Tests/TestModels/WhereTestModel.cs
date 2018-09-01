@@ -13,7 +13,7 @@ namespace EasyDAL.Exchange.Tests.Entities
         public DateTime CreatedOn { get; set; }
 
         public DateTime DateTime_大于等于 { get; set; }
-        public DateTime EndTime { get; set; }
+        public DateTime DateTime_小于等于 { get; set; }
 
         public AgentLevel AgentLevelXX { get; set; }
 

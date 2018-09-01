@@ -20,7 +20,7 @@ namespace EasyDAL.Exchange.Tests
                 {
                     CreatedOn = DateTime.Now.AddDays(-30),
                     DateTime_大于等于 = DateTime.Now.AddDays(-30),
-                    EndTime = DateTime.Now,
+                    DateTime_小于等于 = DateTime.Now,
                     AgentLevelXX = AgentLevel.DistiAgent,
                     ContainStr = "~00-d-3-1-"
                 };
