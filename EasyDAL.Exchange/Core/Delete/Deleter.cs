@@ -14,6 +14,10 @@ namespace EasyDAL.Exchange.Core.Delete
             DC = dc;
         }
 
+        /// <summary>
+        /// 过滤条件起点
+        /// </summary>
+        /// <param name="func">格式: it => it.Id == m.Id </param>
         public DeleteFilter<M> Where(Expression<Func<M, bool>> func)
         {
             WhereHandle(func, CrudTypeEnum.Delete);

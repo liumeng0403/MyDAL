@@ -165,8 +165,9 @@ namespace EasyDAL.Exchange.Core
 
         internal string GetUpdates()
         {
-            if (!DC.Conditions.Any(it => it.Action == ActionEnum.Set)
-                && !DC.Conditions.Any(it => it.Action == ActionEnum.Change))
+            if (//!DC.Conditions.Any(it => it.Action == ActionEnum.Set)
+            //    && !DC.Conditions.Any(it => it.Action == ActionEnum.Change)
+                !DC.Conditions.Any(it => it.Action == ActionEnum.Update))
             {
                 throw new Exception("没有设置任何要更新的字段!");
             }
@@ -177,8 +178,9 @@ namespace EasyDAL.Exchange.Core
             {
                 switch (item.Action)
                 {
-                    case ActionEnum.Set:
-                    case ActionEnum.Change:
+                    //case ActionEnum.Set:
+                    //case ActionEnum.Change:
+                    case ActionEnum.Update:
                         switch (item.Option)
                         {
                             case OptionEnum.ChangeAdd:
@@ -244,8 +246,9 @@ namespace EasyDAL.Exchange.Core
             switch (item.Action)
             {
                 case ActionEnum.Insert:
-                case ActionEnum.Set:
-                case ActionEnum.Change:
+                //case ActionEnum.Set:
+                //case ActionEnum.Change:
+                case ActionEnum.Update:
                 case ActionEnum.Where:
                 case ActionEnum.And:
                 case ActionEnum.Or:

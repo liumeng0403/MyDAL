@@ -17,20 +17,30 @@ namespace EasyDAL.Exchange.Core.Delete
             DC = dc;
         }
 
+        /// <summary>
+        /// 与 条件
+        /// </summary>
+        /// <param name="func">格式: it => it.Id == m.Id</param>
         public DeleteFilter<M> And(Expression<Func<M, bool>> func)
         {
             AndHandle(func,CrudTypeEnum.Delete);
             return this;
         }
 
-
+        /// <summary>
+        /// 或 条件
+        /// </summary>
+        /// <param name="func">格式: it => it.Id == m.Id</param>
         public DeleteFilter<M> Or(Expression<Func<M, bool>> func)
         {
             OrHandle(func, CrudTypeEnum.Delete);
             return this;
         }
 
-
+        /// <summary>
+        /// 单表数据删除
+        /// </summary>
+        /// <returns>删除条目数</returns>
         public async Task<int> DeleteAsync()
         {
             return await SqlHelper.ExecuteAsync(

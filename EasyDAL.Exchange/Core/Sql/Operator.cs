@@ -108,7 +108,7 @@ namespace EasyDAL.Exchange.Core.Sql
                     KeyOne = tp.key,
                     Param = tp.param,
                     Value = tp.val,
-                    Action = ActionEnum.Set,
+                    Action = ActionEnum.Update,
                     Option = OptionEnum.Set,
                     Crud = CrudTypeEnum.Update
                 });
