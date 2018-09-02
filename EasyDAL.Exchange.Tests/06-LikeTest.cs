@@ -1,8 +1,6 @@
 ﻿using EasyDAL.Exchange.Core.Sql;
 using EasyDAL.Exchange.Tests.Entities;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
