@@ -16,6 +16,10 @@ namespace EasyDAL.Exchange.Core.Query
             DC = dc;
         }
 
+        /// <summary>
+        /// 单表单值查询
+        /// </summary>
+        /// <typeparam name="V">int/long/decimal/...</typeparam>
         public async Task<V> QuerySingleValueAsync<V>()
         {
             return await SqlHelper.ExecuteScalarAsync<V>(

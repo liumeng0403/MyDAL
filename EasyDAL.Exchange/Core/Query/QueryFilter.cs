@@ -21,19 +21,30 @@ namespace EasyDAL.Exchange.Core.Query
             DC = dc;
         }
 
-
+        /// <summary>
+        /// 与条件
+        /// </summary>
+        /// <param name="func">格式: it => it.CreatedOn >= WhereTest.DateTime_大于等于</param>
         public QueryFilter<M> And(Expression<Func<M, bool>> func)
         {
             AndHandle(func, CrudTypeEnum.Query);
             return this;
         }
 
+        /// <summary>
+        /// 或条件
+        /// </summary>
+        /// <param name="func">格式: it => it.AgentLevel == testQ.AgentLevelXX</param>
         public QueryFilter<M> Or(Expression<Func<M, bool>> func)
         {
             OrHandle(func, CrudTypeEnum.Query);
             return this;
         }
 
+        /// <summary>
+        /// select count(column)
+        /// </summary>
+        /// <param name="func">格式: it => it.Id</param>
         public SingleFilter<M> Count<F>(Expression<Func<M, F>> func)
         {
             var field = DC.EH.ExpressionHandle(func);
@@ -48,6 +59,9 @@ namespace EasyDAL.Exchange.Core.Query
             return new SingleFilter<M>(DC);
         }
 
+        /// <summary>
+        /// 查询是否存在符合条件的数据
+        /// </summary>
         public async Task<bool> ExistAsync()
         {
             var count = await SqlHelper.ExecuteScalarAsync<long>(
@@ -64,31 +78,53 @@ namespace EasyDAL.Exchange.Core.Query
             }
         }
 
-
+        /// <summary>
+        /// 单表单条数据查询
+        /// </summary>
         public async Task<M> QueryFirstOrDefaultAsync()
         {
             return await QueryFirstOrDefaultAsyncHandle<M, M>();
         }
+        /// <summary>
+        /// 单表单条数据查询
+        /// </summary>
+        /// <typeparam name="VM">ViewModel</typeparam>
         public async Task<VM> QueryFirstOrDefaultAsync<VM>()
         {
             return await QueryFirstOrDefaultAsyncHandle<M, VM>();
         }
 
-
+        /// <summary>
+        /// 单表多条数据查询
+        /// </summary>
         public async Task<List<M>> QueryListAsync()
         {
             return await QueryListAsyncHandle<M, M>();
         }
+        /// <summary>
+        /// 单表多条数据查询
+        /// </summary>
+        /// <typeparam name="VM">ViewModel</typeparam>
         public async Task<List<VM>> QueryListAsync<VM>()
         {
             return await QueryListAsyncHandle<M, VM>();
         }
 
-
+        /// <summary>
+        /// 单表分页查询
+        /// </summary>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">每页条数</param>
         public async Task<PagingList<M>> QueryPagingListAsync(int pageIndex, int pageSize)
         {
             return await QueryPagingListAsyncHandle<M, M>(pageIndex, pageSize);
         }
+        /// <summary>
+        /// 单表分页查询
+        /// </summary>
+        /// <typeparam name="VM">ViewModel</typeparam>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">每页条数</param>
         public async Task<PagingList<VM>> QueryPagingListAsync<VM>(int pageIndex, int pageSize)
         {
             return await QueryPagingListAsyncHandle<M, VM>(pageIndex, pageSize);
