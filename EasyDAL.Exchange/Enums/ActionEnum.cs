@@ -25,17 +25,23 @@ namespace EasyDAL.Exchange.Enums
         [Description("")]
         Insert,
 
-        /// <summary>
-        /// "="
-        /// </summary>
-        [Description("=")]
-        Set,
+        ///// <summary>
+        ///// "="
+        ///// </summary>
+        //[Description("=")]
+        //Set,
+
+        ///// <summary>
+        ///// ""
+        ///// </summary>
+        //[Description("")]
+        //Change,
 
         /// <summary>
-        /// ""
+        /// 
         /// </summary>
         [Description("")]
-        Change,
+        Update,
 
         /// <summary>
         /// ""
