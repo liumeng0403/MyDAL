@@ -1,6 +1,7 @@
 ﻿using EasyDAL.Exchange.Core.Sql;
 using EasyDAL.Exchange.Enums;
 using EasyDAL.Exchange.Helper;
+using Rainbow.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +52,28 @@ namespace EasyDAL.Exchange.Core.Query
         public async Task<List<VM>> QueryAllAsync<VM>()
         {
             return await QueryAllAsyncHandle<M, VM>();
+        }
+
+        /// <summary>
+        /// 单表分页查询
+        /// </summary>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">每页条数</param>
+        /// <returns>返回全表分页数据</returns>
+        public async Task<PagingList<M>> QueryAllPagingListAsync(int pageIndex, int pageSize)
+        {
+            return await QueryPagingListAsyncHandle<M, M>(pageIndex, pageSize, SqlTypeEnum.QueryAllPagingListAsync);
+        }
+        /// <summary>
+        /// 单表分页查询
+        /// </summary>
+        /// <typeparam name="VM">ViewModel</typeparam>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">每页条数</param>
+        /// <returns>返回全表分页数据</returns>
+        public async Task<PagingList<VM>> QueryAllPagingListAsync<VM>(int pageIndex, int pageSize)
+        {
+            return await QueryPagingListAsyncHandle<M, VM>(pageIndex, pageSize, SqlTypeEnum.QueryAllPagingListAsync);
         }
 
     }

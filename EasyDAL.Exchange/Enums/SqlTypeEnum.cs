@@ -14,6 +14,7 @@ namespace EasyDAL.Exchange.Enums
         QueryListAsync,
         JoinQueryListAsync,
         QueryPagingListAsync,
+        QueryAllPagingListAsync,
         QuerySingleValueAsync,
         ExistAsync,
         QueryAllAsync

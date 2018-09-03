@@ -83,6 +83,12 @@ namespace EasyDAL.Exchange.Enums
         /// " or "
         /// </summary>
         [Description(" or ")]
-        Or
+        Or,
+
+        /// <summary>
+        /// ""
+        /// </summary>
+        [Description("")]
+        OrderBy
     }
 }

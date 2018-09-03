@@ -46,7 +46,7 @@ namespace EasyDAL.Exchange.Core.Delete
             return await SqlHelper.ExecuteAsync(
                 DC.Conn, 
                 DC.SqlProvider.GetSQL<M>( SqlTypeEnum.DeleteAsync)[0],
-                DC.SqlProvider.GetParameters());
+                DC.GetParameters());
         }
 
     }

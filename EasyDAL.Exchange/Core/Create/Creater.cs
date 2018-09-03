@@ -28,7 +28,7 @@ namespace EasyDAL.Exchange.Core.Create
             return await SqlHelper.ExecuteAsync(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(SqlTypeEnum.CreateAsync)[0],
-                DC.SqlProvider.GetParameters());
+                DC.GetParameters());
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace EasyDAL.Exchange.Core.Create
             return await SqlHelper.ExecuteAsync(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(SqlTypeEnum.CreateBatchAsync)[0],
-                DC.SqlProvider.GetParameters());
+                DC.GetParameters());
         }
 
     }
