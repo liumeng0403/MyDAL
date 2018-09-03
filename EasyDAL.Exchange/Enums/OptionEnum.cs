@@ -20,6 +20,12 @@ namespace EasyDAL.Exchange.Enums
         Insert,
 
         /// <summary>
+        /// ""
+        /// </summary>
+        [Description("")]
+        InsertTVP,
+
+        /// <summary>
         /// =
         /// </summary>
         [Description("=")]

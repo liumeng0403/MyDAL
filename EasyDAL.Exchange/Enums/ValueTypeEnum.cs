@@ -9,5 +9,7 @@ namespace EasyDAL.Exchange.Enums
         None,
         Bool,
         Int
+        //    ,
+        //Null
     }
 }

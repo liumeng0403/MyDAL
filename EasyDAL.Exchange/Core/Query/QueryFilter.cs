@@ -51,6 +51,7 @@ namespace EasyDAL.Exchange.Core.Query
             {
                 KeyOne = field,
                 Param = field,
+                ParamRaw=field,
                 Action = ActionEnum.Select,
                 Option = OptionEnum.Count,
                 Crud = CrudTypeEnum.Query

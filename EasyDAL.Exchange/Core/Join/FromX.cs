@@ -21,7 +21,6 @@ namespace EasyDAL.Exchange.Core.Join
             {
                 TableOne = DC.SqlProvider.GetTableName(m),
                 AliasOne = alias,
-                Param = string.Empty,
                 Action = ActionEnum.From,
                 Crud= CrudTypeEnum.Join
             });

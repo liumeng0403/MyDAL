@@ -317,6 +317,7 @@ namespace EasyDAL.Exchange.Helper
                             {
                                 KeyOne = key,
                                 Param = key,
+                                ParamRaw=key,
                                 Value = val,
                                 Option = option,
                                 FuncSupplement= GetOption(binExpr)
@@ -330,6 +331,7 @@ namespace EasyDAL.Exchange.Helper
                             {
                                 KeyOne = key,
                                 Param = key,
+                                ParamRaw=key,
                                 Value = val,
                                 Option = option
                             };
@@ -348,6 +350,7 @@ namespace EasyDAL.Exchange.Helper
                             {
                                 KeyOne = key,
                                 Param = key,
+                                ParamRaw=key,
                                 Value = val,
                                 Option = option
                             };
@@ -361,6 +364,7 @@ namespace EasyDAL.Exchange.Helper
                             {
                                 KeyOne= "OneEqualOne",
                                 Param = "OneEqualOne",
+                                ParamRaw= "OneEqualOne",
                                 Value = bodyC.Value.ToString(),
                                 ValueType= ValueTypeEnum.Bool,
                                 Option = OptionEnum.OneEqualOne
@@ -416,7 +420,6 @@ namespace EasyDAL.Exchange.Helper
                                 AliasOne = tuple1.alias,
                                 KeyTwo = tuple2.key,
                                 AliasTwo = tuple2.alias,
-                                Param = string.Empty,
                                 Action = action,
                                 Option = GetOption(bExpr)
                             };
@@ -442,6 +445,7 @@ namespace EasyDAL.Exchange.Helper
                                 AliasOne = tuple.alias,
                                 Value = val,
                                 Param = tuple.key,
+                                ParamRaw=tuple.key,
                                 Action = action,
                                 Option = GetOption(bExpr)
                             };

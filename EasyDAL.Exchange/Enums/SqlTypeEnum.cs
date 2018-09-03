@@ -7,6 +7,7 @@ namespace EasyDAL.Exchange.Enums
     internal enum SqlTypeEnum
     {
         CreateAsync,
+        CreateBatchAsync,
         DeleteAsync,
         UpdateAsync,
         QueryFirstOrDefaultAsync,

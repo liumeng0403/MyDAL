@@ -1,5 +1,5 @@
 ﻿
-using EasyDAL.Exchange.Core;
+using EasyDAL.Exchange.Core.Create;
 using EasyDAL.Exchange.Core.Sql;
 using EasyDAL.Exchange.Enums;
 using EasyDAL.Exchange.Helper;
@@ -12,19 +12,12 @@ namespace EasyDAL.Exchange
     public static class DbExtension
     {
         /// <summary>
-        /// 插入单条数据
+        /// 新建数据 方法簇
         /// </summary>
         /// <typeparam name="M">M:与DB Table 一 一对应</typeparam>
-        /// <returns>插入条目数</returns>
-        public async static Task<int> CreateAsync<M>(this IDbConnection connection,M m)
+        public static Core.Create.Creater<M> Creater<M>(this IDbConnection connection)
         {
-            var creater = new Core.Create.Creater<M>(new DbContext(connection));
-
-            creater.DC.GetProperties(m);
-            return await SqlHelper.ExecuteAsync(
-                creater.DC.Conn,
-                creater.DC.SqlProvider.GetSQL<M>(SqlTypeEnum.CreateAsync)[0],
-                creater.DC.SqlProvider.GetParameters());
+            return new Core.Create.Creater<M>(new DbContext(connection));
         }
 
         /// <summary>

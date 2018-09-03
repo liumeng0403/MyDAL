@@ -23,7 +23,6 @@ namespace EasyDAL.Exchange.Core.Join
             {
                 TableOne = DC.SqlProvider.GetTableName(m),
                 AliasOne = alias,
-                Param = string.Empty,
                 Action = ActionEnum.InnerJoin,
                 Crud= CrudTypeEnum.Join
             });
@@ -37,7 +36,6 @@ namespace EasyDAL.Exchange.Core.Join
             {
                 TableOne = DC.SqlProvider.GetTableName(m),
                 AliasOne = alias,
-                Param = string.Empty,
                 Action = ActionEnum.LeftJoin,
                 Crud = CrudTypeEnum.Join
             });

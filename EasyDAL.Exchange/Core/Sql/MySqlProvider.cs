@@ -12,6 +12,8 @@ using System.Data;
 using EasyDAL.Exchange.Common;
 using EasyDAL.Exchange.AdoNet;
 using System.ComponentModel.DataAnnotations.Schema;
+using EasyDAL.Exchange.Helper;
+using System.Threading.Tasks;
 
 namespace EasyDAL.Exchange.Core
 {
@@ -197,13 +199,54 @@ namespace EasyDAL.Exchange.Core
             return string.Join(",", list);
         }
 
+        internal async Task<List<ColumnInfo>> GetColumnsInfos<M>()
+        {
+            TryGetTableName<M>(out var tableName);
+            var sql = $@"
+                                        SELECT
+                                            TABLE_NAME as TableName,
+                                            column_name as ColumnName,
+                                            DATA_TYPE as DataType,
+                                            column_default as ColumnDefault,
+                                            is_nullable AS IsNullable,
+                                            column_comment as ColumnComment
+                                        FROM
+                                            information_schema.COLUMNS
+                                        WHERE
+                                            TABLE_NAME = '{tableName.TrimStart('`').TrimEnd('`').ToLower()}'
+                                        ;
+                                  ";
+            return (await SqlHelper.QueryAsync<ColumnInfo>(DC.Conn, sql, new DynamicParameters())).ToList();
+        }
+
         internal string GetColumns()
         {
-            return $" ({ string.Join(",", DC.Conditions.Select(it => $"`{it.KeyOne}`"))}) ";
+            var list = new List<string>();
+            foreach (var item in DC.Conditions)
+            {
+                if (item.TvpIndex == 0)
+                {
+                    list.Add($"`{item.KeyOne}`");
+                }
+            }
+            return $" ({ string.Join(",", list)}) ";
         }
         internal string GetValues()
         {
-            return $" ({ string.Join(",", DC.Conditions.Select(it => $"@{it.Param}"))}) ";
+            var list = new List<string>();
+            for(var i=0;i<DC.Conditions.Max(it=>it.TvpIndex)+1;i++)
+            {
+                var values = new List<string>();
+                foreach(var item in DC.Conditions)
+                {                    
+                    if(item.TvpIndex==i)
+                    {
+                        values.Add($"@{item.Param}");
+                    }
+                }
+                list.Add($"({string.Join(",", values)})");
+            }
+            return string.Join(",", list);
         }
 
         internal string GetTableName<M>(M m)
@@ -265,8 +308,25 @@ namespace EasyDAL.Exchange.Core
                     switch (item.ValueType)
                     {
                         case ValueTypeEnum.Bool:
-                            paras.Add(item.Param, item.Value.ToBool(), DbType.Boolean);
+                            if (!string.IsNullOrWhiteSpace(item.ColumnType)
+                                && item.ColumnType.Equals("bit", StringComparison.OrdinalIgnoreCase))
+                            {
+                                if(item.Value.ToBool())
+                                {
+                                    paras.Add(item.Param, 1, DbType.Int16);
+                                }
+                                else
+                                {
+                                    paras.Add(item.Param, 0, DbType.Int16);
+                                }
+                            }
+                            else
+                            {
+                                paras.Add(item.Param, item.Value.ToBool(), DbType.Boolean);
+                            }
                             break;
+                        //case ValueTypeEnum.Null:
+                        //    paras.Add(item.Param,DBNull.Value,DbType.)
                         case ValueTypeEnum.None:
                             paras.Add(item.Param, item.Value);
                             break;
@@ -289,7 +349,16 @@ namespace EasyDAL.Exchange.Core
             switch (type)
             {
                 case SqlTypeEnum.CreateAsync:
-                    list.Add($" insert into {tableName} {DC.SqlProvider.GetColumns()} values {DC.SqlProvider.GetValues()} ;");
+                    list.Add($" insert into {tableName} {GetColumns()} values {GetValues()} ;");
+                    break;
+                case SqlTypeEnum.CreateBatchAsync:
+                    list.Add(
+                                  $" LOCK TABLES {tableName} WRITE; " +
+                                  $" /*!40000 ALTER TABLE {tableName} DISABLE KEYS */; " +
+                                  $" insert into  {tableName} {GetColumns()} VALUES {GetValues()} ; " +
+                                  $" /*!40000 ALTER TABLE {tableName} ENABLE KEYS */; " +
+                                  $" UNLOCK TABLES; "
+                                 );
                     break;
                 case SqlTypeEnum.DeleteAsync:
                     list.Add($" delete from {tableName} where {GetWheres()} ; ");
