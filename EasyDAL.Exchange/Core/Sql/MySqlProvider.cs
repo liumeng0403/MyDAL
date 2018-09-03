@@ -117,12 +117,12 @@ namespace EasyDAL.Exchange.Core
 
         internal string GetWheres()
         {
-            if (!DC.Conditions.Any(it => it.Action == ActionEnum.Where)
-                && !DC.Conditions.Any(it => it.Action == ActionEnum.And)
-                && !DC.Conditions.Any(it => it.Action == ActionEnum.Or))
-            {
-                throw new Exception("没有设置任何条件!");
-            }
+            //if (!DC.Conditions.Any(it => it.Action == ActionEnum.Where)
+            //    && !DC.Conditions.Any(it => it.Action == ActionEnum.And)
+            //    && !DC.Conditions.Any(it => it.Action == ActionEnum.Or))
+            //{
+            //    throw new Exception("没有设置任何条件!");
+            //}
 
             var str = string.Empty;
 
@@ -324,34 +324,34 @@ namespace EasyDAL.Exchange.Core
                                  );
                     break;
                 case SqlTypeEnum.DeleteAsync:
-                    list.Add($" delete from {tableName} where {GetWheres()} ; ");
+                    list.Add($" delete from {tableName} {GetWheres()} ; ");
                     break;
                 case SqlTypeEnum.UpdateAsync:
-                    list.Add($" update {tableName} set {DC.SqlProvider.GetUpdates()} where {GetWheres()} ;");
+                    list.Add($" update {tableName} set {DC.SqlProvider.GetUpdates()} {GetWheres()} ;");
                     break;
                 case SqlTypeEnum.QueryFirstOrDefaultAsync:
-                    list.Add($"SELECT * FROM {tableName} WHERE {GetWheres()} ; ");
+                    list.Add($"SELECT * FROM {tableName} {GetWheres()} ; ");
                     break;
                 case SqlTypeEnum.QueryListAsync:
-                    list.Add($"SELECT * FROM {tableName} WHERE {GetWheres()} ; ");
+                    list.Add($"SELECT * FROM {tableName} {GetWheres()} ; ");
                     break;
                 case SqlTypeEnum.QueryPagingListAsync:
                     var wherePart = GetWheres();
-                    list.Add($"SELECT count(*) FROM {tableName} WHERE {wherePart} ; ");
-                    list.Add($"SELECT * FROM {tableName} WHERE {wherePart} order by {GetOrderByPart<M>()} limit {(pageIndex - 1) * pageSize},{pageIndex * pageSize}  ; ");
+                    list.Add($"SELECT count(*) FROM {tableName} {wherePart} ; ");
+                    list.Add($"SELECT * FROM {tableName} {wherePart} order by {GetOrderByPart<M>()} limit {(pageIndex - 1) * pageSize},{pageIndex * pageSize}  ; ");
                     break;
                 case SqlTypeEnum.QueryAllPagingListAsync:
                     list.Add($"SELECT count(*) FROM {tableName} ; ");
                     list.Add($"SELECT * FROM {tableName} order by {GetOrderByPart<M>()} limit {(pageIndex - 1) * pageSize},{pageIndex * pageSize}  ; ");
                     break;
                 case SqlTypeEnum.JoinQueryListAsync:
-                    list.Add($" select * from {GetJoins()} where {GetWheres()} ; ");
+                    list.Add($" select * from {GetJoins()} {GetWheres()} ; ");
                     break;
                 case SqlTypeEnum.QuerySingleValueAsync:
-                    list.Add($" select {GetSingleValuePart()} from {tableName} where {GetWheres()} ; ");
+                    list.Add($" select {GetSingleValuePart()} from {tableName} {GetWheres()} ; ");
                     break;
                 case SqlTypeEnum.ExistAsync:
-                    list.Add($" select count(*) from {tableName} where {GetWheres()} ; ");
+                    list.Add($" select count(*) from {tableName} {GetWheres()} ; ");
                     break;
                 case SqlTypeEnum.QueryAllAsync:
                     list.Add($" select * from {tableName} ; ");
