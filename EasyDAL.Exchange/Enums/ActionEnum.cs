@@ -68,9 +68,9 @@ namespace EasyDAL.Exchange.Enums
         On,
 
         /// <summary>
-        /// " "
+        /// " where "
         /// </summary>
-        [Description(" ")]
+        [Description(" where ")]
         Where,
 
         /// <summary>
