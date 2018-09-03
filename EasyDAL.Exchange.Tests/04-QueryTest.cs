@@ -24,8 +24,8 @@ namespace EasyDAL.Exchange.Tests
             };
             // 造数据
             var resc = await Conn
-                .CreateAsync<BodyFitRecord>(m);
-                //.CreateAsync(m);
+                .Creater<BodyFitRecord>()
+                .CreateAsync(m);
 
             var xx0 = "";
 

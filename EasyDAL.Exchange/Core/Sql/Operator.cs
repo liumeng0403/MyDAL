@@ -37,6 +37,7 @@ namespace EasyDAL.Exchange.Core.Sql
             {
                 KeyOne = key,
                 Param = key,
+                ParamRaw=key,
                 Value = val,
                 Option = option,
                 Action = action,
@@ -107,6 +108,7 @@ namespace EasyDAL.Exchange.Core.Sql
                 {
                     KeyOne = tp.key,
                     Param = tp.param,
+                    ParamRaw=tp.param,
                     Value = tp.val,
                     Action = ActionEnum.Update,
                     Option = OptionEnum.Set,
@@ -143,6 +145,7 @@ namespace EasyDAL.Exchange.Core.Sql
                 {
                     KeyOne = tp.key,
                     Param = tp.param,
+                    ParamRaw=tp.param,
                     Value = tp.val,
                     Action = action,
                     Option = OptionEnum.Equal,

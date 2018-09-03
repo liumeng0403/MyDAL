@@ -28,6 +28,45 @@ namespace EasyDAL.Exchange.Tests
                 .Where(it => it.Id == res1.Id)
                 .DeleteAsync();
         }
+        private async Task<List<AddressInfo>> PreCreateBatch()
+        {
+            var res1 = await Conn
+                .Deleter<AddressInfo>()
+                .Where(a => true)
+                .DeleteAsync();
+
+            var list = new List<AddressInfo>();
+            for(var i=0;i<10;i++)
+            {
+                if (i % 2 == 0)
+                {
+                    list.Add(new AddressInfo
+                    {
+                        Id = Guid.NewGuid(),
+                        CreatedOn = DateTime.Now,
+                        ContactName = "Name_" + i.ToString(),
+                        ContactPhone = "1800000000" + i.ToString(),
+                        DetailAddress = "Address_" + i.ToString(),
+                        IsDefault = true,   // f:bool c:bit(1)
+                        UserId = Guid.NewGuid()
+                    });
+                }
+                else
+                {
+                    list.Add(new AddressInfo
+                    {
+                        Id = Guid.NewGuid(),
+                        CreatedOn = DateTime.Now,
+                        ContactName = "Name_" + i.ToString(),
+                        ContactPhone = "1800000000" + i.ToString(),
+                        DetailAddress = "Address_" + i.ToString(),
+                        IsDefault = false,   // f:bool c:bit(1)
+                        UserId = Guid.NewGuid()
+                    });
+                }
+            }
+            return list;
+        }
 
         // 创建一个新对象
         [Fact]
@@ -46,7 +85,8 @@ namespace EasyDAL.Exchange.Tests
 
             // 新建
             var res1 = await Conn.OpenHint()
-                .CreateAsync<BodyFitRecord>(m);
+                .Creater<BodyFitRecord>()
+                .CreateAsync(m);
             //.CreateAsync(m);
 
             var tuple = (Hints.SQL, Hints.Parameters);
@@ -78,9 +118,27 @@ namespace EasyDAL.Exchange.Tests
             var xx1 = "";
 
             var res1 = await Conn.OpenHint()
+                .Creater<Agent>()
                 .CreateAsync(m1);
 
             var tuple = (Hints.SQL, Hints.Parameters);
+
+            var xx = "";
+        }
+
+        // 批量创建新对象
+        [Fact]
+        public async Task CreateBatchAsync()
+        {
+            var list = await PreCreateBatch();
+
+            var xx1 = "";
+
+            var res1 = await Conn.OpenHint()
+                .Creater<AddressInfo>()
+                .CreateBatchAsync(list);
+
+            var tuple1 = (Hints.SQL, Hints.Parameters);
 
             var xx = "";
         }

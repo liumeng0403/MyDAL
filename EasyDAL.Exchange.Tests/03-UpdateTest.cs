@@ -32,8 +32,8 @@ namespace EasyDAL.Exchange.Tests
 
             // 建
             var res2 = await Conn
-                .CreateAsync<BodyFitRecord>(m);
-                //.CreateAsync(m);
+                .Creater<BodyFitRecord>()
+                .CreateAsync(m);
 
             return m;
 
