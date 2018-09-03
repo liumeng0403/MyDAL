@@ -53,6 +53,22 @@ namespace EasyDAL.Exchange.Core
             throw new Exception(value);
         }
 
+        private string GetOrderByPart<M>()
+        {
+            var str = string.Empty;
+
+            if(!DC.Conditions.Any(it=>it.Action== ActionEnum.OrderBy))
+            {
+                str = $" {DC.SC.GetModelProperys(typeof(M)).First().Name} desc ";
+            }
+            else
+            {
+                str = string.Join(",", DC.Conditions.Where(it => it.Action == ActionEnum.OrderBy).Select(it => $" {it.KeyOne} {it.Option.ToEnumDesc<OptionEnum>()} "));
+            }
+
+            return str;
+        }
+
         internal string GetSingleValuePart()
         {
             var str = string.Empty;
@@ -283,59 +299,6 @@ namespace EasyDAL.Exchange.Core
             }
         }
 
-        private bool IsParameter(DicModel item)
-        {
-            switch (item.Action)
-            {
-                case ActionEnum.Insert:
-                //case ActionEnum.Set:
-                //case ActionEnum.Change:
-                case ActionEnum.Update:
-                case ActionEnum.Where:
-                case ActionEnum.And:
-                case ActionEnum.Or:
-                    return true;
-            }
-            return false;
-        }
-        internal DynamicParameters GetParameters()
-        {
-            var paras = new DynamicParameters();
-            foreach (var item in DC.Conditions)
-            {
-                if (IsParameter(item))
-                {
-                    switch (item.ValueType)
-                    {
-                        case ValueTypeEnum.Bool:
-                            if (!string.IsNullOrWhiteSpace(item.ColumnType)
-                                && item.ColumnType.Equals("bit", StringComparison.OrdinalIgnoreCase))
-                            {
-                                if(item.Value.ToBool())
-                                {
-                                    paras.Add(item.Param, 1, DbType.Int16);
-                                }
-                                else
-                                {
-                                    paras.Add(item.Param, 0, DbType.Int16);
-                                }
-                            }
-                            else
-                            {
-                                paras.Add(item.Param, item.Value.ToBool(), DbType.Boolean);
-                            }
-                            break;
-                        //case ValueTypeEnum.Null:
-                        //    paras.Add(item.Param,DBNull.Value,DbType.)
-                        case ValueTypeEnum.None:
-                            paras.Add(item.Param, item.Value);
-                            break;
-                    }
-                }
-            }
-            return paras;
-        }
-
         internal List<string> GetSQL<M>(SqlTypeEnum type, int? pageIndex = null, int? pageSize = null)
         {
             var list = new List<string>();
@@ -375,7 +338,11 @@ namespace EasyDAL.Exchange.Core
                 case SqlTypeEnum.QueryPagingListAsync:
                     var wherePart = GetWheres();
                     list.Add($"SELECT count(*) FROM {tableName} WHERE {wherePart} ; ");
-                    list.Add($"SELECT * FROM {tableName} WHERE {wherePart} limit {(pageIndex - 1) * pageSize},{pageIndex * pageSize}  ; ");
+                    list.Add($"SELECT * FROM {tableName} WHERE {wherePart} order by {GetOrderByPart<M>()} limit {(pageIndex - 1) * pageSize},{pageIndex * pageSize}  ; ");
+                    break;
+                case SqlTypeEnum.QueryAllPagingListAsync:
+                    list.Add($"SELECT count(*) FROM {tableName} ; ");
+                    list.Add($"SELECT * FROM {tableName} order by {GetOrderByPart<M>()} limit {(pageIndex - 1) * pageSize},{pageIndex * pageSize}  ; ");
                     break;
                 case SqlTypeEnum.JoinQueryListAsync:
                     list.Add($" select * from {GetJoins()} where {GetWheres()} ; ");
@@ -397,7 +364,7 @@ namespace EasyDAL.Exchange.Core
                 Hints.SQL = list;
                 Hints.Parameters = DC
                     .Conditions
-                    .Where(it => IsParameter(it))
+                    .Where(it => DC.IsParameter(it))
                     .Select(it =>
                     {
                         return $"key:【{it.Param}】;val:【{it.Value}】.";

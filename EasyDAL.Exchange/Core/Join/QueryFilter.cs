@@ -31,7 +31,7 @@ namespace EasyDAL.Exchange.Core.Join
             return (await SqlHelper.QueryAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<VM>(SqlTypeEnum.JoinQueryListAsync)[0],
-                DC.SqlProvider.GetParameters())).ToList();
+                DC.GetParameters())).ToList();
         }
 
     }

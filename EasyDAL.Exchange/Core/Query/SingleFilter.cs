@@ -25,7 +25,7 @@ namespace EasyDAL.Exchange.Core.Query
             return await SqlHelper.ExecuteScalarAsync<V>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(SqlTypeEnum.QuerySingleValueAsync)[0],
-                DC.SqlProvider.GetParameters());
+                DC.GetParameters());
         }
 
     }

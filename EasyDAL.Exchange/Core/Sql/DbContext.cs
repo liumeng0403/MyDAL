@@ -1,6 +1,9 @@
 ﻿
+using EasyDAL.Exchange.AdoNet;
+using EasyDAL.Exchange.Cache;
 using EasyDAL.Exchange.Common;
 using EasyDAL.Exchange.Enums;
+using EasyDAL.Exchange.Extensions;
 using EasyDAL.Exchange.Helper;
 using System;
 using System.Collections.Concurrent;
@@ -15,10 +18,10 @@ namespace EasyDAL.Exchange.Core.Sql
     internal class DbContext
     {
 
-        private static ConcurrentDictionary<Type, List<PropertyInfo>> ModelPropertiesCache { get; } = new ConcurrentDictionary<Type, List<PropertyInfo>>();
-        private static ConcurrentDictionary<string, List<ColumnInfo>> TableColumnsCache { get; } = new ConcurrentDictionary<string, List<ColumnInfo>>();
+  
+        internal static ConcurrentDictionary<string, List<ColumnInfo>> TableColumnsCache { get; } = new ConcurrentDictionary<string, List<ColumnInfo>>();
 
-        private string GetTCKey<M>()
+        internal string GetTCKey<M>()
         {
             var key = string.Empty;
             key += Conn.Database;
@@ -26,12 +29,30 @@ namespace EasyDAL.Exchange.Core.Sql
             key += tableName;
             return key;
         }
+        internal bool IsParameter(DicModel item)
+        {
+            switch (item.Action)
+            {
+                case ActionEnum.Insert:
+                //case ActionEnum.Set:
+                //case ActionEnum.Change:
+                case ActionEnum.Update:
+                case ActionEnum.Where:
+                case ActionEnum.And:
+                case ActionEnum.Or:
+                    return true;
+            }
+            return false;
+        }
+
 
         internal AttributeHelper AH { get; private set; }
 
         internal GenericHelper GH { get; private set; }
         internal Hints Hint { get; set; }
         internal ExpressionHelper EH { get; private set; }
+
+        internal StaticCache SC { get; private set; }
 
         internal List<DicModel> Conditions { get; private set; }
 
@@ -65,12 +86,7 @@ namespace EasyDAL.Exchange.Core.Sql
 
         private async Task SetInsertValue<M>(M m,OptionEnum option,int index)
         {
-            var props = default(List<PropertyInfo>);
-            if (!ModelPropertiesCache.TryGetValue(m.GetType(), out props))
-            {
-                props = GH.GetPropertyInfos(m);
-                ModelPropertiesCache[m.GetType()] = props;
-            }
+            var props = SC.GetModelProperys(m.GetType());
             var tcKey = GetTCKey<M>();
             var columns = default(List<ColumnInfo>);
             if (!TableColumnsCache.TryGetValue(tcKey,out columns))
@@ -119,6 +135,43 @@ namespace EasyDAL.Exchange.Core.Sql
             }
         }
 
+        internal DynamicParameters GetParameters()
+        {
+            var paras = new DynamicParameters();
+            foreach (var item in Conditions)
+            {
+                if (IsParameter(item))
+                {
+                    switch (item.ValueType)
+                    {
+                        case ValueTypeEnum.Bool:
+                            if (!string.IsNullOrWhiteSpace(item.ColumnType)
+                                && item.ColumnType.Equals("bit", StringComparison.OrdinalIgnoreCase))
+                            {
+                                if (item.Value.ToBool())
+                                {
+                                    paras.Add(item.Param, 1, DbType.Int16);
+                                }
+                                else
+                                {
+                                    paras.Add(item.Param, 0, DbType.Int16);
+                                }
+                            }
+                            else
+                            {
+                                paras.Add(item.Param, item.Value.ToBool(), DbType.Boolean);
+                            }
+                            break;
+                        case ValueTypeEnum.None:
+                            paras.Add(item.Param, item.Value);
+                            break;
+                    }
+                }
+            }
+            return paras;
+        }
+
+
         internal DbContext(IDbConnection conn)
         {
             Conn = conn;
@@ -126,6 +179,7 @@ namespace EasyDAL.Exchange.Core.Sql
             AH = AttributeHelper.Instance;
             GH = GenericHelper.Instance;
             EH = ExpressionHelper.Instance;
+            SC = StaticCache.Instance;
             SqlProvider = new MySqlProvider(this);
         }
 

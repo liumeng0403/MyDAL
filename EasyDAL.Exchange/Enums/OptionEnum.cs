@@ -101,6 +101,18 @@ namespace EasyDAL.Exchange.Enums
         /// =
         /// </summary>
         [Description("=")]
-        Set
+        Set,
+
+        /// <summary>
+        /// " asc "
+        /// </summary>
+        [Description(" asc ")]
+        Asc,
+
+        /// <summary>
+        /// " desc "
+        /// </summary>
+        [Description(" desc ")]
+        Desc
     }
 }

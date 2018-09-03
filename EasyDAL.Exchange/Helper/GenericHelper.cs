@@ -230,6 +230,11 @@ namespace EasyDAL.Exchange.Helper
             var props = m.GetType().GetProperties(BindingFlags.GetProperty | BindingFlags.Instance | BindingFlags.Public).ToList();
             return props;
         }
+        public List<PropertyInfo> GetPropertyInfos(Type mType)
+        {
+            var props = mType.GetProperties(BindingFlags.GetProperty | BindingFlags.Instance | BindingFlags.Public).ToList();
+            return props;
+        }
 
         private string ConvertType(object value)
         {

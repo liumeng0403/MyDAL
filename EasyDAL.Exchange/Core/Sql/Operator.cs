@@ -174,7 +174,7 @@ namespace EasyDAL.Exchange.Core.Sql
             return await SqlHelper.QueryFirstOrDefaultAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<DM>(SqlTypeEnum.QueryFirstOrDefaultAsync)[0],
-                DC.SqlProvider.GetParameters());
+                DC.GetParameters());
         }
 
         protected async Task<List<VM>> QueryListAsyncHandle<DM,VM>()
@@ -182,16 +182,16 @@ namespace EasyDAL.Exchange.Core.Sql
             return (await SqlHelper.QueryAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<DM>(SqlTypeEnum.QueryListAsync)[0],
-                DC.SqlProvider.GetParameters())).ToList();
+                DC.GetParameters())).ToList();
         }
 
-        protected async Task<PagingList<VM>> QueryPagingListAsyncHandle<DM,VM>(int pageIndex, int pageSize)
+        internal async Task<PagingList<VM>> QueryPagingListAsyncHandle<DM,VM>(int pageIndex, int pageSize,SqlTypeEnum sqlType)
         {
             var result = new PagingList<VM>();
             result.PageIndex = pageIndex;
             result.PageSize = pageSize;
-            var paras = DC.SqlProvider.GetParameters();
-            var sql = DC.SqlProvider.GetSQL<DM>(SqlTypeEnum.QueryPagingListAsync, result.PageIndex, result.PageSize);
+            var paras = DC.GetParameters();
+            var sql = DC.SqlProvider.GetSQL<DM>(sqlType, result.PageIndex, result.PageSize);
             result.TotalCount = await SqlHelper.ExecuteScalarAsync<long>(DC.Conn, sql[0], paras);
             result.Data = (await SqlHelper.QueryAsync<VM>(DC.Conn, sql[1], paras)).ToList();
             return result;
@@ -202,7 +202,7 @@ namespace EasyDAL.Exchange.Core.Sql
             return (await SqlHelper.QueryAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<DM>(SqlTypeEnum.QueryAllAsync)[0],
-                DC.SqlProvider.GetParameters())).ToList();
+                DC.GetParameters())).ToList();
         }
     }
 }
