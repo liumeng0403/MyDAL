@@ -165,21 +165,6 @@ namespace EasyDAL.Exchange.Tests
 
             var tuple4 = (Hints.SQL, Hints.Parameters);
 
-            var xx5 = "";
-
-            // where object
-            var res5 = await Conn.OpenHint()
-                .Selecter<Agent>()
-                .Where(new
-                {
-                    Id=Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"),
-                    Name= "樊士芹",
-                    xxx="xxx"
-                })
-                .QueryListAsync();
-
-            var tuple5 = (Hints.SQL, Hints.Parameters);
-
             var xx = "";
         }
 

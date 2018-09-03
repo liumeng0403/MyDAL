@@ -1,4 +1,5 @@
 ﻿using EasyDAL.Exchange.Common;
+using EasyDAL.Exchange.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -10,44 +11,6 @@ namespace EasyDAL.Exchange.Helper
 {
     internal class GenericHelper : ClassInstance<GenericHelper>
     {
-
-        public RM GetPropertyValue<M, RM>(M m, string properyName)
-        {
-            try
-            {
-                if (m is ExpandoObject)
-                {
-                    var dic = m as IDictionary<string, object>;
-                    return (RM)dic[properyName];
-                }
-
-                return (RM)m.GetType().GetProperty(properyName).GetValue(m, null);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("方法GetPropertyValue<M, RM>出错:" + ex.Message);
-            }
-        }
-
-        public string GetPropertyValue<M>(M m, string properyName)
-        {
-            try
-            {
-                if (m is ExpandoObject)
-                {
-                    var dic = m as IDictionary<string, object>;
-                    return ConvertType(dic[properyName]);
-                }
-
-                return m.GetType().GetProperty(properyName).GetValue(m, null).ToString();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("方法GetPropertyValue<M>出错:" + "请向方法 [GenericHelper.ConvertType] 中添加类型解析 " + ex.Message);
-            }
-        }
-
-
         public string GetTypeValue(Type valType, PropertyInfo outerProp, object outerObj)
         {
             var val = string.Empty;
@@ -86,8 +49,11 @@ namespace EasyDAL.Exchange.Helper
             {
                 val = outerProp.GetValue(outerObj, null).ToString();
             }
-            else if (valType == typeof(DateTime)
-                || valType == typeof(Guid)
+            else if(valType == typeof(DateTime))
+            {
+                val = outerProp.GetValue(outerObj, null).ToDatetimeStr();
+            }
+            else if (valType == typeof(Guid)
                 || valType == typeof(string))
             {
                 val = outerProp.GetValue(outerObj, null).ToString();
@@ -115,7 +81,14 @@ namespace EasyDAL.Exchange.Helper
                 }
                 else
                 {
-                    val = obj.ToString();
+                    if (valType == typeof(DateTime?))
+                    {
+                        val = obj.ToDatetimeStr();
+                    }
+                    else
+                    {
+                        val = obj.ToString();
+                    }
                 }
             }
             else if (valType.IsEnum)
@@ -186,7 +159,7 @@ namespace EasyDAL.Exchange.Helper
             }
             else if (valType == typeof(DateTime))
             {
-                val = objVal.ToString();
+                val = objVal.ToDatetimeStr();
             }
             else if (valType == typeof(Guid))
             {
@@ -206,21 +179,7 @@ namespace EasyDAL.Exchange.Helper
             }
             return val;
         }
-        public void SetPropertyValue<M>(M m, string propertyName, object value)
-        {
-            try
-            {
-                if (value != null)
-                {
-                    m.GetType().GetProperty(propertyName).SetValue(m, value, null);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("方法SetPropertyValue<M>出错:" + ex.Message);
-            }
-        }
-
+        
         public List<PropertyInfo> GetPropertyInfos<M>(M m)
         {
             if (m == null)
@@ -235,20 +194,6 @@ namespace EasyDAL.Exchange.Helper
             var props = mType.GetProperties(BindingFlags.GetProperty | BindingFlags.Instance | BindingFlags.Public).ToList();
             return props;
         }
-
-        private string ConvertType(object value)
-        {
-            if (value.GetType() == typeof(DateTime))
-            {
-                return Convert.ToDateTime(value).ToString("yyyy-MM-dd HH:mm:ss");
-            }
-
-            if (value.GetType() == typeof(Guid))
-            {
-                return value.ToString();
-            }
-
-            return value.ToString();
-        }
+        
     }
 }
