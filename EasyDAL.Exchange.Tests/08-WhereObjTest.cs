@@ -3,6 +3,7 @@ using EasyDAL.Exchange.Core.Sql;
 using EasyDAL.Exchange.Extensions;
 using EasyDAL.Exchange.Tests.Entities;
 using EasyDAL.Exchange.Tests.ViewModels;
+using Rainbow.Core;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
