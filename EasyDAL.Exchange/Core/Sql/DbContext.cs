@@ -49,7 +49,7 @@ namespace EasyDAL.Exchange.Core.Sql
         internal AttributeHelper AH { get; private set; }
 
         internal GenericHelper GH { get; private set; }
-        internal Debug Hint { get; set; }
+        internal XDebug Hint { get; set; }
         internal ExpressionHelper EH { get; private set; }
 
         internal StaticCache SC { get; private set; }

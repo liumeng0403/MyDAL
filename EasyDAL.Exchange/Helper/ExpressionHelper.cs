@@ -16,6 +16,8 @@ namespace EasyDAL.Exchange.Helper
 
         private GenericHelper GH = GenericHelper.Instance;
 
+        /********************************************************************************************************************/
+
         // -01-02- 
         private (string key, Type type) GetKey(ParameterExpression parameter, Expression body, OptionEnum option)
         {
@@ -195,7 +197,7 @@ namespace EasyDAL.Exchange.Helper
             return val;
         }
         // 01
-        private (string key, string alias,Type valType) GetMemKeyAlias(Expression expr)
+        private (string key, string alias, Type valType) GetMemKeyAlias(Expression expr)
         {
             var memExpr = expr as MemberExpression;
             var mMemExpr = memExpr.Expression as MemberExpression;
@@ -205,6 +207,88 @@ namespace EasyDAL.Exchange.Helper
             var valType = keyProp.PropertyType;
             return (key, alias, valType);
         }
+        // 01
+        private bool IsBinaryExpr(ExpressionType type)
+        {
+            if (type == ExpressionType.Equal
+                || type == ExpressionType.NotEqual
+                || type == ExpressionType.LessThan
+                || type == ExpressionType.LessThanOrEqual
+                || type == ExpressionType.GreaterThan
+                || type == ExpressionType.GreaterThanOrEqual)
+            {
+                return true;
+            }
+
+            return false;
+        }
+        // 01
+        private DicModel BinaryCharLengthHandle(string key, string value, Type valType, ExpressionType nodeType)
+        {
+            return new DicModel
+            {
+                KeyOne = key,
+                Param = key,
+                ParamRaw = key,
+                Value = value,
+                ValueType = valType,
+                Option = OptionEnum.CharLength,
+                FuncSupplement = GetOption(nodeType)
+            };
+        }
+        // 01
+        private DicModel BinaryNormalHandle(string key, string value, Type valType, ExpressionType nodeType)
+        {
+            return new DicModel
+            {
+                KeyOne = key,
+                Param = key,
+                ParamRaw = key,
+                Value = value,
+                ValueType = valType,
+                Option = GetOption(nodeType)
+            };
+        }
+        // 01
+        private DicModel CallLikeHandle(string key, string value, Type valType)
+        {
+            return new DicModel
+            {
+                KeyOne = key,
+                Param = key,
+                ParamRaw = key,
+                Value = value,
+                ValueType = valType,
+                Option = OptionEnum.Like
+            };
+        }
+        // 01
+        private DicModel ConstantBoolHandle(string value,Type valType)
+        {
+            return new DicModel
+            {
+                KeyOne = "OneEqualOne",
+                Param = "OneEqualOne",
+                ParamRaw = "OneEqualOne",
+                Value = value,
+                ValueType = valType,
+                Option = OptionEnum.OneEqualOne
+            };
+        }
+        // 01
+        private DicModel MemberBoolHandle(string key,Type valType)
+        {
+            return new DicModel
+            {
+                KeyOne = key,
+                Param = key,
+                ParamRaw = key,
+                Value = true.ToString(),
+                ValueType = valType,
+                Option = OptionEnum.Equal
+            };
+        }
+        // 01
         private (Expression left, Expression right, ExpressionType node) HandBinExpr(BinaryExpression binExpr)
         {
             var binLeft = binExpr.Left;
@@ -275,6 +359,8 @@ namespace EasyDAL.Exchange.Helper
             return result;
         }
 
+        /********************************************************************************************************************/
+
         /// <summary>
         /// 获取表达式信息
         /// </summary>
@@ -307,93 +393,71 @@ namespace EasyDAL.Exchange.Helper
         {
             try
             {
+                //
                 var result = default(DicModel);
                 var parameter = func.Parameters[0];
                 var body = func.Body;
-                var key = string.Empty;
+                var nodeType = body.NodeType;
                 var val = string.Empty;
-                var option = OptionEnum.None;
-                switch (body.NodeType)
+
+                //
+                if (IsBinaryExpr(nodeType))
                 {
-                    case ExpressionType.Equal:
-                    case ExpressionType.NotEqual:
-                    case ExpressionType.LessThan:
-                    case ExpressionType.LessThanOrEqual:
-                    case ExpressionType.GreaterThan:
-                    case ExpressionType.GreaterThanOrEqual:
-                        var binExpr = body as BinaryExpression;
-                        var binTuple = HandBinExpr(binExpr);
-                        val = GetBinaryVal(binTuple.right);
-                        var leftStr = binTuple.left.ToString();
-                        if (leftStr.Contains(".Length")
-                            && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
-                        {
-                            option = OptionEnum.CharLength;
-                            var keyTuple = GetKey(parameter, binTuple.left, option);                            
-                            result = new DicModel
-                            {
-                                KeyOne = keyTuple.key,
-                                Param = keyTuple.key,
-                                ParamRaw = keyTuple.key,
-                                Value = val,      
-                                ValueType=keyTuple.type,
-                                Option = option,
-                                FuncSupplement = GetOption(binTuple.node)
-                            };
-                        }
-                        else
-                        {
-                            option = GetOption(binTuple.node);
-                            var keyTuple = GetKey(parameter, binTuple.left, option);
-                            result = new DicModel
-                            {
-                                KeyOne = keyTuple.key,
-                                Param = keyTuple.key,
-                                ParamRaw = keyTuple.key,
-                                Value = val,
-                                ValueType=keyTuple.type,
-                                Option = option
-                            };
-                        }
-                        break;
-                    case ExpressionType.Call:
-                        var bodyMC = body as MethodCallExpression;
-                        var exprStr = bodyMC.ToString();
-                        if (exprStr.Contains(".Contains("))
-                        {
-                            var mem = bodyMC.Object as MemberExpression;
-                            option = OptionEnum.Like;
-                            var keyTuple = GetKey(parameter, mem, option);
-                            val = GetCallVal(bodyMC);
-                            result = new DicModel
-                            {
-                                KeyOne = keyTuple.key,
-                                Param = keyTuple.key,
-                                ParamRaw = keyTuple.key,
-                                Value = val,
-                                ValueType=keyTuple.type,
-                                Option = option
-                            };
-                        }
-                        break;
-                    case ExpressionType.Constant:
-                        var bodyC = body as ConstantExpression;
-                        if (bodyC.Type == typeof(bool))
-                        {
-                            result = new DicModel
-                            {
-                                KeyOne = "OneEqualOne",
-                                Param = "OneEqualOne",
-                                ParamRaw = "OneEqualOne",
-                                Value = bodyC.Value.ToString(),
-                                ValueType =bodyC.Type ,
-                                Option = OptionEnum.OneEqualOne
-                            };
-                        }
-                        break;
-                    default:
-                        throw new Exception();
+                    var binExpr = body as BinaryExpression;
+                    var binTuple = HandBinExpr(binExpr);
+                    val = GetBinaryVal(binTuple.right);
+                    var leftStr = binTuple.left.ToString();
+                    if (leftStr.Contains(".Length")
+                        && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
+                    {                        
+                        var keyTuple = GetKey(parameter, binTuple.left, OptionEnum.CharLength);
+                        result = BinaryCharLengthHandle(keyTuple.key, val, keyTuple.type, binTuple.node);
+                    }
+                    else
+                    {
+                        var keyTuple = GetKey(parameter, binTuple.left, GetOption(binTuple.node));
+                        result = BinaryNormalHandle(keyTuple.key, val, keyTuple.type, binTuple.node);
+                    }
                 }
+                else if (nodeType == ExpressionType.Call)
+                {
+                    var mcExpr = body as MethodCallExpression;
+                    var exprStr = mcExpr.ToString();
+                    if (exprStr.Contains(".Contains("))
+                    {
+                        var mem = mcExpr.Object as MemberExpression;
+                        var keyTuple = GetKey(parameter, mem, OptionEnum.Like);
+                        val = GetCallVal(mcExpr);
+                        result = CallLikeHandle(keyTuple.key, val, keyTuple.type);
+                    }
+                }
+                else if (nodeType == ExpressionType.Constant)
+                {
+                    var cExpr = body as ConstantExpression;
+                    val = cExpr.Value.ToString();
+                    var valType = cExpr.Type;
+                    if (cExpr.Type == typeof(bool))
+                    {
+                        result = ConstantBoolHandle(val, valType);
+                    }
+                }
+                else if (nodeType == ExpressionType.MemberAccess)
+                {
+                    var memExpr = body as MemberExpression;
+                    var memProp = memExpr.Member as PropertyInfo;
+                    var valType = memProp.PropertyType;
+                    var key = memProp.Name;
+                    if (valType == typeof(bool))
+                    {
+                        result = MemberBoolHandle(key, valType);
+                    }
+                }
+                else
+                {
+                    throw new Exception();
+                }
+
+                //
                 if (result != null)
                 {
                     return result;
@@ -421,60 +485,64 @@ namespace EasyDAL.Exchange.Helper
         {
             try
             {
+                //
                 var result = default(DicModel);
                 var body = func.Body;
-                switch (body.NodeType)
+                var nodeType = body.NodeType;
+
+                //
+                if (IsBinaryExpr(nodeType))
                 {
-                    case ExpressionType.Equal:
-                    case ExpressionType.LessThan:
-                    case ExpressionType.LessThanOrEqual:
-                    case ExpressionType.GreaterThan:
-                    case ExpressionType.GreaterThanOrEqual:
-                        var bExpr = body as BinaryExpression;
-                        if (action == ActionEnum.On)
+                    var binExpr = body as BinaryExpression;
+                    if (action == ActionEnum.On)
+                    {
+                        var tuple1 = GetMemKeyAlias(binExpr.Left);
+                        var tuple2 = GetMemKeyAlias(binExpr.Right);
+                        result = new DicModel
                         {
-                            var tuple1 = GetMemKeyAlias(bExpr.Left);
-                            var tuple2 = GetMemKeyAlias(bExpr.Right);
-                            result = new DicModel
-                            {
-                                KeyOne = tuple1.key,
-                                AliasOne = tuple1.alias,
-                                KeyTwo = tuple2.key,
-                                AliasTwo = tuple2.alias,
-                                Action = action,
-                                Option = GetOption(bExpr.NodeType)
-                            };
-                        }
-                        else if (action == ActionEnum.Where
-                            || action == ActionEnum.And)
+                            KeyOne = tuple1.key,
+                            AliasOne = tuple1.alias,
+                            KeyTwo = tuple2.key,
+                            AliasTwo = tuple2.alias,
+                            Action = action,
+                            Option = GetOption(binExpr.NodeType)
+                        };
+                    }
+                    else if (action == ActionEnum.Where
+                        || action == ActionEnum.And
+                        || action == ActionEnum.Or)
+                    {
+                        var tuple = GetMemKeyAlias(binExpr.Left);
+                        var val = string.Empty;
+                        switch (binExpr.Right.NodeType)
                         {
-                            var tuple = GetMemKeyAlias(bExpr.Left);
-                            var val = string.Empty;
-                            switch (bExpr.Right.NodeType)
-                            {
-                                case ExpressionType.Call:
-                                    val = GetCallVal((bExpr.Right as MethodCallExpression));
-                                    break;
-                            }
-                            if (string.IsNullOrWhiteSpace(val))
-                            {
-                                throw new Exception();
-                            }
-                            result = new DicModel
-                            {
-                                KeyOne = tuple.key,
-                                AliasOne = tuple.alias,
-                                Value = val,
-                                ValueType=tuple.valType,
-                                Param = tuple.key,
-                                ParamRaw = tuple.key,
-                                Action = action,
-                                Option = GetOption(bExpr.NodeType)
-                            };
+                            case ExpressionType.Call:
+                                val = GetCallVal((binExpr.Right as MethodCallExpression));
+                                break;
                         }
-                        break;
+                        if (string.IsNullOrWhiteSpace(val))
+                        {
+                            throw new Exception();
+                        }
+                        result = new DicModel
+                        {
+                            KeyOne = tuple.key,
+                            AliasOne = tuple.alias,
+                            Value = val,
+                            ValueType = tuple.valType,
+                            Param = tuple.key,
+                            ParamRaw = tuple.key,
+                            Action = action,
+                            Option = GetOption(binExpr.NodeType)
+                        };
+                    }
+                }
+                else
+                {
+                    throw new Exception();
                 }
 
+                //
                 if (result != null)
                 {
                     return result;

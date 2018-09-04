@@ -71,7 +71,7 @@ namespace EasyDAL.Exchange.Tests
                 .Where(it => it.Id == m.Id)
                 .UpdateAsync();
 
-            var tuple1 = (Debug.SQL, Debug.Parameters);
+            var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
             var xx2 = "";
 
@@ -83,7 +83,7 @@ namespace EasyDAL.Exchange.Tests
                 .Or(it => it.CreatedOn == Convert.ToDateTime("2018-08-19 11:34:42.577074"))
                 .UpdateAsync();
 
-            var tuple2 = (Debug.SQL, Debug.Parameters);
+            var tuple2 = (XDebug.SQL, XDebug.Parameters);
 
             var xx3 = "";
 
@@ -98,7 +98,7 @@ namespace EasyDAL.Exchange.Tests
                 .Where(it => it.Id == Guid.Parse("032ce51f-1034-4fb2-9741-01655202ecbc"))
                 .UpdateAsync();
 
-            var tuple3 = (Debug.SQL, Debug.Parameters);
+            var tuple3 = (XDebug.SQL, XDebug.Parameters);
 
 
             var xx4 = "";
@@ -113,7 +113,7 @@ namespace EasyDAL.Exchange.Tests
                 .Where(it => it.Id == Guid.Parse("032ce51f-1034-4fb2-9741-01655202ecbc"))
                 .UpdateAsync();
 
-            var tuple4 = (Debug.SQL, Debug.Parameters);
+            var tuple4 = (XDebug.SQL, XDebug.Parameters);
 
             var xx5 = "";
 
@@ -125,7 +125,7 @@ namespace EasyDAL.Exchange.Tests
                 .And(it => it.ProductId == Guid.Parse("85ce17c1-10d9-4784-b054-016551e5e109"))
                 .UpdateAsync();
 
-            var tuple5 = (Debug.SQL, Debug.Parameters);
+            var tuple5 = (XDebug.SQL, XDebug.Parameters);
 
             var xx6 = "";
 
@@ -142,7 +142,7 @@ namespace EasyDAL.Exchange.Tests
                 .Where(it => it.Id == resx6.Id)
                 .UpdateAsync();
 
-            var tuple6 = (Debug.SQL, Debug.Parameters);
+            var tuple6 = (XDebug.SQL, XDebug.Parameters);
 
             var xx = "";
         }

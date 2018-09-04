@@ -360,10 +360,10 @@ namespace EasyDAL.Exchange.Core
             }
 
             //
-            if (Debug.Hint)
+            if (XDebug.Hint)
             {
-                Debug.SQL = list;
-                Debug.Parameters = DC
+                XDebug.SQL = list;
+                XDebug.Parameters = DC
                     .Conditions
                     .Where(it => DC.IsParameter(it))
                     .Select(it =>

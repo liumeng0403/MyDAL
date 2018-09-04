@@ -12,21 +12,21 @@ namespace EasyDAL.Exchange.Tests
     {
 
         [Fact]
-        public async Task XXtest()
+        public async Task TwoJoinTest()
         {
 
             var xxx = "";
 
             var resx = await Conn.OpenDebug()
-                .Joiner()
-                .From<Agent>(out var agent, "agent")
-                .InnerJoin<AgentInventoryRecord>(out var record, "record")
+                .Joiner<Agent,AgentInventoryRecord>(out var agent,out var record)
+                .From(()=>agent)
+                .InnerJoin(record)
                 .On(() => agent.Id == record.AgentId)
                 .Where(() => agent.Id == Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef"))
                 .And(() => record.CreatedOn >= DateTime.Now.AddDays(-30))
                 .QueryListAsync<Agent>();
 
-            var tuple = (Debug.SQL, Debug.Parameters);
+            var tuple = (XDebug.SQL, XDebug.Parameters);
 
             var xxxx = "";
         }

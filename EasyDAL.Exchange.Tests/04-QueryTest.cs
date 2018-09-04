@@ -76,7 +76,7 @@ namespace EasyDAL.Exchange.Tests
                 .Where(it => it.CreatedOn <= DateTime.Now)
                 .QueryFirstOrDefaultAsync();
 
-            var tuple = (Debug.SQL, Debug.Parameters);
+            var tuple = (XDebug.SQL, XDebug.Parameters);
 
             var xx = "";
 
@@ -153,7 +153,7 @@ namespace EasyDAL.Exchange.Tests
                 .Where(it => it.Name.Length > 2)
                 .QueryListAsync();
 
-            var tuple3 = (Debug.SQL, Debug.Parameters);
+            var tuple3 = (XDebug.SQL, XDebug.Parameters);
 
             var xx = "";
         }
@@ -191,7 +191,7 @@ namespace EasyDAL.Exchange.Tests
                 .Where(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
                 .ExistAsync();
 
-            var tuple = (Debug.SQL, Debug.Parameters);
+            var tuple = (XDebug.SQL, XDebug.Parameters);
 
             var xx = "";
         }
@@ -206,7 +206,7 @@ namespace EasyDAL.Exchange.Tests
                 .Selecter<Agent>()
                 .QueryAllAsync();
 
-            var tuple = (Debug.SQL, Debug.Parameters);
+            var tuple = (XDebug.SQL, XDebug.Parameters);
 
             var xx = "";
         }
@@ -220,7 +220,7 @@ namespace EasyDAL.Exchange.Tests
                 .Selecter<Agent>()
                 .QueryAllAsync<AgentVM>();
 
-            var tuple = (Debug.SQL, Debug.Parameters);
+            var tuple = (XDebug.SQL, XDebug.Parameters);
 
             var xx = "";
         }

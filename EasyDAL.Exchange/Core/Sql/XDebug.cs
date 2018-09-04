@@ -5,7 +5,7 @@ using System.Text;
 
 namespace EasyDAL.Exchange.Core.Sql
 {
-    public class Debug
+    public class XDebug
     {
         public static bool Hint { get; set; }
         private static List<string> _sql { get; set; } = new List<string>();

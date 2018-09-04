@@ -89,7 +89,7 @@ namespace EasyDAL.Exchange.Tests
                 .CreateAsync(m);
             //.CreateAsync(m);
 
-            var tuple = (Debug.SQL, Debug.Parameters);
+            var tuple = (XDebug.SQL, XDebug.Parameters);
 
             var xx = "";
         }
@@ -121,7 +121,7 @@ namespace EasyDAL.Exchange.Tests
                 .Creater<Agent>()
                 .CreateAsync(m1);
 
-            var tuple = (Debug.SQL, Debug.Parameters);
+            var tuple = (XDebug.SQL, XDebug.Parameters);
 
             var xx = "";
         }
@@ -138,7 +138,7 @@ namespace EasyDAL.Exchange.Tests
                 .Creater<AddressInfo>()
                 .CreateBatchAsync(list);
 
-            var tuple1 = (Debug.SQL, Debug.Parameters);
+            var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
             var xx = "";
         }

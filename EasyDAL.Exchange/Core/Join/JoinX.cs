@@ -16,13 +16,12 @@ namespace EasyDAL.Exchange.Core.Join
             DC = dc;
         }
 
-        public OnX InnerJoin<M>(out M m,string alias)
+        public OnX InnerJoin<M>(M m)
         {
-            m = Activator.CreateInstance<M>();
             DC.AddConditions(new DicModel
             {
                 TableOne = DC.SqlProvider.GetTableName(m),
-                AliasOne = alias,
+                AliasOne ="",  // alias,
                 Action = ActionEnum.InnerJoin,
                 Crud= CrudTypeEnum.Join
             });
