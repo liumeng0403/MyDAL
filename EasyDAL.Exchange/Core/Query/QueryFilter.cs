@@ -120,15 +120,16 @@ namespace EasyDAL.Exchange.Core.Query
         {
             return await QueryPagingListAsyncHandle<M, M>(pageIndex, pageSize, SqlTypeEnum.QueryPagingListAsync);
         }
-        ///// <summary>
-        ///// 单表分页查询
-        ///// </summary>
-        ///// <param name="pageIndex">页码</param>
-        ///// <param name="pageSize">每页条数</param>
-        //public async Task<PagingList<M>> QueryPagingListAsync()
-        //{
-        //    return await QueryPagingListAsyncHandle<M, M>(pageIndex, pageSize, SqlTypeEnum.QueryPagingListAsync);
-        //}
+        /// <summary>
+        /// 单表分页查询
+        /// </summary>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">每页条数</param>
+        public async Task<PagingList<M>> QueryPagingListAsync(PagingQueryOption option)
+        {
+            OptionOrderByHandle(option);
+            return await QueryPagingListAsyncHandle<M, M>(option.PageIndex, option.PageSize, SqlTypeEnum.QueryPagingListAsync);
+        }
         /// <summary>
         /// 单表分页查询
         /// </summary>
@@ -139,16 +140,17 @@ namespace EasyDAL.Exchange.Core.Query
         {
             return await QueryPagingListAsyncHandle<M, VM>(pageIndex, pageSize, SqlTypeEnum.QueryPagingListAsync);
         }
-        ///// <summary>
-        ///// 单表分页查询
-        ///// </summary>
-        ///// <typeparam name="VM">ViewModel</typeparam>
-        ///// <param name="pageIndex">页码</param>
-        ///// <param name="pageSize">每页条数</param>
-        //public async Task<PagingList<VM>> QueryPagingListAsync<VM>()
-        //{
-        //    return await QueryPagingListAsyncHandle<M, VM>(pageIndex, pageSize, SqlTypeEnum.QueryPagingListAsync);
-        //}
+        /// <summary>
+        /// 单表分页查询
+        /// </summary>
+        /// <typeparam name="VM">ViewModel</typeparam>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">每页条数</param>
+        public async Task<PagingList<VM>> QueryPagingListAsync<VM>(PagingQueryOption option)
+        {
+            OptionOrderByHandle(option);
+            return await QueryPagingListAsyncHandle<M, VM>(option.PageIndex, option.PageSize, SqlTypeEnum.QueryPagingListAsync);
+        }
 
     }
 }

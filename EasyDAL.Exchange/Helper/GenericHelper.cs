@@ -53,10 +53,13 @@ namespace EasyDAL.Exchange.Helper
             {
                 val = outerProp.GetValue(outerObj, null).ToDatetimeStr();
             }
-            else if (valType == typeof(Guid)
-                || valType == typeof(string))
+            else if (valType == typeof(Guid))
             {
                 val = outerProp.GetValue(outerObj, null).ToString();
+            }
+            else if (valType == typeof(string))
+            {
+                val = outerProp.GetValue(outerObj, null)?.ToString();
             }
             else if (valType == typeof(sbyte?)
                 || valType == typeof(byte?)
