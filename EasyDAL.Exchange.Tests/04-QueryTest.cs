@@ -71,12 +71,12 @@ namespace EasyDAL.Exchange.Tests
             var xx6 = "";
 
             // <= DateTime
-            var res7 = await Conn.OpenHint()
+            var res7 = await Conn.OpenDebug()
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.CreatedOn <= DateTime.Now)
                 .QueryFirstOrDefaultAsync();
 
-            var tuple = (Hints.SQL, Hints.Parameters);
+            var tuple = (Debug.SQL, Debug.Parameters);
 
             var xx = "";
 
@@ -148,22 +148,12 @@ namespace EasyDAL.Exchange.Tests
             var xx3 = "";
 
             // .Where(a => a.Name.Length > 0)
-            var res3 = await Conn.OpenHint()
+            var res3 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => it.Name.Length > 2)
                 .QueryListAsync();
 
-            var tuple3 = (Hints.SQL, Hints.Parameters);
-
-            var xx4 = "";
-
-            // where 1=1
-            var res4 = await Conn.OpenHint()
-                .Selecter<Agent>()
-                .Where(it => false) // true  false
-                .QueryListAsync();
-
-            var tuple4 = (Hints.SQL, Hints.Parameters);
+            var tuple3 = (Debug.SQL, Debug.Parameters);
 
             var xx = "";
         }
@@ -190,36 +180,18 @@ namespace EasyDAL.Exchange.Tests
             var xx = "";
         }
 
-        // 查询 单值
-        [Fact]
-        public async Task QuerySingleValueAsyncTest()
-        {
-            var xx0 = "";
-
-            // count(id)  like "陈%"
-            var res0 = await Conn.OpenHint()
-                .Selecter<Agent>()
-                .Where(it => it.Name.Contains(LikeTest.百分号))
-                .Count(it => it.Id)
-                .QuerySingleValueAsync<long>();
-
-            var tuple = (Hints.SQL, Hints.Parameters);
-
-            var xx = "";
-        }
-
         // 查询 是否存在
         [Fact]
         public async Task ExistAsyncTest()
         {
             var xx1 = "";
 
-            var res1 = await Conn.OpenHint()
+            var res1 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
                 .ExistAsync();
 
-            var tuple = (Hints.SQL, Hints.Parameters);
+            var tuple = (Debug.SQL, Debug.Parameters);
 
             var xx = "";
         }
@@ -230,11 +202,11 @@ namespace EasyDAL.Exchange.Tests
         {
             var xx1 = "";
 
-            var res1 = await Conn.OpenHint()
+            var res1 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .QueryAllAsync();
 
-            var tuple = (Hints.SQL, Hints.Parameters);
+            var tuple = (Debug.SQL, Debug.Parameters);
 
             var xx = "";
         }
@@ -244,11 +216,11 @@ namespace EasyDAL.Exchange.Tests
         {
             var xx1 = "";
 
-            var res1 = await Conn.OpenHint()
+            var res1 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .QueryAllAsync<AgentVM>();
 
-            var tuple = (Hints.SQL, Hints.Parameters);
+            var tuple = (Debug.SQL, Debug.Parameters);
 
             var xx = "";
         }

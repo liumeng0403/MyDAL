@@ -11,6 +11,7 @@ namespace EasyDAL.Exchange.Cache
     internal class StaticCache : ClassInstance<StaticCache>
     {
         private static GenericHelper GH { get; } = GenericHelper.Instance; 
+
         private static ConcurrentDictionary<Type, List<PropertyInfo>> ModelPropertiesCache { get; } = new ConcurrentDictionary<Type, List<PropertyInfo>>();
         internal List<PropertyInfo> GetModelProperys(Type mType)
         {
@@ -23,5 +24,6 @@ namespace EasyDAL.Exchange.Cache
             return props;
         }
 
+        internal static ConcurrentDictionary<string, ConcurrentDictionary<Int32, String>> EHCache { get; } = new ConcurrentDictionary<string, ConcurrentDictionary<Int32, String>>();
     }
 }

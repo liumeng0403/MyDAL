@@ -7,6 +7,7 @@ namespace EasyDAL.Exchange.Enums
     public enum CrudTypeEnum
     {
 
+        None,
         Create,
         Delete,
         Update,

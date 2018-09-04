@@ -21,7 +21,7 @@ namespace EasyDAL.Exchange.Tests
                 BodyMeasureProperty = "{xxx:yyy,mmm:nnn}"
             };
             // 新建
-            var res0 = await Conn.OpenHint()
+            var res0 = await Conn.OpenDebug()
                 .Creater<BodyFitRecord>()
                 .CreateAsync(m);
 
@@ -53,13 +53,13 @@ namespace EasyDAL.Exchange.Tests
 
             // testH.ContainStr="~00-d-3-1-"
             // 默认 "%"+testH.ContainStr+"%"
-            var res1 = await Conn.OpenHint()
+            var res1 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= WhereTest.DateTime_大于等于)
                 .And(it => it.PathId.Contains(WhereTest.ContainStr))
                 .QueryPagingListAsync(1, 10);
 
-            var sql1 = (Hints.SQL, Hints.Parameters);
+            var sql1 = (Debug.SQL, Debug.Parameters);
 
             var xx2 = "";
 
@@ -70,7 +70,7 @@ namespace EasyDAL.Exchange.Tests
                 .And(it => it.PathId.Contains("~00-d-3-1-"))
                 .QueryPagingListAsync(1, 10);
 
-            var sql2 = (Hints.SQL, Hints.Parameters);
+            var sql2 = (Debug.SQL, Debug.Parameters);
 
             var xx = "";
         }
@@ -104,37 +104,37 @@ namespace EasyDAL.Exchange.Tests
             var xx0 = "";
 
             // 无通配符 -- "陈" -- "%"+"陈"+"%"
-            var res0 = await Conn.OpenHint()
+            var res0 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains(LikeTest.无通配符))
                 .QueryListAsync();
 
-            var sql0 = (Hints.SQL, Hints.Parameters);
+            var sql0 = (Debug.SQL, Debug.Parameters);
 
             var xx1 = "";
 
             // 百分号 -- "陈%" -- "陈%"
-            var res1 = await Conn.OpenHint()
+            var res1 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains(LikeTest.百分号))
                 .QueryListAsync();
 
-            var sql1 = (Hints.SQL, Hints.Parameters);
+            var sql1 = (Debug.SQL, Debug.Parameters);
 
             var xx2 = "";
 
             // 下划线 -- "王_" -- "王_" 
-            var res2 = await Conn.OpenHint()
+            var res2 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains(LikeTest.下划线))
                 .QueryListAsync();
 
-            var sql2 = (Hints.SQL, Hints.Parameters);
+            var sql2 = (Debug.SQL, Debug.Parameters);
 
             var xx3 = "";
 
             // 百分号转义 -- "刘/%_" -- "刘/%_"
-            var res3 = await Conn.OpenHint()
+            var res3 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains(LikeTest.百分号转义))
                 .And (it=>it.Id==resx1.Id)
@@ -142,20 +142,38 @@ namespace EasyDAL.Exchange.Tests
                 .And(it=>it.Name.Contains("%/%%"))
                 .QueryListAsync();
 
-            var sql3 = (Hints.SQL, Hints.Parameters);
+            var sql3 = (Debug.SQL, Debug.Parameters);
 
             var xx4 = "";
 
             // 下划线转义 -- "何/__" -- "何/__"
-            var res4 = await Conn.OpenHint()
+            var res4 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains(LikeTest.下划线转义))
                 .QueryListAsync();
 
-            var sql4 = (Hints.SQL, Hints.Parameters);
+            var sql4 = (Debug.SQL, Debug.Parameters);
 
             var xx = "";
 
+        }
+
+        // 查询 单值
+        [Fact]
+        public async Task QuerySingleValueAsyncTest()
+        {
+            var xx1 = "";
+
+            // count(id)  like "陈%"
+            var res1 = await Conn.OpenDebug()
+                .Selecter<Agent>()
+                .Where(it => it.Name.Contains(LikeTest.百分号))
+                .Count(it => it.Id)
+                .QuerySingleValueAsync<long>();
+
+            var tuple1 = (Debug.SQL, Debug.Parameters);
+
+            var xx = "";
         }
 
     }

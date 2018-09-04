@@ -84,12 +84,12 @@ namespace EasyDAL.Exchange.Tests
             var xx1 = "";
 
             // 新建
-            var res1 = await Conn.OpenHint()
+            var res1 = await Conn.OpenDebug()
                 .Creater<BodyFitRecord>()
                 .CreateAsync(m);
             //.CreateAsync(m);
 
-            var tuple = (Hints.SQL, Hints.Parameters);
+            var tuple = (Debug.SQL, Debug.Parameters);
 
             var xx = "";
         }
@@ -117,11 +117,11 @@ namespace EasyDAL.Exchange.Tests
 
             var xx1 = "";
 
-            var res1 = await Conn.OpenHint()
+            var res1 = await Conn.OpenDebug()
                 .Creater<Agent>()
                 .CreateAsync(m1);
 
-            var tuple = (Hints.SQL, Hints.Parameters);
+            var tuple = (Debug.SQL, Debug.Parameters);
 
             var xx = "";
         }
@@ -134,11 +134,11 @@ namespace EasyDAL.Exchange.Tests
 
             var xx1 = "";
 
-            var res1 = await Conn.OpenHint()
+            var res1 = await Conn.OpenDebug()
                 .Creater<AddressInfo>()
                 .CreateBatchAsync(list);
 
-            var tuple1 = (Hints.SQL, Hints.Parameters);
+            var tuple1 = (Debug.SQL, Debug.Parameters);
 
             var xx = "";
         }
