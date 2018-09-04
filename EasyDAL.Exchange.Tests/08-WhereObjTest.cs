@@ -1,9 +1,10 @@
-﻿using EasyDAL.Exchange.Core.Sql;
+﻿using EasyDAL.Exchange.Common;
+using EasyDAL.Exchange.Core.Sql;
+using EasyDAL.Exchange.Extensions;
 using EasyDAL.Exchange.Tests.Entities;
-using Rainbow.Core;
+using EasyDAL.Exchange.Tests.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -19,7 +20,7 @@ namespace EasyDAL.Exchange.Tests
         }
 
         [Fact]
-        public async Task Test01()
+        public async Task WhereObjQueryOptionTest()
         {
 
             var xx1 = "";
@@ -43,18 +44,36 @@ namespace EasyDAL.Exchange.Tests
             var option = new AgentQueryOption();
             option.Id = Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b");
             option.Name = "樊士芹";
-            //// where method
-            //var res2 = await Conn.OpenHint()
-            //    .Selecter<Agent>()
-            //    .Where(option.GetCondition())
-            //    .QueryPagingListAsync(option);
+            // where method
+            var res2 = await Conn.OpenHint()
+                .Selecter<Agent>()
+                .Where(option.GetCondition())
+                .QueryPagingListAsync(option);
 
-            //var tuple2=
+            var tuple2 = (Hints.SQL, Hints.Parameters);
 
             var xx3 = "";
 
-            // where object --> no where
+            option.OrderBys = new List<OrderBy>
+            {
+                new OrderBy
+                {
+                    Field="Name",
+                    Desc=true
+                }
+            };
+            // where method -- option orderby 
             var res3 = await Conn.OpenHint()
+                .Selecter<Agent>()
+                .Where(option.GetCondition())
+                .QueryPagingListAsync<AgentVM>(option);
+
+            var tuple3 = (Hints.SQL, Hints.Parameters);
+
+            var xx4 = "";
+
+            // where object --> no where
+            var res4 = await Conn.OpenHint()
                 .Selecter<Agent>()
                 .Where(new
                 {
@@ -64,7 +83,7 @@ namespace EasyDAL.Exchange.Tests
                 })
                 .QueryListAsync();
 
-            var tuple3 = (Hints.SQL, Hints.Parameters);
+            var tuple4 = (Hints.SQL, Hints.Parameters);
 
 
             var xx = "";

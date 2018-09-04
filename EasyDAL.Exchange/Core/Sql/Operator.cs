@@ -169,6 +169,35 @@ namespace EasyDAL.Exchange.Core.Sql
             DC.AddConditions(field);
         }
 
+        protected void OptionOrderByHandle(PagingQueryOption option)
+        {
+            if (option.OrderBys != null
+              && option.OrderBys.Any())
+            {
+                foreach (var item in option.OrderBys)
+                {
+                    if (!string.IsNullOrWhiteSpace(item.Field))
+                    {
+                        var op = OptionEnum.None;
+                        if (item.Desc)
+                        {
+                            op = OptionEnum.Desc;
+                        }
+                        else
+                        {
+                            op = OptionEnum.Asc;
+                        }
+                        DC.AddConditions(new DicModel
+                        {
+                            KeyOne = item.Field,
+                            Action = ActionEnum.OrderBy,
+                            Option = op
+                        });
+                    }
+                }
+            }
+        }
+
         protected async Task<VM> QueryFirstOrDefaultAsyncHandle<DM,VM>()
         {
             return await SqlHelper.QueryFirstOrDefaultAsync<VM>(
