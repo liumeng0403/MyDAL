@@ -58,9 +58,9 @@ namespace EasyDAL.Exchange
         /// <summary>
         /// Sql 调试跟踪 开启
         /// </summary>
-        public static IDbConnection OpenHint(this IDbConnection connection)
+        public static IDbConnection OpenDebug(this IDbConnection connection)
         {
-            Hints.Hint = true;
+            Debug.Hint = true;
             return connection;
         }
 

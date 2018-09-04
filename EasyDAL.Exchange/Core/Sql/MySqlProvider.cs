@@ -100,11 +100,11 @@ namespace EasyDAL.Exchange.Core
                 switch (item.Action)
                 {
                     case ActionEnum.From:
-                        str += $" `{item.TableOne}` as {item.AliasOne} ";
+                        str += $" {item.TableOne} as {item.AliasOne} ";
                         break;
                     case ActionEnum.InnerJoin:
                     case ActionEnum.LeftJoin:
-                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} `{item.TableOne}` as {item.AliasOne} ";
+                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.TableOne} as {item.AliasOne} ";
                         break;
                     case ActionEnum.On:
                         str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.AliasOne}.`{item.KeyOne}`={item.AliasTwo}.`{item.KeyTwo}` ";
@@ -359,10 +359,10 @@ namespace EasyDAL.Exchange.Core
             }
 
             //
-            if (Hints.Hint)
+            if (Debug.Hint)
             {
-                Hints.SQL = list;
-                Hints.Parameters = DC
+                Debug.SQL = list;
+                Debug.Parameters = DC
                     .Conditions
                     .Where(it => DC.IsParameter(it))
                     .Select(it =>

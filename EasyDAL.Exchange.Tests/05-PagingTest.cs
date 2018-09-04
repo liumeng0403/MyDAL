@@ -19,12 +19,12 @@ namespace EasyDAL.Exchange.Tests
         {
             var xx0 = "";
 
-            var res1 = await Conn.OpenHint()
+            var res1 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= WhereTest.DateTime_大于等于)
                 .QueryPagingListAsync(1, 10);
 
-            var tuple1 = (Hints.SQL, Hints.Parameters);
+            var tuple1 = (Debug.SQL, Debug.Parameters);
 
             var xx = "";
         }
@@ -50,11 +50,11 @@ namespace EasyDAL.Exchange.Tests
         {
             var xx1 = "";
 
-            var res1 = await Conn.OpenHint()
+            var res1 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .QueryAllPagingListAsync(1, 10);
 
-            var tuple1 = (Hints.SQL, Hints.Parameters);
+            var tuple1 = (Debug.SQL, Debug.Parameters);
 
             var xx = "";
         }
@@ -65,11 +65,11 @@ namespace EasyDAL.Exchange.Tests
         {
             var xx1 = "";
 
-            var res1 = await Conn.OpenHint()
+            var res1 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .QueryAllPagingListAsync<AgentVM>(1, 10);
 
-            var tuple1 = (Hints.SQL, Hints.Parameters);
+            var tuple1 = (Debug.SQL, Debug.Parameters);
 
             var xx = "";
         }

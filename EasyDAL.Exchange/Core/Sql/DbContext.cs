@@ -18,7 +18,7 @@ namespace EasyDAL.Exchange.Core.Sql
     internal class DbContext
     {
 
-  
+
         internal static ConcurrentDictionary<string, List<ColumnInfo>> TableColumnsCache { get; } = new ConcurrentDictionary<string, List<ColumnInfo>>();
 
         internal string GetTCKey<M>()
@@ -49,7 +49,7 @@ namespace EasyDAL.Exchange.Core.Sql
         internal AttributeHelper AH { get; private set; }
 
         internal GenericHelper GH { get; private set; }
-        internal Hints Hint { get; set; }
+        internal Debug Hint { get; set; }
         internal ExpressionHelper EH { get; private set; }
 
         internal StaticCache SC { get; private set; }
@@ -63,7 +63,7 @@ namespace EasyDAL.Exchange.Core.Sql
         internal void AddConditions(DicModel dic)
         {
             if (!string.IsNullOrWhiteSpace(dic.Param)
-                && Conditions.Any(it => it.Param.Equals(dic.Param, StringComparison.OrdinalIgnoreCase)))
+                && Conditions.Any(it => dic.Param.Equals(it.Param, StringComparison.OrdinalIgnoreCase)))
             {
                 if (dic.Param.Contains("__"))
                 {
@@ -84,12 +84,12 @@ namespace EasyDAL.Exchange.Core.Sql
             }
         }
 
-        private async Task SetInsertValue<M>(M m,OptionEnum option,int index)
+        private async Task SetInsertValue<M>(M m, OptionEnum option, int index)
         {
             var props = SC.GetModelProperys(m.GetType());
             var tcKey = GetTCKey<M>();
             var columns = default(List<ColumnInfo>);
-            if (!TableColumnsCache.TryGetValue(tcKey,out columns))
+            if (!TableColumnsCache.TryGetValue(tcKey, out columns))
             {
                 columns = await SqlProvider.GetColumnsInfos<M>();
                 TableColumnsCache[tcKey] = columns;
@@ -98,22 +98,22 @@ namespace EasyDAL.Exchange.Core.Sql
             foreach (var prop in props)
             {
                 var val = GH.GetTypeValue(prop.PropertyType, prop, m);
-                var valType = ValueTypeEnum.None;
-                if(prop.PropertyType==typeof(bool))
-                {
-                    valType = ValueTypeEnum.Bool;
-                }
-                else
-                {
-                    valType = ValueTypeEnum.None;
-                }
+                //var valType = ValueTypeEnum.None;
+                //if(prop.PropertyType==typeof(bool))
+                //{
+                //    valType = ValueTypeEnum.Bool;
+                //}
+                //else
+                //{
+                //    valType = ValueTypeEnum.None;
+                //}
                 AddConditions(new DicModel
                 {
                     KeyOne = prop.Name,
                     Param = prop.Name,
                     ParamRaw = prop.Name,
                     Value = val,
-                    ValueType = valType,
+                    ValueType = prop.PropertyType,
                     ColumnType = columns.Where(it => it.ColumnName.Equals(prop.Name, StringComparison.OrdinalIgnoreCase)).First().DataType,
                     Action = ActionEnum.Insert,
                     Option = option,
@@ -123,14 +123,14 @@ namespace EasyDAL.Exchange.Core.Sql
         }
         internal async Task GetProperties<M>(M m)
         {
-            await SetInsertValue(m, OptionEnum.Insert,0);
+            await SetInsertValue(m, OptionEnum.Insert, 0);
         }
         internal async Task GetProperties<M>(IEnumerable<M> mList)
         {
             var i = 0;
             foreach (var m in mList)
             {
-                await SetInsertValue(m, OptionEnum.InsertTVP,i);
+                await SetInsertValue(m, OptionEnum.InsertTVP, i);
                 i++;
             }
         }
@@ -138,36 +138,39 @@ namespace EasyDAL.Exchange.Core.Sql
         internal DynamicParameters GetParameters()
         {
             var paras = new DynamicParameters();
+
+            //
             foreach (var item in Conditions)
             {
                 if (IsParameter(item))
                 {
-                    switch (item.ValueType)
+                    if (item.ValueType == typeof(bool))
                     {
-                        case ValueTypeEnum.Bool:
-                            if (!string.IsNullOrWhiteSpace(item.ColumnType)
-                                && item.ColumnType.Equals("bit", StringComparison.OrdinalIgnoreCase))
+                        if (!string.IsNullOrWhiteSpace(item.ColumnType)
+                            && item.ColumnType.Equals("bit", StringComparison.OrdinalIgnoreCase))
+                        {
+                            if (item.Value.ToBool())
                             {
-                                if (item.Value.ToBool())
-                                {
-                                    paras.Add(item.Param, 1, DbType.Int16);
-                                }
-                                else
-                                {
-                                    paras.Add(item.Param, 0, DbType.Int16);
-                                }
+                                paras.Add(item.Param, 1, DbType.UInt16);
                             }
                             else
                             {
-                                paras.Add(item.Param, item.Value.ToBool(), DbType.Boolean);
+                                paras.Add(item.Param, 0, DbType.UInt16);
                             }
-                            break;
-                        case ValueTypeEnum.None:
-                            paras.Add(item.Param, item.Value);
-                            break;
+                        }
+                        else
+                        {
+                            paras.Add(item.Param, item.Value.ToBool(), DbType.Boolean);
+                        }
+                    }
+                    else
+                    {
+                        paras.Add(item.Param, item.Value);
                     }
                 }
             }
+
+            //
             return paras;
         }
 

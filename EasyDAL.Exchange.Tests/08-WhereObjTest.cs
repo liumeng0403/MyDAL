@@ -26,7 +26,7 @@ namespace EasyDAL.Exchange.Tests
             var xx1 = "";
 
             // where object
-            var res1 = await Conn.OpenHint()
+            var res1 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(new
                 {
@@ -36,7 +36,7 @@ namespace EasyDAL.Exchange.Tests
                 })
                 .QueryListAsync();
 
-            var tuple1 = (Hints.SQL, Hints.Parameters);
+            var tuple1 = (Debug.SQL, Debug.Parameters);
 
             var xx2 = "";
 
@@ -45,12 +45,12 @@ namespace EasyDAL.Exchange.Tests
             option.Id = Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b");
             option.Name = "樊士芹";
             // where method
-            var res2 = await Conn.OpenHint()
+            var res2 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(option.GetCondition())
                 .QueryPagingListAsync(option);
 
-            var tuple2 = (Hints.SQL, Hints.Parameters);
+            var tuple2 = (Debug.SQL, Debug.Parameters);
 
             var xx3 = "";
 
@@ -63,17 +63,17 @@ namespace EasyDAL.Exchange.Tests
                 }
             };
             // where method -- option orderby 
-            var res3 = await Conn.OpenHint()
+            var res3 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(option.GetCondition())
                 .QueryPagingListAsync<AgentVM>(option);
 
-            var tuple3 = (Hints.SQL, Hints.Parameters);
+            var tuple3 = (Debug.SQL, Debug.Parameters);
 
             var xx4 = "";
 
             // where object --> no where
-            var res4 = await Conn.OpenHint()
+            var res4 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(new
                 {
@@ -83,7 +83,7 @@ namespace EasyDAL.Exchange.Tests
                 })
                 .QueryListAsync();
 
-            var tuple4 = (Hints.SQL, Hints.Parameters);
+            var tuple4 = (Debug.SQL, Debug.Parameters);
 
 
             var xx = "";

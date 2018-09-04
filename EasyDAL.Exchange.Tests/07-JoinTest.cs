@@ -17,7 +17,7 @@ namespace EasyDAL.Exchange.Tests
 
             var xxx = "";
 
-            var resx = await Conn.OpenHint()
+            var resx = await Conn.OpenDebug()
                 .Joiner()
                 .From<Agent>(out var agent, "agent")
                 .InnerJoin<AgentInventoryRecord>(out var record, "record")
@@ -26,7 +26,7 @@ namespace EasyDAL.Exchange.Tests
                 .And(() => record.CreatedOn >= DateTime.Now.AddDays(-30))
                 .QueryListAsync<Agent>();
 
-            var tuple = (Hints.SQL, Hints.Parameters);
+            var tuple = (Debug.SQL, Debug.Parameters);
 
             var xxxx = "";
         }

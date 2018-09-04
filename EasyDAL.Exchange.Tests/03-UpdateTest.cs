@@ -64,14 +64,14 @@ namespace EasyDAL.Exchange.Tests
             // 修改
 
             // set field 1
-            var res1 = await Conn.OpenHint()
+            var res1 = await Conn.OpenDebug()
                 .Updater<BodyFitRecord>()      
                 .Set(it => it.CreatedOn, m1.CreatedOn)
                 .Set(it => it.BodyMeasureProperty, m1.BodyMeasureProperty)
                 .Where(it => it.Id == m.Id)
                 .UpdateAsync();
 
-            var tuple1 = (Hints.SQL, Hints.Parameters);
+            var tuple1 = (Debug.SQL, Debug.Parameters);
 
             var xx2 = "";
 
@@ -83,12 +83,12 @@ namespace EasyDAL.Exchange.Tests
                 .Or(it => it.CreatedOn == Convert.ToDateTime("2018-08-19 11:34:42.577074"))
                 .UpdateAsync();
 
-            var tuple2 = (Hints.SQL, Hints.Parameters);
+            var tuple2 = (Debug.SQL, Debug.Parameters);
 
             var xx3 = "";
 
             // set dynamic
-            var res3 = await Conn.OpenHint()
+            var res3 = await Conn.OpenDebug()
                 .Updater<AgentInventoryRecord>()
                 .Set(new
                 {
@@ -98,7 +98,7 @@ namespace EasyDAL.Exchange.Tests
                 .Where(it => it.Id == Guid.Parse("032ce51f-1034-4fb2-9741-01655202ecbc"))
                 .UpdateAsync();
 
-            var tuple3 = (Hints.SQL, Hints.Parameters);
+            var tuple3 = (Debug.SQL, Debug.Parameters);
 
 
             var xx4 = "";
@@ -107,13 +107,13 @@ namespace EasyDAL.Exchange.Tests
             obj.TotalSaleCount = 2000;
             obj.xxx = 3000;
             // set expand object
-            var res4 = await Conn.OpenHint()
+            var res4 = await Conn.OpenDebug()
                 .Updater<AgentInventoryRecord>()
                 .Set(obj as object)
                 .Where(it => it.Id == Guid.Parse("032ce51f-1034-4fb2-9741-01655202ecbc"))
                 .UpdateAsync();
 
-            var tuple4 = (Hints.SQL, Hints.Parameters);
+            var tuple4 = (Debug.SQL, Debug.Parameters);
 
             var xx5 = "";
 
@@ -125,7 +125,7 @@ namespace EasyDAL.Exchange.Tests
                 .And(it => it.ProductId == Guid.Parse("85ce17c1-10d9-4784-b054-016551e5e109"))
                 .UpdateAsync();
 
-            var tuple5 = (Hints.SQL, Hints.Parameters);
+            var tuple5 = (Debug.SQL, Debug.Parameters);
 
             var xx6 = "";
 
@@ -142,7 +142,7 @@ namespace EasyDAL.Exchange.Tests
                 .Where(it => it.Id == resx6.Id)
                 .UpdateAsync();
 
-            var tuple6 = (Hints.SQL, Hints.Parameters);
+            var tuple6 = (Debug.SQL, Debug.Parameters);
 
             var xx = "";
         }
