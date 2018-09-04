@@ -24,7 +24,7 @@ namespace EasyDAL.Exchange.Tests
                 .Where(it => it.CreatedOn >= WhereTest.DateTime_大于等于)
                 .QueryPagingListAsync(1, 10);
 
-            var tuple1 = (Debug.SQL, Debug.Parameters);
+            var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
             var xx = "";
         }
@@ -54,7 +54,7 @@ namespace EasyDAL.Exchange.Tests
                 .Selecter<Agent>()
                 .QueryAllPagingListAsync(1, 10);
 
-            var tuple1 = (Debug.SQL, Debug.Parameters);
+            var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
             var xx = "";
         }
@@ -69,7 +69,7 @@ namespace EasyDAL.Exchange.Tests
                 .Selecter<Agent>()
                 .QueryAllPagingListAsync<AgentVM>(1, 10);
 
-            var tuple1 = (Debug.SQL, Debug.Parameters);
+            var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
             var xx = "";
         }

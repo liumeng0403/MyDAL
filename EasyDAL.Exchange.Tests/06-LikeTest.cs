@@ -59,7 +59,7 @@ namespace EasyDAL.Exchange.Tests
                 .And(it => it.PathId.Contains(WhereTest.ContainStr))
                 .QueryPagingListAsync(1, 10);
 
-            var sql1 = (Debug.SQL, Debug.Parameters);
+            var sql1 = (XDebug.SQL, XDebug.Parameters);
 
             var xx2 = "";
 
@@ -70,7 +70,7 @@ namespace EasyDAL.Exchange.Tests
                 .And(it => it.PathId.Contains("~00-d-3-1-"))
                 .QueryPagingListAsync(1, 10);
 
-            var sql2 = (Debug.SQL, Debug.Parameters);
+            var sql2 = (XDebug.SQL, XDebug.Parameters);
 
             var xx = "";
         }
@@ -109,7 +109,7 @@ namespace EasyDAL.Exchange.Tests
                 .Where(it => it.Name.Contains(LikeTest.无通配符))
                 .QueryListAsync();
 
-            var sql0 = (Debug.SQL, Debug.Parameters);
+            var sql0 = (XDebug.SQL, XDebug.Parameters);
 
             var xx1 = "";
 
@@ -119,7 +119,7 @@ namespace EasyDAL.Exchange.Tests
                 .Where(it => it.Name.Contains(LikeTest.百分号))
                 .QueryListAsync();
 
-            var sql1 = (Debug.SQL, Debug.Parameters);
+            var sql1 = (XDebug.SQL, XDebug.Parameters);
 
             var xx2 = "";
 
@@ -129,7 +129,7 @@ namespace EasyDAL.Exchange.Tests
                 .Where(it => it.Name.Contains(LikeTest.下划线))
                 .QueryListAsync();
 
-            var sql2 = (Debug.SQL, Debug.Parameters);
+            var sql2 = (XDebug.SQL, XDebug.Parameters);
 
             var xx3 = "";
 
@@ -142,7 +142,7 @@ namespace EasyDAL.Exchange.Tests
                 .And(it=>it.Name.Contains("%/%%"))
                 .QueryListAsync();
 
-            var sql3 = (Debug.SQL, Debug.Parameters);
+            var sql3 = (XDebug.SQL, XDebug.Parameters);
 
             var xx4 = "";
 
@@ -152,7 +152,7 @@ namespace EasyDAL.Exchange.Tests
                 .Where(it => it.Name.Contains(LikeTest.下划线转义))
                 .QueryListAsync();
 
-            var sql4 = (Debug.SQL, Debug.Parameters);
+            var sql4 = (XDebug.SQL, XDebug.Parameters);
 
             var xx = "";
 
@@ -171,7 +171,7 @@ namespace EasyDAL.Exchange.Tests
                 .Count(it => it.Id)
                 .QuerySingleValueAsync<long>();
 
-            var tuple1 = (Debug.SQL, Debug.Parameters);
+            var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
             var xx = "";
         }

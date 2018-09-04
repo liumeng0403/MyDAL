@@ -36,7 +36,7 @@ namespace EasyDAL.Exchange.Tests
                 })
                 .QueryListAsync();
 
-            var tuple1 = (Debug.SQL, Debug.Parameters);
+            var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
             var xx2 = "";
 
@@ -50,7 +50,7 @@ namespace EasyDAL.Exchange.Tests
                 .Where(option.GetCondition())
                 .QueryPagingListAsync(option);
 
-            var tuple2 = (Debug.SQL, Debug.Parameters);
+            var tuple2 = (XDebug.SQL, XDebug.Parameters);
 
             var xx3 = "";
 
@@ -68,7 +68,7 @@ namespace EasyDAL.Exchange.Tests
                 .Where(option.GetCondition())
                 .QueryPagingListAsync<AgentVM>(option);
 
-            var tuple3 = (Debug.SQL, Debug.Parameters);
+            var tuple3 = (XDebug.SQL, XDebug.Parameters);
 
             var xx4 = "";
 
@@ -83,7 +83,7 @@ namespace EasyDAL.Exchange.Tests
                 })
                 .QueryListAsync();
 
-            var tuple4 = (Debug.SQL, Debug.Parameters);
+            var tuple4 = (XDebug.SQL, XDebug.Parameters);
 
 
             var xx = "";
