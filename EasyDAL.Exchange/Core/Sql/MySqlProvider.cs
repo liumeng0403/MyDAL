@@ -52,6 +52,11 @@ namespace EasyDAL.Exchange.Core
 
             throw new Exception(value);
         }
+        private string InStrHandle(DicModel dic)
+        {
+            var paras = DC.Conditions.Where(it => it.ParamRaw.Equals(dic.ParamRaw, StringComparison.OrdinalIgnoreCase)).ToList();
+            return $" {string.Join(",", paras.Select(it => $" @{it.Param} "))} ";
+        }
 
         private string GetOrderByPart<M>()
         {
@@ -171,6 +176,9 @@ namespace EasyDAL.Exchange.Core
                                 break;
                             case OptionEnum.OneEqualOne:
                                 str += $" {item.Action.ToEnumDesc<ActionEnum>()} @{item.Param} ";
+                                break;
+                            case OptionEnum.In:
+                                str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.KeyOne} {item.Option.ToEnumDesc<OptionEnum>()}({InStrHandle(item)}) ";
                                 break;
                         }
                         break;
