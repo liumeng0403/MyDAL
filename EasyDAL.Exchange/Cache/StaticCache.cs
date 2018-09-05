@@ -25,5 +25,18 @@ namespace EasyDAL.Exchange.Cache
         }
 
         internal static ConcurrentDictionary<string, ConcurrentDictionary<Int32, String>> EHCache { get; } = new ConcurrentDictionary<string, ConcurrentDictionary<Int32, String>>();
+
+        private static ConcurrentDictionary<string, Assembly> AssemblyCache { get; } = new ConcurrentDictionary<string, Assembly>();
+        internal Assembly GetAssembly(string fullName)
+        {
+            var ass = default(Assembly);
+            if(!AssemblyCache.TryGetValue(fullName,out ass))
+            {
+                ass = GH.LoadAssembly(fullName);
+                AssemblyCache[fullName] = ass;
+            }
+            return ass;
+        }
+
     }
 }

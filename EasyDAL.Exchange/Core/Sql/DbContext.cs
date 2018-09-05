@@ -54,6 +54,8 @@ namespace EasyDAL.Exchange.Core.Sql
 
         internal StaticCache SC { get; private set; }
 
+        internal ParameterPartHandle PPH { get; private set; }
+
         internal List<DicModel> Conditions { get; private set; }
 
         internal IDbConnection Conn { get; private set; }
@@ -62,7 +64,50 @@ namespace EasyDAL.Exchange.Core.Sql
 
         internal void AddConditions(DicModel dic)
         {
-            if (!string.IsNullOrWhiteSpace(dic.Param)
+            if (dic.Value.Contains(",")
+                && dic.Option== OptionEnum.In)
+            {
+                var vals = dic.Value.Split(',').Select(it => it);
+                var i = 0;
+                foreach(var val in vals)
+                {
+                    //
+                    i++;
+                    var op = OptionEnum.None;
+                    if(i==1)
+                    {
+                        op = OptionEnum.In;
+                    }
+                    else
+                    {
+                        op = OptionEnum.InHelper;
+                    }
+                    
+                    //
+                    var dicx = new DicModel
+                    {
+                        TableOne = dic.TableOne,
+                        KeyOne = dic.KeyOne,
+                        AliasOne = dic.AliasOne,
+                        TableTwo = dic.TableTwo,
+                        KeyTwo = dic.KeyTwo,
+                        AliasTwo = dic.AliasTwo,
+                        Param = dic.Param,
+                        ParamRaw = dic.ParamRaw,
+                        Value = val,
+                        ValueType = dic.ValueType,
+                        ColumnType = dic.ColumnType,
+                        Option = op,
+                        Action = dic.Action,
+                        Crud = dic.Crud,
+                        FuncSupplement = dic.FuncSupplement,
+                        TvpIndex = dic.TvpIndex
+                    };
+                    AddConditions(dicx);
+                }
+                Conditions.Remove(dic);
+            }
+            else if (!string.IsNullOrWhiteSpace(dic.Param)
                 && Conditions.Any(it => dic.Param.Equals(it.Param, StringComparison.OrdinalIgnoreCase)))
             {
                 if (dic.Param.Contains("__"))
@@ -146,22 +191,19 @@ namespace EasyDAL.Exchange.Core.Sql
                 {
                     if (item.ValueType == typeof(bool))
                     {
-                        if (!string.IsNullOrWhiteSpace(item.ColumnType)
-                            && item.ColumnType.Equals("bit", StringComparison.OrdinalIgnoreCase))
-                        {
-                            if (item.Value.ToBool())
-                            {
-                                paras.Add(item.Param, 1, DbType.UInt16);
-                            }
-                            else
-                            {
-                                paras.Add(item.Param, 0, DbType.UInt16);
-                            }
-                        }
-                        else
-                        {
-                            paras.Add(item.Param, item.Value.ToBool(), DbType.Boolean);
-                        }
+                        paras.Add(PPH.BoolParamHandle(item));
+                    }
+                    else if(item.ValueType==typeof(short))
+                    {
+                        paras.Add(item.Param, item.Value.ToShort(), DbType.Int16);
+                    }
+                    else if (item.ValueType==typeof(int))
+                    {
+                        paras.Add(item.Param, item.Value.ToInt(), DbType.Int32);
+                    }
+                    else if(item.ValueType==typeof(long))
+                    {
+                        paras.Add(item.Param, item.Value.ToLong(), DbType.Int64);
                     }
                     else
                     {
@@ -183,6 +225,7 @@ namespace EasyDAL.Exchange.Core.Sql
             GH = GenericHelper.Instance;
             EH = ExpressionHelper.Instance;
             SC = StaticCache.Instance;
+            PPH = ParameterPartHandle.Instance;
             SqlProvider = new MySqlProvider(this);
         }
 

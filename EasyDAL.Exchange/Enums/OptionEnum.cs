@@ -68,6 +68,13 @@ namespace EasyDAL.Exchange.Enums
         Like,
 
         /// <summary>
+        /// " in "
+        /// </summary>
+        [Description(" in ")]
+        In,
+        InHelper,
+
+        /// <summary>
         /// " count"
         /// </summary>
         [Description(" count")]

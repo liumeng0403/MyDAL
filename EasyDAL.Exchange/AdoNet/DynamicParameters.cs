@@ -54,6 +54,10 @@ namespace EasyDAL.Exchange.AdoNet
                 Scale = scale
             };
         }
+        public void Add(ParamInfo param)
+        {
+            parameters[CleanKeyStr(param.Name)] = param;
+        }
 
         /// <summary>
         /// 清理 key str 中的特殊字符

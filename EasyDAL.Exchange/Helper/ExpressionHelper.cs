@@ -3,8 +3,10 @@ using EasyDAL.Exchange.Cache;
 using EasyDAL.Exchange.Common;
 using EasyDAL.Exchange.Enums;
 using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -15,6 +17,7 @@ namespace EasyDAL.Exchange.Helper
     {
 
         private GenericHelper GH = GenericHelper.Instance;
+        private StaticCache SC = StaticCache.Instance;
 
         /********************************************************************************************************************/
 
@@ -22,18 +25,15 @@ namespace EasyDAL.Exchange.Helper
         private (string key, Type type) GetKey(ParameterExpression parameter, Expression body, OptionEnum option)
         {
             var leftBody = body as MemberExpression;
-            if (leftBody == null)  // Convert
+            var info = default(PropertyInfo);
+            if (body.NodeType == ExpressionType.Convert)
             {
                 var exp = body as UnaryExpression;
-                var opMem = exp.Operand as MemberExpression;
-                var key = opMem.Member.Name;
-                var keyProp = opMem.Member as PropertyInfo;
-                var type = keyProp.PropertyType;
-                return (key, type);
+                var opMem = exp.Operand;
+                return GetKey(parameter, opMem, option);
             }
-            else  // MemberAccess
+            else if (body.NodeType == ExpressionType.MemberAccess)
             {
-                var info = default(PropertyInfo);
                 if (option == OptionEnum.CharLength)
                 {
                     var clMemExpr = leftBody.Expression as MemberExpression;
@@ -58,6 +58,17 @@ namespace EasyDAL.Exchange.Helper
                     });
                 return (field, type);
             }
+            else if (body.NodeType == ExpressionType.Call)
+            {
+                var mcExpr = body as MethodCallExpression;
+                var mem = mcExpr.Arguments[0];
+                if (option == OptionEnum.In)
+                {
+                    return GetKey(parameter, mem, option);
+                }
+            }
+
+            return (default(string), default(Type));
         }
         // -02-03-
         private string GetMemExprVal(Expression memExpre)
@@ -66,13 +77,23 @@ namespace EasyDAL.Exchange.Helper
 
             //
             var memExpr = memExpre as MemberExpression;
-            var outerProp = memExpr.Member as PropertyInfo;
-            if (outerProp == null)
+            var targetProp = memExpr.Member as PropertyInfo;
+            if (targetProp == null)
             {
-                var memMem = memExpr.Member as FieldInfo;
+                var targetField = memExpr.Member as FieldInfo;
                 var memCon = memExpr.Expression as ConstantExpression;
                 object memObj = memCon.Value;
-                str = memMem.GetValue(memObj).ToString();
+                var fType = targetField.FieldType;
+                if (IsListT(fType))
+                {
+                    var type = memExpr.Type as Type;
+                    var vals = targetField.GetValue(memObj);
+                    str = InValueForListT(type, vals);
+                }
+                else
+                {
+                    str = targetField.GetValue(memObj).ToString();
+                }
             }
             else
             {
@@ -80,28 +101,57 @@ namespace EasyDAL.Exchange.Helper
                 {
                     var type = memExpr.Type as Type;
                     var instance = Activator.CreateInstance(type);
-                    str = outerProp.GetValue(instance, null).ToString();
+                    str = targetProp.GetValue(instance, null).ToString();
                 }
                 else
                 {
-                    MemberExpression innerMember = (MemberExpression)memExpr.Expression;
-                    var innerField = innerMember.Member as FieldInfo;
-                    if (innerField == null)
+                    MemberExpression innerMember = memExpr.Expression as MemberExpression;
+                    if (innerMember == null)
                     {
-                        var innerFieldX = innerMember.Member as PropertyInfo;
-                        ConstantExpression ce = (ConstantExpression)innerMember.Expression;
+                        var ce = memExpr.Expression as ConstantExpression;
                         object innerObj = ce.Value;
-                        var outerObj = innerFieldX.GetValue(innerObj);
-                        var valType = outerProp.PropertyType;
-                        str = GH.GetTypeValue(valType, outerProp, outerObj);
+                        var memP = memExpr.Member as PropertyInfo;
+                        var vals = memP.GetValue(innerObj);
+                        var valType = memP.PropertyType;
+                        if (IsListT(valType))
+                        {
+                            str = InValueForListT(valType, vals);
+                        }
+                        else
+                        {
+                            str = GH.GetTypeValue(valType, memP, innerObj);    // 此项 可能 有问题 
+                        }
                     }
                     else
                     {
-                        ConstantExpression ce = (ConstantExpression)innerMember.Expression;
-                        object innerObj = ce.Value;
-                        var outerObj = innerField.GetValue(innerObj);
-                        var valType = outerProp.PropertyType;
-                        str = GH.GetTypeValue(valType, outerProp, outerObj);
+                        var innerField = innerMember.Member as FieldInfo;
+                        if (innerField == null)
+                        {
+
+                            var innerFieldX = innerMember.Member as PropertyInfo;
+                            var ce = innerMember.Expression as ConstantExpression;
+                            object innerObj = ce.Value;
+                            var outerObj = innerFieldX.GetValue(innerObj);
+                            var fType = targetProp.PropertyType;
+                            if (IsListT(fType))
+                            {
+                                var type = memExpr.Type as Type;
+                                var vals = targetProp.GetValue(outerObj);
+                                str = InValueForListT(type, vals);
+                            }
+                            else
+                            {
+                                str = GH.GetTypeValue(fType, targetProp, outerObj);
+                            }
+                        }
+                        else
+                        {
+                            var ce = innerMember.Expression as ConstantExpression;
+                            object innerObj = ce.Value;
+                            var outerObj = innerField.GetValue(innerObj);
+                            var valType = targetProp.PropertyType;
+                            str = GH.GetTypeValue(valType, targetProp, outerObj);
+                        }
                     }
                 }
             }
@@ -197,6 +247,12 @@ namespace EasyDAL.Exchange.Helper
             return val;
         }
         // 01
+        private string GetConVal(Expression conExpr)
+        {
+            var con = conExpr as ConstantExpression;
+            return con.Value.ToString();
+        }
+        // 01
         private (string key, string alias, Type valType) GetMemKeyAlias(Expression expr)
         {
             var memExpr = expr as MemberExpression;
@@ -250,6 +306,23 @@ namespace EasyDAL.Exchange.Helper
             };
         }
         // 01
+        private DicModel CallInHandle(string key, string value, Type valType)
+        {
+            if (valType.IsEnum)
+            {
+                valType = typeof(int);
+            }
+            return new DicModel
+            {
+                KeyOne = key,
+                Param = key,
+                ParamRaw = key,
+                Value = value,
+                ValueType = valType,
+                Option = OptionEnum.In
+            };
+        }
+        // 01
         private DicModel CallLikeHandle(string key, string value, Type valType)
         {
             return new DicModel
@@ -263,7 +336,7 @@ namespace EasyDAL.Exchange.Helper
             };
         }
         // 01
-        private DicModel ConstantBoolHandle(string value,Type valType)
+        private DicModel ConstantBoolHandle(string value, Type valType)
         {
             return new DicModel
             {
@@ -276,7 +349,7 @@ namespace EasyDAL.Exchange.Helper
             };
         }
         // 01
-        private DicModel MemberBoolHandle(string key,Type valType)
+        private DicModel MemberBoolHandle(string key, Type valType)
         {
             return new DicModel
             {
@@ -359,6 +432,55 @@ namespace EasyDAL.Exchange.Helper
             return result;
         }
 
+        // 03 04
+        private bool IsListT(Type type)
+        {
+            if (type.IsGenericType
+                && "System.Collections.Generic".Equals(type.Namespace, StringComparison.OrdinalIgnoreCase)
+                && "List`1".Equals(type.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            return false;
+        }
+        // 03 04
+        private string InValueForListT(Type type, object vals)
+        {
+            var str = string.Empty;
+
+            //
+            var valType = default(Type);
+            var typeT = type.GetGenericArguments()[0];
+            if (typeT == typeof(string)
+                || typeT == typeof(ushort)
+                || typeT == typeof(short)
+                || typeT == typeof(uint)
+                || typeT == typeof(int)
+                || typeT == typeof(ulong)
+                || typeT == typeof(long))
+            {
+                valType = typeT;
+            }
+            else
+            {
+                var currAssembly = SC.GetAssembly(typeT.FullName);
+                valType = currAssembly.GetType(typeT.FullName);
+            }
+
+            //
+            var ds = vals as dynamic;
+            var intVals = new List<object>();
+            for (var i = 0; i < ds.Count; i++)
+            {
+                intVals.Add(GH.GetTypeValue(valType, ds[i]));
+            }
+            str = string.Join(",", intVals.Select(it=>it.ToString()));
+
+            //
+            return str;
+        }
+
         /********************************************************************************************************************/
 
         /// <summary>
@@ -371,7 +493,16 @@ namespace EasyDAL.Exchange.Helper
                 var parameter = func.Parameters[0];
                 var body = func.Body as MemberExpression;
                 var keyTuple = GetKey(parameter, body, OptionEnum.None);
-                return keyTuple.key;
+                var key = keyTuple.key;
+
+                if (!string.IsNullOrWhiteSpace(key))
+                {
+                    return key;
+                }
+                else
+                {
+                    throw new Exception();
+                }
             }
             catch (Exception ex)
             {
@@ -409,7 +540,7 @@ namespace EasyDAL.Exchange.Helper
                     var leftStr = binTuple.left.ToString();
                     if (leftStr.Contains(".Length")
                         && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
-                    {                        
+                    {
                         var keyTuple = GetKey(parameter, binTuple.left, OptionEnum.CharLength);
                         result = BinaryCharLengthHandle(keyTuple.key, val, keyTuple.type, binTuple.node);
                     }
@@ -423,12 +554,44 @@ namespace EasyDAL.Exchange.Helper
                 {
                     var mcExpr = body as MethodCallExpression;
                     var exprStr = mcExpr.ToString();
+                    var memType = mcExpr.Object.Type;
                     if (exprStr.Contains(".Contains("))
                     {
-                        var mem = mcExpr.Object as MemberExpression;
-                        var keyTuple = GetKey(parameter, mem, OptionEnum.Like);
-                        val = GetCallVal(mcExpr);
-                        result = CallLikeHandle(keyTuple.key, val, keyTuple.type);
+                        var objNodeType = mcExpr.Object.NodeType;
+                        if (objNodeType == ExpressionType.MemberAccess)
+                        {
+                            var memO = mcExpr.Object as MemberExpression;
+                            if (memType.GetInterfaces() != null
+                                && memType.GetInterfaces().Contains(typeof(IList))
+                                && !memType.IsArray)
+                            {
+                                val = HandMember(mcExpr.Object);
+                                var keyTuple = GetKey(parameter, mcExpr, OptionEnum.In);
+                                result = CallInHandle(keyTuple.key, val, keyTuple.type);
+                            }
+                            else if (memType == typeof(string))
+                            {
+                                var keyTuple = GetKey(parameter, memO, OptionEnum.Like);
+                                val = GetCallVal(mcExpr);
+                                result = CallLikeHandle(keyTuple.key, val, keyTuple.type);
+                            }
+                        }
+                        else if(objNodeType== ExpressionType.ListInit)
+                        {
+                            var liExpr = mcExpr.Object as ListInitExpression;
+                            var keyTuple = GetKey(parameter, mcExpr, OptionEnum.In);
+                            if (keyTuple.type == typeof(int))
+                            {
+                                var vals = new List<string>();
+                                foreach(var ini in liExpr.Initializers)
+                                {
+                                    var arg = ini.Arguments[0];
+                                    vals.Add(GetConVal(ini.Arguments[0]));
+                                }
+                                val = string.Join(",", vals);
+                                result = CallInHandle(keyTuple.key, val, keyTuple.type);
+                            }
+                        }
                     }
                 }
                 else if (nodeType == ExpressionType.Constant)
