@@ -1,6 +1,9 @@
-﻿using EasyDAL.Exchange.Core.Sql;
+﻿using EasyDAL.Exchange.Core;
 using EasyDAL.Exchange.UserFacade.Create;
 using EasyDAL.Exchange.UserFacade.Delete;
+using EasyDAL.Exchange.UserFacade.Join;
+using EasyDAL.Exchange.UserFacade.Query;
+using EasyDAL.Exchange.UserFacade.Update;
 using System;
 using System.Data;
 
@@ -30,74 +33,74 @@ namespace EasyDAL.Exchange
         /// 修改数据 方法簇
         /// </summary>
         /// <typeparam name="M">M:与DB Table 一 一对应</typeparam>
-        public static Core.Update.Setter<M> Updater<M>(this IDbConnection connection)
+        public static Setter<M> Updater<M>(this IDbConnection connection)
         {
-            return new Core.Update.Setter<M>(new DbContext(connection));
+            return new Setter<M>(new DbContext(connection));
         }
 
         /// <summary>
         /// 单表查询 方法簇
         /// </summary>
         /// <typeparam name="M">M:与DB Table 一 一对应</typeparam>
-        public static Core.Query.Selecter<M> Selecter<M>(this IDbConnection connection)
+        public static Selecter<M> Selecter<M>(this IDbConnection connection)
         {
-            return new Core.Query.Selecter<M>(new DbContext(connection));
+            return new Selecter<M>(new DbContext(connection));
         }
 
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Core.Join.FromX Joiner<M1>(this IDbConnection connection,out M1 table1)
+        public static FromX Joiner<M1>(this IDbConnection connection,out M1 table1)
         {
             table1 = Activator.CreateInstance<M1>();
-            return new Core.Join.FromX(new DbContext(connection));
+            return new FromX(new DbContext(connection));
         }
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Core.Join.FromX Joiner<M1,M2>(this IDbConnection connection,out M1 table1,out M2 table2)
+        public static FromX Joiner<M1,M2>(this IDbConnection connection,out M1 table1,out M2 table2)
         {
             table1 = Activator.CreateInstance<M1>();
             table2 = Activator.CreateInstance<M2>();
-            return new Core.Join.FromX(new DbContext(connection));
+            return new FromX(new DbContext(connection));
         }
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Core.Join.FromX Joiner<M1,M2,M3>(this IDbConnection connection,out M1 table1,out M2 table2,out M3 table3)
+        public static FromX Joiner<M1,M2,M3>(this IDbConnection connection,out M1 table1,out M2 table2,out M3 table3)
         {
             table1 = Activator.CreateInstance<M1>();
             table2 = Activator.CreateInstance<M2>();
             table3 = Activator.CreateInstance<M3>();
-            return new Core.Join.FromX(new DbContext(connection));
+            return new FromX(new DbContext(connection));
         }
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Core.Join.FromX Joiner<M1,M2,M3,M4>(this IDbConnection connection,out M1 table1,out M2 table2,out M3 table3,out M4 table4)
+        public static FromX Joiner<M1,M2,M3,M4>(this IDbConnection connection,out M1 table1,out M2 table2,out M3 table3,out M4 table4)
         {
             table1 = Activator.CreateInstance<M1>();
             table2 = Activator.CreateInstance<M2>();
             table3 = Activator.CreateInstance<M3>();
             table4 = Activator.CreateInstance<M4>();
-            return new Core.Join.FromX(new DbContext(connection));
+            return new FromX(new DbContext(connection));
         }
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Core.Join.FromX Joiner<M1,M2,M3,M4,M5>(this IDbConnection connection,out M1 table1,out M2 table2,out M3 table3,out M4 table4,out M5 table5)
+        public static FromX Joiner<M1,M2,M3,M4,M5>(this IDbConnection connection,out M1 table1,out M2 table2,out M3 table3,out M4 table4,out M5 table5)
         {
             table1 = Activator.CreateInstance<M1>();
             table2 = Activator.CreateInstance<M2>();
             table3 = Activator.CreateInstance<M3>();
             table4 = Activator.CreateInstance<M4>();
             table5 = Activator.CreateInstance<M5>();
-            return new Core.Join.FromX(new DbContext(connection));
+            return new FromX(new DbContext(connection));
         }
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Core.Join.FromX Joiner<M1,M2,M3,M4,M5,M6>(this IDbConnection connection,out M1 table1,out M2 table2,out M3 table3,out M4 table4,out M5 table5,out M6 table6)
+        public static FromX Joiner<M1,M2,M3,M4,M5,M6>(this IDbConnection connection,out M1 table1,out M2 table2,out M3 table3,out M4 table4,out M5 table5,out M6 table6)
         {
             table1 = Activator.CreateInstance<M1>();
             table2 = Activator.CreateInstance<M2>();
@@ -105,7 +108,7 @@ namespace EasyDAL.Exchange
             table4 = Activator.CreateInstance<M4>();
             table5 = Activator.CreateInstance<M5>();
             table6 = Activator.CreateInstance<M6>();
-            return new Core.Join.FromX(new DbContext(connection));
+            return new FromX(new DbContext(connection));
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿using EasyDAL.Exchange.Core.Sql;
+﻿using EasyDAL.Exchange.Core;
 using EasyDAL.Exchange.Enums;
 using EasyDAL.Exchange.Helper;
 using System;
@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.Core.Query
+namespace EasyDAL.Exchange.UserFacade.Query
 {
     public class SingleFilter<M>:Operator
     {

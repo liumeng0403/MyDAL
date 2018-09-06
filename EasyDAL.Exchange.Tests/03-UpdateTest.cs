@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using EasyDAL.Exchange.Extensions;
-using EasyDAL.Exchange.Core.Sql;
+using EasyDAL.Exchange.Core;
 using System.Dynamic;
 
 namespace EasyDAL.Exchange.Tests

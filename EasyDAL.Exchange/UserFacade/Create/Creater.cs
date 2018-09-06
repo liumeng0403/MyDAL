@@ -1,4 +1,4 @@
-﻿using EasyDAL.Exchange.Core.Sql;
+﻿using EasyDAL.Exchange.Core;
 using EasyDAL.Exchange.Enums;
 using EasyDAL.Exchange.Helper;
 using System.Collections.Generic;

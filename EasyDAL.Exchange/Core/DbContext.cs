@@ -13,7 +13,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.Core.Sql
+namespace EasyDAL.Exchange.Core
 {
     internal class DbContext
     {
@@ -64,17 +64,18 @@ namespace EasyDAL.Exchange.Core.Sql
 
         internal void AddConditions(DicModel dic)
         {
-            if (dic.Value.Contains(",")
-                && dic.Option== OptionEnum.In)
+            if (!string.IsNullOrWhiteSpace(dic.Value)
+                && dic.Value.Contains(",")
+                && dic.Option == OptionEnum.In)
             {
                 var vals = dic.Value.Split(',').Select(it => it);
                 var i = 0;
-                foreach(var val in vals)
+                foreach (var val in vals)
                 {
                     //
                     i++;
                     var op = OptionEnum.None;
-                    if(i==1)
+                    if (i == 1)
                     {
                         op = OptionEnum.In;
                     }
@@ -82,7 +83,7 @@ namespace EasyDAL.Exchange.Core.Sql
                     {
                         op = OptionEnum.InHelper;
                     }
-                    
+
                     //
                     var dicx = new DicModel
                     {
@@ -193,15 +194,15 @@ namespace EasyDAL.Exchange.Core.Sql
                     {
                         paras.Add(PPH.BoolParamHandle(item));
                     }
-                    else if(item.ValueType==typeof(short))
+                    else if (item.ValueType == typeof(short))
                     {
                         paras.Add(item.Param, item.Value.ToShort(), DbType.Int16);
                     }
-                    else if (item.ValueType==typeof(int))
+                    else if (item.ValueType == typeof(int))
                     {
                         paras.Add(item.Param, item.Value.ToInt(), DbType.Int32);
                     }
-                    else if(item.ValueType==typeof(long))
+                    else if (item.ValueType == typeof(long))
                     {
                         paras.Add(item.Param, item.Value.ToLong(), DbType.Int64);
                     }

@@ -1,4 +1,4 @@
-﻿using EasyDAL.Exchange.Core.Sql;
+﻿using EasyDAL.Exchange.Core;
 using EasyDAL.Exchange.Enums;
 using EasyDAL.Exchange.Helper;
 using System;
@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.Core.Join
+namespace EasyDAL.Exchange.UserFacade.Join
 {
     public class QueryFilter : Operator
     {

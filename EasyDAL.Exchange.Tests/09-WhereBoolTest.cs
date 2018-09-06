@@ -1,4 +1,4 @@
-﻿using EasyDAL.Exchange.Core.Sql;
+﻿using EasyDAL.Exchange.Core;
 using EasyDAL.Exchange.Tests.Entities;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ namespace EasyDAL.Exchange.Tests
     {
 
         [Fact]
-        public async Task test01()
+        public async Task BoolDefaultTest()
         {
 
             var xx1 = "";

@@ -1,4 +1,4 @@
-﻿using EasyDAL.Exchange.Core.Sql;
+﻿using EasyDAL.Exchange.Core;
 using EasyDAL.Exchange.Tests.Entities;
 using EasyDAL.Exchange.Tests.Enums;
 using System;
@@ -14,18 +14,12 @@ namespace EasyDAL.Exchange.Tests
         private async Task PreCreate(BodyFitRecord m)
         {
             // 清除数据
-            var xx1 = "";
-
-            var res1 = await Conn
-                .Selecter<BodyFitRecord>()
-                .Where(it => it.Id == m.Id)
-                .QueryFirstOrDefaultAsync();
-
+            
             var xx2 = "";
 
             var res2 = await Conn
                 .Deleter<BodyFitRecord>()
-                .Where(it => it.Id == res1.Id)
+                .Where(it => it.Id == Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"))
                 .DeleteAsync();
         }
         private async Task<List<AddressInfo>> PreCreateBatch()
