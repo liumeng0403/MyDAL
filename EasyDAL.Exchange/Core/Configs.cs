@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EasyDAL.Exchange.Core.Sql
+namespace EasyDAL.Exchange.Core
 {
     public class Configs
     {

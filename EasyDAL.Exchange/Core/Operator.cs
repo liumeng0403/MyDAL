@@ -10,7 +10,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.Core.Sql
+namespace EasyDAL.Exchange.Core
 {
     public abstract class Operator
     {

@@ -1,4 +1,4 @@
-﻿using EasyDAL.Exchange.Core.Sql;
+﻿using EasyDAL.Exchange.Core;
 using EasyDAL.Exchange.Tests.Entities;
 using EasyDAL.Exchange.Tests.Enums;
 using EasyDAL.Exchange.Tests.ViewModels;
@@ -9,12 +9,11 @@ using Xunit;
 namespace EasyDAL.Exchange.Tests
 {
     public class QueryTest : TestBase
-    {       
-
-        // 查询一个已存在对象 单条件
-        [Fact]
-        public async Task QueryFirstOrDefaultAsyncTest()
+    {   
+        private async Task<BodyFitRecord> PreQuery()
         {
+
+
             var m = new BodyFitRecord
             {
                 Id = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"),
@@ -22,51 +21,77 @@ namespace EasyDAL.Exchange.Tests
                 UserId = Guid.NewGuid(),
                 BodyMeasureProperty = "xxxx"
             };
+
+            // 清理数据
+            var resd = await Conn
+                .Deleter<BodyFitRecord>()
+                .Where(it => it.Id == m.Id)
+                .DeleteAsync();
+
             // 造数据
             var resc = await Conn
                 .Creater<BodyFitRecord>()
                 .CreateAsync(m);
 
+            return m;
+        }
+
+        // 查询一个已存在对象 单条件
+        [Fact]
+        public async Task QueryFirstOrDefaultAsyncTest()
+        {
+            var m = await PreQuery();
+
             var xx0 = "";
 
             //  == Guid
-            var res = await Conn
+            var res = await Conn.OpenDebug()
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.Id == Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"))
                 .QueryFirstOrDefaultAsync();
 
+            var tuple0 = (XDebug.SQL, XDebug.Parameters);
+
             var xx1 = "";
 
             // == DateTime
-            var res2 = await Conn
+            var res2 = await Conn.OpenDebug()
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.CreatedOn == Convert.ToDateTime("2018-08-23 13:36:58"))
                 .QueryFirstOrDefaultAsync();
 
+            var tuple2 = (XDebug.SQL, XDebug.Parameters);
+
             var xx2 = "";
 
             // == string
-            var res3 = await Conn
+            var res3 = await Conn.OpenDebug()
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.BodyMeasureProperty == "xxxx")
                 .QueryFirstOrDefaultAsync();
 
+            var tuple3 = (XDebug.SQL, XDebug.Parameters);
+
             var xx4 = "";
 
             // >= obj.DateTime
-            var res5 = await Conn
+            var res5 = await Conn.OpenDebug()
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.CreatedOn >= WhereTest.CreatedOn)
                 .QueryFirstOrDefaultAsync();
+
+            var tuple5 = (XDebug.SQL, XDebug.Parameters);
 
             var xx5 = "";
 
             var start = DateTime.Now.AddDays(-10);
             // >= variable(DateTime)
-            var res6 = await Conn
+            var res6 = await Conn.OpenDebug()
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.CreatedOn >= start)
                 .QueryFirstOrDefaultAsync();
+
+            var tuple6 = (XDebug.SQL, XDebug.Parameters);
 
             var xx6 = "";
 
@@ -76,15 +101,11 @@ namespace EasyDAL.Exchange.Tests
                 .Where(it => it.CreatedOn <= DateTime.Now)
                 .QueryFirstOrDefaultAsync();
 
-            var tuple = (XDebug.SQL, XDebug.Parameters);
+            var tuple7 = (XDebug.SQL, XDebug.Parameters);
 
             var xx = "";
 
-            // 清理数据
-            var resd = await Conn
-                .Deleter<BodyFitRecord>()
-                .Where(it => it.Id == m.Id)
-                .DeleteAsync();
+
         }
 
         // 查询一个已存在对象 多条件
@@ -94,11 +115,13 @@ namespace EasyDAL.Exchange.Tests
             var xx1 = "";
 
             // where and
-            var res1 = await Conn
+            var res1 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= WhereTest.DateTime_大于等于)
                 .And(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
                 .QueryFirstOrDefaultAsync();
+
+            var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
             var xx2 = "";
 
@@ -110,10 +133,12 @@ namespace EasyDAL.Exchange.Tests
         {
             var xx1 = "";
 
-            var res1 = await Conn
+            var res1 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
                 .QueryFirstOrDefaultAsync<AgentVM>();
+
+            var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
             var xx = "";
         }
@@ -133,27 +158,21 @@ namespace EasyDAL.Exchange.Tests
 
             var xx1 = "";
 
-            var res1 = await Conn
+            var res1 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= testQ.DateTime_大于等于)
                 .QueryListAsync();
 
+            var tuple1 = (XDebug.SQL, XDebug.Parameters);
+
             var xx2 = "";
 
-            var res2 = await Conn
+            var res2 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => it.AgentLevel == testQ.AgentLevelXX)
                 .QueryListAsync();
 
-            var xx3 = "";
-
-            // .Where(a => a.Name.Length > 0)
-            var res3 = await Conn.OpenDebug()
-                .Selecter<Agent>()
-                .Where(it => it.Name.Length > 2)
-                .QueryListAsync();
-
-            var tuple3 = (XDebug.SQL, XDebug.Parameters);
+            var tuple2 = (XDebug.SQL, XDebug.Parameters);
 
             var xx = "";
         }
@@ -172,10 +191,12 @@ namespace EasyDAL.Exchange.Tests
 
             var xx1 = "";
 
-            var res1 = await Conn
+            var res1 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= testQ.DateTime_大于等于)
                 .QueryListAsync<AgentVM>();
+
+            var tuple1 = (XDebug.SQL, XDebug.Parameters);
             
             var xx = "";
         }
@@ -206,7 +227,7 @@ namespace EasyDAL.Exchange.Tests
                 .Selecter<Agent>()
                 .QueryAllAsync();
 
-            var tuple = (XDebug.SQL, XDebug.Parameters);
+            var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
             var xx = "";
         }
@@ -220,7 +241,7 @@ namespace EasyDAL.Exchange.Tests
                 .Selecter<Agent>()
                 .QueryAllAsync<AgentVM>();
 
-            var tuple = (XDebug.SQL, XDebug.Parameters);
+            var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
             var xx = "";
         }

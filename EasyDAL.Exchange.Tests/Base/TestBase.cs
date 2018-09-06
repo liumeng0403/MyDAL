@@ -5,7 +5,7 @@ using EasyDAL.Exchange.AdoNet;
 using MySql.Data.MySqlClient;
 using EasyDAL.Exchange.Tests.Entities;
 using EasyDAL.Exchange.Tests.Enums;
-using EasyDAL.Exchange.Core.Sql;
+using EasyDAL.Exchange.Core;
 using EasyDAL.Exchange.Tests.TestModels;
 using System.Collections.Generic;
 

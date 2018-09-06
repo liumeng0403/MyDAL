@@ -1,6 +1,6 @@
 ﻿using EasyDAL.Exchange.AdoNet.Interfaces;
 using EasyDAL.Exchange.Cache;
-using EasyDAL.Exchange.Core.Sql;
+using EasyDAL.Exchange.Core;
 using EasyDAL.Exchange.Helper;
 using EasyDAL.Exchange.X;
 using System.Collections.Generic;

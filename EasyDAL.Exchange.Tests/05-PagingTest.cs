@@ -1,4 +1,4 @@
-﻿using EasyDAL.Exchange.Core.Sql;
+﻿using EasyDAL.Exchange.Core;
 using EasyDAL.Exchange.Tests.Entities;
 using EasyDAL.Exchange.Tests.Enums;
 using EasyDAL.Exchange.Tests.ViewModels;
@@ -36,10 +36,12 @@ namespace EasyDAL.Exchange.Tests
         {
             var xx1 = "";
 
-            var res1 = await Conn
+            var res1 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= WhereTest.DateTime_大于等于)
                 .QueryPagingListAsync<AgentVM>(1, 10);
+
+            var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
             var xx = "";
         }

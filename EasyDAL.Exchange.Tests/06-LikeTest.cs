@@ -1,4 +1,4 @@
-﻿using EasyDAL.Exchange.Core.Sql;
+﻿using EasyDAL.Exchange.Core;
 using EasyDAL.Exchange.Tests.Entities;
 using System;
 using System.Threading.Tasks;
@@ -8,9 +8,7 @@ namespace EasyDAL.Exchange.Tests
 {
     public class LikeTest : TestBase
     {
-
-        [Fact]
-        public async Task QueryFirstOrDefaultAsyncTest()
+        private async Task<BodyFitRecord> Pre01()
         {
             // 造数据
             var m = new BodyFitRecord
@@ -20,18 +18,59 @@ namespace EasyDAL.Exchange.Tests
                 UserId = Guid.NewGuid(),
                 BodyMeasureProperty = "{xxx:yyy,mmm:nnn}"
             };
+
+
+
             // 新建
             var res0 = await Conn.OpenDebug()
                 .Creater<BodyFitRecord>()
                 .CreateAsync(m);
 
+            return m;
+        }
+        private async Task<Agent> Pre02()
+        {
+
+            var xxx = "";
+
+            // 造数据
+            var resx1 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.Id == Guid.Parse("014c55c3-b371-433c-abc0-016544491da8"))
+                .QueryFirstOrDefaultAsync();
+            var resx2 = await Conn
+                .Updater<Agent>()
+                .Set(it => it.Name, "刘%华")
+                .Where(it => it.Id == resx1.Id)
+                .UpdateAsync();
+            var resx3 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.Id == Guid.Parse("018a1855-e238-4fb7-82d6-0165442fd654"))
+                .QueryFirstOrDefaultAsync();
+            var resx4 = await Conn
+                .Updater<Agent>()
+                .Set(it => it.Name, "何_伟")
+                .Where(it => it.Id == resx3.Id)
+                .UpdateAsync();
+
+            return resx1;
+
+        }
+
+        [Fact]
+        public async Task QueryFirstOrDefaultAsyncTest()
+        {
+            var m = await Pre01();
+
             var xx1 = "";
 
             // 默认 "%"+"xx"+"%"
-            var res1 = await Conn
+            var res1 = await Conn.OpenDebug()
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.BodyMeasureProperty.Contains("xx"))
                 .QueryFirstOrDefaultAsync();
+
+            var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
             var xx = "";
 
@@ -79,27 +118,7 @@ namespace EasyDAL.Exchange.Tests
         [Fact]
         public async Task QueryListAsyncTest()
         {
-            var xxx = "";
-
-            // 造数据
-            var resx1 = await Conn
-                .Selecter<Agent>()
-                .Where(it => it.Id == Guid.Parse("014c55c3-b371-433c-abc0-016544491da8"))
-                .QueryFirstOrDefaultAsync();
-            var resx2 = await Conn
-                .Updater<Agent>()
-                .Set(it => it.Name, "刘%华")
-                .Where(it => it.Id == resx1.Id)
-                .UpdateAsync();
-            var resx3 = await Conn
-                .Selecter<Agent>()
-                .Where(it => it.Id == Guid.Parse("018a1855-e238-4fb7-82d6-0165442fd654"))
-                .QueryFirstOrDefaultAsync();
-            var resx4 = await Conn
-                .Updater<Agent>()
-                .Set(it => it.Name, "何_伟")
-                .Where(it => it.Id == resx3.Id)
-                .UpdateAsync();
+            var resx1 = await Pre02();
 
             var xx0 = "";
 
@@ -156,24 +175,6 @@ namespace EasyDAL.Exchange.Tests
 
             var xx = "";
 
-        }
-
-        // 查询 单值
-        [Fact]
-        public async Task QuerySingleValueAsyncTest()
-        {
-            var xx1 = "";
-
-            // count(id)  like "陈%"
-            var res1 = await Conn.OpenDebug()
-                .Selecter<Agent>()
-                .Where(it => it.Name.Contains(LikeTest.百分号))
-                .Count(it => it.Id)
-                .QuerySingleValueAsync<long>();
-
-            var tuple1 = (XDebug.SQL, XDebug.Parameters);
-
-            var xx = "";
         }
 
     }

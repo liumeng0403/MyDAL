@@ -1,7 +1,7 @@
 ﻿
 using EasyDAL.Exchange.AdoNet;
 using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Core.Sql;
+using EasyDAL.Exchange.Core;
 using EasyDAL.Exchange.Enums;
 using EasyDAL.Exchange.Extensions;
 using EasyDAL.Exchange.Helper;
