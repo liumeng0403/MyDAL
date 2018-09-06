@@ -1,18 +1,14 @@
 ﻿
+using EasyDAL.Exchange.AdoNet;
+using EasyDAL.Exchange.Common;
+using EasyDAL.Exchange.Core.Sql;
 using EasyDAL.Exchange.Enums;
+using EasyDAL.Exchange.Extensions;
+using EasyDAL.Exchange.Helper;
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using System.Reflection;
-using EasyDAL.Exchange.Extensions;
-using EasyDAL.Exchange.DynamicParameter;
-using EasyDAL.Exchange.Core.Sql;
-using System.Data;
-using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.AdoNet;
 using System.ComponentModel.DataAnnotations.Schema;
-using EasyDAL.Exchange.Helper;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace EasyDAL.Exchange.Core

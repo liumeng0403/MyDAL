@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 
-namespace EasyDAL.Exchange.MapperX
+namespace EasyDAL.Exchange.Cache
 {
     internal class TypeDeserializerCache
     {

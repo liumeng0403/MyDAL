@@ -19,8 +19,11 @@ namespace EasyDAL.Exchange.Tests.Entities
 
         public string ContainStr { get; set; }
 
-        public List<AgentLevel> In_枚举 { get; set; }
+        public List<AgentLevel> In_List_枚举 { get; set; }
 
-        public List<string> In_String { get; set; }
+        public AgentLevel[] In_Array_枚举 { get; set; }
+
+        public List<string> In_List_String { get; set; }
+        public string[] In_Array_String { get; set; }
     }
 }

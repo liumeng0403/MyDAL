@@ -24,12 +24,22 @@ namespace EasyDAL.Exchange.Tests
                     DateTime_小于等于 = DateTime.Now,
                     AgentLevelXX = AgentLevel.DistiAgent,
                     ContainStr = "~00-d-3-1-",
-                    In_枚举 = new List<AgentLevel>
+                    In_List_枚举 = new List<AgentLevel>
                     {
                         AgentLevel.CityAgent,
                         AgentLevel.DistiAgent
                     },
-                    In_String = new List<string>
+                    In_Array_枚举= new AgentLevel[]
+                    {
+                        AgentLevel.CityAgent,
+                        AgentLevel.DistiAgent
+                    },
+                    In_List_String = new List<string>
+                    {
+                        "黄银凤",
+                        "刘建芬"
+                    },
+                    In_Array_String= new string[]
                     {
                         "黄银凤",
                         "刘建芬"

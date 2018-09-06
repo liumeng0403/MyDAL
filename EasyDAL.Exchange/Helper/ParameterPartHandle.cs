@@ -1,11 +1,8 @@
-﻿using EasyDAL.Exchange.AdoNet;
-using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.DynamicParameter;
+﻿using EasyDAL.Exchange.Common;
 using EasyDAL.Exchange.Extensions;
+using EasyDAL.Exchange.X;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Text;
 
 namespace EasyDAL.Exchange.Helper
 {

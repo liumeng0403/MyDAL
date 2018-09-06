@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace EasyDAL.Exchange.Core.Delete
+namespace EasyDAL.Exchange.UserFacade.Delete
 {
     public class Deleter<M>: Operator
     {

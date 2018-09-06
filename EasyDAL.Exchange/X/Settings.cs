@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace EasyDAL.Exchange.MapperX
+namespace EasyDAL.Exchange.X
 {
     /// <summary>
     /// Permits specifying certain SqlMapper values globally.

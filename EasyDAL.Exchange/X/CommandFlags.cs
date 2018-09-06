@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EasyDAL.Exchange.MapperX
+namespace EasyDAL.Exchange.X
 {
     /// <summary>
     /// Additional state flags that control command behaviour

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 
-namespace EasyDAL.Exchange.DynamicParameter
+namespace EasyDAL.Exchange.X
 {
     internal sealed class ParamInfo
     {
