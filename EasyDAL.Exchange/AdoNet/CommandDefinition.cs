@@ -1,11 +1,7 @@
-﻿using EasyDAL.Exchange.Cache;
-using EasyDAL.Exchange.Core.Sql;
-using EasyDAL.Exchange.DynamicParameter;
-using EasyDAL.Exchange.MapperX;
+﻿using EasyDAL.Exchange.Core.Sql;
+using EasyDAL.Exchange.X;
 using System;
 using System.Data;
-using System.Reflection;
-using System.Reflection.Emit;
 
 namespace EasyDAL.Exchange.AdoNet
 {

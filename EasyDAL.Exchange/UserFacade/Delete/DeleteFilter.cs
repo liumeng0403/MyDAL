@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.Core.Delete
+namespace EasyDAL.Exchange.UserFacade.Delete
 {
     public class DeleteFilter<M>:Operator
     {        

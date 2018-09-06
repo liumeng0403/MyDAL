@@ -84,11 +84,19 @@ namespace EasyDAL.Exchange.Helper
                 var memCon = memExpr.Expression as ConstantExpression;
                 object memObj = memCon.Value;
                 var fType = targetField.FieldType;
-                if (IsListT(fType))
+                if (IsListT(fType)
+                    || fType.IsArray)
                 {
                     var type = memExpr.Type as Type;
                     var vals = targetField.GetValue(memObj);
-                    str = InValueForListT(type, vals);
+                    if (fType.IsArray)
+                    {
+                        str = InValueForArray(type, vals);
+                    }
+                    else
+                    {
+                        str = InValueForListT(type, vals);
+                    }
                 }
                 else
                 {
@@ -113,9 +121,17 @@ namespace EasyDAL.Exchange.Helper
                         var memP = memExpr.Member as PropertyInfo;
                         var vals = memP.GetValue(innerObj);
                         var valType = memP.PropertyType;
-                        if (IsListT(valType))
+                        if (IsListT(valType)
+                            || valType.IsArray)
                         {
-                            str = InValueForListT(valType, vals);
+                            if (valType.IsArray)
+                            {
+                                str = InValueForArray(valType, vals);
+                            }
+                            else
+                            {
+                                str = InValueForListT(valType, vals);
+                            }
                         }
                         else
                         {
@@ -133,11 +149,19 @@ namespace EasyDAL.Exchange.Helper
                             object innerObj = ce.Value;
                             var outerObj = innerFieldX.GetValue(innerObj);
                             var fType = targetProp.PropertyType;
-                            if (IsListT(fType))
+                            if (IsListT(fType)
+                                || fType.IsArray)
                             {
                                 var type = memExpr.Type as Type;
                                 var vals = targetProp.GetValue(outerObj);
-                                str = InValueForListT(type, vals);
+                                if (fType.IsArray)
+                                {
+                                    str = InValueForArray(type, vals);
+                                }
+                                else
+                                {
+                                    str = InValueForListT(type, vals);
+                                }
                             }
                             else
                             {
@@ -488,6 +512,42 @@ namespace EasyDAL.Exchange.Helper
             //
             return str;
         }
+        // 03 04
+        private string InValueForArray(Type type, object vals)
+        {
+            var str = string.Empty;
+
+            //
+            var valType = default(Type);
+            var typeT = type.GetElementType();
+            if (typeT == typeof(string)
+                || typeT == typeof(ushort)
+                || typeT == typeof(short)
+                || typeT == typeof(uint)
+                || typeT == typeof(int)
+                || typeT == typeof(ulong)
+                || typeT == typeof(long))
+            {
+                valType = typeT;
+            }
+            else
+            {
+                var currAssembly = SC.GetAssembly(typeT.FullName);
+                valType = currAssembly.GetType(typeT.FullName);
+            }
+
+            //
+            var ds = vals as dynamic;
+            var intVals = new List<object>();
+            for (var i = 0; i < ds.Length; i++)
+            {
+                intVals.Add(GH.GetTypeValue(valType, ds[i]));
+            }
+            str = string.Join(",", intVals.Select(it => it.ToString()));
+
+            //
+            return str;
+        }
 
         /********************************************************************************************************************/
 
@@ -562,40 +622,66 @@ namespace EasyDAL.Exchange.Helper
                 {
                     var mcExpr = body as MethodCallExpression;
                     var exprStr = mcExpr.ToString();
-                    var memType = mcExpr.Object.Type;
                     if (exprStr.Contains(".Contains("))
                     {
-                        var objNodeType = mcExpr.Object.NodeType;
-                        if (objNodeType == ExpressionType.MemberAccess)
+                        if (mcExpr.Object == null)
                         {
-                            var memO = mcExpr.Object as MemberExpression;
-                            if (memType.GetInterfaces() != null
-                                && memType.GetInterfaces().Contains(typeof(IList))
-                                && !memType.IsArray)
+                            var memKey = mcExpr.Arguments[1];
+                            var memVal = mcExpr.Arguments[0];
+                            if (memVal.NodeType == ExpressionType.MemberAccess)
                             {
-                                val = HandMember(mcExpr.Object);
-                                var keyTuple = GetKey(parameter, mcExpr, OptionEnum.In);
+                                var keyTuple = GetKey(parameter, memKey, OptionEnum.In);
+                                val = HandMember(memVal);
                                 result = CallInHandle(keyTuple.key, val, keyTuple.type);
                             }
-                            else if (memType == typeof(string))
+                            else if(memVal.NodeType== ExpressionType.NewArrayInit)
                             {
-                                var keyTuple = GetKey(parameter, memO, OptionEnum.Like);
-                                val = GetCallVal(mcExpr);
-                                result = CallLikeHandle(keyTuple.key, val, keyTuple.type);
+                                var naExpr = memVal as NewArrayExpression;
+                                var keyTuple = GetKey(parameter, memKey, OptionEnum.In);
+                                var vals = new List<string>();
+                                foreach (var exp in naExpr.Expressions)
+                                {
+                                    vals.Add(GetConVal(exp, keyTuple.type));
+                                }
+                                val = string.Join(",", vals);
+                                result = CallInHandle(keyTuple.key, val, keyTuple.type);
                             }
                         }
-                        else if (objNodeType == ExpressionType.ListInit)
+                        else
                         {
-                            var liExpr = mcExpr.Object as ListInitExpression;
-                            var keyTuple = GetKey(parameter, mcExpr, OptionEnum.In);
-                            var vals = new List<string>();
-                            foreach (var ini in liExpr.Initializers)
+                            var objNodeType = mcExpr.Object.NodeType;
+                            if (objNodeType == ExpressionType.MemberAccess)
                             {
-                                var arg = ini.Arguments[0];
-                                vals.Add(GetConVal(ini.Arguments[0], keyTuple.type));
+                                var memO = mcExpr.Object as MemberExpression;
+                                var memType = mcExpr.Object.Type;
+                                if (memType.GetInterfaces() != null
+                                    && memType.GetInterfaces().Contains(typeof(IList))
+                                    && !memType.IsArray)
+                                {
+                                    val = HandMember(mcExpr.Object);
+                                    var keyTuple = GetKey(parameter, mcExpr, OptionEnum.In);
+                                    result = CallInHandle(keyTuple.key, val, keyTuple.type);
+                                }
+                                else if (memType == typeof(string))
+                                {
+                                    var keyTuple = GetKey(parameter, memO, OptionEnum.Like);
+                                    val = GetCallVal(mcExpr);
+                                    result = CallLikeHandle(keyTuple.key, val, keyTuple.type);
+                                }
                             }
-                            val = string.Join(",", vals);
-                            result = CallInHandle(keyTuple.key, val, keyTuple.type);
+                            else if (objNodeType == ExpressionType.ListInit)
+                            {
+                                var liExpr = mcExpr.Object as ListInitExpression;
+                                var keyTuple = GetKey(parameter, mcExpr, OptionEnum.In);
+                                var vals = new List<string>();
+                                foreach (var ini in liExpr.Initializers)
+                                {
+                                    var arg = ini.Arguments[0];
+                                    vals.Add(GetConVal(ini.Arguments[0], keyTuple.type));
+                                }
+                                val = string.Join(",", vals);
+                                result = CallInHandle(keyTuple.key, val, keyTuple.type);
+                            }
                         }
                     }
                 }

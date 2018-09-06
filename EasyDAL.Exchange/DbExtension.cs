@@ -1,11 +1,8 @@
-﻿
-using EasyDAL.Exchange.Core.Create;
-using EasyDAL.Exchange.Core.Sql;
-using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.Helper;
+﻿using EasyDAL.Exchange.Core.Sql;
+using EasyDAL.Exchange.UserFacade.Create;
+using EasyDAL.Exchange.UserFacade.Delete;
 using System;
 using System.Data;
-using System.Threading.Tasks;
 
 namespace EasyDAL.Exchange
 {
@@ -15,18 +12,18 @@ namespace EasyDAL.Exchange
         /// 新建数据 方法簇
         /// </summary>
         /// <typeparam name="M">M:与DB Table 一 一对应</typeparam>
-        public static Core.Create.Creater<M> Creater<M>(this IDbConnection connection)
+        public static Creater<M> Creater<M>(this IDbConnection connection)
         {
-            return new Core.Create.Creater<M>(new DbContext(connection));
+            return new Creater<M>(new DbContext(connection));
         }
 
         /// <summary>
         /// 删除数据 方法簇
         /// </summary>
         /// <typeparam name="M">M:与DB Table 一 一对应</typeparam>
-        public static Core.Delete.Deleter<M> Deleter<M>(this IDbConnection connection)
+        public static Deleter<M> Deleter<M>(this IDbConnection connection)
         {
-            return new Core.Delete.Deleter<M>(new DbContext(connection));
+            return new Deleter<M>(new DbContext(connection));
         }
 
         /// <summary>

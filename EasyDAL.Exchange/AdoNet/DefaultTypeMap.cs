@@ -1,8 +1,6 @@
-﻿using EasyDAL.Exchange.AdoNet;
-using EasyDAL.Exchange.AdoNet.Interfaces;
+﻿using EasyDAL.Exchange.AdoNet.Interfaces;
 using EasyDAL.Exchange.Extensions;
-using EasyDAL.Exchange.Helper;
-using EasyDAL.Exchange.MapperX;
+using EasyDAL.Exchange.X;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,5 +1,4 @@
 ﻿using EasyDAL.Exchange.AdoNet;
-using EasyDAL.Exchange.MapperX;
 using System;
 using System.Data;
 
