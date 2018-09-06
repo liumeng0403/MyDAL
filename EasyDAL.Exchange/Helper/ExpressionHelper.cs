@@ -247,10 +247,18 @@ namespace EasyDAL.Exchange.Helper
             return val;
         }
         // 01
-        private string GetConVal(Expression conExpr)
+        private string GetConVal(Expression conExpr, Type valType)
         {
             var con = conExpr as ConstantExpression;
-            return con.Value.ToString();
+
+            if (valType.IsEnum)
+            {
+                return ((int)(con.Value)).ToString();
+            }
+            else
+            {
+                return con.Value.ToString();
+            }
         }
         // 01
         private (string key, string alias, Type valType) GetMemKeyAlias(Expression expr)
@@ -475,7 +483,7 @@ namespace EasyDAL.Exchange.Helper
             {
                 intVals.Add(GH.GetTypeValue(valType, ds[i]));
             }
-            str = string.Join(",", intVals.Select(it=>it.ToString()));
+            str = string.Join(",", intVals.Select(it => it.ToString()));
 
             //
             return str;
@@ -576,21 +584,18 @@ namespace EasyDAL.Exchange.Helper
                                 result = CallLikeHandle(keyTuple.key, val, keyTuple.type);
                             }
                         }
-                        else if(objNodeType== ExpressionType.ListInit)
+                        else if (objNodeType == ExpressionType.ListInit)
                         {
                             var liExpr = mcExpr.Object as ListInitExpression;
                             var keyTuple = GetKey(parameter, mcExpr, OptionEnum.In);
-                            if (keyTuple.type == typeof(int))
+                            var vals = new List<string>();
+                            foreach (var ini in liExpr.Initializers)
                             {
-                                var vals = new List<string>();
-                                foreach(var ini in liExpr.Initializers)
-                                {
-                                    var arg = ini.Arguments[0];
-                                    vals.Add(GetConVal(ini.Arguments[0]));
-                                }
-                                val = string.Join(",", vals);
-                                result = CallInHandle(keyTuple.key, val, keyTuple.type);
+                                var arg = ini.Arguments[0];
+                                vals.Add(GetConVal(ini.Arguments[0], keyTuple.type));
                             }
+                            val = string.Join(",", vals);
+                            result = CallInHandle(keyTuple.key, val, keyTuple.type);
                         }
                     }
                 }

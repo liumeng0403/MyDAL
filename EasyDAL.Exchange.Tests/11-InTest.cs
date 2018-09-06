@@ -120,13 +120,13 @@ namespace EasyDAL.Exchange.Tests
         }
 
         [Fact]
-        public async Task ListT_Value_Test()
+        public async Task ListT_Init_Test()
         {
             await PereValue();
 
             var xx1 = "";
 
-            // where in -- List<int>
+            // where in -- List<int>  init 
             var res1 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => new List<int> { 5, 10 }.Contains(it.DirectorStarCount))
@@ -134,6 +134,45 @@ namespace EasyDAL.Exchange.Tests
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
+            var xx2 = "";
+
+            // where in -- List<long> init
+            var res2 = await Conn.OpenDebug()
+                .Selecter<Agent>()
+                .Where(it => new List<long> { 5, 10 }.Contains(it.DirectorStarCount))
+                .QueryListAsync();
+
+            var tuple2 = (XDebug.SQL, XDebug.Parameters);
+
+            var xx3 = "";
+
+            // where in -- List<short> init
+            var res3 = await Conn.OpenDebug()
+                .Selecter<Agent>()
+                .Where(it => new List<short> { 5, 10 }.Contains((short)(it.DirectorStarCount)))
+                .QueryListAsync();
+
+            var tuple3 = (XDebug.SQL, XDebug.Parameters);
+
+            var xx4 = "";
+
+            // where in -- List<string> init
+            var res4 = await Conn.OpenDebug()
+                .Selecter<Agent>()
+                .Where(it => new List<string> { "黄银凤", "刘建芬" }.Contains(it.Name))
+                .QueryListAsync();
+
+            var tuple4 = (XDebug.SQL, XDebug.Parameters);
+
+            var xx5 = "";
+
+            // where in -- List<enum> init
+            var res5 = await Conn.OpenDebug()
+                .Selecter<Agent>()
+                .Where(it => new List<AgentLevel> { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel))
+                .QueryListAsync();
+
+            var tuple5 = (XDebug.SQL, XDebug.Parameters);
 
             var xx = "";
         }
