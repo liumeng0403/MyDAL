@@ -19,7 +19,9 @@ namespace EasyDAL.Exchange.Tests
 
             var resx = await Conn.OpenDebug()
                 .Joiner<Agent,AgentInventoryRecord>(out var agent,out var record)
-                .From(()=>agent).InnerJoin(()=>record).On(() => agent.Id == record.AgentId)
+                .From(()=>agent)
+                .InnerJoin(()=>record)
+                .On(() => agent.Id == record.AgentId)
                 .Where(() => agent.Id == Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef"))
                 .And(() => record.CreatedOn >= DateTime.Now.AddDays(-30))
                 .QueryListAsync<Agent>();

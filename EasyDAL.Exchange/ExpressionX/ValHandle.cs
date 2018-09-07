@@ -279,7 +279,7 @@ namespace EasyDAL.Exchange.ExpressionX
             }
         }
         // 01
-        internal string GetConVal(ConstantExpression con, Type valType)
+        internal string GetConstantVal(ConstantExpression con, Type valType)
         {
             //var con = conExpr as ConstantExpression;
 

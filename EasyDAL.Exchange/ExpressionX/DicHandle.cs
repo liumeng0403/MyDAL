@@ -11,32 +11,32 @@ namespace EasyDAL.Exchange.ExpressionX
     {
 
         // 02
-        internal static OptionEnum GetOption(ExpressionType nodeType)
+        internal static OptionEnum GetOption(ExpressionType nodeType, bool isR)
         {
             var option = OptionEnum.None;
             if (nodeType == ExpressionType.Equal)
             {
-                option = OptionEnum.Equal;
+                option = !isR ? OptionEnum.Equal : OptionEnum.Equal;
             }
             else if (nodeType == ExpressionType.NotEqual)
             {
-                option = OptionEnum.NotEqual;
+                option = !isR ? OptionEnum.NotEqual : OptionEnum.NotEqual;
             }
             else if (nodeType == ExpressionType.LessThan)
             {
-                option = OptionEnum.LessThan;
+                option = !isR ? OptionEnum.LessThan : OptionEnum.GreaterThan;
             }
             else if (nodeType == ExpressionType.LessThanOrEqual)
             {
-                option = OptionEnum.LessThanOrEqual;
+                option = !isR ? OptionEnum.LessThanOrEqual : OptionEnum.GreaterThanOrEqual;
             }
             else if (nodeType == ExpressionType.GreaterThan)
             {
-                option = OptionEnum.GreaterThan;
+                option = !isR ? OptionEnum.GreaterThan : OptionEnum.LessThan;
             }
             else if (nodeType == ExpressionType.GreaterThanOrEqual)
             {
-                option = OptionEnum.GreaterThanOrEqual;
+                option = !isR ? OptionEnum.GreaterThanOrEqual : OptionEnum.LessThanOrEqual;
             }
 
             return option;
@@ -44,7 +44,7 @@ namespace EasyDAL.Exchange.ExpressionX
 
         /*******************************************************************************************************/
 
-        internal static DicModel BinaryCharLengthHandle(string key, string value, Type valType, ExpressionType nodeType)
+        internal static DicModel BinaryCharLengthHandle(string key, string value, Type valType, ExpressionType nodeType,bool isR)
         {
             return new DicModel
             {
@@ -54,11 +54,11 @@ namespace EasyDAL.Exchange.ExpressionX
                 Value = value,
                 ValueType = valType,
                 Option = OptionEnum.CharLength,
-                FuncSupplement = GetOption(nodeType)
+                FuncSupplement = GetOption(nodeType,isR)
             };
         }
         // 01
-        internal static DicModel BinaryNormalHandle(string key, string value, Type valType, ExpressionType nodeType)
+        internal static DicModel BinaryNormalHandle(string key, string value, Type valType, ExpressionType nodeType,bool isR)
         {
             return new DicModel
             {
@@ -67,7 +67,7 @@ namespace EasyDAL.Exchange.ExpressionX
                 ParamRaw = key,
                 Value = value,
                 ValueType = valType,
-                Option = GetOption(nodeType)
+                Option = GetOption(nodeType,isR)
             };
         }
         // 01
