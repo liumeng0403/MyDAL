@@ -16,15 +16,12 @@ namespace EasyDAL.Exchange.UserFacade.Join
             DC = dc;
         }
 
-        public OnX InnerJoin<M>(M m)
+        public OnX InnerJoin<M>(Expression<Func<M>> func)
         {
-            DC.AddConditions(new DicModel
-            {
-                TableOne = DC.SqlProvider.GetTableName(m),
-                AliasOne ="",  // alias,
-                Action = ActionEnum.InnerJoin,
-                Crud= CrudTypeEnum.Join
-            });
+            var dic = DC.EH.ExpressionHandle(func);
+            dic.Action = ActionEnum.InnerJoin;
+            dic.Crud = CrudTypeEnum.Join;
+            DC.AddConditions(dic);
             return new OnX(DC);
         }
 
