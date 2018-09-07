@@ -15,7 +15,7 @@ using System.Reflection;
 
 namespace EasyDAL.Exchange.ExpressionX
 {
-    internal class ExpressionHandleX 
+    internal class ExpressionHandleX
     {
         private DbContext DC { get; set; }
 
@@ -106,19 +106,22 @@ namespace EasyDAL.Exchange.ExpressionX
         // 01
 
         // 01
-        private (Expression left, Expression right, ExpressionType node , bool isR) HandBinExpr(ParameterExpression parameter, BinaryExpression binExpr)
+        private (Expression left, Expression right, ExpressionType node, bool isR) HandBinExpr(ParameterExpression parameter, BinaryExpression binExpr)
         {
             var binLeft = binExpr.Left;
             var binRight = binExpr.Right;
             var binNode = binExpr.NodeType;
 
-            if (binLeft.ToString().StartsWith($"{parameter.Name}.", StringComparison.Ordinal))
+            var leftStr = binLeft.ToString();
+            var name = parameter.Name;
+            if (leftStr.StartsWith($"{name}.", StringComparison.Ordinal)
+                || leftStr.StartsWith($"Convert({name}.", StringComparison.Ordinal))
             {
-                return (binLeft, binRight, binNode,false);
+                return (binLeft, binRight, binNode, false);
             }
             else
             {
-                return (binRight, binLeft, binNode,true);
+                return (binRight, binLeft, binNode, true);
             }
         }
         // 02
@@ -127,7 +130,7 @@ namespace EasyDAL.Exchange.ExpressionX
             var result = default(string);
             if (binRight.NodeType == ExpressionType.MemberAccess)
             {
-                result = DC.VH. GetMemExprVal(binRight);
+                result = DC.VH.GetMemExprVal(binRight);
             }
             //else if (binRight.NodeType == ExpressionType.Convert)
             //{
@@ -271,19 +274,19 @@ namespace EasyDAL.Exchange.ExpressionX
                 if (IsBinaryExpr(nodeType))
                 {
                     var binExpr = body as BinaryExpression;
-                    var binTuple = HandBinExpr(parameter,binExpr);
+                    var binTuple = HandBinExpr(parameter, binExpr);
                     val = HandBinary(binTuple.right);
                     var leftStr = binTuple.left.ToString();
                     if (leftStr.Contains(".Length")
                         && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
                     {
                         var keyTuple = GetKey(parameter, binTuple.left, OptionEnum.CharLength);
-                        result = DicHandle.BinaryCharLengthHandle(keyTuple.key, val, keyTuple.type, binTuple.node,binTuple.isR);
+                        result = DicHandle.BinaryCharLengthHandle(keyTuple.key, val, keyTuple.type, binTuple.node, binTuple.isR);
                     }
                     else
                     {
-                        var keyTuple = GetKey(parameter, binTuple.left, DicHandle. GetOption(binTuple.node,binTuple.isR));
-                        result = DicHandle. BinaryNormalHandle(keyTuple.key, val, keyTuple.type, binTuple.node,binTuple.isR);
+                        var keyTuple = GetKey(parameter, binTuple.left, DicHandle.GetOption(binTuple.node, binTuple.isR));
+                        result = DicHandle.BinaryNormalHandle(keyTuple.key, val, keyTuple.type, binTuple.node, binTuple.isR);
                     }
                 }
                 else if (nodeType == ExpressionType.Call)
@@ -300,7 +303,7 @@ namespace EasyDAL.Exchange.ExpressionX
                             {
                                 var keyTuple = GetKey(parameter, memKey, OptionEnum.In);
                                 val = HandMember(memVal as MemberExpression);
-                                result = DicHandle. CallInHandle(keyTuple.key, val, keyTuple.type);
+                                result = DicHandle.CallInHandle(keyTuple.key, val, keyTuple.type);
                             }
                             else if (memVal.NodeType == ExpressionType.NewArrayInit)
                             {
@@ -312,7 +315,7 @@ namespace EasyDAL.Exchange.ExpressionX
                                     vals.Add(DC.VH.GetConstantVal(exp as ConstantExpression, keyTuple.type));
                                 }
                                 val = string.Join(",", vals);
-                                result = DicHandle. CallInHandle(keyTuple.key, val, keyTuple.type);
+                                result = DicHandle.CallInHandle(keyTuple.key, val, keyTuple.type);
                             }
                         }
                         else
@@ -329,13 +332,13 @@ namespace EasyDAL.Exchange.ExpressionX
                                 {
                                     val = HandMember(memO);
                                     var keyTuple = GetKey(parameter, mcExpr, OptionEnum.In);
-                                    result = DicHandle. CallInHandle(keyTuple.key, val, keyTuple.type);
+                                    result = DicHandle.CallInHandle(keyTuple.key, val, keyTuple.type);
                                 }
                                 else if (memType == typeof(string))
                                 {
                                     var keyTuple = GetKey(parameter, memO, OptionEnum.Like);
                                     val = DC.VH.GetCallVal(mcExpr);
-                                    result = DicHandle. CallLikeHandle(keyTuple.key, val, keyTuple.type);
+                                    result = DicHandle.CallLikeHandle(keyTuple.key, val, keyTuple.type);
                                 }
                             }
                             else if (objNodeType == ExpressionType.ListInit)
@@ -349,7 +352,7 @@ namespace EasyDAL.Exchange.ExpressionX
                                     vals.Add(DC.VH.GetConstantVal(ini.Arguments[0] as ConstantExpression, keyTuple.type));
                                 }
                                 val = string.Join(",", vals);
-                                result = DicHandle. CallInHandle(keyTuple.key, val, keyTuple.type);
+                                result = DicHandle.CallInHandle(keyTuple.key, val, keyTuple.type);
                             }
                         }
                     }
@@ -361,7 +364,7 @@ namespace EasyDAL.Exchange.ExpressionX
                     var valType = cExpr.Type;
                     if (cExpr.Type == typeof(bool))
                     {
-                        result = DicHandle. ConstantBoolHandle(val, valType);
+                        result = DicHandle.ConstantBoolHandle(val, valType);
                     }
                 }
                 else if (nodeType == ExpressionType.MemberAccess)
@@ -372,7 +375,7 @@ namespace EasyDAL.Exchange.ExpressionX
                     var key = memProp.Name;
                     if (valType == typeof(bool))
                     {
-                        result = DicHandle. MemberBoolHandle(key, valType);
+                        result = DicHandle.MemberBoolHandle(key, valType);
                     }
                 }
                 else
@@ -464,7 +467,7 @@ namespace EasyDAL.Exchange.ExpressionX
                             KeyTwo = tuple2.key,
                             AliasTwo = tuple2.alias,
                             Action = action,
-                            Option = DicHandle. GetOption(binExpr.NodeType,false)
+                            Option = DicHandle.GetOption(binExpr.NodeType, false)
                         };
                     }
                     else if (action == ActionEnum.Where
@@ -493,7 +496,7 @@ namespace EasyDAL.Exchange.ExpressionX
                             Param = tuple.key,
                             ParamRaw = tuple.key,
                             Action = action,
-                            Option = DicHandle. GetOption(binExpr.NodeType,false)
+                            Option = DicHandle.GetOption(binExpr.NodeType, false)
                         };
                     }
                 }

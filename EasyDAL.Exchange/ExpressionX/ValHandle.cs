@@ -116,18 +116,26 @@ namespace EasyDAL.Exchange.ExpressionX
             var str = string.Empty;
 
             //
-            var targetProp = memExpr.Member as PropertyInfo;
-            if (targetProp == null)
+            if (memExpr.Expression == null      //  null   Property   
+                && memExpr.Member.MemberType == MemberTypes.Property)
             {
-                var targetField = memExpr.Member as FieldInfo;
-                var memCon = memExpr.Expression as ConstantExpression;
-                object memObj = memCon.Value;
-                var fType = targetField.FieldType;
+                var targetProp = memExpr.Member as PropertyInfo;
+                var type = memExpr.Type as Type;
+                var instance = Activator.CreateInstance(type);
+                str = targetProp.GetValue(instance, null).ToString();
+            }
+            else if (memExpr.Expression.NodeType == ExpressionType.Constant   //  Constant   Field 
+                && memExpr.Member.MemberType == MemberTypes.Field)
+            {
+                var fInfo = memExpr.Member as FieldInfo;
+                var cExpr = memExpr.Expression as ConstantExpression;
+                var obj = cExpr.Value;
+                var fType = fInfo.FieldType;
                 if (IsListT(fType)
                     || fType.IsArray)
                 {
                     var type = memExpr.Type as Type;
-                    var vals = targetField.GetValue(memObj);
+                    var vals = fInfo.GetValue(obj);
                     if (fType.IsArray)
                     {
                         str = InValueForArray(type, vals);
@@ -139,86 +147,77 @@ namespace EasyDAL.Exchange.ExpressionX
                 }
                 else
                 {
-                    str = targetField.GetValue(memObj).ToString();
+                    str = fInfo.GetValue(obj).ToString();
                 }
             }
-            else
+            else if (memExpr.Expression.NodeType == ExpressionType.Constant   //  Constant   Property
+                && memExpr.Member.MemberType == MemberTypes.Property)
             {
-                if (memExpr.Expression == null)
+                var pInfo = memExpr.Member as PropertyInfo;
+                var cExpr = memExpr.Expression as ConstantExpression;
+                var obj = cExpr.Value;
+                var valObj = pInfo.GetValue(obj);
+                var valType = pInfo.PropertyType;
+                if (IsListT(valType)
+                    || valType.IsArray)
                 {
-                    var type = memExpr.Type as Type;
-                    var instance = Activator.CreateInstance(type);
-                    str = targetProp.GetValue(instance, null).ToString();
+                    if (valType.IsArray)
+                    {
+                        str = InValueForArray(valType, valObj);
+                    }
+                    else
+                    {
+                        str = InValueForListT(valType, valObj);
+                    }
                 }
                 else
                 {
-                    MemberExpression innerMember = memExpr.Expression as MemberExpression;
-                    if (innerMember == null)
+                    str = DC.GH.GetTypeValue(valType, pInfo, obj);    // 此项 可能 有问题 
+                }
+            }
+            else if (memExpr.Expression.NodeType == ExpressionType.MemberAccess    //  MemberAccess   Property
+                && memExpr.Member.MemberType == MemberTypes.Property)
+            {
+                var targetProp = memExpr.Member as PropertyInfo;
+                MemberExpression innerMember = memExpr.Expression as MemberExpression;
+                if (innerMember.Member.MemberType == MemberTypes.Property)
+                {
+                    var pInfo = innerMember.Member as PropertyInfo;
+                    var cExpr = innerMember.Expression as ConstantExpression;
+                    var obj = cExpr.Value;
+                    var valObj = pInfo.GetValue(obj);
+                    var fType = targetProp.PropertyType;
+                    if (IsListT(fType)
+                        || fType.IsArray)
                     {
-                        var ce = memExpr.Expression as ConstantExpression;
-                        object innerObj = ce.Value;
-                        var memP = memExpr.Member as PropertyInfo;
-                        var vals = memP.GetValue(innerObj);
-                        var valType = memP.PropertyType;
-                        if (IsListT(valType)
-                            || valType.IsArray)
+                        var type = memExpr.Type as Type;
+                        var vals = targetProp.GetValue(valObj);
+                        if (fType.IsArray)
                         {
-                            if (valType.IsArray)
-                            {
-                                str = InValueForArray(valType, vals);
-                            }
-                            else
-                            {
-                                str = InValueForListT(valType, vals);
-                            }
+                            str = InValueForArray(type, vals);
                         }
                         else
                         {
-                            str = DC.GH.GetTypeValue(valType, memP, innerObj);    // 此项 可能 有问题 
+                            str = InValueForListT(type, vals);
                         }
                     }
                     else
                     {
-                        var innerField = innerMember.Member as FieldInfo;
-                        if (innerField == null)
-                        {
-
-                            var innerFieldX = innerMember.Member as PropertyInfo;
-                            var ce = innerMember.Expression as ConstantExpression;
-                            object innerObj = ce.Value;
-                            var outerObj = innerFieldX.GetValue(innerObj);
-                            var fType = targetProp.PropertyType;
-                            if (IsListT(fType)
-                                || fType.IsArray)
-                            {
-                                var type = memExpr.Type as Type;
-                                var vals = targetProp.GetValue(outerObj);
-                                if (fType.IsArray)
-                                {
-                                    str = InValueForArray(type, vals);
-                                }
-                                else
-                                {
-                                    str = InValueForListT(type, vals);
-                                }
-                            }
-                            else
-                            {
-                                str = DC.GH.GetTypeValue(fType, targetProp, outerObj);
-                            }
-                        }
-                        else
-                        {
-                            var ce = innerMember.Expression as ConstantExpression;
-                            object innerObj = ce.Value;
-                            var outerObj = innerField.GetValue(innerObj);
-                            var valType = targetProp.PropertyType;
-                            str = DC.GH.GetTypeValue(valType, targetProp, outerObj);
-                        }
+                        str = DC.GH.GetTypeValue(fType, targetProp, valObj);
                     }
+                }
+                else if (innerMember.Member.MemberType == MemberTypes.Field)
+                {
+                    var fInfo = innerMember.Member as FieldInfo;
+                    var cExpr = innerMember.Expression as ConstantExpression;
+                    var obj = cExpr.Value;
+                    var valObj = fInfo.GetValue(obj);
+                    var valType = targetProp.PropertyType;
+                    str = DC.GH.GetTypeValue(valType, targetProp, valObj);
                 }
             }
 
+            //
             if (!string.IsNullOrWhiteSpace(str))
             {
                 return str;
