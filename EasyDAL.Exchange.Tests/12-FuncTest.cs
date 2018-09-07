@@ -22,6 +22,16 @@ namespace EasyDAL.Exchange.Tests
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
+            var xxR1 = "";
+
+            // .Where(a => a.Name.Length > 0)
+            var resR1 = await Conn.OpenDebug()
+                .Selecter<Agent>()
+                .Where(it => 2 < it.Name.Length)
+                .QueryListAsync();
+
+            var tupleR1 = (XDebug.SQL, XDebug.Parameters);
+
             var xx = "";
 
         }
