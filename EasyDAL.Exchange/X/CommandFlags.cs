@@ -8,7 +8,7 @@ namespace EasyDAL.Exchange.X
     /// Additional state flags that control command behaviour
     /// </summary>
     [Flags]
-    public enum CommandFlags
+    internal enum CommandFlags
     {
         /// <summary>
         /// No additional flags

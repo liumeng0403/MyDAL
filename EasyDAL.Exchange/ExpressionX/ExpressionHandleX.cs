@@ -1,7 +1,9 @@
 ﻿
 using EasyDAL.Exchange.Cache;
 using EasyDAL.Exchange.Common;
+using EasyDAL.Exchange.Core;
 using EasyDAL.Exchange.Enums;
+using EasyDAL.Exchange.ExpressionX;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
@@ -11,13 +13,17 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace EasyDAL.Exchange.Helper
+namespace EasyDAL.Exchange.ExpressionX
 {
-    internal class ExpressionHelper : ClassInstance<ExpressionHelper>
+    internal class ExpressionHandleX 
     {
+        private DbContext DC { get; set; }
 
-        private GenericHelper GH = GenericHelper.Instance;
-        private StaticCache SC = StaticCache.Instance;
+        private ExpressionHandleX() { }
+        internal ExpressionHandleX(DbContext dc)
+        {
+            DC = dc;
+        }
 
         /********************************************************************************************************************/
 
@@ -70,183 +76,80 @@ namespace EasyDAL.Exchange.Helper
 
             return (default(string), default(Type));
         }
-        // -02-03-
-        private string GetMemExprVal(Expression memExpre)
+        // 01
+        private (string key, string alias, Type valType) GetMemKeyAlias(Expression expr)
         {
-            var str = string.Empty;
+            var memExpr = expr as MemberExpression;
+            var mMemExpr = memExpr.Expression as MemberExpression;
+            var key = memExpr.Member.Name;
+            var alias = mMemExpr.Member.Name;
+            var keyProp = memExpr.Member as PropertyInfo;
+            var valType = keyProp.PropertyType;
+            return (key, alias, valType);
+        }
 
-            //
-            var memExpr = memExpre as MemberExpression;
-            var targetProp = memExpr.Member as PropertyInfo;
-            if (targetProp == null)
+        // 01
+        private bool IsBinaryExpr(ExpressionType type)
+        {
+            if (type == ExpressionType.Equal
+                || type == ExpressionType.NotEqual
+                || type == ExpressionType.LessThan
+                || type == ExpressionType.LessThanOrEqual
+                || type == ExpressionType.GreaterThan
+                || type == ExpressionType.GreaterThanOrEqual)
             {
-                var targetField = memExpr.Member as FieldInfo;
-                var memCon = memExpr.Expression as ConstantExpression;
-                object memObj = memCon.Value;
-                var fType = targetField.FieldType;
-                if (IsListT(fType)
-                    || fType.IsArray)
-                {
-                    var type = memExpr.Type as Type;
-                    var vals = targetField.GetValue(memObj);
-                    if (fType.IsArray)
-                    {
-                        str = InValueForArray(type, vals);
-                    }
-                    else
-                    {
-                        str = InValueForListT(type, vals);
-                    }
-                }
-                else
-                {
-                    str = targetField.GetValue(memObj).ToString();
-                }
-            }
-            else
-            {
-                if (memExpr.Expression == null)
-                {
-                    var type = memExpr.Type as Type;
-                    var instance = Activator.CreateInstance(type);
-                    str = targetProp.GetValue(instance, null).ToString();
-                }
-                else
-                {
-                    MemberExpression innerMember = memExpr.Expression as MemberExpression;
-                    if (innerMember == null)
-                    {
-                        var ce = memExpr.Expression as ConstantExpression;
-                        object innerObj = ce.Value;
-                        var memP = memExpr.Member as PropertyInfo;
-                        var vals = memP.GetValue(innerObj);
-                        var valType = memP.PropertyType;
-                        if (IsListT(valType)
-                            || valType.IsArray)
-                        {
-                            if (valType.IsArray)
-                            {
-                                str = InValueForArray(valType, vals);
-                            }
-                            else
-                            {
-                                str = InValueForListT(valType, vals);
-                            }
-                        }
-                        else
-                        {
-                            str = GH.GetTypeValue(valType, memP, innerObj);    // 此项 可能 有问题 
-                        }
-                    }
-                    else
-                    {
-                        var innerField = innerMember.Member as FieldInfo;
-                        if (innerField == null)
-                        {
-
-                            var innerFieldX = innerMember.Member as PropertyInfo;
-                            var ce = innerMember.Expression as ConstantExpression;
-                            object innerObj = ce.Value;
-                            var outerObj = innerFieldX.GetValue(innerObj);
-                            var fType = targetProp.PropertyType;
-                            if (IsListT(fType)
-                                || fType.IsArray)
-                            {
-                                var type = memExpr.Type as Type;
-                                var vals = targetProp.GetValue(outerObj);
-                                if (fType.IsArray)
-                                {
-                                    str = InValueForArray(type, vals);
-                                }
-                                else
-                                {
-                                    str = InValueForListT(type, vals);
-                                }
-                            }
-                            else
-                            {
-                                str = GH.GetTypeValue(fType, targetProp, outerObj);
-                            }
-                        }
-                        else
-                        {
-                            var ce = innerMember.Expression as ConstantExpression;
-                            object innerObj = ce.Value;
-                            var outerObj = innerField.GetValue(innerObj);
-                            var valType = targetProp.PropertyType;
-                            str = GH.GetTypeValue(valType, targetProp, outerObj);
-                        }
-                    }
-                }
+                return true;
             }
 
-            if (!string.IsNullOrWhiteSpace(str))
+            return false;
+        }
+        // 01
+
+        // 01
+        private (Expression left, Expression right, ExpressionType node) HandBinExpr(BinaryExpression binExpr)
+        {
+            var binLeft = binExpr.Left;
+            var binRight = binExpr.Right;
+            var binNode = binExpr.NodeType;
+            return (binLeft, binRight, binNode);
+        }
+        // 02
+        private string HandMember(Expression binRight)
+        {
+            var result = default(string);
+            if (binRight.NodeType == ExpressionType.MemberAccess)
             {
-                return str;
+                result = DC.VH. GetMemExprVal(binRight as MemberExpression);
+            }
+            else if (binRight.NodeType == ExpressionType.Convert)
+            {
+                var expr = binRight as UnaryExpression;
+                if (expr.Operand.NodeType == ExpressionType.Convert)
+                {
+                    var exprExpr = expr.Operand as UnaryExpression;
+                    var memExpr = exprExpr.Operand as MemberExpression;
+                    var memCon = memExpr.Expression as ConstantExpression;
+                    var memObj = memCon.Value;
+                    var memFiled = memExpr.Member as FieldInfo;
+                    result = memFiled.GetValue(memObj).ToString();
+                }
+                else if (expr.Operand.NodeType == ExpressionType.MemberAccess)
+                {
+                    result = DC.VH. GetMemExprVal(expr.Operand as MemberExpression);
+                }
             }
             else
             {
                 throw new Exception();
             }
+            return result;
         }
         // 01
-        private string GetCallVal(MethodCallExpression mcExpr)
+        private string HandBinary(Expression binRight)
         {
             var val = string.Empty;
 
             //
-            //var bodyMC = expr as MethodCallExpression;
-            var pExpr = mcExpr.Arguments[0];
-            if (pExpr.NodeType == ExpressionType.Constant)
-            {
-                var type = mcExpr.Type;
-                if (type == typeof(DateTime))
-                {
-                    var obj = Convert.ToDateTime(GetMemExprVal(mcExpr.Object));
-                    var method = mcExpr.Method.Name;
-                    var args = new List<object>();
-                    foreach (var arg in mcExpr.Arguments)
-                    {
-                        if (arg.NodeType == ExpressionType.Constant)
-                        {
-                            var carg = arg as ConstantExpression;
-                            args.Add(carg.Value);
-                        }
-                    }
-                    val = (type.InvokeMember(method, BindingFlags.Default | BindingFlags.InvokeMethod, null, obj, args.ToArray())).ToString();
-                }
-                else
-                {
-                    val = (string)((pExpr as ConstantExpression).Value);
-                }
-            }
-            else if (pExpr.NodeType == ExpressionType.MemberAccess)
-            {
-                val = GetMemExprVal(pExpr);
-            }
-            else
-            {
-                val = string.Empty;
-            }
-
-            //
-            if (!string.IsNullOrWhiteSpace(val))
-            {
-                return val;
-            }
-            else
-            {
-                throw new Exception();
-            }
-        }
-        // 01
-        private string GetBinaryVal(Expression binRight)
-        {
-            var val = string.Empty;
-
-            //
-            //var bodyB = body as BinaryExpression;
-            //var binRight = binExpr.Right;
             switch (binRight.NodeType)
             {
                 case ExpressionType.Constant:
@@ -269,284 +172,6 @@ namespace EasyDAL.Exchange.Helper
 
             //
             return val;
-        }
-        // 01
-        private string GetConVal(Expression conExpr, Type valType)
-        {
-            var con = conExpr as ConstantExpression;
-
-            if (valType.IsEnum)
-            {
-                return ((int)(con.Value)).ToString();
-            }
-            else
-            {
-                return con.Value.ToString();
-            }
-        }
-        // 01
-        private (string key, string alias, Type valType) GetMemKeyAlias(Expression expr)
-        {
-            var memExpr = expr as MemberExpression;
-            var mMemExpr = memExpr.Expression as MemberExpression;
-            var key = memExpr.Member.Name;
-            var alias = mMemExpr.Member.Name;
-            var keyProp = memExpr.Member as PropertyInfo;
-            var valType = keyProp.PropertyType;
-            return (key, alias, valType);
-        }
-        // 01
-        private bool IsBinaryExpr(ExpressionType type)
-        {
-            if (type == ExpressionType.Equal
-                || type == ExpressionType.NotEqual
-                || type == ExpressionType.LessThan
-                || type == ExpressionType.LessThanOrEqual
-                || type == ExpressionType.GreaterThan
-                || type == ExpressionType.GreaterThanOrEqual)
-            {
-                return true;
-            }
-
-            return false;
-        }
-        // 01
-        private DicModel BinaryCharLengthHandle(string key, string value, Type valType, ExpressionType nodeType)
-        {
-            return new DicModel
-            {
-                KeyOne = key,
-                Param = key,
-                ParamRaw = key,
-                Value = value,
-                ValueType = valType,
-                Option = OptionEnum.CharLength,
-                FuncSupplement = GetOption(nodeType)
-            };
-        }
-        // 01
-        private DicModel BinaryNormalHandle(string key, string value, Type valType, ExpressionType nodeType)
-        {
-            return new DicModel
-            {
-                KeyOne = key,
-                Param = key,
-                ParamRaw = key,
-                Value = value,
-                ValueType = valType,
-                Option = GetOption(nodeType)
-            };
-        }
-        // 01
-        private DicModel CallInHandle(string key, string value, Type valType)
-        {
-            if (valType.IsEnum)
-            {
-                valType = typeof(int);
-            }
-            return new DicModel
-            {
-                KeyOne = key,
-                Param = key,
-                ParamRaw = key,
-                Value = value,
-                ValueType = valType,
-                Option = OptionEnum.In
-            };
-        }
-        // 01
-        private DicModel CallLikeHandle(string key, string value, Type valType)
-        {
-            return new DicModel
-            {
-                KeyOne = key,
-                Param = key,
-                ParamRaw = key,
-                Value = value,
-                ValueType = valType,
-                Option = OptionEnum.Like
-            };
-        }
-        // 01
-        private DicModel ConstantBoolHandle(string value, Type valType)
-        {
-            return new DicModel
-            {
-                KeyOne = "OneEqualOne",
-                Param = "OneEqualOne",
-                ParamRaw = "OneEqualOne",
-                Value = value,
-                ValueType = valType,
-                Option = OptionEnum.OneEqualOne
-            };
-        }
-        // 01
-        private DicModel MemberBoolHandle(string key, Type valType)
-        {
-            return new DicModel
-            {
-                KeyOne = key,
-                Param = key,
-                ParamRaw = key,
-                Value = true.ToString(),
-                ValueType = valType,
-                Option = OptionEnum.Equal
-            };
-        }
-        // 01
-        private (Expression left, Expression right, ExpressionType node) HandBinExpr(BinaryExpression binExpr)
-        {
-            var binLeft = binExpr.Left;
-            var binRight = binExpr.Right;
-            var binNode = binExpr.NodeType;
-            return (binLeft, binRight, binNode);
-        }
-        // 02
-        private OptionEnum GetOption(ExpressionType nodeType)
-        {
-            var option = OptionEnum.None;
-            if (nodeType == ExpressionType.Equal)
-            {
-                option = OptionEnum.Equal;
-            }
-            else if (nodeType == ExpressionType.NotEqual)
-            {
-                option = OptionEnum.NotEqual;
-            }
-            else if (nodeType == ExpressionType.LessThan)
-            {
-                option = OptionEnum.LessThan;
-            }
-            else if (nodeType == ExpressionType.LessThanOrEqual)
-            {
-                option = OptionEnum.LessThanOrEqual;
-            }
-            else if (nodeType == ExpressionType.GreaterThan)
-            {
-                option = OptionEnum.GreaterThan;
-            }
-            else if (nodeType == ExpressionType.GreaterThanOrEqual)
-            {
-                option = OptionEnum.GreaterThanOrEqual;
-            }
-
-            return option;
-        }
-        // 02
-        private string HandMember(Expression binRight)
-        {
-            var result = default(string);
-            if (binRight.NodeType == ExpressionType.MemberAccess)
-            {
-                result = GetMemExprVal(binRight);
-            }
-            else if (binRight.NodeType == ExpressionType.Convert)
-            {
-                var expr = binRight as UnaryExpression;
-                if (expr.Operand.NodeType == ExpressionType.Convert)
-                {
-                    var exprExpr = expr.Operand as UnaryExpression;
-                    var memExpr = exprExpr.Operand as MemberExpression;
-                    var memCon = memExpr.Expression as ConstantExpression;
-                    var memObj = memCon.Value;
-                    var memFiled = memExpr.Member as FieldInfo;
-                    result = memFiled.GetValue(memObj).ToString();
-                }
-                else if (expr.Operand.NodeType == ExpressionType.MemberAccess)
-                {
-                    result = GetMemExprVal(expr.Operand);
-                }
-            }
-            else
-            {
-                throw new Exception();
-            }
-            return result;
-        }
-
-        // 03 04
-        private bool IsListT(Type type)
-        {
-            if (type.IsGenericType
-                && "System.Collections.Generic".Equals(type.Namespace, StringComparison.OrdinalIgnoreCase)
-                && "List`1".Equals(type.Name, StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-
-            return false;
-        }
-        // 03 04
-        private string InValueForListT(Type type, object vals)
-        {
-            var str = string.Empty;
-
-            //
-            var valType = default(Type);
-            var typeT = type.GetGenericArguments()[0];
-            if (typeT == typeof(string)
-                || typeT == typeof(ushort)
-                || typeT == typeof(short)
-                || typeT == typeof(uint)
-                || typeT == typeof(int)
-                || typeT == typeof(ulong)
-                || typeT == typeof(long))
-            {
-                valType = typeT;
-            }
-            else
-            {
-                var currAssembly = SC.GetAssembly(typeT.FullName);
-                valType = currAssembly.GetType(typeT.FullName);
-            }
-
-            //
-            var ds = vals as dynamic;
-            var intVals = new List<object>();
-            for (var i = 0; i < ds.Count; i++)
-            {
-                intVals.Add(GH.GetTypeValue(valType, ds[i]));
-            }
-            str = string.Join(",", intVals.Select(it => it.ToString()));
-
-            //
-            return str;
-        }
-        // 03 04
-        private string InValueForArray(Type type, object vals)
-        {
-            var str = string.Empty;
-
-            //
-            var valType = default(Type);
-            var typeT = type.GetElementType();
-            if (typeT == typeof(string)
-                || typeT == typeof(ushort)
-                || typeT == typeof(short)
-                || typeT == typeof(uint)
-                || typeT == typeof(int)
-                || typeT == typeof(ulong)
-                || typeT == typeof(long))
-            {
-                valType = typeT;
-            }
-            else
-            {
-                var currAssembly = SC.GetAssembly(typeT.FullName);
-                valType = currAssembly.GetType(typeT.FullName);
-            }
-
-            //
-            var ds = vals as dynamic;
-            var intVals = new List<object>();
-            for (var i = 0; i < ds.Length; i++)
-            {
-                intVals.Add(GH.GetTypeValue(valType, ds[i]));
-            }
-            str = string.Join(",", intVals.Select(it => it.ToString()));
-
-            //
-            return str;
         }
 
         /********************************************************************************************************************/
@@ -604,18 +229,18 @@ namespace EasyDAL.Exchange.Helper
                 {
                     var binExpr = body as BinaryExpression;
                     var binTuple = HandBinExpr(binExpr);
-                    val = GetBinaryVal(binTuple.right);
+                    val = HandBinary(binTuple.right);
                     var leftStr = binTuple.left.ToString();
                     if (leftStr.Contains(".Length")
                         && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
                     {
                         var keyTuple = GetKey(parameter, binTuple.left, OptionEnum.CharLength);
-                        result = BinaryCharLengthHandle(keyTuple.key, val, keyTuple.type, binTuple.node);
+                        result = DicHandle.BinaryCharLengthHandle(keyTuple.key, val, keyTuple.type, binTuple.node);
                     }
                     else
                     {
-                        var keyTuple = GetKey(parameter, binTuple.left, GetOption(binTuple.node));
-                        result = BinaryNormalHandle(keyTuple.key, val, keyTuple.type, binTuple.node);
+                        var keyTuple = GetKey(parameter, binTuple.left, DicHandle. GetOption(binTuple.node));
+                        result = DicHandle. BinaryNormalHandle(keyTuple.key, val, keyTuple.type, binTuple.node);
                     }
                 }
                 else if (nodeType == ExpressionType.Call)
@@ -632,19 +257,19 @@ namespace EasyDAL.Exchange.Helper
                             {
                                 var keyTuple = GetKey(parameter, memKey, OptionEnum.In);
                                 val = HandMember(memVal);
-                                result = CallInHandle(keyTuple.key, val, keyTuple.type);
+                                result = DicHandle. CallInHandle(keyTuple.key, val, keyTuple.type);
                             }
-                            else if(memVal.NodeType== ExpressionType.NewArrayInit)
+                            else if (memVal.NodeType == ExpressionType.NewArrayInit)
                             {
                                 var naExpr = memVal as NewArrayExpression;
                                 var keyTuple = GetKey(parameter, memKey, OptionEnum.In);
                                 var vals = new List<string>();
                                 foreach (var exp in naExpr.Expressions)
                                 {
-                                    vals.Add(GetConVal(exp, keyTuple.type));
+                                    vals.Add(DC.VH.GetConVal(exp as ConstantExpression, keyTuple.type));
                                 }
                                 val = string.Join(",", vals);
-                                result = CallInHandle(keyTuple.key, val, keyTuple.type);
+                                result = DicHandle. CallInHandle(keyTuple.key, val, keyTuple.type);
                             }
                         }
                         else
@@ -660,13 +285,13 @@ namespace EasyDAL.Exchange.Helper
                                 {
                                     val = HandMember(mcExpr.Object);
                                     var keyTuple = GetKey(parameter, mcExpr, OptionEnum.In);
-                                    result = CallInHandle(keyTuple.key, val, keyTuple.type);
+                                    result = DicHandle. CallInHandle(keyTuple.key, val, keyTuple.type);
                                 }
                                 else if (memType == typeof(string))
                                 {
                                     var keyTuple = GetKey(parameter, memO, OptionEnum.Like);
-                                    val = GetCallVal(mcExpr);
-                                    result = CallLikeHandle(keyTuple.key, val, keyTuple.type);
+                                    val = DC.VH.GetCallVal(mcExpr);
+                                    result = DicHandle. CallLikeHandle(keyTuple.key, val, keyTuple.type);
                                 }
                             }
                             else if (objNodeType == ExpressionType.ListInit)
@@ -677,10 +302,10 @@ namespace EasyDAL.Exchange.Helper
                                 foreach (var ini in liExpr.Initializers)
                                 {
                                     var arg = ini.Arguments[0];
-                                    vals.Add(GetConVal(ini.Arguments[0], keyTuple.type));
+                                    vals.Add(DC.VH.GetConVal(ini.Arguments[0] as ConstantExpression, keyTuple.type));
                                 }
                                 val = string.Join(",", vals);
-                                result = CallInHandle(keyTuple.key, val, keyTuple.type);
+                                result = DicHandle. CallInHandle(keyTuple.key, val, keyTuple.type);
                             }
                         }
                     }
@@ -692,7 +317,7 @@ namespace EasyDAL.Exchange.Helper
                     var valType = cExpr.Type;
                     if (cExpr.Type == typeof(bool))
                     {
-                        result = ConstantBoolHandle(val, valType);
+                        result = DicHandle. ConstantBoolHandle(val, valType);
                     }
                 }
                 else if (nodeType == ExpressionType.MemberAccess)
@@ -703,7 +328,7 @@ namespace EasyDAL.Exchange.Helper
                     var key = memProp.Name;
                     if (valType == typeof(bool))
                     {
-                        result = MemberBoolHandle(key, valType);
+                        result = DicHandle. MemberBoolHandle(key, valType);
                     }
                 }
                 else
@@ -735,6 +360,42 @@ namespace EasyDAL.Exchange.Helper
         }
 
         // join
+        public DicModel ExpressionHandle<M>(Expression<Func<M>> func)
+        {
+            try
+            {
+                var result = default(DicModel);
+                var body = func.Body as MemberExpression;
+                var alias = body.Member.Name;
+                var table = DC.SqlProvider.GetTableName(body.Type);
+                result = new DicModel
+                {
+                    TableOne = table,
+                    AliasOne = alias
+                };
+
+                //
+                if (result != null)
+                {
+                    return result;
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                if (!string.IsNullOrWhiteSpace(ex.Message))
+                {
+                    throw ex;
+                }
+                else
+                {
+                    throw new Exception($"不支持的表达式:[{func.ToString()}]");
+                }
+            }
+        }
         public DicModel ExpressionHandle(Expression<Func<bool>> func, ActionEnum action)
         {
             try
@@ -759,19 +420,20 @@ namespace EasyDAL.Exchange.Helper
                             KeyTwo = tuple2.key,
                             AliasTwo = tuple2.alias,
                             Action = action,
-                            Option = GetOption(binExpr.NodeType)
+                            Option = DicHandle. GetOption(binExpr.NodeType)
                         };
                     }
                     else if (action == ActionEnum.Where
                         || action == ActionEnum.And
                         || action == ActionEnum.Or)
                     {
+                        //result = ExpressionHandle(func);
                         var tuple = GetMemKeyAlias(binExpr.Left);
                         var val = string.Empty;
                         switch (binExpr.Right.NodeType)
                         {
                             case ExpressionType.Call:
-                                val = GetCallVal((binExpr.Right as MethodCallExpression));
+                                val = DC.VH.GetCallVal((binExpr.Right as MethodCallExpression));
                                 break;
                         }
                         if (string.IsNullOrWhiteSpace(val))
@@ -787,7 +449,7 @@ namespace EasyDAL.Exchange.Helper
                             Param = tuple.key,
                             ParamRaw = tuple.key,
                             Action = action,
-                            Option = GetOption(binExpr.NodeType)
+                            Option = DicHandle. GetOption(binExpr.NodeType)
                         };
                     }
                 }

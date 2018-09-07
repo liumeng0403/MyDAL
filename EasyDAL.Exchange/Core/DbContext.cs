@@ -3,6 +3,7 @@ using EasyDAL.Exchange.AdoNet;
 using EasyDAL.Exchange.Cache;
 using EasyDAL.Exchange.Common;
 using EasyDAL.Exchange.Enums;
+using EasyDAL.Exchange.ExpressionX;
 using EasyDAL.Exchange.Extensions;
 using EasyDAL.Exchange.Helper;
 using System;
@@ -50,11 +51,13 @@ namespace EasyDAL.Exchange.Core
 
         internal GenericHelper GH { get; private set; }
         internal XDebug Hint { get; set; }
-        internal ExpressionHelper EH { get; private set; }
+        internal ExpressionHandleX EH { get; private set; }
 
         internal StaticCache SC { get; private set; }
 
         internal ParameterPartHandle PPH { get; private set; }
+
+        internal ValHandle VH { get; private set; }
 
         internal List<DicModel> Conditions { get; private set; }
 
@@ -223,8 +226,9 @@ namespace EasyDAL.Exchange.Core
             Conn = conn;
             Conditions = new List<DicModel>();
             AH = AttributeHelper.Instance;
+            VH = new ValHandle(this);
             GH = GenericHelper.Instance;
-            EH = ExpressionHelper.Instance;
+            EH = new ExpressionHandleX(this);
             SC = StaticCache.Instance;
             PPH = ParameterPartHandle.Instance;
             SqlProvider = new MySqlProvider(this);

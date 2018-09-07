@@ -52,41 +52,38 @@ namespace EasyDAL.Exchange.Helper
                 attributeValueFunc((T)attribute);
         }
 
-        private void CacheAttributeValue<M, T>(M m, Func<T, string> attributeValueFunc, string name)
-            where T : Attribute
-        {
-            var key = BuildKey(m.GetType(), name);
-            var value = GetValue(m.GetType(), attributeValueFunc, name);
-            lock ($"{key}_attributeValueLockKey")
-            {
-                if (!Cache.ContainsKey(key))
-                {
-                    Cache[key] = value;
-                }
-            }
-        }
-
-        private string GetAttributeValue<M, A>(M m, Func<A, string> attributeValueFunc, string name)
+        private string GetAttributeValue< A>(Type type, Func<A, string> attributeValueFunc, string name)
             where A : Attribute
         {
-            var key = BuildKey(m.GetType(), name);
+            var key = BuildKey(type, name);
             if (!Cache.ContainsKey(key))
             {
-                CacheAttributeValue(m, attributeValueFunc, name);
+                //CacheAttributeValue(type, attributeValueFunc, name);
+                //var keyx = BuildKey(type, name);
+                var value = GetValue(type, attributeValueFunc, name);
+                lock ($"{key}_attributeValueLockKey")
+                {
+                    if (!Cache.ContainsKey(key))
+                    {
+                        Cache[key] = value;
+                    }
+                }
             }
             return Cache[key];
         }
 
+        /************************************************************************************************************************************/
+
         public string GetPropertyValue<M, A>(M m, Func<A, string> attributeValueFunc, string name)
             where A : Attribute
         {
-            return GetAttributeValue(m, attributeValueFunc, name);
+            return GetAttributeValue(m.GetType(), attributeValueFunc, name);
         }
 
-        public string GetPropertyValue<M, A>(M m, Func<A, string> attributeValueFunc)
+        public string GetPropertyValue< A>(Type type, Func<A, string> attributeValueFunc)
             where A : Attribute
         {
-            return GetAttributeValue(m, attributeValueFunc, null);
+            return GetAttributeValue(type, attributeValueFunc, null);
         }
 
         public Attribute GetAttribute<M,A>(M m, PropertyInfo prop)

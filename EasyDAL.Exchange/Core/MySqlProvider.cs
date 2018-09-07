@@ -15,15 +15,16 @@ namespace EasyDAL.Exchange.Core
 {
     internal class MySqlProvider
     {
-        private MySqlProvider() { }
+        private DbContext DC { get; set; }
 
+        private MySqlProvider() { }
         internal MySqlProvider(DbContext dc)
         {
             DC = dc;
             DC.SqlProvider = this;
         }
 
-        internal DbContext DC { get; private set; }
+        /****************************************************************************************************************/
 
         private string LikeStrHandle(DicModel dic)
         {
@@ -272,16 +273,26 @@ namespace EasyDAL.Exchange.Core
         internal string GetTableName<M>(M m)
         {
             var tableName = string.Empty;
-            tableName = DC.AH.GetPropertyValue<M, TableAttribute>(m, a => a.Name);
+            tableName = DC.AH.GetPropertyValue<TableAttribute>(m.GetType(), a => a.Name);
             if (string.IsNullOrWhiteSpace(tableName))
             {
                 throw new Exception("DB Entity 缺少 TableAttribute 指定的表名!");
             }
             return $"`{tableName}`";
         }
+        internal string GetTableName (Type mType)
+        {
+            var tableName = string.Empty;
+            tableName = DC.AH.GetPropertyValue<TableAttribute>(mType, a => a.Name);
+            if (string.IsNullOrWhiteSpace(tableName))
+            {
+                throw new Exception("DB Entity 缺少 TableAttribute 指定的表名!");
+            }
+            return tableName;
+        }
         internal bool TryGetTableName<M>(out string tableName)
         {
-            tableName = DC.AH.GetPropertyValue<M, TableAttribute>(Activator.CreateInstance<M>(), a => a.Name);
+            tableName = DC.AH.GetPropertyValue<TableAttribute>(typeof(M), a => a.Name);
             if (string.IsNullOrWhiteSpace(tableName))
             {
                 throw new Exception("DB Entity 缺少 TableAttribute 指定的表名!");

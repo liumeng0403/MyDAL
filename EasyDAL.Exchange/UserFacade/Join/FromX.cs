@@ -17,13 +17,10 @@ namespace EasyDAL.Exchange.UserFacade.Join
 
         public JoinX From<M>(Expression<Func<M>> func)
         {
-            DC.AddConditions(new DicModel
-            {
-                //TableOne = DC.SqlProvider.GetTableName(m),
-                AliasOne ="",// alias,
-                Action = ActionEnum.From,
-                Crud= CrudTypeEnum.Join
-            });
+            var dic = DC.EH.ExpressionHandle(func);
+            dic.Action = ActionEnum.From;
+            dic.Crud = CrudTypeEnum.Join;
+            DC.AddConditions(dic);
             return new JoinX(DC);
         }
     }
