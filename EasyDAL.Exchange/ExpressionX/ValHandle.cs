@@ -234,11 +234,16 @@ namespace EasyDAL.Exchange.ExpressionX
 
             //
             //var bodyMC = expr as MethodCallExpression;
+            var type = mcExpr.Type;
             var pExpr = mcExpr.Arguments[0];
-            if (pExpr.NodeType == ExpressionType.Constant)
+            if (pExpr.NodeType == ExpressionType.Constant
+                && type == typeof(DateTime))
             {
-                var type = mcExpr.Type;
-                if (type == typeof(DateTime))
+                if (mcExpr.Object == null)
+                {
+
+                }
+                else if(mcExpr.Object.NodeType==  ExpressionType.MemberAccess)
                 {
                     var obj = Convert.ToDateTime(GetMemExprVal(mcExpr.Object as MemberExpression));
                     var method = mcExpr.Method.Name;
@@ -253,10 +258,12 @@ namespace EasyDAL.Exchange.ExpressionX
                     }
                     val = (type.InvokeMember(method, BindingFlags.Default | BindingFlags.InvokeMethod, null, obj, args.ToArray())).ToString();
                 }
-                else
-                {
-                    val = (string)((pExpr as ConstantExpression).Value);
-                }
+            }
+            else if (pExpr.NodeType == ExpressionType.Constant)
+            {
+                //val = (string)((pExpr as ConstantExpression).Value);
+                var con = pExpr as ConstantExpression;
+                val = GetConstantVal(con, con.Type);
             }
             else if (pExpr.NodeType == ExpressionType.MemberAccess)
             {

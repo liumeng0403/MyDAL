@@ -106,16 +106,16 @@ namespace EasyDAL.Exchange.ExpressionX
         // 01
 
         // 01
-        private (Expression left, Expression right, ExpressionType node, bool isR) HandBinExpr(ParameterExpression parameter, BinaryExpression binExpr)
+        private (Expression left, Expression right, ExpressionType node, bool isR) HandBinExpr(List<string> list, BinaryExpression binExpr)
         {
             var binLeft = binExpr.Left;
             var binRight = binExpr.Right;
             var binNode = binExpr.NodeType;
 
             var leftStr = binLeft.ToString();
-            var name = parameter.Name;
-            if (leftStr.StartsWith($"{name}.", StringComparison.Ordinal)
-                || leftStr.StartsWith($"Convert({name}.", StringComparison.Ordinal))
+            if (list.Any(it => leftStr.StartsWith($"{it}.", StringComparison.Ordinal))
+                || list.Any(it => leftStr.StartsWith($"Convert({it}.", StringComparison.Ordinal))
+                || (list.Any(it=>leftStr.Contains($").{it}."))&& leftStr.StartsWith($"value(",StringComparison.Ordinal)))
             {
                 return (binLeft, binRight, binNode, false);
             }
@@ -202,9 +202,10 @@ namespace EasyDAL.Exchange.ExpressionX
                     break;
                 case ExpressionType.Call:
                     var rightExpr = binRight as MethodCallExpression;
-                    var conVal = rightExpr.Arguments[0] as ConstantExpression;
+                    //var conVal = rightExpr.Arguments[0] as ConstantExpression;
                     //val = conVal.Value.ToString();
-                    val = DC.VH.GetConstantVal(conVal, conVal.Type);
+                    //val = DC.VH.GetConstantVal(conVal, conVal.Type);
+                    val = DC.VH.GetCallVal(rightExpr);
                     break;
                 case ExpressionType.MemberAccess:
                     val = HandMember(binRight as MemberExpression);
@@ -274,7 +275,10 @@ namespace EasyDAL.Exchange.ExpressionX
                 if (IsBinaryExpr(nodeType))
                 {
                     var binExpr = body as BinaryExpression;
-                    var binTuple = HandBinExpr(parameter, binExpr);
+                    var binTuple = HandBinExpr(new List<string>
+                    {
+                        parameter.Name
+                    }, binExpr);
                     val = HandBinary(binTuple.right);
                     var leftStr = binTuple.left.ToString();
                     if (leftStr.Contains(".Length")
@@ -474,15 +478,22 @@ namespace EasyDAL.Exchange.ExpressionX
                         || action == ActionEnum.And
                         || action == ActionEnum.Or)
                     {
+
+                        var binTuple = HandBinExpr(DC.Conditions.Select(it => it.AliasOne).ToList(), binExpr);
                         //result = ExpressionHandle(func);
                         var tuple = GetMemKeyAlias(binExpr.Left);
                         var val = string.Empty;
-                        switch (binExpr.Right.NodeType)
-                        {
-                            case ExpressionType.Call:
-                                val = DC.VH.GetCallVal((binExpr.Right as MethodCallExpression));
-                                break;
-                        }
+                        var rNodeType = binExpr.Right.NodeType;
+
+                        ////
+                        //if (rNodeType == ExpressionType.Call)
+                        //{
+                        //    val = DC.VH.GetCallVal((binExpr.Right as MethodCallExpression));
+                        //}
+                        val = HandBinary(binExpr.Right);
+
+
+                        //
                         if (string.IsNullOrWhiteSpace(val))
                         {
                             throw new Exception();
