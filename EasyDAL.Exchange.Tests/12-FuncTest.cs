@@ -31,6 +31,7 @@ namespace EasyDAL.Exchange.Tests
                 .QueryListAsync();
 
             var tupleR1 = (XDebug.SQL, XDebug.Parameters);
+            Assert.True(res1.Count == resR1.Count);
 
             var xx = "";
 

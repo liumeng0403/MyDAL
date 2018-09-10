@@ -77,6 +77,9 @@ namespace EasyDAL.Exchange.Tests
 
             var tuple3 = (XDebug.SQL, XDebug.Parameters);
 
+            Assert.True(res1.Count == res2.Count);
+            Assert.True(res2.Count == res3.Count);
+
             var xx = "";
         }
 
@@ -119,6 +122,9 @@ namespace EasyDAL.Exchange.Tests
 
             var tuple3 = (XDebug.SQL, XDebug.Parameters);
 
+            Assert.True(res1.Count == res2.Count);
+            Assert.True(res2.Count == res3.Count);
+
             var xx = "";
         }
 
@@ -156,6 +162,9 @@ namespace EasyDAL.Exchange.Tests
                 .QueryListAsync();
 
             var tuple3 = (XDebug.SQL, XDebug.Parameters);
+
+            Assert.True(res1.Count == res2.Count);
+            Assert.True(res2.Count == res3.Count);
 
             var xx4 = "";
 
@@ -219,6 +228,9 @@ namespace EasyDAL.Exchange.Tests
 
             var tuple3 = (XDebug.SQL, XDebug.Parameters);
 
+            Assert.True(res1.Count == res2.Count);
+            Assert.True(res2.Count == res3.Count);
+
             var xx = "";
         }
 
@@ -261,6 +273,9 @@ namespace EasyDAL.Exchange.Tests
 
             var tuple3 = (XDebug.SQL, XDebug.Parameters);
 
+            Assert.True(res1.Count == res2.Count);
+            Assert.True(res2.Count == res3.Count);
+
             var xx = "";
         }
 
@@ -298,6 +313,9 @@ namespace EasyDAL.Exchange.Tests
                 .QueryListAsync();
 
             var tuple3 = (XDebug.SQL, XDebug.Parameters);
+
+            Assert.True(res1.Count == res2.Count);
+            Assert.True(res2.Count == res3.Count);
 
             var xx4 = "";
 

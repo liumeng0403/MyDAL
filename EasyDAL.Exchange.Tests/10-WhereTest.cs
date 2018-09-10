@@ -35,6 +35,19 @@ namespace EasyDAL.Exchange.Tests
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
+            var xxR1 = "";
+
+            // where method parameter 
+            var resR1 = await Conn.OpenDebug()
+                .Selecter<Agent>()
+                .Where(it => id == it.Id)
+                .QueryFirstOrDefaultAsync();
+
+            var tupleR1 = (XDebug.SQL, XDebug.Parameters);
+
+            Assert.True(res1.Id.Equals(Guid.Parse("000a9465-8665-40bf-90e3-0165442d9120")));
+            Assert.True(resR1.Id.Equals(Guid.Parse("000a9465-8665-40bf-90e3-0165442d9120")));
+
             var xx = "";
         }
 

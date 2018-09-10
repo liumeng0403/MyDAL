@@ -25,6 +25,7 @@ namespace EasyDAL.Exchange.Tests
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
+
             var xx2 = "";
 
             var res2 = await Conn.OpenDebug()
