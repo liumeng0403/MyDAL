@@ -19,7 +19,18 @@ namespace EasyDAL.Exchange.Tests
                 BodyMeasureProperty = "{xxx:yyy,mmm:nnn}"
             };
 
-
+            // 清理数据
+            var resx1 = await Conn
+                .Selecter<BodyFitRecord>()
+                .Where(it => it.Id == m.Id)
+                .QueryFirstOrDefaultAsync();
+            if (resx1 != null)
+            {
+                var resx2 = await Conn
+                    .Deleter<BodyFitRecord>()
+                    .Where(it => it.Id == resx1.Id)
+                    .DeleteAsync();
+            }
 
             // 新建
             var res0 = await Conn.OpenDebug()
@@ -74,15 +85,7 @@ namespace EasyDAL.Exchange.Tests
 
             var xx = "";
 
-            // 清理数据
-            var resx1 = await Conn
-                .Selecter<BodyFitRecord>()
-                .Where(it => it.Id == m.Id)
-                .QueryFirstOrDefaultAsync();
-            var resx2 = await Conn
-                .Deleter<BodyFitRecord>()
-                .Where(it => it.Id == res1.Id)
-                .DeleteAsync();
+
         }
 
         [Fact]

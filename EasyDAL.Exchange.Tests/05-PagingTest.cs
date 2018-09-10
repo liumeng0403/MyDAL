@@ -26,6 +26,15 @@ namespace EasyDAL.Exchange.Tests
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
+            var resR1 = await Conn.OpenDebug()
+                .Selecter<Agent>()
+                .Where(it => WhereTest.DateTime_大于等于 <= it.CreatedOn)
+                .QueryPagingListAsync(1, 10);
+
+            var tupleR1 = (XDebug.SQL, XDebug.Parameters);
+
+            Assert.True(res1.TotalCount == resR1.TotalCount);
+
             var xx = "";
         }
 
@@ -42,6 +51,15 @@ namespace EasyDAL.Exchange.Tests
                 .QueryPagingListAsync<AgentVM>(1, 10);
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
+
+            var resR1 = await Conn.OpenDebug()
+                .Selecter<Agent>()
+                .Where(it => WhereTest.DateTime_大于等于 <= it.CreatedOn)
+                .QueryPagingListAsync<AgentVM>(1, 10);
+
+            var tupleR1 = (XDebug.SQL, XDebug.Parameters);
+
+            Assert.True(res1.TotalCount == resR1.TotalCount);
 
             var xx = "";
         }

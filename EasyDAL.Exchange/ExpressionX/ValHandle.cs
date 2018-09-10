@@ -116,7 +116,7 @@ namespace EasyDAL.Exchange.ExpressionX
             var str = string.Empty;
 
             //
-            if (memExpr.Expression == null      //  null   Property   
+            if (memExpr.Expression == null                                                                                    //  null   Property   
                 && memExpr.Member.MemberType == MemberTypes.Property)
             {
                 var targetProp = memExpr.Member as PropertyInfo;
@@ -124,7 +124,7 @@ namespace EasyDAL.Exchange.ExpressionX
                 var instance = Activator.CreateInstance(type);
                 str = targetProp.GetValue(instance, null).ToString();
             }
-            else if (memExpr.Expression.NodeType == ExpressionType.Constant   //  Constant   Field 
+            else if (memExpr.Expression.NodeType == ExpressionType.Constant                     //  Constant   Field 
                 && memExpr.Member.MemberType == MemberTypes.Field)
             {
                 var fInfo = memExpr.Member as FieldInfo;
@@ -150,7 +150,7 @@ namespace EasyDAL.Exchange.ExpressionX
                     str = fInfo.GetValue(obj).ToString();
                 }
             }
-            else if (memExpr.Expression.NodeType == ExpressionType.Constant   //  Constant   Property
+            else if (memExpr.Expression.NodeType == ExpressionType.Constant                     //  Constant   Property
                 && memExpr.Member.MemberType == MemberTypes.Property)
             {
                 var pInfo = memExpr.Member as PropertyInfo;
@@ -175,7 +175,7 @@ namespace EasyDAL.Exchange.ExpressionX
                     str = DC.GH.GetTypeValue(valType, pInfo, obj);    // 此项 可能 有问题 
                 }
             }
-            else if (memExpr.Expression.NodeType == ExpressionType.MemberAccess    //  MemberAccess   Property
+            else if (memExpr.Expression.NodeType == ExpressionType.MemberAccess          //  MemberAccess   Property
                 && memExpr.Member.MemberType == MemberTypes.Property)
             {
                 var targetProp = memExpr.Member as PropertyInfo;

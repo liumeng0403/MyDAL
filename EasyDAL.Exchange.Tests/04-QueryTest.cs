@@ -52,6 +52,15 @@ namespace EasyDAL.Exchange.Tests
 
             var tuple0 = (XDebug.SQL, XDebug.Parameters);
 
+            var resR = await Conn.OpenDebug()
+                .Selecter<BodyFitRecord>()
+                .Where(it => Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e") == it.Id)
+                .QueryFirstOrDefaultAsync();
+
+            var tupleR0 = (XDebug.SQL, XDebug.Parameters);
+
+            Assert.True(res.Id == resR.Id);
+
             var xx1 = "";
 
             // == DateTime
@@ -61,6 +70,15 @@ namespace EasyDAL.Exchange.Tests
                 .QueryFirstOrDefaultAsync();
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters);
+
+            var resR2 = await Conn.OpenDebug()
+                .Selecter<BodyFitRecord>()
+                .Where(it => Convert.ToDateTime("2018-08-23 13:36:58") == it.CreatedOn)
+                .QueryFirstOrDefaultAsync();
+
+            var tupleR2 = (XDebug.SQL, XDebug.Parameters);
+
+            Assert.True(res2.Id == resR2.Id);
 
             var xx2 = "";
 
@@ -72,15 +90,33 @@ namespace EasyDAL.Exchange.Tests
 
             var tuple3 = (XDebug.SQL, XDebug.Parameters);
 
+            var resR3 = await Conn.OpenDebug()
+                .Selecter<BodyFitRecord>()
+                .Where(it => "xxxx" == it.BodyMeasureProperty)
+                .QueryFirstOrDefaultAsync();
+
+            var tupleR3 = (XDebug.SQL, XDebug.Parameters);
+
+            Assert.True(res3.Id == resR3.Id);
+
             var xx4 = "";
 
             // >= obj.DateTime
             var res5 = await Conn.OpenDebug()
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.CreatedOn >= WhereTest.CreatedOn)
-                .QueryFirstOrDefaultAsync();
+                .QueryListAsync();
 
             var tuple5 = (XDebug.SQL, XDebug.Parameters);
+
+            var resR5 = await Conn.OpenDebug()
+                .Selecter<BodyFitRecord>()
+                .Where(it => WhereTest.CreatedOn <= it.CreatedOn)
+                .QueryListAsync();
+
+            var tupleR5 = (XDebug.SQL, XDebug.Parameters);
+
+            Assert.True(res5.Count == resR5.Count);
 
             var xx5 = "";
 
@@ -89,9 +125,18 @@ namespace EasyDAL.Exchange.Tests
             var res6 = await Conn.OpenDebug()
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.CreatedOn >= start)
-                .QueryFirstOrDefaultAsync();
+                .QueryListAsync();
 
             var tuple6 = (XDebug.SQL, XDebug.Parameters);
+
+            var resR6 = await Conn.OpenDebug()
+                .Selecter<BodyFitRecord>()
+                .Where(it => start <= it.CreatedOn)
+                .QueryListAsync();
+
+            var tupleR6 = (XDebug.SQL, XDebug.Parameters);
+
+            Assert.True(res6.Count == resR6.Count);
 
             var xx6 = "";
 
@@ -99,9 +144,18 @@ namespace EasyDAL.Exchange.Tests
             var res7 = await Conn.OpenDebug()
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.CreatedOn <= DateTime.Now)
-                .QueryFirstOrDefaultAsync();
+                .QueryListAsync();
 
             var tuple7 = (XDebug.SQL, XDebug.Parameters);
+
+            var resR7 = await Conn.OpenDebug()
+                .Selecter<BodyFitRecord>()
+                .Where(it => DateTime.Now >= it.CreatedOn)
+                .QueryListAsync();
+
+            var tupleR7 = (XDebug.SQL, XDebug.Parameters);
+
+            Assert.True(res7.Count == resR7.Count);
 
             var xx = "";
 
