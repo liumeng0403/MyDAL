@@ -23,7 +23,7 @@ namespace EasyDAL.Exchange.Tests
                 .InnerJoin(()=>record)
                 .On(() => agent.Id == record.AgentId)
                 .Where(() => agent.Id == Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef"))
-                .And(() => record.CreatedOn >= DateTime.Now.AddDays(-30))
+                .And(() => record.CreatedOn >= DateTime.Now.AddDays(-60))
                 .QueryListAsync<Agent>();
 
             var tuple = (XDebug.SQL, XDebug.Parameters);

@@ -233,7 +233,6 @@ namespace EasyDAL.Exchange.ExpressionX
             var val = string.Empty;
 
             //
-            //var bodyMC = expr as MethodCallExpression;
             var type = mcExpr.Type;
             var pExpr = mcExpr.Arguments[0];
             if (pExpr.NodeType == ExpressionType.Constant
@@ -241,7 +240,8 @@ namespace EasyDAL.Exchange.ExpressionX
             {
                 if (mcExpr.Object == null)
                 {
-
+                    var con = pExpr as ConstantExpression;
+                    val = GetConstantVal(con, con.Type);
                 }
                 else if(mcExpr.Object.NodeType==  ExpressionType.MemberAccess)
                 {
@@ -261,7 +261,6 @@ namespace EasyDAL.Exchange.ExpressionX
             }
             else if (pExpr.NodeType == ExpressionType.Constant)
             {
-                //val = (string)((pExpr as ConstantExpression).Value);
                 var con = pExpr as ConstantExpression;
                 val = GetConstantVal(con, con.Type);
             }
