@@ -75,7 +75,7 @@ namespace EasyDAL.Exchange.Tests
                 .From(() => agent5)
                 .InnerJoin(() => record5)
                 .On(() => agent5.Id == record5.AgentId)
-                .Where(() => agent5.AgentLevel==AgentLevel.Customer)
+                .Where(() => agent5.AgentLevel==AgentLevel.DistiAgent)
                 .QueryListAsync<AgentInventoryRecord>();
 
             var tuple5 = (XDebug.SQL, XDebug.Parameters);
