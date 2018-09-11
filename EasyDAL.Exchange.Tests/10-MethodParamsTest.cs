@@ -2,13 +2,14 @@
 using EasyDAL.Exchange.Tests.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace EasyDAL.Exchange.Tests
 {
-    public class WhereTest:TestBase
+    public class MethodParamsTest:TestBase
     {
 
         [Fact]
@@ -49,6 +50,39 @@ namespace EasyDAL.Exchange.Tests
             Assert.True(resR1.Id.Equals(Guid.Parse("000a9465-8665-40bf-90e3-0165442d9120")));
 
             var xx = "";
+        }
+
+        [Fact]
+        public async Task MethodListParamTest()
+        {
+            var list = new List<Guid>();
+            list.Add(Guid.Parse("00079c84-a511-418b-bd5b-0165442eb30a"));
+            list.Add(Guid.Parse("000cecd5-56dc-4085-804b-0165443bdf5d"));
+
+            await yyy(list);
+            await yyy(list.ToArray());
+        }
+        private async Task yyy(List<Guid> list)
+        {
+            var xx = "";
+
+            var res = await Conn
+                .Selecter<Agent>()
+                .Where(it => list.Contains(it.Id))
+                .QueryListAsync();
+
+            var xxx = "";
+        }
+        private async Task yyy(Guid[] arrays)
+        {
+            var xx = "";
+
+            var res = await Conn
+                .Selecter<Agent>()
+                .Where(it => arrays.Contains(it.Id))
+                .QueryListAsync();
+
+            var xxx = "";
         }
 
     }

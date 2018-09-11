@@ -34,57 +34,41 @@ namespace EasyDAL.Exchange.ExpressionX
 
             return false;
         }
-        // 03 04
-        private string InValueForListT(Type type, object vals)
+
+        private bool IsSysType(Type type)
         {
-            var str = string.Empty;
-
-            //
-            var valType = default(Type);
-            var typeT = type.GetGenericArguments()[0];
-            if (typeT == typeof(string)
-                || typeT == typeof(ushort)
-                || typeT == typeof(short)
-                || typeT == typeof(uint)
-                || typeT == typeof(int)
-                || typeT == typeof(ulong)
-                || typeT == typeof(long))
+            if (type == typeof(string)
+                || type == typeof(ushort)
+                || type == typeof(short)
+                || type == typeof(uint)
+                || type == typeof(int)
+                || type == typeof(ulong)
+                || type == typeof(long)
+                || type == typeof(Guid))
             {
-                valType = typeT;
-            }
-            else
-            {
-                var currAssembly = DC.SC.GetAssembly(typeT.FullName);
-                valType = currAssembly.GetType(typeT.FullName);
+                return true;
             }
 
-            //
-            var ds = vals as dynamic;
-            var intVals = new List<object>();
-            for (var i = 0; i < ds.Count; i++)
-            {
-                intVals.Add(DC.GH.GetTypeValue(valType, ds[i]));
-            }
-            str = string.Join(",", intVals.Select(it => it.ToString()));
-
-            //
-            return str;
+            return false;
         }
         // 03 04
-        private string InValueForArray(Type type, object vals)
+        private string InValueForListT(Type type, object vals, bool isArray)
         {
             var str = string.Empty;
 
             //
             var valType = default(Type);
-            var typeT = type.GetElementType();
-            if (typeT == typeof(string)
-                || typeT == typeof(ushort)
-                || typeT == typeof(short)
-                || typeT == typeof(uint)
-                || typeT == typeof(int)
-                || typeT == typeof(ulong)
-                || typeT == typeof(long))
+            var typeT = default(Type);
+            if (isArray)
+            {
+                typeT = type.GetElementType();
+            }
+            else
+            {
+                typeT = type.GetGenericArguments()[0];
+            }
+
+            if (IsSysType(typeT))
             {
                 valType = typeT;
             }
@@ -97,7 +81,16 @@ namespace EasyDAL.Exchange.ExpressionX
             //
             var ds = vals as dynamic;
             var intVals = new List<object>();
-            for (var i = 0; i < ds.Length; i++)
+            var num = default(int);
+            if (isArray)
+            {
+                num = ds.Length;
+            }
+            else
+            {
+                num = ds.Count;
+            }
+            for (var i = 0; i < num; i++)
             {
                 intVals.Add(DC.GH.GetTypeValue(valType, ds[i]));
             }
@@ -136,14 +129,7 @@ namespace EasyDAL.Exchange.ExpressionX
                 {
                     var type = memExpr.Type as Type;
                     var vals = fInfo.GetValue(obj);
-                    if (fType.IsArray)
-                    {
-                        str = InValueForArray(type, vals);
-                    }
-                    else
-                    {
-                        str = InValueForListT(type, vals);
-                    }
+                    str = InValueForListT(type, vals, fType.IsArray);
                 }
                 else
                 {
@@ -161,14 +147,7 @@ namespace EasyDAL.Exchange.ExpressionX
                 if (IsListT(valType)
                     || valType.IsArray)
                 {
-                    if (valType.IsArray)
-                    {
-                        str = InValueForArray(valType, valObj);
-                    }
-                    else
-                    {
-                        str = InValueForListT(valType, valObj);
-                    }
+                    str = InValueForListT(valType, valObj, valType.IsArray);
                 }
                 else
                 {
@@ -192,14 +171,7 @@ namespace EasyDAL.Exchange.ExpressionX
                     {
                         var type = memExpr.Type as Type;
                         var vals = targetProp.GetValue(valObj);
-                        if (fType.IsArray)
-                        {
-                            str = InValueForArray(type, vals);
-                        }
-                        else
-                        {
-                            str = InValueForListT(type, vals);
-                        }
+                        str = InValueForListT(type, vals, fType.IsArray);
                     }
                     else
                     {
@@ -243,7 +215,7 @@ namespace EasyDAL.Exchange.ExpressionX
                     var con = pExpr as ConstantExpression;
                     val = GetConstantVal(con, con.Type);
                 }
-                else if(mcExpr.Object.NodeType==  ExpressionType.MemberAccess)
+                else if (mcExpr.Object.NodeType == ExpressionType.MemberAccess)
                 {
                     var obj = Convert.ToDateTime(GetMemExprVal(mcExpr.Object as MemberExpression));
                     var method = mcExpr.Method.Name;

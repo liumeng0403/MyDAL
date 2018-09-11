@@ -62,6 +62,8 @@ namespace EasyDAL.Exchange.Core
         internal List<DicModel> Conditions { get; private set; }
 
         internal IDbConnection Conn { get; private set; }
+        internal IDbTransaction Tran { get; set; }
+
 
         internal MySqlProvider SqlProvider { get; set; }
 
