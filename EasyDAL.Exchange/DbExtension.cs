@@ -6,6 +6,7 @@ using EasyDAL.Exchange.UserFacade.Query;
 using EasyDAL.Exchange.UserFacade.Update;
 using System;
 using System.Data;
+using EasyDAL.Exchange.UserFacade.Transaction;
 
 namespace EasyDAL.Exchange
 {
@@ -118,6 +119,14 @@ namespace EasyDAL.Exchange
         {
             XDebug.Hint = true;
             return connection;
+        }
+
+        /// <summary>
+        /// 事务单元
+        /// </summary>
+        public static Transactioner Transactioner(this IDbConnection connection)
+        {
+            return new Transactioner(new DbContext(connection));
         }
 
     }
