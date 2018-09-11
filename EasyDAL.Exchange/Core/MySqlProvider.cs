@@ -377,12 +377,13 @@ namespace EasyDAL.Exchange.Core
             if (XDebug.Hint)
             {
                 XDebug.SQL = list;
+                var paras = DC.GetParameters();
                 XDebug.Parameters = DC
                     .Conditions
                     .Where(it => DC.IsParameter(it))
                     .Select(it =>
                     {
-                        return $"key:【{it.Param}】;val:【{it.Value}】.";
+                        return $"key:【{it.Param}】;val:【{it.Value}】;param【{it.DbValue}】.";
                     })
                     .ToList();
             }

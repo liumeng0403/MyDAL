@@ -29,7 +29,7 @@ namespace EasyDAL.Exchange.Tests
                         AgentLevel.CityAgent,
                         AgentLevel.DistiAgent
                     },
-                    In_Array_枚举= new AgentLevel[]
+                    In_Array_枚举 = new AgentLevel[]
                     {
                         AgentLevel.CityAgent,
                         AgentLevel.DistiAgent
@@ -39,7 +39,7 @@ namespace EasyDAL.Exchange.Tests
                         "黄银凤",
                         "刘建芬"
                     },
-                    In_Array_String= new string[]
+                    In_Array_String = new string[]
                     {
                         "黄银凤",
                         "刘建芬"
@@ -65,18 +65,27 @@ namespace EasyDAL.Exchange.Tests
 
         protected IDbConnection Conn
         {
-            get
-            {
-                return GetOpenConnection();
-            }
-        }
-
-        private static IDbConnection GetOpenConnection(bool mars = false)
-        {
             /*
              * CREATE DATABASE `rainbow_test_db20180817` 
+             */
+            get { return GetOpenConnection("Rainbow_Test_DB20180817"); }
+        }
+
+        protected IDbConnection Conn2
+        {
+            /*
+             * CREATE DATABASE `rainbow_unicorn_db20180901` 
+             */
+            get { return GetOpenConnection("rainbow_unicorn_db20180901"); }
+        }
+
+
+        private static IDbConnection GetOpenConnection(string name)
+        {
+            /*
+             * 
             */
-            var conn = new MySqlConnection("Server=localhost; Database=Rainbow_Test_DB20180817; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;");
+            var conn = new MySqlConnection($"Server=localhost; Database={name}; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;");
             conn.Open();
             //Hints.Hint = true;  // 全局 Hint 配置, 生产环境不要开启 
             return conn;

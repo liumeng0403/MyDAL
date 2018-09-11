@@ -29,15 +29,18 @@ namespace EasyDAL.Exchange.Helper
             {
                 if (item.Value.ToBool())
                 {
+                    item.DbValue = 1.ToString();
                     return GetDefault(item.Param, 1, DbType.UInt16);
                 }
                 else
                 {
+                    item.DbValue = 0.ToString();
                     return GetDefault(item.Param, 0, DbType.UInt16);
                 }
             }
             else
             {
+                item.DbValue = item.Value.ToBool().ToString();
                 return GetDefault(item.Param, item.Value.ToBool(), DbType.Boolean);
             }
         }

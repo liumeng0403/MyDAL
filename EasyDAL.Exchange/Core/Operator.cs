@@ -45,7 +45,7 @@ namespace EasyDAL.Exchange.Core
             });
         }
 
-        private List<(string key,string param,string val)> GetKPV<M>(object objx)
+        private List<(string key,string param,string val,Type valType,string colType)> GetKPV<M>(object objx)
         {
             var list = new List<string>();
             var dic = default(IDictionary<string, object>);
@@ -79,23 +79,27 @@ namespace EasyDAL.Exchange.Core
             }
 
             //
-            var result = new List<(string key, string param, string val)>();
+            var result = new List<(string key, string param, string val,Type valType,string colType)>();
+            var columns = ( DC.SC.GetColumnInfos<M>(DC)).GetAwaiter().GetResult();
             foreach (var prop in list)
             {
                 var val = string.Empty;
+                var valType = default(Type);
+                var columnType = columns.First(it => it.ColumnName.Equals(prop, StringComparison.OrdinalIgnoreCase)).DataType;
                 if (objx is ExpandoObject)
                 {
                     var obj = dic[prop];
-                    var mt = obj.GetType();
-                    val = DC.GH.GetTypeValue(mt, obj);
+                    valType = obj.GetType();
+                    val = DC.GH.GetTypeValue(valType, obj);
                 }
                 else
                 {
                     var mp = objx.GetType().GetProperty(prop);
-                    var mt = mp.GetType();
-                    val = DC.GH.GetTypeValue(mt, mp, objx);
+                    valType = mp.GetType();
+                    val = DC.GH.GetTypeValue(valType, mp, objx);
                 }
-                result.Add((prop, prop, val));
+
+                result.Add((prop, prop, val, valType, columnType));
             }
             return result;
         }
@@ -147,6 +151,8 @@ namespace EasyDAL.Exchange.Core
                     Param = tp.param,
                     ParamRaw=tp.param,
                     Value = tp.val,
+                    ValueType=tp.valType,
+                    ColumnType=tp.colType,
                     Action = action,
                     Option = OptionEnum.Equal,
                     Crud = CrudTypeEnum.Query

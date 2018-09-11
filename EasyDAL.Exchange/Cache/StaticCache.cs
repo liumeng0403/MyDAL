@@ -5,6 +5,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
+using EasyDAL.Exchange.Core;
 
 namespace EasyDAL.Exchange.Cache
 {
@@ -36,6 +38,28 @@ namespace EasyDAL.Exchange.Cache
                 AssemblyCache[fullName] = ass;
             }
             return ass;
+        }
+
+
+        private static ConcurrentDictionary<string, List<ColumnInfo>> TableColumnsCache { get; } = new ConcurrentDictionary<string, List<ColumnInfo>>();
+        private string GetTCKey<M>(DbContext dc)
+        {
+            var key = string.Empty;
+            key += dc.Conn.Database;
+            dc.SqlProvider.TryGetTableName<M>(out var tableName);
+            key += tableName;
+            return key;
+        }
+        internal async Task<List<ColumnInfo>> GetColumnInfos<M>(DbContext dc)
+        {
+            var tcKey = GetTCKey<M>(dc);
+            if (!TableColumnsCache.TryGetValue(tcKey, out var columns))
+            {
+                columns = await dc.SqlProvider.GetColumnsInfos<M>();
+                TableColumnsCache[tcKey] = columns;
+            }
+
+            return columns;
         }
 
     }
