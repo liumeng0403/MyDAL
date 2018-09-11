@@ -6,6 +6,7 @@ using EasyDAL.Exchange.Tests.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using EasyDAL.Exchange.Tests.Entities.rainbow_unicorn_db20180901;
 using Xunit;
 
 namespace EasyDAL.Exchange.Tests
@@ -17,6 +18,11 @@ namespace EasyDAL.Exchange.Tests
         {
             public Guid? Id { get; set; }
             public string Name { get; set; }
+        }
+
+        public class ProductQueryOption : PagingQueryOption
+        {
+            public bool? VipProduct { get; set; }
         }
 
         [Fact]
@@ -84,6 +90,20 @@ namespace EasyDAL.Exchange.Tests
                 .QueryListAsync();
 
             var tuple4 = (XDebug.SQL, XDebug.Parameters);
+
+            var xx5 = "";
+
+            var option2 = new ProductQueryOption
+            {
+                VipProduct = null     // true fals null 
+            };
+            // where method -- option orderby 
+            var res5 = await Conn2.OpenDebug()
+                .Selecter<Product>()
+                .Where(option2.GetCondition())
+                .QueryPagingListAsync(option2);
+
+            var tuple5 = (XDebug.SQL, XDebug.Parameters);
 
 
             var xx = "";

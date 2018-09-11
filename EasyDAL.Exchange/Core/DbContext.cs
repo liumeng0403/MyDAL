@@ -20,16 +20,7 @@ namespace EasyDAL.Exchange.Core
     {
 
 
-        internal static ConcurrentDictionary<string, List<ColumnInfo>> TableColumnsCache { get; } = new ConcurrentDictionary<string, List<ColumnInfo>>();
-
-        internal string GetTCKey<M>()
-        {
-            var key = string.Empty;
-            key += Conn.Database;
-            SqlProvider.TryGetTableName<M>(out var tableName);
-            key += tableName;
-            return key;
-        }
+      
         internal bool IsParameter(DicModel item)
         {
             switch (item.Action)
@@ -138,26 +129,11 @@ namespace EasyDAL.Exchange.Core
         private async Task SetInsertValue<M>(M m, OptionEnum option, int index)
         {
             var props = SC.GetModelProperys(m.GetType());
-            var tcKey = GetTCKey<M>();
-            var columns = default(List<ColumnInfo>);
-            if (!TableColumnsCache.TryGetValue(tcKey, out columns))
-            {
-                columns = await SqlProvider.GetColumnsInfos<M>();
-                TableColumnsCache[tcKey] = columns;
-            }
+            var columns = (SC.GetColumnInfos<M>(this)).GetAwaiter().GetResult();
 
             foreach (var prop in props)
             {
                 var val = GH.GetTypeValue(prop.PropertyType, prop, m);
-                //var valType = ValueTypeEnum.None;
-                //if(prop.PropertyType==typeof(bool))
-                //{
-                //    valType = ValueTypeEnum.Bool;
-                //}
-                //else
-                //{
-                //    valType = ValueTypeEnum.None;
-                //}
                 AddConditions(new DicModel
                 {
                     KeyOne = prop.Name,
@@ -165,7 +141,7 @@ namespace EasyDAL.Exchange.Core
                     ParamRaw = prop.Name,
                     Value = val,
                     ValueType = prop.PropertyType,
-                    ColumnType = columns.Where(it => it.ColumnName.Equals(prop.Name, StringComparison.OrdinalIgnoreCase)).First().DataType,
+                    ColumnType = columns.First(it => it.ColumnName.Equals(prop.Name, StringComparison.OrdinalIgnoreCase)).DataType,
                     Action = ActionEnum.Insert,
                     Option = option,
                     TvpIndex = index
@@ -195,24 +171,32 @@ namespace EasyDAL.Exchange.Core
             {
                 if (IsParameter(item))
                 {
-                    if (item.ValueType == typeof(bool))
+                    if (item.ValueType == typeof(bool)
+                        || item.ValueType == typeof(bool?))
                     {
                         paras.Add(PPH.BoolParamHandle(item));
                     }
-                    else if (item.ValueType == typeof(short))
+                    else if (item.ValueType == typeof(short)
+                             || item.ValueType== typeof(short?))
                     {
+                        item.DbValue = item.Value.ToShort().ToString();
                         paras.Add(item.Param, item.Value.ToShort(), DbType.Int16);
                     }
-                    else if (item.ValueType == typeof(int))
+                    else if (item.ValueType == typeof(int)
+                             || item.ValueType== typeof(int?))
                     {
+                        item.DbValue = item.Value.ToInt().ToString();
                         paras.Add(item.Param, item.Value.ToInt(), DbType.Int32);
                     }
-                    else if (item.ValueType == typeof(long))
+                    else if (item.ValueType == typeof(long)
+                             || item.ValueType==typeof(long?))
                     {
+                        item.DbValue = item.Value.ToLong().ToString();
                         paras.Add(item.Param, item.Value.ToLong(), DbType.Int64);
                     }
                     else
                     {
+                        item.DbValue = item.Value;
                         paras.Add(item.Param, item.Value);
                     }
                 }
