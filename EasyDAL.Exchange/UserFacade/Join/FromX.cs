@@ -8,11 +8,12 @@ using System.Text;
 
 namespace EasyDAL.Exchange.UserFacade.Join
 {
-    public class FromX: Operator
+    public class FromX: Operator,IMethodObject
     {
         internal FromX(DbContext dc)
         {
             DC = dc;
+            DC.OP = this;
         }
 
         public JoinX From<M>(Expression<Func<M>> func)

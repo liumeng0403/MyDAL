@@ -13,32 +13,13 @@ using System.Threading.Tasks;
 
 namespace EasyDAL.Exchange.UserFacade.Query
 {
-    public class QueryFilter<M> : Operator
+    public class QueryFilter<M> : Operator,IMethodObject
     {
         internal QueryFilter(DbContext dc)
             : base()
         {
             DC = dc;
-        }
-
-        /// <summary>
-        /// 与条件
-        /// </summary>
-        /// <param name="func">格式: it => it.CreatedOn >= WhereTest.DateTime_大于等于</param>
-        public QueryFilter<M> And(Expression<Func<M, bool>> func)
-        {
-            AndHandle(func, CrudTypeEnum.Query);
-            return this;
-        }
-
-        /// <summary>
-        /// 或条件
-        /// </summary>
-        /// <param name="func">格式: it => it.AgentLevel == testQ.AgentLevelXX</param>
-        public QueryFilter<M> Or(Expression<Func<M, bool>> func)
-        {
-            OrHandle(func, CrudTypeEnum.Query);
-            return this;
+            DC.OP = this;
         }
 
         /// <summary>

@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 using System.Threading.Tasks;
+using EasyDAL.Exchange.Common;
 using EasyDAL.Exchange.Core;
 
 namespace EasyDAL.Exchange.UserFacade.Transaction
 {
     /// <summary>
     /// </summary>
-    public sealed class Transactioner : Operator
+    public sealed class Transactioner : Operator,IMethodObject
     {
         private Transactioner()
         {

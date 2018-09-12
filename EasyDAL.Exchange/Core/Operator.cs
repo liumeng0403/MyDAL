@@ -103,7 +103,7 @@ namespace EasyDAL.Exchange.Core
             }
             return result;
         }
-        protected void DynamicSetHandle<M>(object mSet)
+        internal void DynamicSetHandle<M>(object mSet)
         {
             var tuples = GetKPV<M>(mSet);
             foreach (var tp in tuples)
@@ -121,7 +121,7 @@ namespace EasyDAL.Exchange.Core
             }
         }
         
-        protected void WhereHandle<T>(Expression<Func<T, bool>> func,CrudTypeEnum crud)
+        internal void WhereHandle<T>(Expression<Func<T, bool>> func,CrudTypeEnum crud)
         {
             var field = DC.EH.ExpressionHandle(func);
             field.Action = ActionEnum.Where;
@@ -129,7 +129,7 @@ namespace EasyDAL.Exchange.Core
             DC.AddConditions(field);
         }
 
-        protected void DynamicWhereHandle<M>(object mWhere)
+        internal void DynamicWhereHandle<M>(object mWhere)
         {
             var tuples = GetKPV<M>(mWhere);
             var count = 0;
@@ -160,7 +160,7 @@ namespace EasyDAL.Exchange.Core
             }
         }
 
-        protected void AndHandle<T>(Expression<Func<T, bool>> func,CrudTypeEnum crud)
+        internal void AndHandle<T>(Expression<Func<T, bool>> func,CrudTypeEnum crud)
         {
             var field = DC.EH.ExpressionHandle(func);
             field.Action = ActionEnum.And;
@@ -168,7 +168,7 @@ namespace EasyDAL.Exchange.Core
             DC.AddConditions(field);
         }
 
-        protected void OrHandle<T>(Expression<Func<T, bool>> func,CrudTypeEnum crud)
+        internal void OrHandle<T>(Expression<Func<T, bool>> func,CrudTypeEnum crud)
         {
             var field = DC.EH.ExpressionHandle(func);
             field.Action = ActionEnum.Or;

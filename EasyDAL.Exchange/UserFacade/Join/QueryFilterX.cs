@@ -7,23 +7,17 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using EasyDAL.Exchange.Common;
 
 namespace EasyDAL.Exchange.UserFacade.Join
 {
-    public class QueryFilter : Operator
+    public class QueryFilterX : Operator,IMethodObject
     {
 
-        internal QueryFilter(DbContext dc)
+        internal QueryFilterX(DbContext dc)
         {
             DC = dc;
-        }
-
-        public QueryFilter And(Expression<Func<bool>> func)
-        {
-            var field = DC.EH.ExpressionHandle(func, ActionEnum.And);
-            field.Crud = CrudTypeEnum.Join;
-            DC.AddConditions(field);
-            return this;
+            DC.OP = this;
         }
 
         public async Task<List<VM>> QueryListAsync<VM>()

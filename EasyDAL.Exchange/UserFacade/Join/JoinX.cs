@@ -8,12 +8,13 @@ using System.Text;
 
 namespace EasyDAL.Exchange.UserFacade.Join
 {
-    public class JoinX: Operator
+    public class JoinX: Operator,IMethodObject
     {
 
         internal JoinX(DbContext dc)
         {
             DC = dc;
+            DC.OP = this;
         }
 
         public OnX InnerJoin<M>(Expression<Func<M>> func)
@@ -36,14 +37,6 @@ namespace EasyDAL.Exchange.UserFacade.Join
                 Crud = CrudTypeEnum.Join
             });
             return new OnX(DC);
-        }
-
-        public QueryFilter Where(Expression<Func<bool>> func)
-        {
-            var field = DC.EH.ExpressionHandle(func, ActionEnum.Where);
-            field.Crud = CrudTypeEnum.Join;
-            DC.AddConditions(field);
-            return new QueryFilter(DC);
         }
 
     }

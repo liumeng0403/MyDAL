@@ -7,34 +7,16 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using EasyDAL.Exchange.Common;
 
 namespace EasyDAL.Exchange.UserFacade.Delete
 {
-    public class DeleteFilter<M>:Operator
+    public class DeleteFilter<M>:Operator,IMethodObject
     {        
         internal DeleteFilter(DbContext dc)
         {
             DC = dc;
-        }
-
-        /// <summary>
-        /// 与 条件
-        /// </summary>
-        /// <param name="func">格式: it => it.Id == m.Id</param>
-        public DeleteFilter<M> And(Expression<Func<M, bool>> func)
-        {
-            AndHandle(func,CrudTypeEnum.Delete);
-            return this;
-        }
-
-        /// <summary>
-        /// 或 条件
-        /// </summary>
-        /// <param name="func">格式: it => it.Id == m.Id</param>
-        public DeleteFilter<M> Or(Expression<Func<M, bool>> func)
-        {
-            OrHandle(func, CrudTypeEnum.Delete);
-            return this;
+            DC.OP = this;
         }
 
         /// <summary>
