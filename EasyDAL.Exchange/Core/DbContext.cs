@@ -9,6 +9,7 @@ using EasyDAL.Exchange.Helper;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Linq;
 using System.Reflection;
@@ -126,6 +127,17 @@ namespace EasyDAL.Exchange.Core
             {
                 Conditions.Add(dic);
             }
+        }
+
+        internal string TableAttributeName(Type mType)
+        {
+            var tableName = string.Empty;
+            tableName = AH.GetPropertyValue<TableAttribute>(mType, a => a.Name);
+            if (string.IsNullOrWhiteSpace(tableName))
+            {
+                throw new Exception("DB Entity 缺少 TableAttribute 指定的表名!");
+            }
+            return tableName;
         }
 
         private async Task SetInsertValue<M>(M m, OptionEnum option, int index)
