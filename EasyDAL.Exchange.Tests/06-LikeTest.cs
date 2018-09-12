@@ -180,5 +180,22 @@ namespace EasyDAL.Exchange.Tests
 
         }
 
+        [Fact]
+        public async Task JoinLikeTest()
+        {
+
+            var xx1 = "";
+
+            var res1 = await Conn.OpenDebug()
+                .Joiner<Agent, AgentInventoryRecord>(out var agent, out var record)
+                .From(() => agent)
+                    .InnerJoin(() => record).On(() => agent.Id == record.AgentId)
+                .Where(()=>agent.Name.Contains(LikeTest.无通配符))
+                .QueryListAsync<AgentInventoryRecord>();
+
+            var xx = "";
+
+        }
+
     }
 }

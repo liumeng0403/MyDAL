@@ -337,7 +337,21 @@ namespace EasyDAL.Exchange.Tests
 
             var tuple5 = (XDebug.SQL, XDebug.Parameters);
 
+            var xx6 = "";
+
+            // where in -- enum[] init
+            var res6 = await Conn.OpenDebug()
+                .Joiner<Agent,AgentInventoryRecord>(out var agent,out var record)
+                .From(()=>agent)
+                .InnerJoin(()=>record)
+                .On(()=>agent.Id==record.AgentId)
+                .Where(() => new AgentLevel[] { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(agent.AgentLevel))
+                .QueryListAsync<Agent>();
+
+            var tuple6 = (XDebug.SQL, XDebug.Parameters);
+
             var xx = "";
         }
+
     }
 }

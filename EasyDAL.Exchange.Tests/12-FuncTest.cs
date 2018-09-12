@@ -33,6 +33,20 @@ namespace EasyDAL.Exchange.Tests
             var tupleR1 = (XDebug.SQL, XDebug.Parameters);
             Assert.True(res1.Count == resR1.Count);
 
+
+            var xx2 = "";
+
+            // .Where(a => a.Name.Length > 0)
+            var res2 = await Conn.OpenDebug()
+                .Joiner<Agent,AgentInventoryRecord>(out var agent,out var record)
+                .From(()=>agent)
+                .InnerJoin(()=>record)
+                .On(()=>agent.Id==record.AgentId)
+                .Where(() => agent.Name.Length > 2)
+                .QueryListAsync<Agent>();
+
+            var tuple2 = (XDebug.SQL, XDebug.Parameters);
+
             var xx = "";
 
         }
