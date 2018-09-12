@@ -3,14 +3,16 @@ using EasyDAL.Exchange.Enums;
 using EasyDAL.Exchange.Helper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using EasyDAL.Exchange.Common;
 
 namespace EasyDAL.Exchange.UserFacade.Create
 {
-    public class Creater<M>: Operator
+    public class Creater<M>: Operator,IMethodObject
     {
         internal Creater(DbContext dc)
         {
             DC = dc;
+            DC.OP = this;
         }
 
 

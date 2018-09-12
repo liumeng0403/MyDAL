@@ -11,7 +11,6 @@
     </PackageReference>
     <DotNetCliToolReference Include="dotnet-xunit" Version="$(xUnitVersion)" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\EasyDAL.Exchange\EasyDAL.Exchange.csproj" />
   </ItemGroup>

@@ -5,10 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using EasyDAL.Exchange.Common;
 
 namespace EasyDAL.Exchange.UserFacade.Query
 {
-    public class SingleFilter<M>:Operator
+    public class SingleFilter<M>:Operator,IMethodObject
     {
 
         internal SingleFilter(DbContext dc)

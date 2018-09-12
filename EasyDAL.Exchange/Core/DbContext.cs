@@ -58,6 +58,8 @@ namespace EasyDAL.Exchange.Core
 
         internal MySqlProvider SqlProvider { get; set; }
 
+        internal Operator OP { get; set; }
+
         internal void AddConditions(DicModel dic)
         {
             if (!string.IsNullOrWhiteSpace(dic.Value)
