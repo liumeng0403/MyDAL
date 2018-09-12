@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
-namespace EasyDAL.Exchange.Enums
+namespace Yunyong.DataExchange.Enums
 {
     internal enum ActionEnum
     {

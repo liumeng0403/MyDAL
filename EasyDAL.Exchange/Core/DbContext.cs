@@ -1,11 +1,11 @@
 ﻿
-using EasyDAL.Exchange.AdoNet;
-using EasyDAL.Exchange.Cache;
-using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.ExpressionX;
-using EasyDAL.Exchange.Extensions;
-using EasyDAL.Exchange.Helper;
+using Yunyong.DataExchange.AdoNet;
+using Yunyong.DataExchange.Cache;
+using Yunyong.DataExchange.Common;
+using Yunyong.DataExchange.Enums;
+using Yunyong.DataExchange.ExpressionX;
+using Yunyong.DataExchange.Extensions;
+using Yunyong.DataExchange.Helper;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -15,7 +15,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.Core
+namespace Yunyong.DataExchange.Core
 {
     internal class DbContext
     {

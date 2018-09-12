@@ -1,15 +1,15 @@
-﻿using EasyDAL.Exchange.AdoNet;
-using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.Helper;
+﻿using Yunyong.DataExchange.AdoNet;
+using Yunyong.DataExchange.Core;
+using Yunyong.DataExchange.Enums;
+using Yunyong.DataExchange.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using EasyDAL.Exchange.Common;
+using Yunyong.DataExchange.Common;
 
-namespace EasyDAL.Exchange.UserFacade.Delete
+namespace Yunyong.DataExchange.UserFacade.Delete
 {
     public class DeleteFilter<M>:Operator,IMethodObject
     {        

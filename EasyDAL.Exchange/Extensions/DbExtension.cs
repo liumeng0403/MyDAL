@@ -1,14 +1,14 @@
-﻿using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.UserFacade.Create;
-using EasyDAL.Exchange.UserFacade.Delete;
-using EasyDAL.Exchange.UserFacade.Join;
-using EasyDAL.Exchange.UserFacade.Query;
-using EasyDAL.Exchange.UserFacade.Update;
+﻿using Yunyong.DataExchange.Core;
+using Yunyong.DataExchange.UserFacade.Create;
+using Yunyong.DataExchange.UserFacade.Delete;
+using Yunyong.DataExchange.UserFacade.Join;
+using Yunyong.DataExchange.UserFacade.Query;
+using Yunyong.DataExchange.UserFacade.Update;
 using System;
 using System.Data;
-using EasyDAL.Exchange.UserFacade.Transaction;
+using Yunyong.DataExchange.UserFacade.Transaction;
 
-namespace EasyDAL.Exchange
+namespace Yunyong.DataExchange
 {
     public static class DbExtension
     {

@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Reflection;
 using System.Text;
 
-namespace EasyDAL.Exchange.Extensions
+namespace Yunyong.DataExchange.Extensions
 {
     public static class EnumMethodExtensions
     {

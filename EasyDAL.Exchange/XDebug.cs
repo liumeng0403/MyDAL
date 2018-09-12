@@ -1,9 +1,9 @@
-﻿using EasyDAL.Exchange.Common;
+﻿using Yunyong.DataExchange.Common;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EasyDAL.Exchange
+namespace Yunyong.DataExchange
 {
     public class XDebug
     {

@@ -1,10 +1,10 @@
-﻿using EasyDAL.Exchange.AdoNet.Interfaces;
+﻿using Yunyong.DataExchange.AdoNet.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-namespace EasyDAL.Exchange.AdoNet
+namespace Yunyong.DataExchange.AdoNet
 {
     /// <summary>
     /// Represents simple member map for one of target parameter or property or field to source DataReader column

@@ -1,13 +1,13 @@
-﻿using EasyDAL.Exchange.AdoNet;
-using EasyDAL.Exchange.Cache;
-using EasyDAL.Exchange.Helper;
+﻿using Yunyong.DataExchange.AdoNet;
+using Yunyong.DataExchange.Cache;
+using Yunyong.DataExchange.Helper;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
 
-namespace EasyDAL.Exchange.Cache
+namespace Yunyong.DataExchange.Cache
 {
     internal class TypeDeserializerCache
     {

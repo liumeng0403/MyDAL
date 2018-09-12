@@ -1,9 +1,9 @@
 ﻿
-using EasyDAL.Exchange.Cache;
-using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.ExpressionX;
+using Yunyong.DataExchange.Cache;
+using Yunyong.DataExchange.Common;
+using Yunyong.DataExchange.Core;
+using Yunyong.DataExchange.Enums;
+using Yunyong.DataExchange.ExpressionX;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
@@ -14,7 +14,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 // ReSharper disable All
 
-namespace EasyDAL.Exchange.ExpressionX
+namespace Yunyong.DataExchange.ExpressionX
 {
     internal class ExpressionHandleX
     {

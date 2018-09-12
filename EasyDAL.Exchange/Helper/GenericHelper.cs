@@ -1,5 +1,5 @@
-﻿using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Extensions;
+﻿using Yunyong.DataExchange.Common;
+using Yunyong.DataExchange.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace EasyDAL.Exchange.Helper
+namespace Yunyong.DataExchange.Helper
 {
     internal class GenericHelper : ClassInstance<GenericHelper>
     {

@@ -1,4 +1,4 @@
-﻿using EasyDAL.Exchange.Core;
+﻿using Yunyong.DataExchange;
 using EasyDAL.Exchange.Tests.Entities;
 using EasyDAL.Exchange.Tests.Enums;
 using System;

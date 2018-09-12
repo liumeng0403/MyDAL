@@ -1,12 +1,12 @@
-﻿using EasyDAL.Exchange.AdoNet.Interfaces;
-using EasyDAL.Exchange.Cache;
-using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.Helper;
-using EasyDAL.Exchange.X;
+﻿using Yunyong.DataExchange.AdoNet.Interfaces;
+using Yunyong.DataExchange.Cache;
+using Yunyong.DataExchange.Core;
+using Yunyong.DataExchange.Helper;
+using Yunyong.DataExchange.X;
 using System.Collections.Generic;
 using System.Data;
 
-namespace EasyDAL.Exchange.AdoNet
+namespace Yunyong.DataExchange.AdoNet
 {
     /// <summary>
     /// A bag of parameters that can be passed to the Dapper Query and Execute methods

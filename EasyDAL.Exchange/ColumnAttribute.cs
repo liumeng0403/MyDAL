@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange
+namespace Yunyong.DataExchange
 {
     public class ColumnAttribute: Attribute
     {

@@ -1,8 +1,8 @@
-﻿using EasyDAL.Exchange.AdoNet;
+﻿using Yunyong.DataExchange.AdoNet;
 using System;
 using System.Data;
 
-namespace EasyDAL.Exchange.Cache
+namespace Yunyong.DataExchange.Cache
 {
     internal class CacheInfo
     {

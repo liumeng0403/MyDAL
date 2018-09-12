@@ -12,7 +12,7 @@
     <DotNetCliToolReference Include="dotnet-xunit" Version="$(xUnitVersion)" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EasyDAL.Exchange\EasyDAL.Exchange.csproj" />
+    <ProjectReference Include="..\EasyDAL.Exchange\Yunyong.DataExchange.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 
-namespace EasyDAL.Exchange.Cache
+namespace Yunyong.DataExchange.Cache
 {
     internal struct DeserializerState
     {

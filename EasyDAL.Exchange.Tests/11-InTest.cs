@@ -1,4 +1,4 @@
-﻿using EasyDAL.Exchange.Core;
+﻿using Yunyong.DataExchange.Core;
 using EasyDAL.Exchange.Tests.Entities;
 using EasyDAL.Exchange.Tests.Enums;
 using System;
@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using Yunyong.DataExchange;
 
 namespace EasyDAL.Exchange.Tests
 {

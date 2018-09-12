@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EasyDAL.Exchange.Enums
+namespace Yunyong.DataExchange.Enums
 {
     [Flags]
     internal enum RowEnum

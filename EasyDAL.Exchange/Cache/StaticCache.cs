@@ -1,14 +1,14 @@
-﻿using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Helper;
+﻿using Yunyong.DataExchange.Common;
+using Yunyong.DataExchange.Helper;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using EasyDAL.Exchange.Core;
+using Yunyong.DataExchange.Core;
 
-namespace EasyDAL.Exchange.Cache
+namespace Yunyong.DataExchange.Cache
 {
     internal class StaticCache : ClassInstance<StaticCache>
     {

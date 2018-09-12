@@ -1,10 +1,10 @@
-﻿using EasyDAL.Exchange.AdoNet.Interfaces;
+﻿using Yunyong.DataExchange.AdoNet.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-namespace EasyDAL.Exchange.AdoNet.Interfaces
+namespace Yunyong.DataExchange.AdoNet.Interfaces
 {
     /// <summary>
     /// Implement this interface to change default mapping of reader columns to type members

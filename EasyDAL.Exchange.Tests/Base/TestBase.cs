@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Data;
 using Xunit;
-using EasyDAL.Exchange.AdoNet;
+using Yunyong.DataExchange.AdoNet;
 using MySql.Data.MySqlClient;
 using EasyDAL.Exchange.Tests.Entities;
 using EasyDAL.Exchange.Tests.Enums;
-using EasyDAL.Exchange.Core;
+using Yunyong.DataExchange.Core;
 using EasyDAL.Exchange.Tests.TestModels;
 using System.Collections.Generic;
 

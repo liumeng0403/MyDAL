@@ -1,7 +1,7 @@
-﻿using EasyDAL.Exchange.Cache;
+﻿using Yunyong.DataExchange.Cache;
 using System.Data;
 
-namespace EasyDAL.Exchange.AdoNet.Interfaces
+namespace Yunyong.DataExchange.AdoNet.Interfaces
 {
     /// <summary>
     /// Implement this interface to pass an arbitrary db specific set of parameters to Dapper

@@ -1,10 +1,10 @@
-﻿using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Extensions;
-using EasyDAL.Exchange.X;
+﻿using Yunyong.DataExchange.Common;
+using Yunyong.DataExchange.Extensions;
+using Yunyong.DataExchange.X;
 using System;
 using System.Data;
 
-namespace EasyDAL.Exchange.Helper
+namespace Yunyong.DataExchange.Helper
 {
     internal class ParameterPartHandle : ClassInstance<ParameterPartHandle>
     {

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
-using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.UserFacade.Delete;
-using EasyDAL.Exchange.UserFacade.Query;
-using EasyDAL.Exchange.UserFacade.Update;
+using Yunyong.DataExchange.Enums;
+using Yunyong.DataExchange.UserFacade.Delete;
+using Yunyong.DataExchange.UserFacade.Query;
+using Yunyong.DataExchange.UserFacade.Update;
 
-namespace EasyDAL.Exchange
+namespace Yunyong.DataExchange
 {
     public static class OrExtension
     {

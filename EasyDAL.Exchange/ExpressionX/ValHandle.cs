@@ -1,4 +1,4 @@
-﻿using EasyDAL.Exchange.Core;
+﻿using Yunyong.DataExchange.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 
-namespace EasyDAL.Exchange.ExpressionX
+namespace Yunyong.DataExchange.ExpressionX
 {
     internal class ValHandle
     {

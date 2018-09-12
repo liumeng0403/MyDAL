@@ -1,9 +1,9 @@
-﻿using EasyDAL.Exchange.Enums;
+﻿using Yunyong.DataExchange.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EasyDAL.Exchange.Common
+namespace Yunyong.DataExchange.Common
 {
     internal class DicModel
     {

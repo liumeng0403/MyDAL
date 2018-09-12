@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EasyDAL.Exchange.Common
+namespace Yunyong.DataExchange.Common
 {
     /// <summary>
     ///     Object 实例

@@ -1,6 +1,6 @@
-﻿using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.Helper;
+﻿using Yunyong.DataExchange.Common;
+using Yunyong.DataExchange.Enums;
+using Yunyong.DataExchange.Helper;
 using Yunyong.Core;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.Core
+namespace Yunyong.DataExchange.Core
 {
     public abstract class Operator
     {

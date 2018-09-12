@@ -1,9 +1,10 @@
-﻿using EasyDAL.Exchange.Enums;
+﻿using Yunyong.DataExchange.Enums;
 using EasyDAL.Exchange.Tests.Entities;
 using System;
 using System.Threading.Tasks;
 using Xunit;
 using System.Dynamic;
+using Yunyong.DataExchange;
 
 namespace EasyDAL.Exchange.Tests
 {

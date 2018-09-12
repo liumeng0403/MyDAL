@@ -1,11 +1,11 @@
-﻿using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Enums;
+﻿using Yunyong.DataExchange.Common;
+using Yunyong.DataExchange.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace EasyDAL.Exchange.ExpressionX
+namespace Yunyong.DataExchange.ExpressionX
 {
     internal static class DicHandle
     {

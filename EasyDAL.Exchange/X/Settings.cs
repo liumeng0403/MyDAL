@@ -1,4 +1,4 @@
-﻿using EasyDAL.Exchange.Extensions;
+﻿using Yunyong.DataExchange.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace EasyDAL.Exchange.X
+namespace Yunyong.DataExchange.X
 {
     /// <summary>
     /// Permits specifying certain SqlMapper values globally.

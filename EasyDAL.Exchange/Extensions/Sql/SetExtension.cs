@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
-using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.UserFacade.Update;
+using Yunyong.DataExchange.Enums;
+using Yunyong.DataExchange.UserFacade.Update;
 
-namespace EasyDAL.Exchange
+namespace Yunyong.DataExchange
 {
     public static class SetExtension
     {

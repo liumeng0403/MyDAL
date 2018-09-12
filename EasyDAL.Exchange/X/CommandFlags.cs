@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EasyDAL.Exchange.X
+namespace Yunyong.DataExchange.X
 {
     /// <summary>
     /// Additional state flags that control command behaviour

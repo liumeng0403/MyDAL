@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EasyDAL.Exchange.Extensions
+namespace Yunyong.DataExchange.Extensions
 {
     public static class StringMethodExtensions
     {

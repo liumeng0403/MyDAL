@@ -1,9 +1,9 @@
-﻿using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.X;
+﻿using Yunyong.DataExchange.Core;
+using Yunyong.DataExchange.X;
 using System;
 using System.Data;
 
-namespace EasyDAL.Exchange.AdoNet
+namespace Yunyong.DataExchange.AdoNet
 {
     /// <summary>
     /// sql 操作定义

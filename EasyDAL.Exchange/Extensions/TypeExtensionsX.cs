@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-namespace EasyDAL.Exchange.Extensions
+namespace Yunyong.DataExchange.Extensions
 {
     /// <summary>
     /// 

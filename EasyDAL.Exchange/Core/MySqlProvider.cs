@@ -1,17 +1,17 @@
 ﻿
-using EasyDAL.Exchange.AdoNet;
-using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.Extensions;
-using EasyDAL.Exchange.Helper;
+using Yunyong.DataExchange.AdoNet;
+using Yunyong.DataExchange.Common;
+using Yunyong.DataExchange.Core;
+using Yunyong.DataExchange.Enums;
+using Yunyong.DataExchange.Extensions;
+using Yunyong.DataExchange.Helper;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.Core
+namespace Yunyong.DataExchange.Core
 {
     internal class MySqlProvider
     {

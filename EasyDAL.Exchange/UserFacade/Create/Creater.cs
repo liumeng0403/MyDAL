@@ -1,11 +1,11 @@
-﻿using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.Helper;
+﻿using Yunyong.DataExchange.Core;
+using Yunyong.DataExchange.Enums;
+using Yunyong.DataExchange.Helper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using EasyDAL.Exchange.Common;
+using Yunyong.DataExchange.Common;
 
-namespace EasyDAL.Exchange.UserFacade.Create
+namespace Yunyong.DataExchange.UserFacade.Create
 {
     public class Creater<M>: Operator,IMethodObject
     {

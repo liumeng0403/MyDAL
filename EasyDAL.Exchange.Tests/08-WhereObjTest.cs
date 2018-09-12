@@ -1,6 +1,6 @@
-﻿using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.Extensions;
+﻿using Yunyong.DataExchange.Common;
+using Yunyong.DataExchange;
+using Yunyong.DataExchange.Extensions;
 using EasyDAL.Exchange.Tests.Entities;
 using EasyDAL.Exchange.Tests.ViewModels;
 using Yunyong.Core;

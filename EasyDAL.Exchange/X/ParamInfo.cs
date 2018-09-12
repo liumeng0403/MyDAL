@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 
-namespace EasyDAL.Exchange.X
+namespace Yunyong.DataExchange.X
 {
     internal sealed class ParamInfo
     {

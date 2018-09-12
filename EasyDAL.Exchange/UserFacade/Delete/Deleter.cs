@@ -1,12 +1,12 @@
-﻿using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.Enums;
+﻿using Yunyong.DataExchange.Core;
+using Yunyong.DataExchange.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
-using EasyDAL.Exchange.Common;
+using Yunyong.DataExchange.Common;
 
-namespace EasyDAL.Exchange.UserFacade.Delete
+namespace Yunyong.DataExchange.UserFacade.Delete
 {
     public class Deleter<M>: Operator,IMethodObject
     {

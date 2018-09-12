@@ -1,12 +1,12 @@
-﻿using EasyDAL.Exchange.AdoNet.Interfaces;
-using EasyDAL.Exchange.Extensions;
-using EasyDAL.Exchange.X;
+﻿using Yunyong.DataExchange.AdoNet.Interfaces;
+using Yunyong.DataExchange.Extensions;
+using Yunyong.DataExchange.X;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace EasyDAL.Exchange.AdoNet
+namespace Yunyong.DataExchange.AdoNet
 {
     /// <summary>
     /// 默认类型映射策略

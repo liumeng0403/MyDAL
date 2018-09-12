@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EasyDAL.Exchange
+namespace Yunyong.DataExchange
 {
     public static class CreateExtension
     {

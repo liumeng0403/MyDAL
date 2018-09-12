@@ -1,12 +1,12 @@
-﻿using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.Enums;
+﻿using Yunyong.DataExchange.Common;
+using Yunyong.DataExchange.Core;
+using Yunyong.DataExchange.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace EasyDAL.Exchange.UserFacade.Join
+namespace Yunyong.DataExchange.UserFacade.Join
 {
     public class JoinX: Operator,IMethodObject
     {

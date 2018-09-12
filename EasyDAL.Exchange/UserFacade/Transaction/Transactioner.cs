@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 using System.Threading.Tasks;
-using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Core;
+using Yunyong.DataExchange.Common;
+using Yunyong.DataExchange.Core;
 
-namespace EasyDAL.Exchange.UserFacade.Transaction
+namespace Yunyong.DataExchange.UserFacade.Transaction
 {
     /// <summary>
     /// </summary>

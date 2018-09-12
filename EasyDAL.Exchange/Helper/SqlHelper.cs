@@ -1,9 +1,9 @@
-﻿using EasyDAL.Exchange.AdoNet;
-using EasyDAL.Exchange.AdoNet.Interfaces;
-using EasyDAL.Exchange.Cache;
-using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.Extensions;
-using EasyDAL.Exchange.X;
+﻿using Yunyong.DataExchange.AdoNet;
+using Yunyong.DataExchange.AdoNet.Interfaces;
+using Yunyong.DataExchange.Cache;
+using Yunyong.DataExchange.Enums;
+using Yunyong.DataExchange.Extensions;
+using Yunyong.DataExchange.X;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ using System.Reflection.Emit;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.Helper
+namespace Yunyong.DataExchange.Helper
 {
     internal static class SqlHelper
     {

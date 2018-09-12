@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
-namespace EasyDAL.Exchange.Common
+namespace Yunyong.DataExchange.Common
 {
     [EditorBrowsable(EditorBrowsableState.Never)]
     public interface IMethodObject
