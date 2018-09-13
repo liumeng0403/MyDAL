@@ -1,5 +1,4 @@
-﻿using EasyDAL.Exchange.UserFacade.Query;
-using System;
+﻿using System;
 using System.Linq.Expressions;
 using Yunyong.DataExchange.UserFacade.Query;
 
