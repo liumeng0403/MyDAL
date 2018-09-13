@@ -8,14 +8,12 @@ using System.Threading.Tasks;
 
 namespace EasyDAL.Exchange.UserFacade.Join
 {
-    public class QueryFilterX : Operator,IMethodObject
+    public class QueryFilterX : Operator, IMethodObject
     {
 
         internal QueryFilterX(DbContext dc)
-        {
-            DC = dc;
-            DC.OP = this;
-        }
+            : base(dc)
+        { }
 
         public async Task<List<VM>> QueryListAsync<VM>()
         {

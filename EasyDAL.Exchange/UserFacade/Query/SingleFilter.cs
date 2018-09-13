@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace EasyDAL.Exchange.UserFacade.Query
 {
-    public class SingleFilter<M>:Operator,IMethodObject
+    public class SingleFilter<M> : Operator, IMethodObject
     {
 
         internal SingleFilter(DbContext dc)
-        {
-            DC = dc;
-        }
+            : base(dc)
+        { }
 
         /// <summary>
         /// 单表单值查询

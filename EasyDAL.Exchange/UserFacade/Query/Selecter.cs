@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 
 namespace EasyDAL.Exchange.UserFacade.Query
 {
-    public class Selecter<M>: Operator,IMethodObject
+    public class Selecter<M> : Operator, IMethodObject
     {
         internal Selecter(DbContext dc)
-        {
-            DC = dc;
-            DC.OP = this;
-        }
+            : base(dc)
+        { }
 
         /// <summary>
         /// 单表数据查询

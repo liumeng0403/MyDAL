@@ -1,6 +1,6 @@
 ﻿using EasyDAL.Exchange.AdoNet.Interfaces;
 using EasyDAL.Exchange.Extensions;
-using EasyDAL.Exchange.X;
+using EasyDAL.Exchange.Others;
 using System;
 using System.Collections.Generic;
 using System.Linq;

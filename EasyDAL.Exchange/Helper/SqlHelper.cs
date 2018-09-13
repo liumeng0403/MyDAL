@@ -3,7 +3,7 @@ using EasyDAL.Exchange.AdoNet.Interfaces;
 using EasyDAL.Exchange.Cache;
 using EasyDAL.Exchange.Enums;
 using EasyDAL.Exchange.Extensions;
-using EasyDAL.Exchange.X;
+using EasyDAL.Exchange.Others;
 using System;
 using System.Collections;
 using System.Collections.Generic;

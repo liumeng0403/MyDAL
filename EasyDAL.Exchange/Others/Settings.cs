@@ -1,12 +1,9 @@
-﻿using EasyDAL.Exchange.Extensions;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Data;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
-namespace EasyDAL.Exchange.X
+namespace EasyDAL.Exchange.Others
 {
     /// <summary>
     /// Permits specifying certain SqlMapper values globally.

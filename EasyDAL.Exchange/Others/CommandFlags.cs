@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace EasyDAL.Exchange.X
+namespace EasyDAL.Exchange.Others
 {
     /// <summary>
     /// Additional state flags that control command behaviour

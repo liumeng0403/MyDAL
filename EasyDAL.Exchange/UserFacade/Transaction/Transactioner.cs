@@ -1,24 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Text;
-using System.Threading.Tasks;
-using EasyDAL.Exchange.Common;
+﻿using EasyDAL.Exchange.Common;
 using EasyDAL.Exchange.Core;
+using System;
+using System.Threading.Tasks;
 
 namespace EasyDAL.Exchange.UserFacade.Transaction
 {
     /// <summary>
     /// </summary>
-    public sealed class Transactioner : Operator,IMethodObject
+    public sealed class Transactioner : Operator, IMethodObject
     {
-        private Transactioner()
-        {
-        }
+
         internal Transactioner(DbContext dc)
-        {
-            DC = dc;
-        }
+            : base(dc)
+        { }
 
         /// <summary>
         /// 业务单元 -- 已处理 using(connection) / using(transaction) / try(exception)

@@ -1,5 +1,5 @@
 ﻿using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.X;
+using EasyDAL.Exchange.Others;
 using System;
 using System.Data;
 

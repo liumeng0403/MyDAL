@@ -13,8 +13,10 @@ namespace EasyDAL.Exchange.Core
     public abstract class Operator
     {
         
-        internal Operator()
+        internal Operator(DbContext dc)
         {
+            DC = dc;
+            DC.OP = this;
         }
 
         private List<(string key, string param, string val, Type valType, string colType)> GetKPV<M>(object objx)

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Text;
+﻿using System.Data;
 
-namespace EasyDAL.Exchange.X
+namespace EasyDAL.Exchange.Others
 {
     internal sealed class ParamInfo
     {

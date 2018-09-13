@@ -2,7 +2,7 @@
 using EasyDAL.Exchange.Cache;
 using EasyDAL.Exchange.Core;
 using EasyDAL.Exchange.Helper;
-using EasyDAL.Exchange.X;
+using EasyDAL.Exchange.Others;
 using System.Collections.Generic;
 using System.Data;
 

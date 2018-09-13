@@ -1,6 +1,6 @@
 ﻿using EasyDAL.Exchange.Common;
 using EasyDAL.Exchange.Extensions;
-using EasyDAL.Exchange.X;
+using EasyDAL.Exchange.Others;
 using System;
 using System.Data;
 
