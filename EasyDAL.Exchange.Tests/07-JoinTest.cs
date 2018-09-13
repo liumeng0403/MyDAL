@@ -1,8 +1,6 @@
-﻿using Yunyong.DataExchange;
-using EasyDAL.Exchange.Tests.Entities;
+using Yunyong.DataExchange;
+﻿using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 

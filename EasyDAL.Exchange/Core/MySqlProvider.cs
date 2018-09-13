@@ -68,14 +68,19 @@ namespace Yunyong.DataExchange.Core
         private string GetOrderByPart<M>()
         {
             var str = string.Empty;
+            var cols = (DC.SC.GetColumnInfos<M>(DC)).GetAwaiter().GetResult();
 
-            if (!DC.Conditions.Any(it => it.Action == ActionEnum.OrderBy))
+            if (DC.Conditions.Any(it => it.Action == ActionEnum.OrderBy))
             {
-                str = $" {DC.SC.GetModelProperys(typeof(M)).First().Name} desc ";
+                str = string.Join(",", DC.Conditions.Where(it => it.Action == ActionEnum.OrderBy).Select(it => $" `{it.KeyOne}` {it.Option.ToEnumDesc<OptionEnum>()} "));
+            }
+            else if (cols.Any(it=> "PRI".Equals(it.KeyType,StringComparison.OrdinalIgnoreCase)))
+            {
+                str = string.Join(",", cols.Where(it => "PRI".Equals(it.KeyType, StringComparison.OrdinalIgnoreCase)).Select(it => $" `{it.ColumnName}` desc "));
             }
             else
             {
-                str = string.Join(",", DC.Conditions.Where(it => it.Action == ActionEnum.OrderBy).Select(it => $" {it.KeyOne} {it.Option.ToEnumDesc<OptionEnum>()} "));
+                str = $" `{DC.SC.GetModelProperys(typeof(M), DC).First().Name}` desc ";
             }
 
             return str;
@@ -254,17 +259,18 @@ namespace Yunyong.DataExchange.Core
         {
             TryGetTableName<M>(out var tableName);
             var sql = $@"
-                                        SELECT
+                                        SELECT distinct
                                             TABLE_NAME as TableName,
                                             column_name as ColumnName,
                                             DATA_TYPE as DataType,
                                             column_default as ColumnDefault,
                                             is_nullable AS IsNullable,
-                                            column_comment as ColumnComment
+                                            column_comment as ColumnComment,
+                                            column_key as KeyType
                                         FROM
                                             information_schema.COLUMNS
-                                        WHERE
-                                            TABLE_NAME = '{tableName.TrimStart('`').TrimEnd('`').ToLower()}'
+                                        WHERE  table_schema='{DC.Conn.Database}'
+                                            and  TABLE_NAME = '{tableName.TrimStart('`').TrimEnd('`').ToLower()}'
                                         ;
                                   ";
             return (await SqlHelper.QueryAsync<ColumnInfo>(DC.Conn, sql, new DynamicParameters())).ToList();

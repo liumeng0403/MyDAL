@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Yunyong.DataExchange.Common
 {
-    [EditorBrowsable(EditorBrowsableState.Never)]
+    //[EditorBrowsable(EditorBrowsableState.Never)]
     public interface IMethodObject
     {
         [EditorBrowsable(EditorBrowsableState.Never)]

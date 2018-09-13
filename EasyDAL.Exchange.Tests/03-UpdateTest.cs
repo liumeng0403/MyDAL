@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Xunit;
 using System.Dynamic;
 using Yunyong.DataExchange;
+using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
 
 namespace EasyDAL.Exchange.Tests
 {

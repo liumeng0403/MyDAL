@@ -1,14 +1,12 @@
-﻿using Yunyong.DataExchange.Common;
-using Yunyong.DataExchange;
-using Yunyong.DataExchange.Extensions;
-using EasyDAL.Exchange.Tests.Entities;
+using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
+using EasyDAL.Exchange.Tests.Entities.rainbow_unicorn_db20180901;
 using EasyDAL.Exchange.Tests.ViewModels;
-using Yunyong.Core;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using EasyDAL.Exchange.Tests.Entities.rainbow_unicorn_db20180901;
 using Xunit;
+using Yunyong.Core;
+using Yunyong.DataExchange;
 
 namespace EasyDAL.Exchange.Tests
 {
