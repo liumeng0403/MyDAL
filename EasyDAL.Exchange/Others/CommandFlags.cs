@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Yunyong.DataExchange.X
+namespace Yunyong.DataExchange.Others
 {
     /// <summary>
     /// Additional state flags that control command behaviour

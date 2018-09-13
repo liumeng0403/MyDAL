@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EasyDAL.Exchange.UserFacade.Query;
+using System;
 using System.Linq.Expressions;
 using Yunyong.DataExchange.UserFacade.Query;
 
@@ -9,16 +10,16 @@ namespace Yunyong.DataExchange
 
         /**************************************************************************************************************/
 
-        public static QueryFilter<M> OrderBy<M, F>(this QueryFilter<M> queryFilter, Expression<Func<M,F>> func,OrderByEnum orderBy= OrderByEnum.Desc)
+        public static OrderBy<M> OrderBy<M, F>(this QueryFilter<M> queryFilter, Expression<Func<M,F>> func,OrderByEnum orderBy= OrderByEnum.Desc)
         {
             queryFilter.DC.OP.OrderByHandle(func, orderBy);
-            return queryFilter;
+            return new OrderBy<M>(queryFilter.DC);
         }
 
-        public static QueryFilter<M> ThenOrderBy<M, F>(this QueryFilter<M> queryFilter, Expression<Func<M, F>> func, OrderByEnum orderBy = OrderByEnum.Desc)
+        public static ThenOrderBy<M> ThenOrderBy<M, F>(this OrderBy<M> orderByer, Expression<Func<M, F>> func, OrderByEnum orderBy = OrderByEnum.Desc)
         {
-            queryFilter.DC.OP.OrderByHandle(func, orderBy);
-            return queryFilter;
+            orderByer.DC.OP.OrderByHandle(func, orderBy);
+            return new ThenOrderBy<M>(orderByer.DC);
         }
 
         /**************************************************************************************************************/

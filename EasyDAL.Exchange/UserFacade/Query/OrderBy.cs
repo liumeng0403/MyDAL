@@ -1,74 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Yunyong.Core;
 using Yunyong.DataExchange.Common;
 using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Enums;
-using Yunyong.DataExchange.Helper;
 
 namespace Yunyong.DataExchange.UserFacade.Query
 {
-    public class QueryFilter<M> : Operator,IMethodObject
+    public class OrderBy<M> : Operator, IMethodObject
     {
-        internal QueryFilter(DbContext dc)
+        internal OrderBy(DbContext dc)
             : base(dc)
-        {  }
+        { }
 
-        /// <summary>
-        /// select count(column)
-        /// </summary>
-        /// <param name="func">格式: it => it.Id</param>
-        public SingleFilter<M> Count<F>(Expression<Func<M, F>> func)
-        {
-            var field = DC.EH.ExpressionHandle(func);
-            DC.AddConditions(new DicModel
-            {
-                KeyOne = field,
-                Param = field,
-                ParamRaw=field,
-                Action = ActionEnum.Select,
-                Option = OptionEnum.Count,
-                Crud = CrudTypeEnum.Query
-            });
-            return new SingleFilter<M>(DC);
-        }
-
-        /// <summary>
-        /// 查询是否存在符合条件的数据
-        /// </summary>
-        public async Task<bool> ExistAsync()
-        {
-            var count = await SqlHelper.ExecuteScalarAsync<long>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(SqlTypeEnum.ExistAsync)[0],
-                DC.GetParameters());
-            if (count > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// 单表单条数据查询
-        /// </summary>
-        public async Task<M> QueryFirstOrDefaultAsync()
-        {
-            return await QueryFirstOrDefaultAsyncHandle<M, M>();
-        }
-        /// <summary>
-        /// 单表单条数据查询
-        /// </summary>
-        /// <typeparam name="VM">ViewModel</typeparam>
-        public async Task<VM> QueryFirstOrDefaultAsync<VM>()
-        {
-            return await QueryFirstOrDefaultAsyncHandle<M, VM>();
-        }
 
         /// <summary>
         /// 单表多条数据查询
@@ -126,6 +70,7 @@ namespace Yunyong.DataExchange.UserFacade.Query
             OrderByOptionHandle(option);
             return await QueryPagingListAsyncHandle<M, VM>(option.PageIndex, option.PageSize, SqlTypeEnum.QueryPagingListAsync);
         }
+
 
     }
 }

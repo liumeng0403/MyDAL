@@ -15,7 +15,7 @@
     <PackageTags>easy,easydal,exchange,orm,ormlite,mysql,mysqlorm</PackageTags>
     <PackageReleaseNotes>由一个开发项目中的 idea 演变,产生与实现!
        -- https://www.cnblogs.com/Meng-NET/p/8963476.html</PackageReleaseNotes>
-    <ApplicationIcon>X\favicon.ico</ApplicationIcon>
+    <ApplicationIcon>Others\favicon.ico</ApplicationIcon>
     <Win32Resource />
   </PropertyGroup>
   <ItemGroup>

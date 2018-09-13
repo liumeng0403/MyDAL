@@ -1,10 +1,10 @@
-﻿using Yunyong.DataExchange.AdoNet.Interfaces;
+using System.Collections.Generic;
+using System.Data;
+using Yunyong.DataExchange.AdoNet.Interfaces;
 using Yunyong.DataExchange.Cache;
 using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Helper;
-using Yunyong.DataExchange.X;
-using System.Collections.Generic;
-using System.Data;
+using Yunyong.DataExchange.Others;
 
 namespace Yunyong.DataExchange.AdoNet
 {

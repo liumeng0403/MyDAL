@@ -1,21 +1,17 @@
-﻿using Yunyong.DataExchange.Core;
-using Yunyong.DataExchange.Enums;
 using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 using Yunyong.DataExchange.Common;
+using Yunyong.DataExchange.Core;
+using Yunyong.DataExchange.Enums;
 
 namespace Yunyong.DataExchange.UserFacade.Join
 {
-    public class OnX: Operator,IMethodObject
+    public class OnX : Operator, IMethodObject
     {
 
         internal OnX(DbContext dc)
-        {
-            DC = dc;
-            DC.OP = this;
-        }
+            : base(dc)
+        { }
 
         public JoinX On(Expression<Func<bool>> func)
         {

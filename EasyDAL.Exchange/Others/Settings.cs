@@ -1,12 +1,9 @@
-﻿using Yunyong.DataExchange.Extensions;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
-namespace Yunyong.DataExchange.X
+namespace Yunyong.DataExchange.Others
 {
     /// <summary>
     /// Permits specifying certain SqlMapper values globally.

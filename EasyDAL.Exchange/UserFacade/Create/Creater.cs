@@ -7,14 +7,11 @@ using Yunyong.DataExchange.Common;
 
 namespace Yunyong.DataExchange.UserFacade.Create
 {
-    public class Creater<M>: Operator,IMethodObject
+    public class Creater<M> : Operator, IMethodObject
     {
-        internal Creater(DbContext dc)
-        {
-            DC = dc;
-            DC.OP = this;
-        }
-
+        internal Creater(DbContext dc) 
+            : base(dc)
+        { }
 
         /// <summary>
         /// 插入单条数据
