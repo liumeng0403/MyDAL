@@ -66,9 +66,9 @@ namespace EasyDAL.Exchange.Tests
         protected IDbConnection Conn
         {
             /*
-             * CREATE DATABASE `rainbow_test_db20180817` 
+             * CREATE DATABASE `EasyDAL_Exchange`;
              */
-            get { return GetOpenConnection("Rainbow_Test_DB20180817"); }
+            get { return GetOpenConnection("EasyDAL_Exchange"); }
         }
 
         protected IDbConnection Conn2

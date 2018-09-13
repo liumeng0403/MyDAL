@@ -142,7 +142,7 @@ namespace EasyDAL.Exchange.Core
 
         private async Task SetInsertValue<M>(M m, OptionEnum option, int index)
         {
-            var props = SC.GetModelProperys(m.GetType());
+            var props = SC.GetModelProperys(m.GetType(),this);
             var columns = (SC.GetColumnInfos<M>(this)).GetAwaiter().GetResult();
 
             foreach (var prop in props)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace EasyDAL.Exchange.Tests.Entities
+namespace EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange
 {
 
     /*

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace EasyDAL.Exchange.Common
 {
-    [EditorBrowsable(EditorBrowsableState.Never)]
+    //[EditorBrowsable(EditorBrowsableState.Never)]
     public interface IMethodObject
     {
         [EditorBrowsable(EditorBrowsableState.Never)]

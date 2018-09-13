@@ -1,12 +1,7 @@
-﻿using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.Tests.Entities;
-using EasyDAL.Exchange.Tests.Enums;
+﻿using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using EasyDAL.Exchange;
 
 namespace EasyDAL.Exchange.Tests
 {

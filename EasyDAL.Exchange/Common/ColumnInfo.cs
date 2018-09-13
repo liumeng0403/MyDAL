@@ -12,5 +12,6 @@ namespace EasyDAL.Exchange.Common
         public string ColumnDefault { get; set; }
         public string IsNullable { get; set; }
         public string ColumnComment { get; set; }
+        public string KeyType { get; set; }
     }
 }

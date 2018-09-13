@@ -1,12 +1,11 @@
 ﻿using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Core;
 using EasyDAL.Exchange.Extensions;
-using EasyDAL.Exchange.Tests.Entities;
+using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
+using EasyDAL.Exchange.Tests.Entities.rainbow_unicorn_db20180901;
 using EasyDAL.Exchange.Tests.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using EasyDAL.Exchange.Tests.Entities.rainbow_unicorn_db20180901;
 using Xunit;
 
 namespace EasyDAL.Exchange.Tests

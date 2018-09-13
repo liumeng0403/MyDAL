@@ -74,7 +74,7 @@ namespace EasyDAL.Exchange.ExpressionX
             }
             else
             {
-                var currAssembly = DC.SC.GetAssembly(typeT.FullName);
+                var currAssembly = DC.SC.GetAssembly(typeT.FullName,DC);
                 valType = currAssembly.GetType(typeT.FullName);
             }
 

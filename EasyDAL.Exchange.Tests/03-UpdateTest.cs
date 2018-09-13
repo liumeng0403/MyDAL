@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 using System.Dynamic;
+using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
 
 namespace EasyDAL.Exchange.Tests
 {

@@ -1,5 +1,4 @@
-﻿using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.Tests.Entities;
+﻿using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
 using System.Threading.Tasks;
 using Xunit;
 

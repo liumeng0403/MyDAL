@@ -3,7 +3,7 @@ using EasyDAL.Exchange.Tests.Enums;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace EasyDAL.Exchange.Tests.Entities
+namespace EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange
 {
     /*
      * CREATE TABLE `agent` (
