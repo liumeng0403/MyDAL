@@ -3,12 +3,10 @@ using EasyDAL.Exchange.Cache;
 using EasyDAL.Exchange.Common;
 using EasyDAL.Exchange.Core;
 using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.ExpressionX;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -68,7 +66,6 @@ namespace EasyDAL.Exchange.ExpressionX
         // -01-02- 
         private (string key, string alias, Type valType) GetKey(Expression bodyL, OptionEnum option)
         {
-            var info = default(PropertyInfo);
             if (bodyL.NodeType == ExpressionType.Convert)
             {
                 var exp = bodyL as UnaryExpression;
@@ -78,6 +75,7 @@ namespace EasyDAL.Exchange.ExpressionX
             else if (bodyL.NodeType == ExpressionType.MemberAccess)
             {
                 var leftBody = bodyL as MemberExpression;
+                var info = default(PropertyInfo);
 
                 //
                 var paramType = default(Type);
@@ -87,20 +85,11 @@ namespace EasyDAL.Exchange.ExpressionX
                     var clMemExpr = leftBody.Expression as MemberExpression;
                     paramType = clMemExpr.Expression.Type;
                     info = paramType.GetProperty(clMemExpr.Member.Name);
-                    //var paraExpr = clMemExpr.Expression as ParameterExpression;
-                    //if (paraExpr != null)
-                    //{
-                    //    alias = paraExpr.Name;
-                    //}
                 }
                 else
                 {
                     paramType = leftBody.Expression.Type;
                     info = paramType.GetProperty(leftBody.Member.Name);
-                    //if (clMemExpr != null)
-                    //{
-                    //    alias = clMemExpr.Member.Name;
-                    //}
                 }
 
                 //

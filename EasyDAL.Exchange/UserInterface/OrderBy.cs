@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
-namespace EasyDAL.Exchange.Common
+namespace EasyDAL.Exchange
 {
     /// <summary>
     ///     排序设置

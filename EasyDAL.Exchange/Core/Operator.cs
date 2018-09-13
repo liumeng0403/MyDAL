@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EasyDAL.Exchange.Core
@@ -18,33 +17,7 @@ namespace EasyDAL.Exchange.Core
         {
         }
 
-        internal DbContext DC { get; set; }
-
-        internal void SetChangeHandle<M, F>(Expression<Func<M, F>> func, F modVal, ActionEnum action, OptionEnum option)
-        {
-            var key = DC.EH.ExpressionHandle(func);
-            var val = string.Empty;
-            if (modVal == null)
-            {
-                val = null;
-            }
-            else
-            {
-                val = DC.GH.GetTypeValue(modVal.GetType(), modVal);
-            }
-            DC.AddConditions(new DicModel
-            {
-                KeyOne = key,
-                Param = key,
-                ParamRaw=key,
-                Value = val,
-                Option = option,
-                Action = action,
-                Crud = CrudTypeEnum.Update
-            });
-        }
-
-        private List<(string key,string param,string val,Type valType,string colType)> GetKPV<M>(object objx)
+        private List<(string key, string param, string val, Type valType, string colType)> GetKPV<M>(object objx)
         {
             var list = new List<string>();
             var dic = default(IDictionary<string, object>);
@@ -78,8 +51,8 @@ namespace EasyDAL.Exchange.Core
             }
 
             //
-            var result = new List<(string key, string param, string val,Type valType,string colType)>();
-            var columns = ( DC.SC.GetColumnInfos<M>(DC)).GetAwaiter().GetResult();
+            var result = new List<(string key, string param, string val, Type valType, string colType)>();
+            var columns = (DC.SC.GetColumnInfos<M>(DC)).GetAwaiter().GetResult();
             foreach (var prop in list)
             {
                 var val = string.Empty;
@@ -102,7 +75,38 @@ namespace EasyDAL.Exchange.Core
             }
             return result;
         }
-        internal void DynamicSetHandle<M>(object mSet)
+        
+        /****************************************************************************************************************************************/
+
+        internal DbContext DC { get; set; }
+
+        /****************************************************************************************************************************************/
+
+        internal void SetChangeHandle<M, F>(Expression<Func<M, F>> func, F modVal, ActionEnum action, OptionEnum option)
+        {
+            var key = DC.EH.ExpressionHandle(func);
+            var val = string.Empty;
+            if (modVal == null)
+            {
+                val = null;
+            }
+            else
+            {
+                val = DC.GH.GetTypeValue(modVal.GetType(), modVal);
+            }
+            DC.AddConditions(new DicModel
+            {
+                KeyOne = key,
+                Param = key,
+                ParamRaw=key,
+                Value = val,
+                Option = option,
+                Action = action,
+                Crud = CrudTypeEnum.Update
+            });
+        }
+
+        internal void SetDynamicHandle<M>(object mSet)
         {
             var tuples = GetKPV<M>(mSet);
             foreach (var tp in tuples)
@@ -128,7 +132,7 @@ namespace EasyDAL.Exchange.Core
             DC.AddConditions(field);
         }
 
-        internal void DynamicWhereHandle<M>(object mWhere)
+        internal void WhereDynamicHandle<M>(object mWhere)
         {
             var tuples = GetKPV<M>(mWhere);
             var count = 0;
@@ -175,7 +179,30 @@ namespace EasyDAL.Exchange.Core
             DC.AddConditions(field);
         }
 
-        protected void OptionOrderByHandle(PagingQueryOption option)
+        internal void OrderByHandle<M,F>(Expression<Func<M, F>> func, OrderByEnum orderBy)
+        {
+            var field = DC.EH.ExpressionHandle(func);
+            var option = OptionEnum.None;
+            switch (orderBy)
+            {
+                case OrderByEnum.Asc:
+                    option = OptionEnum.Asc;
+                    break;
+                case OrderByEnum.Desc:
+                    option = OptionEnum.Desc;
+                    break;
+            }
+
+            DC.AddConditions(new DicModel
+            {
+                KeyOne = field,
+                Option = option,
+                Action = ActionEnum.OrderBy,
+                Crud = CrudTypeEnum.Query
+            });
+        }
+
+        protected void OrderByOptionHandle(PagingQueryOption option)
         {
             if (option.OrderBys != null
               && option.OrderBys.Any())
@@ -203,6 +230,8 @@ namespace EasyDAL.Exchange.Core
                 }
             }
         }
+
+        /****************************************************************************************************************************************/
 
         protected async Task<VM> QueryFirstOrDefaultAsyncHandle<DM,VM>()
         {

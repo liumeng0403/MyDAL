@@ -1,8 +1,7 @@
-﻿using System;
+﻿using EasyDAL.Exchange.Common;
 using System.Collections.Generic;
-using System.Text;
 
-namespace EasyDAL.Exchange.Common
+namespace EasyDAL.Exchange
 {
     /// <summary>
     ///     分页查询设置

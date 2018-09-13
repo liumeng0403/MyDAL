@@ -1,13 +1,10 @@
-﻿using EasyDAL.Exchange.AdoNet;
-using EasyDAL.Exchange.Common;
+﻿using EasyDAL.Exchange.Common;
 using EasyDAL.Exchange.Core;
 using EasyDAL.Exchange.Enums;
 using EasyDAL.Exchange.Helper;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace EasyDAL.Exchange.UserFacade.Query
@@ -107,7 +104,7 @@ namespace EasyDAL.Exchange.UserFacade.Query
         /// <param name="pageSize">每页条数</param>
         public async Task<PagingList<M>> QueryPagingListAsync(PagingQueryOption option)
         {
-            OptionOrderByHandle(option);
+            OrderByOptionHandle(option);
             return await QueryPagingListAsyncHandle<M, M>(option.PageIndex, option.PageSize, SqlTypeEnum.QueryPagingListAsync);
         }
         /// <summary>
@@ -128,7 +125,7 @@ namespace EasyDAL.Exchange.UserFacade.Query
         /// <param name="pageSize">每页条数</param>
         public async Task<PagingList<VM>> QueryPagingListAsync<VM>(PagingQueryOption option)
         {
-            OptionOrderByHandle(option);
+            OrderByOptionHandle(option);
             return await QueryPagingListAsyncHandle<M, VM>(option.PageIndex, option.PageSize, SqlTypeEnum.QueryPagingListAsync);
         }
 

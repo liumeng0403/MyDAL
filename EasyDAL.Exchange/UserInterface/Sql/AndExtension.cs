@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Text;
-using EasyDAL.Exchange.Enums;
+﻿using EasyDAL.Exchange.Enums;
 using EasyDAL.Exchange.UserFacade.Delete;
-using EasyDAL.Exchange.UserFacade;
 using EasyDAL.Exchange.UserFacade.Join;
 using EasyDAL.Exchange.UserFacade.Query;
 using EasyDAL.Exchange.UserFacade.Update;
+using System;
+using System.Linq.Expressions;
 
 namespace EasyDAL.Exchange
 {

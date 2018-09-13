@@ -17,31 +17,19 @@ namespace EasyDAL.Exchange.Enums
         /// ""
         /// </summary>
         [Description("")]
-        Select,
-
-        /// <summary>
-        /// ""
-        /// </summary>
-        [Description("")]
         Insert,
-
-        ///// <summary>
-        ///// "="
-        ///// </summary>
-        //[Description("=")]
-        //Set,
-
-        ///// <summary>
-        ///// ""
-        ///// </summary>
-        //[Description("")]
-        //Change,
 
         /// <summary>
         /// 
         /// </summary>
         [Description("")]
         Update,
+
+        /// <summary>
+        /// ""
+        /// </summary>
+        [Description("")]
+        Select,
 
         /// <summary>
         /// ""

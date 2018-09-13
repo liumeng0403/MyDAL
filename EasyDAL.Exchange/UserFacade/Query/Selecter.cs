@@ -1,13 +1,8 @@
-﻿using EasyDAL.Exchange.Core;
+﻿using EasyDAL.Exchange.Common;
+using EasyDAL.Exchange.Core;
 using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.Helper;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
-using EasyDAL.Exchange.Common;
 
 namespace EasyDAL.Exchange.UserFacade.Query
 {

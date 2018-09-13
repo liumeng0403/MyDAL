@@ -29,6 +29,24 @@ namespace EasyDAL.Exchange.Enums
         /// =
         /// </summary>
         [Description("=")]
+        Set,
+
+        /// <summary>
+        /// +
+        /// </summary>
+        [Description("+")]
+        ChangeAdd,
+
+        /// <summary>
+        /// -
+        /// </summary>
+        [Description("-")]
+        ChangeMinus,
+
+        /// <summary>
+        /// =
+        /// </summary>
+        [Description("=")]
         Equal,
 
         /// <summary>
@@ -91,24 +109,6 @@ namespace EasyDAL.Exchange.Enums
         /// </summary>
         [Description("")]
         OneEqualOne,
-
-        /// <summary>
-        /// +
-        /// </summary>
-        [Description("+")]
-        ChangeAdd,
-
-        /// <summary>
-        /// -
-        /// </summary>
-        [Description("-")]
-        ChangeMinus,
-
-        /// <summary>
-        /// =
-        /// </summary>
-        [Description("=")]
-        Set,
 
         /// <summary>
         /// " asc "

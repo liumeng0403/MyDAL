@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Text;
-using EasyDAL.Exchange.Enums;
+﻿using EasyDAL.Exchange.Enums;
 using EasyDAL.Exchange.UserFacade.Update;
+using System;
+using System.Linq.Expressions;
 
 namespace EasyDAL.Exchange
 {
@@ -26,7 +24,7 @@ namespace EasyDAL.Exchange
         /// </summary>
         public static Setter<M> Set<M>(this Setter<M> setter, object mSet)
         {
-            setter.DC.OP.DynamicSetHandle<M>(mSet);
+            setter.DC.OP.SetDynamicHandle<M>(mSet);
             return setter;
         }
 
