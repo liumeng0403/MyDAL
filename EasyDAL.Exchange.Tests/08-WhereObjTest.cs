@@ -1,5 +1,4 @@
 using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
-using EasyDAL.Exchange.Tests.Entities.rainbow_unicorn_db20180901;
 using EasyDAL.Exchange.Tests.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -97,7 +96,7 @@ namespace EasyDAL.Exchange.Tests
                 VipProduct = null     // true fals null 
             };
             // where method -- option orderby 
-            var res5 = await Conn2.OpenDebug()
+            var res5 = await Conn.OpenDebug()
                 .Selecter<Product>()
                 .Where(option2.GetCondition())
                 .QueryPagingListAsync(option2);

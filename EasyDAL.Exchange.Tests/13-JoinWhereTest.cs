@@ -2,11 +2,12 @@ using Yunyong.DataExchange;
 ﻿using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
 using System;
 using System.Threading.Tasks;
+using EasyDAL.Exchange.Tests.Enums;
 using Xunit;
 
 namespace EasyDAL.Exchange.Tests
 {
-    public class JoinWhereTest:TestBase
+    public class JoinWhereTest : TestBase
     {
         private async Task<Agent> PreData01()
         {
@@ -25,24 +26,112 @@ namespace EasyDAL.Exchange.Tests
 
             var xx1 = "";
 
-            // method datetime
+            //
             var res1 = await Conn.OpenDebug()
-                .Joiner<Agent, AgentInventoryRecord>(out var agent, out var record)
-                .From(() => agent)
-                    .InnerJoin(() => record).On(() => agent.Id == record.AgentId)
-                //.Where(() => agent.CreatedOn >= DateTime.Now.AddDays(-60))                                                               //  const  method  DateTime  >=
-                //.Where(() => agent.CreatedOn >= Convert.ToDateTime("2018-08-16 19:20:28.118853"))                      //  const  method  DateTime  >=
-                //.Where(() => record.AgentId == Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef"))                  //  const  method  Guid  ==
-                //.Where(() => agent.Name == "辛文丽")                                                                                                            //  const  string  ==
-                //.Where(() => agent.AgentLevel == AgentLevel.DistiAgent)                                                                           //  const  enum  ==
-                //.Where(()=>agent.Id==m.Id)                                                                                                                              //  virable  prop  Guid  ==
-                //.Where(() => agent.Name == name)                                                                                                                 //  virable  string  ==
-                //.Where(()=>agent.AgentLevel==(AgentLevel)level)                                                                                        //  virable  enum  ==
-                .Where(() => agent.CreatedOn >= WhereTest.DateTime_大于等于)                                                              //  prop prop DateTime  >=
+                .Joiner<Agent, AgentInventoryRecord>(out var agent1, out var record1)
+                .From(() => agent1)
+                .InnerJoin(() => record1).On(() => agent1.Id == record1.AgentId)
+                .Where(() => agent1.CreatedOn >= DateTime.Now.AddDays(-60))                                                               //  const  method  DateTime  >=
                 .QueryListAsync<AgentInventoryRecord>();
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
-            
+
+            var xx2 = "";
+
+            // 
+            var res2 = await Conn.OpenDebug()
+                .Joiner<Agent, AgentInventoryRecord>(out var agent2, out var record2)
+                .From(() => agent2)
+                .InnerJoin(() => record2).On(() => agent2.Id == record2.AgentId)
+                .Where(() => agent2.CreatedOn >= Convert.ToDateTime("2018-08-16 19:20:28.118853"))                      //  const  method  DateTime  >=
+                .QueryListAsync<AgentInventoryRecord>();
+
+            var tuple2 = (XDebug.SQL, XDebug.Parameters);
+
+            var xx3 = "";
+
+            // 
+            var res3 = await Conn.OpenDebug()
+                .Joiner<Agent, AgentInventoryRecord>(out var agent3, out var record3)
+                .From(() => agent3)
+                .InnerJoin(() => record3).On(() => agent3.Id == record3.AgentId)
+                .Where(() => record3.AgentId == Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef"))                  //  const  method  Guid  ==
+                .QueryListAsync<AgentInventoryRecord>();
+
+            var tuple3 = (XDebug.SQL, XDebug.Parameters);
+
+            var xx4 = "";
+
+            // 
+            var res4 = await Conn.OpenDebug()
+                .Joiner<Agent, AgentInventoryRecord>(out var agent4, out var record4)
+                .From(() => agent4)
+                .InnerJoin(() => record4).On(() => agent4.Id == record4.AgentId)
+                .Where(() => agent4.Name == "辛文丽")                                                                                                            //  const  string  ==
+                .QueryListAsync<AgentInventoryRecord>();
+
+            var tuple4 = (XDebug.SQL, XDebug.Parameters);
+
+            var xx5 = "";
+
+            // 
+            var res5 = await Conn.OpenDebug()
+                .Joiner<Agent, AgentInventoryRecord>(out var agent5, out var record5)
+                .From(() => agent5)
+                .InnerJoin(() => record5).On(() => agent5.Id == record5.AgentId)
+                .Where(() => agent5.AgentLevel == AgentLevel.DistiAgent)                                                                           //  const  enum  ==
+                .QueryListAsync<AgentInventoryRecord>();
+
+            var tuple5 = (XDebug.SQL, XDebug.Parameters);
+
+            var xx6 = "";
+
+            // 
+            var res6 = await Conn.OpenDebug()
+                .Joiner<Agent, AgentInventoryRecord>(out var agent6, out var record6)
+                .From(() => agent6)
+                .InnerJoin(() => record6).On(() => agent6.Id == record6.AgentId)
+                .Where(() => agent6.Id == m.Id)                                                                                                                              //  virable  prop  Guid  ==
+                .QueryListAsync<AgentInventoryRecord>();
+
+            var tuple6 = (XDebug.SQL, XDebug.Parameters);
+
+            var xx7 = "";
+
+            // 
+            var res7 = await Conn.OpenDebug()
+                .Joiner<Agent, AgentInventoryRecord>(out var agent7, out var record7)
+                .From(() => agent7)
+                .InnerJoin(() => record7).On(() => agent7.Id == record7.AgentId)
+                .Where(() => agent7.Name == name)                                                                                                                 //  virable  string  ==
+                .QueryListAsync<AgentInventoryRecord>();
+
+            var tuple7 = (XDebug.SQL, XDebug.Parameters);
+
+            var xx8 = "";
+
+            // 
+            var res8 = await Conn.OpenDebug()
+                .Joiner<Agent, AgentInventoryRecord>(out var agent8, out var record8)
+                .From(() => agent8)
+                .InnerJoin(() => record8).On(() => agent8.Id == record8.AgentId)
+                .Where(() => agent8.AgentLevel == (AgentLevel)level)                                                                                        //  virable  enum  ==
+                .QueryListAsync<AgentInventoryRecord>();
+
+            var tuple8 = (XDebug.SQL, XDebug.Parameters);
+
+            var xx9 = "";
+
+            // 
+            var res9 = await Conn.OpenDebug()
+                .Joiner<Agent, AgentInventoryRecord>(out var agent9, out var record9)
+                .From(() => agent9)
+                .InnerJoin(() => record9).On(() => agent9.Id == record9.AgentId)
+                .Where(() => agent9.CreatedOn >= WhereTest.DateTime_大于等于)                                                              //  prop prop DateTime  >=
+                .QueryListAsync<AgentInventoryRecord>();
+
+            var tuple9 = (XDebug.SQL, XDebug.Parameters);
+
             var xx = "";
 
         }

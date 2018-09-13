@@ -19,7 +19,7 @@ namespace EasyDAL.Exchange.Tests
             {
                 return new WhereTestModel
                 {
-                    CreatedOn = DateTime.Now.AddDays(-30),
+                    CreatedOn = Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30),
                     DateTime_大于等于 = DateTime.Now.AddDays(-30),
                     DateTime_小于等于 = DateTime.Now,
                     AgentLevelXX = AgentLevel.DistiAgent,
