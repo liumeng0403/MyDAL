@@ -1,18 +1,14 @@
-﻿
+﻿using System;
+using System.Collections;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using Yunyong.DataExchange.Cache;
 using Yunyong.DataExchange.Common;
 using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Enums;
-using Yunyong.DataExchange.ExpressionX;
-using System;
-using System.Collections;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-// ReSharper disable All
 
 namespace Yunyong.DataExchange.ExpressionX
 {
@@ -68,7 +64,6 @@ namespace Yunyong.DataExchange.ExpressionX
         // -01-02- 
         private (string key, string alias, Type valType) GetKey(Expression bodyL, OptionEnum option)
         {
-            var info = default(PropertyInfo);
             if (bodyL.NodeType == ExpressionType.Convert)
             {
                 var exp = bodyL as UnaryExpression;
@@ -78,6 +73,7 @@ namespace Yunyong.DataExchange.ExpressionX
             else if (bodyL.NodeType == ExpressionType.MemberAccess)
             {
                 var leftBody = bodyL as MemberExpression;
+                var info = default(PropertyInfo);
 
                 //
                 var paramType = default(Type);
@@ -87,20 +83,11 @@ namespace Yunyong.DataExchange.ExpressionX
                     var clMemExpr = leftBody.Expression as MemberExpression;
                     paramType = clMemExpr.Expression.Type;
                     info = paramType.GetProperty(clMemExpr.Member.Name);
-                    //var paraExpr = clMemExpr.Expression as ParameterExpression;
-                    //if (paraExpr != null)
-                    //{
-                    //    alias = paraExpr.Name;
-                    //}
                 }
                 else
                 {
                     paramType = leftBody.Expression.Type;
                     info = paramType.GetProperty(leftBody.Member.Name);
-                    //if (clMemExpr != null)
-                    //{
-                    //    alias = clMemExpr.Member.Name;
-                    //}
                 }
 
                 //

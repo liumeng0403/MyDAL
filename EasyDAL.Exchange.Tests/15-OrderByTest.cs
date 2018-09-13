@@ -15,7 +15,14 @@ namespace EasyDAL.Exchange.Tests
             var xx1 = "";
 
             // order by
+            var res1 = await Conn.OpenDebug()
+                .Selecter<Agent>()
+                .Where(it => it.AgentLevel == (AgentLevel)128)
+                .OrderBy(it=>it.PathId)
+                .ThenOrderBy(it=>it.Name, OrderByEnum.Asc)
+                .QueryPagingListAsync(1,10);
 
+            var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
             var xx2 = "";
 

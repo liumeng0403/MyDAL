@@ -5,6 +5,16 @@ using System.Text;
 
 namespace EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange
 {
+    /*
+     *CREATE TABLE `wechatpaymentrecord` (
+     * `Id` char(36) NOT NULL,
+     * `CreatedOn` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+     * `PaymentBillId` char(36) NOT NULL,
+     * `Amount` double NOT NULL,
+     * `PaymentTime` datetime(6) NOT NULL,
+     * `WechatpayTradeNo` longtext
+     * ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+     */
     [Table("WechatPaymentRecord")]
     public class WechatPaymentRecord 
     {

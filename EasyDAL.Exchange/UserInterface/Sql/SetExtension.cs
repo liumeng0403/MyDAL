@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Linq.Expressions;
-using System.Text;
 using Yunyong.DataExchange.Enums;
 using Yunyong.DataExchange.UserFacade.Update;
 
@@ -26,7 +24,7 @@ namespace Yunyong.DataExchange
         /// </summary>
         public static Setter<M> Set<M>(this Setter<M> setter, object mSet)
         {
-            setter.DC.OP.DynamicSetHandle<M>(mSet);
+            setter.DC.OP.SetDynamicHandle<M>(mSet);
             return setter;
         }
 

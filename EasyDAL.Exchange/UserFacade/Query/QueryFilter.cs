@@ -1,15 +1,12 @@
-﻿using Yunyong.DataExchange.AdoNet;
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Yunyong.Core;
 using Yunyong.DataExchange.Common;
 using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Enums;
 using Yunyong.DataExchange.Helper;
-using Yunyong.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Yunyong.DataExchange.UserFacade.Query
 {
@@ -108,7 +105,7 @@ namespace Yunyong.DataExchange.UserFacade.Query
         /// <param name="pageSize">每页条数</param>
         public async Task<PagingList<M>> QueryPagingListAsync(PagingQueryOption option)
         {
-            OptionOrderByHandle(option);
+            OrderByOptionHandle(option);
             return await QueryPagingListAsyncHandle<M, M>(option.PageIndex, option.PageSize, SqlTypeEnum.QueryPagingListAsync);
         }
         /// <summary>
@@ -129,7 +126,7 @@ namespace Yunyong.DataExchange.UserFacade.Query
         /// <param name="pageSize">每页条数</param>
         public async Task<PagingList<VM>> QueryPagingListAsync<VM>(PagingQueryOption option)
         {
-            OptionOrderByHandle(option);
+            OrderByOptionHandle(option);
             return await QueryPagingListAsyncHandle<M, VM>(option.PageIndex, option.PageSize, SqlTypeEnum.QueryPagingListAsync);
         }
 

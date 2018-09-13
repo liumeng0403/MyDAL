@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Linq.Expressions;
-using System.Text;
 using Yunyong.DataExchange.Enums;
 using Yunyong.DataExchange.UserFacade.Delete;
 using Yunyong.DataExchange.UserFacade.Join;
@@ -13,6 +11,8 @@ namespace Yunyong.DataExchange
     public static class WhereExtension
     {
 
+        /**************************************************************************************************************/
+
         /// <summary>
         /// 过滤条件起点
         /// </summary>
@@ -23,6 +23,8 @@ namespace Yunyong.DataExchange
             return new DeleteFilter<M>(deleter.DC);
         }
 
+        /**************************************************************************************************************/
+
         /// <summary>
         /// 过滤条件起点
         /// </summary>
@@ -32,6 +34,8 @@ namespace Yunyong.DataExchange
             setter.DC.OP.WhereHandle(func, CrudTypeEnum.Update);
             return new UpdateFilter<M>(setter.DC);
         }
+
+        /**************************************************************************************************************/
 
         /// <summary>
         /// 过滤条件起点
@@ -47,9 +51,11 @@ namespace Yunyong.DataExchange
         /// </summary>
         public static QueryFilter<M> Where<M>(this Selecter<M> selecter, object mWhere)
         {
-            selecter.DC.OP.DynamicWhereHandle<M>(mWhere);
+            selecter.DC.OP.WhereDynamicHandle<M>(mWhere);
             return new QueryFilter<M>(selecter.DC);
         }
+
+        /**************************************************************************************************************/
 
         public static QueryFilterX Where(this JoinX joinX, Expression<Func<bool>> func)
         {

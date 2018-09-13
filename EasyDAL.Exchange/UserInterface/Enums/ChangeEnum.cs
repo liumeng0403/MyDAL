@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
+﻿using System.ComponentModel;
 
-namespace Yunyong.DataExchange.Enums
+namespace Yunyong.DataExchange
 {
     public enum ChangeEnum
     {

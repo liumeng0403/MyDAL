@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Linq.Expressions;
-using System.Text;
 using Yunyong.DataExchange.Enums;
 using Yunyong.DataExchange.UserFacade.Delete;
-using Yunyong.DataExchange.UserFacade;
 using Yunyong.DataExchange.UserFacade.Join;
 using Yunyong.DataExchange.UserFacade.Query;
 using Yunyong.DataExchange.UserFacade.Update;
