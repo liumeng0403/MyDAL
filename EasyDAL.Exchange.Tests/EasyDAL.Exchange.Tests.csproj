@@ -18,4 +18,8 @@
   <ItemGroup>
     <PackageReference Update="SourceLink.Create.GitHub" Version="2.8.3" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Entities\rainbow_unicorn_db20180901\" />
+  </ItemGroup>
 </Project>
