@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EasyDAL.Exchange.Tests.ViewModels
+﻿namespace EasyDAL.Exchange.Tests.ViewModels
 {
-    public class WhereTest
+    public class _12_WhereTest
     {
 
 

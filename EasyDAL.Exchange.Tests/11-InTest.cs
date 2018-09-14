@@ -8,7 +8,7 @@ using Xunit;
 
 namespace EasyDAL.Exchange.Tests
 {
-    public class InTest:TestBase
+    public class _11_InTest:TestBase
     {
         private List<AgentLevel> EnumList { get; set; }
         private AgentLevel[] EnumArray { get; set; }

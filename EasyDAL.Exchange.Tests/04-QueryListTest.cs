@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EasyDAL.Exchange.Tests.Entities;
+﻿using EasyDAL.Exchange.Tests.Entities;
 using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
 using EasyDAL.Exchange.Tests.Enums;
 using EasyDAL.Exchange.Tests.ViewModels;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace EasyDAL.Exchange.Tests
 {
-    public class QueryListTest:TestBase
+    public class _04_QueryListTest:TestBase
     {
 
         [Fact]

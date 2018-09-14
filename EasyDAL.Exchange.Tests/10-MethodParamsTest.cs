@@ -7,7 +7,7 @@ using Xunit;
 
 namespace EasyDAL.Exchange.Tests
 {
-    public class MethodParamsTest:TestBase
+    public class _10_MethodParamsTest:TestBase
     {
 
         [Fact]

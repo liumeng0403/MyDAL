@@ -6,7 +6,7 @@ using Xunit;
 
 namespace EasyDAL.Exchange.Tests
 {
-    public class DeleteTest : TestBase
+    public class _02_DeleteTest : TestBase
     {
         private async Task<BodyFitRecord> PreDelete()
         {

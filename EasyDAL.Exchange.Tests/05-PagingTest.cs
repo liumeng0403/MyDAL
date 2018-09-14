@@ -5,7 +5,7 @@ using Xunit;
 
 namespace EasyDAL.Exchange.Tests
 {
-    public class PagingTest : TestBase
+    public class _05_PagingTest : TestBase
     {
 
         // 分页查询 m

@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
+﻿using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
 using EasyDAL.Exchange.Tests.ViewModels;
+using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace EasyDAL.Exchange.Tests
 {
-    public class QueryFirstOrDefaultTest:TestBase
+    public class _04_QueryFirstOrDefaultTest:TestBase
     {
 
         private async Task<BodyFitRecord> PreQuery()

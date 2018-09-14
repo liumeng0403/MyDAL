@@ -7,7 +7,7 @@ using Xunit;
 
 namespace EasyDAL.Exchange.Tests
 {
-    public class CreateTest : TestBase
+    public class _01_CreateTest : TestBase
     {
         private async Task PreCreate(BodyFitRecord m)
         {
@@ -64,34 +64,31 @@ namespace EasyDAL.Exchange.Tests
         [Fact]
         public async Task CreateAsyncTest()
         {
-            var m = new BodyFitRecord
+
+            /********************************************************************************************************************************/
+
+            var m1 = new BodyFitRecord
             {
                 Id = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"),
                 CreatedOn = DateTime.Now,
                 UserId = Guid.NewGuid(),
                 BodyMeasureProperty = "{xxx:yyy,mmm:nnn}"
             };
-            await PreCreate(m);
+            await PreCreate(m1);
 
             var xx1 = "";
 
             // 新建
             var res1 = await Conn.OpenDebug()
                 .Creater<BodyFitRecord>()
-                .CreateAsync(m);
-            //.CreateAsync(m);
+                .CreateAsync(m1);
+            Assert.True(res1 == 1);
 
-            var tuple = (XDebug.SQL, XDebug.Parameters);
+            var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
-            var xx = "";
-        }
+            /********************************************************************************************************************************/
 
-        // 创建一个具有可空属性字段的对象
-        [Fact]
-        public async Task CreateAsyncTest2()
-        {
-
-            var m1 = new Agent
+            var m2 = new Agent
             {
                 Id = Guid.NewGuid(),
                 CreatedOn = DateTime.Now,
@@ -107,30 +104,27 @@ namespace EasyDAL.Exchange.Tests
                 DirectorStarCount = 5
             };
 
-            var xx1 = "";
+            var xx2 = "";
 
-            var res1 = await Conn.OpenDebug()
+            var res2 = await Conn.OpenDebug()
                 .Creater<Agent>()
-                .CreateAsync(m1);
+                .CreateAsync(m2);
+            Assert.True(res2 == 1);
 
-            var tuple = (XDebug.SQL, XDebug.Parameters);
+            var tuple2 = (XDebug.SQL, XDebug.Parameters);
 
-            var xx = "";
-        }
+            /********************************************************************************************************************************/
 
-        // 批量创建新对象
-        [Fact]
-        public async Task CreateBatchAsync()
-        {
-            var list = await PreCreateBatch();
+            var list3 = await PreCreateBatch();
 
-            var xx1 = "";
+            var xx3 = "";
 
-            var res1 = await Conn.OpenDebug()
+            var res3 = await Conn.OpenDebug()
                 .Creater<AddressInfo>()
-                .CreateBatchAsync(list);
+                .CreateBatchAsync(list3);
+            Assert.True(res3 == 10);
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters);
+            var tuple3 = (XDebug.SQL, XDebug.Parameters);
 
             var xx = "";
         }

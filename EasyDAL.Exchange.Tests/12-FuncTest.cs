@@ -4,7 +4,7 @@ using Xunit;
 
 namespace EasyDAL.Exchange.Tests
 {
-    public class FuncTest: TestBase
+    public class _12_FuncTest: TestBase
     {
 
         [Fact]

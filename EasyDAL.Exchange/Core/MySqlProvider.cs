@@ -360,7 +360,7 @@ namespace EasyDAL.Exchange.Core
                 }
                 list.Add($"({string.Join(",", values)})");
             }
-            return string.Join(",", list);
+            return string.Join(", \r\n ", list);
         }
 
         internal string GetTableName<M>(M m)
@@ -408,17 +408,17 @@ namespace EasyDAL.Exchange.Core
                 case UiMethodEnum.CreateBatchAsync:
                     list.Add(
                                   $" LOCK TABLES {Table<M>(type)} WRITE; " +
-                                  $" /*!40000 ALTER TABLE {Table<M>(type)} DISABLE KEYS */; " +
-                                  $" insert into  {Table<M>(type)} {GetColumns()} VALUES {GetValues()} ; " +
-                                  $" /*!40000 ALTER TABLE {Table<M>(type)} ENABLE KEYS */; " +
-                                  $" UNLOCK TABLES; "
+                                  $" \r\n /*!40000 ALTER TABLE {Table<M>(type)} DISABLE KEYS */; " +
+                                  $" \r\n insert into  {Table<M>(type)} {GetColumns()} \r\n VALUES {GetValues()} ; " +
+                                  $" \r\n /*!40000 ALTER TABLE {Table<M>(type)} ENABLE KEYS */; " +
+                                  $" \r\n UNLOCK TABLES; "
                                  );
                     break;
                 case UiMethodEnum.DeleteAsync:
                     list.Add($" delete {From()} {Table<M>(type)} {Wheres()} ; ");
                     break;
                 case UiMethodEnum.UpdateAsync:
-                    list.Add($" update {Table<M>(type)} set {DC.SqlProvider.GetUpdates()} {Wheres()} ;");
+                    list.Add($" update {Table<M>(type)} \r\n set {DC.SqlProvider.GetUpdates()} {Wheres()} ;");
                     break;
                 case UiMethodEnum.QueryFirstOrDefaultAsync:
                     list.Add($"select * {From()} {Table<M>(type)} {Wheres()} ; ");

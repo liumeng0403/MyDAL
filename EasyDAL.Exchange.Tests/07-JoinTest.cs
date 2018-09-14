@@ -1,13 +1,13 @@
 ﻿using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
+using EasyDAL.Exchange.Tests.ViewModels;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using EasyDAL.Exchange.Tests.ViewModels;
 using Xunit;
 
 namespace EasyDAL.Exchange.Tests
 {
-    public class JoinTest : TestBase
+    public class _07_JoinTest : TestBase
     {
 
         [Fact]

@@ -1,11 +1,11 @@
-﻿using EasyDAL.Exchange.Tests.Enums;
+﻿using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
+using EasyDAL.Exchange.Tests.Enums;
 using System.Threading.Tasks;
-using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
 using Xunit;
 
 namespace EasyDAL.Exchange.Tests
 {
-    public class OrderByTest : TestBase
+    public class _15_OrderByTest : TestBase
     {
 
         [Fact]
