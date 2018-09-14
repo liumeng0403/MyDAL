@@ -5,7 +5,7 @@ using Yunyong.DataExchange;
 
 namespace EasyDAL.Exchange.Tests
 {
-    public class TransactionTest : TestBase
+    public class _14_TransactionTest : TestBase
     {
         [Fact]
         public async Task test01()

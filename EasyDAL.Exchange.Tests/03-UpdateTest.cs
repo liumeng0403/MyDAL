@@ -9,7 +9,7 @@ using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
 
 namespace EasyDAL.Exchange.Tests
 {
-    public class UpdateTest:TestBase
+    public class _03_UpdateTest:TestBase
     {
 
         private async Task<BodyFitRecord> CreateDbData()
@@ -48,6 +48,8 @@ namespace EasyDAL.Exchange.Tests
             var m2 = 10;
             var id2 = Guid.Parse("0ce552c0-2f5e-4c22-b26d-01654443b30e");
 
+            /***************************************************************************************************************************/
+
             var xx1 = "";
 
             // DB data
@@ -68,8 +70,11 @@ namespace EasyDAL.Exchange.Tests
                 .Set(it => it.BodyMeasureProperty, m1.BodyMeasureProperty)
                 .Where(it => it.Id == m.Id)
                 .UpdateAsync();
+            Assert.True(res1 == 1);
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
+
+            /***************************************************************************************************************************/
 
             var xx2 = "";
 
@@ -80,8 +85,11 @@ namespace EasyDAL.Exchange.Tests
                 .Where(it => it.AgentId == id2)
                 .Or(it => it.CreatedOn == Convert.ToDateTime("2018-08-19 11:34:42.577074"))
                 .UpdateAsync();
+            Assert.True(res2 == 2);
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters);
+
+            /***************************************************************************************************************************/
 
             var xx3 = "";
 
@@ -95,9 +103,11 @@ namespace EasyDAL.Exchange.Tests
                 })
                 .Where(it => it.Id == Guid.Parse("032ce51f-1034-4fb2-9741-01655202ecbc"))
                 .UpdateAsync();
+            Assert.True(res3 == 1);
 
             var tuple3 = (XDebug.SQL, XDebug.Parameters);
 
+            /***************************************************************************************************************************/
 
             var xx4 = "";
 
@@ -110,8 +120,11 @@ namespace EasyDAL.Exchange.Tests
                 .Set(obj as object)
                 .Where(it => it.Id == Guid.Parse("032ce51f-1034-4fb2-9741-01655202ecbc"))
                 .UpdateAsync();
+            Assert.True(res4 == 1);
 
             var tuple4 = (XDebug.SQL, XDebug.Parameters);
+
+            /***************************************************************************************************************************/
 
             var xx5 = "";
 
@@ -122,8 +135,11 @@ namespace EasyDAL.Exchange.Tests
                 .Where(it => it.AgentId == id2)
                 .And(it => it.ProductId == Guid.Parse("85ce17c1-10d9-4784-b054-016551e5e109"))
                 .UpdateAsync();
+            Assert.True(res5 == 1);
 
             var tuple5 = (XDebug.SQL, XDebug.Parameters);
+
+            /***************************************************************************************************************************/
 
             var xx6 = "";
 
@@ -139,8 +155,45 @@ namespace EasyDAL.Exchange.Tests
                 .Set(it => it.ActivedOn, resx6.ActivedOn)
                 .Where(it => it.Id == resx6.Id)
                 .UpdateAsync();
+            Assert.True(res6 == 1);
 
             var tuple6 = (XDebug.SQL, XDebug.Parameters);
+
+            /***************************************************************************************************************************/
+
+            var xx7 = "";
+
+            var guid7 = Guid.Parse("b3866d7c-2b51-46ae-85cb-0165c9121e8f");
+            var resxxx7 = await Conn
+                .Updater<Product>()
+                .Set(it => it.VipProduct, false)
+                .Where(it => it.Id == guid7)
+                .UpdateAsync();
+            var resx7 = await Conn
+                .Selecter<Product>()
+                .Where(it => it.Id == guid7)
+                .QueryFirstOrDefaultAsync();
+            Assert.NotNull(resx7);
+            Assert.False(resx7.VipProduct);
+            resx7.VipProduct = true;
+
+            // update set bool bit
+            var res7 = await Conn
+                .Updater<Product>()
+                .Set(it => it.VipProduct, resx7.VipProduct)
+                .Where(it => it.Id == resx7.Id)
+                .UpdateAsync();
+            Assert.True(res7 == 1);
+
+            var tuple7 = (XDebug.SQL, XDebug.Parameters);
+
+            var resxx7 = await Conn
+                .Selecter<Product>()
+                .Where(it => it.Id == guid7)
+                .QueryFirstOrDefaultAsync();
+            Assert.True(resxx7.VipProduct);
+
+            /***************************************************************************************************************************/
 
             var xx = "";
         }

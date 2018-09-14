@@ -6,7 +6,7 @@ using Yunyong.DataExchange;
 
 namespace EasyDAL.Exchange.Tests
 {
-    public class OrderByTest : TestBase
+    public class _15_OrderByTest : TestBase
     {
 
         [Fact]

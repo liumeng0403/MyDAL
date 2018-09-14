@@ -8,7 +8,7 @@ using Yunyong.DataExchange;
 
 namespace EasyDAL.Exchange.Tests
 {
-    public class JoinTest : TestBase
+    public class _07_JoinTest : TestBase
     {
 
         [Fact]

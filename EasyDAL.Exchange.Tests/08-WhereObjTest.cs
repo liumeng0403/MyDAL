@@ -9,7 +9,7 @@ using Yunyong.DataExchange;
 
 namespace EasyDAL.Exchange.Tests
 {
-    public class WhereObjTest:TestBase
+    public class _08_WhereObjTest:TestBase
     {
         // yunyong_tech 分支专用
         public class AgentQueryOption:PagingQueryOption

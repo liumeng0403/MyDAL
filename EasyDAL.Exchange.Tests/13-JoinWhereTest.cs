@@ -1,14 +1,14 @@
 using Yunyong.DataExchange;
 ﻿using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
+using EasyDAL.Exchange.Tests.Enums;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using EasyDAL.Exchange.Tests.Enums;
 using Xunit;
 
 namespace EasyDAL.Exchange.Tests
 {
-    public class JoinWhereTest : TestBase
+    public class _13_JoinWhereTest : TestBase
     {
         private async Task<Agent> PreData01()
         {

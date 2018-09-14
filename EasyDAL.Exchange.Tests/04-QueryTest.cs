@@ -1,15 +1,12 @@
-using Yunyong.DataExchange;
-﻿using EasyDAL.Exchange.Tests.Entities;
 using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
-using EasyDAL.Exchange.Tests.Enums;
-using EasyDAL.Exchange.Tests.ViewModels;
 using System;
 using System.Threading.Tasks;
 using Xunit;
+using Yunyong.DataExchange;
 
 namespace EasyDAL.Exchange.Tests
 {
-    public class QueryTest : TestBase
+    public class _04_QueryTest : TestBase
     {   
     
 

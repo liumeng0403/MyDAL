@@ -5,7 +5,7 @@ using Xunit;
 
 namespace EasyDAL.Exchange.Tests
 {
-    public class WhereBoolTest:TestBase
+    public class _09_WhereBoolTest:TestBase
     {
 
         [Fact]

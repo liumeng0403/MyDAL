@@ -6,7 +6,7 @@ using Xunit;
 
 namespace EasyDAL.Exchange.Tests
 {
-    public class LikeTest : TestBase
+    public class _06_LikeTest : TestBase
     {
         private async Task<BodyFitRecord> Pre01()
         {

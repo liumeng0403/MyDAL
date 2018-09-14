@@ -121,6 +121,7 @@ namespace Yunyong.DataExchange.Core
                     Param = tp.param,
                     ParamRaw=tp.param,
                     Value = tp.val,
+                    ValueType=tp.valType,
                     Action = ActionEnum.Update,
                     Option = OptionEnum.Set,
                     Crud = CrudTypeEnum.Update

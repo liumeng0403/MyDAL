@@ -10,7 +10,7 @@ using Yunyong.DataExchange;
 
 namespace EasyDAL.Exchange.Tests
 {
-    public class QueryListTest:TestBase
+    public class _04_QueryListTest:TestBase
     {
 
         [Fact]
