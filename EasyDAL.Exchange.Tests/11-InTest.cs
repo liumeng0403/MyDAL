@@ -40,6 +40,9 @@ namespace EasyDAL.Exchange.Tests
         [Fact]
         public async Task ListT_Enum_Test()
         {
+
+            /*******************************************************************************************************************/
+
             var xx1 = "";
 
             var enums = new List<AgentLevel>
@@ -55,6 +58,8 @@ namespace EasyDAL.Exchange.Tests
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
+            /*******************************************************************************************************************/
+
             var xx2 = "";
             
             // where in -- obj.prop List<enum>
@@ -64,6 +69,8 @@ namespace EasyDAL.Exchange.Tests
                 .QueryListAsync();
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters);
+
+            /*******************************************************************************************************************/
 
             var xx3 = "";
 
@@ -78,14 +85,11 @@ namespace EasyDAL.Exchange.Tests
 
             Assert.True(res1.Count == res2.Count);
             Assert.True(res2.Count == res3.Count);
+            Assert.True(res1.Count == 555);
 
-            var xx = "";
-        }
-
-        [Fact]
-        public async Task ListT_String_Test()
-        {
-            var xx1 = "";
+            /*******************************************************************************************************************/
+            
+            var xx4 = "";
 
             var names = new List<string>
             {
@@ -93,261 +97,292 @@ namespace EasyDAL.Exchange.Tests
                 "刘建芬"
             };
             // where in  --  variable  List<string>  
-            var res1 = await Conn.OpenDebug()
+            var res4 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => names.Contains(it.Name))
                 .QueryListAsync();
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters);
+            var tuple4 = (XDebug.SQL, XDebug.Parameters);
 
-            var xx2 = "";
+            /*******************************************************************************************************************/
+
+            var xx5 = "";
 
             // where in -- obj.prop List<string>
-            var res2 = await Conn.OpenDebug()
+            var res5 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => WhereTest.In_List_String.Contains(it.Name))
                 .QueryListAsync();
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters);
+            var tuple5 = (XDebug.SQL, XDebug.Parameters);
 
-            var xx3 = "";
+            /*******************************************************************************************************************/
+
+            var xx6 = "";
 
             StringList = names;
             // where in -- this.prop List<string>
-            var res3 = await Conn.OpenDebug()
+            var res6 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => StringList.Contains(it.Name))
                 .QueryListAsync();
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters);
+            var tuple6 = (XDebug.SQL, XDebug.Parameters);
 
-            Assert.True(res1.Count == res2.Count);
-            Assert.True(res2.Count == res3.Count);
+            Assert.True(res4.Count == res5.Count);
+            Assert.True(res5.Count == res6.Count);
+            Assert.True(res4.Count == 2);
 
-            var xx = "";
-        }
+            /*******************************************************************************************************************/
 
-        [Fact]
-        public async Task ListT_Init_Test()
-        {
+
             await PereValue();
 
-            var xx1 = "";
+            /*******************************************************************************************************************/
+
+            var xx7 = "";
 
             // where in -- List<int>  init 
-            var res1 = await Conn.OpenDebug()
+            var res7 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => new List<int> { 5, 10 }.Contains(it.DirectorStarCount))
                 .QueryListAsync();
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters);
+            var tuple7 = (XDebug.SQL, XDebug.Parameters);
 
-            var xx2 = "";
+            /*******************************************************************************************************************/
+
+            var xx8 = "";
 
             // where in -- List<long> init
-            var res2 = await Conn.OpenDebug()
+            var res8 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => new List<long> { 5, 10 }.Contains(it.DirectorStarCount))
                 .QueryListAsync();
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters);
+            var tuple8 = (XDebug.SQL, XDebug.Parameters);
 
-            var xx3 = "";
+            /*******************************************************************************************************************/
+
+            var xx9 = "";
 
             // where in -- List<short> init
-            var res3 = await Conn.OpenDebug()
+            var res9 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => new List<short> { 5, 10 }.Contains((short)(it.DirectorStarCount)))
                 .QueryListAsync();
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters);
+            var tuple9 = (XDebug.SQL, XDebug.Parameters);
 
-            Assert.True(res1.Count == res2.Count);
-            Assert.True(res2.Count == res3.Count);
+            Assert.True(res7.Count == res8.Count);
+            Assert.True(res8.Count == res9.Count);
+            Assert.True(res7.Count == 2);
 
-            var xx4 = "";
+            /*******************************************************************************************************************/
+
+            var xx10 = "";
 
             // where in -- List<string> init
-            var res4 = await Conn.OpenDebug()
+            var res10 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => new List<string> { "黄银凤", "刘建芬" }.Contains(it.Name))
                 .QueryListAsync();
+            Assert.True(res10.Count == 2);
 
-            var tuple4 = (XDebug.SQL, XDebug.Parameters);
+            var tuple10 = (XDebug.SQL, XDebug.Parameters);
 
-            var xx5 = "";
+            /*******************************************************************************************************************/
+
+            var xx11 = "";
 
             // where in -- List<enum> init
-            var res5 = await Conn.OpenDebug()
+            var res11 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => new List<AgentLevel> { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel))
                 .QueryListAsync();
+            Assert.True(res11.Count == 555);
 
-            var tuple5 = (XDebug.SQL, XDebug.Parameters);
+            var tuple11 = (XDebug.SQL, XDebug.Parameters);
 
-            var xx = "";
-        }
+            /*******************************************************************************************************************/
 
-        [Fact]
-        public async Task Array_Enum_Test()
-        {
-            var xx1 = "";
+            var xx12 = "";
 
-            var enums = new AgentLevel[]
+            var enumArray = new AgentLevel[]
             {
                 AgentLevel.CityAgent,
                 AgentLevel.DistiAgent
             };
             // where in  --  variable  enum[]  
-            var res1 = await Conn.OpenDebug()
+            var res12 = await Conn.OpenDebug()
                 .Selecter<Agent>()
-                .Where(it => enums.Contains(it.AgentLevel))
+                .Where(it => enumArray.Contains(it.AgentLevel))
                 .QueryListAsync();
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters);
+            var tuple12 = (XDebug.SQL, XDebug.Parameters);
 
-            var xx2 = "";
+            /*******************************************************************************************************************/
+
+            var xx13 = "";
 
             // where in -- obj.prop enum[]
-            var res2 = await Conn.OpenDebug()
+            var res13 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => WhereTest.In_Array_枚举.Contains(it.AgentLevel))
                 .QueryListAsync();
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters);
+            var tuple13 = (XDebug.SQL, XDebug.Parameters);
 
-            var xx3 = "";
+            /*******************************************************************************************************************/
 
-            EnumArray = enums;
+            var xx14 = "";
+
+            EnumArray = enumArray;
             // where in -- this.prop enum[]
-            var res3 = await Conn.OpenDebug()
+            var res14 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => EnumArray.Contains(it.AgentLevel))
                 .QueryListAsync();
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters);
+            var tuple14 = (XDebug.SQL, XDebug.Parameters);
 
-            Assert.True(res1.Count == res2.Count);
-            Assert.True(res2.Count == res3.Count);
+            Assert.True(res12.Count == res13.Count);
+            Assert.True(res13.Count == res14.Count);
+            Assert.True(res12.Count == 555);
 
-            var xx = "";
-        }
+            /*******************************************************************************************************************/
 
-        [Fact]
-        public async Task Array_String_Test()
-        {
-            var xx1 = "";
+            var xx15 = "";
 
-            var names = new string[]
+            var nameArray = new string[]
             {
                 "黄银凤",
                 "刘建芬"
             };
             // where in  --  variable  string[]  
-            var res1 = await Conn.OpenDebug()
+            var res15 = await Conn.OpenDebug()
                 .Selecter<Agent>()
-                .Where(it => names.Contains(it.Name))
+                .Where(it => nameArray.Contains(it.Name))
                 .QueryListAsync();
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters);
+            var tuple15 = (XDebug.SQL, XDebug.Parameters);
 
-            var xx2 = "";
+            /*******************************************************************************************************************/
+
+            var xx16 = "";
 
             // where in -- obj.prop string[]
-            var res2 = await Conn.OpenDebug()
+            var res16 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => WhereTest.In_Array_String.Contains(it.Name))
                 .QueryListAsync();
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters);
+            var tuple16 = (XDebug.SQL, XDebug.Parameters);
 
-            var xx3 = "";
+            /*******************************************************************************************************************/
 
-            StringArray = names;
+            var xx17 = "";
+
+            StringArray = nameArray;
             // where in -- this.prop string[]
-            var res3 = await Conn.OpenDebug()
+            var res17 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => StringArray.Contains(it.Name))
                 .QueryListAsync();
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters);
+            var tuple17 = (XDebug.SQL, XDebug.Parameters);
 
-            Assert.True(res1.Count == res2.Count);
-            Assert.True(res2.Count == res3.Count);
+            Assert.True(res15.Count == res16.Count);
+            Assert.True(res16.Count == res17.Count);
+            Assert.True(res15.Count == 2);
 
-            var xx = "";
-        }
+            /*******************************************************************************************************************/
 
-        [Fact]
-        public async Task Array_Init_Test()
-        {
             await PereValue();
 
-            var xx1 = "";
+            /*******************************************************************************************************************/
+
+            var xx18 = "";
 
             // where in -- int[]  init 
-            var res1 = await Conn.OpenDebug()
+            var res18 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => new int[] { 5, 10 }.Contains(it.DirectorStarCount))
                 .QueryListAsync();
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters);
+            var tuple18 = (XDebug.SQL, XDebug.Parameters);
 
-            var xx2 = "";
+            /*******************************************************************************************************************/
+
+            var xx19 = "";
 
             // where in -- long[] init
-            var res2 = await Conn.OpenDebug()
+            var res19 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => new long[] { 5L, 10L }.Contains(it.DirectorStarCount))
                 .QueryListAsync();
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters);
+            var tuple19 = (XDebug.SQL, XDebug.Parameters);
 
-            var xx3 = "";
+            /*******************************************************************************************************************/
+
+            var xx20 = "";
 
             // where in -- short[] init
-            var res3 = await Conn.OpenDebug()
+            var res20 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => new short[] { 5, 10 }.Contains((short)(it.DirectorStarCount)))
                 .QueryListAsync();
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters);
+            var tuple20 = (XDebug.SQL, XDebug.Parameters);
 
-            Assert.True(res1.Count == res2.Count);
-            Assert.True(res2.Count == res3.Count);
+            Assert.True(res18.Count == res19.Count);
+            Assert.True(res19.Count == res20.Count);
+            Assert.True(res18.Count == 2);
 
-            var xx4 = "";
+            /*******************************************************************************************************************/
+
+            var xx21 = "";
 
             // where in -- string[] init
-            var res4 = await Conn.OpenDebug()
+            var res21 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => new string[] { "黄银凤", "刘建芬" }.Contains(it.Name))
                 .QueryListAsync();
+            Assert.True(res21.Count == 2);
 
-            var tuple4 = (XDebug.SQL, XDebug.Parameters);
+            var tuple21 = (XDebug.SQL, XDebug.Parameters);
 
-            var xx5 = "";
+            /*******************************************************************************************************************/
+
+            var xx22 = "";
 
             // where in -- enum[] init
-            var res5 = await Conn.OpenDebug()
+            var res22 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => new AgentLevel[] { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel))
                 .QueryListAsync();
+            Assert.True(res22.Count == 555);
 
-            var tuple5 = (XDebug.SQL, XDebug.Parameters);
+            var tuple22 = (XDebug.SQL, XDebug.Parameters);
 
-            var xx6 = "";
+            /*******************************************************************************************************************/
+
+            var xx23 = "";
 
             // where in -- enum[] init
-            var res6 = await Conn.OpenDebug()
+            var res23 = await Conn.OpenDebug()
                 .Joiner<Agent,AgentInventoryRecord>(out var agent,out var record)
                 .From(()=>agent)
                 .InnerJoin(()=>record)
                 .On(()=>agent.Id==record.AgentId)
                 .Where(() => new AgentLevel[] { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(agent.AgentLevel))
                 .QueryListAsync<Agent>();
+            Assert.True(res23.Count == 574);
 
-            var tuple6 = (XDebug.SQL, XDebug.Parameters);
+            var tuple23 = (XDebug.SQL, XDebug.Parameters);
+
+            /*******************************************************************************************************************/
 
             var xx = "";
         }

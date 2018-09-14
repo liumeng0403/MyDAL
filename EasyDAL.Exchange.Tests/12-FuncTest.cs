@@ -9,8 +9,13 @@ namespace EasyDAL.Exchange.Tests
     {
 
         [Fact]
-        public async Task CharLengthTest()
+        public async Task FuncTest()
         {
+
+            /*
+             *char_length
+             */
+            /************************************************************************************************************************/
 
             var xx1 = "";
 
@@ -18,7 +23,7 @@ namespace EasyDAL.Exchange.Tests
             var res1 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => it.Name.Length > 2)
-                .QueryListAsync();
+                .QueryListAsync();            
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
@@ -29,10 +34,12 @@ namespace EasyDAL.Exchange.Tests
                 .Selecter<Agent>()
                 .Where(it => 2 < it.Name.Length)
                 .QueryListAsync();
+            Assert.True(res1.Count == resR1.Count);
+            Assert.True(res1.Count == 22660);
 
             var tupleR1 = (XDebug.SQL, XDebug.Parameters);
-            Assert.True(res1.Count == resR1.Count);
 
+            /************************************************************************************************************************/
 
             var xx2 = "";
 
@@ -44,28 +51,28 @@ namespace EasyDAL.Exchange.Tests
                 .On(()=>agent.Id==record.AgentId)
                 .Where(() => agent.Name.Length > 2)
                 .QueryListAsync<Agent>();
+            Assert.True(res2.Count == 457);
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters);
 
-            var xx = "";
+            /*
+             *count
+             */
+            /************************************************************************************************************************/
 
-        }
-
-
-        // 查询 单值
-        [Fact]
-        public async Task CountTest()
-        {
-            var xx1 = "";
+            var xx3 = "";
 
             // count(id)  like "陈%"
-            var res1 = await Conn.OpenDebug()
+            var res3 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains(LikeTest.百分号))
                 .Count(it => it.Id)
                 .QuerySingleValueAsync<long>();
+            Assert.True(res3 == 1421);
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters);
+            var tuple3 = (XDebug.SQL, XDebug.Parameters);
+
+            /************************************************************************************************************************/
 
             var xx = "";
         }
