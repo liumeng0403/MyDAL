@@ -103,6 +103,7 @@ namespace Yunyong.DataExchange.Core
                 Param = key,
                 ParamRaw=key,
                 Value = val,
+                ValueType=typeof(F),
                 Option = option,
                 Action = action,
                 Crud = CrudTypeEnum.Update
