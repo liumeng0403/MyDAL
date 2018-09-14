@@ -48,6 +48,7 @@ namespace Yunyong.DataExchange.Enums
         /// </summary>
         [Description("")]
         Column,
+        ColumnAs,
 
         /// <summary>
         /// =

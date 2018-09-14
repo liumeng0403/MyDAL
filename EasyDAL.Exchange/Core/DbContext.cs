@@ -87,9 +87,9 @@ namespace Yunyong.DataExchange.Core
                     var dicx = new DicModel
                     {
                         TableOne = dic.TableOne,
-                        TableClass=dic.TableClass,
-                        KeyOne = dic.KeyOne,
-                        AliasOne = dic.AliasOne,
+                        ClassFullName = dic.ClassFullName,
+                        ColumnOne = dic.ColumnOne,
+                        TableAliasOne = dic.TableAliasOne,
                         TableTwo = dic.TableTwo,
                         KeyTwo = dic.KeyTwo,
                         AliasTwo = dic.AliasTwo,
@@ -151,7 +151,7 @@ namespace Yunyong.DataExchange.Core
                 var val = GH.GetTypeValue(prop.PropertyType, prop, m);
                 AddConditions(new DicModel
                 {
-                    KeyOne = prop.Name,
+                    ColumnOne = prop.Name,
                     Param = prop.Name,
                     ParamRaw = prop.Name,
                     Value = val,

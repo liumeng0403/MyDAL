@@ -48,8 +48,8 @@ namespace Yunyong.DataExchange.ExpressionX
         {
             return new DicModel
             {
-                KeyOne = key,
-                AliasOne=alias,
+                ColumnOne = key,
+                TableAliasOne = alias,
                 Param = key,
                 ParamRaw = key,
                 Value = value,
@@ -63,8 +63,8 @@ namespace Yunyong.DataExchange.ExpressionX
         {
             return new DicModel
             {
-                KeyOne = key,
-                AliasOne = alias,
+                ColumnOne = key,
+                TableAliasOne = alias,
                 Value = value,
                 ValueType = valType,
                 Param = key,
@@ -81,8 +81,8 @@ namespace Yunyong.DataExchange.ExpressionX
             }
             return new DicModel
             {
-                KeyOne = key,
-                AliasOne=alias,
+                ColumnOne = key,
+                TableAliasOne = alias,
                 Param = key,
                 ParamRaw = key,
                 Value = value,
@@ -95,8 +95,8 @@ namespace Yunyong.DataExchange.ExpressionX
         {
             return new DicModel
             {
-                KeyOne = key,
-                AliasOne=alias,
+                ColumnOne = key,
+                TableAliasOne = alias,
                 Param = key,
                 ParamRaw = key,
                 Value = value,
@@ -109,7 +109,7 @@ namespace Yunyong.DataExchange.ExpressionX
         {
             return new DicModel
             {
-                KeyOne = "OneEqualOne",
+                ColumnOne = "OneEqualOne",
                 Param = "OneEqualOne",
                 ParamRaw = "OneEqualOne",
                 Value = value,
@@ -122,8 +122,8 @@ namespace Yunyong.DataExchange.ExpressionX
         {
             return new DicModel
             {
-                KeyOne = key,
-                AliasOne=alias,
+                ColumnOne = key,
+                TableAliasOne = alias,
                 Param = key,
                 ParamRaw = key,
                 Value = true.ToString(),

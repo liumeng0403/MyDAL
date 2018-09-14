@@ -15,7 +15,7 @@ namespace Yunyong.DataExchange.UserFacade.Join
 
         public OnX InnerJoin<M>(Expression<Func<M>> func)
         {
-            var dic = DC.EH.ExpressionHandle(func);
+            var dic = DC.EH.ExpressionHandle(func)[0];
             dic.Action = ActionEnum.InnerJoin;
             dic.Crud = CrudTypeEnum.Join;
             DC.AddConditions(dic);
@@ -28,8 +28,8 @@ namespace Yunyong.DataExchange.UserFacade.Join
             DC.AddConditions(new DicModel
             {
                 TableOne = DC.SqlProvider.GetTableName(m),
-                TableClass=m.GetType().FullName,
-                AliasOne = alias,
+                ClassFullName = m.GetType().FullName,
+                TableAliasOne = alias,
                 Action = ActionEnum.LeftJoin,
                 Crud = CrudTypeEnum.Join
             });
