@@ -498,6 +498,7 @@ namespace Yunyong.DataExchange.ExpressionX
                 result = new DicModel
                 {
                     TableOne = table,
+                    TableClass=body.Type.FullName,
                     AliasOne = alias
                 };
 

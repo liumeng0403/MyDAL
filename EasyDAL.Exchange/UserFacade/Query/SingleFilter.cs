@@ -21,7 +21,7 @@ namespace Yunyong.DataExchange.UserFacade.Query
         {
             return await SqlHelper.ExecuteScalarAsync<V>(
                 DC.Conn,
-                DC.SqlProvider.GetSQL<M>(SqlTypeEnum.QuerySingleValueAsync)[0],
+                DC.SqlProvider.GetSQL<M>(UiMethodEnum.QuerySingleValueAsync)[0],
                 DC.GetParameters());
         }
 

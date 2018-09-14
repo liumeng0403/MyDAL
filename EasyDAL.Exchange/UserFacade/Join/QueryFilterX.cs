@@ -17,9 +17,10 @@ namespace Yunyong.DataExchange.UserFacade.Join
 
         public async Task<List<VM>> QueryListAsync<VM>()
         {
+            SelectMHandle<VM>();
             return (await SqlHelper.QueryAsync<VM>(
                 DC.Conn,
-                DC.SqlProvider.GetSQL<VM>(SqlTypeEnum.JoinQueryListAsync)[0],
+                DC.SqlProvider.GetSQL<VM>(UiMethodEnum.JoinQueryListAsync)[0],
                 DC.GetParameters())).ToList();
         }
 

@@ -22,7 +22,7 @@ namespace Yunyong.DataExchange.UserFacade.Create
             await DC.GetProperties(m);
             return await SqlHelper.ExecuteAsync(
                 DC.Conn,
-                DC.SqlProvider.GetSQL<M>(SqlTypeEnum.CreateAsync)[0],
+                DC.SqlProvider.GetSQL<M>(UiMethodEnum.CreateAsync)[0],
                 DC.GetParameters());
         }
 
@@ -35,7 +35,7 @@ namespace Yunyong.DataExchange.UserFacade.Create
             await DC.GetProperties(mList);
             return await SqlHelper.ExecuteAsync(
                 DC.Conn,
-                DC.SqlProvider.GetSQL<M>(SqlTypeEnum.CreateBatchAsync)[0],
+                DC.SqlProvider.GetSQL<M>(UiMethodEnum.CreateBatchAsync)[0],
                 DC.GetParameters());
         }
 

@@ -87,6 +87,7 @@ namespace Yunyong.DataExchange.Core
                     var dicx = new DicModel
                     {
                         TableOne = dic.TableOne,
+                        TableClass=dic.TableClass,
                         KeyOne = dic.KeyOne,
                         AliasOne = dic.AliasOne,
                         TableTwo = dic.TableTwo,

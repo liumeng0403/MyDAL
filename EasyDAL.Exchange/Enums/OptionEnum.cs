@@ -44,6 +44,12 @@ namespace Yunyong.DataExchange.Enums
         ChangeMinus,
 
         /// <summary>
+        /// ""
+        /// </summary>
+        [Description("")]
+        Column,
+
+        /// <summary>
         /// =
         /// </summary>
         [Description("=")]

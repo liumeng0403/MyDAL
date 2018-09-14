@@ -1,6 +1,7 @@
 using Yunyong.DataExchange;
 ﻿using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using EasyDAL.Exchange.Tests.Enums;
 using Xunit;
@@ -24,6 +25,8 @@ namespace EasyDAL.Exchange.Tests
             var name = "辛文丽";
             var level = 128;
 
+            /**************************************************************************************************************************/
+
             var xx1 = "";
 
             //
@@ -33,8 +36,11 @@ namespace EasyDAL.Exchange.Tests
                 .InnerJoin(() => record1).On(() => agent1.Id == record1.AgentId)
                 .Where(() => agent1.CreatedOn >= DateTime.Now.AddDays(-60))                                                               //  const  method  DateTime  >=
                 .QueryListAsync<AgentInventoryRecord>();
+            Assert.True(res1.Count == 574);
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
+
+            /**************************************************************************************************************************/
 
             var xx2 = "";
 
@@ -45,8 +51,11 @@ namespace EasyDAL.Exchange.Tests
                 .InnerJoin(() => record2).On(() => agent2.Id == record2.AgentId)
                 .Where(() => agent2.CreatedOn >= Convert.ToDateTime("2018-08-16 19:20:28.118853"))                      //  const  method  DateTime  >=
                 .QueryListAsync<AgentInventoryRecord>();
+            Assert.True(res2.Count == 523);
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters);
+
+            /**************************************************************************************************************************/
 
             var xx3 = "";
 
@@ -57,8 +66,12 @@ namespace EasyDAL.Exchange.Tests
                 .InnerJoin(() => record3).On(() => agent3.Id == record3.AgentId)
                 .Where(() => record3.AgentId == Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef"))                  //  const  method  Guid  ==
                 .QueryListAsync<AgentInventoryRecord>();
+            Assert.True(res3.Count == 1);
+            Assert.Equal(res3.First().Id , Guid.Parse("02dbc81c-5c9a-4cdf-8bf0-016551f756c4"));
 
             var tuple3 = (XDebug.SQL, XDebug.Parameters);
+
+            /**************************************************************************************************************************/
 
             var xx4 = "";
 
@@ -69,8 +82,11 @@ namespace EasyDAL.Exchange.Tests
                 .InnerJoin(() => record4).On(() => agent4.Id == record4.AgentId)
                 .Where(() => agent4.Name == "辛文丽")                                                                                                            //  const  string  ==
                 .QueryListAsync<AgentInventoryRecord>();
+            Assert.True(res4.Count == 1);
 
             var tuple4 = (XDebug.SQL, XDebug.Parameters);
+
+            /**************************************************************************************************************************/
 
             var xx5 = "";
 
@@ -81,8 +97,11 @@ namespace EasyDAL.Exchange.Tests
                 .InnerJoin(() => record5).On(() => agent5.Id == record5.AgentId)
                 .Where(() => agent5.AgentLevel == AgentLevel.DistiAgent)                                                                           //  const  enum  ==
                 .QueryListAsync<AgentInventoryRecord>();
+            Assert.True(res5.Count == 574);
 
             var tuple5 = (XDebug.SQL, XDebug.Parameters);
+
+            /**************************************************************************************************************************/
 
             var xx6 = "";
 
@@ -92,9 +111,13 @@ namespace EasyDAL.Exchange.Tests
                 .From(() => agent6)
                 .InnerJoin(() => record6).On(() => agent6.Id == record6.AgentId)
                 .Where(() => agent6.Id == m.Id)                                                                                                                              //  virable  prop  Guid  ==
-                .QueryListAsync<AgentInventoryRecord>();
+                .QueryListAsync<Agent>();
+            Assert.True(res6.Count == 1);
+            Assert.Equal(res6.First().Id, Guid.Parse("0ce552c0-2f5e-4c22-b26d-01654443b30e"));
 
             var tuple6 = (XDebug.SQL, XDebug.Parameters);
+
+            /**************************************************************************************************************************/
 
             var xx7 = "";
 
@@ -105,8 +128,11 @@ namespace EasyDAL.Exchange.Tests
                 .InnerJoin(() => record7).On(() => agent7.Id == record7.AgentId)
                 .Where(() => agent7.Name == name)                                                                                                                 //  virable  string  ==
                 .QueryListAsync<AgentInventoryRecord>();
+            Assert.True(res7.Count == 1);
 
             var tuple7 = (XDebug.SQL, XDebug.Parameters);
+
+            /**************************************************************************************************************************/
 
             var xx8 = "";
 
@@ -117,8 +143,11 @@ namespace EasyDAL.Exchange.Tests
                 .InnerJoin(() => record8).On(() => agent8.Id == record8.AgentId)
                 .Where(() => agent8.AgentLevel == (AgentLevel)level)                                                                                        //  virable  enum  ==
                 .QueryListAsync<AgentInventoryRecord>();
+            Assert.True(res8.Count == 574);
 
             var tuple8 = (XDebug.SQL, XDebug.Parameters);
+
+            /**************************************************************************************************************************/
 
             var xx9 = "";
 
@@ -129,8 +158,11 @@ namespace EasyDAL.Exchange.Tests
                 .InnerJoin(() => record9).On(() => agent9.Id == record9.AgentId)
                 .Where(() => agent9.CreatedOn >= WhereTest.DateTime_大于等于)                                                              //  prop prop DateTime  >=
                 .QueryListAsync<AgentInventoryRecord>();
+            Assert.True(res9.Count == 574);
 
             var tuple9 = (XDebug.SQL, XDebug.Parameters);
+
+            /**************************************************************************************************************************/
 
             var xx = "";
 

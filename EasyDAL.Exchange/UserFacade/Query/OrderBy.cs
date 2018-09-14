@@ -37,7 +37,7 @@ namespace Yunyong.DataExchange.UserFacade.Query
         /// <param name="pageSize">每页条数</param>
         public async Task<PagingList<M>> QueryPagingListAsync(int pageIndex, int pageSize)
         {
-            return await QueryPagingListAsyncHandle<M, M>(pageIndex, pageSize, SqlTypeEnum.QueryPagingListAsync);
+            return await QueryPagingListAsyncHandle<M, M>(pageIndex, pageSize, UiMethodEnum.QueryPagingListAsync);
         }
         /// <summary>
         /// 单表分页查询
@@ -47,7 +47,7 @@ namespace Yunyong.DataExchange.UserFacade.Query
         public async Task<PagingList<M>> QueryPagingListAsync(PagingQueryOption option)
         {
             OrderByOptionHandle(option);
-            return await QueryPagingListAsyncHandle<M, M>(option.PageIndex, option.PageSize, SqlTypeEnum.QueryPagingListAsync);
+            return await QueryPagingListAsyncHandle<M, M>(option.PageIndex, option.PageSize, UiMethodEnum.QueryPagingListAsync);
         }
         /// <summary>
         /// 单表分页查询
@@ -57,7 +57,7 @@ namespace Yunyong.DataExchange.UserFacade.Query
         /// <param name="pageSize">每页条数</param>
         public async Task<PagingList<VM>> QueryPagingListAsync<VM>(int pageIndex, int pageSize)
         {
-            return await QueryPagingListAsyncHandle<M, VM>(pageIndex, pageSize, SqlTypeEnum.QueryPagingListAsync);
+            return await QueryPagingListAsyncHandle<M, VM>(pageIndex, pageSize, UiMethodEnum.QueryPagingListAsync);
         }
         /// <summary>
         /// 单表分页查询
@@ -68,7 +68,7 @@ namespace Yunyong.DataExchange.UserFacade.Query
         public async Task<PagingList<VM>> QueryPagingListAsync<VM>(PagingQueryOption option)
         {
             OrderByOptionHandle(option);
-            return await QueryPagingListAsyncHandle<M, VM>(option.PageIndex, option.PageSize, SqlTypeEnum.QueryPagingListAsync);
+            return await QueryPagingListAsyncHandle<M, VM>(option.PageIndex, option.PageSize, UiMethodEnum.QueryPagingListAsync);
         }
 
 

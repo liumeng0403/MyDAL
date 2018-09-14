@@ -103,7 +103,52 @@ namespace Yunyong.DataExchange.Core
             return str;
         }
 
-        internal string GetJoins()
+        internal string Columns()
+        {
+            var str = string.Empty;
+            var list = new List<string>();
+            foreach (var dic in DC.Conditions)
+            {
+                if (dic.Option != OptionEnum.Column)
+                {
+                    continue;
+                }
+
+                switch (dic.Action)
+                {
+                    case ActionEnum.Select:
+                        switch (dic.Crud)
+                        {
+                            case CrudTypeEnum.Join:
+                                list.Add( $" \t {dic.AliasOne}.`{dic.KeyOne}` ");
+                                break;
+                        }
+                        break;
+                }
+            }
+
+            str = string.Join(",\r\n", list);
+            return str;
+        }
+
+        private string From()
+        {
+            return "\r\n from";
+        }
+
+        private string Table<M>(UiMethodEnum type)
+        {
+
+            var tableName = string.Empty;
+            if (type != UiMethodEnum.JoinQueryListAsync)
+            {
+                TryGetTableName<M>(out tableName);
+            }
+
+            return tableName;
+        }
+
+        internal string Joins()
         {
             var str = string.Empty;
 
@@ -132,7 +177,7 @@ namespace Yunyong.DataExchange.Core
             return str;
         }
 
-        internal string GetWheres()
+        internal string Wheres()
         {
             //if (!DC.Conditions.Any(it => it.Action == ActionEnum.Where)
             //    && !DC.Conditions.Any(it => it.Action == ActionEnum.And)
@@ -216,6 +261,8 @@ namespace Yunyong.DataExchange.Core
                         break;
                 }
             }
+
+            str = str.Replace("where", "\r\n where");
 
             return str;
         }
@@ -338,62 +385,57 @@ namespace Yunyong.DataExchange.Core
             }
         }
 
-        internal List<string> GetSQL<M>(SqlTypeEnum type, int? pageIndex = null, int? pageSize = null)
+        internal List<string> GetSQL<M>(UiMethodEnum type, int? pageIndex = null, int? pageSize = null)
         {
             var list = new List<string>();
 
             //
-            var tableName = string.Empty;
-            if (type != SqlTypeEnum.JoinQueryListAsync)
-            {
-                TryGetTableName<M>(out tableName);
-            }
             switch (type)
             {
-                case SqlTypeEnum.CreateAsync:
-                    list.Add($" insert into {tableName} {GetColumns()} values {GetValues()} ;");
+                case UiMethodEnum.CreateAsync:
+                    list.Add($" insert into {Table<M>(type)} {GetColumns()} values {GetValues()} ;");
                     break;
-                case SqlTypeEnum.CreateBatchAsync:
+                case UiMethodEnum.CreateBatchAsync:
                     list.Add(
-                                  $" LOCK TABLES {tableName} WRITE; " +
-                                  $" /*!40000 ALTER TABLE {tableName} DISABLE KEYS */; " +
-                                  $" insert into  {tableName} {GetColumns()} VALUES {GetValues()} ; " +
-                                  $" /*!40000 ALTER TABLE {tableName} ENABLE KEYS */; " +
+                                  $" LOCK TABLES {Table<M>(type)} WRITE; " +
+                                  $" /*!40000 ALTER TABLE {Table<M>(type)} DISABLE KEYS */; " +
+                                  $" insert into  {Table<M>(type)} {GetColumns()} VALUES {GetValues()} ; " +
+                                  $" /*!40000 ALTER TABLE {Table<M>(type)} ENABLE KEYS */; " +
                                   $" UNLOCK TABLES; "
                                  );
                     break;
-                case SqlTypeEnum.DeleteAsync:
-                    list.Add($" delete from {tableName} {GetWheres()} ; ");
+                case UiMethodEnum.DeleteAsync:
+                    list.Add($" delete {From()} {Table<M>(type)} {Wheres()} ; ");
                     break;
-                case SqlTypeEnum.UpdateAsync:
-                    list.Add($" update {tableName} set {DC.SqlProvider.GetUpdates()} {GetWheres()} ;");
+                case UiMethodEnum.UpdateAsync:
+                    list.Add($" update {Table<M>(type)} set {DC.SqlProvider.GetUpdates()} {Wheres()} ;");
                     break;
-                case SqlTypeEnum.QueryFirstOrDefaultAsync:
-                    list.Add($"SELECT * FROM {tableName} {GetWheres()} ; ");
+                case UiMethodEnum.QueryFirstOrDefaultAsync:
+                    list.Add($"select * {From()} {Table<M>(type)} {Wheres()} ; ");
                     break;
-                case SqlTypeEnum.QueryListAsync:
-                    list.Add($"SELECT * FROM {tableName} {GetWheres()} ; ");
+                case UiMethodEnum.QueryListAsync:
+                    list.Add($"select * {From()} {Table<M>(type)} {Wheres()} ; ");
                     break;
-                case SqlTypeEnum.QueryPagingListAsync:
-                    var wherePart = GetWheres();
-                    list.Add($"SELECT count(*) FROM {tableName} {wherePart} ; ");
-                    list.Add($"SELECT * FROM {tableName} {wherePart} order by {GetOrderByPart<M>()} limit {(pageIndex - 1) * pageSize},{pageIndex * pageSize}  ; ");
+                case UiMethodEnum.QueryPagingListAsync:
+                    var wherePart = Wheres();
+                    list.Add($"select count(*) {From()} {Table<M>(type)} {wherePart} ; ");
+                    list.Add($"select * {From()} {Table<M>(type)} {wherePart} order by {GetOrderByPart<M>()} limit {(pageIndex - 1) * pageSize},{pageIndex * pageSize}  ; ");
                     break;
-                case SqlTypeEnum.QueryAllPagingListAsync:
-                    list.Add($"SELECT count(*) FROM {tableName} ; ");
-                    list.Add($"SELECT * FROM {tableName} order by {GetOrderByPart<M>()} limit {(pageIndex - 1) * pageSize},{pageIndex * pageSize}  ; ");
+                case UiMethodEnum.QueryAllPagingListAsync:
+                    list.Add($"select count(*) {From()} {Table<M>(type)} ; ");
+                    list.Add($"select * {From()} {Table<M>(type)} order by {GetOrderByPart<M>()} limit {(pageIndex - 1) * pageSize},{pageIndex * pageSize}  ; ");
                     break;
-                case SqlTypeEnum.JoinQueryListAsync:
-                    list.Add($" select * from {GetJoins()} {GetWheres()} ; ");
+                case UiMethodEnum.JoinQueryListAsync:
+                    list.Add($" select {Columns()} {From()} {Joins()} {Wheres()} ; ");
                     break;
-                case SqlTypeEnum.QuerySingleValueAsync:
-                    list.Add($" select {GetSingleValuePart()} from {tableName} {GetWheres()} ; ");
+                case UiMethodEnum.QuerySingleValueAsync:
+                    list.Add($" select {GetSingleValuePart()} {From()} {Table<M>(type)} {Wheres()} ; ");
                     break;
-                case SqlTypeEnum.ExistAsync:
-                    list.Add($" select count(*) from {tableName} {GetWheres()} ; ");
+                case UiMethodEnum.ExistAsync:
+                    list.Add($" select count(*) {From()} {Table<M>(type)} {Wheres()} ; ");
                     break;
-                case SqlTypeEnum.QueryAllAsync:
-                    list.Add($" select * from {tableName} ; ");
+                case UiMethodEnum.QueryAllAsync:
+                    list.Add($" select * {From()} {Table<M>(type)} ; ");
                     break;
             }
 
