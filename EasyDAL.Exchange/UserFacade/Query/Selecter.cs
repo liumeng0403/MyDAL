@@ -38,7 +38,7 @@ namespace EasyDAL.Exchange.UserFacade.Query
         /// <returns>返回全表分页数据</returns>
         public async Task<PagingList<M>> QueryAllPagingListAsync(int pageIndex, int pageSize)
         {
-            return await QueryPagingListAsyncHandle<M, M>(pageIndex, pageSize, SqlTypeEnum.QueryAllPagingListAsync);
+            return await QueryPagingListAsyncHandle<M, M>(pageIndex, pageSize, UiMethodEnum.QueryAllPagingListAsync);
         }
         /// <summary>
         /// 单表分页查询
@@ -49,7 +49,7 @@ namespace EasyDAL.Exchange.UserFacade.Query
         /// <returns>返回全表分页数据</returns>
         public async Task<PagingList<VM>> QueryAllPagingListAsync<VM>(int pageIndex, int pageSize)
         {
-            return await QueryPagingListAsyncHandle<M, VM>(pageIndex, pageSize, SqlTypeEnum.QueryAllPagingListAsync);
+            return await QueryPagingListAsyncHandle<M, VM>(pageIndex, pageSize, UiMethodEnum.QueryAllPagingListAsync);
         }
 
     }

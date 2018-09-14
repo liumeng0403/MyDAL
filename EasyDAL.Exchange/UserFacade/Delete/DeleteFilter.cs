@@ -21,7 +21,7 @@ namespace EasyDAL.Exchange.UserFacade.Delete
         {
             return await SqlHelper.ExecuteAsync(
                 DC.Conn,
-                DC.SqlProvider.GetSQL<M>(SqlTypeEnum.DeleteAsync)[0],
+                DC.SqlProvider.GetSQL<M>(UiMethodEnum.DeleteAsync)[0],
                 DC.GetParameters());
         }
 

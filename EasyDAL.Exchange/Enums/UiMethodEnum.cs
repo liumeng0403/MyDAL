@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EasyDAL.Exchange.Enums
+﻿namespace EasyDAL.Exchange.Enums
 {
-    internal enum SqlTypeEnum
+    internal enum UiMethodEnum
     {
         CreateAsync,
         CreateBatchAsync,

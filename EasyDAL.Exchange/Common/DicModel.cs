@@ -8,6 +8,7 @@ namespace EasyDAL.Exchange.Common
     internal class DicModel
     {
         public string TableOne { get; set; }
+        public string TableClass { get; set; }
         public string KeyOne { get; set; }
         public string AliasOne{get;set;}
         public string TableTwo { get; set; }

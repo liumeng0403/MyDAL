@@ -44,6 +44,12 @@ namespace EasyDAL.Exchange.Enums
         ChangeMinus,
 
         /// <summary>
+        /// ""
+        /// </summary>
+        [Description("")]
+        Column,
+
+        /// <summary>
         /// =
         /// </summary>
         [Description("=")]

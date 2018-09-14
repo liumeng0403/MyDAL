@@ -233,13 +233,38 @@ namespace EasyDAL.Exchange.Core
             }
         }
 
+        internal void SelectMHandle<VM>()
+        {
+            var vmType = typeof(VM);
+            var vmName = vmType.FullName;
+            var tab = DC.Conditions.FirstOrDefault(it => vmName.Equals(it.TableClass, StringComparison.OrdinalIgnoreCase));
+            if (tab!=null)
+            {
+                foreach (var prop in DC.GH.GetPropertyInfos(vmType))
+                {
+                    DC.AddConditions(new DicModel
+                    {
+                        KeyOne = prop.Name,
+                        AliasOne = tab.AliasOne,
+                        Action = ActionEnum.Select,
+                        Option = OptionEnum.Column,
+                        Crud = CrudTypeEnum.Join
+                    });
+                }
+            }
+            else
+            {
+
+            }
+        }
+
         /****************************************************************************************************************************************/
 
         protected async Task<VM> QueryFirstOrDefaultAsyncHandle<DM,VM>()
         {
             return await SqlHelper.QueryFirstOrDefaultAsync<VM>(
                 DC.Conn,
-                DC.SqlProvider.GetSQL<DM>(SqlTypeEnum.QueryFirstOrDefaultAsync)[0],
+                DC.SqlProvider.GetSQL<DM>(UiMethodEnum.QueryFirstOrDefaultAsync)[0],
                 DC.GetParameters());
         }
 
@@ -247,11 +272,11 @@ namespace EasyDAL.Exchange.Core
         {
             return (await SqlHelper.QueryAsync<VM>(
                 DC.Conn,
-                DC.SqlProvider.GetSQL<DM>(SqlTypeEnum.QueryListAsync)[0],
+                DC.SqlProvider.GetSQL<DM>(UiMethodEnum.QueryListAsync)[0],
                 DC.GetParameters())).ToList();
         }
 
-        internal async Task<PagingList<VM>> QueryPagingListAsyncHandle<DM,VM>(int pageIndex, int pageSize,SqlTypeEnum sqlType)
+        internal async Task<PagingList<VM>> QueryPagingListAsyncHandle<DM,VM>(int pageIndex, int pageSize, UiMethodEnum sqlType)
         {
             var result = new PagingList<VM>();
             result.PageIndex = pageIndex;
@@ -267,7 +292,7 @@ namespace EasyDAL.Exchange.Core
         {
             return (await SqlHelper.QueryAsync<VM>(
                 DC.Conn,
-                DC.SqlProvider.GetSQL<DM>(SqlTypeEnum.QueryAllAsync)[0],
+                DC.SqlProvider.GetSQL<DM>(UiMethodEnum.QueryAllAsync)[0],
                 DC.GetParameters())).ToList();
         }
     }

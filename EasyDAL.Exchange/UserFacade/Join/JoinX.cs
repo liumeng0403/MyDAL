@@ -28,6 +28,7 @@ namespace EasyDAL.Exchange.UserFacade.Join
             DC.AddConditions(new DicModel
             {
                 TableOne = DC.SqlProvider.GetTableName(m),
+                TableClass=m.GetType().FullName,
                 AliasOne = alias,
                 Action = ActionEnum.LeftJoin,
                 Crud = CrudTypeEnum.Join

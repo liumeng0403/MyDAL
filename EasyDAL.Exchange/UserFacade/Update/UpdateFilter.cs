@@ -20,7 +20,7 @@ namespace EasyDAL.Exchange.UserFacade.Update
         {
             return await SqlHelper.ExecuteAsync(
                 DC.Conn,
-                DC.SqlProvider.GetSQL<M>(SqlTypeEnum.UpdateAsync)[0],
+                DC.SqlProvider.GetSQL<M>(UiMethodEnum.UpdateAsync)[0],
                 DC.GetParameters());
         }
 
