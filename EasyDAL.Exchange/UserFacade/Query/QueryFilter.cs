@@ -24,7 +24,7 @@ namespace EasyDAL.Exchange.UserFacade.Query
             var field = DC.EH.ExpressionHandle(func);
             DC.AddConditions(new DicModel
             {
-                KeyOne = field,
+                ColumnOne = field,
                 Param = field,
                 ParamRaw=field,
                 Action = ActionEnum.Select,

@@ -48,6 +48,7 @@ namespace EasyDAL.Exchange.Enums
         /// </summary>
         [Description("")]
         Column,
+        ColumnAs,
 
         /// <summary>
         /// =

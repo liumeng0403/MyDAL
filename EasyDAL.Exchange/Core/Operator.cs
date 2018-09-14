@@ -98,7 +98,7 @@ namespace EasyDAL.Exchange.Core
             }
             DC.AddConditions(new DicModel
             {
-                KeyOne = key,
+                ColumnOne = key,
                 Param = key,
                 ParamRaw=key,
                 Value = val,
@@ -115,7 +115,7 @@ namespace EasyDAL.Exchange.Core
             {             
                 DC.AddConditions(new DicModel
                 {
-                    KeyOne = tp.key,
+                    ColumnOne = tp.key,
                     Param = tp.param,
                     ParamRaw=tp.param,
                     Value = tp.val,
@@ -152,7 +152,7 @@ namespace EasyDAL.Exchange.Core
                 }
                 DC.AddConditions(new DicModel
                 {
-                    KeyOne = tp.key,
+                    ColumnOne = tp.key,
                     Param = tp.param,
                     ParamRaw=tp.param,
                     Value = tp.val,
@@ -197,7 +197,7 @@ namespace EasyDAL.Exchange.Core
 
             DC.AddConditions(new DicModel
             {
-                KeyOne = field,
+                ColumnOne = field,
                 Option = option,
                 Action = ActionEnum.OrderBy,
                 Crud = CrudTypeEnum.Query
@@ -224,7 +224,7 @@ namespace EasyDAL.Exchange.Core
                         }
                         DC.AddConditions(new DicModel
                         {
-                            KeyOne = item.Field,
+                            ColumnOne = item.Field,
                             Action = ActionEnum.OrderBy,
                             Option = op
                         });
@@ -237,15 +237,15 @@ namespace EasyDAL.Exchange.Core
         {
             var vmType = typeof(VM);
             var vmName = vmType.FullName;
-            var tab = DC.Conditions.FirstOrDefault(it => vmName.Equals(it.TableClass, StringComparison.OrdinalIgnoreCase));
+            var tab = DC.Conditions.FirstOrDefault(it => vmName.Equals(it.ClassFullName, StringComparison.OrdinalIgnoreCase));
             if (tab!=null)
             {
                 foreach (var prop in DC.GH.GetPropertyInfos(vmType))
                 {
                     DC.AddConditions(new DicModel
                     {
-                        KeyOne = prop.Name,
-                        AliasOne = tab.AliasOne,
+                        ColumnOne = prop.Name,
+                        TableAliasOne = tab.TableAliasOne,
                         Action = ActionEnum.Select,
                         Option = OptionEnum.Column,
                         Crud = CrudTypeEnum.Join
