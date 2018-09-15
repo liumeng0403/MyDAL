@@ -3,6 +3,7 @@ using EasyDAL.Exchange.Tests.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using EasyDAL.Exchange.Tests.Enums;
 using Xunit;
 using Yunyong.Core;
 using Yunyong.DataExchange;
@@ -88,6 +89,36 @@ namespace EasyDAL.Exchange.Tests
                 .QueryListAsync();
 
             var tuple4 = (XDebug.SQL, XDebug.Parameters);
+
+            // no where --> and or
+            var res41 = await Conn.OpenDebug()
+                .Selecter<Agent>()
+                .Where(new
+                {
+                    //Id = Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"),
+                    //Name = "樊士芹",
+                    xxx = "xxx"
+                })
+                .And(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
+                .Or(it => it.AgentLevel == AgentLevel.DistiAgent)
+                .QueryListAsync();
+
+            var tuple41 = (XDebug.SQL, XDebug.Parameters);
+
+            // no where --> or and 
+            var res42 = await Conn.OpenDebug()
+                .Selecter<Agent>()
+                .Where(new
+                {
+                    //Id = Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"),
+                    //Name = "樊士芹",
+                    xxx = "xxx"
+                })
+                .Or(it => it.AgentLevel == AgentLevel.Customer)
+                .And(it => it.Name == "金月琴")
+                .QueryListAsync();
+
+            var tuple42 = (XDebug.SQL, XDebug.Parameters);
 
             var xx5 = "";
 

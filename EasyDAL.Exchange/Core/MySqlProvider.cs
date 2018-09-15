@@ -1,15 +1,13 @@
-﻿
-using Yunyong.DataExchange.AdoNet;
-using Yunyong.DataExchange.Common;
-using Yunyong.DataExchange.Core;
-using Yunyong.DataExchange.Enums;
-using Yunyong.DataExchange.Extensions;
-using Yunyong.DataExchange.Helper;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Yunyong.DataExchange.AdoNet;
+using Yunyong.DataExchange.Common;
+using Yunyong.DataExchange.Enums;
+using Yunyong.DataExchange.Extensions;
+using Yunyong.DataExchange.Helper;
 
 namespace Yunyong.DataExchange.Core
 {
@@ -292,8 +290,21 @@ namespace Yunyong.DataExchange.Core
                 }
             }
 
-            str = str.Replace("where", "\r\n where");
-
+            if (!string.IsNullOrWhiteSpace(str)
+                && DC.Conditions.All(it=>it.Action!= ActionEnum.Where))
+            {
+                var aIdx = str.IndexOf(" and ",StringComparison.Ordinal);
+                var oIdx = str.IndexOf(" or ", StringComparison.Ordinal);
+                if (aIdx < oIdx)
+                {
+                    str = $" {ActionEnum.Where.ToEnumDesc<ActionEnum>()} true {str} ";
+                }
+                else
+                {
+                    str = $" {ActionEnum.Where.ToEnumDesc<ActionEnum>()} false {str} ";
+                }
+            }
+            
             return str;
         }
 
