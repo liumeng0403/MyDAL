@@ -1,8 +1,5 @@
 ﻿using EasyDAL.Exchange.Common;
 using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.Enums;
-using System;
-using System.Linq.Expressions;
 
 namespace EasyDAL.Exchange.UserFacade.Join
 {
@@ -13,13 +10,7 @@ namespace EasyDAL.Exchange.UserFacade.Join
             : base(dc)
         { }
 
-        public FromX On(Expression<Func<bool>> func)
-        {
-            var field = DC.EH.ExpressionHandle(func, ActionEnum.On);
-            field.Crud = CrudTypeEnum.Join;
-            DC.AddConditions(field);
-            return new FromX(DC);
-        }
+
 
     }
 }
