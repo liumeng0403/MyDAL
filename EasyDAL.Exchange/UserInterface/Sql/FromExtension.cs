@@ -1,7 +1,7 @@
-﻿using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.UserFacade.Join;
-using System;
+﻿using System;
 using System.Linq.Expressions;
+using Yunyong.DataExchange.Enums;
+using Yunyong.DataExchange.UserFacade.Join;
 
 namespace EasyDAL.Exchange
 {
