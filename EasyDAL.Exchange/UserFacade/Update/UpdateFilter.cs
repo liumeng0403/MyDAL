@@ -8,7 +8,7 @@ namespace Yunyong.DataExchange.UserFacade.Update
 {
     public class UpdateFilter<M> : Operator, IMethodObject
     {
-        internal UpdateFilter(DbContext dc)
+        internal UpdateFilter(Context dc)
             : base(dc)
         { }
 

@@ -12,7 +12,7 @@ namespace Yunyong.DataExchange.UserFacade.Query
 {
     public class QueryFilter<M> : Operator,IMethodObject
     {
-        internal QueryFilter(DbContext dc)
+        internal QueryFilter(Context dc)
             : base(dc)
         {  }
 

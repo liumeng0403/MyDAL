@@ -8,7 +8,7 @@ namespace Yunyong.DataExchange.UserFacade.Delete
 {
     public class DeleteFilter<M> : Operator, IMethodObject
     {
-        internal DeleteFilter(DbContext dc)
+        internal DeleteFilter(Context dc)
             : base(dc)
         { }
 

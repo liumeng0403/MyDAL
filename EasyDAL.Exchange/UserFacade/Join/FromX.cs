@@ -1,4 +1,4 @@
-﻿using Yunyong.DataExchange.Common;
+using Yunyong.DataExchange.Common;
 using Yunyong.DataExchange.Core;
 
 namespace Yunyong.DataExchange.UserFacade.Join
@@ -6,7 +6,7 @@ namespace Yunyong.DataExchange.UserFacade.Join
     public class FromX : Operator, IMethodObject
     {
 
-        internal FromX(DbContext dc)
+        internal FromX(Context dc)
             : base(dc)
         { }
 

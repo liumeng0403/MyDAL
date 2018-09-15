@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
@@ -15,7 +15,7 @@ namespace Yunyong.DataExchange.Core
     public abstract class Operator
     {
         
-        internal Operator(DbContext dc)
+        internal Operator(Context dc)
         {
             DC = dc;
             DC.OP = this;
@@ -56,7 +56,7 @@ namespace Yunyong.DataExchange.Core
 
             //
             var result = new List<(string key, string param, string val, Type valType, string colType)>();
-            var columns = (DC.SC.GetColumnInfos<M>(DC)).GetAwaiter().GetResult();
+            var columns = (DC.SC.GetColumnInfos(DC.SC.GetKey(typeof(M).FullName,DC.Conn.Database),DC)).GetAwaiter().GetResult();
             foreach (var prop in list)
             {
                 var val = string.Empty;
@@ -82,7 +82,7 @@ namespace Yunyong.DataExchange.Core
         
         /****************************************************************************************************************************************/
 
-        internal DbContext DC { get; set; }
+        internal Context DC { get; set; }
 
         /****************************************************************************************************************************************/
 

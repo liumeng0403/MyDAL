@@ -11,11 +11,11 @@ namespace Yunyong.DataExchange.ExpressionX
     internal class ValHandle
     {
 
-        private DbContext DC { get; set; }
+        private Context DC { get; set; }
 
         private ValHandle() { }
 
-        internal ValHandle(DbContext dc)
+        internal ValHandle(Context dc)
         {
             DC = dc;
         }

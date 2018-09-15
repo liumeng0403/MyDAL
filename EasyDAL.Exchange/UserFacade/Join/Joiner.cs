@@ -5,7 +5,7 @@ namespace Yunyong.DataExchange.UserFacade.Join
 {
     public class Joiner : Operator, IMethodObject
     {
-        internal Joiner(DbContext dc)
+        internal Joiner(Context dc)
             : base(dc)
         { }
 

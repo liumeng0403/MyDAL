@@ -14,7 +14,7 @@ namespace Yunyong.DataExchange.UserFacade.Join
     public class WhereX : Operator, IMethodObject
     {
 
-        internal WhereX(DbContext dc)
+        internal WhereX(Context dc)
             : base(dc)
         { }
 

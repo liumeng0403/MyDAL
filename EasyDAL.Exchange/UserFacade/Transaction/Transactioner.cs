@@ -10,7 +10,7 @@ namespace Yunyong.DataExchange.UserFacade.Transaction
     public sealed class Transactioner : Operator, IMethodObject
     {
 
-        internal Transactioner(DbContext dc)
+        internal Transactioner(Context dc)
             : base(dc)
         { }
 

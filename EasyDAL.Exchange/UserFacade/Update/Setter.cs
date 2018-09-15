@@ -5,7 +5,7 @@ namespace Yunyong.DataExchange.UserFacade.Update
 {
     public sealed class Setter<M> : Operator, IMethodObject
     {
-        internal Setter(DbContext dc)
+        internal Setter(Context dc)
             : base(dc)
         { }
     }

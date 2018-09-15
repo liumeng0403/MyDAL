@@ -10,7 +10,7 @@ namespace Yunyong.DataExchange.UserFacade.Query
     public class ThenOrderBy<M> : Operator, IMethodObject
     {
 
-        internal ThenOrderBy(DbContext dc)
+        internal ThenOrderBy(Context dc)
             : base(dc)
         { }
 

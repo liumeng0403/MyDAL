@@ -15,10 +15,10 @@ namespace Yunyong.DataExchange.Core
 {
     internal class MySqlProvider
     {
-        private DbContext DC { get; set; }
+        private Context DC { get; set; }
 
         private MySqlProvider() { }
-        internal MySqlProvider(DbContext dc)
+        internal MySqlProvider(Context dc)
         {
             DC = dc;
             DC.SqlProvider = this;
@@ -68,7 +68,7 @@ namespace Yunyong.DataExchange.Core
         private string GetOrderByPart<M>()
         {
             var str = string.Empty;
-            var cols = (DC.SC.GetColumnInfos<M>(DC)).GetAwaiter().GetResult();
+            var cols = (DC.SC.GetColumnInfos(DC.SC.GetKey(typeof(M).FullName,DC.Conn.Database),DC)).GetAwaiter().GetResult();
 
             if (DC.Conditions.Any(it => it.Action == ActionEnum.OrderBy))
             {
@@ -332,9 +332,9 @@ namespace Yunyong.DataExchange.Core
             return string.Join(",", list);
         }
 
-        internal async Task<List<ColumnInfo>> GetColumnsInfos<M>()
+        internal async Task<List<ColumnInfo>> GetColumnsInfos(string tableName)
         {
-            TryGetTableName<M>(out var tableName);
+            //TryGetTableName<M>(out var tableName);
             var sql = $@"
                                         SELECT distinct
                                             TABLE_NAME as TableName,
