@@ -13,12 +13,12 @@ namespace EasyDAL.Exchange.UserFacade.Join
             : base(dc)
         { }
 
-        public JoinX On(Expression<Func<bool>> func)
+        public FromX On(Expression<Func<bool>> func)
         {
             var field = DC.EH.ExpressionHandle(func, ActionEnum.On);
             field.Crud = CrudTypeEnum.Join;
             DC.AddConditions(field);
-            return new JoinX(DC);
+            return new FromX(DC);
         }
 
     }
