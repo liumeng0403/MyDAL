@@ -1,11 +1,12 @@
-using Yunyong.DataExchange.Common;
+﻿using Yunyong.DataExchange.Common;
 using Yunyong.DataExchange.Core;
 
 namespace Yunyong.DataExchange.UserFacade.Join
 {
-    public class Joiner : Operator, IMethodObject
+    public class JoinX : Operator, IMethodObject
     {
-        internal Joiner(DbContext dc)
+
+        internal JoinX(DbContext dc)
             : base(dc)
         { }
 
