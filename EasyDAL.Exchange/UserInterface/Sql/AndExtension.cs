@@ -44,12 +44,12 @@ namespace EasyDAL.Exchange
             return queryFilter;
         }
 
-        public static QueryFilterX And(this QueryFilterX queryFilterX, Expression<Func<bool>> func)
+        public static WhereX And(this WhereX where, Expression<Func<bool>> func)
         {
-            var field = queryFilterX. DC.EH.ExpressionHandle(func, ActionEnum.And);
+            var field = where. DC.EH.ExpressionHandle(func, ActionEnum.And);
             field.Crud = CrudTypeEnum.Join;
-            queryFilterX. DC.AddConditions(field);
-            return queryFilterX;
+            where. DC.AddConditions(field);
+            return where;
         }
 
     }

@@ -1,20 +1,19 @@
-﻿using System;
-using EasyDAL.Exchange.Common;
+﻿using EasyDAL.Exchange.Common;
 using EasyDAL.Exchange.Core;
 using EasyDAL.Exchange.Enums;
 using EasyDAL.Exchange.Helper;
+using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace EasyDAL.Exchange.UserFacade.Join
 {
-    public class QueryFilterX : Operator, IMethodObject
+    public class WhereX : Operator, IMethodObject
     {
 
-        internal QueryFilterX(DbContext dc)
+        internal WhereX(DbContext dc)
             : base(dc)
         { }
 

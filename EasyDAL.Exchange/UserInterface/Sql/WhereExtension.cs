@@ -57,12 +57,12 @@ namespace EasyDAL.Exchange
 
         /**************************************************************************************************************/
 
-        public static QueryFilterX Where(this FromX joinX, Expression<Func<bool>> func)
+        public static WhereX Where(this OnX on, Expression<Func<bool>> func)
         {
-            var field = joinX.DC.EH.ExpressionHandle(func, ActionEnum.Where);
+            var field = on.DC.EH.ExpressionHandle(func, ActionEnum.Where);
             field.Crud = CrudTypeEnum.Join;
-            joinX.DC.AddConditions(field);
-            return new QueryFilterX(joinX.DC);
+            on.DC.AddConditions(field);
+            return new WhereX(on.DC);
         }
 
     }
