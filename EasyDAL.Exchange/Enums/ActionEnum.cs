@@ -58,19 +58,19 @@ namespace EasyDAL.Exchange.Enums
         /// <summary>
         /// " where "
         /// </summary>
-        [Description(" where ")]
+        [Description(" \r\n where ")]
         Where,
 
         /// <summary>
         /// " and "
         /// </summary>
-        [Description(" and ")]
+        [Description(" \r\n and ")]
         And,
 
         /// <summary>
         /// " or "
         /// </summary>
-        [Description(" or ")]
+        [Description(" \r\n or ")]
         Or,
 
         /// <summary>

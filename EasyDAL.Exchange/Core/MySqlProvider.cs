@@ -1,7 +1,6 @@
 ﻿
 using EasyDAL.Exchange.AdoNet;
 using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Core;
 using EasyDAL.Exchange.Enums;
 using EasyDAL.Exchange.Extensions;
 using EasyDAL.Exchange.Helper;
@@ -292,8 +291,21 @@ namespace EasyDAL.Exchange.Core
                 }
             }
 
-            str = str.Replace("where", "\r\n where");
-
+            if (!string.IsNullOrWhiteSpace(str)
+                && DC.Conditions.All(it=>it.Action!= ActionEnum.Where))
+            {
+                var aIdx = str.IndexOf(" and ",StringComparison.Ordinal);
+                var oIdx = str.IndexOf(" or ", StringComparison.Ordinal);
+                if (aIdx < oIdx)
+                {
+                    str = $" {ActionEnum.Where.ToEnumDesc<ActionEnum>()} true {str} ";
+                }
+                else
+                {
+                    str = $" {ActionEnum.Where.ToEnumDesc<ActionEnum>()} false {str} ";
+                }
+            }
+            
             return str;
         }
 
