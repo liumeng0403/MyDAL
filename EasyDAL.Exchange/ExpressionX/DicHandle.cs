@@ -1,9 +1,7 @@
-﻿using Yunyong.DataExchange.Common;
-using Yunyong.DataExchange.Enums;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq.Expressions;
-using System.Text;
+using Yunyong.DataExchange.Common;
+using Yunyong.DataExchange.Enums;
 
 namespace Yunyong.DataExchange.ExpressionX
 {
@@ -52,7 +50,7 @@ namespace Yunyong.DataExchange.ExpressionX
                 TableAliasOne = alias,
                 Param = key,
                 ParamRaw = key,
-                Value = value,
+                CsValue = value,
                 ValueType = valType,
                 Option = OptionEnum.CharLength,
                 FuncSupplement = GetOption(nodeType,isR)
@@ -65,7 +63,7 @@ namespace Yunyong.DataExchange.ExpressionX
             {
                 ColumnOne = key,
                 TableAliasOne = alias,
-                Value = value,
+                CsValue = value,
                 ValueType = valType,
                 Param = key,
                 ParamRaw = key,
@@ -85,7 +83,7 @@ namespace Yunyong.DataExchange.ExpressionX
                 TableAliasOne = alias,
                 Param = key,
                 ParamRaw = key,
-                Value = value,
+                CsValue = value,
                 ValueType = valType,
                 Option = OptionEnum.In
             };
@@ -99,7 +97,7 @@ namespace Yunyong.DataExchange.ExpressionX
                 TableAliasOne = alias,
                 Param = key,
                 ParamRaw = key,
-                Value = value,
+                CsValue = value,
                 ValueType = valType,
                 Option = OptionEnum.Like
             };
@@ -112,7 +110,7 @@ namespace Yunyong.DataExchange.ExpressionX
                 ColumnOne = "OneEqualOne",
                 Param = "OneEqualOne",
                 ParamRaw = "OneEqualOne",
-                Value = value,
+                CsValue = value,
                 ValueType = valType,
                 Option = OptionEnum.OneEqualOne
             };
@@ -126,13 +124,25 @@ namespace Yunyong.DataExchange.ExpressionX
                 TableAliasOne = alias,
                 Param = key,
                 ParamRaw = key,
-                Value = true.ToString(),
+                CsValue = true.ToString(),
                 ValueType = valType,
                 Option = OptionEnum.Equal
             };
         }
 
         /*******************************************************************************************************/
+
+        internal static DicModel SelectColumnHandle(string columnOne,string tableAliasOne)
+        {
+            return new DicModel
+            {
+                ColumnOne = columnOne,
+                TableAliasOne = tableAliasOne,
+                Action = ActionEnum.Select,
+                Option = OptionEnum.Column,
+                Crud = CrudTypeEnum.Join
+            };
+        }
 
     }
 }

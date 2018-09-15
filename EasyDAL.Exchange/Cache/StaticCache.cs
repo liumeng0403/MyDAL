@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -11,7 +10,14 @@ namespace Yunyong.DataExchange.Cache
 {
     internal class StaticCache : ClassInstance<StaticCache>
     {
-        //private static GenericHelper GH { get; } = GenericHelper.Instance;
+        internal string GetTCKey<M>(DbContext dc)
+        {
+            var key = string.Empty;
+            key += dc.Conn.Database;
+            dc.SqlProvider.TryGetTableName<M>(out var tableName);
+            key += tableName;
+            return key;
+        }
 
         /*****************************************************************************************************************************************************/
 
@@ -46,14 +52,6 @@ namespace Yunyong.DataExchange.Cache
         /*****************************************************************************************************************************************************/
 
         private static ConcurrentDictionary<string, List<ColumnInfo>> TableColumnsCache { get; } = new ConcurrentDictionary<string, List<ColumnInfo>>();
-        private string GetTCKey<M>(DbContext dc)
-        {
-            var key = string.Empty;
-            key += dc.Conn.Database;
-            dc.SqlProvider.TryGetTableName<M>(out var tableName);
-            key += tableName;
-            return key;
-        }
         internal async Task<List<ColumnInfo>> GetColumnInfos<M>(DbContext dc)
         {
             var tcKey = GetTCKey<M>(dc);
@@ -64,6 +62,15 @@ namespace Yunyong.DataExchange.Cache
             }
 
             return columns;
+        }
+
+        /*****************************************************************************************************************************************************/
+
+        private static ConcurrentDictionary<string, Type> ModelTypeCache { get; } = new ConcurrentDictionary<string, Type>();
+
+        internal Type GetModelType<M>(string key)
+        {
+            return null;
         }
 
     }

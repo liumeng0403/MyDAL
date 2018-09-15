@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Yunyong.Core;
 using Yunyong.DataExchange.Common;
 using Yunyong.DataExchange.Enums;
+using Yunyong.DataExchange.ExpressionX;
 using Yunyong.DataExchange.Helper;
 
 namespace Yunyong.DataExchange.Core
@@ -102,7 +103,7 @@ namespace Yunyong.DataExchange.Core
                 ColumnOne = key,
                 Param = key,
                 ParamRaw=key,
-                Value = val,
+                CsValue = val,
                 ValueType=typeof(F),
                 Option = option,
                 Action = action,
@@ -120,7 +121,7 @@ namespace Yunyong.DataExchange.Core
                     ColumnOne = tp.key,
                     Param = tp.param,
                     ParamRaw=tp.param,
-                    Value = tp.val,
+                    CsValue = tp.val,
                     ValueType=tp.valType,
                     Action = ActionEnum.Update,
                     Option = OptionEnum.Set,
@@ -158,7 +159,7 @@ namespace Yunyong.DataExchange.Core
                     ColumnOne = tp.key,
                     Param = tp.param,
                     ParamRaw=tp.param,
-                    Value = tp.val,
+                    CsValue = tp.val,
                     ValueType=tp.valType,
                     ColumnType=tp.colType,
                     Action = action,
@@ -240,24 +241,44 @@ namespace Yunyong.DataExchange.Core
         {
             var vmType = typeof(VM);
             var vmName = vmType.FullName;
+            var vmProps = DC.GH.GetPropertyInfos(vmType);
             var tab = DC.Conditions.FirstOrDefault(it => vmName.Equals(it.ClassFullName, StringComparison.OrdinalIgnoreCase));
             if (tab!=null)
             {
-                foreach (var prop in DC.GH.GetPropertyInfos(vmType))
+                foreach (var prop in vmProps)
                 {
-                    DC.AddConditions(new DicModel
-                    {
-                        ColumnOne = prop.Name,
-                        TableAliasOne = tab.TableAliasOne,
-                        Action = ActionEnum.Select,
-                        Option = OptionEnum.Column,
-                        Crud = CrudTypeEnum.Join
-                    });
+                    DC.AddConditions(DicHandle.SelectColumnHandle(prop.Name, tab.TableAliasOne));
                 }
             }
             else
             {
+                var fullNames = DC.Conditions.Where(it => !string.IsNullOrWhiteSpace(it.ClassFullName)).Distinct();
+                throw new Exception($"请使用 [[Task<List<VM>> QueryListAsync<VM>(Expression<Func<VM>> func)]] 方法! 或者 {vmType.Name} 必须为 [[{string.Join(",", fullNames.Select(it => it.ClassName))}]] 其中之一 !");
 
+                // 下面代码 可能有问题
+                foreach (var name in fullNames.Select(it=>it.ClassFullName).Distinct())
+                {
+                    var type = Type.GetType(name);
+                    var mProps = DC.GH.GetPropertyInfos(type);
+                    foreach (var vprop in vmProps)
+                    {
+                        if (DC.Conditions.Any(it => vprop.Name.Equals(it.VmColumn, StringComparison.Ordinal)))
+                        {
+                            continue;
+                        }
+
+                        foreach (var mprop in mProps)
+                        {
+                            if (!vprop.Name.Equals(mprop.Name, StringComparison.Ordinal))
+                            {
+                                continue;
+                            }
+
+                            var ali = DC.Conditions.First(it => name.Equals(it.ClassFullName, StringComparison.Ordinal)).TableAliasOne;
+                            DC.AddConditions(DicHandle.SelectColumnHandle(vprop.Name,ali));
+                        }
+                    }
+                }
             }
         }
 

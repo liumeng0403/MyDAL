@@ -63,11 +63,11 @@ namespace Yunyong.DataExchange.Core
 
         internal void AddConditions(DicModel dic)
         {
-            if (!string.IsNullOrWhiteSpace(dic.Value)
-                && dic.Value.Contains(",")
+            if (!string.IsNullOrWhiteSpace(dic.CsValue)
+                && dic.CsValue.Contains(",")
                 && dic.Option == OptionEnum.In)
             {
-                var vals = dic.Value.Split(',').Select(it => it);
+                var vals = dic.CsValue.Split(',').Select(it => it);
                 var i = 0;
                 foreach (var val in vals)
                 {
@@ -95,7 +95,7 @@ namespace Yunyong.DataExchange.Core
                         AliasTwo = dic.AliasTwo,
                         Param = dic.Param,
                         ParamRaw = dic.ParamRaw,
-                        Value = val,
+                        CsValue = val,
                         ValueType = dic.ValueType,
                         ColumnType = dic.ColumnType,
                         Option = op,
@@ -154,7 +154,7 @@ namespace Yunyong.DataExchange.Core
                     ColumnOne = prop.Name,
                     Param = prop.Name,
                     ParamRaw = prop.Name,
-                    Value = val,
+                    CsValue = val,
                     ValueType = prop.PropertyType,
                     ColumnType = columns.First(it => it.ColumnName.Equals(prop.Name, StringComparison.OrdinalIgnoreCase)).DataType,
                     Action = ActionEnum.Insert,
@@ -194,25 +194,25 @@ namespace Yunyong.DataExchange.Core
                     else if (item.ValueType == typeof(short)
                              || item.ValueType== typeof(short?))
                     {
-                        item.DbValue = item.Value.ToShort().ToString();
-                        paras.Add(item.Param, item.Value.ToShort(), DbType.Int16);
+                        item.DbValue = item.CsValue.ToShort().ToString();
+                        paras.Add(item.Param, item.CsValue.ToShort(), DbType.Int16);
                     }
                     else if (item.ValueType == typeof(int)
                              || item.ValueType== typeof(int?))
                     {
-                        item.DbValue = item.Value.ToInt().ToString();
-                        paras.Add(item.Param, item.Value.ToInt(), DbType.Int32);
+                        item.DbValue = item.CsValue.ToInt().ToString();
+                        paras.Add(item.Param, item.CsValue.ToInt(), DbType.Int32);
                     }
                     else if (item.ValueType == typeof(long)
                              || item.ValueType==typeof(long?))
                     {
-                        item.DbValue = item.Value.ToLong().ToString();
-                        paras.Add(item.Param, item.Value.ToLong(), DbType.Int64);
+                        item.DbValue = item.CsValue.ToLong().ToString();
+                        paras.Add(item.Param, item.CsValue.ToLong(), DbType.Int64);
                     }
                     else
                     {
-                        item.DbValue = item.Value;
-                        paras.Add(item.Param, item.Value);
+                        item.DbValue = item.CsValue;
+                        paras.Add(item.Param, item.CsValue);
                     }
                 }
             }

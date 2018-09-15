@@ -27,7 +27,7 @@ namespace Yunyong.DataExchange.Helper
             if (!string.IsNullOrWhiteSpace(item.ColumnType)
                 && item.ColumnType.Equals("bit", StringComparison.OrdinalIgnoreCase))
             {
-                if (item.Value.ToBool())
+                if (item.CsValue.ToBool())
                 {
                     item.DbValue = 1.ToString();
                     return GetDefault(item.Param, 1, DbType.UInt16);
@@ -40,8 +40,8 @@ namespace Yunyong.DataExchange.Helper
             }
             else
             {
-                item.DbValue = item.Value.ToBool().ToString();
-                return GetDefault(item.Param, item.Value.ToBool(), DbType.Boolean);
+                item.DbValue = item.CsValue.ToBool().ToString();
+                return GetDefault(item.Param, item.CsValue.ToBool(), DbType.Boolean);
             }
         }
 
