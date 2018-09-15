@@ -33,7 +33,8 @@ namespace EasyDAL.Exchange.Tests
             var res2 = await Conn.OpenDebug()
                 .Joiner<Agent, AgentInventoryRecord>(out var agent2, out var record2)
                 .From(() => agent2)
-                .InnerJoin(() => record2).On(() => agent2.Id == record2.AgentId)
+                .InnerJoin(() => record2)
+                .On(() => agent2.Id == record2.AgentId)
                 .Where(() => record2.CreatedOn >= WhereTest.CreatedOn)
                 .QueryListAsync(()=>new AgentVM
                 {

@@ -10,10 +10,10 @@ using Yunyong.DataExchange.Helper;
 
 namespace Yunyong.DataExchange.UserFacade.Join
 {
-    public class QueryFilterX : Operator, IMethodObject
+    public class WhereX : Operator, IMethodObject
     {
 
-        internal QueryFilterX(DbContext dc)
+        internal WhereX(DbContext dc)
             : base(dc)
         { }
 
