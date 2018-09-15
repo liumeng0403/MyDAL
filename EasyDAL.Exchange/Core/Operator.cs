@@ -237,9 +237,9 @@ namespace Yunyong.DataExchange.Core
             }
         }
 
-        internal void SelectMHandle<VM>()
+        internal void SelectMHandle<M>()
         {
-            var vmType = typeof(VM);
+            var vmType = typeof(M);
             var vmName = vmType.FullName;
             var vmProps = DC.GH.GetPropertyInfos(vmType);
             var tab = DC.Conditions.FirstOrDefault(it => vmName.Equals(it.ClassFullName, StringComparison.OrdinalIgnoreCase));
@@ -279,6 +279,18 @@ namespace Yunyong.DataExchange.Core
                         }
                     }
                 }
+            }
+        }
+
+        internal void SelectMHandle<VM>(Expression<Func<VM>> func)
+        {
+            var list = DC.EH.ExpressionHandle(func);
+            foreach (var dic in list)
+            {
+                dic.Action = ActionEnum.Select;
+                dic.Option = OptionEnum.ColumnAs;
+                dic.Crud = CrudTypeEnum.Join;
+                DC.AddConditions(dic);
             }
         }
 

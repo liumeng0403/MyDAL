@@ -85,6 +85,26 @@ namespace Yunyong.DataExchange.Core
 
             return str;
         }
+        //private string GetOrderByPart()
+        //{
+        //    var str = string.Empty;
+        //    var cols = (DC.SC.GetColumnInfos<M>(DC)).GetAwaiter().GetResult();
+
+        //    if (DC.Conditions.Any(it => it.Action == ActionEnum.OrderBy))
+        //    {
+        //        str = string.Join(",", DC.Conditions.Where(it => it.Action == ActionEnum.OrderBy).Select(it => $" `{it.ColumnOne}` {it.Option.ToEnumDesc<OptionEnum>()} "));
+        //    }
+        //    else if (cols.Any(it => "PRI".Equals(it.KeyType, StringComparison.OrdinalIgnoreCase)))
+        //    {
+        //        str = string.Join(",", cols.Where(it => "PRI".Equals(it.KeyType, StringComparison.OrdinalIgnoreCase)).Select(it => $" `{it.ColumnName}` desc "));
+        //    }
+        //    else
+        //    {
+        //        str = $" `{DC.SC.GetModelProperys(typeof(M), DC).First().Name}` desc ";
+        //    }
+
+        //    return str;
+        //}
 
         internal string GetSingleValuePart()
         {
@@ -423,20 +443,28 @@ namespace Yunyong.DataExchange.Core
                 case UiMethodEnum.QueryFirstOrDefaultAsync:
                     list.Add($"select * {From()} {Table<M>(type)} {Wheres()} ; ");
                     break;
+                case UiMethodEnum.JoinQueryFirstOrDefaultAsync:
+                    list.Add($" select {Columns()} {From()} {Joins()} {Wheres()} ; ");
+                    break;
                 case UiMethodEnum.QueryListAsync:
                     list.Add($"select * {From()} {Table<M>(type)} {Wheres()} ; ");
                     break;
+                case UiMethodEnum.JoinQueryListAsync:
+                    list.Add($" select {Columns()} {From()} {Joins()} {Wheres()} ; ");
+                    break;
                 case UiMethodEnum.QueryPagingListAsync:
-                    var wherePart = Wheres();
-                    list.Add($"select count(*) {From()} {Table<M>(type)} {wherePart} ; ");
-                    list.Add($"select * {From()} {Table<M>(type)} {wherePart} order by {GetOrderByPart<M>()} limit {(pageIndex - 1) * pageSize},{pageIndex * pageSize}  ; ");
+                    var wherePart8 = Wheres();
+                    list.Add($"select count(*) {From()} {Table<M>(type)} {wherePart8} ; ");
+                    list.Add($"select * {From()} {Table<M>(type)} {wherePart8} order by {GetOrderByPart<M>()} limit {(pageIndex - 1) * pageSize},{pageIndex * pageSize}  ; ");
+                    break;
+                case UiMethodEnum.JoinQueryPagingListAsync:
+                    var wherePart9 = Wheres();
+                    list.Add($"select count(*) {From()} {Joins()} {wherePart9} ; ");
+                    //list.Add($"select {Columns()} {From()} {Joins()} {wherePart9} order by {GetOrderByPart()} limit {(pageIndex - 1) * pageSize},{pageIndex * pageSize}  ; ");
                     break;
                 case UiMethodEnum.QueryAllPagingListAsync:
                     list.Add($"select count(*) {From()} {Table<M>(type)} ; ");
                     list.Add($"select * {From()} {Table<M>(type)} order by {GetOrderByPart<M>()} limit {(pageIndex - 1) * pageSize},{pageIndex * pageSize}  ; ");
-                    break;
-                case UiMethodEnum.JoinQueryListAsync:
-                    list.Add($" select {Columns()} {From()} {Joins()} {Wheres()} ; ");
                     break;
                 case UiMethodEnum.QuerySingleValueAsync:
                     list.Add($" select {GetSingleValuePart()} {From()} {Table<M>(type)} {Wheres()} ; ");
