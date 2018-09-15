@@ -1,5 +1,4 @@
-﻿
-using EasyDAL.Exchange.Cache;
+﻿using EasyDAL.Exchange.Cache;
 using EasyDAL.Exchange.Common;
 using EasyDAL.Exchange.Core;
 using EasyDAL.Exchange.Enums;
@@ -7,11 +6,9 @@ using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-// ReSharper disable All
 
 namespace EasyDAL.Exchange.ExpressionX
 {
@@ -178,23 +175,6 @@ namespace EasyDAL.Exchange.ExpressionX
             {
                 result = DC.VH.GetMemExprVal(binRight);
             }
-            //else if (binRight.NodeType == ExpressionType.Convert)
-            //{
-            //    var expr = binRight as UnaryExpression;
-            //    if (expr.Operand.NodeType == ExpressionType.Convert)
-            //    {
-            //        var exprExpr = expr.Operand as UnaryExpression;
-            //        var memExpr = exprExpr.Operand as MemberExpression;
-            //        var memCon = memExpr.Expression as ConstantExpression;
-            //        var memObj = memCon.Value;
-            //        var memFiled = memExpr.Member as FieldInfo;
-            //        result = memFiled.GetValue(memObj).ToString();
-            //    }
-            //    else if (expr.Operand.NodeType == ExpressionType.MemberAccess)
-            //    {
-            //        result = DC.VH. GetMemExprVal(expr.Operand as MemberExpression);
-            //    }
-            //}
             else
             {
                 throw new Exception();
@@ -205,11 +185,6 @@ namespace EasyDAL.Exchange.ExpressionX
         private string HandConvert(Expression binRight)
         {
             var result = default(string);
-            //if (binRight.NodeType == ExpressionType.MemberAccess)
-            //{
-            //    result = DC.VH.GetMemExprVal(binRight as MemberExpression);
-            //}
-            //else 
             if (binRight.NodeType == ExpressionType.Convert)
             {
                 var expr = binRight as UnaryExpression;
@@ -242,7 +217,6 @@ namespace EasyDAL.Exchange.ExpressionX
             switch (binRight.NodeType)
             {
                 case ExpressionType.Constant:
-                    //val = (binRight as ConstantExpression).Value.ToString();
                     var con = binRight as ConstantExpression;
                     val = DC.VH.GetConstantVal(con, con.Type);
                     break;
@@ -547,7 +521,16 @@ namespace EasyDAL.Exchange.ExpressionX
                     var miExpr = func.Body as MemberInitExpression;
                     foreach (var mb in miExpr.Bindings)
                     {
-                        
+                        var mbEx = mb as MemberAssignment;
+                        var maMem = mbEx.Expression as MemberExpression;
+                        var tuple = GetMemTuple(maMem);
+                        var colAlias = mbEx.Member.Name;
+                        result.Add(new DicModel
+                        {
+                            TableAliasOne = tuple.alias,
+                            ColumnOne = tuple.key,
+                            ColumnAlias = colAlias
+                        });
                     }
                 }
                 else

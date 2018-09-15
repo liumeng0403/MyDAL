@@ -29,7 +29,7 @@ namespace EasyDAL.Exchange.Core
         private string LikeStrHandle(DicModel dic)
         {
             var name = dic.Param;
-            var value = dic.Value;
+            var value = dic.CsValue;
             if (!value.Contains("%")
                 && !value.Contains("_"))
             {
@@ -176,7 +176,7 @@ namespace EasyDAL.Exchange.Core
                         break;
                     case ActionEnum.InnerJoin:
                     case ActionEnum.LeftJoin:
-                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.TableOne} as {item.TableAliasOne} ";
+                        str += $" \r\n \t {item.Action.ToEnumDesc<ActionEnum>()} {item.TableOne} as {item.TableAliasOne} ";
                         break;
                     case ActionEnum.On:
                         str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.TableAliasOne}.`{item.ColumnOne}`={item.AliasTwo}.`{item.KeyTwo}` ";
@@ -459,7 +459,7 @@ namespace EasyDAL.Exchange.Core
                     .Where(it => DC.IsParameter(it))
                     .Select(it =>
                     {
-                        return $"key:【{it.Param}】;val:【{it.Value}】;param【{it.DbValue}】.";
+                        return $"key:【{it.Param}】;val:【{it.CsValue}】;param【{it.DbValue}】.";
                     })
                     .ToList();
             }
