@@ -8,7 +8,7 @@ namespace EasyDAL.Exchange.UserFacade.Query
 {
     public class Selecter<M> : Operator, IMethodObject
     {
-        internal Selecter(DbContext dc)
+        internal Selecter(Context dc)
             : base(dc)
         { }
 

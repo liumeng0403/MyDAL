@@ -5,7 +5,7 @@ namespace EasyDAL.Exchange.UserFacade.Delete
 {
     public class Deleter<M> : Operator, IMethodObject
     {
-        internal Deleter(DbContext dc)
+        internal Deleter(Context dc)
             : base(dc)
         { }
 

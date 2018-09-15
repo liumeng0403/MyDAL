@@ -8,7 +8,7 @@ namespace EasyDAL.Exchange.UserFacade.Query
 {
     public class OrderBy<M> : Operator, IMethodObject
     {
-        internal OrderBy(DbContext dc)
+        internal OrderBy(Context dc)
             : base(dc)
         { }
 

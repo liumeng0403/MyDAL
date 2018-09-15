@@ -6,7 +6,7 @@ namespace EasyDAL.Exchange.UserFacade.Join
     public class OnX : Operator, IMethodObject
     {
 
-        internal OnX(DbContext dc)
+        internal OnX(Context dc)
             : base(dc)
         { }
 

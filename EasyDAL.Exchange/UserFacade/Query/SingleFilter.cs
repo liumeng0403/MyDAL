@@ -9,7 +9,7 @@ namespace EasyDAL.Exchange.UserFacade.Query
     public class SingleFilter<M> : Operator, IMethodObject
     {
 
-        internal SingleFilter(DbContext dc)
+        internal SingleFilter(Context dc)
             : base(dc)
         { }
 

@@ -3,10 +3,10 @@ using EasyDAL.Exchange.UserFacade.Create;
 using EasyDAL.Exchange.UserFacade.Delete;
 using EasyDAL.Exchange.UserFacade.Join;
 using EasyDAL.Exchange.UserFacade.Query;
+using EasyDAL.Exchange.UserFacade.Transaction;
 using EasyDAL.Exchange.UserFacade.Update;
 using System;
 using System.Data;
-using EasyDAL.Exchange.UserFacade.Transaction;
 
 namespace EasyDAL.Exchange
 {
@@ -18,7 +18,7 @@ namespace EasyDAL.Exchange
         /// <typeparam name="M">M:与DB Table 一 一对应</typeparam>
         public static Creater<M> Creater<M>(this IDbConnection connection)
         {
-            return new Creater<M>(new DbContext(connection));
+            return new Creater<M>(new DbContext<M>(connection));
         }
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace EasyDAL.Exchange
         /// <typeparam name="M">M:与DB Table 一 一对应</typeparam>
         public static Deleter<M> Deleter<M>(this IDbConnection connection)
         {
-            return new Deleter<M>(new DbContext(connection));
+            return new Deleter<M>(new DbContext<M>(connection));
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace EasyDAL.Exchange
         /// <typeparam name="M">M:与DB Table 一 一对应</typeparam>
         public static Setter<M> Updater<M>(this IDbConnection connection)
         {
-            return new Setter<M>(new DbContext(connection));
+            return new Setter<M>(new DbContext<M>(connection));
         }
 
         /// <summary>
@@ -45,63 +45,63 @@ namespace EasyDAL.Exchange
         /// <typeparam name="M">M:与DB Table 一 一对应</typeparam>
         public static Selecter<M> Selecter<M>(this IDbConnection connection)
         {
-            return new Selecter<M>(new DbContext(connection));
+            return new Selecter<M>(new DbContext<M>(connection));
         }
 
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Joiner Joiner<M1>(this IDbConnection connection,out M1 table1)
+        public static Joiner Joiner<M1>(this IDbConnection connection, out M1 table1)
         {
             table1 = Activator.CreateInstance<M1>();
-            return new Joiner(new DbContext(connection));
+            return new Joiner(new DbContext<M1>(connection));
         }
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Joiner Joiner<M1,M2>(this IDbConnection connection,out M1 table1,out M2 table2)
+        public static Joiner Joiner<M1, M2>(this IDbConnection connection, out M1 table1, out M2 table2)
         {
             table1 = Activator.CreateInstance<M1>();
             table2 = Activator.CreateInstance<M2>();
-            return new Joiner(new DbContext(connection));
+            return new Joiner(new DbContext<M1, M2>(connection));
         }
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Joiner Joiner<M1,M2,M3>(this IDbConnection connection,out M1 table1,out M2 table2,out M3 table3)
+        public static Joiner Joiner<M1, M2, M3>(this IDbConnection connection, out M1 table1, out M2 table2, out M3 table3)
         {
             table1 = Activator.CreateInstance<M1>();
             table2 = Activator.CreateInstance<M2>();
             table3 = Activator.CreateInstance<M3>();
-            return new Joiner(new DbContext(connection));
+            return new Joiner(new DbContext<M1, M2, M3>(connection));
         }
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Joiner Joiner<M1,M2,M3,M4>(this IDbConnection connection,out M1 table1,out M2 table2,out M3 table3,out M4 table4)
+        public static Joiner Joiner<M1, M2, M3, M4>(this IDbConnection connection, out M1 table1, out M2 table2, out M3 table3, out M4 table4)
         {
             table1 = Activator.CreateInstance<M1>();
             table2 = Activator.CreateInstance<M2>();
             table3 = Activator.CreateInstance<M3>();
             table4 = Activator.CreateInstance<M4>();
-            return new Joiner(new DbContext(connection));
+            return new Joiner(new DbContext<M1, M2, M3, M4>(connection));
         }
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Joiner Joiner<M1,M2,M3,M4,M5>(this IDbConnection connection,out M1 table1,out M2 table2,out M3 table3,out M4 table4,out M5 table5)
+        public static Joiner Joiner<M1, M2, M3, M4, M5>(this IDbConnection connection, out M1 table1, out M2 table2, out M3 table3, out M4 table4, out M5 table5)
         {
             table1 = Activator.CreateInstance<M1>();
             table2 = Activator.CreateInstance<M2>();
             table3 = Activator.CreateInstance<M3>();
             table4 = Activator.CreateInstance<M4>();
             table5 = Activator.CreateInstance<M5>();
-            return new Joiner(new DbContext(connection));
+            return new Joiner(new DbContext<M1, M2, M3, M4, M5>(connection));
         }
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Joiner Joiner<M1,M2,M3,M4,M5,M6>(this IDbConnection connection,out M1 table1,out M2 table2,out M3 table3,out M4 table4,out M5 table5,out M6 table6)
+        public static Joiner Joiner<M1, M2, M3, M4, M5, M6>(this IDbConnection connection, out M1 table1, out M2 table2, out M3 table3, out M4 table4, out M5 table5, out M6 table6)
         {
             table1 = Activator.CreateInstance<M1>();
             table2 = Activator.CreateInstance<M2>();
@@ -109,7 +109,7 @@ namespace EasyDAL.Exchange
             table4 = Activator.CreateInstance<M4>();
             table5 = Activator.CreateInstance<M5>();
             table6 = Activator.CreateInstance<M6>();
-            return new Joiner(new DbContext(connection));
+            return new Joiner(new DbContext<M1, M2, M3, M4, M5, M6>(connection));
         }
 
         /// <summary>

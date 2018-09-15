@@ -14,10 +14,10 @@ namespace EasyDAL.Exchange.ExpressionX
 {
     internal class ExpressionHandleX
     {
-        private DbContext DC { get; set; }
+        private Context DC { get; set; }
 
         private ExpressionHandleX() { }
-        internal ExpressionHandleX(DbContext dc)
+        internal ExpressionHandleX(Context dc)
         {
             DC = dc;
         }

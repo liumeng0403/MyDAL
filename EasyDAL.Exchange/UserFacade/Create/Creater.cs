@@ -9,7 +9,7 @@ namespace EasyDAL.Exchange.UserFacade.Create
 {
     public class Creater<M> : Operator, IMethodObject
     {
-        internal Creater(DbContext dc) 
+        internal Creater(Context dc) 
             : base(dc)
         { }
 

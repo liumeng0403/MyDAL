@@ -11,7 +11,7 @@ namespace EasyDAL.Exchange.UserFacade.Query
 {
     public class QueryFilter<M> : Operator,IMethodObject
     {
-        internal QueryFilter(DbContext dc)
+        internal QueryFilter(Context dc)
             : base(dc)
         {  }
 

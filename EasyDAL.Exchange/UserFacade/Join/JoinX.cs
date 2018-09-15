@@ -9,7 +9,7 @@ namespace EasyDAL.Exchange.UserFacade.Join
     public class JoinX : Operator, IMethodObject
     {
 
-        internal JoinX(DbContext dc)
+        internal JoinX(Context dc)
             : base(dc)
         { }
 

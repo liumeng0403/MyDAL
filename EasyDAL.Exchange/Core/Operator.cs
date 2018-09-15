@@ -1,5 +1,6 @@
 ﻿using EasyDAL.Exchange.Common;
 using EasyDAL.Exchange.Enums;
+using EasyDAL.Exchange.ExpressionX;
 using EasyDAL.Exchange.Helper;
 using System;
 using System.Collections.Generic;
@@ -7,14 +8,13 @@ using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using EasyDAL.Exchange.ExpressionX;
 
 namespace EasyDAL.Exchange.Core
 {
     public abstract class Operator
     {
         
-        internal Operator(DbContext dc)
+        internal Operator(Context dc)
         {
             DC = dc;
             DC.OP = this;
@@ -55,7 +55,7 @@ namespace EasyDAL.Exchange.Core
 
             //
             var result = new List<(string key, string param, string val, Type valType, string colType)>();
-            var columns = (DC.SC.GetColumnInfos<M>(DC)).GetAwaiter().GetResult();
+            var columns = (DC.SC.GetColumnInfos(DC.SC.GetKey(typeof(M).FullName,DC.Conn.Database),DC)).GetAwaiter().GetResult();
             foreach (var prop in list)
             {
                 var val = string.Empty;
@@ -81,7 +81,7 @@ namespace EasyDAL.Exchange.Core
         
         /****************************************************************************************************************************************/
 
-        internal DbContext DC { get; set; }
+        internal Context DC { get; set; }
 
         /****************************************************************************************************************************************/
 
