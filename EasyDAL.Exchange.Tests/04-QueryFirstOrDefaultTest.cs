@@ -135,6 +135,46 @@ namespace EasyDAL.Exchange.Tests
 
             /****************************************************************************************************************************************/
 
+            var xx6 = "";
+
+            var guid6 = Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef");
+            var res6 = await Conn.OpenDebug()
+                .Joiner<Agent, AgentInventoryRecord>(out var agent6, out var record6)
+                .From(() => agent6)
+                .InnerJoin(() => record6)
+                .On(() => agent6.Id == record6.AgentId)
+                .Where(() => agent6.Id == guid6 )
+                .QueryFirstOrDefaultAsync<Agent>();
+            Assert.NotNull(res6);
+            Assert.Equal("夏明君", res6.Name);
+
+            var tuple6 = (XDebug.SQL, XDebug.Parameters);
+
+            /****************************************************************************************************************************************/
+
+            var xx7 = "";
+
+            var res7 = await Conn.OpenDebug()
+                .Joiner<Agent, AgentInventoryRecord>(out var agent7, out var record7)
+                .From(() => agent7)
+                .InnerJoin(() => record7)
+                .On(() => agent7.Id == record7.AgentId)
+                .Where(() => agent7.Id == guid6)
+                .QueryFirstOrDefaultAsync(() => new AgentVM
+                {
+                    nn = agent7.PathId,
+                    yy = record7.Id,
+                    xx = agent7.Id,
+                    zz = agent7.Name,
+                    mm = record7.LockedCount
+                });
+            Assert.NotNull(res7);
+            Assert.Equal("夏明君", res7.zz);
+
+            var tuple7 = (XDebug.SQL, XDebug.Parameters);
+
+            /****************************************************************************************************************************************/
+
             var xx = "";
 
         }
