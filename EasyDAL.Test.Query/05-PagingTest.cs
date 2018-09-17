@@ -1,9 +1,10 @@
-﻿using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
-using EasyDAL.Exchange.Tests.ViewModels;
+﻿using EasyDAL.Exchange;
+using EasyDAL.Test.Entities.EasyDal_Exchange;
+using EasyDAL.Test.ViewModels;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace EasyDAL.Exchange.Tests
+namespace EasyDAL.Test.Query
 {
     public class _05_PagingTest : TestBase
     {

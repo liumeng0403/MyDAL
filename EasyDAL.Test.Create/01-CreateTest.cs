@@ -1,18 +1,19 @@
-﻿using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
-using EasyDAL.Exchange.Tests.Enums;
+﻿using EasyDAL.Exchange;
+using EasyDAL.Test.Entities.EasyDal_Exchange;
+using EasyDAL.Test.Enums;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace EasyDAL.Exchange.Tests
+namespace EasyDAL.Test.Create
 {
     public class _01_CreateTest : TestBase
     {
         private async Task PreCreate(BodyFitRecord m)
         {
             // 清除数据
-            
+
             var xx2 = "";
 
             var res2 = await Conn
@@ -28,7 +29,7 @@ namespace EasyDAL.Exchange.Tests
                 .DeleteAsync();
 
             var list = new List<AddressInfo>();
-            for(var i=0;i<10;i++)
+            for (var i = 0; i < 10; i++)
             {
                 if (i % 2 == 0)
                 {
@@ -100,7 +101,7 @@ namespace EasyDAL.Exchange.Tests
                 CrmUserId = "yyyyy",
                 AgentLevel = AgentLevel.DistiAgent,
                 ActivedOn = null,   // DateTime?
-                ActiveOrderId  = null,  // Guid?
+                ActiveOrderId = null,  // Guid?
                 DirectorStarCount = 5
             };
 

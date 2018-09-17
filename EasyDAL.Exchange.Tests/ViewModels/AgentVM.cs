@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace EasyDAL.Exchange.Tests.ViewModels
+namespace EasyDAL.Test.ViewModels
 {
     public class AgentVM
     {

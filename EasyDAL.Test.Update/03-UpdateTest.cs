@@ -1,14 +1,13 @@
-﻿using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.Tests.Entities;
+﻿using EasyDAL.Exchange;
+using EasyDAL.Test.Entities.EasyDal_Exchange;
 using System;
+using System.Dynamic;
 using System.Threading.Tasks;
 using Xunit;
-using System.Dynamic;
-using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
 
-namespace EasyDAL.Exchange.Tests
+namespace EasyDAL.Test.Update
 {
-    public class _03_UpdateTest:TestBase
+    public class _03_UpdateTest : TestBase
     {
 
         private async Task<BodyFitRecord> CreateDbData()
@@ -59,12 +58,12 @@ namespace EasyDAL.Exchange.Tests
                 UserId = Guid.NewGuid(),
                 BodyMeasureProperty = "{xxx:yyy,mmm:nnn,zzz:aaa}"   // new value
             };
-            
+
             // 修改
 
             // set field 1
             var res1 = await Conn.OpenDebug()
-                .Updater<BodyFitRecord>()      
+                .Updater<BodyFitRecord>()
                 .Set(it => it.CreatedOn, m1.CreatedOn)
                 .Set(it => it.BodyMeasureProperty, m1.BodyMeasureProperty)
                 .Where(it => it.Id == m.Id)

@@ -1,13 +1,14 @@
-﻿using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
+﻿using EasyDAL.Exchange;
+using EasyDAL.Test.Entities.EasyDal_Exchange;
 using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace EasyDAL.Exchange.Tests
+namespace EasyDAL.Test.Query
 {
     public class _04_QueryTest : TestBase
-    {   
-    
+    {
+
 
 
 

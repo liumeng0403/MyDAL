@@ -1,10 +1,11 @@
-﻿using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
-using EasyDAL.Exchange.Tests.Enums;
+﻿using EasyDAL.Exchange;
+using EasyDAL.Test.Entities.EasyDal_Exchange;
+using EasyDAL.Test.Enums;
 using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace EasyDAL.Exchange.Tests
+namespace EasyDAL.Test.Delete
 {
     public class _02_DeleteTest : TestBase
     {

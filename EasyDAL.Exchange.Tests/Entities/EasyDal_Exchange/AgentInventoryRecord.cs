@@ -2,7 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange
+namespace EasyDAL.Test.Entities.EasyDal_Exchange
 {
     /*
      * CREATE TABLE `agentinventoryrecord` (

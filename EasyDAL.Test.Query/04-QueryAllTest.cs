@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using EasyDAL.Exchange;
+using EasyDAL.Test.Entities.EasyDal_Exchange;
+using EasyDAL.Test.ViewModels;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
-using EasyDAL.Exchange.Tests.ViewModels;
 using Xunit;
 
-namespace EasyDAL.Exchange.Tests
+namespace EasyDAL.Test.Query
 {
-    public class _04_QueryAllTest:TestBase
+    public class _04_QueryAllTest : TestBase
     {
 
         [Fact]

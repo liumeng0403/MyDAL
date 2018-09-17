@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EasyDAL.Exchange.Tests.Enums
+﻿namespace EasyDAL.Test.Enums
 {
     public enum AgentLevel
     {

@@ -1,10 +1,11 @@
-﻿using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
+﻿using EasyDAL.Exchange;
+using EasyDAL.Test.Entities.EasyDal_Exchange;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace EasyDAL.Exchange.Tests
+namespace EasyDAL.Test.Query
 {
-    public class _12_FuncTest: TestBase
+    public class _12_FuncTest : TestBase
     {
 
         [Fact]
@@ -22,7 +23,7 @@ namespace EasyDAL.Exchange.Tests
             var res1 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => it.Name.Length > 2)
-                .QueryListAsync();            
+                .QueryListAsync();
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
@@ -44,10 +45,10 @@ namespace EasyDAL.Exchange.Tests
 
             // .Where(a => a.Name.Length > 0)
             var res2 = await Conn.OpenDebug()
-                .Joiner<Agent,AgentInventoryRecord>(out var agent,out var record)
-                .From(()=>agent)
-                .InnerJoin(()=>record)
-                .On(()=>agent.Id==record.AgentId)
+                .Joiner<Agent, AgentInventoryRecord>(out var agent, out var record)
+                .From(() => agent)
+                .InnerJoin(() => record)
+                .On(() => agent.Id == record.AgentId)
                 .Where(() => agent.Name.Length > 2)
                 .QueryListAsync<Agent>();
             Assert.True(res2.Count == 457);

@@ -1,15 +1,12 @@
-﻿using System;
-using System.Data;
-using Xunit;
-using EasyDAL.Exchange.AdoNet;
+﻿using EasyDAL.Test.Entities;
+using EasyDAL.Test.Enums;
+using EasyDAL.Test.TestModels;
 using MySql.Data.MySqlClient;
-using EasyDAL.Exchange.Tests.Entities;
-using EasyDAL.Exchange.Tests.Enums;
-using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.Tests.TestModels;
+using System;
 using System.Collections.Generic;
+using System.Data;
 
-namespace EasyDAL.Exchange.Tests
+namespace EasyDAL.Test
 {
     public abstract class TestBase : IDisposable
     {

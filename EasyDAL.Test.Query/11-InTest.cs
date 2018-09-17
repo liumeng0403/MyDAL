@@ -1,14 +1,15 @@
-﻿using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
-using EasyDAL.Exchange.Tests.Enums;
+﻿using EasyDAL.Exchange;
+using EasyDAL.Test.Entities.EasyDal_Exchange;
+using EasyDAL.Test.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace EasyDAL.Exchange.Tests
+namespace EasyDAL.Test.Query
 {
-    public class _11_InTest:TestBase
+    public class _11_InTest : TestBase
     {
         private List<AgentLevel> EnumList { get; set; }
         private AgentLevel[] EnumArray { get; set; }
@@ -60,7 +61,7 @@ namespace EasyDAL.Exchange.Tests
             /*******************************************************************************************************************/
 
             var xx2 = "";
-            
+
             // where in -- obj.prop List<enum>
             var res2 = await Conn.OpenDebug()
                 .Selecter<Agent>()
@@ -87,7 +88,7 @@ namespace EasyDAL.Exchange.Tests
             Assert.True(res1.Count == 555);
 
             /*******************************************************************************************************************/
-            
+
             var xx4 = "";
 
             var names = new List<string>
@@ -371,10 +372,10 @@ namespace EasyDAL.Exchange.Tests
 
             // where in -- enum[] init
             var res23 = await Conn.OpenDebug()
-                .Joiner<Agent,AgentInventoryRecord>(out var agent,out var record)
-                .From(()=>agent)
-                .InnerJoin(()=>record)
-                .On(()=>agent.Id==record.AgentId)
+                .Joiner<Agent, AgentInventoryRecord>(out var agent, out var record)
+                .From(() => agent)
+                .InnerJoin(() => record)
+                .On(() => agent.Id == record.AgentId)
                 .Where(() => new AgentLevel[] { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(agent.AgentLevel))
                 .QueryListAsync<Agent>();
             Assert.True(res23.Count == 574);
