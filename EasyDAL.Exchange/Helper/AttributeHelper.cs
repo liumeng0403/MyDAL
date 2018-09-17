@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reflection;
 using Yunyong.DataExchange.Cache;
@@ -52,16 +52,11 @@ namespace Yunyong.DataExchange.Helper
             var key = BuildKey(type, name);
             if (!StaticCache.Cache.ContainsKey(key))
             {
-                //CacheAttributeValue(type, attributeValueFunc, name);
-                //var keyx = BuildKey(type, name);
                 var value = GetValue(type, attributeValueFunc, name);
-                //lock ($"{key}_attributeValueLockKey")
-                //{
                 if (!StaticCache.Cache.ContainsKey(key))
                 {
                     StaticCache.Cache[key] = value;
                 }
-                //}
             }
             return StaticCache.Cache[key];
         }
@@ -74,7 +69,7 @@ namespace Yunyong.DataExchange.Helper
             return GetAttributeValue(m.GetType(), attributeValueFunc, name);
         }
 
-        public string GetPropertyValue<A>(Type type, Func<A, string> attributeValueFunc)
+        public string GetAttributePropVal<A>(Type type, Func<A, string> attributeValueFunc)
             where A : Attribute
         {
             return GetAttributeValue(type, attributeValueFunc, null);

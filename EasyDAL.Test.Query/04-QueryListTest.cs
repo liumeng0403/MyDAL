@@ -34,7 +34,7 @@ namespace EasyDAL.Test.Query
                 .Where(it => WhereTest.CreatedOn <= it.CreatedOn)
                 .QueryListAsync();
             Assert.True(res1.Count == resR1.Count);
-            Assert.True(res1.Count == 1);
+            Assert.True(res1.Count >0);
 
             var tupleR1 = (XDebug.SQL, XDebug.Parameters);
 
@@ -56,7 +56,7 @@ namespace EasyDAL.Test.Query
                 .Where(it => start <= it.CreatedOn)
                 .QueryListAsync();
             Assert.True(res2.Count == resR2.Count);
-            Assert.True(res2.Count == 1);
+            Assert.True(res2.Count > 0);
 
             var tupleR2 = (XDebug.SQL, XDebug.Parameters);
 
@@ -77,7 +77,7 @@ namespace EasyDAL.Test.Query
                 .Where(it => DateTime.Now >= it.CreatedOn)
                 .QueryListAsync();
             Assert.True(res3.Count == resR3.Count);
-            Assert.True(res3.Count == 1);
+            Assert.True(res3.Count >0 );
 
             var tupleR3 = (XDebug.SQL, XDebug.Parameters);
 

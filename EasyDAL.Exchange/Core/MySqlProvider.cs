@@ -170,7 +170,7 @@ namespace Yunyong.DataExchange.Core
             var tableName = string.Empty;
             if (type != UiMethodEnum.JoinQueryListAsync)
             {
-                TryGetTableName<M>(out tableName);
+                tableName = GetTableName(typeof(M));
             }
 
             return tableName;
@@ -394,24 +394,24 @@ namespace Yunyong.DataExchange.Core
             return string.Join(", \r\n ", list);
         }
 
-        internal string GetTableName<M>(M m)
-        {
-            return $"`{DC.TableAttributeName(m.GetType())}`";
-        }
+        //internal string GetTableName<M>(M m)
+        //{
+        //    return $"`{DC.TableAttributeName(m.GetType())}`";
+        //}
         internal string GetTableName(Type mType)
         {
             return $"`{DC.TableAttributeName(mType)}`";
         }
-        internal bool TryGetTableName<M>(out string tableName)
-        {
-            tableName = DC.AH.GetPropertyValue<TableAttribute>(typeof(M), a => a.Name);
-            if (string.IsNullOrWhiteSpace(tableName))
-            {
-                throw new Exception("DB Entity 缺少 TableAttribute 指定的表名!");
-            }
-            tableName = $"`{tableName}`";
-            return true;
-        }
+        //internal bool TryGetTableName<M>(out string tableName)
+        //{
+        //    tableName = DC.AH.GetAttributePropVal<TableAttribute>(typeof(M), a => a.Name);
+        //    if (string.IsNullOrWhiteSpace(tableName))
+        //    {
+        //        throw new Exception("DB Entity 缺少 TableAttribute 指定的表名!");
+        //    }
+        //    tableName = $"`{tableName}`";
+        //    return true;
+        //}
 
         internal OptionEnum GetChangeOption(ChangeEnum change)
         {
