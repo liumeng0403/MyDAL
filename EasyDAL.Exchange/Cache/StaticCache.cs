@@ -89,5 +89,13 @@ namespace Yunyong.DataExchange.Cache
             ModelTableCache.GetOrAdd(key,tableName);
         }
 
+        /*****************************************************************************************************************************************************/
+
+        /// <summary>
+        /// Cache Data
+        /// </summary>
+        internal static ConcurrentDictionary<string, string> Cache { get; } = new ConcurrentDictionary<string, string>();
+
+
     }
 }

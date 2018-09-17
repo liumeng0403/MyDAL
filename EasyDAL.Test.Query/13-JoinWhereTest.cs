@@ -1,12 +1,12 @@
-using Yunyong.DataExchange;
-﻿using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
-using EasyDAL.Exchange.Tests.Enums;
+using EasyDAL.Test.Entities.EasyDal_Exchange;
+using EasyDAL.Test.Enums;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
+using Yunyong.DataExchange;
 
-namespace EasyDAL.Exchange.Tests
+namespace EasyDAL.Test.Query
 {
     public class _13_JoinWhereTest : TestBase
     {
@@ -67,7 +67,7 @@ namespace EasyDAL.Exchange.Tests
                 .Where(() => record3.AgentId == Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef"))                  //  const  method  Guid  ==
                 .QueryListAsync<AgentInventoryRecord>();
             Assert.True(res3.Count == 1);
-            Assert.Equal(res3.First().Id , Guid.Parse("02dbc81c-5c9a-4cdf-8bf0-016551f756c4"));
+            Assert.Equal(res3.First().Id, Guid.Parse("02dbc81c-5c9a-4cdf-8bf0-016551f756c4"));
 
             var tuple3 = (XDebug.SQL, XDebug.Parameters);
 
@@ -156,7 +156,7 @@ namespace EasyDAL.Exchange.Tests
                 .Joiner<Agent, AgentInventoryRecord>(out var agent9, out var record9)
                 .From(() => agent9)
                 .InnerJoin(() => record9).On(() => agent9.Id == record9.AgentId)
-                .Where(() => agent9.CreatedOn >= WhereTest.DateTime_大于等于)                                                              //  prop prop DateTime  >=
+                .Where(() => agent9.CreatedOn >= WhereTest.CreatedOn)                                                              //  prop prop DateTime  >=
                 .QueryListAsync<AgentInventoryRecord>();
             Assert.True(res9.Count == 574);
 

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
-namespace EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange
+namespace EasyDAL.Test.Entities.EasyDal_Exchange
 {
     /*
      * CREATE TABLE `addressinfo` (

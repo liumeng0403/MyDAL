@@ -1,19 +1,13 @@
-﻿using Yunyong.DataExchange.Common;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using System.Reflection;
-using System.Text;
+using Yunyong.DataExchange.Cache;
+using Yunyong.DataExchange.Common;
 
 namespace Yunyong.DataExchange.Helper
 {
-    internal class AttributeHelper: ClassInstance<AttributeHelper>
+    internal class AttributeHelper : ClassInstance<AttributeHelper>
     {
-        /// <summary>
-        /// Cache Data
-        /// </summary>
-        private static readonly Dictionary<string, string> Cache = new Dictionary<string, string>();
-
         /// <summary>
         /// 缓存Collection Name Key
         /// </summary>
@@ -52,24 +46,24 @@ namespace Yunyong.DataExchange.Helper
                 attributeValueFunc((T)attribute);
         }
 
-        private string GetAttributeValue< A>(Type type, Func<A, string> attributeValueFunc, string name)
+        private string GetAttributeValue<A>(Type type, Func<A, string> attributeValueFunc, string name)
             where A : Attribute
         {
             var key = BuildKey(type, name);
-            if (!Cache.ContainsKey(key))
+            if (!StaticCache.Cache.ContainsKey(key))
             {
                 //CacheAttributeValue(type, attributeValueFunc, name);
                 //var keyx = BuildKey(type, name);
                 var value = GetValue(type, attributeValueFunc, name);
-                lock ($"{key}_attributeValueLockKey")
+                //lock ($"{key}_attributeValueLockKey")
+                //{
+                if (!StaticCache.Cache.ContainsKey(key))
                 {
-                    if (!Cache.ContainsKey(key))
-                    {
-                        Cache[key] = value;
-                    }
+                    StaticCache.Cache[key] = value;
                 }
+                //}
             }
-            return Cache[key];
+            return StaticCache.Cache[key];
         }
 
         /************************************************************************************************************************************/
@@ -80,13 +74,13 @@ namespace Yunyong.DataExchange.Helper
             return GetAttributeValue(m.GetType(), attributeValueFunc, name);
         }
 
-        public string GetPropertyValue< A>(Type type, Func<A, string> attributeValueFunc)
+        public string GetPropertyValue<A>(Type type, Func<A, string> attributeValueFunc)
             where A : Attribute
         {
             return GetAttributeValue(type, attributeValueFunc, null);
         }
 
-        public Attribute GetAttribute<M,A>(M m, PropertyInfo prop)
+        public Attribute GetAttribute<M, A>(M m, PropertyInfo prop)
         {
             try
             {

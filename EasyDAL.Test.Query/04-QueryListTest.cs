@@ -1,16 +1,16 @@
-﻿using EasyDAL.Exchange.Tests.Entities;
-using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
-using EasyDAL.Exchange.Tests.Enums;
-using EasyDAL.Exchange.Tests.ViewModels;
+﻿using EasyDAL.Test.Entities;
+using EasyDAL.Test.Entities.EasyDal_Exchange;
+using EasyDAL.Test.Enums;
+using EasyDAL.Test.ViewModels;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 using Yunyong.DataExchange;
 
-namespace EasyDAL.Exchange.Tests
+namespace EasyDAL.Test.Query
 {
-    public class _04_QueryListTest:TestBase
+    public class _04_QueryListTest : TestBase
     {
 
         [Fact]
@@ -39,7 +39,7 @@ namespace EasyDAL.Exchange.Tests
             var tupleR1 = (XDebug.SQL, XDebug.Parameters);
 
             /********************************************************************************************************************************/
-            
+
             var xx2 = "";
 
             var start = WhereTest.CreatedOn.AddDays(-10);
@@ -82,11 +82,11 @@ namespace EasyDAL.Exchange.Tests
             var tupleR3 = (XDebug.SQL, XDebug.Parameters);
 
             /********************************************************************************************************************************/
-            
+
             var testQ = new WhereTestModel
             {
                 CreatedOn = DateTime.Now.AddDays(-30),
-                DateTime_大于等于 = DateTime.Now.AddDays(-30),
+                DateTime_大于等于 = WhereTest.CreatedOn,
                 DateTime_小于等于 = DateTime.Now,
                 AgentLevelXX = AgentLevel.DistiAgent,
                 ContainStr = "~00-d-3-1-"

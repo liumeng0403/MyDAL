@@ -1,13 +1,13 @@
-﻿using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
-using EasyDAL.Exchange.Tests.ViewModels;
+﻿using EasyDAL.Test.Entities.EasyDal_Exchange;
+using EasyDAL.Test.ViewModels;
 using System;
 using System.Threading.Tasks;
 using Xunit;
 using Yunyong.DataExchange;
 
-namespace EasyDAL.Exchange.Tests
+namespace EasyDAL.Test.Query
 {
-    public class _04_QueryFirstOrDefaultTest:TestBase
+    public class _04_QueryFirstOrDefaultTest : TestBase
     {
 
         private async Task<BodyFitRecord> PreQuery()
@@ -84,7 +84,7 @@ namespace EasyDAL.Exchange.Tests
             Assert.True(res2.Id == resR2.Id);
 
             var tupleR2 = (XDebug.SQL, XDebug.Parameters);
-            
+
             /****************************************************************************************************************************************/
 
             var xx3 = "";
@@ -114,7 +114,7 @@ namespace EasyDAL.Exchange.Tests
             // where and
             var res4 = await Conn.OpenDebug()
                 .Selecter<Agent>()
-                .Where(it => it.CreatedOn >= WhereTest.DateTime_大于等于)
+                .Where(it => it.CreatedOn >= WhereTest.CreatedOn)
                 .And(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
                 .QueryFirstOrDefaultAsync();
             Assert.NotNull(res4);
@@ -144,7 +144,7 @@ namespace EasyDAL.Exchange.Tests
                 .From(() => agent6)
                 .InnerJoin(() => record6)
                 .On(() => agent6.Id == record6.AgentId)
-                .Where(() => agent6.Id == guid6 )
+                .Where(() => agent6.Id == guid6)
                 .QueryFirstOrDefaultAsync<Agent>();
             Assert.NotNull(res6);
             Assert.Equal("夏明君", res6.Name);

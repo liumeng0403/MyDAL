@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EasyDAL.Exchange.Tests.TestModels
+﻿namespace EasyDAL.Test.TestModels
 {
     public class LikeTestModel
     {

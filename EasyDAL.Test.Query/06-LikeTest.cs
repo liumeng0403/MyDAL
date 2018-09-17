@@ -1,10 +1,10 @@
-using Yunyong.DataExchange;
-﻿using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
+using EasyDAL.Test.Entities.EasyDal_Exchange;
 using System;
 using System.Threading.Tasks;
 using Xunit;
+using Yunyong.DataExchange;
 
-namespace EasyDAL.Exchange.Tests
+namespace EasyDAL.Test.Query
 {
     public class _06_LikeTest : TestBase
     {
@@ -159,9 +159,9 @@ namespace EasyDAL.Exchange.Tests
             var res3 = await Conn.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains(LikeTest.百分号转义))
-                .And (it=>it.Id==resx1.Id)
-                .And (it=>it.Name.Contains("%华"))
-                .And(it=>it.Name.Contains("%/%%"))
+                .And(it => it.Id == resx1.Id)
+                .And(it => it.Name.Contains("%华"))
+                .And(it => it.Name.Contains("%/%%"))
                 .QueryListAsync();
 
             var sql3 = (XDebug.SQL, XDebug.Parameters);
@@ -190,7 +190,7 @@ namespace EasyDAL.Exchange.Tests
                 .Joiner<Agent, AgentInventoryRecord>(out var agent, out var record)
                 .From(() => agent)
                     .InnerJoin(() => record).On(() => agent.Id == record.AgentId)
-                .Where(()=>agent.Name.Contains(LikeTest.无通配符))
+                .Where(() => agent.Name.Contains(LikeTest.无通配符))
                 .QueryListAsync<AgentInventoryRecord>();
 
             var xx = "";

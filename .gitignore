@@ -3,3 +3,11 @@
 /EasyDAL.Exchange/obj/
 /EasyDAL.Exchange.Tests/bin/
 /EasyDAL.Exchange.Tests/obj/
+/EasyDAL.Test.Create/bin/
+/EasyDAL.Test.Create/obj/
+/EasyDAL.Test.Delete/obj/
+/EasyDAL.Test.Delete/bin/
+/EasyDAL.Test.Update/bin/
+/EasyDAL.Test.Update/obj/
+/EasyDAL.Test.Query/bin/
+/EasyDAL.Test.Query/obj/

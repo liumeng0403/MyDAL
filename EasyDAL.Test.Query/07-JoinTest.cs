@@ -1,12 +1,12 @@
-using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
-using EasyDAL.Exchange.Tests.ViewModels;
+using EasyDAL.Test.Entities.EasyDal_Exchange;
+using EasyDAL.Test.ViewModels;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 using Yunyong.DataExchange;
 
-namespace EasyDAL.Exchange.Tests
+namespace EasyDAL.Test.Query
 {
     public class _07_JoinTest : TestBase
     {
@@ -18,9 +18,9 @@ namespace EasyDAL.Exchange.Tests
             var xx1 = "";
 
             var res1 = await Conn.OpenDebug()
-                .Joiner<Agent,AgentInventoryRecord>(out var agent1,out var record1)
-                .From(()=>agent1)
-                .InnerJoin(()=>record1)
+                .Joiner<Agent, AgentInventoryRecord>(out var agent1, out var record1)
+                .From(() => agent1)
+                .InnerJoin(() => record1)
                 .On(() => agent1.Id == record1.AgentId)
                 .Where(() => agent1.Id == Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef"))
                 .And(() => record1.CreatedOn >= DateTime.Now.AddDays(-60))
@@ -36,13 +36,13 @@ namespace EasyDAL.Exchange.Tests
                 .InnerJoin(() => record2)
                 .On(() => agent2.Id == record2.AgentId)
                 .Where(() => record2.CreatedOn >= WhereTest.CreatedOn)
-                .QueryListAsync(()=>new AgentVM
+                .QueryListAsync(() => new AgentVM
                 {
-                    nn=agent2.PathId,
+                    nn = agent2.PathId,
                     yy = record2.Id,
                     xx = agent2.Id,
                     zz = agent2.Name,
-                    mm=record2.LockedCount
+                    mm = record2.LockedCount
                 });
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters);

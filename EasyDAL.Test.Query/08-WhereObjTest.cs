@@ -1,19 +1,19 @@
-using EasyDAL.Exchange.Tests.Entities.EasyDal_Exchange;
-using EasyDAL.Exchange.Tests.ViewModels;
+using EasyDAL.Test.Entities.EasyDal_Exchange;
+using EasyDAL.Test.Enums;
+using EasyDAL.Test.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using EasyDAL.Exchange.Tests.Enums;
 using Xunit;
 using Yunyong.Core;
 using Yunyong.DataExchange;
 
-namespace EasyDAL.Exchange.Tests
+namespace EasyDAL.Test.Query
 {
-    public class _08_WhereObjTest:TestBase
+    public class _08_WhereObjTest : TestBase
     {
         // yunyong_tech 分支专用
-        public class AgentQueryOption:PagingQueryOption
+        public class AgentQueryOption : PagingQueryOption
         {
             public Guid? Id { get; set; }
             public string Name { get; set; }
@@ -45,7 +45,7 @@ namespace EasyDAL.Exchange.Tests
 
             var xx2 = "";
 
-            
+
             var option = new AgentQueryOption();
             option.Id = Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b");
             option.Name = "樊士芹";

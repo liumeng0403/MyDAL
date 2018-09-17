@@ -1,9 +1,8 @@
-﻿using EasyDAL.Exchange.Tests.Enums;
+﻿using EasyDAL.Test.Enums;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace EasyDAL.Exchange.Tests.Entities
+namespace EasyDAL.Test.Entities
 {
     public class WhereTestModel
     {
