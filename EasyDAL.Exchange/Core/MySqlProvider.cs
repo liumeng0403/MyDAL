@@ -231,12 +231,12 @@ namespace EasyDAL.Exchange.Core
                                 switch (item.Crud)
                                 {
                                     case CrudTypeEnum.Join:
-                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.TableAliasOne}.`{item.ColumnOne}`{item.Compare.ToEnumDesc<OptionEnum>()}@{item.Param} ";
+                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.TableAliasOne}.`{item.ColumnOne}`{item.Compare.ToEnumDesc<CompareConditionEnum>()}@{item.Param} ";
                                         break;
                                     case CrudTypeEnum.Delete:
                                     case CrudTypeEnum.Update:
                                     case CrudTypeEnum.Query:
-                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} `{item.ColumnOne}`{item.Compare.ToEnumDesc<OptionEnum>()}@{item.Param} ";
+                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} `{item.ColumnOne}`{item.Compare.ToEnumDesc<CompareConditionEnum>()}@{item.Param} ";
                                         break;
                                 }
                                 break;
@@ -257,12 +257,12 @@ namespace EasyDAL.Exchange.Core
                                 switch (item.Crud)
                                 {
                                     case CrudTypeEnum.Join:
-                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.Option.ToEnumDesc<OptionEnum>()}({item.TableAliasOne}.`{item.ColumnOne}`){item.Compare.ToEnumDesc<OptionEnum>()}@{item.Param} ";
+                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.Option.ToEnumDesc<OptionEnum>()}({item.TableAliasOne}.`{item.ColumnOne}`){item.Compare.ToEnumDesc<CompareConditionEnum>()}@{item.Param} ";
                                         break;
                                     case CrudTypeEnum.Delete:
                                     case CrudTypeEnum.Update:
                                     case CrudTypeEnum.Query:
-                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.Option.ToEnumDesc<OptionEnum>()}(`{item.ColumnOne}`){item.Compare.ToEnumDesc<OptionEnum>()}@{item.Param} ";
+                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.Option.ToEnumDesc<OptionEnum>()}(`{item.ColumnOne}`){item.Compare.ToEnumDesc<CompareConditionEnum>()}@{item.Param} ";
                                         break;
                                 }
                                 break;
