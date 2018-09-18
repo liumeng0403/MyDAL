@@ -33,11 +33,12 @@ namespace Yunyong.DataExchange.Common
         public string DbValue { get; set; }
         public Type ValueType { get; set; }
         public string ColumnType { get; set; }
+        public CompareConditionEnum Compare { get; set; }
         public OptionEnum Option { get; set; }
         public ActionEnum Action { get; set; }
         public CrudTypeEnum Crud { get; set; }
 
-        public OptionEnum FuncSupplement { get; set; }
+        //public OptionEnum FuncSupplement { get; set; }
         public int TvpIndex { get; set; }
     }
 }

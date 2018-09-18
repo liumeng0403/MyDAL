@@ -207,6 +207,7 @@ namespace Yunyong.DataExchange.Core
 
         internal string Wheres()
         {
+            /* 可能有问题*/
             //if (!DC.Conditions.Any(it => it.Action == ActionEnum.Where)
             //    && !DC.Conditions.Any(it => it.Action == ActionEnum.And)
             //    && !DC.Conditions.Any(it => it.Action == ActionEnum.Or))
@@ -225,21 +226,16 @@ namespace Yunyong.DataExchange.Core
                     case ActionEnum.Or:
                         switch (item.Option)
                         {
-                            case OptionEnum.Equal:
-                            case OptionEnum.NotEqual:
-                            case OptionEnum.LessThan:
-                            case OptionEnum.LessThanOrEqual:
-                            case OptionEnum.GreaterThan:
-                            case OptionEnum.GreaterThanOrEqual:
+                            case OptionEnum.Compare:
                                 switch (item.Crud)
                                 {
                                     case CrudTypeEnum.Join:
-                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.TableAliasOne}.`{item.ColumnOne}`{item.Option.ToEnumDesc<OptionEnum>()}@{item.Param} ";
+                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.TableAliasOne}.`{item.ColumnOne}`{item.Compare.ToEnumDesc<OptionEnum>()}@{item.Param} ";
                                         break;
                                     case CrudTypeEnum.Delete:
                                     case CrudTypeEnum.Update:
                                     case CrudTypeEnum.Query:
-                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} `{item.ColumnOne}`{item.Option.ToEnumDesc<OptionEnum>()}@{item.Param} ";
+                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} `{item.ColumnOne}`{item.Compare.ToEnumDesc<OptionEnum>()}@{item.Param} ";
                                         break;
                                 }
                                 break;
@@ -260,12 +256,12 @@ namespace Yunyong.DataExchange.Core
                                 switch (item.Crud)
                                 {
                                     case CrudTypeEnum.Join:
-                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.Option.ToEnumDesc<OptionEnum>()}({item.TableAliasOne}.`{item.ColumnOne}`){item.FuncSupplement.ToEnumDesc<OptionEnum>()}@{item.Param} ";
+                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.Option.ToEnumDesc<OptionEnum>()}({item.TableAliasOne}.`{item.ColumnOne}`){item.Compare.ToEnumDesc<OptionEnum>()}@{item.Param} ";
                                         break;
                                     case CrudTypeEnum.Delete:
                                     case CrudTypeEnum.Update:
                                     case CrudTypeEnum.Query:
-                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.Option.ToEnumDesc<OptionEnum>()}(`{item.ColumnOne}`){item.FuncSupplement.ToEnumDesc<OptionEnum>()}@{item.Param} ";
+                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.Option.ToEnumDesc<OptionEnum>()}(`{item.ColumnOne}`){item.Compare.ToEnumDesc<OptionEnum>()}@{item.Param} ";
                                         break;
                                 }
                                 break;

@@ -97,9 +97,9 @@ namespace Yunyong.DataExchange.ExpressionX
                     .GetOrAdd($"{paramType.FullName}:{info.Module.GetHashCode()}", moduleKey => new ConcurrentDictionary<Int32, String>())
                     .GetOrAdd(info.MetadataToken, innnerKey =>
                     {
-                        if (info.IsDefined(typeof(ColumnAttribute), false))
+                        if (info.IsDefined(typeof(ColumnXAttribute), false))
                         {
-                            var attr = (ColumnAttribute)info.GetCustomAttributes(typeof(ColumnAttribute), false)[0];
+                            var attr = (ColumnXAttribute)info.GetCustomAttributes(typeof(ColumnXAttribute), false)[0];
                             return attr.Name;
                         }
                         return info.Name;
@@ -253,7 +253,7 @@ namespace Yunyong.DataExchange.ExpressionX
             }
             else
             {
-                var keyTuple = GetKey(binTuple.left, DicHandle.GetOption(binTuple.node, binTuple.isR));
+                var keyTuple = GetKey(binTuple.left, OptionEnum.Compare /*DicHandle.GetOption(binTuple.node, binTuple.isR)*/);
                 return DicHandle.BinaryNormalHandle(keyTuple.key, keyTuple.alias, val, keyTuple.valType, binTuple.node, binTuple.isR);
             }
         }
@@ -365,7 +365,7 @@ namespace Yunyong.DataExchange.ExpressionX
 
         private DicModel HandOnBinary(BinaryExpression binExpr)
         {
-            var option = DicHandle.GetOption(binExpr.NodeType, false);
+            var option = OptionEnum.Compare;
             var tuple1 = GetKey(binExpr.Left, option);
             var tuple2 = GetKey(binExpr.Right, option);
             return new DicModel
@@ -374,8 +374,9 @@ namespace Yunyong.DataExchange.ExpressionX
                 TableAliasOne = tuple1.alias,
                 KeyTwo = tuple2.key,
                 AliasTwo = tuple2.alias,
-                Option = option
-            };
+                Option = option,
+                Compare= DicHandle.GetOption(binExpr.NodeType, false)
+        };
         }
 
         /********************************************************************************************************************/
