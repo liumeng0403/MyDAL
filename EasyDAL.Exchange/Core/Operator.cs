@@ -162,7 +162,8 @@ namespace EasyDAL.Exchange.Core
                     ValueType=tp.valType,
                     ColumnType=tp.colType,
                     Action = action,
-                    Option = OptionEnum.Equal,
+                    Option = OptionEnum.Compare,
+                    Compare= CompareConditionEnum.Equal,
                     Crud = CrudTypeEnum.Query
                 });
             }

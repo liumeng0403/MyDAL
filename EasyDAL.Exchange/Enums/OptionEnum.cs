@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
+﻿using System.ComponentModel;
 
 namespace EasyDAL.Exchange.Enums
 {
@@ -51,40 +48,46 @@ namespace EasyDAL.Exchange.Enums
         ColumnAs,
 
         /// <summary>
-        /// =
+        /// ""
         /// </summary>
-        [Description("=")]
-        Equal,
+        [Description("")]
+        Compare,
 
-        /// <summary>
-        /// <>
-        /// </summary>
-        [Description("<>")]
-        NotEqual,
+        ///// <summary>
+        ///// =
+        ///// </summary>
+        //[Description("=")]
+        //Equal,
 
-        /// <summary>
-        /// &lt;
-        /// </summary>
-        [Description("<")]
-        LessThan,
+        ///// <summary>
+        ///// <>
+        ///// </summary>
+        //[Description("<>")]
+        //NotEqual,
 
-        /// <summary>
-        /// &lt;=
-        /// </summary>
-        [Description("<=")]
-        LessThanOrEqual,
+        ///// <summary>
+        ///// &lt;
+        ///// </summary>
+        //[Description("<")]
+        //LessThan,
 
-        /// <summary>
-        /// &gt;
-        /// </summary>
-        [Description(">")]
-        GreaterThan,
+        ///// <summary>
+        ///// &lt;=
+        ///// </summary>
+        //[Description("<=")]
+        //LessThanOrEqual,
 
-        /// <summary>
-        /// &gt;=
-        /// </summary>
-        [Description(">=")]
-        GreaterThanOrEqual,
+        ///// <summary>
+        ///// &gt;
+        ///// </summary>
+        //[Description(">")]
+        //GreaterThan,
+
+        ///// <summary>
+        ///// &gt;=
+        ///// </summary>
+        //[Description(">=")]
+        //GreaterThanOrEqual,
 
         /// <summary>
         /// " like "

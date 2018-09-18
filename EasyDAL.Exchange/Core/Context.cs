@@ -108,7 +108,7 @@ namespace EasyDAL.Exchange.Core
                         Option = op,
                         Action = dic.Action,
                         Crud = dic.Crud,
-                        FuncSupplement = dic.FuncSupplement,
+                        Compare = dic.Compare,
                         TvpIndex = dic.TvpIndex
                     };
                     AddConditions(dicx);

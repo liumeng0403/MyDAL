@@ -9,32 +9,32 @@ namespace EasyDAL.Exchange.ExpressionX
     {
 
         // 02
-        internal static OptionEnum GetOption(ExpressionType nodeType, bool isR)
+        internal static CompareConditionEnum GetOption(ExpressionType nodeType, bool isR)
         {
-            var option = OptionEnum.None;
+            var option = CompareConditionEnum.None;
             if (nodeType == ExpressionType.Equal)
             {
-                option = !isR ? OptionEnum.Equal : OptionEnum.Equal;
+                option = !isR ? CompareConditionEnum.Equal : CompareConditionEnum.Equal;
             }
             else if (nodeType == ExpressionType.NotEqual)
             {
-                option = !isR ? OptionEnum.NotEqual : OptionEnum.NotEqual;
+                option = !isR ? CompareConditionEnum.NotEqual : CompareConditionEnum.NotEqual;
             }
             else if (nodeType == ExpressionType.LessThan)
             {
-                option = !isR ? OptionEnum.LessThan : OptionEnum.GreaterThan;
+                option = !isR ? CompareConditionEnum.LessThan : CompareConditionEnum.GreaterThan;
             }
             else if (nodeType == ExpressionType.LessThanOrEqual)
             {
-                option = !isR ? OptionEnum.LessThanOrEqual : OptionEnum.GreaterThanOrEqual;
+                option = !isR ? CompareConditionEnum.LessThanOrEqual : CompareConditionEnum.GreaterThanOrEqual;
             }
             else if (nodeType == ExpressionType.GreaterThan)
             {
-                option = !isR ? OptionEnum.GreaterThan : OptionEnum.LessThan;
+                option = !isR ? CompareConditionEnum.GreaterThan : CompareConditionEnum.LessThan;
             }
             else if (nodeType == ExpressionType.GreaterThanOrEqual)
             {
-                option = !isR ? OptionEnum.GreaterThanOrEqual : OptionEnum.LessThanOrEqual;
+                option = !isR ? CompareConditionEnum.GreaterThanOrEqual : CompareConditionEnum.LessThanOrEqual;
             }
 
             return option;
@@ -42,7 +42,7 @@ namespace EasyDAL.Exchange.ExpressionX
 
         /*******************************************************************************************************/
 
-        internal static DicModel BinaryCharLengthHandle(string key,string alias, string value, Type valType, ExpressionType nodeType,bool isR)
+        internal static DicModel BinaryCharLengthHandle(string key, string alias, string value, Type valType, ExpressionType nodeType, bool isR)
         {
             return new DicModel
             {
@@ -53,11 +53,11 @@ namespace EasyDAL.Exchange.ExpressionX
                 CsValue = value,
                 ValueType = valType,
                 Option = OptionEnum.CharLength,
-                FuncSupplement = GetOption(nodeType,isR)
+                Compare = GetOption(nodeType, isR)
             };
         }
         // 01
-        internal static DicModel BinaryNormalHandle(string key,string alias, string value, Type valType, ExpressionType nodeType,bool isR)
+        internal static DicModel BinaryNormalHandle(string key, string alias, string value, Type valType, ExpressionType nodeType, bool isR)
         {
             return new DicModel
             {
@@ -67,11 +67,12 @@ namespace EasyDAL.Exchange.ExpressionX
                 ValueType = valType,
                 Param = key,
                 ParamRaw = key,
-                Option = GetOption(nodeType,isR)
+                Option = OptionEnum.Compare,
+                Compare = GetOption(nodeType, isR)
             };
         }
         // 01
-        internal static DicModel CallInHandle(string key,string alias, string value, Type valType)
+        internal static DicModel CallInHandle(string key, string alias, string value, Type valType)
         {
             if (valType.IsEnum)
             {
@@ -89,7 +90,7 @@ namespace EasyDAL.Exchange.ExpressionX
             };
         }
         // 01
-        internal static DicModel CallLikeHandle(string key,string alias, string value, Type valType)
+        internal static DicModel CallLikeHandle(string key, string alias, string value, Type valType)
         {
             return new DicModel
             {
@@ -116,7 +117,7 @@ namespace EasyDAL.Exchange.ExpressionX
             };
         }
         // 01
-        internal static DicModel MemberBoolHandle(string key,string alias, Type valType)
+        internal static DicModel MemberBoolHandle(string key, string alias, Type valType)
         {
             return new DicModel
             {
@@ -126,13 +127,14 @@ namespace EasyDAL.Exchange.ExpressionX
                 ParamRaw = key,
                 CsValue = true.ToString(),
                 ValueType = valType,
-                Option = OptionEnum.Equal
+                Option = OptionEnum.Compare,
+                Compare = CompareConditionEnum.Equal
             };
         }
 
         /*******************************************************************************************************/
 
-        internal static DicModel SelectColumnHandle(string columnOne,string tableAliasOne)
+        internal static DicModel SelectColumnHandle(string columnOne, string tableAliasOne)
         {
             return new DicModel
             {
