@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26730.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyDAL.Exchange", "EasyDAL.Exchange\EasyDAL.Exchange.csproj", "{F855E75C-7452-4427-A10F-414FC6DADE04}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyDAL.Test", "EasyDAL.Exchange.Tests\EasyDAL.Test.csproj", "{CB195413-53C3-4A18-B7EB-0BB6476BE6E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyDAL.Test", "EasyDAL.Test\EasyDAL.Test.csproj", "{CB195413-53C3-4A18-B7EB-0BB6476BE6E3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyDAL.Test.Query", "EasyDAL.Test.Query\EasyDAL.Test.Query.csproj", "{623DEC4C-6189-4E0F-8ADD-2CC02CE39941}"
 EndProject
