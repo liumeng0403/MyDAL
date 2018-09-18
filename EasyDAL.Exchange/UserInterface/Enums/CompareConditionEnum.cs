@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace EasyDAL.Exchange
+namespace Yunyong.DataExchange
 {
     public enum CompareConditionEnum
     {

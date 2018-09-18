@@ -1,4 +1,4 @@
-﻿namespace EasyDAL.Exchange
+﻿namespace Yunyong.DataExchange
 {
     public enum KeyTypeEnum
     {

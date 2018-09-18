@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EasyDAL.Exchange
+namespace Yunyong.DataExchange
 {
     public class ColumnXAttribute: Attribute
     {
