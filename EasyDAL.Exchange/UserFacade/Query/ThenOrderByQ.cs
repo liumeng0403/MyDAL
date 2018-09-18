@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace EasyDAL.Exchange.UserFacade.Query
 {
-    public class OrderBy<M> : Operator, IMethodObject
+    public class ThenOrderByQ<M> : Operator, IMethodObject
     {
-        internal OrderBy(Context dc)
+
+        internal ThenOrderByQ(Context dc)
             : base(dc)
         { }
-
 
         /// <summary>
         /// 单表多条数据查询
@@ -69,7 +69,6 @@ namespace EasyDAL.Exchange.UserFacade.Query
             OrderByOptionHandle(option);
             return await QueryPagingListAsyncHandle<M, VM>(option.PageIndex, option.PageSize, UiMethodEnum.QueryPagingListAsync);
         }
-
 
     }
 }

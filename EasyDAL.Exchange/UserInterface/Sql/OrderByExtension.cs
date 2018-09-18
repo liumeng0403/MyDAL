@@ -9,16 +9,16 @@ namespace EasyDAL.Exchange
 
         /**************************************************************************************************************/
 
-        public static OrderBy<M> OrderBy<M, F>(this QueryFilter<M> queryFilter, Expression<Func<M,F>> func,OrderByEnum orderBy= OrderByEnum.Desc)
+        public static OrderByQ<M> OrderBy<M, F>(this WhereQ<M> where, Expression<Func<M,F>> func,OrderByEnum orderBy= OrderByEnum.Desc)
         {
-            queryFilter.DC.OP.OrderByHandle(func, orderBy);
-            return new OrderBy<M>(queryFilter.DC);
+            where.DC.OP.OrderByHandle(func, orderBy);
+            return new OrderByQ<M>(where.DC);
         }
 
-        public static ThenOrderBy<M> ThenOrderBy<M, F>(this OrderBy<M> orderByer, Expression<Func<M, F>> func, OrderByEnum orderBy = OrderByEnum.Desc)
+        public static ThenOrderByQ<M> ThenOrderBy<M, F>(this OrderByQ<M> orderByQ, Expression<Func<M, F>> func, OrderByEnum orderBy = OrderByEnum.Desc)
         {
-            orderByer.DC.OP.OrderByHandle(func, orderBy);
-            return new ThenOrderBy<M>(orderByer.DC);
+            orderByQ.DC.OP.OrderByHandle(func, orderBy);
+            return new ThenOrderByQ<M>(orderByQ.DC);
         }
 
         /**************************************************************************************************************/

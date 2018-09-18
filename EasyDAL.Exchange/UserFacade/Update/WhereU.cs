@@ -4,24 +4,23 @@ using EasyDAL.Exchange.Enums;
 using EasyDAL.Exchange.Helper;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.UserFacade.Delete
+namespace EasyDAL.Exchange.UserFacade.Update
 {
-    public class DeleteFilter<M> : Operator, IMethodObject
+    public class WhereU<M> : Operator, IMethodObject
     {
-        internal DeleteFilter(Context dc)
+        internal WhereU(Context dc)
             : base(dc)
         { }
 
-
         /// <summary>
-        /// 单表数据删除
+        /// 单表数据更新
         /// </summary>
-        /// <returns>删除条目数</returns>
-        public async Task<int> DeleteAsync()
+        /// <returns>更新条目数</returns>
+        public async Task<int> UpdateAsync()
         {
             return await SqlHelper.ExecuteAsync(
                 DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.DeleteAsync)[0],
+                DC.SqlProvider.GetSQL<M>(UiMethodEnum.UpdateAsync)[0],
                 DC.GetParameters());
         }
 

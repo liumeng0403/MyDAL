@@ -3,9 +3,9 @@ using EasyDAL.Exchange.Core;
 
 namespace EasyDAL.Exchange.UserFacade.Update
 {
-    public sealed class Setter<M> : Operator, IMethodObject
+    public sealed class Updater<M> : Operator, IMethodObject
     {
-        internal Setter(Context dc)
+        internal Updater(Context dc)
             : base(dc)
         { }
     }

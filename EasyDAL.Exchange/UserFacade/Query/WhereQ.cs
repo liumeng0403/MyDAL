@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace EasyDAL.Exchange.UserFacade.Query
 {
-    public class QueryFilter<M> : Operator,IMethodObject
+    public class WhereQ<M> : Operator,IMethodObject
     {
-        internal QueryFilter(Context dc)
+        internal WhereQ(Context dc)
             : base(dc)
         {  }
 

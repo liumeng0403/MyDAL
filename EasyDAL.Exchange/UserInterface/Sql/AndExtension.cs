@@ -16,10 +16,10 @@ namespace EasyDAL.Exchange
         /// 与 条件
         /// </summary>
         /// <param name="func">格式: it => it.Id == m.Id</param>
-        public static DeleteFilter<M> And<M>(this DeleteFilter<M> deleteFilter, Expression<Func<M, bool>> func)
+        public static WhereD<M> And<M>(this WhereD<M> where, Expression<Func<M, bool>> func)
         {
-            deleteFilter.DC.OP. AndHandle(func, CrudTypeEnum.Delete);
-            return deleteFilter;
+            where.DC.OP. AndHandle(func, CrudTypeEnum.Delete);
+            return where;
         }
 
 
@@ -27,10 +27,10 @@ namespace EasyDAL.Exchange
         /// 与条件
         /// </summary>
         /// <param name="func">格式: it => it.ProductId == Guid.Parse("85ce17c1-10d9-4784-b054-016551e5e109")</param>
-        public static UpdateFilter<M> And<M>(this UpdateFilter<M> updateFilter, Expression<Func<M, bool>> func)
+        public static WhereU<M> And<M>(this WhereU<M> where, Expression<Func<M, bool>> func)
         {
-            updateFilter.DC.OP. AndHandle(func, CrudTypeEnum.Update);
-            return updateFilter;
+            where.DC.OP. AndHandle(func, CrudTypeEnum.Update);
+            return where;
         }
 
 
@@ -38,10 +38,10 @@ namespace EasyDAL.Exchange
         /// 与条件
         /// </summary>
         /// <param name="func">格式: it => it.CreatedOn >= WhereTest.DateTime_大于等于</param>
-        public static  QueryFilter<M> And<M>(this QueryFilter<M> queryFilter,  Expression<Func<M, bool>> func)
+        public static WhereQ<M> And<M>(this WhereQ<M> where,  Expression<Func<M, bool>> func)
         {
-            queryFilter.DC.OP. AndHandle(func, CrudTypeEnum.Query);
-            return queryFilter;
+            where.DC.OP. AndHandle(func, CrudTypeEnum.Query);
+            return where;
         }
 
         public static WhereX And(this WhereX where, Expression<Func<bool>> func)
