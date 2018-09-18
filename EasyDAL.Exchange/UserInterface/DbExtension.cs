@@ -1,12 +1,12 @@
+using System;
+using System.Data;
 using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.UserFacade.Create;
 using Yunyong.DataExchange.UserFacade.Delete;
 using Yunyong.DataExchange.UserFacade.Join;
 using Yunyong.DataExchange.UserFacade.Query;
-using Yunyong.DataExchange.UserFacade.Update;
-using System;
-using System.Data;
 using Yunyong.DataExchange.UserFacade.Transaction;
+using Yunyong.DataExchange.UserFacade.Update;
 
 namespace Yunyong.DataExchange
 {

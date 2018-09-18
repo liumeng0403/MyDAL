@@ -1,7 +1,7 @@
-﻿using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Core;
+﻿using Yunyong.DataExchange.Common;
+using Yunyong.DataExchange.Core;
 
-namespace EasyDAL.Exchange.UserFacade.Update
+namespace Yunyong.DataExchange.UserFacade.Update
 {
     public sealed class Updater<M> : Operator, IMethodObject
     {
