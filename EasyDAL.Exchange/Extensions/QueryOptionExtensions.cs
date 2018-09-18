@@ -1,4 +1,4 @@
-﻿//using EasyDAL.Exchange.Common;
+//using EasyDAL.Exchange.Common;
 //using System;
 //using System.Collections.Generic;
 //using System.Dynamic;
