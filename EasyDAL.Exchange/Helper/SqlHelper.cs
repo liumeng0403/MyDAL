@@ -106,7 +106,7 @@ namespace EasyDAL.Exchange.Helper
             {
                 type = nullUnderlyingType;
             }
-            if (type.IsEnumX() && !typeMap.ContainsKey(type))
+            if (type.IsEnum && !typeMap.ContainsKey(type))
             {
                 type = Enum.GetUnderlyingType(type);
             }
@@ -213,7 +213,7 @@ namespace EasyDAL.Exchange.Helper
             if (value is T) return (T)value;
             var type = typeof(T);
             type = Nullable.GetUnderlyingType(type) ?? type;
-            if (type.IsEnumX())
+            if (type.IsEnum)
             {
                 if (value is float || value is double || value is decimal)
                 {
@@ -393,9 +393,9 @@ namespace EasyDAL.Exchange.Helper
                         // unbox nullable enums as the primitive, i.e. byte etc
 
                         var nullUnderlyingType = Nullable.GetUnderlyingType(memberType);
-                        var unboxType = nullUnderlyingType?.IsEnumX() == true ? nullUnderlyingType : memberType;
+                        var unboxType = nullUnderlyingType?.IsEnum == true ? nullUnderlyingType : memberType;
 
-                        if (unboxType.IsEnumX())
+                        if (unboxType.IsEnum)
                         {
                             Type numericType = Enum.GetUnderlyingType(unboxType);
                             if (colType == typeof(string))
@@ -425,11 +425,11 @@ namespace EasyDAL.Exchange.Helper
                         }
                         else
                         {
-                            TypeCode dataTypeCode = TypeExtensionsX.GetTypeCodeX(colType);
-                            TypeCode unboxTypeCode = TypeExtensionsX.GetTypeCodeX(unboxType);
+                            TypeCode dataTypeCode = Type.GetTypeCode(colType);
+                            TypeCode unboxTypeCode = Type.GetTypeCode(unboxType);
                             if (colType == unboxType
                                 || dataTypeCode == unboxTypeCode
-                                || dataTypeCode == TypeExtensionsX.GetTypeCodeX(nullUnderlyingType))
+                                || dataTypeCode == Type.GetTypeCode(nullUnderlyingType))
                             {
                                 il.Emit(OpCodes.Unbox_Any, unboxType); // stack is now [target][target][typed-value]
                                 //}
@@ -464,7 +464,7 @@ namespace EasyDAL.Exchange.Helper
                     if (specializedConstructor != null)
                     {
                         il.Emit(OpCodes.Pop);
-                        if (item.MemberType.IsValueTypeX())
+                        if (item.MemberType.IsValueType)
                         {
                             int localIndex = il.DeclareLocal(item.MemberType).LocalIndex;
                             LoadLocalAddress(il, localIndex);
@@ -476,11 +476,11 @@ namespace EasyDAL.Exchange.Helper
                             il.Emit(OpCodes.Ldnull);
                         }
                     }
-                    else if (applyNullSetting && (!memberType.IsValueTypeX() || Nullable.GetUnderlyingType(memberType) != null))
+                    else if (applyNullSetting && (!memberType.IsValueType || Nullable.GetUnderlyingType(memberType) != null))
                     {
                         il.Emit(OpCodes.Pop); // stack is now [target][target]
                         // can load a null with this value
-                        if (memberType.IsValueTypeX())
+                        if (memberType.IsValueType)
                         { // must be Nullable<T> for some T
                             GetTempLocal(il, ref structLocals, memberType, true); // stack is now [target][target][null]
                         }
@@ -563,7 +563,7 @@ namespace EasyDAL.Exchange.Helper
             {
                 bool handled = false;
                 OpCode opCode = default(OpCode);
-                switch (TypeExtensionsX.GetTypeCodeX(from))
+                switch (Type.GetTypeCode(from))
                 {
                     case TypeCode.Boolean:
                     case TypeCode.Byte:
@@ -577,7 +577,7 @@ namespace EasyDAL.Exchange.Helper
                     case TypeCode.Single:
                     case TypeCode.Double:
                         handled = true;
-                        switch (TypeExtensionsX.GetTypeCodeX(via ?? to))
+                        switch (Type.GetTypeCode(via ?? to))
                         {
                             case TypeCode.Byte:
                                 opCode = OpCodes.Conv_Ovf_I1_Un; break;
@@ -710,7 +710,7 @@ namespace EasyDAL.Exchange.Helper
                         }
                         else
                         {
-                            formattedValue = Convert.ToString(value) + " - " + TypeExtensionsX.GetTypeCodeX(value.GetType());
+                            formattedValue = Convert.ToString(value) + " - " + Type.GetTypeCode(value.GetType());
                         }
                     }
                     catch (Exception valEx)

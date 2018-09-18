@@ -87,9 +87,9 @@ namespace EasyDAL.Exchange.AdoNet
                         continue;
                     var unboxedType = Nullable.GetUnderlyingType(ctorParameters[i].ParameterType) ?? ctorParameters[i].ParameterType;
                     if (unboxedType != types[i] 
-                        && !(unboxedType.IsEnumX() && Enum.GetUnderlyingType(unboxedType) == types[i])
+                        && !(unboxedType.IsEnum && Enum.GetUnderlyingType(unboxedType) == types[i])
                         && !(unboxedType == typeof(char) && types[i] == typeof(string))
-                        && !(unboxedType.IsEnumX() && types[i] == typeof(string)))
+                        && !(unboxedType.IsEnum && types[i] == typeof(string)))
                     {
                         break;
                     }
