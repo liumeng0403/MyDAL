@@ -3,10 +3,12 @@ using Yunyong.DataExchange.Core;
 
 namespace Yunyong.DataExchange.UserFacade.Update
 {
-    public sealed class Setter<M> : Operator, IMethodObject
+    public class SetU<M> : Operator, IMethodObject
     {
-        internal Setter(Context dc)
+
+        internal SetU(Context dc)
             : base(dc)
         { }
+
     }
 }

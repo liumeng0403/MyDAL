@@ -7,10 +7,10 @@ using Yunyong.DataExchange.Enums;
 
 namespace Yunyong.DataExchange.UserFacade.Query
 {
-    public class ThenOrderBy<M> : Operator, IMethodObject
+    public class ThenOrderByQ<M> : Operator, IMethodObject
     {
 
-        internal ThenOrderBy(Context dc)
+        internal ThenOrderByQ(Context dc)
             : base(dc)
         { }
 

@@ -13,19 +13,30 @@ namespace Yunyong.DataExchange
         /// </summary>
         /// <param name="func">格式: it => it.CreatedOn</param>
         /// <param name="newVal">新值</param>
-        public static Setter<M> Set<M, F>(this Setter<M> setter, Expression<Func<M, F>> func, F newVal)
+        public static SetU<M> Set<M, F>(this Updater<M> updater, Expression<Func<M, F>> func, F newVal)
         {
-            setter.DC.OP.SetChangeHandle<M, F>(func, newVal, ActionEnum.Update, OptionEnum.Set);
-            return setter;
+            updater.DC.OP.SetChangeHandle<M, F>(func, newVal, ActionEnum.Update, OptionEnum.Set);
+            return new SetU<M>(updater.DC);
         }
+        /// <summary>
+        /// set 单个字段数据
+        /// </summary>
+        /// <param name="func">格式: it => it.CreatedOn</param>
+        /// <param name="newVal">新值</param>
+        public static SetU<M> Set<M, F>(this SetU<M> set, Expression<Func<M, F>> func, F newVal)
+        {
+            set.DC.OP.SetChangeHandle<M, F>(func, newVal, ActionEnum.Update, OptionEnum.Set);
+            return set;
+        }
+
 
         /// <summary>
         /// set 多个字段数据
         /// </summary>
-        public static Setter<M> Set<M>(this Setter<M> setter, object mSet)
+        public static SetU<M> Set<M>(this Updater<M> updater, object mSet)
         {
-            setter.DC.OP.SetDynamicHandle<M>(mSet);
-            return setter;
+            updater.DC.OP.SetDynamicHandle<M>(mSet);
+            return new SetU<M>(updater.DC);
         }
 
 
@@ -35,12 +46,22 @@ namespace Yunyong.DataExchange
         /// <param name="func">格式: it => it.LockedCount</param>
         /// <param name="modifyVal">变更值</param>
         /// <param name="change">+/-/...</param>
-        public static Setter<M> Change<M, F>(this Setter<M> setter, Expression<Func<M, F>> func, F modifyVal, ChangeEnum change)
+        public static SetU<M> Change<M, F>(this Updater<M> updater, Expression<Func<M, F>> func, F modifyVal, ChangeEnum change)
         {
-            setter.DC.OP.SetChangeHandle<M, F>(func, modifyVal, ActionEnum.Update, setter.DC.SqlProvider.GetChangeOption(change));
-            return setter;
+            updater.DC.OP.SetChangeHandle<M, F>(func, modifyVal, ActionEnum.Update, updater.DC.SqlProvider.GetChangeOption(change));
+            return new SetU<M>(updater.DC);
         }
-
+        /// <summary>
+        /// set 单个字段变更
+        /// </summary>
+        /// <param name="func">格式: it => it.LockedCount</param>
+        /// <param name="modifyVal">变更值</param>
+        /// <param name="change">+/-/...</param>
+        public static SetU<M> Change<M, F>(this SetU<M> set, Expression<Func<M, F>> func, F modifyVal, ChangeEnum change)
+        {
+            set.DC.OP.SetChangeHandle<M, F>(func, modifyVal, ActionEnum.Update, set.DC.SqlProvider.GetChangeOption(change));
+            return set;
+        }
 
     }
 }

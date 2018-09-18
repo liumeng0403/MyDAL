@@ -6,9 +6,9 @@ using Yunyong.DataExchange.Helper;
 
 namespace Yunyong.DataExchange.UserFacade.Delete
 {
-    public class DeleteFilter<M> : Operator, IMethodObject
+    public class WhereD<M> : Operator, IMethodObject
     {
-        internal DeleteFilter(Context dc)
+        internal WhereD(Context dc)
             : base(dc)
         { }
 

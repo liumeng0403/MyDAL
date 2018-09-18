@@ -6,9 +6,9 @@ using Yunyong.DataExchange.Helper;
 
 namespace Yunyong.DataExchange.UserFacade.Update
 {
-    public class UpdateFilter<M> : Operator, IMethodObject
+    public class WhereU<M> : Operator, IMethodObject
     {
-        internal UpdateFilter(Context dc)
+        internal WhereU(Context dc)
             : base(dc)
         { }
 
