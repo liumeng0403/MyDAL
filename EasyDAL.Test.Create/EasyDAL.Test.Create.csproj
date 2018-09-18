@@ -15,7 +15,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <DotNetCliToolReference Include="dotnet-xunit" Version="$(xUnitVersion)" />
-    <ProjectReference Include="..\EasyDAL.Exchange.Tests\EasyDAL.Test.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EasyDAL.Test\EasyDAL.Test.csproj" />
   </ItemGroup>
 
 </Project>
