@@ -19,7 +19,7 @@ namespace EasyDAL.Exchange.UserFacade.Create
         /// <returns>插入条目数</returns>
         public async Task<int> CreateAsync(M m)
         {
-            await DC.GetProperties(m);
+            DC.GetProperties(m);
             return await SqlHelper.ExecuteAsync(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.CreateAsync)[0],
@@ -32,11 +32,15 @@ namespace EasyDAL.Exchange.UserFacade.Create
         /// <returns>插入条目数</returns>
         public async Task<int> CreateBatchAsync(IEnumerable<M> mList)
         {
-            await DC.GetProperties(mList);
-            return await SqlHelper.ExecuteAsync(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.CreateBatchAsync)[0],
-                DC.GetParameters());
+            return await DC.BDH.StepProcess(mList, 15, async list =>
+            {
+                DC.ResetConditions();
+                DC.GetProperties(list);                
+                return await SqlHelper.ExecuteAsync(
+                    DC.Conn,
+                    DC.SqlProvider.GetSQL<M>(UiMethodEnum.CreateBatchAsync)[0],
+                    DC.GetParameters());
+            });
         }
 
     }

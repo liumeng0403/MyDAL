@@ -12,11 +12,6 @@ namespace EasyDAL.Exchange.Cache
     {
         internal string GetKey(string classFullName, string dbName)
         {
-            //var key = string.Empty;
-            //key += dc.Conn.Database;
-            //dc.SqlProvider.TryGetTableName<M>(out var tableName);
-            //key += tableName;
-            //return key;
             return $"{dbName}:{classFullName}";
         }
 
@@ -77,7 +72,15 @@ namespace EasyDAL.Exchange.Cache
 
         internal Type GetModelType<M>(string key)
         {
-            return null;
+            return ModelTypeCache[key];
+        }
+
+        internal void SetModelType(string key,Type type)
+        {
+            if (!ModelTypeCache.ContainsKey(key))
+            {
+                ModelTypeCache[key] = type;
+            }
         }
 
         /*****************************************************************************************************************************************************/
