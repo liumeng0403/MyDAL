@@ -5,7 +5,7 @@ using Xunit;
 
 namespace EasyDAL.Test.Query
 {
-    public class _12_FuncTest : TestBase
+    public class _06_FuncTest : TestBase
     {
 
         [Fact]

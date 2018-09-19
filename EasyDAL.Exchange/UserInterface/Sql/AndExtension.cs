@@ -11,6 +11,7 @@ namespace EasyDAL.Exchange
     public static class AndExtension
     {
 
+        /*************************************************************************************************************************************/
 
         /// <summary>
         /// 与 条件
@@ -22,6 +23,7 @@ namespace EasyDAL.Exchange
             return where;
         }
 
+        /*************************************************************************************************************************************/
 
         /// <summary>
         /// 与条件
@@ -33,6 +35,7 @@ namespace EasyDAL.Exchange
             return where;
         }
 
+        /*************************************************************************************************************************************/
 
         /// <summary>
         /// 与条件
@@ -44,11 +47,11 @@ namespace EasyDAL.Exchange
             return where;
         }
 
+        /*************************************************************************************************************************************/
+
         public static WhereX And(this WhereX where, Expression<Func<bool>> func)
         {
-            var field = where. DC.EH.ExpressionHandle(func, ActionEnum.And);
-            field.Crud = CrudTypeEnum.Join;
-            where. DC.AddConditions(field);
+            where.DC.OP.WhereJoinHandle(where, func, ActionEnum.And);
             return where;
         }
 

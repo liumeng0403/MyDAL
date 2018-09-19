@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace EasyDAL.Exchange.UserFacade.Query
 {
-    public class SingleFilter<M> : Operator, IMethodObject
+    public class CountQ<M> : Operator, IMethodObject
     {
 
-        internal SingleFilter(Context dc)
+        internal CountQ(Context dc)
             : base(dc)
         { }
 

@@ -4,12 +4,14 @@ using EasyDAL.Exchange.UserFacade.Query;
 using EasyDAL.Exchange.UserFacade.Update;
 using System;
 using System.Linq.Expressions;
+using EasyDAL.Exchange.UserFacade.Join;
 
 namespace EasyDAL.Exchange
 {
     public static class OrExtension
     {
 
+        /****************************************************************************************************************************************/
 
         /// <summary>
         /// 或 条件
@@ -21,6 +23,7 @@ namespace EasyDAL.Exchange
             return where;
         }
 
+        /****************************************************************************************************************************************/
 
         /// <summary>
         /// 或条件
@@ -32,6 +35,7 @@ namespace EasyDAL.Exchange
             return where;
         }
 
+        /****************************************************************************************************************************************/
 
         /// <summary>
         /// 或条件
@@ -40,6 +44,14 @@ namespace EasyDAL.Exchange
         public static WhereQ<M> Or<M>(this WhereQ<M> where, Expression<Func<M, bool>> func)
         {
             where.DC.OP. OrHandle(func, CrudTypeEnum.Query);
+            return where;
+        }
+
+        /****************************************************************************************************************************************/
+
+        public static WhereX Or(this WhereX where, Expression<Func<bool>> func)
+        {
+            where.DC.OP.WhereJoinHandle(where, func, ActionEnum.Or);
             return where;
         }
 

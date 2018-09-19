@@ -6,7 +6,6 @@ using EasyDAL.Exchange.Extensions;
 using EasyDAL.Exchange.Helper;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -67,7 +66,7 @@ namespace EasyDAL.Exchange.Core
         private string GetOrderByPart<M>()
         {
             var str = string.Empty;
-            var cols = (DC.SC.GetColumnInfos(DC.SC.GetKey(typeof(M).FullName,DC.Conn.Database),DC)).GetAwaiter().GetResult();
+            var cols = DC.SC.GetColumnInfos(DC.SC.GetKey(typeof(M).FullName,DC.Conn.Database));
 
             if (DC.Conditions.Any(it => it.Action == ActionEnum.OrderBy))
             {
@@ -79,31 +78,32 @@ namespace EasyDAL.Exchange.Core
             }
             else
             {
-                str = $" `{DC.SC.GetModelProperys(typeof(M), DC).First().Name}` desc ";
+                str = $" `{DC.SC.GetModelProperys(DC.SC.GetKey( typeof(M).FullName, DC.Conn.Database)).First().Name}` desc ";
             }
 
             return str;
         }
-        //private string GetOrderByPart()
-        //{
-        //    var str = string.Empty;
-        //    var cols = (DC.SC.GetColumnInfos<M>(DC)).GetAwaiter().GetResult();
+        private string GetOrderByPart()
+        {
+            var str = string.Empty;
+            var key = DC.SC.GetKey(DC.Conditions.First(it => !string.IsNullOrWhiteSpace(it.ClassFullName)).ClassFullName, DC.Conn.Database);
+            var cols = DC.SC.GetColumnInfos(key);
 
-        //    if (DC.Conditions.Any(it => it.Action == ActionEnum.OrderBy))
-        //    {
-        //        str = string.Join(",", DC.Conditions.Where(it => it.Action == ActionEnum.OrderBy).Select(it => $" `{it.ColumnOne}` {it.Option.ToEnumDesc<OptionEnum>()} "));
-        //    }
-        //    else if (cols.Any(it => "PRI".Equals(it.KeyType, StringComparison.OrdinalIgnoreCase)))
-        //    {
-        //        str = string.Join(",", cols.Where(it => "PRI".Equals(it.KeyType, StringComparison.OrdinalIgnoreCase)).Select(it => $" `{it.ColumnName}` desc "));
-        //    }
-        //    else
-        //    {
-        //        str = $" `{DC.SC.GetModelProperys(typeof(M), DC).First().Name}` desc ";
-        //    }
+            if (DC.Conditions.Any(it => it.Action == ActionEnum.OrderBy))
+            {
+                str = string.Join(",", DC.Conditions.Where(it => it.Action == ActionEnum.OrderBy).Select(it => $" `{it.ColumnOne}` {it.Option.ToEnumDesc<OptionEnum>()} "));
+            }
+            else if (cols.Any(it => "PRI".Equals(it.KeyType, StringComparison.OrdinalIgnoreCase)))
+            {
+                str = string.Join(",", cols.Where(it => "PRI".Equals(it.KeyType, StringComparison.OrdinalIgnoreCase)).Select(it => $" `{it.ColumnName}` desc "));
+            }
+            else
+            {
+                str = $" `{DC.SC.GetModelProperys(key).First().Name}` desc ";
+            }
 
-        //    return str;
-        //}
+            return str;
+        }
 
         internal string GetSingleValuePart()
         {
@@ -391,24 +391,11 @@ namespace EasyDAL.Exchange.Core
             return string.Join(", \r\n ", list);
         }
 
-        //internal string GetTableName<M>(M m)
-        //{
-        //    return $"`{DC.TableAttributeName(m.GetType())}`";
-        //}
+
         internal string GetTableName(Type mType)
         {
             return $"`{DC.TableAttributeName(mType)}`";
         }
-        //internal bool TryGetTableName<M>(out string tableName)
-        //{
-        //    tableName = DC.AH.GetAttributePropVal<TableAttribute>(typeof(M), a => a.Name);
-        //    if (string.IsNullOrWhiteSpace(tableName))
-        //    {
-        //        throw new Exception("DB Entity 缺少 TableAttribute 指定的表名!");
-        //    }
-        //    tableName = $"`{tableName}`";
-        //    return true;
-        //}
 
         internal OptionEnum GetChangeOption(ChangeEnum change)
         {
@@ -468,7 +455,7 @@ namespace EasyDAL.Exchange.Core
                 case UiMethodEnum.JoinQueryPagingListAsync:
                     var wherePart9 = Wheres();
                     list.Add($"select count(*) {From()} {Joins()} {wherePart9} ; ");
-                    //list.Add($"select {Columns()} {From()} {Joins()} {wherePart9} order by {GetOrderByPart()} limit {(pageIndex - 1) * pageSize},{pageIndex * pageSize}  ; ");
+                    list.Add($"select {Columns()} {From()} {Joins()} {wherePart9} order by {GetOrderByPart()} limit {(pageIndex - 1) * pageSize},{pageIndex * pageSize}  ; ");
                     break;
                 case UiMethodEnum.QueryAllPagingListAsync:
                     list.Add($"select count(*) {From()} {Table<M>(type)} ; ");
