@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Yunyong.Core;
+using Yunyong.DataExchange.Common;
 
 namespace Yunyong.DataExchange.Helper
 {
