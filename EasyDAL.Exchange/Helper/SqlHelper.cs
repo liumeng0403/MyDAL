@@ -14,7 +14,6 @@ using Yunyong.DataExchange.AdoNet;
 using Yunyong.DataExchange.AdoNet.Interfaces;
 using Yunyong.DataExchange.Cache;
 using Yunyong.DataExchange.Enums;
-using Yunyong.DataExchange.Extensions;
 using Yunyong.DataExchange.Others;
 
 namespace Yunyong.DataExchange.Helper

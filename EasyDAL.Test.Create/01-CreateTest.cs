@@ -2,7 +2,9 @@ using EasyDAL.Test.Entities.EasyDal_Exchange;
 using EasyDAL.Test.Enums;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Xunit;
 using Yunyong.DataExchange;
 
@@ -126,6 +128,27 @@ namespace EasyDAL.Test.Create
             Assert.True(res3 == 10);
 
             var tuple3 = (XDebug.SQL, XDebug.Parameters);
+
+            /********************************************************************************************************************************/
+
+            var json = File.ReadAllText(@"C:\Users\Administrator.DESKTOP-UH5FN5U\Desktop\工作\DalTestDB\ProfileData.json");
+            var list = JsonConvert.DeserializeObject<List<UserInfo>>(json);
+            foreach (var item in list)
+            {
+                item.Id = Guid.NewGuid();
+                item.CreatedOn = DateTime.Now;
+            }
+
+            var xx4 = "";
+
+            var res4 = await Conn.OpenDebug()
+                .Creater<UserInfo>()
+                .CreateBatchAsync(list);
+            Assert.True(res4 == list.Count);
+
+            var tuple4 = (XDebug.SQL, XDebug.Parameters);
+
+            /********************************************************************************************************************************/
 
             var xx = "";
         }
