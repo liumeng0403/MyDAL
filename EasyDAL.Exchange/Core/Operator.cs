@@ -56,7 +56,7 @@ namespace Yunyong.DataExchange.Core
 
             //
             var result = new List<(string key, string param, string val, Type valType, string colType)>();
-            var columns = (DC.SC.GetColumnInfos(DC.SC.GetKey(typeof(M).FullName,DC.Conn.Database),DC)).GetAwaiter().GetResult();
+            var columns = DC.SC.GetColumnInfos(DC.SC.GetKey(typeof(M).FullName,DC.Conn.Database));
             foreach (var prop in list)
             {
                 var val = string.Empty;
@@ -128,6 +128,13 @@ namespace Yunyong.DataExchange.Core
                     Crud = CrudTypeEnum.Update
                 });
             }
+        }
+
+        internal void WhereJoinHandle(Operator op,Expression<Func<bool>> func , ActionEnum action)
+        {
+            var dic = op.DC.EH.ExpressionHandle(func, action);
+            dic.Crud = CrudTypeEnum.Join;
+            op.DC.AddConditions(dic);
         }
         
         internal void WhereHandle<T>(Expression<Func<T, bool>> func,CrudTypeEnum crud)

@@ -9,7 +9,7 @@ using Yunyong.DataExchange;
 
 namespace EasyDAL.Test.Query
 {
-    public class _11_InTest : TestBase
+    public class _06_InTest : TestBase
     {
         private List<AgentLevel> EnumList { get; set; }
         private AgentLevel[] EnumArray { get; set; }

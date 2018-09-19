@@ -68,6 +68,7 @@ namespace Yunyong.DataExchange.UserFacade.Join
         /// <param name="pageSize">每页条数</param>
         public async Task<PagingList<M>> QueryPagingListAsync<M>(int pageIndex, int pageSize)
         {
+            SelectMHandle<M>();
             var result = new PagingList<M>();
             result.PageIndex = pageIndex;
             result.PageSize = pageSize;

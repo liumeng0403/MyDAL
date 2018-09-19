@@ -6,12 +6,8 @@ using Yunyong.DataExchange;
 
 namespace EasyDAL.Test.Query
 {
-    public class _04_QueryTest : TestBase
+    public class _04_ExistTest : TestBase
     {
-
-
-
-
 
         // 查询 是否存在
         [Fact]
@@ -28,10 +24,6 @@ namespace EasyDAL.Test.Query
 
             var xx = "";
         }
-
-
-
-
-
+        
     }
 }

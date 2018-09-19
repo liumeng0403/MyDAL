@@ -17,25 +17,6 @@ namespace Yunyong.DataExchange.UserFacade.Query
         {  }
 
         /// <summary>
-        /// select count(column)
-        /// </summary>
-        /// <param name="func">格式: it => it.Id</param>
-        public SingleFilter<M> Count<F>(Expression<Func<M, F>> func)
-        {
-            var field = DC.EH.ExpressionHandle(func);
-            DC.AddConditions(new DicModel
-            {
-                ColumnOne = field,
-                Param = field,
-                ParamRaw=field,
-                Action = ActionEnum.Select,
-                Option = OptionEnum.Count,
-                Crud = CrudTypeEnum.Query
-            });
-            return new SingleFilter<M>(DC);
-        }
-
-        /// <summary>
         /// 查询是否存在符合条件的数据
         /// </summary>
         public async Task<bool> ExistAsync()

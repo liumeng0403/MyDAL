@@ -59,9 +59,7 @@ namespace Yunyong.DataExchange
 
         public static WhereX Where(this OnX on, Expression<Func<bool>> func)
         {
-            var field = on.DC.EH.ExpressionHandle(func, ActionEnum.Where);
-            field.Crud = CrudTypeEnum.Join;
-            on.DC.AddConditions(field);
+            on.DC.OP.WhereJoinHandle(on, func, ActionEnum.Where);
             return new WhereX(on.DC);
         }
 

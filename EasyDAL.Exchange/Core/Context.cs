@@ -149,15 +149,21 @@ namespace Yunyong.DataExchange.Core
 
         internal void SetMTCache<M>()
         {
+            //
             var type = typeof(M);
+            var key = SC.GetKey(type.FullName, Conn.Database);
+
+            //
             var table = SqlProvider.GetTableName(type);
             SC.SetModelTable(SC.GetKey(type.FullName, Conn.Database), table);
+            SC.SetModelProperys(type, this);
+            (SC.SetModelColumnInfos(key, this)).GetAwaiter().GetResult();
         }
 
         private async Task SetInsertValue<M>(M m, OptionEnum option, int index)
         {
-            var props = SC.GetModelProperys(m.GetType(), this);
-            var columns = (SC.GetColumnInfos(SC.GetKey(typeof(M).FullName, Conn.Database), this)).GetAwaiter().GetResult();
+            var props = SC.GetModelProperys(SC.GetKey(m.GetType().FullName, Conn.Database));
+            var columns = SC.GetColumnInfos(SC.GetKey(typeof(M).FullName, Conn.Database));
 
             foreach (var prop in props)
             {

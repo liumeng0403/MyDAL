@@ -2,6 +2,7 @@ using System;
 using System.Linq.Expressions;
 using Yunyong.DataExchange.Enums;
 using Yunyong.DataExchange.UserFacade.Delete;
+using Yunyong.DataExchange.UserFacade.Join;
 using Yunyong.DataExchange.UserFacade.Query;
 using Yunyong.DataExchange.UserFacade.Update;
 
@@ -10,6 +11,7 @@ namespace Yunyong.DataExchange
     public static class OrExtension
     {
 
+        /****************************************************************************************************************************************/
 
         /// <summary>
         /// 或 条件
@@ -21,6 +23,7 @@ namespace Yunyong.DataExchange
             return where;
         }
 
+        /****************************************************************************************************************************************/
 
         /// <summary>
         /// 或条件
@@ -32,6 +35,7 @@ namespace Yunyong.DataExchange
             return where;
         }
 
+        /****************************************************************************************************************************************/
 
         /// <summary>
         /// 或条件
@@ -40,6 +44,14 @@ namespace Yunyong.DataExchange
         public static WhereQ<M> Or<M>(this WhereQ<M> where, Expression<Func<M, bool>> func)
         {
             where.DC.OP. OrHandle(func, CrudTypeEnum.Query);
+            return where;
+        }
+
+        /****************************************************************************************************************************************/
+
+        public static WhereX Or(this WhereX where, Expression<Func<bool>> func)
+        {
+            where.DC.OP.WhereJoinHandle(where, func, ActionEnum.Or);
             return where;
         }
 
