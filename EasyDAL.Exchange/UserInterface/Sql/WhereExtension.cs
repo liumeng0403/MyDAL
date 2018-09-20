@@ -63,5 +63,11 @@ namespace EasyDAL.Exchange
             return new WhereX(on.DC);
         }
 
+        //public static WhereX Where(this OnX on, object mWhere)
+        //{
+        //    on.DC.OP.WhereJoinHandle(on, func, ActionEnum.Where);
+        //    return new WhereX(on.DC);
+        //}
+
     }
 }

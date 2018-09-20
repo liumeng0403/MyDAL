@@ -77,16 +77,24 @@ namespace EasyDAL.Exchange.UserFacade.Join
             result.Data = (await SqlHelper.QueryAsync<M>(DC.Conn, sql[1], paras)).ToList();
             return result;
         }
-        ///// <summary>
-        ///// 单表分页查询
-        ///// </summary>
-        ///// <param name="pageIndex">页码</param>
-        ///// <param name="pageSize">每页条数</param>
-        //public async Task<PagingList<M>> QueryPagingListAsync(PagingQueryOption option)
-        //{
-        //    OrderByOptionHandle(option);
-        //    return await QueryPagingListAsyncHandle<M, M>(option.PageIndex, option.PageSize, UiMethodEnum.QueryPagingListAsync);
-        //}
+        /// <summary>
+        /// 单表分页查询
+        /// </summary>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">每页条数</param>
+        public async Task<PagingList<M>> QueryPagingListAsync<M>(PagingQueryOption option)
+        {
+            SelectMHandle<M>();
+            OrderByOptionHandle(option);
+            var result = new PagingList<M>();
+            result.PageIndex = option.PageIndex;
+            result.PageSize = option.PageSize;
+            var paras = DC.GetParameters();
+            var sql = DC.SqlProvider.GetSQL<M>(UiMethodEnum.JoinQueryPagingListAsync, result.PageIndex, result.PageSize);
+            result.TotalCount = await SqlHelper.ExecuteScalarAsync<long>(DC.Conn, sql[0], paras);
+            result.Data = (await SqlHelper.QueryAsync<M>(DC.Conn, sql[1], paras)).ToList();
+            return result;
+        }
         ///// <summary>
         ///// 单表分页查询
         ///// </summary>

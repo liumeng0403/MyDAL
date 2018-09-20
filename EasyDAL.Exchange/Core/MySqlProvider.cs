@@ -86,20 +86,21 @@ namespace EasyDAL.Exchange.Core
         private string GetOrderByPart()
         {
             var str = string.Empty;
-            var key = DC.SC.GetKey(DC.Conditions.First(it => !string.IsNullOrWhiteSpace(it.ClassFullName)).ClassFullName, DC.Conn.Database);
+            var dic = DC.Conditions.First(it => !string.IsNullOrWhiteSpace(it.ClassFullName));
+            var key = DC.SC.GetKey(dic.ClassFullName, DC.Conn.Database);
             var cols = DC.SC.GetColumnInfos(key);
 
             if (DC.Conditions.Any(it => it.Action == ActionEnum.OrderBy))
             {
-                str = string.Join(",", DC.Conditions.Where(it => it.Action == ActionEnum.OrderBy).Select(it => $" `{it.ColumnOne}` {it.Option.ToEnumDesc<OptionEnum>()} "));
+                str = string.Join(",", DC.Conditions.Where(it => it.Action == ActionEnum.OrderBy).Select(it => $" {dic.TableAliasOne}.`{it.ColumnOne}` {it.Option.ToEnumDesc<OptionEnum>()} "));
             }
             else if (cols.Any(it => "PRI".Equals(it.KeyType, StringComparison.OrdinalIgnoreCase)))
             {
-                str = string.Join(",", cols.Where(it => "PRI".Equals(it.KeyType, StringComparison.OrdinalIgnoreCase)).Select(it => $" `{it.ColumnName}` desc "));
+                str = string.Join(",", cols.Where(it => "PRI".Equals(it.KeyType, StringComparison.OrdinalIgnoreCase)).Select(it => $" {dic.TableAliasOne}.`{it.ColumnName}` desc "));
             }
             else
             {
-                str = $" `{DC.SC.GetModelProperys(key).First().Name}` desc ";
+                str = $" {dic.TableAliasOne}.`{DC.SC.GetModelProperys(key).First().Name}` desc ";
             }
 
             return str;
