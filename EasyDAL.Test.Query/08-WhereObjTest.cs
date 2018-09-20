@@ -17,6 +17,8 @@ namespace EasyDAL.Test.Query
         {
             public Guid? Id { get; set; }
             public string Name { get; set; }
+
+            public AgentLevel AgentLevel { get; set; }
         }
 
         public class ProductQueryOption : PagingQueryOption
@@ -27,6 +29,8 @@ namespace EasyDAL.Test.Query
         [Fact]
         public async Task WhereObjQueryOptionTest()
         {
+
+            /*************************************************************************************************************************/
 
             var xx1 = "";
 
@@ -43,8 +47,9 @@ namespace EasyDAL.Test.Query
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
-            var xx2 = "";
+            /*************************************************************************************************************************/
 
+            var xx2 = "";
 
             var option = new AgentQueryOption();
             option.Id = Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b");
@@ -56,6 +61,8 @@ namespace EasyDAL.Test.Query
                 .QueryPagingListAsync(option);
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters);
+
+            /*************************************************************************************************************************/
 
             var xx3 = "";
 
@@ -74,6 +81,8 @@ namespace EasyDAL.Test.Query
                 .QueryPagingListAsync<AgentVM>(option);
 
             var tuple3 = (XDebug.SQL, XDebug.Parameters);
+
+            /*************************************************************************************************************************/
 
             var xx4 = "";
 
@@ -120,6 +129,8 @@ namespace EasyDAL.Test.Query
 
             var tuple42 = (XDebug.SQL, XDebug.Parameters);
 
+            /*************************************************************************************************************************/
+
             var xx5 = "";
 
             var option2 = new ProductQueryOption
@@ -134,6 +145,26 @@ namespace EasyDAL.Test.Query
 
             var tuple5 = (XDebug.SQL, XDebug.Parameters);
 
+
+            /*************************************************************************************************************************/
+
+            var option6 = new AgentQueryOption();
+            option6.AgentLevel = AgentLevel.DistiAgent;
+
+            var xx6 = "";
+
+            var res6 = await Conn.OpenDebug()
+                .Joiner<Agent, AgentInventoryRecord>(out var agent6, out var record6)
+                .From(() => agent6)
+                .InnerJoin(() => record6)
+                .On(() => agent6.Id == record6.AgentId)
+                .Where(() => agent6.AgentLevel == AgentLevel.DistiAgent)
+                .QueryPagingListAsync<Agent>(option6);
+            Assert.True(res6.TotalCount == 574);
+
+            var tuple6 = (XDebug.SQL, XDebug.Parameters);
+
+            /*************************************************************************************************************************/
 
             var xx = "";
 
