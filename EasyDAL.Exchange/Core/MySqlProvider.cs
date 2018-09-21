@@ -6,6 +6,7 @@ using EasyDAL.Exchange.Extensions;
 using EasyDAL.Exchange.Helper;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -172,7 +173,9 @@ namespace EasyDAL.Exchange.Core
             var tableName = string.Empty;
             if (type != UiMethodEnum.JoinQueryListAsync)
             {
-                tableName = GetTableName(typeof(M));
+                //tableName = GetTableName(typeof(M));
+                var key = DC.SC.GetKey(typeof(M).FullName, DC.Conn.Database);
+                tableName = DC.SC.GetModelTableName(key);
             }
 
             return tableName;
@@ -395,7 +398,14 @@ namespace EasyDAL.Exchange.Core
 
         internal string GetTableName(Type mType)
         {
-            return $"`{DC.TableAttributeName(mType)}`";
+            var tableName = string.Empty;
+            tableName = DC.AH.GetAttributePropVal<TableAttribute>(mType, a => a.Name);
+            if (string.IsNullOrWhiteSpace(tableName))
+            {
+                throw new Exception("DB Entity 缺少 TableAttribute 指定的表名!");
+            }
+            return $"`{tableName}`";
+            //return $"`{DC.TableAttributeName(mType)}`";
         }
 
         internal OptionEnum GetChangeOption(ChangeEnum change)

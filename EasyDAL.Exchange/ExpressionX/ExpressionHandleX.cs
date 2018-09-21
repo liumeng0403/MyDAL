@@ -574,7 +574,7 @@ namespace EasyDAL.Exchange.ExpressionX
                 {
                     var body = func.Body as MemberExpression;
                     var alias = body.Member.Name;
-                    var table = DC.SqlProvider.GetTableName(body.Type);
+                    var table = DC.SC.GetModelTableName(DC.SC.GetKey(body.Type.FullName, DC.Conn.Database));  // DC.SqlProvider.GetTableName(body.Type);
                     result.Add(new DicModel
                     {
                         TableOne = table,

@@ -61,7 +61,7 @@ namespace EasyDAL.Exchange.Cache
         {
             if (!ModelColumnInfosCache.ContainsKey(key))
             {
-                var columns = await dc.SqlProvider.GetColumnsInfos(dc.SC.GetModelTable(key));
+                var columns = await dc.SqlProvider.GetColumnsInfos(dc.SC.GetModelTableName(key));
                 ModelColumnInfosCache[key] = columns;
             }
         }
@@ -85,16 +85,16 @@ namespace EasyDAL.Exchange.Cache
 
         /*****************************************************************************************************************************************************/
 
-        private static ConcurrentDictionary<string, string> ModelTableCache { get; } = new ConcurrentDictionary<string, string>();
+        private static ConcurrentDictionary<string, string> ModelTableNameCache { get; } = new ConcurrentDictionary<string, string>();
 
-        internal string GetModelTable(string key)
+        internal string GetModelTableName(string key)
         {
-            return ModelTableCache[key];
+            return ModelTableNameCache[key];
         }
 
-        internal void SetModelTable(string key, string tableName)
+        internal void SetModelTableName(string key, string tableName)
         {
-            ModelTableCache.GetOrAdd(key, tableName);
+            ModelTableNameCache.GetOrAdd(key, tableName);
         }
 
         /*****************************************************************************************************************************************************/
