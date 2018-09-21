@@ -87,7 +87,8 @@ namespace EasyDAL.Exchange.Core
 
         internal void SetChangeHandle<M, F>(Expression<Func<M, F>> func, F modVal, ActionEnum action, OptionEnum option)
         {
-            var key = DC.EH.ExpressionHandle(func);
+            var keyDic = DC.EH.ExpressionHandle(func)[0];
+            var key = keyDic.ColumnOne;
             var val = string.Empty;
             if (modVal == null)
             {
@@ -194,7 +195,8 @@ namespace EasyDAL.Exchange.Core
 
         internal void OrderByHandle<M,F>(Expression<Func<M, F>> func, OrderByEnum orderBy)
         {
-            var field = DC.EH.ExpressionHandle(func);
+            var keyDic = DC.EH.ExpressionHandle(func)[0];
+            var key = keyDic.ColumnOne;
             var option = OptionEnum.None;
             switch (orderBy)
             {
@@ -208,7 +210,7 @@ namespace EasyDAL.Exchange.Core
 
             DC.AddConditions(new DicModel
             {
-                ColumnOne = field,
+                ColumnOne = key,
                 Option = option,
                 Action = ActionEnum.OrderBy,
                 Crud = CrudTypeEnum.Query
@@ -297,6 +299,18 @@ namespace EasyDAL.Exchange.Core
                 dic.Action = ActionEnum.Select;
                 dic.Option = OptionEnum.ColumnAs;
                 dic.Crud = CrudTypeEnum.Join;
+                DC.AddConditions(dic);
+            }
+        }
+
+        internal void SelectMHandle<M,VM>(Expression<Func<M,VM>> func)
+        {
+            var list = DC.EH.ExpressionHandle(func);
+            foreach (var dic in list)
+            {
+                dic.Action = ActionEnum.Select;
+                dic.Option = OptionEnum.ColumnAs;
+                dic.Crud = CrudTypeEnum.Query;
                 DC.AddConditions(dic);
             }
         }

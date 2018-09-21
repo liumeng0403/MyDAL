@@ -176,6 +176,22 @@ namespace EasyDAL.Test.Query
 
             /****************************************************************************************************************************************/
 
+            var xx8 = "";
+
+            var res8 = await Conn.OpenDebug()
+                .Selecter<Agent>()
+                .Where(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
+                .QueryFirstOrDefaultAsync(agent=>new AgentVM
+                {
+                    XXXX=agent.Name,
+                    YYYY=agent.PathId
+                });
+            Assert.Equal("樊士芹",res8.XXXX);
+
+            var tuple8 = (XDebug.SQL, XDebug.Parameters);
+
+            /****************************************************************************************************************************************/
+
             var xx = "";
 
         }

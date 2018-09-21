@@ -34,7 +34,7 @@ namespace EasyDAL.Test.Query
                 .Where(it => WhereTest.CreatedOn <= it.CreatedOn)
                 .QueryListAsync();
             Assert.True(res1.Count == resR1.Count);
-            Assert.True(res1.Count >0);
+            //Assert.True(res1.Count >0);
 
             var tupleR1 = (XDebug.SQL, XDebug.Parameters);
 
@@ -56,7 +56,7 @@ namespace EasyDAL.Test.Query
                 .Where(it => start <= it.CreatedOn)
                 .QueryListAsync();
             Assert.True(res2.Count == resR2.Count);
-            Assert.True(res2.Count > 0);
+            //Assert.True(res2.Count > 0);
 
             var tupleR2 = (XDebug.SQL, XDebug.Parameters);
 
@@ -77,7 +77,7 @@ namespace EasyDAL.Test.Query
                 .Where(it => DateTime.Now >= it.CreatedOn)
                 .QueryListAsync();
             Assert.True(res3.Count == resR3.Count);
-            Assert.True(res3.Count >0 );
+            //Assert.True(res3.Count >0 );
 
             var tupleR3 = (XDebug.SQL, XDebug.Parameters);
 
@@ -127,6 +127,21 @@ namespace EasyDAL.Test.Query
             Assert.Null(res6.First().XXXX);
 
             var tuple6 = (XDebug.SQL, XDebug.Parameters);
+
+            /********************************************************************************************************************************/
+
+            var xx7 = "";
+
+            var res7 = await Conn.OpenDebug()
+                .Selecter<Agent>()
+                .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
+                .QueryListAsync(agent => new AgentVM
+                {
+                    XXXX = agent.Name,
+                    YYYY = agent.PathId
+                });
+
+            var tuple7 = (XDebug.SQL, XDebug.Parameters);
 
             /********************************************************************************************************************************/
 

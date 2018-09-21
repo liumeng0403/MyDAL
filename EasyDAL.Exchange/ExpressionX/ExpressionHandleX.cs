@@ -428,6 +428,29 @@ namespace EasyDAL.Exchange.ExpressionX
 
         /********************************************************************************************************************/
 
+        private List<DicModel> HandSelectMemberInit(MemberInitExpression miExpr)
+        {
+            var result = new List<DicModel>();
+            
+            foreach (var mb in miExpr.Bindings)
+            {
+                var mbEx = mb as MemberAssignment;
+                var maMem = mbEx.Expression as MemberExpression;
+                var tuple = GetMemTuple(maMem);
+                var colAlias = mbEx.Member.Name;
+                result.Add(new DicModel
+                {
+                    TableAliasOne = tuple.alias,
+                    ColumnOne = tuple.key,
+                    ColumnAlias = colAlias
+                });
+            }
+
+            return result;
+        }
+
+        /********************************************************************************************************************/
+
         private DicModel HandOnBinary(BinaryExpression binExpr)
         {
             var option = OptionEnum.Compare;
@@ -449,17 +472,37 @@ namespace EasyDAL.Exchange.ExpressionX
         /// <summary>
         /// 获取表达式信息
         /// </summary>
-        public string ExpressionHandle<M, F>(Expression<Func<M, F>> func)
+        public List<DicModel> ExpressionHandle<M, F>(Expression<Func<M, F>> func)
         {
             try
             {
-                var body = func.Body as MemberExpression;
-                var keyTuple = GetKey(body, OptionEnum.None);
-                var key = keyTuple.key;
-
-                if (!string.IsNullOrWhiteSpace(key))
+                var result = new List<DicModel>();
+                var body = func.Body;
+                var nodeType = body.NodeType;
+                if (nodeType == ExpressionType.MemberAccess)
                 {
-                    return key;
+                    var memExpr = func.Body as MemberExpression;
+                    var keyTuple = GetKey(memExpr, OptionEnum.None);
+                    var key = keyTuple.key;
+
+                    if (!string.IsNullOrWhiteSpace(key))
+                    {
+                        result.Add(new DicModel
+                        {
+                            ColumnOne = key
+                        });
+                    }
+                }
+                else if (nodeType == ExpressionType.MemberInit)
+                {
+                    var miExpr = func.Body as MemberInitExpression;
+                    result = HandSelectMemberInit(miExpr);
+                }
+
+                if (result != null
+                    && result.Count > 0)
+                {
+                    return result;
                 }
                 else
                 {
@@ -585,23 +628,7 @@ namespace EasyDAL.Exchange.ExpressionX
                 else if (nodeType == ExpressionType.MemberInit)
                 {
                     var miExpr = func.Body as MemberInitExpression;
-                    foreach (var mb in miExpr.Bindings)
-                    {
-                        var mbEx = mb as MemberAssignment;
-                        var maMem = mbEx.Expression as MemberExpression;
-                        var tuple = GetMemTuple(maMem);
-                        var colAlias = mbEx.Member.Name;
-                        result.Add(new DicModel
-                        {
-                            TableAliasOne = tuple.alias,
-                            ColumnOne = tuple.key,
-                            ColumnAlias = colAlias
-                        });
-                    }
-                }
-                else
-                {
-                    throw new Exception();
+                    result = HandSelectMemberInit(miExpr);
                 }
 
                 //

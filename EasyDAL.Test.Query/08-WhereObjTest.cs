@@ -166,6 +166,23 @@ namespace EasyDAL.Test.Query
 
             /*************************************************************************************************************************/
 
+            var xx7 = "";
+            
+            // where method -- option orderby 
+            var res7 = await Conn.OpenDebug()
+                .Selecter<Agent>()
+                //.Where(option.GetCondition())
+                .Where(it=>it.Name== "樊士芹")
+                .QueryPagingListAsync(option, agent => new AgentVM
+                {
+                    XXXX = agent.Name,
+                    YYYY = agent.PathId
+                });
+
+            var tuple7 = (XDebug.SQL, XDebug.Parameters);
+
+            /*************************************************************************************************************************/
+
             var xx = "";
 
         }

@@ -67,7 +67,7 @@ namespace EasyDAL.Exchange.Core
         private string GetOrderByPart<M>()
         {
             var str = string.Empty;
-            var cols = DC.SC.GetColumnInfos(DC.SC.GetKey(typeof(M).FullName,DC.Conn.Database));
+            var cols = DC.SC.GetColumnInfos(DC.SC.GetKey(typeof(M).FullName, DC.Conn.Database));
 
             if (DC.Conditions.Any(it => it.Action == ActionEnum.OrderBy))
             {
@@ -79,8 +79,10 @@ namespace EasyDAL.Exchange.Core
             }
             else
             {
-                str = $" `{DC.SC.GetModelProperys(DC.SC.GetKey( typeof(M).FullName, DC.Conn.Database)).First().Name}` desc ";
+                str = $" `{DC.SC.GetModelProperys(DC.SC.GetKey(typeof(M).FullName, DC.Conn.Database)).First().Name}` desc ";
             }
+
+            str = $" \r\n order by {str}";
 
             return str;
         }
@@ -104,7 +106,14 @@ namespace EasyDAL.Exchange.Core
                 str = $" {dic.TableAliasOne}.`{DC.SC.GetModelProperys(key).First().Name}` desc ";
             }
 
+            str = $" \r\n order by {str}";
+
             return str;
+        }
+
+        private string Limit(int? pageIndex, int? pageSize)
+        {
+            return $" \r\n limit {(pageIndex - 1) * pageSize},{pageIndex * pageSize}";
         }
 
         internal string GetSingleValuePart()
@@ -128,6 +137,7 @@ namespace EasyDAL.Exchange.Core
         {
             var str = string.Empty;
             var list = new List<string>();
+
             foreach (var dic in DC.Conditions)
             {
                 if (dic.Option != OptionEnum.Column
@@ -153,12 +163,30 @@ namespace EasyDAL.Exchange.Core
                                 }
 
                                 break;
+                            case CrudTypeEnum.Query:
+                                switch (dic.Option)
+                                {
+                                    case OptionEnum.Column:
+                                        list.Add($" \t `{dic.ColumnOne}` ");
+                                        break;
+                                    case OptionEnum.ColumnAs:
+                                        list.Add($" \t `{dic.ColumnOne}` as {dic.ColumnAlias} ");
+                                        break;
+                                }
+                                break;
                         }
                         break;
                 }
             }
 
-            str = string.Join(",\r\n", list);
+            if (list.Count > 0)
+            {
+                str = string.Join(",\r\n", list);
+            }
+            else
+            {
+                str = "*";
+            }
             return str;
         }
 
@@ -292,9 +320,9 @@ namespace EasyDAL.Exchange.Core
             }
 
             if (!string.IsNullOrWhiteSpace(str)
-                && DC.Conditions.All(it=>it.Action!= ActionEnum.Where))
+                && DC.Conditions.All(it => it.Action != ActionEnum.Where))
             {
-                var aIdx = str.IndexOf(" and ",StringComparison.Ordinal);
+                var aIdx = str.IndexOf(" and ", StringComparison.Ordinal);
                 var oIdx = str.IndexOf(" or ", StringComparison.Ordinal);
                 if (aIdx < oIdx)
                 {
@@ -305,7 +333,7 @@ namespace EasyDAL.Exchange.Core
                     str = $" {ActionEnum.Where.ToEnumDesc<ActionEnum>()} false {str} ";
                 }
             }
-            
+
             return str;
         }
 
@@ -447,13 +475,13 @@ namespace EasyDAL.Exchange.Core
                     list.Add($" update {Table<M>(type)} \r\n set {DC.SqlProvider.GetUpdates()} {Wheres()} ;");
                     break;
                 case UiMethodEnum.QueryFirstOrDefaultAsync:
-                    list.Add($"select * {From()} {Table<M>(type)} {Wheres()} ; ");
+                    list.Add($"select {Columns()} {From()} {Table<M>(type)} {Wheres()} ; ");
                     break;
                 case UiMethodEnum.JoinQueryFirstOrDefaultAsync:
                     list.Add($" select {Columns()} {From()} {Joins()} {Wheres()} ; ");
                     break;
                 case UiMethodEnum.QueryListAsync:
-                    list.Add($"select * {From()} {Table<M>(type)} {Wheres()} ; ");
+                    list.Add($"select {Columns()} {From()} {Table<M>(type)} {Wheres()} ; ");
                     break;
                 case UiMethodEnum.JoinQueryListAsync:
                     list.Add($" select {Columns()} {From()} {Joins()} {Wheres()} ; ");
@@ -461,16 +489,16 @@ namespace EasyDAL.Exchange.Core
                 case UiMethodEnum.QueryPagingListAsync:
                     var wherePart8 = Wheres();
                     list.Add($"select count(*) {From()} {Table<M>(type)} {wherePart8} ; ");
-                    list.Add($"select * {From()} {Table<M>(type)} {wherePart8} order by {GetOrderByPart<M>()} limit {(pageIndex - 1) * pageSize},{pageIndex * pageSize}  ; ");
+                    list.Add($"select {Columns()} {From()} {Table<M>(type)} {wherePart8} {GetOrderByPart<M>()} {Limit(pageIndex,pageSize)}  ; ");
                     break;
                 case UiMethodEnum.JoinQueryPagingListAsync:
                     var wherePart9 = Wheres();
                     list.Add($"select count(*) {From()} {Joins()} {wherePart9} ; ");
-                    list.Add($"select {Columns()} {From()} {Joins()} {wherePart9} order by {GetOrderByPart()} limit {(pageIndex - 1) * pageSize},{pageIndex * pageSize}  ; ");
+                    list.Add($"select {Columns()} {From()} {Joins()} {wherePart9} {GetOrderByPart()} {Limit(pageIndex,pageSize)}  ; ");
                     break;
                 case UiMethodEnum.QueryAllPagingListAsync:
                     list.Add($"select count(*) {From()} {Table<M>(type)} ; ");
-                    list.Add($"select * {From()} {Table<M>(type)} order by {GetOrderByPart<M>()} limit {(pageIndex - 1) * pageSize},{pageIndex * pageSize}  ; ");
+                    list.Add($"select * {From()} {Table<M>(type)} {GetOrderByPart<M>()} {Limit(pageIndex,pageSize)}  ; ");
                     break;
                 case UiMethodEnum.QuerySingleValueAsync:
                     list.Add($" select {GetSingleValuePart()} {From()} {Table<M>(type)} {Wheres()} ; ");

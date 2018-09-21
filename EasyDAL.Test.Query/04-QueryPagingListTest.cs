@@ -94,6 +94,21 @@ namespace EasyDAL.Test.Query
 
             /*************************************************************************************************************************/
 
+            var xx6 = "";
+
+            var res6 = await Conn.OpenDebug()
+                .Selecter<Agent>()
+                .Where(it => it.CreatedOn >= WhereTest.CreatedOn)
+                .QueryPagingListAsync(1, 10,agent=>new AgentVM
+                {
+                    XXXX=agent.Name,
+                    YYYY=agent.PathId
+                });
+
+            var tuple6 = (XDebug.SQL, XDebug.Parameters);
+
+            /*************************************************************************************************************************/
+
             var xx = "";
         }
 
