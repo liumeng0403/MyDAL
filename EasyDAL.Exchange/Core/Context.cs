@@ -144,16 +144,16 @@ namespace Yunyong.DataExchange.Core
             Conditions = new List<DicModel>();
         }
 
-        internal string TableAttributeName(Type mType)
-        {
-            var tableName = string.Empty;
-            tableName = AH.GetAttributePropVal<TableAttribute>(mType, a => a.Name);
-            if (string.IsNullOrWhiteSpace(tableName))
-            {
-                throw new Exception("DB Entity 缺少 TableAttribute 指定的表名!");
-            }
-            return tableName;
-        }
+        //internal string TableAttributeName(Type mType)
+        //{
+        //    var tableName = string.Empty;
+        //    tableName = AH.GetAttributePropVal<TableAttribute>(mType, a => a.Name);
+        //    if (string.IsNullOrWhiteSpace(tableName))
+        //    {
+        //        throw new Exception("DB Entity 缺少 TableAttribute 指定的表名!");
+        //    }
+        //    return tableName;
+        //}
 
         internal void SetMTCache<M>()
         {
@@ -163,7 +163,7 @@ namespace Yunyong.DataExchange.Core
 
             //
             var table = SqlProvider.GetTableName(type);
-            SC.SetModelTable(SC.GetKey(type.FullName, Conn.Database), table);
+            SC.SetModelTableName(key, table);
             SC.SetModelType(key, type);
             SC.SetModelProperys(type, this);
             (SC.SetModelColumnInfos(key, this)).GetAwaiter().GetResult();

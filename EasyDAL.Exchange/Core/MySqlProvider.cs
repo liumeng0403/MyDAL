@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using Yunyong.DataExchange.AdoNet;
@@ -171,7 +172,9 @@ namespace Yunyong.DataExchange.Core
             var tableName = string.Empty;
             if (type != UiMethodEnum.JoinQueryListAsync)
             {
-                tableName = GetTableName(typeof(M));
+                //tableName = GetTableName(typeof(M));
+                var key = DC.SC.GetKey(typeof(M).FullName, DC.Conn.Database);
+                tableName = DC.SC.GetModelTableName(key);
             }
 
             return tableName;
@@ -394,7 +397,14 @@ namespace Yunyong.DataExchange.Core
 
         internal string GetTableName(Type mType)
         {
-            return $"`{DC.TableAttributeName(mType)}`";
+            var tableName = string.Empty;
+            tableName = DC.AH.GetAttributePropVal<TableAttribute>(mType, a => a.Name);
+            if (string.IsNullOrWhiteSpace(tableName))
+            {
+                throw new Exception("DB Entity 缺少 TableAttribute 指定的表名!");
+            }
+            return $"`{tableName}`";
+            //return $"`{DC.TableAttributeName(mType)}`";
         }
 
         internal OptionEnum GetChangeOption(ChangeEnum change)
