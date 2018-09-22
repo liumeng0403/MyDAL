@@ -1,4 +1,4 @@
-代码贡献必须符合一下要求:<br/>
+代码贡献必须符合以下要求:<br/>
 1.API 代码提交<br/>
 2.对应 API 有 table model<br/>
 3.对应 API 有 test case<br/>
