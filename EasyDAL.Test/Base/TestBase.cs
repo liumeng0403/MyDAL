@@ -5,6 +5,7 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using Yunyong.DataExchange;
 
 namespace EasyDAL.Test
 {
@@ -84,7 +85,7 @@ namespace EasyDAL.Test
             */
             var conn = new MySqlConnection($"Server=localhost; Database={name}; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;");
             conn.Open();
-            //Hints.Hint = true;  // 全局 Hint 配置, 生产环境不要开启 
+            XConfig.OpenDebug();  // 全局 debug 配置, 生产环境不要开启 
             return conn;
         }
 

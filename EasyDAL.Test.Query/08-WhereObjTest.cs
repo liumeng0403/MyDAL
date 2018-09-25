@@ -35,7 +35,7 @@ namespace EasyDAL.Test.Query
             var xx1 = "";
 
             // where object
-            var res1 = await Conn.OpenDebug()
+            var res1 = await Conn
                 .Selecter<Agent>()
                 .Where(new
                 {
@@ -55,7 +55,7 @@ namespace EasyDAL.Test.Query
             option.Id = Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b");
             option.Name = "樊士芹";
             // where method
-            var res2 = await Conn.OpenDebug()
+            var res2 = await Conn
                 .Selecter<Agent>()
                 .Where(option.GetCondition())
                 .QueryPagingListAsync(option);
@@ -75,7 +75,7 @@ namespace EasyDAL.Test.Query
                 }
             };
             // where method -- option orderby 
-            var res3 = await Conn.OpenDebug()
+            var res3 = await Conn
                 .Selecter<Agent>()
                 .Where(option.GetCondition())
                 .QueryPagingListAsync<AgentVM>(option);
@@ -87,7 +87,7 @@ namespace EasyDAL.Test.Query
             var xx4 = "";
 
             // where object --> no where
-            var res4 = await Conn.OpenDebug()
+            var res4 = await Conn
                 .Selecter<Agent>()
                 .Where(new
                 {
@@ -100,7 +100,7 @@ namespace EasyDAL.Test.Query
             var tuple4 = (XDebug.SQL, XDebug.Parameters);
 
             // no where --> and or
-            var res41 = await Conn.OpenDebug()
+            var res41 = await Conn
                 .Selecter<Agent>()
                 .Where(new
                 {
@@ -115,7 +115,7 @@ namespace EasyDAL.Test.Query
             var tuple41 = (XDebug.SQL, XDebug.Parameters);
 
             // no where --> or and 
-            var res42 = await Conn.OpenDebug()
+            var res42 = await Conn
                 .Selecter<Agent>()
                 .Where(new
                 {
@@ -138,7 +138,7 @@ namespace EasyDAL.Test.Query
                 VipProduct = null     // true fals null 
             };
             // where method -- option orderby 
-            var res5 = await Conn.OpenDebug()
+            var res5 = await Conn
                 .Selecter<Product>()
                 .Where(option2.GetCondition())
                 .QueryPagingListAsync(option2);
@@ -153,7 +153,7 @@ namespace EasyDAL.Test.Query
 
             var xx6 = "";
 
-            var res6 = await Conn.OpenDebug()
+            var res6 = await Conn
                 .Joiner<Agent, AgentInventoryRecord>(out var agent6, out var record6)
                 .From(() => agent6)
                 .InnerJoin(() => record6)
@@ -169,7 +169,7 @@ namespace EasyDAL.Test.Query
             var xx7 = "";
             
             // where method -- option orderby 
-            var res7 = await Conn.OpenDebug()
+            var res7 = await Conn
                 .Selecter<Agent>()
                 //.Where(option.GetCondition())
                 .Where(it=>it.Name== "樊士芹")

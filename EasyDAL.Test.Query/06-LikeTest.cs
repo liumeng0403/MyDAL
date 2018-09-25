@@ -33,7 +33,7 @@ namespace EasyDAL.Test.Query
             }
 
             // 新建
-            var res0 = await Conn.OpenDebug()
+            var res0 = await Conn
                 .Creater<BodyFitRecord>()
                 .CreateAsync(m);
 
@@ -79,7 +79,7 @@ namespace EasyDAL.Test.Query
             var xx1 = "";
 
             // 默认 "%"+"xx"+"%"
-            var res1 = await Conn.OpenDebug()
+            var res1 = await Conn
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.BodyMeasureProperty.Contains("xx"))
                 .QueryFirstOrDefaultAsync();
@@ -93,7 +93,7 @@ namespace EasyDAL.Test.Query
 
             // testH.ContainStr="~00-d-3-1-"
             // 默认 "%"+testH.ContainStr+"%"
-            var res2 = await Conn.OpenDebug()
+            var res2 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= WhereTest.CreatedOn)
                 .And(it => it.PathId.Contains(WhereTest.ContainStr))
@@ -123,7 +123,7 @@ namespace EasyDAL.Test.Query
             var xx4 = "";
 
             // 无通配符 -- "陈" -- "%"+"陈"+"%"
-            var res0 = await Conn.OpenDebug()
+            var res0 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains(LikeTest.无通配符))
                 .QueryListAsync();
@@ -134,7 +134,7 @@ namespace EasyDAL.Test.Query
             var xx5 = "";
 
             // 百分号 -- "陈%" -- "陈%"
-            var res5 = await Conn.OpenDebug()
+            var res5 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains(LikeTest.百分号))
                 .QueryListAsync();
@@ -145,7 +145,7 @@ namespace EasyDAL.Test.Query
             var xx6 = "";
 
             // 下划线 -- "王_" -- "王_" 
-            var res6 = await Conn.OpenDebug()
+            var res6 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains(LikeTest.下划线))
                 .QueryListAsync();
@@ -156,7 +156,7 @@ namespace EasyDAL.Test.Query
             var xx7 = "";
 
             // 百分号转义 -- "刘/%_" -- "刘/%_"
-            var res7 = await Conn.OpenDebug()
+            var res7 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains(LikeTest.百分号转义))
                 .And(it => it.Id == resx4.Id)
@@ -170,7 +170,7 @@ namespace EasyDAL.Test.Query
             var xx8 = "";
 
             // 下划线转义 -- "何/__" -- "何/__"
-            var res4 = await Conn.OpenDebug()
+            var res4 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains(LikeTest.下划线转义))
                 .QueryListAsync();
@@ -182,7 +182,7 @@ namespace EasyDAL.Test.Query
 
             var xx9 = "";
 
-            var res9 = await Conn.OpenDebug()
+            var res9 = await Conn
                 .Joiner<Agent, AgentInventoryRecord>(out var agent9, out var record9)
                 .From(() => agent9)
                     .InnerJoin(() => record9)
@@ -197,7 +197,7 @@ namespace EasyDAL.Test.Query
 
             var xx10 = "";
 
-            var res10 = await Conn.OpenDebug()
+            var res10 = await Conn
                 .Joiner<Agent, AgentInventoryRecord>(out var agent10, out var record10)
                 .From(() => agent10)
                     .InnerJoin(() => record10)
@@ -212,7 +212,7 @@ namespace EasyDAL.Test.Query
 
             var xx11 = "";
 
-            var res11 = await Conn.OpenDebug()
+            var res11 = await Conn
                 .Joiner<Agent, AgentInventoryRecord>(out var agent11, out var record11)
                 .From(() => agent11)
                 .InnerJoin(() => record11)

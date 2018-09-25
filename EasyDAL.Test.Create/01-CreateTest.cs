@@ -82,7 +82,7 @@ namespace EasyDAL.Test.Create
             var xx1 = "";
 
             // 新建
-            var res1 = await Conn.OpenDebug()
+            var res1 = await Conn
                 .Creater<BodyFitRecord>()
                 .CreateAsync(m1);
             Assert.True(res1 == 1);
@@ -109,7 +109,7 @@ namespace EasyDAL.Test.Create
 
             var xx2 = "";
 
-            var res2 = await Conn.OpenDebug()
+            var res2 = await Conn
                 .Creater<Agent>()
                 .CreateAsync(m2);
             Assert.True(res2 == 1);
@@ -122,7 +122,7 @@ namespace EasyDAL.Test.Create
 
             var xx3 = "";
 
-            var res3 = await Conn.OpenDebug()
+            var res3 = await Conn
                 .Creater<AddressInfo>()
                 .CreateBatchAsync(list3);
             Assert.True(res3 == 10);
@@ -141,7 +141,7 @@ namespace EasyDAL.Test.Create
 
             var xx4 = "";
 
-            var res4 = await Conn.OpenDebug()
+            var res4 = await Conn
                 .Creater<UserInfo>()
                 .CreateBatchAsync(list);
             Assert.True(res4 == list.Count);

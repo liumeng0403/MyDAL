@@ -18,7 +18,7 @@ namespace EasyDAL.Test.Query
             var xx1 = "";
 
             // order by
-            var res1 = await Conn.OpenDebug()
+            var res1 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.AgentLevel == (AgentLevel)128)
                 .OrderBy(it => it.PathId)
@@ -33,7 +33,7 @@ namespace EasyDAL.Test.Query
             var xx2 = "";
 
             // key
-            var res2 = await Conn.OpenDebug()
+            var res2 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.AgentLevel == (AgentLevel)2)
                 .QueryPagingListAsync(1, 10);
@@ -46,7 +46,7 @@ namespace EasyDAL.Test.Query
             var xx3 = "";
 
             // none key
-            var res3 = await Conn.OpenDebug()
+            var res3 = await Conn
                 .Selecter<WechatPaymentRecord>()
                 .Where(it => it.Amount > 1)
                 .QueryPagingListAsync(1, 10);

@@ -18,7 +18,7 @@ namespace EasyDAL.Test.Query
 
             var xx1 = "";
 
-            var res1 = await Conn.OpenDebug()
+            var res1 = await Conn
                 .Selecter<Agent>()
                 .QueryAllAsync();
             Assert.True(res1.Count == 28620);
@@ -29,7 +29,7 @@ namespace EasyDAL.Test.Query
 
             var xx2 = "";
 
-            var res2 = await Conn.OpenDebug()
+            var res2 = await Conn
                 .Selecter<Agent>()
                 .QueryAllAsync<AgentVM>();
             Assert.True(res2.Count == 28620);

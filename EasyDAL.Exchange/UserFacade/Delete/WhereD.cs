@@ -3,16 +3,17 @@ using Yunyong.DataExchange.Common;
 using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Enums;
 using Yunyong.DataExchange.Helper;
+using Yunyong.DataExchange.UserFacade.Interfaces;
 
 namespace Yunyong.DataExchange.UserFacade.Delete
 {
-    public class WhereD<M> : Operator, IMethodObject
+    public class WhereD<M> 
+        : Operator, IMethodObject, IDelete
     {
         internal WhereD(Context dc)
             : base(dc)
         { }
-
-
+        
         /// <summary>
         /// 单表数据删除
         /// </summary>

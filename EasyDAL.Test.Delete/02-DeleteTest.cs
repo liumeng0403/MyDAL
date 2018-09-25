@@ -43,7 +43,7 @@ namespace EasyDAL.Test.Delete
             var xx1 = "";
 
             // where 
-            var res1 = await Conn.OpenDebug()
+            var res1 = await Conn
                 .Deleter<BodyFitRecord>()
                 .Where(it => it.Id == m.Id)
                 .DeleteAsync();
@@ -55,7 +55,7 @@ namespace EasyDAL.Test.Delete
             var path = "~00-c-1-2-1-1-1-1-1-4-1-1-1-4-1-2-1-7";
             var level = 2;
             // where and
-            var res3 = await Conn.OpenDebug()
+            var res3 = await Conn
                 .Deleter<Agent>()
                 .Where(it => it.PathId == path)
                 .And(it => it.AgentLevel == (AgentLevel)level)
@@ -66,7 +66,7 @@ namespace EasyDAL.Test.Delete
             var xx3 = "";
 
             // where or
-            var res2 = await Conn.OpenDebug()
+            var res2 = await Conn
                 .Deleter<Agent>()
                 .Where(it => it.PathId == path)
                 .Or(it => it.AgentLevel == (AgentLevel)level)
@@ -77,7 +77,7 @@ namespace EasyDAL.Test.Delete
             var xx4 = "";
 
             // where and or
-            var res4 = await Conn.OpenDebug()
+            var res4 = await Conn
                 .Deleter<Agent>()
                 .Where(it => it.PathId == path)
                 .And(it => it.AgentLevel == (AgentLevel)level)

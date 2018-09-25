@@ -22,14 +22,14 @@ namespace EasyDAL.Test.Query
             var xx1 = "";
 
             // >= obj.DateTime
-            var res1 = await Conn.OpenDebug()
+            var res1 = await Conn
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.CreatedOn >= WhereTest.CreatedOn)
                 .QueryListAsync();
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
-            var resR1 = await Conn.OpenDebug()
+            var resR1 = await Conn
                 .Selecter<BodyFitRecord>()
                 .Where(it => WhereTest.CreatedOn <= it.CreatedOn)
                 .QueryListAsync();
@@ -44,14 +44,14 @@ namespace EasyDAL.Test.Query
 
             var start = WhereTest.CreatedOn.AddDays(-10);
             // >= variable(DateTime)
-            var res2 = await Conn.OpenDebug()
+            var res2 = await Conn
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.CreatedOn >= start)
                 .QueryListAsync();
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters);
 
-            var resR2 = await Conn.OpenDebug()
+            var resR2 = await Conn
                 .Selecter<BodyFitRecord>()
                 .Where(it => start <= it.CreatedOn)
                 .QueryListAsync();
@@ -65,14 +65,14 @@ namespace EasyDAL.Test.Query
             var xx3 = "";
 
             // <= DateTime
-            var res3 = await Conn.OpenDebug()
+            var res3 = await Conn
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.CreatedOn <= DateTime.Now)
                 .QueryListAsync();
 
             var tuple3 = (XDebug.SQL, XDebug.Parameters);
 
-            var resR3 = await Conn.OpenDebug()
+            var resR3 = await Conn
                 .Selecter<BodyFitRecord>()
                 .Where(it => DateTime.Now >= it.CreatedOn)
                 .QueryListAsync();
@@ -94,7 +94,7 @@ namespace EasyDAL.Test.Query
 
             var xx4 = "";
 
-            var res4 = await Conn.OpenDebug()
+            var res4 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= testQ.DateTime_大于等于)
                 .QueryListAsync();
@@ -106,7 +106,7 @@ namespace EasyDAL.Test.Query
 
             var xx5 = "";
 
-            var res5 = await Conn.OpenDebug()
+            var res5 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.AgentLevel == testQ.AgentLevelXX)
                 .QueryListAsync();
@@ -118,7 +118,7 @@ namespace EasyDAL.Test.Query
 
             var xx6 = "";
 
-            var res6 = await Conn.OpenDebug()
+            var res6 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= testQ.DateTime_大于等于)
                 .QueryListAsync<AgentVM>();
@@ -132,7 +132,7 @@ namespace EasyDAL.Test.Query
 
             var xx7 = "";
 
-            var res7 = await Conn.OpenDebug()
+            var res7 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
                 .QueryListAsync(agent => new AgentVM
