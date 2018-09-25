@@ -1,15 +1,14 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Yunyong.DataExchange.Common;
 using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Enums;
 using Yunyong.DataExchange.Helper;
-using Yunyong.DataExchange.UserFacade.Interfaces;
+using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.UserFacade.Create
 {
     public class Creater<M> 
-        : Operator, IMethodObject, ICreate<M>, ICreateBatch<M>
+        : Operator, ICreate<M>, ICreateBatch<M>
     {
         internal Creater(Context dc) 
             : base(dc)

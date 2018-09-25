@@ -9,10 +9,11 @@ using Yunyong.DataExchange.Common;
 using Yunyong.DataExchange.Enums;
 using Yunyong.DataExchange.ExpressionX;
 using Yunyong.DataExchange.Helper;
+using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.Core
 {
-    public abstract class Operator
+    public abstract class Operator: IObjectMethod
     {
         
         internal Operator(Context dc)

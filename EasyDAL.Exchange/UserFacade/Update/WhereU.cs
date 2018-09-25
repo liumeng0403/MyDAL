@@ -1,12 +1,13 @@
 using System.Threading.Tasks;
-using Yunyong.DataExchange.Common;
 using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Enums;
 using Yunyong.DataExchange.Helper;
+using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.UserFacade.Update
 {
-    public class WhereU<M> : Operator, IMethodObject
+    public class WhereU<M> 
+        : Operator, IUpdate
     {
         internal WhereU(Context dc)
             : base(dc)

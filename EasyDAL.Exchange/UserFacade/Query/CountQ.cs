@@ -1,12 +1,13 @@
 using System.Threading.Tasks;
-using Yunyong.DataExchange.Common;
 using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Enums;
 using Yunyong.DataExchange.Helper;
+using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.UserFacade.Query
 {
-    public class CountQ<M> : Operator, IMethodObject
+    public class CountQ<M> 
+        : Operator, IQuerySingleValue
     {
 
         internal CountQ(Context dc)

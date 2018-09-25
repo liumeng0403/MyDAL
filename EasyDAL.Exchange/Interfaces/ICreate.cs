@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Yunyong.DataExchange.UserFacade.Interfaces
+namespace Yunyong.DataExchange.Interfaces
 {
     internal interface ICreate<M>
     {

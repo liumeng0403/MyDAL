@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Yunyong.Core;
-using Yunyong.DataExchange.Common;
 using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Enums;
 using Yunyong.DataExchange.Helper;
+using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.UserFacade.Query
 {
-    public class WhereQ<M> : Operator,IMethodObject
+    public class WhereQ<M> 
+        : Operator, IExist, IQueryFirstOrDefault<M>, IQueryList<M>, IQueryPagingList<M>
     {
         internal WhereQ(Context dc)
             : base(dc)

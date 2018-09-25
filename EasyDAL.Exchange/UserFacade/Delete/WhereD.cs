@@ -1,14 +1,13 @@
 using System.Threading.Tasks;
-using Yunyong.DataExchange.Common;
 using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Enums;
 using Yunyong.DataExchange.Helper;
-using Yunyong.DataExchange.UserFacade.Interfaces;
+using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.UserFacade.Delete
 {
     public class WhereD<M> 
-        : Operator, IMethodObject, IDelete
+        : Operator, IDelete
     {
         internal WhereD(Context dc)
             : base(dc)

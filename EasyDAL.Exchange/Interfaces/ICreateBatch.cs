@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Yunyong.DataExchange.UserFacade.Interfaces
+namespace Yunyong.DataExchange.Interfaces
 {
     internal interface ICreateBatch<M>
     {

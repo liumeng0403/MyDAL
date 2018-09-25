@@ -1,13 +1,14 @@
 using System;
 using System.Threading.Tasks;
-using Yunyong.DataExchange.Common;
 using Yunyong.DataExchange.Core;
+using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.UserFacade.Transaction
 {
     /// <summary>
     /// </summary>
-    public sealed class Transactioner : Operator, IMethodObject
+    public sealed class Transactioner 
+        : Operator, IBusinessUnitOption
     {
 
         internal Transactioner(Context dc)

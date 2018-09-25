@@ -1,10 +1,9 @@
-using Yunyong.DataExchange.Common;
 using Yunyong.DataExchange.Core;
 
 namespace Yunyong.DataExchange.UserFacade.Join
 {
     public class OnX 
-        : Operator, IMethodObject
+        : Operator
     {
 
         internal OnX(Context dc)
