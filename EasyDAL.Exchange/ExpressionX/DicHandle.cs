@@ -146,5 +146,20 @@ namespace Yunyong.DataExchange.ExpressionX
             };
         }
 
+        /*******************************************************************************************************/
+
+        internal static DicModel ConditionCountHandle(string key)
+        {
+            return new DicModel
+            {
+                ColumnOne = key,
+                Param = key,
+                ParamRaw = key,
+                Action = ActionEnum.Select,
+                Option = OptionEnum.Count,
+                Crud = CrudTypeEnum.Query
+            };
+        }
+
     }
 }

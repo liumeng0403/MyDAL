@@ -74,6 +74,29 @@ namespace EasyDAL.Test.Query
 
             /************************************************************************************************************************/
 
+            var xx4 = "";
+
+            // count(id)  like "陈%"
+            var res4 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.Name.Contains(LikeTest.百分号))
+                .CountAsync(it => it.Id);
+            Assert.True(res4 == 1421);
+
+            var tuple4 = (XDebug.SQL, XDebug.Parameters);
+
+            var xx42 = "";
+
+            var res42 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.Name.Contains(LikeTest.百分号))
+                .CountAsync();
+            Assert.True(res42 == 1421);
+
+            var tuple42 = (XDebug.SQL, XDebug.Parameters);
+
+            /************************************************************************************************************************/
+
             var xx = "";
         }
 

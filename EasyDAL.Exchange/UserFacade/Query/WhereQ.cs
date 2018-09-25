@@ -5,13 +5,14 @@ using System.Threading.Tasks;
 using Yunyong.Core;
 using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Enums;
+using Yunyong.DataExchange.ExpressionX;
 using Yunyong.DataExchange.Helper;
 using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.UserFacade.Query
 {
     public class WhereQ<M> 
-        : Operator, IExist, IQueryFirstOrDefault<M>, IQueryList<M>, IQueryPagingList<M>
+        : Operator, IExist, IQueryFirstOrDefault<M>, IQueryList<M>, IQueryPagingList<M>, ICount<M>
     {
         internal WhereQ(Context dc)
             : base(dc)
@@ -34,6 +35,30 @@ namespace Yunyong.DataExchange.UserFacade.Query
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// 查询符合条件数据条目数
+        /// </summary>
+        public async Task<long> CountAsync()
+        {
+            return await SqlHelper.ExecuteScalarAsync<long>(
+                DC.Conn,
+                DC.SqlProvider.GetSQL<M>(UiMethodEnum.CountAsync)[0],
+                DC.GetParameters());
+        }
+        /// <summary>
+        /// 查询符合条件数据条目数
+        /// </summary>
+        public async Task<long> CountAsync<F>(Expression<Func<M, F>> func)
+        {
+            var keyDic = DC.EH.ExpressionHandle(func)[0];
+            var key = keyDic.ColumnOne;
+            DC.AddConditions(DicHandle.ConditionCountHandle(key));
+            return await SqlHelper.ExecuteScalarAsync<long>(
+                 DC.Conn,
+                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.CountAsync)[0],
+                 DC.GetParameters());
         }
 
         /// <summary>
