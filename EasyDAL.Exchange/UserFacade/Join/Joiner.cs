@@ -3,7 +3,8 @@ using EasyDAL.Exchange.Core;
 
 namespace EasyDAL.Exchange.UserFacade.Join
 {
-    public class Joiner : Operator, IMethodObject
+    public class Joiner 
+        : Operator, IMethodObject
     {
         internal Joiner(Context dc)
             : base(dc)

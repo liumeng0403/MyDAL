@@ -20,7 +20,7 @@ namespace EasyDAL.Test.Query
             var xx1 = "";
 
             // .Where(a => a.Name.Length > 0)
-            var res1 = await Conn.OpenDebug()
+            var res1 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Name.Length > 2)
                 .QueryListAsync();
@@ -30,7 +30,7 @@ namespace EasyDAL.Test.Query
             var xxR1 = "";
 
             // .Where(a => a.Name.Length > 0)
-            var resR1 = await Conn.OpenDebug()
+            var resR1 = await Conn
                 .Selecter<Agent>()
                 .Where(it => 2 < it.Name.Length)
                 .QueryListAsync();
@@ -44,7 +44,7 @@ namespace EasyDAL.Test.Query
             var xx2 = "";
 
             // .Where(a => a.Name.Length > 0)
-            var res2 = await Conn.OpenDebug()
+            var res2 = await Conn
                 .Joiner<Agent, AgentInventoryRecord>(out var agent, out var record)
                 .From(() => agent)
                 .InnerJoin(() => record)
@@ -63,7 +63,7 @@ namespace EasyDAL.Test.Query
             var xx3 = "";
 
             // count(id)  like "陈%"
-            var res3 = await Conn.OpenDebug()
+            var res3 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains(LikeTest.百分号))
                 .Count(it => it.Id)

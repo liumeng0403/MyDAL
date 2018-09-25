@@ -62,7 +62,7 @@ namespace EasyDAL.Test.Update
             // 修改
 
             // set field 1
-            var res1 = await Conn.OpenDebug()
+            var res1 = await Conn
                 .Updater<BodyFitRecord>()
                 .Set(it => it.CreatedOn, m1.CreatedOn)
                 .Set(it => it.BodyMeasureProperty, m1.BodyMeasureProperty)
@@ -92,7 +92,7 @@ namespace EasyDAL.Test.Update
             var xx3 = "";
 
             // set dynamic
-            var res3 = await Conn.OpenDebug()
+            var res3 = await Conn
                 .Updater<AgentInventoryRecord>()
                 .Set(new
                 {
@@ -113,7 +113,7 @@ namespace EasyDAL.Test.Update
             obj.TotalSaleCount = 2000;
             obj.xxx = 3000;
             // set expand object
-            var res4 = await Conn.OpenDebug()
+            var res4 = await Conn
                 .Updater<AgentInventoryRecord>()
                 .Set(obj as object)
                 .Where(it => it.Id == Guid.Parse("032ce51f-1034-4fb2-9741-01655202ecbc"))

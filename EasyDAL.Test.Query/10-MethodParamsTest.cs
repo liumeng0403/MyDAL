@@ -28,7 +28,7 @@ namespace EasyDAL.Test.Query
             var xx1 = "";
 
             // where method parameter 
-            var res1 = await Conn.OpenDebug()
+            var res1 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Id == id)
                 .QueryFirstOrDefaultAsync();
@@ -38,7 +38,7 @@ namespace EasyDAL.Test.Query
             var xxR1 = "";
 
             // where method parameter 
-            var resR1 = await Conn.OpenDebug()
+            var resR1 = await Conn
                 .Selecter<Agent>()
                 .Where(it => id == it.Id)
                 .QueryFirstOrDefaultAsync();

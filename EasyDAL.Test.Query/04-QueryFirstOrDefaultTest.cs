@@ -46,7 +46,7 @@ namespace EasyDAL.Test.Query
             var xx1 = "";
 
             //  == Guid
-            var res1 = await Conn.OpenDebug()
+            var res1 = await Conn
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.Id == Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"))
                 .QueryFirstOrDefaultAsync();
@@ -54,7 +54,7 @@ namespace EasyDAL.Test.Query
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
-            var resR1 = await Conn.OpenDebug()
+            var resR1 = await Conn
                 .Selecter<BodyFitRecord>()
                 .Where(it => Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e") == it.Id)
                 .QueryFirstOrDefaultAsync();
@@ -68,7 +68,7 @@ namespace EasyDAL.Test.Query
             var xx2 = "";
 
             // == DateTime
-            var res2 = await Conn.OpenDebug()
+            var res2 = await Conn
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.CreatedOn == Convert.ToDateTime("2018-08-23 13:36:58"))
                 .QueryFirstOrDefaultAsync();
@@ -76,7 +76,7 @@ namespace EasyDAL.Test.Query
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters);
 
-            var resR2 = await Conn.OpenDebug()
+            var resR2 = await Conn
                 .Selecter<BodyFitRecord>()
                 .Where(it => Convert.ToDateTime("2018-08-23 13:36:58") == it.CreatedOn)
                 .QueryFirstOrDefaultAsync();
@@ -90,7 +90,7 @@ namespace EasyDAL.Test.Query
             var xx3 = "";
 
             // == string
-            var res3 = await Conn.OpenDebug()
+            var res3 = await Conn
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.BodyMeasureProperty == "xxxx")
                 .QueryFirstOrDefaultAsync();
@@ -98,7 +98,7 @@ namespace EasyDAL.Test.Query
 
             var tuple3 = (XDebug.SQL, XDebug.Parameters);
 
-            var resR3 = await Conn.OpenDebug()
+            var resR3 = await Conn
                 .Selecter<BodyFitRecord>()
                 .Where(it => "xxxx" == it.BodyMeasureProperty)
                 .QueryFirstOrDefaultAsync();
@@ -112,7 +112,7 @@ namespace EasyDAL.Test.Query
             var xx4 = "";
 
             // where and
-            var res4 = await Conn.OpenDebug()
+            var res4 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= WhereTest.CreatedOn)
                 .And(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
@@ -125,7 +125,7 @@ namespace EasyDAL.Test.Query
 
             var xx5 = "";
 
-            var res5 = await Conn.OpenDebug()
+            var res5 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
                 .QueryFirstOrDefaultAsync<AgentVM>();
@@ -139,7 +139,7 @@ namespace EasyDAL.Test.Query
             var xx6 = "";
 
             var guid6 = Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef");
-            var res6 = await Conn.OpenDebug()
+            var res6 = await Conn
                 .Joiner<Agent, AgentInventoryRecord>(out var agent6, out var record6)
                 .From(() => agent6)
                 .InnerJoin(() => record6)
@@ -155,7 +155,7 @@ namespace EasyDAL.Test.Query
 
             var xx7 = "";
 
-            var res7 = await Conn.OpenDebug()
+            var res7 = await Conn
                 .Joiner<Agent, AgentInventoryRecord>(out var agent7, out var record7)
                 .From(() => agent7)
                 .InnerJoin(() => record7)
@@ -178,7 +178,7 @@ namespace EasyDAL.Test.Query
 
             var xx8 = "";
 
-            var res8 = await Conn.OpenDebug()
+            var res8 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
                 .QueryFirstOrDefaultAsync(agent=>new AgentVM

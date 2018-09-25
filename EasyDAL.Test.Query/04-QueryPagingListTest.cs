@@ -1,9 +1,10 @@
 ﻿using EasyDAL.Exchange;
 using EasyDAL.Test.Entities.EasyDal_Exchange;
+using EasyDAL.Test.Enums;
 using EasyDAL.Test.ViewModels;
 using System.Threading.Tasks;
-using EasyDAL.Test.Enums;
 using Xunit;
+using static EasyDAL.Test.Query._08_WhereObjTest;
 
 namespace EasyDAL.Test.Query
 {
@@ -19,14 +20,14 @@ namespace EasyDAL.Test.Query
 
             var xx1 = "";
 
-            var res1 = await Conn.OpenDebug()
+            var res1 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= WhereTest.CreatedOn)
                 .QueryPagingListAsync(1, 10);
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
-            var resR1 = await Conn.OpenDebug()
+            var resR1 = await Conn
                 .Selecter<Agent>()
                 .Where(it => WhereTest.CreatedOn <= it.CreatedOn)
                 .QueryPagingListAsync(1, 10);
@@ -40,14 +41,14 @@ namespace EasyDAL.Test.Query
 
             var xx2 = "";
 
-            var res2 = await Conn.OpenDebug()
+            var res2 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= WhereTest.CreatedOn)
                 .QueryPagingListAsync<AgentVM>(1, 10);
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters);
 
-            var resR2 = await Conn.OpenDebug()
+            var resR2 = await Conn
                 .Selecter<Agent>()
                 .Where(it => WhereTest.CreatedOn <= it.CreatedOn)
                 .QueryPagingListAsync<AgentVM>(1, 10);
@@ -61,7 +62,7 @@ namespace EasyDAL.Test.Query
 
             var xx3 = "";
 
-            var res3 = await Conn.OpenDebug()
+            var res3 = await Conn
                 .Selecter<Agent>()
                 .QueryAllPagingListAsync(1, 10);
             Assert.True(res3.TotalCount == 28620);
@@ -72,7 +73,7 @@ namespace EasyDAL.Test.Query
 
             var xx4 = "";
 
-            var res4 = await Conn.OpenDebug()
+            var res4 = await Conn
                 .Selecter<Agent>()
                 .QueryAllPagingListAsync<AgentVM>(1, 10);
             Assert.True(res4.TotalCount == 28620);
@@ -83,7 +84,7 @@ namespace EasyDAL.Test.Query
 
             var xx5 = "";
 
-            var res5 = await Conn.OpenDebug()
+            var res5 = await Conn
                 .Joiner<Agent, AgentInventoryRecord>(out var agent5, out var record5)
                 .From(() => agent5)
                 .InnerJoin(() => record5)
@@ -96,16 +97,56 @@ namespace EasyDAL.Test.Query
 
             var xx6 = "";
 
-            var res6 = await Conn.OpenDebug()
+            var res6 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= WhereTest.CreatedOn)
-                .QueryPagingListAsync(1, 10,agent=>new AgentVM
+                .QueryPagingListAsync(1, 10, agent => new AgentVM
                 {
-                    XXXX=agent.Name,
-                    YYYY=agent.PathId
+                    XXXX = agent.Name,
+                    YYYY = agent.PathId
                 });
 
             var tuple6 = (XDebug.SQL, XDebug.Parameters);
+
+            /*************************************************************************************************************************/
+
+            var xx7 = "";
+
+            var res7 = await Conn
+                .Joiner<Agent, AgentInventoryRecord>(out var agent7, out var record7)
+                .From(() => agent7)
+                .InnerJoin(() => record7)
+                .On(() => agent7.Id == record7.AgentId)
+                .Where(() => agent7.AgentLevel == AgentLevel.DistiAgent)
+                .QueryPagingListAsync(() => new AgentVM
+                {
+                    XXXX = agent7.Name,
+                    YYYY = agent7.PathId
+                }, 1, 10);
+            Assert.True(res7.TotalCount == 574);
+
+            var tuple7 = (XDebug.SQL, XDebug.Parameters);
+
+            /*************************************************************************************************************************/
+
+            var xx8 = "";
+
+            var option8 = new AgentQueryOption();
+            option8.AgentLevel = AgentLevel.DistiAgent;
+            var res8 = await Conn
+                .Joiner<Agent, AgentInventoryRecord>(out var agent8, out var record8)
+                .From(() => agent8)
+                .InnerJoin(() => record8)
+                .On(() => agent8.Id == record8.AgentId)
+                .Where(() => agent8.AgentLevel == AgentLevel.DistiAgent)
+                .QueryPagingListAsync(() => new AgentVM
+                {
+                    XXXX = agent8.Name,
+                    YYYY = agent8.PathId
+                }, option8);
+            Assert.True(res8.TotalCount == 574);
+
+            var tuple8 = (XDebug.SQL, XDebug.Parameters);
 
             /*************************************************************************************************************************/
 

@@ -15,7 +15,7 @@ namespace EasyDAL.Test.Query
             var xx1 = "";
 
             // where 1=1
-            var res1 = await Conn.OpenDebug()
+            var res1 = await Conn
                 .Selecter<Agent>()
                 .Where(it => false) // true  false
                 .QueryListAsync();
@@ -25,7 +25,7 @@ namespace EasyDAL.Test.Query
 
             var xx2 = "";
 
-            var res2 = await Conn.OpenDebug()
+            var res2 = await Conn
                 .Selecter<AddressInfo>()
                 .Where(it => it.IsDefault)  //  false  none(true)  
                 .QueryListAsync();
@@ -43,7 +43,7 @@ namespace EasyDAL.Test.Query
             var xx1 = "";
 
             // where 1=1
-            var res1 = await Conn.OpenDebug()
+            var res1 = await Conn
                 .Joiner<Agent, AgentInventoryRecord>(out var agent, out var record)
                 .From(() => agent)
                 .InnerJoin(() => record).On(() => agent.Id == record.AgentId)
@@ -55,7 +55,7 @@ namespace EasyDAL.Test.Query
 
             var xx2 = "";
 
-            var res2 = await Conn.OpenDebug()
+            var res2 = await Conn
                 .Joiner<AddressInfo, AddressInfo>(out var address, out var address2)
                 .From(() => address)
                 .InnerJoin(() => address2).On(() => address.Id == address2.Id)

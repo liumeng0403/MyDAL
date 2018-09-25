@@ -3,14 +3,13 @@ using EasyDAL.Exchange.Core;
 
 namespace EasyDAL.Exchange.UserFacade.Join
 {
-    public class FromX : Operator, IMethodObject
+    public class FromX 
+        : Operator, IMethodObject
     {
 
         internal FromX(Context dc)
             : base(dc)
         { }
-
-
-
+        
     }
 }

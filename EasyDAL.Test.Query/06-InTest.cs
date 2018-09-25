@@ -51,7 +51,7 @@ namespace EasyDAL.Test.Query
                 AgentLevel.DistiAgent
             };
             // where in  --  variable  List<enum>  
-            var res1 = await Conn.OpenDebug()
+            var res1 = await Conn
                 .Selecter<Agent>()
                 .Where(it => enums.Contains(it.AgentLevel))
                 .QueryListAsync();
@@ -63,7 +63,7 @@ namespace EasyDAL.Test.Query
             var xx2 = "";
 
             // where in -- obj.prop List<enum>
-            var res2 = await Conn.OpenDebug()
+            var res2 = await Conn
                 .Selecter<Agent>()
                 .Where(it => WhereTest.In_List_枚举.Contains(it.AgentLevel))
                 .QueryListAsync();
@@ -76,7 +76,7 @@ namespace EasyDAL.Test.Query
 
             EnumList = enums;
             // where in -- this.prop List<enum>
-            var res3 = await Conn.OpenDebug()
+            var res3 = await Conn
                 .Selecter<Agent>()
                 .Where(it => EnumList.Contains(it.AgentLevel))
                 .QueryListAsync();
@@ -97,7 +97,7 @@ namespace EasyDAL.Test.Query
                 "刘建芬"
             };
             // where in  --  variable  List<string>  
-            var res4 = await Conn.OpenDebug()
+            var res4 = await Conn
                 .Selecter<Agent>()
                 .Where(it => names.Contains(it.Name))
                 .QueryListAsync();
@@ -109,7 +109,7 @@ namespace EasyDAL.Test.Query
             var xx5 = "";
 
             // where in -- obj.prop List<string>
-            var res5 = await Conn.OpenDebug()
+            var res5 = await Conn
                 .Selecter<Agent>()
                 .Where(it => WhereTest.In_List_String.Contains(it.Name))
                 .QueryListAsync();
@@ -122,7 +122,7 @@ namespace EasyDAL.Test.Query
 
             StringList = names;
             // where in -- this.prop List<string>
-            var res6 = await Conn.OpenDebug()
+            var res6 = await Conn
                 .Selecter<Agent>()
                 .Where(it => StringList.Contains(it.Name))
                 .QueryListAsync();
@@ -143,7 +143,7 @@ namespace EasyDAL.Test.Query
             var xx7 = "";
 
             // where in -- List<int>  init 
-            var res7 = await Conn.OpenDebug()
+            var res7 = await Conn
                 .Selecter<Agent>()
                 .Where(it => new List<int> { 5, 10 }.Contains(it.DirectorStarCount))
                 .QueryListAsync();
@@ -155,7 +155,7 @@ namespace EasyDAL.Test.Query
             var xx8 = "";
 
             // where in -- List<long> init
-            var res8 = await Conn.OpenDebug()
+            var res8 = await Conn
                 .Selecter<Agent>()
                 .Where(it => new List<long> { 5, 10 }.Contains(it.DirectorStarCount))
                 .QueryListAsync();
@@ -167,7 +167,7 @@ namespace EasyDAL.Test.Query
             var xx9 = "";
 
             // where in -- List<short> init
-            var res9 = await Conn.OpenDebug()
+            var res9 = await Conn
                 .Selecter<Agent>()
                 .Where(it => new List<short> { 5, 10 }.Contains((short)(it.DirectorStarCount)))
                 .QueryListAsync();
@@ -183,7 +183,7 @@ namespace EasyDAL.Test.Query
             var xx10 = "";
 
             // where in -- List<string> init
-            var res10 = await Conn.OpenDebug()
+            var res10 = await Conn
                 .Selecter<Agent>()
                 .Where(it => new List<string> { "黄银凤", "刘建芬" }.Contains(it.Name))
                 .QueryListAsync();
@@ -196,7 +196,7 @@ namespace EasyDAL.Test.Query
             var xx11 = "";
 
             // where in -- List<enum> init
-            var res11 = await Conn.OpenDebug()
+            var res11 = await Conn
                 .Selecter<Agent>()
                 .Where(it => new List<AgentLevel> { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel))
                 .QueryListAsync();
@@ -214,7 +214,7 @@ namespace EasyDAL.Test.Query
                 AgentLevel.DistiAgent
             };
             // where in  --  variable  enum[]  
-            var res12 = await Conn.OpenDebug()
+            var res12 = await Conn
                 .Selecter<Agent>()
                 .Where(it => enumArray.Contains(it.AgentLevel))
                 .QueryListAsync();
@@ -226,7 +226,7 @@ namespace EasyDAL.Test.Query
             var xx13 = "";
 
             // where in -- obj.prop enum[]
-            var res13 = await Conn.OpenDebug()
+            var res13 = await Conn
                 .Selecter<Agent>()
                 .Where(it => WhereTest.In_Array_枚举.Contains(it.AgentLevel))
                 .QueryListAsync();
@@ -239,7 +239,7 @@ namespace EasyDAL.Test.Query
 
             EnumArray = enumArray;
             // where in -- this.prop enum[]
-            var res14 = await Conn.OpenDebug()
+            var res14 = await Conn
                 .Selecter<Agent>()
                 .Where(it => EnumArray.Contains(it.AgentLevel))
                 .QueryListAsync();
@@ -260,7 +260,7 @@ namespace EasyDAL.Test.Query
                 "刘建芬"
             };
             // where in  --  variable  string[]  
-            var res15 = await Conn.OpenDebug()
+            var res15 = await Conn
                 .Selecter<Agent>()
                 .Where(it => nameArray.Contains(it.Name))
                 .QueryListAsync();
@@ -272,7 +272,7 @@ namespace EasyDAL.Test.Query
             var xx16 = "";
 
             // where in -- obj.prop string[]
-            var res16 = await Conn.OpenDebug()
+            var res16 = await Conn
                 .Selecter<Agent>()
                 .Where(it => WhereTest.In_Array_String.Contains(it.Name))
                 .QueryListAsync();
@@ -285,7 +285,7 @@ namespace EasyDAL.Test.Query
 
             StringArray = nameArray;
             // where in -- this.prop string[]
-            var res17 = await Conn.OpenDebug()
+            var res17 = await Conn
                 .Selecter<Agent>()
                 .Where(it => StringArray.Contains(it.Name))
                 .QueryListAsync();
@@ -305,7 +305,7 @@ namespace EasyDAL.Test.Query
             var xx18 = "";
 
             // where in -- int[]  init 
-            var res18 = await Conn.OpenDebug()
+            var res18 = await Conn
                 .Selecter<Agent>()
                 .Where(it => new int[] { 5, 10 }.Contains(it.DirectorStarCount))
                 .QueryListAsync();
@@ -317,7 +317,7 @@ namespace EasyDAL.Test.Query
             var xx19 = "";
 
             // where in -- long[] init
-            var res19 = await Conn.OpenDebug()
+            var res19 = await Conn
                 .Selecter<Agent>()
                 .Where(it => new long[] { 5L, 10L }.Contains(it.DirectorStarCount))
                 .QueryListAsync();
@@ -329,7 +329,7 @@ namespace EasyDAL.Test.Query
             var xx20 = "";
 
             // where in -- short[] init
-            var res20 = await Conn.OpenDebug()
+            var res20 = await Conn
                 .Selecter<Agent>()
                 .Where(it => new short[] { 5, 10 }.Contains((short)(it.DirectorStarCount)))
                 .QueryListAsync();
@@ -345,7 +345,7 @@ namespace EasyDAL.Test.Query
             var xx21 = "";
 
             // where in -- string[] init
-            var res21 = await Conn.OpenDebug()
+            var res21 = await Conn
                 .Selecter<Agent>()
                 .Where(it => new string[] { "黄银凤", "刘建芬" }.Contains(it.Name))
                 .QueryListAsync();
@@ -358,7 +358,7 @@ namespace EasyDAL.Test.Query
             var xx22 = "";
 
             // where in -- enum[] init
-            var res22 = await Conn.OpenDebug()
+            var res22 = await Conn
                 .Selecter<Agent>()
                 .Where(it => new AgentLevel[] { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel))
                 .QueryListAsync();
@@ -371,7 +371,7 @@ namespace EasyDAL.Test.Query
             var xx23 = "";
 
             // where in -- enum[] init
-            var res23 = await Conn.OpenDebug()
+            var res23 = await Conn
                 .Joiner<Agent, AgentInventoryRecord>(out var agent, out var record)
                 .From(() => agent)
                 .InnerJoin(() => record)

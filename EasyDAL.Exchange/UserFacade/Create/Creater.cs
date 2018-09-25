@@ -4,10 +4,12 @@ using EasyDAL.Exchange.Helper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using EasyDAL.Exchange.Common;
+using EasyDAL.Exchange.UserFacade.Interfaces;
 
 namespace EasyDAL.Exchange.UserFacade.Create
 {
-    public class Creater<M> : Operator, IMethodObject
+    public class Creater<M> 
+        : Operator, IMethodObject, ICreate<M>, ICreateBatch<M>
     {
         internal Creater(Context dc) 
             : base(dc)
@@ -25,7 +27,7 @@ namespace EasyDAL.Exchange.UserFacade.Create
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.CreateAsync)[0],
                 DC.GetParameters());
         }
-
+        
         /// <summary>
         /// 批量插入数据
         /// </summary>

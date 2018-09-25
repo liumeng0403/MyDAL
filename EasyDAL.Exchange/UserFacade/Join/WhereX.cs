@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace EasyDAL.Exchange.UserFacade.Join
 {
-    public class WhereX : Operator, IMethodObject
+    public class WhereX 
+        : Operator, IMethodObject
     {
 
         internal WhereX(Context dc)
             : base(dc)
         { }
-
-
+        
         /// <summary>
         /// 多表单条数据查询
         /// </summary>
@@ -95,27 +95,43 @@ namespace EasyDAL.Exchange.UserFacade.Join
             result.Data = (await SqlHelper.QueryAsync<M>(DC.Conn, sql[1], paras)).ToList();
             return result;
         }
-        ///// <summary>
-        ///// 单表分页查询
-        ///// </summary>
-        ///// <typeparam name="VM">ViewModel</typeparam>
-        ///// <param name="pageIndex">页码</param>
-        ///// <param name="pageSize">每页条数</param>
-        //public async Task<PagingList<VM>> QueryPagingListAsync<VM>(int pageIndex, int pageSize)
-        //{
-        //    return await QueryPagingListAsyncHandle<M, VM>(pageIndex, pageSize, UiMethodEnum.QueryPagingListAsync);
-        //}
-        ///// <summary>
-        ///// 单表分页查询
-        ///// </summary>
-        ///// <typeparam name="VM">ViewModel</typeparam>
-        ///// <param name="pageIndex">页码</param>
-        ///// <param name="pageSize">每页条数</param>
-        //public async Task<PagingList<VM>> QueryPagingListAsync<VM>(PagingQueryOption option)
-        //{
-        //    OrderByOptionHandle(option);
-        //    return await QueryPagingListAsyncHandle<M, VM>(option.PageIndex, option.PageSize, UiMethodEnum.QueryPagingListAsync);
-        //}
+        /// <summary>
+        /// 多表分页查询
+        /// </summary>
+        /// <typeparam name="VM">ViewModel</typeparam>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">每页条数</param>
+        public async Task<PagingList<VM>> QueryPagingListAsync<VM>(Expression<Func<VM>> func, int pageIndex, int pageSize)
+        {
+            SelectMHandle(func);
+            var result = new PagingList<VM>();
+            result.PageIndex = pageIndex;
+            result.PageSize = pageSize;
+            var paras = DC.GetParameters();
+            var sql = DC.SqlProvider.GetSQL<VM>(UiMethodEnum.JoinQueryPagingListAsync, result.PageIndex, result.PageSize);
+            result.TotalCount = await SqlHelper.ExecuteScalarAsync<long>(DC.Conn, sql[0], paras);
+            result.Data = (await SqlHelper.QueryAsync<VM>(DC.Conn, sql[1], paras)).ToList();
+            return result;
+        }
+        /// <summary>
+        /// 单表分页查询
+        /// </summary>
+        /// <typeparam name="VM">ViewModel</typeparam>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">每页条数</param>
+        public async Task<PagingList<VM>> QueryPagingListAsync<VM>(Expression<Func<VM>> func,PagingQueryOption option)
+        {
+            SelectMHandle(func);
+            OrderByOptionHandle(option);
+            var result = new PagingList<VM>();
+            result.PageIndex = option.PageIndex;
+            result.PageSize = option.PageSize;
+            var paras = DC.GetParameters();
+            var sql = DC.SqlProvider.GetSQL<VM>(UiMethodEnum.JoinQueryPagingListAsync, result.PageIndex, result.PageSize);
+            result.TotalCount = await SqlHelper.ExecuteScalarAsync<long>(DC.Conn, sql[0], paras);
+            result.Data = (await SqlHelper.QueryAsync<VM>(DC.Conn, sql[1], paras)).ToList();
+            return result;
+        }
 
     }
 }
