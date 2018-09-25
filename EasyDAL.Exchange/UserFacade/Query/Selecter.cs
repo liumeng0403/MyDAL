@@ -1,12 +1,13 @@
-﻿using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Core;
+﻿using EasyDAL.Exchange.Core;
 using EasyDAL.Exchange.Enums;
+using EasyDAL.Exchange.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace EasyDAL.Exchange.UserFacade.Query
 {
-    public class Selecter<M> : Operator, IMethodObject
+    public class Selecter<M> 
+        : Operator, IQueryAll<M>, IQueryAllPagingList<M>
     {
         internal Selecter(Context dc)
             : base(dc)

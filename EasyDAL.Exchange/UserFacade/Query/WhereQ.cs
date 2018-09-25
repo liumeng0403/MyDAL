@@ -1,7 +1,7 @@
-﻿using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Core;
+﻿using EasyDAL.Exchange.Core;
 using EasyDAL.Exchange.Enums;
 using EasyDAL.Exchange.Helper;
+using EasyDAL.Exchange.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 
 namespace EasyDAL.Exchange.UserFacade.Query
 {
-    public class WhereQ<M> : Operator,IMethodObject
+    public class WhereQ<M> 
+        : Operator, IExist, IQueryFirstOrDefault<M>, IQueryList<M>, IQueryPagingList<M>
     {
         internal WhereQ(Context dc)
             : base(dc)

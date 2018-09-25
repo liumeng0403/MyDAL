@@ -118,11 +118,11 @@ namespace EasyDAL.Test.Query
                 .InnerJoin(() => record7)
                 .On(() => agent7.Id == record7.AgentId)
                 .Where(() => agent7.AgentLevel == AgentLevel.DistiAgent)
-                .QueryPagingListAsync(() => new AgentVM
+                .QueryPagingListAsync(1, 10, () => new AgentVM
                 {
                     XXXX = agent7.Name,
                     YYYY = agent7.PathId
-                }, 1, 10);
+                });
             Assert.True(res7.TotalCount == 574);
 
             var tuple7 = (XDebug.SQL, XDebug.Parameters);
@@ -139,11 +139,11 @@ namespace EasyDAL.Test.Query
                 .InnerJoin(() => record8)
                 .On(() => agent8.Id == record8.AgentId)
                 .Where(() => agent8.AgentLevel == AgentLevel.DistiAgent)
-                .QueryPagingListAsync(() => new AgentVM
+                .QueryPagingListAsync(option8, () => new AgentVM
                 {
                     XXXX = agent8.Name,
                     YYYY = agent8.PathId
-                }, option8);
+                });
             Assert.True(res8.TotalCount == 574);
 
             var tuple8 = (XDebug.SQL, XDebug.Parameters);

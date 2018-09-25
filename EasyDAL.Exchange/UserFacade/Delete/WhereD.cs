@@ -1,14 +1,13 @@
-﻿using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Core;
+﻿using EasyDAL.Exchange.Core;
 using EasyDAL.Exchange.Enums;
 using EasyDAL.Exchange.Helper;
-using EasyDAL.Exchange.UserFacade.Interfaces;
+using EasyDAL.Exchange.Interfaces;
 using System.Threading.Tasks;
 
 namespace EasyDAL.Exchange.UserFacade.Delete
 {
     public class WhereD<M> 
-        : Operator, IMethodObject, IDelete
+        : Operator, IDelete
     {
         internal WhereD(Context dc)
             : base(dc)

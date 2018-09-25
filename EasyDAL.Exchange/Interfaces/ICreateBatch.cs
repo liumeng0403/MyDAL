@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.UserFacade.Interfaces
+namespace EasyDAL.Exchange.Interfaces
 {
     internal interface ICreateBatch<M>
     {

@@ -1,10 +1,9 @@
-﻿using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Core;
+﻿using EasyDAL.Exchange.Core;
 
 namespace EasyDAL.Exchange.UserFacade.Join
 {
     public class OnX 
-        : Operator, IMethodObject
+        : Operator
     {
 
         internal OnX(Context dc)

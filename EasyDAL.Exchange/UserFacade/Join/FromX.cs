@@ -1,10 +1,9 @@
-﻿using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Core;
+﻿using EasyDAL.Exchange.Core;
 
 namespace EasyDAL.Exchange.UserFacade.Join
 {
     public class FromX 
-        : Operator, IMethodObject
+        : Operator
     {
 
         internal FromX(Context dc)

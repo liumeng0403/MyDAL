@@ -1,5 +1,5 @@
-﻿using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Core;
+﻿using EasyDAL.Exchange.Core;
+using EasyDAL.Exchange.Interfaces;
 using System;
 using System.Threading.Tasks;
 
@@ -7,7 +7,8 @@ namespace EasyDAL.Exchange.UserFacade.Transaction
 {
     /// <summary>
     /// </summary>
-    public sealed class Transactioner : Operator, IMethodObject
+    public sealed class Transactioner 
+        : Operator, IBusinessUnitOption
     {
 
         internal Transactioner(Context dc)

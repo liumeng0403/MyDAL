@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 
-namespace EasyDAL.Exchange.Common
+namespace EasyDAL.Exchange.Interfaces
 {
-    //[EditorBrowsable(EditorBrowsableState.Never)]
-    public interface IMethodObject
+    internal interface IObjectMethod
     {
         [EditorBrowsable(EditorBrowsableState.Never)]
         bool Equals(object obj);

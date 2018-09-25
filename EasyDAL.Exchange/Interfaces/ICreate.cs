@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.UserFacade.Interfaces
+namespace EasyDAL.Exchange.Interfaces
 {
     internal interface ICreate<M>
     {

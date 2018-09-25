@@ -2,6 +2,7 @@
 using EasyDAL.Exchange.Enums;
 using EasyDAL.Exchange.ExpressionX;
 using EasyDAL.Exchange.Helper;
+using EasyDAL.Exchange.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace EasyDAL.Exchange.Core
 {
-    public abstract class Operator
+    public abstract class Operator: IObjectMethod
     {
         
         internal Operator(Context dc)

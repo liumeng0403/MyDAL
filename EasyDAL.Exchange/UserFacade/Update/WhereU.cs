@@ -1,12 +1,13 @@
-﻿using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Core;
+﻿using EasyDAL.Exchange.Core;
 using EasyDAL.Exchange.Enums;
 using EasyDAL.Exchange.Helper;
+using EasyDAL.Exchange.Interfaces;
 using System.Threading.Tasks;
 
 namespace EasyDAL.Exchange.UserFacade.Update
 {
-    public class WhereU<M> : Operator, IMethodObject
+    public class WhereU<M> 
+        : Operator, IUpdate
     {
         internal WhereU(Context dc)
             : base(dc)
