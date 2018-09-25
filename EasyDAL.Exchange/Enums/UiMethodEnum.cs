@@ -15,6 +15,7 @@
         QueryAllPagingListAsync,
         QuerySingleValueAsync,
         ExistAsync,
+        CountAsync,
         QueryAllAsync
     }
 }

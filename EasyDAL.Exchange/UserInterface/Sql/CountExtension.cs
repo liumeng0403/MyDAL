@@ -1,5 +1,4 @@
-﻿using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Enums;
+﻿using EasyDAL.Exchange.ExpressionX;
 using EasyDAL.Exchange.UserFacade.Query;
 using System;
 using System.Linq.Expressions;
@@ -18,15 +17,7 @@ namespace EasyDAL.Exchange
         {
             var keyDic = where.DC.EH.ExpressionHandle(func)[0];
             var key = keyDic.ColumnOne;
-            where.DC.AddConditions(new DicModel
-            {
-                ColumnOne = key,
-                Param = key,
-                ParamRaw = key,
-                Action = ActionEnum.Select,
-                Option = OptionEnum.Count,
-                Crud = CrudTypeEnum.Query
-            });
+            where.DC.AddConditions(DicHandle.ConditionCountHandle(key));
             return new CountQ<M>(where.DC);
         }
 

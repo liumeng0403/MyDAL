@@ -125,9 +125,25 @@ namespace EasyDAL.Exchange.Core
                 switch (item.Option)
                 {
                     case OptionEnum.Count:
-                        str += $" {item.Option.ToEnumDesc<OptionEnum>()}(`{item.ColumnOne}`) ";
+                        str = GetCountPart();
                         break;
                 }
+            }
+
+            return str;
+        }
+        internal string GetCountPart()
+        {
+            var str = string.Empty;
+
+            var item = DC.Conditions.FirstOrDefault(it => it.Option == OptionEnum.Count);
+            if (item != null)
+            {
+                str = $" {item.Option.ToEnumDesc<OptionEnum>()}(`{item.ColumnOne}`) ";
+            }
+            else
+            {
+                str = " count(*) ";
             }
 
             return str;
@@ -504,7 +520,8 @@ namespace EasyDAL.Exchange.Core
                     list.Add($" select {GetSingleValuePart()} {From()} {Table<M>(type)} {Wheres()} ; ");
                     break;
                 case UiMethodEnum.ExistAsync:
-                    list.Add($" select count(*) {From()} {Table<M>(type)} {Wheres()} ; ");
+                case UiMethodEnum.CountAsync:
+                    list.Add($" select {GetCountPart()} {From()} {Table<M>(type)} {Wheres()} ; ");
                     break;
                 case UiMethodEnum.QueryAllAsync:
                     list.Add($" select * {From()} {Table<M>(type)} ; ");

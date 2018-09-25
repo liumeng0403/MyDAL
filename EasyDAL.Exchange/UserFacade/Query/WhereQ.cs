@@ -1,5 +1,6 @@
 ﻿using EasyDAL.Exchange.Core;
 using EasyDAL.Exchange.Enums;
+using EasyDAL.Exchange.ExpressionX;
 using EasyDAL.Exchange.Helper;
 using EasyDAL.Exchange.Interfaces;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 namespace EasyDAL.Exchange.UserFacade.Query
 {
     public class WhereQ<M> 
-        : Operator, IExist, IQueryFirstOrDefault<M>, IQueryList<M>, IQueryPagingList<M>
+        : Operator, IExist, IQueryFirstOrDefault<M>, IQueryList<M>, IQueryPagingList<M>, ICount<M>
     {
         internal WhereQ(Context dc)
             : base(dc)
@@ -33,6 +34,30 @@ namespace EasyDAL.Exchange.UserFacade.Query
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// 查询符合条件数据条目数
+        /// </summary>
+        public async Task<long> CountAsync()
+        {
+            return await SqlHelper.ExecuteScalarAsync<long>(
+                DC.Conn,
+                DC.SqlProvider.GetSQL<M>(UiMethodEnum.CountAsync)[0],
+                DC.GetParameters());
+        }
+        /// <summary>
+        /// 查询符合条件数据条目数
+        /// </summary>
+        public async Task<long> CountAsync<F>(Expression<Func<M, F>> func)
+        {
+            var keyDic = DC.EH.ExpressionHandle(func)[0];
+            var key = keyDic.ColumnOne;
+            DC.AddConditions(DicHandle.ConditionCountHandle(key));
+            return await SqlHelper.ExecuteScalarAsync<long>(
+                 DC.Conn,
+                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.CountAsync)[0],
+                 DC.GetParameters());
         }
 
         /// <summary>
