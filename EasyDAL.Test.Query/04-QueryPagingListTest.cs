@@ -150,6 +150,32 @@ namespace EasyDAL.Test.Query
 
             /*************************************************************************************************************************/
 
+            var xx9 = "";
+
+            var option9 = new AgentQueryOption();
+            option9.AgentLevel = AgentLevel.DistiAgent;
+            option9.PageIndex = 5;
+            option9.PageSize = 10;
+            var res9 = await Conn
+                .Joiner<Agent, AgentInventoryRecord>(out var agent9, out var record9)
+                .From(() => agent9)
+                .InnerJoin(() => record9)
+                .On(() => agent9.Id == record9.AgentId)
+                .Where(() => agent9.AgentLevel == AgentLevel.DistiAgent)
+                .QueryPagingListAsync(option9, () => new AgentVM
+                {
+                    XXXX = agent9.Name,
+                    YYYY = agent9.PathId
+                });
+            Assert.True(res9.TotalCount == 574);
+            Assert.True(res9.PageSize == 10);
+            Assert.True(res9.PageIndex == 5);
+            Assert.True(res9.Data.Count == 10);
+
+            var tuple9 = (XDebug.SQL, XDebug.Parameters);
+
+            /*************************************************************************************************************************/
+
             var xx = "";
         }
 
