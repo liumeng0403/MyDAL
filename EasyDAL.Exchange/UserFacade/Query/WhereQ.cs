@@ -5,8 +5,7 @@ using System.Threading.Tasks;
 using Yunyong.Core;
 using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Enums;
-using Yunyong.DataExchange.ExpressionX;
-using Yunyong.DataExchange.Helper;
+using Yunyong.DataExchange.Impls;
 using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.UserFacade.Query
@@ -23,18 +22,7 @@ namespace Yunyong.DataExchange.UserFacade.Query
         /// </summary>
         public async Task<bool> ExistAsync()
         {
-            var count = await SqlHelper.ExecuteScalarAsync<long>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.ExistAsync)[0],
-                DC.GetParameters());
-            if (count > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return await new ExistImpl<M>(DC).ExistAsync();
         }
 
         /// <summary>
@@ -42,23 +30,14 @@ namespace Yunyong.DataExchange.UserFacade.Query
         /// </summary>
         public async Task<long> CountAsync()
         {
-            return await SqlHelper.ExecuteScalarAsync<long>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.CountAsync)[0],
-                DC.GetParameters());
+            return await new CountImpl<M>(DC).CountAsync();
         }
         /// <summary>
         /// 查询符合条件数据条目数
         /// </summary>
         public async Task<long> CountAsync<F>(Expression<Func<M, F>> func)
         {
-            var keyDic = DC.EH.ExpressionHandle(func)[0];
-            var key = keyDic.ColumnOne;
-            DC.AddConditions(DicHandle.ConditionCountHandle(key));
-            return await SqlHelper.ExecuteScalarAsync<long>(
-                 DC.Conn,
-                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.CountAsync)[0],
-                 DC.GetParameters());
+            return await new CountImpl<M>(DC).CountAsync(func);
         }
 
         /// <summary>

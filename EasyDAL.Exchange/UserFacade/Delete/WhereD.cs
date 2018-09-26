@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using Yunyong.DataExchange.Core;
-using Yunyong.DataExchange.Enums;
-using Yunyong.DataExchange.Helper;
+using Yunyong.DataExchange.Impls;
 using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.UserFacade.Delete
@@ -19,10 +18,7 @@ namespace Yunyong.DataExchange.UserFacade.Delete
         /// <returns>删除条目数</returns>
         public async Task<int> DeleteAsync()
         {
-            return await SqlHelper.ExecuteAsync(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.DeleteAsync)[0],
-                DC.GetParameters());
+            return await new DeleteImpl<M>(DC).DeleteAsync();
         }
 
     }

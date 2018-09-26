@@ -13,7 +13,8 @@ using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.Core
 {
-    public abstract class Operator: IObjectMethod
+    public abstract class Operator
+        : IObjectMethod
     {
         
         internal Operator(Context dc)

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Yunyong.Core;
 using Yunyong.DataExchange.Core;
-using Yunyong.DataExchange.Enums;
+using Yunyong.DataExchange.Impls;
 using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.UserFacade.Query
@@ -20,7 +20,7 @@ namespace Yunyong.DataExchange.UserFacade.Query
         /// <returns>返回全表数据</returns>
         public async Task<List<M>> QueryAllAsync()
         {
-            return await QueryAllAsyncHandle<M, M>();
+            return await new QueryAllImpl<M>(DC).QueryAllAsync();
         }
         /// <summary>
         /// 单表数据查询
@@ -29,7 +29,7 @@ namespace Yunyong.DataExchange.UserFacade.Query
         /// <returns>返回全表数据</returns>
         public async Task<List<VM>> QueryAllAsync<VM>()
         {
-            return await QueryAllAsyncHandle<M, VM>();
+            return await new QueryAllImpl<M>(DC).QueryAllAsync<VM>();
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace Yunyong.DataExchange.UserFacade.Query
         /// <returns>返回全表分页数据</returns>
         public async Task<PagingList<M>> QueryAllPagingListAsync(int pageIndex, int pageSize)
         {
-            return await QueryPagingListAsyncHandle<M, M>(pageIndex, pageSize, UiMethodEnum.QueryAllPagingListAsync);
+            return await new QueryAllPagingListImpl<M>(DC).QueryAllPagingListAsync(pageIndex, pageSize);
         }
         /// <summary>
         /// 单表分页查询
@@ -51,7 +51,7 @@ namespace Yunyong.DataExchange.UserFacade.Query
         /// <returns>返回全表分页数据</returns>
         public async Task<PagingList<VM>> QueryAllPagingListAsync<VM>(int pageIndex, int pageSize)
         {
-            return await QueryPagingListAsyncHandle<M, VM>(pageIndex, pageSize, UiMethodEnum.QueryAllPagingListAsync);
+            return await new QueryAllPagingListImpl<M>(DC).QueryAllPagingListAsync<VM>(pageIndex, pageSize);
         }
 
     }
