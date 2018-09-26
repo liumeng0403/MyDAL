@@ -1,6 +1,7 @@
 ﻿using EasyDAL.Exchange.Core;
 using EasyDAL.Exchange.Enums;
 using EasyDAL.Exchange.Helper;
+using EasyDAL.Exchange.Impls;
 using EasyDAL.Exchange.Interfaces;
 using System.Threading.Tasks;
 
@@ -19,10 +20,7 @@ namespace EasyDAL.Exchange.UserFacade.Delete
         /// <returns>删除条目数</returns>
         public async Task<int> DeleteAsync()
         {
-            return await SqlHelper.ExecuteAsync(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.DeleteAsync)[0],
-                DC.GetParameters());
+            return await new DeleteImpl<M>(DC).DeleteAsync();
         }
 
     }

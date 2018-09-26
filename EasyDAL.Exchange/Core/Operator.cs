@@ -12,7 +12,8 @@ using System.Threading.Tasks;
 
 namespace EasyDAL.Exchange.Core
 {
-    public abstract class Operator: IObjectMethod
+    public abstract class Operator
+        : IObjectMethod
     {
         
         internal Operator(Context dc)
