@@ -113,7 +113,7 @@ namespace EasyDAL.Exchange.Core
 
         private string Limit(int? pageIndex, int? pageSize)
         {
-            return $" \r\n limit {(pageIndex - 1) * pageSize},{pageIndex * pageSize}";
+            return $" \r\n limit {(pageIndex - 1) * pageSize},{/*pageIndex * */pageSize}";
         }
 
         internal string GetSingleValuePart()
