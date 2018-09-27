@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.8
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyDAL.Exchange", "EasyDAL.Exchange\EasyDAL.Exchange.csproj", "{F855E75C-7452-4427-A10F-414FC6DADE04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL", "EasyDAL.Exchange\MyDAL.csproj", "{F855E75C-7452-4427-A10F-414FC6DADE04}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyDAL.Test", "EasyDAL.Test\EasyDAL.Test.csproj", "{CB195413-53C3-4A18-B7EB-0BB6476BE6E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test", "EasyDAL.Test\MyDAL.Test.csproj", "{CB195413-53C3-4A18-B7EB-0BB6476BE6E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyDAL.Test.Query", "EasyDAL.Test.Query\EasyDAL.Test.Query.csproj", "{623DEC4C-6189-4E0F-8ADD-2CC02CE39941}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.Query", "EasyDAL.Test.Query\MyDAL.Test.Query.csproj", "{623DEC4C-6189-4E0F-8ADD-2CC02CE39941}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyDAL.Test.Update", "EasyDAL.Test.Update\EasyDAL.Test.Update.csproj", "{E52DFE01-C8E2-4E91-8217-3568960D959F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.Update", "EasyDAL.Test.Update\MyDAL.Test.Update.csproj", "{E52DFE01-C8E2-4E91-8217-3568960D959F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyDAL.Test.Delete", "EasyDAL.Test.Delete\EasyDAL.Test.Delete.csproj", "{47F0DADF-8254-4DA6-B03F-A7D3B75E8CC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.Delete", "EasyDAL.Test.Delete\MyDAL.Test.Delete.csproj", "{47F0DADF-8254-4DA6-B03F-A7D3B75E8CC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyDAL.Test.Create", "EasyDAL.Test.Create\EasyDAL.Test.Create.csproj", "{F06614FE-C7A0-489E-9D2E-9C01932A76FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.Create", "EasyDAL.Test.Create\MyDAL.Test.Create.csproj", "{F06614FE-C7A0-489E-9D2E-9C01932A76FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

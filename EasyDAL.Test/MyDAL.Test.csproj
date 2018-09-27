@@ -10,9 +10,6 @@
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <DotNetCliToolReference Include="dotnet-xunit" Version="$(xUnitVersion)" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\EasyDAL.Exchange\EasyDAL.Exchange.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Update="SourceLink.Create.GitHub" Version="2.8.3" />
@@ -20,5 +17,9 @@
 
   <ItemGroup>
     <Folder Include="Entities\rainbow_unicorn_db20180901\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EasyDAL.Exchange\MyDAL.csproj" />
   </ItemGroup>
 </Project>
