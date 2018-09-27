@@ -10,9 +10,9 @@
     <Copyright>2018 Meng.NET</Copyright>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <PackageProjectUrl>https://www.cnblogs.com/Meng-NET/p/8963476.html</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/liumeng0403/EasyDAL.Exchange</RepositoryUrl>
+    <RepositoryUrl>https://github.com/liumeng0403/MyDAL</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>easy,easydal,exchange,orm,ormlite,mysql,mysqlorm</PackageTags>
+    <PackageTags>my,easy,easydal,exchange,orm,ormlite,mysql,mysqlorm,mydal,netcore,netstandard,meng,meng-net</PackageTags>
     <PackageReleaseNotes>由一个开发项目中的 idea 演变,产生与实现!
        -- https://www.cnblogs.com/Meng-NET/p/8963476.html</PackageReleaseNotes>
     <ApplicationIcon>Others\favicon.ico</ApplicationIcon>
