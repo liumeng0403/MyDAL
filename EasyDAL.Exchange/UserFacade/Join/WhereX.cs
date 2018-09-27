@@ -1,6 +1,7 @@
 ﻿using MyDAL.Core;
 using MyDAL.Enums;
 using MyDAL.Helper;
+using MyDAL.Impls;
 using MyDAL.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -23,11 +24,7 @@ namespace MyDAL.UserFacade.Join
         /// </summary>
         public async Task<M> QueryFirstOrDefaultAsync<M>()
         {
-            SelectMHandle<M>();
-            return await SqlHelper.QueryFirstOrDefaultAsync<M>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.JoinQueryFirstOrDefaultAsync)[0],
-                DC.GetParameters());
+            return await new QueryFirstOrDefaultXImpl(DC).QueryFirstOrDefaultAsync<M>();
         }
         /// <summary>
         /// 单表单条数据查询
@@ -35,11 +32,7 @@ namespace MyDAL.UserFacade.Join
         /// <typeparam name="VM">ViewModel</typeparam>
         public async Task<VM> QueryFirstOrDefaultAsync<VM>(Expression<Func<VM>> func)
         {
-            SelectMHandle(func);
-            return await SqlHelper.QueryFirstOrDefaultAsync<VM>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<VM>(UiMethodEnum.JoinQueryFirstOrDefaultAsync)[0],
-                DC.GetParameters());
+            return await new QueryFirstOrDefaultXImpl(DC).QueryFirstOrDefaultAsync<VM>(func);
         }
 
         public async Task<List<M>> QueryListAsync<M>()

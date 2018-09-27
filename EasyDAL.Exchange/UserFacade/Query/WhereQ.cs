@@ -45,7 +45,7 @@ namespace MyDAL.UserFacade.Query
         /// </summary>
         public async Task<M> QueryFirstOrDefaultAsync()
         {
-            return await QueryFirstOrDefaultAsyncHandle<M, M>();
+            return await new QueryFirstOrDefaultImpl<M>(DC).QueryFirstOrDefaultAsync();
         }
         /// <summary>
         /// 单表单条数据查询
@@ -53,7 +53,7 @@ namespace MyDAL.UserFacade.Query
         /// <typeparam name="VM">ViewModel</typeparam>
         public async Task<VM> QueryFirstOrDefaultAsync<VM>()
         {
-            return await QueryFirstOrDefaultAsyncHandle<M, VM>();
+            return await new QueryFirstOrDefaultImpl<M>(DC).QueryFirstOrDefaultAsync<VM>();
         }
         /// <summary>
         /// 单表单条数据查询
@@ -61,8 +61,7 @@ namespace MyDAL.UserFacade.Query
         /// <typeparam name="VM">ViewModel</typeparam>
         public async Task<VM> QueryFirstOrDefaultAsync<VM>(Expression<Func<M, VM>> func)
         {
-            SelectMHandle(func);
-            return await QueryFirstOrDefaultAsyncHandle<M, VM>();
+            return await new QueryFirstOrDefaultImpl<M>(DC).QueryFirstOrDefaultAsync<VM>(func);
         }
 
         /// <summary>
