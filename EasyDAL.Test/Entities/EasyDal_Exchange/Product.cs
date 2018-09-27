@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace EasyDAL.Test.Entities.EasyDal_Exchange
+namespace MyDAL.Test.Entities.EasyDal_Exchange
 {
     /*
      * CREATE TABLE `product` (

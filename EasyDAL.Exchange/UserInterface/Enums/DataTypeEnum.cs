@@ -1,4 +1,4 @@
-﻿namespace Yunyong.DataExchange
+namespace Yunyong.DataExchange
 {
     public enum DataTypeEnum
     {

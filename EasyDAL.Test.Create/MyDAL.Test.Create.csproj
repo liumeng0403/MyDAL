@@ -2,13 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-
-    <IsPackable>false</IsPackable>
-
     <ApplicationIcon />
-
     <OutputType>Exe</OutputType>
-
     <StartupObject />
   </PropertyGroup>
 
@@ -22,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EasyDAL.Test\EasyDAL.Test.csproj" />
+    <ProjectReference Include="..\EasyDAL.Test\MyDAL.Test.csproj" />
   </ItemGroup>
 
 </Project>

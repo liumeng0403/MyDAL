@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Yunyong.Core;
 using Yunyong.DataExchange.Common;
 using Yunyong.DataExchange.Core;

@@ -1,4 +1,4 @@
-﻿using Yunyong.DataExchange.Cache;
+using Yunyong.DataExchange.Cache;
 using System.Data;
 
 namespace Yunyong.DataExchange.AdoNet.Interfaces

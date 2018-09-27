@@ -1,14 +1,14 @@
-using EasyDAL.Test.Entities.EasyDal_Exchange;
-using EasyDAL.Test.Enums;
+using MyDAL.Test.Entities.EasyDal_Exchange;
+using MyDAL.Test.Enums;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Xunit;
 using Yunyong.DataExchange;
 
-namespace EasyDAL.Test.Create
+namespace MyDAL.Test.Create
 {
     public class _01_CreateTest : TestBase
     {

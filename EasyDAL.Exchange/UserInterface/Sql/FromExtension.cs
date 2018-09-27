@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq.Expressions;
 using Yunyong.DataExchange.Enums;
 using Yunyong.DataExchange.UserFacade.Join;

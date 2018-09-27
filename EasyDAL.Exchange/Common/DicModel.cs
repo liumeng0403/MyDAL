@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Yunyong.DataExchange.Enums;
 
 namespace Yunyong.DataExchange.Common

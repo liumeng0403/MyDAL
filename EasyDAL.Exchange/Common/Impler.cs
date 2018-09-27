@@ -1,4 +1,4 @@
-﻿using Yunyong.DataExchange.Core;
+using Yunyong.DataExchange.Core;
 
 namespace Yunyong.DataExchange.Common
 {

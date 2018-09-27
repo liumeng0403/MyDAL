@@ -1,4 +1,4 @@
-﻿namespace Yunyong.DataExchange.Enums
+namespace Yunyong.DataExchange.Enums
 {
     public enum StringLikeEnum
     {

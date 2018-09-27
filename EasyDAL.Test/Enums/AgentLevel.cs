@@ -1,4 +1,4 @@
-﻿namespace EasyDAL.Test.Enums
+﻿namespace MyDAL.Test.Enums
 {
     public enum AgentLevel
     {

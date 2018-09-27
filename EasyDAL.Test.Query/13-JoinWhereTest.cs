@@ -1,12 +1,12 @@
-using EasyDAL.Test.Entities.EasyDal_Exchange;
-using EasyDAL.Test.Enums;
+using MyDAL.Test.Entities.EasyDal_Exchange;
+using MyDAL.Test.Enums;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 using Yunyong.DataExchange;
 
-namespace EasyDAL.Test.Query
+namespace MyDAL.Test.Query
 {
     public class _13_JoinWhereTest : TestBase
     {

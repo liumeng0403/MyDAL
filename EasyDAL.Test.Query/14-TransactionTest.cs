@@ -1,9 +1,9 @@
-﻿using EasyDAL.Test.Entities.EasyDal_Exchange;
+using MyDAL.Test.Entities.EasyDal_Exchange;
 using System.Threading.Tasks;
 using Xunit;
 using Yunyong.DataExchange;
 
-namespace EasyDAL.Test.Query
+namespace MyDAL.Test.Query
 {
     public class _14_TransactionTest : TestBase
     {

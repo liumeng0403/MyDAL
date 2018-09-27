@@ -1,11 +1,8 @@
-﻿using Yunyong.DataExchange.AdoNet;
-using Yunyong.DataExchange.Cache;
-using Yunyong.DataExchange.Helper;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.Text;
+using Yunyong.DataExchange.Helper;
 
 namespace Yunyong.DataExchange.Cache
 {

@@ -1,12 +1,12 @@
-using EasyDAL.Test.Entities.EasyDal_Exchange;
-using EasyDAL.Test.Enums;
-using EasyDAL.Test.ViewModels;
+using MyDAL.Test.Entities.EasyDal_Exchange;
+using MyDAL.Test.Enums;
+using MyDAL.Test.ViewModels;
 using System.Threading.Tasks;
 using Xunit;
 using Yunyong.DataExchange;
-using static EasyDAL.Test.Query._08_WhereObjTest;
+using static MyDAL.Test.Query._08_WhereObjTest;
 
-namespace EasyDAL.Test.Query
+namespace MyDAL.Test.Query
 {
     public class _04_QueryPagingListTest : TestBase
     {

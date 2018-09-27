@@ -1,4 +1,4 @@
-using EasyDAL.Test.Entities.EasyDal_Exchange;
+using MyDAL.Test.Entities.EasyDal_Exchange;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Xunit;
 using Yunyong.DataExchange;
 
-namespace EasyDAL.Test.Query
+namespace MyDAL.Test.Query
 {
     public class _10_MethodParamsTest : TestBase
     {

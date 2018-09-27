@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EasyDAL.Test\EasyDAL.Test.csproj" />
+    <ProjectReference Include="..\EasyDAL.Test\MyDAL.Test.csproj" />
   </ItemGroup>
 
 </Project>
