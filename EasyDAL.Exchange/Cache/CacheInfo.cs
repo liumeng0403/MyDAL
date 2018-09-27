@@ -1,8 +1,8 @@
-﻿using EasyDAL.Exchange.AdoNet;
+﻿using MyDAL.AdoNet;
 using System;
 using System.Data;
 
-namespace EasyDAL.Exchange.Cache
+namespace MyDAL.Cache
 {
     internal class CacheInfo
     {

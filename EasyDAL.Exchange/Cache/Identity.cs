@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Text;
 
-namespace EasyDAL.Exchange.Cache
+namespace MyDAL.Cache
 {
     /// <summary>
     /// Identity of a cached query in Dapper, used for extensibility.

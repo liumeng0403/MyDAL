@@ -1,12 +1,12 @@
-﻿using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.UserFacade.Delete;
-using EasyDAL.Exchange.UserFacade.Query;
-using EasyDAL.Exchange.UserFacade.Update;
+﻿using MyDAL.Enums;
+using MyDAL.UserFacade.Delete;
+using MyDAL.UserFacade.Query;
+using MyDAL.UserFacade.Update;
 using System;
 using System.Linq.Expressions;
-using EasyDAL.Exchange.UserFacade.Join;
+using MyDAL.UserFacade.Join;
 
-namespace EasyDAL.Exchange
+namespace MyDAL
 {
     public static class OrExtension
     {

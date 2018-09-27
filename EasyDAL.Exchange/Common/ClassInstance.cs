@@ -1,4 +1,4 @@
-﻿namespace EasyDAL.Exchange.Common
+﻿namespace MyDAL.Common
 {
     /// <summary>
     ///     Object 实例

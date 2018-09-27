@@ -1,8 +1,8 @@
-﻿using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.ExpressionX;
-using EasyDAL.Exchange.Helper;
-using EasyDAL.Exchange.Interfaces;
+﻿using MyDAL.Common;
+using MyDAL.Enums;
+using MyDAL.ExpressionX;
+using MyDAL.Helper;
+using MyDAL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.Core
+namespace MyDAL.Core
 {
     public abstract class Operator
         : IObjectMethod

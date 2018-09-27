@@ -1,9 +1,9 @@
-﻿using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.Others;
+﻿using MyDAL.Core;
+using MyDAL.Others;
 using System;
 using System.Data;
 
-namespace EasyDAL.Exchange.AdoNet
+namespace MyDAL.AdoNet
 {
     /// <summary>
     /// sql 操作定义

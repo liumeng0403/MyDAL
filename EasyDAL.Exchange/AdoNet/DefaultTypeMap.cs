@@ -1,12 +1,11 @@
-﻿using EasyDAL.Exchange.AdoNet.Interfaces;
-using EasyDAL.Exchange.Extensions;
-using EasyDAL.Exchange.Others;
+﻿using MyDAL.AdoNet.Interfaces;
+using MyDAL.Others;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace EasyDAL.Exchange.AdoNet
+namespace MyDAL.AdoNet
 {
     /// <summary>
     /// 默认类型映射策略

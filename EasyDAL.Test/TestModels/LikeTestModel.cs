@@ -1,4 +1,4 @@
-﻿namespace EasyDAL.Test.TestModels
+﻿namespace MyDAL.Test.TestModels
 {
     public class LikeTestModel
     {

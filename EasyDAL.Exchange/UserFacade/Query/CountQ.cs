@@ -1,10 +1,10 @@
-﻿using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.Helper;
-using EasyDAL.Exchange.Interfaces;
+﻿using MyDAL.Core;
+using MyDAL.Enums;
+using MyDAL.Helper;
+using MyDAL.Interfaces;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.UserFacade.Query
+namespace MyDAL.UserFacade.Query
 {
     public class CountQ<M> 
         : Operator, IQuerySingleValue

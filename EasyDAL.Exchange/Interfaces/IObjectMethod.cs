@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace EasyDAL.Exchange.Interfaces
+namespace MyDAL.Interfaces
 {
     internal interface IObjectMethod
     {

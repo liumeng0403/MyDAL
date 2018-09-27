@@ -1,11 +1,11 @@
-﻿using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.Impls;
-using EasyDAL.Exchange.Interfaces;
+﻿using MyDAL.Core;
+using MyDAL.Enums;
+using MyDAL.Impls;
+using MyDAL.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.UserFacade.Query
+namespace MyDAL.UserFacade.Query
 {
     public class Selecter<M> 
         : Operator, IQueryAll<M>, IQueryAllPagingList<M>

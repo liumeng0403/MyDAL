@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace EasyDAL.Exchange
+namespace MyDAL
 {
     public class XDebug
     {

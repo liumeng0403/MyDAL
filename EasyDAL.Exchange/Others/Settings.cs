@@ -3,7 +3,7 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 
-namespace EasyDAL.Exchange.Others
+namespace MyDAL.Others
 {
     /// <summary>
     /// Permits specifying certain SqlMapper values globally.

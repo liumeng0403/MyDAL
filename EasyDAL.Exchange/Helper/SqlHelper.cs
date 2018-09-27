@@ -1,8 +1,8 @@
-﻿using EasyDAL.Exchange.AdoNet;
-using EasyDAL.Exchange.AdoNet.Interfaces;
-using EasyDAL.Exchange.Cache;
-using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.Others;
+﻿using MyDAL.AdoNet;
+using MyDAL.AdoNet.Interfaces;
+using MyDAL.Cache;
+using MyDAL.Enums;
+using MyDAL.Others;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ using System.Reflection.Emit;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.Helper
+namespace MyDAL.Helper
 {
     internal static class SqlHelper
     {

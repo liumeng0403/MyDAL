@@ -1,11 +1,11 @@
-﻿using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.Helper;
-using EasyDAL.Exchange.Impls;
-using EasyDAL.Exchange.Interfaces;
+﻿using MyDAL.Core;
+using MyDAL.Enums;
+using MyDAL.Helper;
+using MyDAL.Impls;
+using MyDAL.Interfaces;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.UserFacade.Delete
+namespace MyDAL.UserFacade.Delete
 {
     public class WhereD<M> 
         : Operator, IDelete

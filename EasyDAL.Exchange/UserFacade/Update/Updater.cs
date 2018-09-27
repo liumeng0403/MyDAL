@@ -1,6 +1,6 @@
-﻿using EasyDAL.Exchange.Core;
+﻿using MyDAL.Core;
 
-namespace EasyDAL.Exchange.UserFacade.Update
+namespace MyDAL.UserFacade.Update
 {
     public sealed class Updater<M> 
         : Operator

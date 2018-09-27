@@ -1,6 +1,6 @@
-﻿using EasyDAL.Exchange.Core;
+﻿using MyDAL.Core;
 
-namespace EasyDAL.Exchange.Common
+namespace MyDAL.Common
 {
     internal class Impler
         : Operator

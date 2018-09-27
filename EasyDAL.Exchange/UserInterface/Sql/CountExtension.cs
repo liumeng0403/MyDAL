@@ -1,9 +1,9 @@
-﻿using EasyDAL.Exchange.ExpressionX;
-using EasyDAL.Exchange.UserFacade.Query;
+﻿using MyDAL.ExpressionX;
+using MyDAL.UserFacade.Query;
 using System;
 using System.Linq.Expressions;
 
-namespace EasyDAL.Exchange
+namespace MyDAL
 {
     public static class CountExtension
     {

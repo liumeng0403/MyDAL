@@ -1,14 +1,14 @@
-﻿using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.Helper;
-using EasyDAL.Exchange.Interfaces;
+﻿using MyDAL.Core;
+using MyDAL.Enums;
+using MyDAL.Helper;
+using MyDAL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.UserFacade.Join
+namespace MyDAL.UserFacade.Join
 {
     public class WhereX
         : Operator, IQueryFirstOrDefaultX, IQueryListX, IQueryPagingListX

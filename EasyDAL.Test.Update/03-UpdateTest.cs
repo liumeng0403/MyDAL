@@ -1,11 +1,11 @@
-﻿using EasyDAL.Exchange;
-using EasyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL;
+using MyDAL.Test.Entities.EasyDal_Exchange;
 using System;
 using System.Dynamic;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace EasyDAL.Test.Update
+namespace MyDAL.Test.Update
 {
     public class _03_UpdateTest : TestBase
     {

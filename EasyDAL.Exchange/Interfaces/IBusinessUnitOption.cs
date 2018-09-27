@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.Interfaces
+namespace MyDAL.Interfaces
 {
     internal interface IBusinessUnitOption
     {

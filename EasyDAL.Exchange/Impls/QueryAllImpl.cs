@@ -1,12 +1,10 @@
-﻿using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.Interfaces;
-using System;
+﻿using MyDAL.Common;
+using MyDAL.Core;
+using MyDAL.Interfaces;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.Impls
+namespace MyDAL.Impls
 {
     internal class QueryAllImpl<M>
         : Impler, IQueryAll<M>

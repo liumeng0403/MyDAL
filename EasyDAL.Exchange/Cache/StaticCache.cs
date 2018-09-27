@@ -1,12 +1,12 @@
-﻿using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Core;
+﻿using MyDAL.Common;
+using MyDAL.Core;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.Cache
+namespace MyDAL.Cache
 {
     internal class StaticCache : ClassInstance<StaticCache>
     {

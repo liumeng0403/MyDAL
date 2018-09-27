@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace EasyDAL.Exchange
+namespace MyDAL
 {
     /// <summary>
     ///     分页列表

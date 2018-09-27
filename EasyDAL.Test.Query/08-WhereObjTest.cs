@@ -1,14 +1,14 @@
-﻿using EasyDAL.Exchange;
-using EasyDAL.Exchange.Extensions;
-using EasyDAL.Test.Entities.EasyDal_Exchange;
-using EasyDAL.Test.Enums;
-using EasyDAL.Test.ViewModels;
+﻿using MyDAL;
+using MyDAL.Extensions;
+using MyDAL.Test.Entities.EasyDal_Exchange;
+using MyDAL.Test.Enums;
+using MyDAL.Test.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace EasyDAL.Test.Query
+namespace MyDAL.Test.Query
 {
     public class _08_WhereObjTest : TestBase
     {

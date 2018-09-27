@@ -1,6 +1,6 @@
-﻿using EasyDAL.Exchange.Core;
+﻿using MyDAL.Core;
 
-namespace EasyDAL.Exchange.UserFacade.Join
+namespace MyDAL.UserFacade.Join
 {
     public class OnX 
         : Operator

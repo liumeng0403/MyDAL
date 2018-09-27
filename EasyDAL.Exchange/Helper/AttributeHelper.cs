@@ -1,10 +1,10 @@
-﻿using EasyDAL.Exchange.Cache;
-using EasyDAL.Exchange.Common;
+﻿using MyDAL.Cache;
+using MyDAL.Common;
 using System;
 using System.Linq;
 using System.Reflection;
 
-namespace EasyDAL.Exchange.Helper
+namespace MyDAL.Helper
 {
     internal class AttributeHelper : ClassInstance<AttributeHelper>
     {

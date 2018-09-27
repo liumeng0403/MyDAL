@@ -1,8 +1,8 @@
-﻿using EasyDAL.Exchange.UserFacade.Query;
+﻿using MyDAL.UserFacade.Query;
 using System;
 using System.Linq.Expressions;
 
-namespace EasyDAL.Exchange
+namespace MyDAL
 {
     public static class OrderByExtension
     {

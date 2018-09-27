@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EasyDAL.Test.Query
+namespace MyDAL.Test.Query
 {
     public class _04_QueryAllPagingListTest: TestBase
     {

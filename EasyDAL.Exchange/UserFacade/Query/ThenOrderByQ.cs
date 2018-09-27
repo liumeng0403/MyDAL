@@ -1,12 +1,12 @@
-﻿using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.Interfaces;
+﻿using MyDAL.Core;
+using MyDAL.Enums;
+using MyDAL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.UserFacade.Query
+namespace MyDAL.UserFacade.Query
 {
     public class ThenOrderByQ<M> 
         : Operator, IQueryList<M>, IQueryPagingList<M>

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 
-namespace EasyDAL.Exchange.AdoNet.Interfaces
+namespace MyDAL.AdoNet.Interfaces
 {
     /// <summary>
     /// Implements this interface to provide custom member mapping

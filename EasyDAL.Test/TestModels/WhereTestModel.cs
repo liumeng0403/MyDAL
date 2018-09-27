@@ -1,8 +1,8 @@
-﻿using EasyDAL.Test.Enums;
+﻿using MyDAL.Test.Enums;
 using System;
 using System.Collections.Generic;
 
-namespace EasyDAL.Test.Entities
+namespace MyDAL.Test.Entities
 {
     public class WhereTestModel
     {

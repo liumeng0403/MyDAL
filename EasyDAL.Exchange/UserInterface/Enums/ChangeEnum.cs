@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace EasyDAL.Exchange
+namespace MyDAL
 {
     public enum ChangeEnum
     {

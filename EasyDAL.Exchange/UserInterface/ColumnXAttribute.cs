@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EasyDAL.Exchange
+namespace MyDAL
 {
     public class ColumnXAttribute: Attribute
     {

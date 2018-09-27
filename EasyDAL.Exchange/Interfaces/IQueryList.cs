@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.Interfaces
+namespace MyDAL.Interfaces
 {
     internal interface IQueryList<M>
     {

@@ -1,7 +1,7 @@
-﻿using EasyDAL.Exchange.Cache;
-using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.Enums;
+﻿using MyDAL.Cache;
+using MyDAL.Common;
+using MyDAL.Core;
+using MyDAL.Enums;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace EasyDAL.Exchange.ExpressionX
+namespace MyDAL.ExpressionX
 {
     internal class ExpressionHandleX
     {

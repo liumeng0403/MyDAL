@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data;
 
-namespace EasyDAL.Exchange.Cache
+namespace MyDAL.Cache
 {
     internal struct DeserializerKey : IEquatable<DeserializerKey>
     {

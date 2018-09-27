@@ -1,7 +1,7 @@
-﻿using EasyDAL.Exchange.Common;
+﻿using MyDAL.Common;
 using System.Collections.Generic;
 
-namespace EasyDAL.Exchange
+namespace MyDAL
 {
     /// <summary>
     ///     分页查询设置

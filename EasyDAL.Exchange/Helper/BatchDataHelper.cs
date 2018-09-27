@@ -1,10 +1,10 @@
-﻿using EasyDAL.Exchange.Common;
+﻿using MyDAL.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.Helper
+namespace MyDAL.Helper
 {
     internal class BatchDataHelper : ClassInstance<BatchDataHelper>
     {

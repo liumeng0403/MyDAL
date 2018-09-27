@@ -1,13 +1,11 @@
-﻿using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Extensions;
+﻿using MyDAL.Common;
+using MyDAL.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
-namespace EasyDAL.Exchange.Helper
+namespace MyDAL.Helper
 {
     internal class GenericHelper : ClassInstance<GenericHelper>
     {

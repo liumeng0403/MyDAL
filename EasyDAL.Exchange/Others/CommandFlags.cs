@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EasyDAL.Exchange.Others
+namespace MyDAL.Others
 {
     /// <summary>
     /// Additional state flags that control command behaviour

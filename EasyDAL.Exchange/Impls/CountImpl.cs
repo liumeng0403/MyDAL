@@ -1,14 +1,14 @@
-﻿using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.ExpressionX;
-using EasyDAL.Exchange.Helper;
-using EasyDAL.Exchange.Interfaces;
+﻿using MyDAL.Common;
+using MyDAL.Core;
+using MyDAL.Enums;
+using MyDAL.ExpressionX;
+using MyDAL.Helper;
+using MyDAL.Interfaces;
 using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.Impls
+namespace MyDAL.Impls
 {
     internal class CountImpl<M>
         : Impler, ICount<M>

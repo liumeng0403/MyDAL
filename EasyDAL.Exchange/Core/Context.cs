@@ -1,19 +1,16 @@
-﻿using System;
+﻿using MyDAL.AdoNet;
+using MyDAL.Cache;
+using MyDAL.Common;
+using MyDAL.Enums;
+using MyDAL.ExpressionX;
+using MyDAL.Extensions;
+using MyDAL.Helper;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EasyDAL.Exchange.AdoNet;
-using EasyDAL.Exchange.Cache;
-using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.ExpressionX;
-using EasyDAL.Exchange.Extensions;
-using EasyDAL.Exchange.Helper;
 
-namespace EasyDAL.Exchange.Core
+namespace MyDAL.Core
 {
     internal abstract class Context
     {

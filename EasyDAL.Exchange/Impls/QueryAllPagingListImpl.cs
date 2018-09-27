@@ -1,13 +1,10 @@
-﻿using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MyDAL.Common;
+using MyDAL.Core;
+using MyDAL.Enums;
+using MyDAL.Interfaces;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.Impls
+namespace MyDAL.Impls
 {
     internal class QueryAllPagingListImpl<M>
         : Impler, IQueryAllPagingList<M>

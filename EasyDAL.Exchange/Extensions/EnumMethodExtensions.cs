@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Reflection;
 
-namespace EasyDAL.Exchange.Extensions
+namespace MyDAL.Extensions
 {
     public static class EnumMethodExtensions
     {

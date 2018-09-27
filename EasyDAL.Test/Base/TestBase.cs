@@ -1,13 +1,13 @@
-﻿using EasyDAL.Exchange;
-using EasyDAL.Test.Entities;
-using EasyDAL.Test.Enums;
-using EasyDAL.Test.TestModels;
+﻿using MyDAL;
+using MyDAL.Test.Entities;
+using MyDAL.Test.Enums;
+using MyDAL.Test.TestModels;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
 
-namespace EasyDAL.Test
+namespace MyDAL.Test
 {
     public abstract class TestBase : IDisposable
     {
@@ -64,9 +64,9 @@ namespace EasyDAL.Test
         protected IDbConnection Conn
         {
             /*
-             * CREATE DATABASE `EasyDAL_Exchange`;
+             * CREATE DATABASE `EasyDal_Exchange`;
              */
-            get { return GetOpenConnection("EasyDAL_Exchange"); }
+            get { return GetOpenConnection("EasyDal_Exchange"); }
         }
 
         protected IDbConnection Conn2

@@ -1,9 +1,9 @@
-﻿using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Enums;
+﻿using MyDAL.Common;
+using MyDAL.Enums;
 using System;
 using System.Linq.Expressions;
 
-namespace EasyDAL.Exchange.ExpressionX
+namespace MyDAL.ExpressionX
 {
     internal static class DicHandle
     {

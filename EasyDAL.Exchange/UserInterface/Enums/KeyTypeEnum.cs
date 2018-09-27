@@ -1,4 +1,4 @@
-﻿namespace EasyDAL.Exchange
+﻿namespace MyDAL
 {
     public enum KeyTypeEnum
     {

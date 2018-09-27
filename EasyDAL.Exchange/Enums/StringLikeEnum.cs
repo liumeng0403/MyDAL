@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EasyDAL.Exchange.Enums
+﻿namespace MyDAL.Enums
 {
     public enum StringLikeEnum
     {

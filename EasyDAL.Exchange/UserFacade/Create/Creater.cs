@@ -1,12 +1,12 @@
-﻿using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.Helper;
-using EasyDAL.Exchange.Impls;
-using EasyDAL.Exchange.Interfaces;
+﻿using MyDAL.Core;
+using MyDAL.Enums;
+using MyDAL.Helper;
+using MyDAL.Impls;
+using MyDAL.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.UserFacade.Create
+namespace MyDAL.UserFacade.Create
 {
     public class Creater<M> 
         : Operator, ICreate<M>, ICreateBatch<M>

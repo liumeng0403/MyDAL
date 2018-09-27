@@ -1,13 +1,13 @@
-﻿using EasyDAL.Exchange;
-using EasyDAL.Test.Entities.EasyDal_Exchange;
-using EasyDAL.Test.Enums;
+﻿using MyDAL;
+using MyDAL.Test.Entities.EasyDal_Exchange;
+using MyDAL.Test.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace EasyDAL.Test.Query
+namespace MyDAL.Test.Query
 {
     public class _06_InTest : TestBase
     {

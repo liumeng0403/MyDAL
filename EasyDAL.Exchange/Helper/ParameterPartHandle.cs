@@ -1,10 +1,10 @@
-﻿using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Extensions;
-using EasyDAL.Exchange.Others;
+﻿using MyDAL.Common;
+using MyDAL.Extensions;
+using MyDAL.Others;
 using System;
 using System.Data;
 
-namespace EasyDAL.Exchange.Helper
+namespace MyDAL.Helper
 {
     internal class ParameterPartHandle : ClassInstance<ParameterPartHandle>
     {

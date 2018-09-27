@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EasyDAL.Exchange.Common
+﻿namespace MyDAL.Common
 {
     public class ColumnInfo
     {

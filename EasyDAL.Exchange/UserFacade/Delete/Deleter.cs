@@ -1,6 +1,6 @@
-﻿using EasyDAL.Exchange.Core;
+﻿using MyDAL.Core;
 
-namespace EasyDAL.Exchange.UserFacade.Delete
+namespace MyDAL.UserFacade.Delete
 {
     public class Deleter<M> 
         : Operator

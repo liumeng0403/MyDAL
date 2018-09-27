@@ -1,21 +1,6 @@
-﻿
-using EasyDAL.Exchange.AdoNet;
-using EasyDAL.Exchange.Cache;
-using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.ExpressionX;
-using EasyDAL.Exchange.Extensions;
-using EasyDAL.Exchange.Helper;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Data;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿using System.Data;
 
-namespace EasyDAL.Exchange.Core
+namespace MyDAL.Core
 {
     internal class DbContext : Context
     {

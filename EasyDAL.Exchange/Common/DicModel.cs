@@ -1,7 +1,7 @@
-﻿using EasyDAL.Exchange.Enums;
+﻿using MyDAL.Enums;
 using System;
 
-namespace EasyDAL.Exchange.Common
+namespace MyDAL.Common
 {
     internal class DicModel
     {

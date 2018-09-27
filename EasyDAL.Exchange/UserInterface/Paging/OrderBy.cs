@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace EasyDAL.Exchange
+namespace MyDAL
 {
     /// <summary>
     ///     排序设置

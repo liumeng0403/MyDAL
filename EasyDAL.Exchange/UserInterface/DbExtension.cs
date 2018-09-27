@@ -1,14 +1,14 @@
-﻿using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.UserFacade.Create;
-using EasyDAL.Exchange.UserFacade.Delete;
-using EasyDAL.Exchange.UserFacade.Join;
-using EasyDAL.Exchange.UserFacade.Query;
-using EasyDAL.Exchange.UserFacade.Transaction;
-using EasyDAL.Exchange.UserFacade.Update;
+﻿using MyDAL.Core;
+using MyDAL.UserFacade.Create;
+using MyDAL.UserFacade.Delete;
+using MyDAL.UserFacade.Join;
+using MyDAL.UserFacade.Query;
+using MyDAL.UserFacade.Transaction;
+using MyDAL.UserFacade.Update;
 using System;
 using System.Data;
 
-namespace EasyDAL.Exchange
+namespace MyDAL
 {
     public static class DbExtension
     {

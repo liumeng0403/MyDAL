@@ -1,9 +1,9 @@
-﻿using EasyDAL.Exchange;
-using EasyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL;
+using MyDAL.Test.Entities.EasyDal_Exchange;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace EasyDAL.Test.Query
+namespace MyDAL.Test.Query
 {
     public class _09_WhereBoolTest : TestBase
     {

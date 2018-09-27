@@ -1,12 +1,12 @@
-﻿using EasyDAL.Exchange.AdoNet.Interfaces;
-using EasyDAL.Exchange.Cache;
-using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.Helper;
-using EasyDAL.Exchange.Others;
+﻿using MyDAL.AdoNet.Interfaces;
+using MyDAL.Cache;
+using MyDAL.Core;
+using MyDAL.Helper;
+using MyDAL.Others;
 using System.Collections.Generic;
 using System.Data;
 
-namespace EasyDAL.Exchange.AdoNet
+namespace MyDAL.AdoNet
 {
     /// <summary>
     /// A bag of parameters that can be passed to the Dapper Query and Execute methods

@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace EasyDAL.Exchange.Others
+namespace MyDAL.Others
 {
     internal sealed class ParamInfo
     {

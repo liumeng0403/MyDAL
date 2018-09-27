@@ -1,12 +1,12 @@
-﻿using EasyDAL.Exchange.Common;
-using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.Helper;
-using EasyDAL.Exchange.Interfaces;
+﻿using MyDAL.Common;
+using MyDAL.Core;
+using MyDAL.Enums;
+using MyDAL.Helper;
+using MyDAL.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.Impls
+namespace MyDAL.Impls
 {
     internal class CreateBatchImpl<M>
         : Impler, ICreateBatch<M>

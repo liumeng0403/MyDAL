@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EasyDAL.Test.ViewModels
+namespace MyDAL.Test.ViewModels
 {
     public class AgentVM
     {

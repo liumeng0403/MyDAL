@@ -1,9 +1,9 @@
-﻿using EasyDAL.Exchange.Core;
-using EasyDAL.Exchange.Interfaces;
+﻿using MyDAL.Core;
+using MyDAL.Interfaces;
 using System;
 using System.Threading.Tasks;
 
-namespace EasyDAL.Exchange.UserFacade.Transaction
+namespace MyDAL.UserFacade.Transaction
 {
     /// <summary>
     /// </summary>

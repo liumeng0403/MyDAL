@@ -1,4 +1,4 @@
-﻿namespace EasyDAL.Exchange.Enums
+﻿namespace MyDAL.Enums
 {
     internal enum UiMethodEnum
     {

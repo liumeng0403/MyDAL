@@ -1,13 +1,10 @@
-﻿using EasyDAL.Exchange.AdoNet;
-using EasyDAL.Exchange.Cache;
-using EasyDAL.Exchange.Helper;
+﻿using MyDAL.Helper;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.Text;
 
-namespace EasyDAL.Exchange.Cache
+namespace MyDAL.Cache
 {
     internal class TypeDeserializerCache
     {

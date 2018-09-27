@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EasyDAL.Exchange.Extensions
+namespace MyDAL.Extensions
 {
     public static class ObjectMethodExtensions
     {

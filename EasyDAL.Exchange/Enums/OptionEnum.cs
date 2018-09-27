@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace EasyDAL.Exchange.Enums
+namespace MyDAL.Enums
 {
     internal enum OptionEnum
     {

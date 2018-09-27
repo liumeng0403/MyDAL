@@ -1,9 +1,9 @@
-﻿using EasyDAL.Exchange.Enums;
-using EasyDAL.Exchange.UserFacade.Update;
+﻿using MyDAL.Enums;
+using MyDAL.UserFacade.Update;
 using System;
 using System.Linq.Expressions;
 
-namespace EasyDAL.Exchange
+namespace MyDAL
 {
     public static class SetExtension
     {

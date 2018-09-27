@@ -1,9 +1,9 @@
-﻿using EasyDAL.Exchange.Common;
+﻿using MyDAL.Common;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Reflection;
 
-namespace EasyDAL.Exchange.Extensions
+namespace MyDAL.Extensions
 {
     /// <summary>
     ///     查询扩展
