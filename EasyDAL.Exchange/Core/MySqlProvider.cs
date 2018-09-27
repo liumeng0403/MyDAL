@@ -496,10 +496,10 @@ namespace Yunyong.DataExchange.Core
                     list.Add($" select {Columns()} {From()} {Joins()} {Wheres()} ; ");
                     break;
                 case UiMethodEnum.QueryListAsync:
-                    list.Add($"select {Columns()} {From()} {Table<M>(type)} {Wheres()} ; ");
+                    list.Add($"select {Columns()} {From()} {Table<M>(type)} {Wheres()} {GetOrderByPart<M>()} ; ");
                     break;
                 case UiMethodEnum.JoinQueryListAsync:
-                    list.Add($" select {Columns()} {From()} {Joins()} {Wheres()} ; ");
+                    list.Add($" select {Columns()} {From()} {Joins()} {Wheres()} {GetOrderByPart()} ; ");
                     break;
                 case UiMethodEnum.QueryPagingListAsync:
                     var wherePart8 = Wheres();
@@ -523,7 +523,7 @@ namespace Yunyong.DataExchange.Core
                     list.Add($" select {GetCountPart()} {From()} {Table<M>(type)} {Wheres()} ; ");
                     break;
                 case UiMethodEnum.QueryAllAsync:
-                    list.Add($" select * {From()} {Table<M>(type)} ; ");
+                    list.Add($" select * {From()} {Table<M>(type)} {GetOrderByPart<M>()} ; ");
                     break;
             }
 
