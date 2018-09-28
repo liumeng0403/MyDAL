@@ -14,6 +14,8 @@ namespace MyDAL.Test.Query
         [Fact]
         public async Task ColumnTest()
         {
+            /*****************************************************************************************************************************/
+
             var xx1 = "";
 
             var option1 = new AgentQueryOption();
@@ -28,6 +30,26 @@ namespace MyDAL.Test.Query
             Assert.True(res1.Count == 555);
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
+
+            /*****************************************************************************************************************************/
+
+            var xx2 = "";
+
+            var option2 = new AgentQueryOption();
+            option2.StartTime = WhereTest.CreatedOn;
+            option2.EndTime = DateTime.Now;
+
+            var res2 = await Conn
+                .Selecter<Agent>()
+                .Where(option2)
+                .QueryListAsync();
+            //Assert.True(res2.Count == 555);
+
+            var tuple2 = (XDebug.SQL, XDebug.Parameters);
+
+            /*****************************************************************************************************************************/
+
+            var xx = "";
 
         }
     }

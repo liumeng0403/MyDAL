@@ -85,6 +85,18 @@ namespace MyDAL.Enums
         OneEqualOne,
 
         /// <summary>
+        /// " is null "
+        /// </summary>
+        [Description(" is null ")]
+        IsNull,
+
+        /// <summary>
+        /// " is not null "
+        /// </summary>
+        [Description(" is not null ")]
+        IsNotNull,
+
+        /// <summary>
         /// " asc "
         /// </summary>
         [Description(" asc ")]

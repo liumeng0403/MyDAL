@@ -22,6 +22,11 @@ namespace MyDAL.Core
             DC.OP = this;
         }
 
+        private bool CheckQueryVal()
+        {
+            return false;
+        }
+
         private List<(string key, string param, string val, Type valType, string colType, CompareEnum compare)> GetKPV<M>(object objx)
         {
             var list = new List<DicQueryModel>();
