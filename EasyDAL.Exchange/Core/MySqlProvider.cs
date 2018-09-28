@@ -213,11 +213,9 @@ namespace MyDAL.Core
 
         private string Table<M>(UiMethodEnum type)
         {
-
             var tableName = string.Empty;
             if (type != UiMethodEnum.JoinQueryListAsync)
             {
-                //tableName = GetTableName(typeof(M));
                 var key = DC.SC.GetKey(typeof(M).FullName, DC.Conn.Database);
                 tableName = DC.SC.GetModelTableName(key);
             }

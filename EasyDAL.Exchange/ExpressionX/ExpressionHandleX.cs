@@ -62,7 +62,7 @@ namespace MyDAL.ExpressionX
         }
 
         // -01-02- 
-        private (string key, string alias, Type valType) GetKey(Expression bodyL, OptionEnum option)
+        private (string key, string alias, Type valType,string classFullName) GetKey(Expression bodyL, OptionEnum option)
         {
             if (bodyL.NodeType == ExpressionType.Convert)
             {
@@ -106,7 +106,7 @@ namespace MyDAL.ExpressionX
                     });
 
                 //
-                return (field, alias, type);
+                return (field, alias, type,paramType.FullName);
             }
             else if (bodyL.NodeType == ExpressionType.Call)
             {
@@ -118,7 +118,7 @@ namespace MyDAL.ExpressionX
                 }
             }
 
-            return (default(string), default(string), default(Type));
+            return (default(string), default(string), default(Type),default(string));
         }
 
         // 01
@@ -270,7 +270,9 @@ namespace MyDAL.ExpressionX
                                 val = $"%{DC.VH.GetCallVal(mcExpr)}";
                                 break;
                         }
-                        return DicHandle.CallLikeHandle(keyTuple.key, keyTuple.alias, val, keyTuple.valType);
+                        var dic = DicHandle.CallLikeHandle(keyTuple.key, keyTuple.alias, val, keyTuple.valType);
+                        dic.ClassFullName = keyTuple.classFullName;
+                        return dic;
                     }
                 }
             }
@@ -282,7 +284,9 @@ namespace MyDAL.ExpressionX
         {
             var keyTuple = GetKey(expr, OptionEnum.In);
             var val = HandMember(memExpr);
-            return DicHandle.CallInHandle(keyTuple.key, keyTuple.alias, val, keyTuple.valType);
+            var dic = DicHandle.CallInHandle(keyTuple.key, keyTuple.alias, val, keyTuple.valType);
+            dic.ClassFullName = keyTuple.classFullName;
+            return dic;
         }
 
         private DicModel NewCollectionIn(ExpressionType nodeType, Expression keyExpr, Expression valExpr)
@@ -298,7 +302,9 @@ namespace MyDAL.ExpressionX
                 }
 
                 var val = string.Join(",", vals);
-                return DicHandle.CallInHandle(keyTuple.key, keyTuple.alias, val, keyTuple.valType);
+                var dic = DicHandle.CallInHandle(keyTuple.key, keyTuple.alias, val, keyTuple.valType);
+                dic.ClassFullName = keyTuple.classFullName;
+                return dic;
             }
             else if (nodeType == ExpressionType.ListInit)
             {
@@ -312,7 +318,9 @@ namespace MyDAL.ExpressionX
                 }
 
                 var val = string.Join(",", vals);
-                return DicHandle.CallInHandle(keyTuple.key, keyTuple.alias, val, keyTuple.valType);
+                var dic = DicHandle.CallInHandle(keyTuple.key, keyTuple.alias, val, keyTuple.valType);
+                dic.ClassFullName = keyTuple.classFullName;
+                return dic;
             }
 
             return null;
@@ -339,6 +347,7 @@ namespace MyDAL.ExpressionX
                 }
                 return new DicModel
                 {
+                    ClassFullName=tuple.classFullName,
                     ColumnOne = tuple.key,
                     TableAliasOne = tuple.alias,
                     Param = tuple.key,
@@ -357,12 +366,16 @@ namespace MyDAL.ExpressionX
                     && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
                 {
                     var keyTuple = GetKey(binTuple.left, OptionEnum.CharLength);
-                    return DicHandle.BinaryCharLengthHandle(keyTuple.key, keyTuple.alias, val, keyTuple.valType, binTuple.node, binTuple.isR);
+                    var dic = DicHandle.BinaryCharLengthHandle(keyTuple.key, keyTuple.alias, val, keyTuple.valType, binTuple.node, binTuple.isR);
+                    dic.ClassFullName = keyTuple.classFullName;
+                    return dic;
                 }
                 else
                 {
                     var keyTuple = GetKey(binTuple.left, OptionEnum.Compare /*DicHandle.GetOption(binTuple.node, binTuple.isR)*/);
-                    return DicHandle.BinaryNormalHandle(keyTuple.key, keyTuple.alias, val, keyTuple.valType, binTuple.node, binTuple.isR);
+                    var dic = DicHandle.BinaryNormalHandle(keyTuple.key, keyTuple.alias, val, keyTuple.valType, binTuple.node, binTuple.isR);
+                    dic.ClassFullName = keyTuple.classFullName;
+                    return dic;
                 }
             }
         }
@@ -439,20 +452,18 @@ namespace MyDAL.ExpressionX
             var tuple = GetMemTuple(memExpr);
             if (tuple.valType == typeof(bool))
             {
-                return DicHandle.MemberBoolHandle(tuple.key, tuple.alias, tuple.valType);
+                var dic = DicHandle.MemberBoolHandle(tuple.key, tuple.alias, tuple.valType);
+                dic.ClassFullName = tuple.classFullName;
+                return dic;
             }
 
             return null;
         }
 
-        private (string key, string alias, Type valType) GetMemTuple(MemberExpression memExpr)
+        private (string key, string alias, Type valType,string classFullName) GetMemTuple(MemberExpression memExpr)
         {
-            //var memProp = memExpr.Member as PropertyInfo;
-            //var valType = memProp.PropertyType;
-            //var key = memProp.Name;
-            //var alias = GetAlias(memExpr);
             var tuple = GetKey(memExpr, OptionEnum.None);
-            return (tuple.key, tuple.alias, tuple.valType);
+            return (tuple.key, tuple.alias, tuple.valType,tuple.classFullName);
         }
 
         /********************************************************************************************************************/
@@ -469,6 +480,7 @@ namespace MyDAL.ExpressionX
                 var colAlias = mbEx.Member.Name;
                 result.Add(new DicModel
                 {
+                    ClassFullName=tuple.classFullName,
                     TableAliasOne = tuple.alias,
                     ColumnOne = tuple.key,
                     ColumnAlias = colAlias
@@ -487,6 +499,7 @@ namespace MyDAL.ExpressionX
             var tuple2 = GetKey(binExpr.Right, option);
             return new DicModel
             {
+                ClassFullName=tuple1.classFullName,
                 ColumnOne = tuple1.key,
                 TableAliasOne = tuple1.alias,
                 KeyTwo = tuple2.key,
@@ -518,6 +531,7 @@ namespace MyDAL.ExpressionX
                     {
                         result.Add(new DicModel
                         {
+                            ClassFullName=keyTuple.classFullName,
                             ColumnOne = key
                         });
                     }
@@ -635,6 +649,7 @@ namespace MyDAL.ExpressionX
                         var colAlias = mems[i].Name;
                         result.Add(new DicModel
                         {
+                            ClassFullName=tuple.classFullName,
                             TableAliasOne = tuple.alias,
                             ColumnOne = tuple.key,
                             ColumnAlias = colAlias
