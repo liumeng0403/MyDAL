@@ -69,7 +69,7 @@ namespace MyDAL.UserFacade.Query
         /// </summary>
         public async Task<List<M>> QueryListAsync()
         {
-            return await QueryListAsyncHandle<M, M>();
+            return await new QueryListImpl<M>(DC).QueryListAsync();
         }
         /// <summary>
         /// 单表多条数据查询
@@ -77,15 +77,14 @@ namespace MyDAL.UserFacade.Query
         /// <typeparam name="VM">ViewModel</typeparam>
         public async Task<List<VM>> QueryListAsync<VM>()
         {
-            return await QueryListAsyncHandle<M, VM>();
+            return await new QueryListImpl<M>(DC).QueryListAsync<VM>();
         }
         /// <summary>
         /// 单表多条数据查询
         /// </summary>
         public async Task<List<VM>> QueryListAsync<VM>(Expression<Func<M,VM>> func)
         {
-            SelectMHandle(func);
-            return await QueryListAsyncHandle<M, VM>();
+            return await new QueryListImpl<M>(DC).QueryListAsync<VM>(func);
         }
 
         /// <summary>

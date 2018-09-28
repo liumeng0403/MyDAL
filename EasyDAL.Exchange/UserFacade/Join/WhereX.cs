@@ -37,19 +37,11 @@ namespace MyDAL.UserFacade.Join
 
         public async Task<List<M>> QueryListAsync<M>()
         {
-            SelectMHandle<M>();
-            return (await SqlHelper.QueryAsync<M>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.JoinQueryListAsync)[0],
-                DC.GetParameters())).ToList();
+            return await new QueryListXImpl(DC).QueryListAsync<M>();
         }
         public async Task<List<VM>> QueryListAsync<VM>(Expression<Func<VM>> func)
         {
-            SelectMHandle(func);
-            return (await SqlHelper.QueryAsync<VM>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<VM>(UiMethodEnum.JoinQueryListAsync)[0],
-                DC.GetParameters())).ToList();
+            return await new QueryListXImpl(DC).QueryListAsync<VM>(func);
         }
 
         /// <summary>
