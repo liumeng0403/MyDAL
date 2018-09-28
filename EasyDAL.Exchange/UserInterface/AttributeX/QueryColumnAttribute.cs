@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyDAL
+namespace Yunyong.DataExchange
 {
     public class QueryColumnAttribute : Attribute
     {
