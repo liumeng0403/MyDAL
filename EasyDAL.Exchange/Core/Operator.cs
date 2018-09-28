@@ -116,25 +116,25 @@ namespace Yunyong.DataExchange.Core
                     var mp = objx.GetType().GetProperty(prop.VmField);
                     valType = mp.PropertyType;
                     val = DC.GH.GetTypeValue(valType, mp, objx);
-                    if(val==null)
+                    if (val == null)
                     {
                         continue;
                     }
-                    result.Add((prop.MField, prop.VmField, val, valType, columnType,prop.Compare));
+                    result.Add((prop.MField, prop.VmField, val, valType, columnType, prop.Compare));
                 }
                 else if (objx is ExpandoObject)
                 {
                     var obj = dic[prop.MField];
                     valType = obj.GetType();
                     val = DC.GH.GetTypeValue(valType, obj);
-                    result.Add((prop.MField, prop.VmField, val, valType, columnType,prop.Compare));
+                    result.Add((prop.MField, prop.VmField, val, valType, columnType, prop.Compare));
                 }
                 else
                 {
                     var mp = objx.GetType().GetProperty(prop.MField);
                     valType = mp.PropertyType;
                     val = DC.GH.GetTypeValue(valType, mp, objx);
-                    result.Add((prop.MField, prop.VmField, val, valType, columnType,prop.Compare));
+                    result.Add((prop.MField, prop.VmField, val, valType, columnType, prop.Compare));
                 }
             }
             return result;
@@ -161,6 +161,7 @@ namespace Yunyong.DataExchange.Core
             }
             DC.AddConditions(new DicModel
             {
+                ClassFullName=typeof(M).FullName,
                 ColumnOne = key,
                 Param = key,
                 ParamRaw = key,
@@ -175,10 +176,12 @@ namespace Yunyong.DataExchange.Core
         internal void SetDynamicHandle<M>(object mSet)
         {
             var tuples = GetKPV<M>(mSet);
+            var fullName = typeof(M).FullName;
             foreach (var tp in tuples)
             {
                 DC.AddConditions(new DicModel
                 {
+                    ClassFullName=fullName,
                     ColumnOne = tp.key,
                     Param = tp.param,
                     ParamRaw = tp.param,
@@ -201,6 +204,7 @@ namespace Yunyong.DataExchange.Core
         internal void WhereHandle<T>(Expression<Func<T, bool>> func, CrudTypeEnum crud)
         {
             var field = DC.EH.ExpressionHandle(func);
+            field.ClassFullName = typeof(T).FullName;
             field.Action = ActionEnum.Where;
             field.Crud = crud;
             DC.AddConditions(field);
@@ -211,6 +215,7 @@ namespace Yunyong.DataExchange.Core
             var tuples = GetKPV<M>(mWhere);
             var count = 0;
             var action = ActionEnum.None;
+            var fullName = typeof(M).FullName;
             foreach (var tp in tuples)
             {
                 count++;
@@ -224,6 +229,7 @@ namespace Yunyong.DataExchange.Core
                 }
                 DC.AddConditions(new DicModel
                 {
+                    ClassFullName = fullName,
                     ColumnOne = tp.key,
                     Param = tp.param,
                     ParamRaw = tp.param,

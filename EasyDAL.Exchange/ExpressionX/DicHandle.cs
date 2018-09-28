@@ -74,10 +74,10 @@ namespace Yunyong.DataExchange.ExpressionX
         // 01
         internal static DicModel CallInHandle(string key, string alias, string value, Type valType)
         {
-            if (valType.IsEnum)
-            {
-                valType = typeof(int);
-            }
+            //if (valType.IsEnum)
+            //{
+            //    valType = typeof(int);
+            //}
             return new DicModel
             {
                 ColumnOne = key,

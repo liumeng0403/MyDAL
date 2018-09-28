@@ -36,7 +36,7 @@ namespace MyDAL.Test.Query
                 .Selecter<Agent>()
                 .Where(it => it.ActiveOrderId != null)
                 .QueryListAsync();
-            Assert.True(res1.Count == 554);
+            Assert.True(res2.Count == 554);
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters);
 

@@ -34,8 +34,6 @@ namespace Yunyong.DataExchange.Core
             switch (item.Action)
             {
                 case ActionEnum.Insert:
-                //case ActionEnum.Set:
-                //case ActionEnum.Change:
                 case ActionEnum.Update:
                 case ActionEnum.Where:
                 case ActionEnum.And:
@@ -44,7 +42,7 @@ namespace Yunyong.DataExchange.Core
             }
             return false;
         }
-        
+
         internal AttributeHelper AH { get; private set; }
 
         internal GenericHelper GH { get; private set; }
@@ -63,7 +61,7 @@ namespace Yunyong.DataExchange.Core
 
         internal IDbConnection Conn { get; private set; }
         internal IDbTransaction Tran { get; set; }
-        
+
         internal MySqlProvider SqlProvider { get; set; }
 
         internal Operator OP { get; set; }
@@ -213,6 +211,19 @@ namespace Yunyong.DataExchange.Core
             {
                 if (IsParameter(item))
                 {
+                    //
+                    if (string.IsNullOrWhiteSpace(item.ColumnType)
+                        && item.Option!= OptionEnum.OneEqualOne)
+                    {
+                        var columns = SC.GetColumnInfos(SC.GetKey(item.ClassFullName, Conn.Database));
+                        var col = columns.FirstOrDefault(it => it.ColumnName.Equals(item.ColumnOne, StringComparison.OrdinalIgnoreCase));
+                        if (col != null)
+                        {
+                            item.ColumnType = col.DataType;
+                        }
+                    }
+
+                    //
                     if (item.ValueType == typeof(bool)
                         || item.ValueType == typeof(bool?))
                     {
@@ -236,7 +247,7 @@ namespace Yunyong.DataExchange.Core
                         item.DbValue = item.CsValue.ToLong().ToString();
                         paras.Add(item.Param, item.CsValue.ToLong(), DbType.Int64);
                     }
-                    else if(item.ValueType.IsEnum)
+                    else if (item.ValueType.IsEnum)
                     {
                         paras.Add(PPH.EnumParamHandle(item));
                     }
