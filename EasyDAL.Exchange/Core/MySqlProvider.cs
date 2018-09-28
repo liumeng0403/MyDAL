@@ -329,6 +329,10 @@ namespace Yunyong.DataExchange.Core
                                         break;
                                 }
                                 break;
+                            case OptionEnum.IsNull:
+                            case OptionEnum.IsNotNull:
+                                str += $" {item.Action.ToEnumDesc<ActionEnum>()} `{item.ColumnOne}` {item.Option.ToEnumDesc<OptionEnum>()} ";
+                                break;
                         }
                         break;
                 }

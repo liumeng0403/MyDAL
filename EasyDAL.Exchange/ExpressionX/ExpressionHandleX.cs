@@ -285,7 +285,7 @@ namespace Yunyong.DataExchange.ExpressionX
             return DicHandle.CallInHandle(keyTuple.key, keyTuple.alias, val, keyTuple.valType);
         }
 
-        private DicModel NewCollectionIn(ExpressionType nodeType,Expression keyExpr,Expression valExpr)
+        private DicModel NewCollectionIn(ExpressionType nodeType, Expression keyExpr, Expression valExpr)
         {
             if (nodeType == ExpressionType.NewArrayInit)
             {
@@ -323,18 +323,47 @@ namespace Yunyong.DataExchange.ExpressionX
         private DicModel HandConditionBinary(BinaryExpression binExpr, List<string> pres)
         {
             var binTuple = HandBinExpr(pres, binExpr);
-            var val = HandBinary(binTuple.right);
-            var leftStr = binTuple.left.ToString();
-            if (leftStr.Contains(".Length")
-                && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
+            if ((binTuple.node == ExpressionType.Equal || binTuple.node == ExpressionType.NotEqual)
+                && binTuple.right.NodeType == ExpressionType.Constant
+                && (binTuple.right as ConstantExpression).Value == null)
             {
-                var keyTuple = GetKey(binTuple.left, OptionEnum.CharLength);
-                return DicHandle.BinaryCharLengthHandle(keyTuple.key, keyTuple.alias, val, keyTuple.valType, binTuple.node, binTuple.isR);
+                var optionx = OptionEnum.None;
+                var tuple = GetKey(binTuple.left, optionx);
+                if(binTuple.node== ExpressionType.Equal)
+                {
+                    optionx = OptionEnum.IsNull;
+                }
+                else
+                {
+                    optionx = OptionEnum.IsNotNull;
+                }
+                return new DicModel
+                {
+                    ColumnOne = tuple.key,
+                    TableAliasOne = tuple.alias,
+                    Param = tuple.key,
+                    ParamRaw = tuple.key,
+                    CsValue = null,
+                    ValueType = tuple.valType,
+                    Option = optionx,
+                    Compare = CompareEnum.None
+                };
             }
             else
             {
-                var keyTuple = GetKey(binTuple.left, OptionEnum.Compare /*DicHandle.GetOption(binTuple.node, binTuple.isR)*/);
-                return DicHandle.BinaryNormalHandle(keyTuple.key, keyTuple.alias, val, keyTuple.valType, binTuple.node, binTuple.isR);
+                var val = HandBinary(binTuple.right);
+                var leftStr = binTuple.left.ToString();
+                if (leftStr.Contains(".Length")
+                    && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
+                {
+                    var keyTuple = GetKey(binTuple.left, OptionEnum.CharLength);
+                    return DicHandle.BinaryCharLengthHandle(keyTuple.key, keyTuple.alias, val, keyTuple.valType, binTuple.node, binTuple.isR);
+                }
+                else
+                {
+                    var keyTuple = GetKey(binTuple.left, OptionEnum.Compare /*DicHandle.GetOption(binTuple.node, binTuple.isR)*/);
+                    return DicHandle.BinaryNormalHandle(keyTuple.key, keyTuple.alias, val, keyTuple.valType, binTuple.node, binTuple.isR);
+                }
             }
         }
 
@@ -431,7 +460,7 @@ namespace Yunyong.DataExchange.ExpressionX
         private List<DicModel> HandSelectMemberInit(MemberInitExpression miExpr)
         {
             var result = new List<DicModel>();
-            
+
             foreach (var mb in miExpr.Bindings)
             {
                 var mbEx = mb as MemberAssignment;
