@@ -2,7 +2,7 @@
 
 namespace Yunyong.DataExchange
 {
-    public class ColumnXAttribute: Attribute
+    public class TableColumnAttribute : Attribute
     {
         /// <summary>
         /// DB 列名
@@ -43,11 +43,6 @@ namespace Yunyong.DataExchange
         /// DB 精度
         /// </summary>
         public short Precision { get; set; } = -1;
-
-        /// <summary>
-        /// VM 查询
-        /// </summary>
-        public CompareConditionEnum CompareCondition { get; set; }
 
     }
 }
