@@ -97,9 +97,9 @@ namespace MyDAL.ExpressionX
                     .GetOrAdd($"{paramType.FullName}:{info.Module.GetHashCode()}", moduleKey => new ConcurrentDictionary<Int32, String>())
                     .GetOrAdd(info.MetadataToken, innnerKey =>
                     {
-                        if (info.IsDefined(typeof(ColumnXAttribute), false))
+                        if (info.IsDefined(typeof(TableColumnAttribute), false))
                         {
-                            var attr = (ColumnXAttribute)info.GetCustomAttributes(typeof(ColumnXAttribute), false)[0];
+                            var attr = (TableColumnAttribute)info.GetCustomAttributes(typeof(TableColumnAttribute), false)[0];
                             return attr.Name;
                         }
                         return info.Name;
