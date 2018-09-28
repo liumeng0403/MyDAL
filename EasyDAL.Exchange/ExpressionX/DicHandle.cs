@@ -9,32 +9,32 @@ namespace MyDAL.ExpressionX
     {
 
         // 02
-        internal static CompareConditionEnum GetOption(ExpressionType nodeType, bool isR)
+        internal static CompareEnum GetOption(ExpressionType nodeType, bool isR)
         {
-            var option = CompareConditionEnum.None;
+            var option = CompareEnum.None;
             if (nodeType == ExpressionType.Equal)
             {
-                option = !isR ? CompareConditionEnum.Equal : CompareConditionEnum.Equal;
+                option = !isR ? CompareEnum.Equal : CompareEnum.Equal;
             }
             else if (nodeType == ExpressionType.NotEqual)
             {
-                option = !isR ? CompareConditionEnum.NotEqual : CompareConditionEnum.NotEqual;
+                option = !isR ? CompareEnum.NotEqual : CompareEnum.NotEqual;
             }
             else if (nodeType == ExpressionType.LessThan)
             {
-                option = !isR ? CompareConditionEnum.LessThan : CompareConditionEnum.GreaterThan;
+                option = !isR ? CompareEnum.LessThan : CompareEnum.GreaterThan;
             }
             else if (nodeType == ExpressionType.LessThanOrEqual)
             {
-                option = !isR ? CompareConditionEnum.LessThanOrEqual : CompareConditionEnum.GreaterThanOrEqual;
+                option = !isR ? CompareEnum.LessThanOrEqual : CompareEnum.GreaterThanOrEqual;
             }
             else if (nodeType == ExpressionType.GreaterThan)
             {
-                option = !isR ? CompareConditionEnum.GreaterThan : CompareConditionEnum.LessThan;
+                option = !isR ? CompareEnum.GreaterThan : CompareEnum.LessThan;
             }
             else if (nodeType == ExpressionType.GreaterThanOrEqual)
             {
-                option = !isR ? CompareConditionEnum.GreaterThanOrEqual : CompareConditionEnum.LessThanOrEqual;
+                option = !isR ? CompareEnum.GreaterThanOrEqual : CompareEnum.LessThanOrEqual;
             }
 
             return option;
@@ -128,7 +128,7 @@ namespace MyDAL.ExpressionX
                 CsValue = true.ToString(),
                 ValueType = valType,
                 Option = OptionEnum.Compare,
-                Compare = CompareConditionEnum.Equal
+                Compare = CompareEnum.Equal
             };
         }
 

@@ -15,19 +15,51 @@ namespace MyDAL.Core
     public abstract class Operator
         : IObjectMethod
     {
-        
+
         internal Operator(Context dc)
         {
             DC = dc;
             DC.OP = this;
         }
 
-        private List<(string key, string param, string val, Type valType, string colType)> GetKPV<M>(object objx)
+        private List<(string key, string param, string val, Type valType, string colType, CompareEnum compare)> GetKPV<M>(object objx)
         {
-            var list = new List<string>();
+            var list = new List<DicQueryModel>();
             var dic = default(IDictionary<string, object>);
 
-            if (objx is ExpandoObject)
+            if (objx is PagingQueryOption)
+            {
+                foreach (var mp in typeof(M).GetProperties())
+                {
+                    foreach (var sp in objx.GetType().GetProperties(Configs.ClassSelfMember))
+                    {
+                        var spAttr = DC.AH.GetAttribute<QueryColumnAttribute>(objx.GetType(), sp) as QueryColumnAttribute;
+                        var spName = string.Empty;
+                        var compare = CompareEnum.Equal;
+                        if (spAttr != null
+                            && !string.IsNullOrWhiteSpace(spAttr.ColumnName))
+                        {
+                            spName = spAttr.ColumnName;
+                            compare = spAttr.CompareCondition;
+                        }
+                        else
+                        {
+                            spName = sp.Name;
+                        }
+
+                        if (mp.Name.Equals(spName, StringComparison.OrdinalIgnoreCase))
+                        {
+                            list.Add(new DicQueryModel
+                            {
+                                MField = mp.Name,
+                                VmField = sp.Name,
+                                Compare = compare
+                            });
+                        }
+                    }
+                }
+            }
+            else if (objx is ExpandoObject)
             {
                 dic = objx as IDictionary<string, object>;
                 foreach (var mp in typeof(M).GetProperties())
@@ -36,7 +68,12 @@ namespace MyDAL.Core
                     {
                         if (mp.Name.Equals(sp, StringComparison.OrdinalIgnoreCase))
                         {
-                            list.Add(mp.Name);
+                            list.Add(new DicQueryModel
+                            {
+                                MField = mp.Name,
+                                VmField = mp.Name,
+                                Compare = CompareEnum.Equal
+                            });
                         }
                     }
                 }
@@ -49,38 +86,54 @@ namespace MyDAL.Core
                     {
                         if (mp.Name.Equals(sp.Name, StringComparison.OrdinalIgnoreCase))
                         {
-                            list.Add(mp.Name);
+                            list.Add(new DicQueryModel
+                            {
+                                MField = mp.Name,
+                                VmField = mp.Name,
+                                Compare = CompareEnum.Equal
+                            });
                         }
                     }
                 }
             }
 
             //
-            var result = new List<(string key, string param, string val, Type valType, string colType)>();
-            var columns = DC.SC.GetColumnInfos(DC.SC.GetKey(typeof(M).FullName,DC.Conn.Database));
+            var result = new List<(string key, string param, string val, Type valType, string colType, CompareEnum compare)>();
+            var columns = DC.SC.GetColumnInfos(DC.SC.GetKey(typeof(M).FullName, DC.Conn.Database));
             foreach (var prop in list)
             {
                 var val = string.Empty;
                 var valType = default(Type);
-                var columnType = columns.First(it => it.ColumnName.Equals(prop, StringComparison.OrdinalIgnoreCase)).DataType;
-                if (objx is ExpandoObject)
+                var columnType = columns.First(it => it.ColumnName.Equals(prop.MField, StringComparison.OrdinalIgnoreCase)).DataType;
+                if (objx is PagingQueryOption)
                 {
-                    var obj = dic[prop];
+                    var mp = objx.GetType().GetProperty(prop.VmField);
+                    valType = mp.PropertyType;
+                    val = DC.GH.GetTypeValue(valType, mp, objx);
+                    if(val==null)
+                    {
+                        continue;
+                    }
+                    result.Add((prop.MField, prop.VmField, val, valType, columnType,prop.Compare));
+                }
+                else if (objx is ExpandoObject)
+                {
+                    var obj = dic[prop.MField];
                     valType = obj.GetType();
                     val = DC.GH.GetTypeValue(valType, obj);
+                    result.Add((prop.MField, prop.VmField, val, valType, columnType,prop.Compare));
                 }
                 else
                 {
-                    var mp = objx.GetType().GetProperty(prop);
-                    valType = mp.GetType();
+                    var mp = objx.GetType().GetProperty(prop.MField);
+                    valType = mp.PropertyType;
                     val = DC.GH.GetTypeValue(valType, mp, objx);
+                    result.Add((prop.MField, prop.VmField, val, valType, columnType,prop.Compare));
                 }
-
-                result.Add((prop, prop, val, valType, columnType));
             }
             return result;
         }
-        
+
         /****************************************************************************************************************************************/
 
         internal Context DC { get; set; }
@@ -104,9 +157,9 @@ namespace MyDAL.Core
             {
                 ColumnOne = key,
                 Param = key,
-                ParamRaw=key,
+                ParamRaw = key,
                 CsValue = val,
-                ValueType=typeof(F),
+                ValueType = typeof(F),
                 Option = option,
                 Action = action,
                 Crud = CrudTypeEnum.Update
@@ -117,14 +170,14 @@ namespace MyDAL.Core
         {
             var tuples = GetKPV<M>(mSet);
             foreach (var tp in tuples)
-            {             
+            {
                 DC.AddConditions(new DicModel
                 {
                     ColumnOne = tp.key,
                     Param = tp.param,
-                    ParamRaw=tp.param,
+                    ParamRaw = tp.param,
                     CsValue = tp.val,
-                    ValueType=tp.valType,
+                    ValueType = tp.valType,
                     Action = ActionEnum.Update,
                     Option = OptionEnum.Set,
                     Crud = CrudTypeEnum.Update
@@ -132,14 +185,14 @@ namespace MyDAL.Core
             }
         }
 
-        internal void WhereJoinHandle(Operator op,Expression<Func<bool>> func , ActionEnum action)
+        internal void WhereJoinHandle(Operator op, Expression<Func<bool>> func, ActionEnum action)
         {
             var dic = op.DC.EH.ExpressionHandle(func, action);
             dic.Crud = CrudTypeEnum.Join;
             op.DC.AddConditions(dic);
         }
-        
-        internal void WhereHandle<T>(Expression<Func<T, bool>> func,CrudTypeEnum crud)
+
+        internal void WhereHandle<T>(Expression<Func<T, bool>> func, CrudTypeEnum crud)
         {
             var field = DC.EH.ExpressionHandle(func);
             field.Action = ActionEnum.Where;
@@ -167,19 +220,19 @@ namespace MyDAL.Core
                 {
                     ColumnOne = tp.key,
                     Param = tp.param,
-                    ParamRaw=tp.param,
+                    ParamRaw = tp.param,
                     CsValue = tp.val,
-                    ValueType=tp.valType,
-                    ColumnType=tp.colType,
+                    ValueType = tp.valType,
+                    ColumnType = tp.colType,
                     Action = action,
                     Option = OptionEnum.Compare,
-                    Compare= CompareConditionEnum.Equal,
+                    Compare = tp.compare,
                     Crud = CrudTypeEnum.Query
                 });
             }
         }
 
-        internal void AndHandle<T>(Expression<Func<T, bool>> func,CrudTypeEnum crud)
+        internal void AndHandle<T>(Expression<Func<T, bool>> func, CrudTypeEnum crud)
         {
             var field = DC.EH.ExpressionHandle(func);
             field.Action = ActionEnum.And;
@@ -187,7 +240,7 @@ namespace MyDAL.Core
             DC.AddConditions(field);
         }
 
-        internal void OrHandle<T>(Expression<Func<T, bool>> func,CrudTypeEnum crud)
+        internal void OrHandle<T>(Expression<Func<T, bool>> func, CrudTypeEnum crud)
         {
             var field = DC.EH.ExpressionHandle(func);
             field.Action = ActionEnum.Or;
@@ -195,7 +248,7 @@ namespace MyDAL.Core
             DC.AddConditions(field);
         }
 
-        internal void OrderByHandle<M,F>(Expression<Func<M, F>> func, OrderByEnum orderBy)
+        internal void OrderByHandle<M, F>(Expression<Func<M, F>> func, OrderByEnum orderBy)
         {
             var keyDic = DC.EH.ExpressionHandle(func)[0];
             var key = keyDic.ColumnOne;
@@ -254,7 +307,7 @@ namespace MyDAL.Core
             var vmName = vmType.FullName;
             var vmProps = DC.GH.GetPropertyInfos(vmType);
             var tab = DC.Conditions.FirstOrDefault(it => vmName.Equals(it.ClassFullName, StringComparison.OrdinalIgnoreCase));
-            if (tab!=null)
+            if (tab != null)
             {
                 foreach (var prop in vmProps)
                 {
@@ -267,7 +320,7 @@ namespace MyDAL.Core
                 throw new Exception($"请使用 [[Task<List<VM>> QueryListAsync<VM>(Expression<Func<VM>> func)]] 方法! 或者 {vmType.Name} 必须为 [[{string.Join(",", fullNames.Select(it => it.ClassName))}]] 其中之一 !");
 
                 // 下面代码 可能有问题
-                foreach (var name in fullNames.Select(it=>it.ClassFullName).Distinct())
+                foreach (var name in fullNames.Select(it => it.ClassFullName).Distinct())
                 {
                     var type = Type.GetType(name);
                     var mProps = DC.GH.GetPropertyInfos(type);
@@ -286,7 +339,7 @@ namespace MyDAL.Core
                             }
 
                             var ali = DC.Conditions.First(it => name.Equals(it.ClassFullName, StringComparison.Ordinal)).TableAliasOne;
-                            DC.AddConditions(DicHandle.SelectColumnHandle(vprop.Name,ali));
+                            DC.AddConditions(DicHandle.SelectColumnHandle(vprop.Name, ali));
                         }
                     }
                 }
@@ -305,7 +358,7 @@ namespace MyDAL.Core
             }
         }
 
-        internal void SelectMHandle<M,VM>(Expression<Func<M,VM>> func)
+        internal void SelectMHandle<M, VM>(Expression<Func<M, VM>> func)
         {
             var list = DC.EH.ExpressionHandle(func);
             foreach (var dic in list)
@@ -319,7 +372,7 @@ namespace MyDAL.Core
 
         /****************************************************************************************************************************************/
 
-        protected async Task<VM> QueryFirstOrDefaultAsyncHandle<DM,VM>()
+        protected async Task<VM> QueryFirstOrDefaultAsyncHandle<DM, VM>()
         {
             return await SqlHelper.QueryFirstOrDefaultAsync<VM>(
                 DC.Conn,
@@ -327,7 +380,7 @@ namespace MyDAL.Core
                 DC.GetParameters());
         }
 
-        protected async Task<List<VM>> QueryListAsyncHandle<DM,VM>()
+        protected async Task<List<VM>> QueryListAsyncHandle<DM, VM>()
         {
             return (await SqlHelper.QueryAsync<VM>(
                 DC.Conn,
@@ -335,7 +388,7 @@ namespace MyDAL.Core
                 DC.GetParameters())).ToList();
         }
 
-        internal async Task<PagingList<VM>> QueryPagingListAsyncHandle<DM,VM>(int pageIndex, int pageSize, UiMethodEnum sqlType)
+        internal async Task<PagingList<VM>> QueryPagingListAsyncHandle<DM, VM>(int pageIndex, int pageSize, UiMethodEnum sqlType)
         {
             var result = new PagingList<VM>();
             result.PageIndex = pageIndex;
@@ -347,7 +400,7 @@ namespace MyDAL.Core
             return result;
         }
 
-        protected async Task<List<VM>> QueryAllAsyncHandle<DM,VM>()
+        protected async Task<List<VM>> QueryAllAsyncHandle<DM, VM>()
         {
             return (await SqlHelper.QueryAsync<VM>(
                 DC.Conn,

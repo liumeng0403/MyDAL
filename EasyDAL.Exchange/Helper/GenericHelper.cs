@@ -94,7 +94,8 @@ namespace MyDAL.Helper
             }
             else if (valType.IsEnum)
             {
-                val = ((int)outerProp.GetValue(outerObj, null)).ToString();
+                //val = ((int)outerProp.GetValue(outerObj, null)).ToString();
+                val = outerProp.GetValue(outerObj, null).ToString();
             }
             else
             {
@@ -172,7 +173,8 @@ namespace MyDAL.Helper
             }
             else if (valType.IsEnum)
             {
-                val = ((int)objVal).ToString();
+                //val = ((int)objVal).ToString();
+                val = objVal.ToString();
             }
             else
             {

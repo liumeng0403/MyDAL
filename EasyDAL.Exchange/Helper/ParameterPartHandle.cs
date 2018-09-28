@@ -45,5 +45,21 @@ namespace MyDAL.Helper
             }
         }
 
+        public ParamInfo EnumParamHandle(DicModel item)
+        {
+            if (!string.IsNullOrWhiteSpace(item.ColumnType)
+                && item.ColumnType.Equals("int", StringComparison.OrdinalIgnoreCase))
+            {
+                var val = (int)(Enum.Parse(item.ValueType, item.CsValue, true));
+                item.DbValue=val.ToString();
+                return GetDefault(item.Param, val, DbType.Int32);
+            }
+            else
+            {
+                item.DbValue = item.CsValue;
+                return GetDefault(item.Param, item.CsValue.ToBool(), DbType.Boolean);
+            }
+        }
+
     }
 }

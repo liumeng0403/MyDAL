@@ -236,6 +236,10 @@ namespace MyDAL.Core
                         item.DbValue = item.CsValue.ToLong().ToString();
                         paras.Add(item.Param, item.CsValue.ToLong(), DbType.Int64);
                     }
+                    else if(item.ValueType.IsEnum)
+                    {
+                        paras.Add(PPH.EnumParamHandle(item));
+                    }
                     else
                     {
                         item.DbValue = item.CsValue;

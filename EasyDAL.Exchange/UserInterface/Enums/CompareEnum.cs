@@ -2,7 +2,7 @@
 
 namespace MyDAL
 {
-    public enum CompareConditionEnum
+    public enum CompareEnum
     {
         /// <summary>
         /// " "
