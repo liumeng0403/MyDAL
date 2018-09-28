@@ -1,5 +1,6 @@
 using MyDAL.Test.Entities.EasyDal_Exchange;
 using MyDAL.Test.Enums;
+using MyDAL.Test.Options;
 using MyDAL.Test.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -12,19 +13,6 @@ namespace MyDAL.Test.Query
 {
     public class _08_WhereObjTest : TestBase
     {
-        // yunyong_tech 分支专用
-        public class AgentQueryOption : PagingQueryOption
-        {
-            public Guid? Id { get; set; }
-            public string Name { get; set; }
-
-            public AgentLevel AgentLevel { get; set; }
-        }
-
-        public class ProductQueryOption : PagingQueryOption
-        {
-            public bool? VipProduct { get; set; }
-        }
 
         [Fact]
         public async Task WhereObjQueryOptionTest()

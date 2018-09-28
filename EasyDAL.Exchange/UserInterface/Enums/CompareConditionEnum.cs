@@ -17,7 +17,7 @@ namespace Yunyong.DataExchange
         Equal,
 
         /// <summary>
-        /// <>
+        /// !=
         /// </summary>
         [Description("<>")]
         NotEqual,
