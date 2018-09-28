@@ -17,7 +17,7 @@ namespace MyDAL
         Equal,
 
         /// <summary>
-        /// <>
+        /// !=
         /// </summary>
         [Description("<>")]
         NotEqual,

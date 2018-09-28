@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Reflection;
 
-namespace MyDAL.Extensions
+namespace MyDAL
 {
     /// <summary>
     ///     查询扩展

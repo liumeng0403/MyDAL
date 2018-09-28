@@ -1,10 +1,9 @@
-﻿using MyDAL;
-using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.EasyDal_Exchange;
 using MyDAL.Test.Enums;
+using MyDAL.Test.Options;
 using MyDAL.Test.ViewModels;
 using System.Threading.Tasks;
 using Xunit;
-using static MyDAL.Test.Query._08_WhereObjTest;
 
 namespace MyDAL.Test.Query
 {
