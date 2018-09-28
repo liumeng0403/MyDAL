@@ -1,4 +1,6 @@
-﻿namespace MyDAL.Test.Options
+﻿using Yunyong.Core;
+
+namespace MyDAL.Test.Options
 {
     public class ProductQueryOption : PagingQueryOption
     {

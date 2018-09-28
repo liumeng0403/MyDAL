@@ -1,5 +1,6 @@
 ﻿using MyDAL.Test.Enums;
 using System;
+using Yunyong.Core;
 
 namespace MyDAL.Test.Options
 {
