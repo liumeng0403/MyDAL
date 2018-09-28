@@ -8,12 +8,18 @@ namespace Yunyong.DataExchange
         /// <summary>
         /// Table 列名
         /// </summary>
-        public string ColumnName { get; set; } = string.Empty;
+        public string ColumnName { get; }
 
         /// <summary>
         /// 查询动作
         /// </summary>
-        public CompareConditionEnum CompareCondition { get; set; } = CompareConditionEnum.Equal;
+        public CompareEnum CompareCondition { get; }
+
+        public QueryColumnAttribute(string columnName, CompareEnum compareType = CompareEnum.Equal)
+        {
+            ColumnName = columnName;
+            CompareCondition = compareType;
+        }
 
     }
 }

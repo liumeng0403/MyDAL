@@ -2,7 +2,7 @@
 {
     public enum AgentLevel
     {
-        None = 0,
+        //None = 0,
         NewCustomer = 1,
         Customer = 2,
         CityAgent = 4,

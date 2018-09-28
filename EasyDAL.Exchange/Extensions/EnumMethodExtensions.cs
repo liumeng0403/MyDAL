@@ -12,7 +12,7 @@ namespace Yunyong.DataExchange.Extensions
         /// <summary>
         /// EnumValue(short) ---> EnumDescription(string)
         /// </summary>
-        public static string ToEnumDesc<TEnum>(this short enumValue)  // LM
+        public static string ToEnumDesc<TEnum>(this short enumValue)
             where TEnum : struct
         {
             return ToEnumDescription<TEnum>(enumValue.ToString());
@@ -21,7 +21,7 @@ namespace Yunyong.DataExchange.Extensions
         /// <summary>
         /// EnumValue(int) ---> EnumDescription(string)
         /// </summary>
-        public static string ToEnumDesc<TEnum>(this int enumValue)   // LM
+        public static string ToEnumDesc<TEnum>(this int enumValue)  
             where TEnum : struct
         {
             return ToEnumDescription<TEnum>(enumValue.ToString());
@@ -30,7 +30,7 @@ namespace Yunyong.DataExchange.Extensions
         /// <summary>
         /// EnumValue(enum) ---> EnumDescription(string)
         /// </summary>
-        public static string ToEnumDesc<TEnum>(this ValueType enumValue)  // LM
+        public static string ToEnumDesc<TEnum>(this ValueType enumValue)  
             where TEnum : struct
         {
             return ToEnumDescription<TEnum>(enumValue.ToString());
@@ -39,7 +39,7 @@ namespace Yunyong.DataExchange.Extensions
         /// <summary>
         /// EnumValue(string) ---> EnumDescription(string)
         /// </summary>
-        public static string ToEnumDesc<TEnum>(this string enumValue) // LM
+        public static string ToEnumDesc<TEnum>(this string enumValue) 
             where TEnum : struct
         {
             return ToEnumDescription<TEnum>(enumValue.Trim());
@@ -48,7 +48,7 @@ namespace Yunyong.DataExchange.Extensions
         /// <summary>
         /// 公用
         /// </summary>
-        private static string ToEnumDescription<TEnum>(string enumValue)     // LM
+        private static string ToEnumDescription<TEnum>(string enumValue)  
             where TEnum : struct
         {
             var result = string.Empty;
@@ -69,7 +69,7 @@ namespace Yunyong.DataExchange.Extensions
         /// <summary>
         /// EnumValue(short) ---> Enum(TEnum)
         /// </summary>
-        public static TEnum ToEnum<TEnum>(this short enumValueShort)   // LM
+        public static TEnum ToEnum<TEnum>(this short enumValueShort)  
             where TEnum : struct
         {
             return ToEnumType<TEnum>(enumValueShort.ToString());
@@ -78,7 +78,7 @@ namespace Yunyong.DataExchange.Extensions
         /// <summary>
         /// EnumValue(int) ---> Enum(TEnum)
         /// </summary>
-        public static TEnum ToEnum<TEnum>(this int enumValue)   // LM
+        public static TEnum ToEnum<TEnum>(this int enumValue)   
             where TEnum : struct
         {
             return ToEnumType<TEnum>(enumValue.ToString());
@@ -87,7 +87,7 @@ namespace Yunyong.DataExchange.Extensions
         /// <summary>
         /// EnumValue(string) ---> Enum(TEnum)
         /// </summary>
-        public static TEnum ToEnum<TEnum>(this string enumValueString)   // LM
+        public static TEnum ToEnum<TEnum>(this string enumValueString)  
             where TEnum : struct
         {
             return ToEnumType<TEnum>(enumValueString.Trim());
@@ -96,7 +96,7 @@ namespace Yunyong.DataExchange.Extensions
         /// <summary>
         /// 公用
         /// </summary>
-        private static TEnum ToEnumType<TEnum>(string enumValue)   // LM
+        private static TEnum ToEnumType<TEnum>(string enumValue)  
             where TEnum : struct
         {
             var result = default(TEnum);

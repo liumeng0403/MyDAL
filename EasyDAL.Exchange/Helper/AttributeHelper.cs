@@ -89,5 +89,18 @@ namespace Yunyong.DataExchange.Helper
                 throw new Exception("方法 Attribute GetAttribute<M,A>(M m, PropertyInfo prop) 出错:" + ex.Message);
             }
         }
+        public Attribute GetAttribute<A>(Type mType, PropertyInfo prop)
+        {
+            try
+            {
+                return mType
+                    .GetMember(prop.Name, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance)[0]
+                    .GetCustomAttribute(typeof(A), false);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("方法 Attribute GetAttribute<M,A>(M m, PropertyInfo prop) 出错:" + ex.Message);
+            }
+        }
     }
 }
