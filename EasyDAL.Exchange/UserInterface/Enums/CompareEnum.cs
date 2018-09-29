@@ -46,6 +46,17 @@ namespace MyDAL
         [Description(">=")]
         GreaterThanOrEqual,
 
+        /// <summary>
+        /// " like "
+        /// </summary>
+        [Description(" like ")]
+        Like,
+
+        /// <summary>
+        /// " in "
+        /// </summary>
+        [Description(" in ")]
+        In
 
     }
 }

@@ -57,49 +57,54 @@ namespace MyDAL.ExpressionX
             };
         }
         // 01
-        internal static DicModel BinaryNormalHandle(string key, string alias, string value, Type valType, ExpressionType nodeType, bool isR)
+        internal static DicModel BinaryCompareHandle(CrudTypeEnum crud, ActionEnum action,string classFullName,string key, string alias, string value, Type valType,CompareEnum compare)
         {
             return new DicModel
             {
+                ClassFullName=classFullName,
                 ColumnOne = key,
                 TableAliasOne = alias,
                 CsValue = value,
                 ValueType = valType,
                 Param = key,
                 ParamRaw = key,
+                Crud= crud,
+                Action = action,
                 Option = OptionEnum.Compare,
-                Compare = GetOption(nodeType, isR)
+                Compare = compare
             };
         }
         // 01
-        internal static DicModel CallInHandle(string key, string alias, string value, Type valType)
+        internal static DicModel CallInHandle(CrudTypeEnum crud,ActionEnum action, string classFullName, string key, string alias, string value, Type valType)
         {
-            //if (valType.IsEnum)
-            //{
-            //    valType = typeof(int);
-            //}
             return new DicModel
             {
+                ClassFullName = classFullName,
                 ColumnOne = key,
                 TableAliasOne = alias,
-                Param = key,
-                ParamRaw = key,
                 CsValue = value,
                 ValueType = valType,
+                Param = key,
+                ParamRaw = key,
+                Crud = crud,
+                Action = action,
                 Option = OptionEnum.In
             };
         }
         // 01
-        internal static DicModel CallLikeHandle(string key, string alias, string value, Type valType)
+        internal static DicModel CallLikeHandle(CrudTypeEnum crud, ActionEnum action, string classFullName, string key, string alias, string value, Type valType)
         {
             return new DicModel
             {
+                ClassFullName = classFullName,
                 ColumnOne = key,
                 TableAliasOne = alias,
-                Param = key,
-                ParamRaw = key,
                 CsValue = value,
                 ValueType = valType,
+                Param = key,
+                ParamRaw = key,
+                Crud = crud,
+                Action = action,
                 Option = OptionEnum.Like
             };
         }
