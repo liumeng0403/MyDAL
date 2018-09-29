@@ -1,13 +1,14 @@
 ﻿using MyDAL.Core;
 using MyDAL.Enums;
 using MyDAL.Helper;
+using MyDAL.Impls;
 using MyDAL.Interfaces;
 using System.Threading.Tasks;
 
 namespace MyDAL.UserFacade.Query
 {
     public class CountQ<M> 
-        : Operator, IQuerySingleValue
+        : Operator, IQuerySingleValue<M>
     {
 
         internal CountQ(Context dc)
@@ -20,10 +21,7 @@ namespace MyDAL.UserFacade.Query
         /// <typeparam name="V">int/long/decimal/...</typeparam>
         public async Task<V> QuerySingleValueAsync<V>()
         {
-            return await SqlHelper.ExecuteScalarAsync<V>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.QuerySingleValueAsync)[0],
-                DC.GetParameters());
+            return await new QuerySingleValueImpl<M>(DC).QuerySingleValueAsync<V>();
         }
 
     }

@@ -18,10 +18,11 @@ namespace MyDAL.Impls
         public async Task<int> CreateAsync(M m)
         {
             DC.GetProperties(m);
+            DC.IP.ConvertDic();
             return await SqlHelper.ExecuteAsync(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.CreateAsync)[0],
-                DC.GetParameters());
+                DC.SqlProvider.GetParameters());
         }
     }
 }

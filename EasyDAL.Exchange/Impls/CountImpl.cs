@@ -23,7 +23,7 @@ namespace MyDAL.Impls
             return await SqlHelper.ExecuteScalarAsync<long>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.CountAsync)[0],
-                DC.GetParameters());
+                DC.SqlProvider.GetParameters());
         }
 
         public async Task<long> CountAsync<F>(Expression<Func<M, F>> func)
@@ -34,7 +34,7 @@ namespace MyDAL.Impls
             return await SqlHelper.ExecuteScalarAsync<long>(
                  DC.Conn,
                  DC.SqlProvider.GetSQL<M>(UiMethodEnum.CountAsync)[0],
-                 DC.GetParameters());
+                 DC.SqlProvider.GetParameters());
         }
     }
 }

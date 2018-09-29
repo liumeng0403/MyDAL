@@ -2,7 +2,7 @@
 
 namespace MyDAL.Interfaces
 {
-    internal interface IQuerySingleValue
+    internal interface IQuerySingleValue<M>
     {
         Task<V> QuerySingleValueAsync<V>();
     }

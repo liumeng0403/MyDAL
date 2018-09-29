@@ -30,6 +30,7 @@ namespace MyDAL.Impls
         public async Task<VM> QueryFirstOrDefaultAsync<VM>(Expression<Func<M, VM>> func)
         {
             SelectMHandle(func);
+            DC.IP.ConvertDic();
             return await QueryFirstOrDefaultAsyncHandle<M, VM>();
         }
     }
@@ -45,19 +46,21 @@ namespace MyDAL.Impls
         public async Task<M> QueryFirstOrDefaultAsync<M>()
         {
             SelectMHandle<M>();
+            DC.IP.ConvertDic();
             return await SqlHelper.QueryFirstOrDefaultAsync<M>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.JoinQueryFirstOrDefaultAsync)[0],
-                DC.GetParameters());
+                DC.SqlProvider.GetParameters());
         }
 
         public async Task<VM> QueryFirstOrDefaultAsync<VM>(Expression<Func<VM>> func)
         {
-            SelectMHandle(func);
+            SelectMHandle(func);           
+            DC.IP.ConvertDic();
             return await SqlHelper.QueryFirstOrDefaultAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<VM>(UiMethodEnum.JoinQueryFirstOrDefaultAsync)[0],
-                DC.GetParameters());
+                DC.SqlProvider.GetParameters());
         }
     }
 }

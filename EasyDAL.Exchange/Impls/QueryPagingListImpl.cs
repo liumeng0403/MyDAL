@@ -31,6 +31,7 @@ namespace MyDAL.Impls
         public async Task<PagingList<VM>> QueryPagingListAsync<VM>(int pageIndex, int pageSize, Expression<Func<M, VM>> func)
         {
             SelectMHandle(func);
+            DC.IP.ConvertDic();
             return await QueryPagingListAsyncHandle<M, VM>(pageIndex, pageSize, UiMethodEnum.QueryPagingListAsync);
         }
     }
@@ -46,12 +47,14 @@ namespace MyDAL.Impls
         public async Task<PagingList<M>> QueryPagingListAsync(PagingQueryOption option)
         {
             OrderByOptionHandle(option);
+            DC.IP.ConvertDic();
             return await QueryPagingListAsyncHandle<M, M>(option.PageIndex, option.PageSize, UiMethodEnum.QueryPagingListAsync);
         }
 
         public async Task<PagingList<VM>> QueryPagingListAsync<VM>(PagingQueryOption option)
         {
             OrderByOptionHandle(option);
+            DC.IP.ConvertDic();
             return await QueryPagingListAsyncHandle<M, VM>(option.PageIndex, option.PageSize, UiMethodEnum.QueryPagingListAsync);
         }
 
@@ -59,6 +62,7 @@ namespace MyDAL.Impls
         {
             SelectMHandle(func);
             OrderByOptionHandle(option);
+            DC.IP.ConvertDic();
             return await QueryPagingListAsyncHandle<M, VM>(option.PageIndex, option.PageSize, UiMethodEnum.QueryPagingListAsync);
         }
     }
@@ -74,10 +78,11 @@ namespace MyDAL.Impls
         public async Task<PagingList<M>> QueryPagingListAsync<M>(int pageIndex, int pageSize)
         {
             SelectMHandle<M>();
+            DC.IP.ConvertDic();
             var result = new PagingList<M>();
             result.PageIndex = pageIndex;
             result.PageSize = pageSize;
-            var paras = DC.GetParameters();
+            var paras = DC.SqlProvider.GetParameters();
             var sql = DC.SqlProvider.GetSQL<M>(UiMethodEnum.JoinQueryPagingListAsync, result.PageIndex, result.PageSize);
             result.TotalCount = await SqlHelper.ExecuteScalarAsync<long>(DC.Conn, sql[0], paras);
             result.Data = (await SqlHelper.QueryAsync<M>(DC.Conn, sql[1], paras)).ToList();
@@ -87,10 +92,11 @@ namespace MyDAL.Impls
         public async Task<PagingList<VM>> QueryPagingListAsync<VM>(int pageIndex, int pageSize, Expression<Func<VM>> func)
         {
             SelectMHandle(func);
+            DC.IP.ConvertDic();
             var result = new PagingList<VM>();
             result.PageIndex = pageIndex;
             result.PageSize = pageSize;
-            var paras = DC.GetParameters();
+            var paras = DC.SqlProvider.GetParameters();
             var sql = DC.SqlProvider.GetSQL<VM>(UiMethodEnum.JoinQueryPagingListAsync, result.PageIndex, result.PageSize);
             result.TotalCount = await SqlHelper.ExecuteScalarAsync<long>(DC.Conn, sql[0], paras);
             result.Data = (await SqlHelper.QueryAsync<VM>(DC.Conn, sql[1], paras)).ToList();
@@ -110,10 +116,11 @@ namespace MyDAL.Impls
         {
             SelectMHandle<M>();
             OrderByOptionHandle(option);
+            DC.IP.ConvertDic();
             var result = new PagingList<M>();
             result.PageIndex = option.PageIndex;
             result.PageSize = option.PageSize;
-            var paras = DC.GetParameters();
+            var paras = DC.SqlProvider.GetParameters();
             var sql = DC.SqlProvider.GetSQL<M>(UiMethodEnum.JoinQueryPagingListAsync, result.PageIndex, result.PageSize);
             result.TotalCount = await SqlHelper.ExecuteScalarAsync<long>(DC.Conn, sql[0], paras);
             result.Data = (await SqlHelper.QueryAsync<M>(DC.Conn, sql[1], paras)).ToList();
@@ -124,10 +131,11 @@ namespace MyDAL.Impls
         {
             SelectMHandle(func);
             OrderByOptionHandle(option);
+            DC.IP.ConvertDic();
             var result = new PagingList<VM>();
             result.PageIndex = option.PageIndex;
             result.PageSize = option.PageSize;
-            var paras = DC.GetParameters();
+            var paras = DC.SqlProvider.GetParameters();
             var sql = DC.SqlProvider.GetSQL<VM>(UiMethodEnum.JoinQueryPagingListAsync, result.PageIndex, result.PageSize);
             result.TotalCount = await SqlHelper.ExecuteScalarAsync<long>(DC.Conn, sql[0], paras);
             result.Data = (await SqlHelper.QueryAsync<VM>(DC.Conn, sql[1], paras)).ToList();

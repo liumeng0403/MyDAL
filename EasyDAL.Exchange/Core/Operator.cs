@@ -228,7 +228,7 @@ namespace MyDAL.Core
             {
                 val = DC.GH.GetTypeValue(modVal.GetType(), modVal);
             }
-            DC.AddConditions(new DicModel
+            DC.AddConditions(new DicModelUI
             {
                 ClassFullName = typeof(M).FullName,
                 ColumnOne = key,
@@ -248,7 +248,7 @@ namespace MyDAL.Core
             var fullName = typeof(M).FullName;
             foreach (var tp in tuples)
             {
-                DC.AddConditions(new DicModel
+                DC.AddConditions(new DicModelUI
                 {
                     ClassFullName = fullName,
                     ColumnOne = tp.key,
@@ -345,7 +345,7 @@ namespace MyDAL.Core
                     break;
             }
 
-            DC.AddConditions(new DicModel
+            DC.AddConditions(new DicModelUI
             {
                 ColumnOne = key,
                 Option = option,
@@ -372,7 +372,7 @@ namespace MyDAL.Core
                         {
                             op = OptionEnum.Asc;
                         }
-                        DC.AddConditions(new DicModel
+                        DC.AddConditions(new DicModelUI
                         {
                             ColumnOne = item.Field,
                             Action = ActionEnum.OrderBy,
@@ -388,7 +388,7 @@ namespace MyDAL.Core
             var vmType = typeof(M);
             var vmName = vmType.FullName;
             var vmProps = DC.GH.GetPropertyInfos(vmType);
-            var tab = DC.Conditions.FirstOrDefault(it => vmName.Equals(it.ClassFullName, StringComparison.OrdinalIgnoreCase));
+            var tab = DC.UiConditions.FirstOrDefault(it => vmName.Equals(it.ClassFullName, StringComparison.OrdinalIgnoreCase));
             if (tab != null)
             {
                 foreach (var prop in vmProps)
@@ -398,33 +398,8 @@ namespace MyDAL.Core
             }
             else
             {
-                var fullNames = DC.Conditions.Where(it => !string.IsNullOrWhiteSpace(it.ClassFullName)).Distinct();
-                throw new Exception($"请使用 [[Task<List<VM>> QueryListAsync<VM>(Expression<Func<VM>> func)]] 方法! 或者 {vmType.Name} 必须为 [[{string.Join(",", fullNames.Select(it => it.ClassName))}]] 其中之一 !");
-
-                // 下面代码 可能有问题
-                foreach (var name in fullNames.Select(it => it.ClassFullName).Distinct())
-                {
-                    var type = Type.GetType(name);
-                    var mProps = DC.GH.GetPropertyInfos(type);
-                    foreach (var vprop in vmProps)
-                    {
-                        if (DC.Conditions.Any(it => vprop.Name.Equals(it.VmColumn, StringComparison.Ordinal)))
-                        {
-                            continue;
-                        }
-
-                        foreach (var mprop in mProps)
-                        {
-                            if (!vprop.Name.Equals(mprop.Name, StringComparison.Ordinal))
-                            {
-                                continue;
-                            }
-
-                            var ali = DC.Conditions.First(it => name.Equals(it.ClassFullName, StringComparison.Ordinal)).TableAliasOne;
-                            DC.AddConditions(DicHandle.SelectColumnHandle(vprop.Name, ali));
-                        }
-                    }
-                }
+                var fullNames = DC.UiConditions.Where(it => !string.IsNullOrWhiteSpace(it.ClassFullName)).Distinct();
+                throw new Exception($"请使用 [[Task<List<VM>> QueryListAsync<VM>(Expression<Func<VM>> func)]] 方法! 或者 {vmType.Name} 必须为 [[{string.Join(",", fullNames.Select(it => it.ClassName))}]] 其中之一 !");                
             }
         }
 
@@ -459,7 +434,7 @@ namespace MyDAL.Core
             return await SqlHelper.QueryFirstOrDefaultAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<DM>(UiMethodEnum.QueryFirstOrDefaultAsync)[0],
-                DC.GetParameters());
+                DC.SqlProvider.GetParameters());
         }
 
         protected async Task<List<VM>> QueryListAsyncHandle<DM, VM>()
@@ -467,7 +442,7 @@ namespace MyDAL.Core
             return (await SqlHelper.QueryAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<DM>(UiMethodEnum.QueryListAsync)[0],
-                DC.GetParameters())).ToList();
+                DC.SqlProvider.GetParameters())).ToList();
         }
 
         internal async Task<PagingList<VM>> QueryPagingListAsyncHandle<DM, VM>(int pageIndex, int pageSize, UiMethodEnum sqlType)
@@ -475,7 +450,7 @@ namespace MyDAL.Core
             var result = new PagingList<VM>();
             result.PageIndex = pageIndex;
             result.PageSize = pageSize;
-            var paras = DC.GetParameters();
+            var paras = DC.SqlProvider.GetParameters();
             var sql = DC.SqlProvider.GetSQL<DM>(sqlType, result.PageIndex, result.PageSize);
             result.TotalCount = await SqlHelper.ExecuteScalarAsync<long>(DC.Conn, sql[0], paras);
             result.Data = (await SqlHelper.QueryAsync<VM>(DC.Conn, sql[1], paras)).ToList();
@@ -487,7 +462,7 @@ namespace MyDAL.Core
             return (await SqlHelper.QueryAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<DM>(UiMethodEnum.QueryAllAsync)[0],
-                DC.GetParameters())).ToList();
+                DC.SqlProvider.GetParameters())).ToList();
         }
     }
 }

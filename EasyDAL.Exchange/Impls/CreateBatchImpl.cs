@@ -22,10 +22,11 @@ namespace MyDAL.Impls
             {
                 DC.ResetConditions();
                 DC.GetProperties(list);
+                DC.IP.ConvertDic();
                 return await SqlHelper.ExecuteAsync(
                     DC.Conn,
                     DC.SqlProvider.GetSQL<M>(UiMethodEnum.CreateBatchAsync)[0],
-                    DC.GetParameters());
+                    DC.SqlProvider.GetParameters());
             });
         }
     }

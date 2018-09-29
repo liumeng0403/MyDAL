@@ -240,7 +240,7 @@ namespace MyDAL.ExpressionX
 
         /********************************************************************************************************************/
 
-        private DicModel StringLike(MethodCallExpression mcExpr, StringLikeEnum type,ActionEnum action,CrudTypeEnum crud)
+        private DicModelUI StringLike(MethodCallExpression mcExpr, StringLikeEnum type,ActionEnum action,CrudTypeEnum crud)
         {
             if (mcExpr.Object == null)
             {
@@ -280,7 +280,7 @@ namespace MyDAL.ExpressionX
             return null;
         }
 
-        private DicModel CollectionIn(Expression expr, MemberExpression memExpr,ActionEnum action,CrudTypeEnum crud)
+        private DicModelUI CollectionIn(Expression expr, MemberExpression memExpr,ActionEnum action,CrudTypeEnum crud)
         {
             var keyTuple = GetKey(expr, OptionEnum.In);
             var val = HandMember(memExpr);
@@ -289,7 +289,7 @@ namespace MyDAL.ExpressionX
             //return dic;
         }
 
-        private DicModel NewCollectionIn(ExpressionType nodeType, Expression keyExpr, Expression valExpr,ActionEnum action,CrudTypeEnum crud)
+        private DicModelUI NewCollectionIn(ExpressionType nodeType, Expression keyExpr, Expression valExpr,ActionEnum action,CrudTypeEnum crud)
         {
             if (nodeType == ExpressionType.NewArrayInit)
             {
@@ -328,7 +328,7 @@ namespace MyDAL.ExpressionX
 
         /********************************************************************************************************************/
 
-        private DicModel HandConditionBinary(CrudTypeEnum crud, ActionEnum action, BinaryExpression binExpr, List<string> pres)
+        private DicModelUI HandConditionBinary(CrudTypeEnum crud, ActionEnum action, BinaryExpression binExpr, List<string> pres)
         {
             var binTuple = HandBinExpr(pres, binExpr);
             if ((binTuple.node == ExpressionType.Equal || binTuple.node == ExpressionType.NotEqual)
@@ -345,7 +345,7 @@ namespace MyDAL.ExpressionX
                 {
                     optionx = OptionEnum.IsNotNull;
                 }
-                return new DicModel
+                return new DicModelUI
                 {
                     ClassFullName = tuple.classFullName,
                     ColumnOne = tuple.key,
@@ -380,7 +380,7 @@ namespace MyDAL.ExpressionX
             }
         }
 
-        private DicModel HandConditionCall(MethodCallExpression mcExpr,ActionEnum action,CrudTypeEnum crud)
+        private DicModelUI HandConditionCall(MethodCallExpression mcExpr,ActionEnum action,CrudTypeEnum crud)
         {
             var exprStr = mcExpr.ToString();
             if (exprStr.Contains(".Contains("))
@@ -435,7 +435,7 @@ namespace MyDAL.ExpressionX
             return null;
         }
 
-        private DicModel HandConditionConstant(ConstantExpression cExpr)
+        private DicModelUI HandConditionConstant(ConstantExpression cExpr)
         {
             var valType = cExpr.Type;
             var val = DC.VH.GetConstantVal(cExpr, valType);
@@ -447,7 +447,7 @@ namespace MyDAL.ExpressionX
             return null;
         }
 
-        private DicModel HandConditionMemberAccess(MemberExpression memExpr)
+        private DicModelUI HandConditionMemberAccess(MemberExpression memExpr)
         {
             var tuple = GetMemTuple(memExpr);
             if (tuple.valType == typeof(bool))
@@ -468,9 +468,9 @@ namespace MyDAL.ExpressionX
 
         /********************************************************************************************************************/
 
-        private List<DicModel> HandSelectMemberInit(MemberInitExpression miExpr)
+        private List<DicModelUI> HandSelectMemberInit(MemberInitExpression miExpr)
         {
-            var result = new List<DicModel>();
+            var result = new List<DicModelUI>();
 
             foreach (var mb in miExpr.Bindings)
             {
@@ -478,7 +478,7 @@ namespace MyDAL.ExpressionX
                 var maMem = mbEx.Expression as MemberExpression;
                 var tuple = GetMemTuple(maMem);
                 var colAlias = mbEx.Member.Name;
-                result.Add(new DicModel
+                result.Add(new DicModelUI
                 {
                     ClassFullName = tuple.classFullName,
                     TableAliasOne = tuple.alias,
@@ -492,12 +492,12 @@ namespace MyDAL.ExpressionX
 
         /********************************************************************************************************************/
 
-        private DicModel HandOnBinary(BinaryExpression binExpr)
+        private DicModelUI HandOnBinary(BinaryExpression binExpr)
         {
             var option = OptionEnum.Compare;
             var tuple1 = GetKey(binExpr.Left, option);
             var tuple2 = GetKey(binExpr.Right, option);
-            return new DicModel
+            return new DicModelUI
             {
                 ClassFullName = tuple1.classFullName,
                 ColumnOne = tuple1.key,
@@ -514,11 +514,11 @@ namespace MyDAL.ExpressionX
         /// <summary>
         /// 获取表达式信息
         /// </summary>
-        public List<DicModel> ExpressionHandle<M, F>(Expression<Func<M, F>> func)
+        public List<DicModelUI> ExpressionHandle<M, F>(Expression<Func<M, F>> func)
         {
             try
             {
-                var result = new List<DicModel>();
+                var result = new List<DicModelUI>();
                 var body = func.Body;
                 var nodeType = body.NodeType;
                 if (nodeType == ExpressionType.MemberAccess)
@@ -529,7 +529,7 @@ namespace MyDAL.ExpressionX
 
                     if (!string.IsNullOrWhiteSpace(key))
                     {
-                        result.Add(new DicModel
+                        result.Add(new DicModelUI
                         {
                             ClassFullName = keyTuple.classFullName,
                             ColumnOne = key
@@ -568,12 +568,12 @@ namespace MyDAL.ExpressionX
         /// <summary>
         /// 获取表达式信息
         /// </summary>
-        public DicModel ExpressionHandle<M>(CrudTypeEnum crud, ActionEnum action,Expression<Func<M, bool>> func)
+        public DicModelUI ExpressionHandle<M>(CrudTypeEnum crud, ActionEnum action,Expression<Func<M, bool>> func)
         {
             try
             {
                 //
-                var result = default(DicModel);
+                var result = default(DicModelUI);
                 var body = func.Body;
                 var nodeType = body.NodeType;
 
@@ -632,11 +632,11 @@ namespace MyDAL.ExpressionX
         }
 
         // join
-        public List<DicModel> ExpressionHandle<M>(Expression<Func<M>> func)
+        public List<DicModelUI> ExpressionHandle<M>(Expression<Func<M>> func)
         {
             try
             {
-                var result = new List<DicModel>();
+                var result = new List<DicModelUI>();
                 var nodeType = func.Body.NodeType;
                 if (nodeType == ExpressionType.New)
                 {
@@ -647,7 +647,7 @@ namespace MyDAL.ExpressionX
                     {
                         var tuple = GetMemTuple(args[i] as MemberExpression);
                         var colAlias = mems[i].Name;
-                        result.Add(new DicModel
+                        result.Add(new DicModelUI
                         {
                             ClassFullName = tuple.classFullName,
                             TableAliasOne = tuple.alias,
@@ -662,7 +662,7 @@ namespace MyDAL.ExpressionX
                     var body = func.Body as MemberExpression;
                     var alias = body.Member.Name;
                     var table = DC.SC.GetModelTableName(DC.SC.GetKey(body.Type.FullName, DC.Conn.Database));  // DC.SqlProvider.GetTableName(body.Type);
-                    result.Add(new DicModel
+                    result.Add(new DicModelUI
                     {
                         TableOne = table,
                         ClassFullName = body.Type.FullName,
@@ -698,12 +698,12 @@ namespace MyDAL.ExpressionX
                 }
             }
         }
-        public DicModel ExpressionHandle(Expression<Func<bool>> func, ActionEnum action,CrudTypeEnum crud)
+        public DicModelUI ExpressionHandle(Expression<Func<bool>> func, ActionEnum action,CrudTypeEnum crud)
         {
             try
             {
                 //
-                var result = default(DicModel);
+                var result = default(DicModelUI);
                 var body = func.Body;
                 var nodeType = body.NodeType;
 
@@ -720,9 +720,8 @@ namespace MyDAL.ExpressionX
                         || action == ActionEnum.And
                         || action == ActionEnum.Or)
                     {
-                        var pres = DC.Conditions.Select(it => it.TableAliasOne).ToList();
+                        var pres = DC.UiConditions.Select(it => it.TableAliasOne).ToList();
                         result = HandConditionBinary(crud,action, binExpr, pres);
-                        //result.Action = action;
                     }
                 }
                 else if (nodeType == ExpressionType.Call)

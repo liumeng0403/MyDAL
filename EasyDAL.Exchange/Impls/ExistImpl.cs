@@ -20,7 +20,7 @@ namespace MyDAL.Impls
             var count = await SqlHelper.ExecuteScalarAsync<long>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.ExistAsync)[0],
-                DC.GetParameters());
+                DC.SqlProvider.GetParameters());
             if (count > 0)
             {
                 return true;

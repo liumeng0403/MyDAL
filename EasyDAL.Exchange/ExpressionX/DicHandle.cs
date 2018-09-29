@@ -42,9 +42,9 @@ namespace MyDAL.ExpressionX
 
         /*******************************************************************************************************/
 
-        internal static DicModel BinaryCharLengthHandle(string key, string alias, string value, Type valType, ExpressionType nodeType, bool isR)
+        internal static DicModelUI BinaryCharLengthHandle(string key, string alias, string value, Type valType, ExpressionType nodeType, bool isR)
         {
-            return new DicModel
+            return new DicModelUI
             {
                 ColumnOne = key,
                 TableAliasOne = alias,
@@ -57,9 +57,9 @@ namespace MyDAL.ExpressionX
             };
         }
         // 01
-        internal static DicModel BinaryCompareHandle(CrudTypeEnum crud, ActionEnum action,string classFullName,string key, string alias, string value, Type valType,CompareEnum compare)
+        internal static DicModelUI BinaryCompareHandle(CrudTypeEnum crud, ActionEnum action,string classFullName,string key, string alias, string value, Type valType,CompareEnum compare)
         {
-            return new DicModel
+            return new DicModelUI
             {
                 ClassFullName=classFullName,
                 ColumnOne = key,
@@ -75,9 +75,9 @@ namespace MyDAL.ExpressionX
             };
         }
         // 01
-        internal static DicModel CallInHandle(CrudTypeEnum crud,ActionEnum action, string classFullName, string key, string alias, string value, Type valType)
+        internal static DicModelUI CallInHandle(CrudTypeEnum crud,ActionEnum action, string classFullName, string key, string alias, string value, Type valType)
         {
-            return new DicModel
+            return new DicModelUI
             {
                 ClassFullName = classFullName,
                 ColumnOne = key,
@@ -92,9 +92,9 @@ namespace MyDAL.ExpressionX
             };
         }
         // 01
-        internal static DicModel CallLikeHandle(CrudTypeEnum crud, ActionEnum action, string classFullName, string key, string alias, string value, Type valType)
+        internal static DicModelUI CallLikeHandle(CrudTypeEnum crud, ActionEnum action, string classFullName, string key, string alias, string value, Type valType)
         {
-            return new DicModel
+            return new DicModelUI
             {
                 ClassFullName = classFullName,
                 ColumnOne = key,
@@ -109,9 +109,9 @@ namespace MyDAL.ExpressionX
             };
         }
         // 01
-        internal static DicModel ConstantBoolHandle(string value, Type valType)
+        internal static DicModelUI ConstantBoolHandle(string value, Type valType)
         {
-            return new DicModel
+            return new DicModelUI
             {
                 ColumnOne = "OneEqualOne",
                 Param = "OneEqualOne",
@@ -122,9 +122,9 @@ namespace MyDAL.ExpressionX
             };
         }
         // 01
-        internal static DicModel MemberBoolHandle(string key, string alias, Type valType)
+        internal static DicModelUI MemberBoolHandle(string key, string alias, Type valType)
         {
-            return new DicModel
+            return new DicModelUI
             {
                 ColumnOne = key,
                 TableAliasOne = alias,
@@ -139,9 +139,9 @@ namespace MyDAL.ExpressionX
 
         /*******************************************************************************************************/
 
-        internal static DicModel SelectColumnHandle(string columnOne, string tableAliasOne)
+        internal static DicModelUI SelectColumnHandle(string columnOne, string tableAliasOne)
         {
-            return new DicModel
+            return new DicModelUI
             {
                 ColumnOne = columnOne,
                 TableAliasOne = tableAliasOne,
@@ -153,9 +153,9 @@ namespace MyDAL.ExpressionX
 
         /*******************************************************************************************************/
 
-        internal static DicModel ConditionCountHandle(string key)
+        internal static DicModelUI ConditionCountHandle(string key)
         {
-            return new DicModel
+            return new DicModelUI
             {
                 ColumnOne = key,
                 Param = key,

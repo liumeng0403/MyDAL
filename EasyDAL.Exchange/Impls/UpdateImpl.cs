@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Impls
 {
-    internal class DeleteImpl<M>
-        : Impler, IDelete
+    internal class UpdateImpl<M>
+        : Impler, IUpdate<M>
     {
-        internal DeleteImpl(Context dc) 
+        internal UpdateImpl(Context dc) 
             : base(dc)
         {
         }
 
-        public async Task<int> DeleteAsync()
+        public async Task<int> UpdateAsync()
         {
             return await SqlHelper.ExecuteAsync(
                 DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.DeleteAsync)[0],
+                DC.SqlProvider.GetSQL<M>(UiMethodEnum.UpdateAsync)[0],
                 DC.SqlProvider.GetParameters());
         }
     }
