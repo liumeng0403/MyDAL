@@ -32,6 +32,7 @@ namespace Yunyong.DataExchange.Impls
         public async Task<List<VM>> QueryListAsync<VM>(Expression<Func<M, VM>> func)
         {
             SelectMHandle(func);
+            DC.IP.ConvertDic();
             return await QueryListAsyncHandle<M, VM>();
         }
     }
@@ -47,19 +48,21 @@ namespace Yunyong.DataExchange.Impls
         public async Task<List<M>> QueryListAsync<M>()
         {
             SelectMHandle<M>();
+            DC.IP.ConvertDic();
             return (await SqlHelper.QueryAsync<M>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.JoinQueryListAsync)[0],
-                DC.GetParameters())).ToList();
+                DC.SqlProvider.GetParameters())).ToList();
         }
 
         public async Task<List<VM>> QueryListAsync<VM>(Expression<Func<VM>> func)
         {
             SelectMHandle(func);
+            DC.IP.ConvertDic();
             return (await SqlHelper.QueryAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<VM>(UiMethodEnum.JoinQueryListAsync)[0],
-                DC.GetParameters())).ToList();
+                DC.SqlProvider.GetParameters())).ToList();
         }
     }
 }

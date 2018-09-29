@@ -1,13 +1,12 @@
 using System.Threading.Tasks;
 using Yunyong.DataExchange.Core;
-using Yunyong.DataExchange.Enums;
-using Yunyong.DataExchange.Helper;
+using Yunyong.DataExchange.Impls;
 using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.UserFacade.Update
 {
     public class WhereU<M> 
-        : Operator, IUpdate
+        : Operator, IUpdate<M>
     {
         internal WhereU(Context dc)
             : base(dc)
@@ -19,10 +18,7 @@ namespace Yunyong.DataExchange.UserFacade.Update
         /// <returns>更新条目数</returns>
         public async Task<int> UpdateAsync()
         {
-            return await SqlHelper.ExecuteAsync(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.UpdateAsync)[0],
-                DC.GetParameters());
+            return await new UpdateImpl<M>(DC).UpdateAsync();
         }
 
     }

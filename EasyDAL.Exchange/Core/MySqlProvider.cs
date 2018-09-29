@@ -24,10 +24,10 @@ namespace Yunyong.DataExchange.Core
 
         /****************************************************************************************************************/
 
-        private string LikeStrHandle(DicModel dic)
+        private string LikeStrHandle(DicModelDB dic)
         {
             var name = dic.Param;
-            var value = dic.CsValue;
+            var value = dic.DbValue.ToString(); // dic.CsValue;
             if (!value.Contains("%")
                 && !value.Contains("_"))
             {
@@ -47,9 +47,9 @@ namespace Yunyong.DataExchange.Core
 
             throw new Exception(value);
         }
-        private string InStrHandle(DicModel dic)
+        private string InStrHandle(DicModelDB dic)
         {
-            var paras = DC.Conditions.Where(it =>
+            var paras = DC.DbConditions.Where(it =>
             {
                 if (!string.IsNullOrWhiteSpace(it.ParamRaw))
                 {
@@ -68,9 +68,9 @@ namespace Yunyong.DataExchange.Core
             var str = string.Empty;
             var cols = DC.SC.GetColumnInfos(DC.SC.GetKey(typeof(M).FullName, DC.Conn.Database));
 
-            if (DC.Conditions.Any(it => it.Action == ActionEnum.OrderBy))
+            if (DC.DbConditions.Any(it => it.Action == ActionEnum.OrderBy))
             {
-                str = string.Join(",", DC.Conditions.Where(it => it.Action == ActionEnum.OrderBy).Select(it => $" `{it.ColumnOne}` {it.Option.ToEnumDesc<OptionEnum>()} "));
+                str = string.Join(",", DC.DbConditions.Where(it => it.Action == ActionEnum.OrderBy).Select(it => $" `{it.ColumnOne}` {it.Option.ToEnumDesc<OptionEnum>()} "));
             }
             else if (cols.Any(it => "PRI".Equals(it.KeyType, StringComparison.OrdinalIgnoreCase)))
             {
@@ -88,13 +88,13 @@ namespace Yunyong.DataExchange.Core
         private string GetOrderByPart()
         {
             var str = string.Empty;
-            var dic = DC.Conditions.First(it => !string.IsNullOrWhiteSpace(it.ClassFullName));
+            var dic = DC.DbConditions.First(it => !string.IsNullOrWhiteSpace(it.ClassFullName));
             var key = DC.SC.GetKey(dic.ClassFullName, DC.Conn.Database);
             var cols = DC.SC.GetColumnInfos(key);
 
-            if (DC.Conditions.Any(it => it.Action == ActionEnum.OrderBy))
+            if (DC.DbConditions.Any(it => it.Action == ActionEnum.OrderBy))
             {
-                str = string.Join(",", DC.Conditions.Where(it => it.Action == ActionEnum.OrderBy).Select(it => $" {dic.TableAliasOne}.`{it.ColumnOne}` {it.Option.ToEnumDesc<OptionEnum>()} "));
+                str = string.Join(",", DC.DbConditions.Where(it => it.Action == ActionEnum.OrderBy).Select(it => $" {dic.TableAliasOne}.`{it.ColumnOne}` {it.Option.ToEnumDesc<OptionEnum>()} "));
             }
             else if (cols.Any(it => "PRI".Equals(it.KeyType, StringComparison.OrdinalIgnoreCase)))
             {
@@ -112,14 +112,14 @@ namespace Yunyong.DataExchange.Core
 
         private string Limit(int? pageIndex, int? pageSize)
         {
-            return $" \r\n limit {(pageIndex - 1) * pageSize},{/*pageIndex * */pageSize}";
+            return $" \r\n limit {(pageIndex - 1) * pageSize},{pageSize}";
         }
 
         internal string GetSingleValuePart()
         {
             var str = string.Empty;
 
-            foreach (var item in DC.Conditions)
+            foreach (var item in DC.DbConditions)
             {
                 switch (item.Option)
                 {
@@ -135,7 +135,7 @@ namespace Yunyong.DataExchange.Core
         {
             var str = string.Empty;
 
-            var item = DC.Conditions.FirstOrDefault(it => it.Option == OptionEnum.Count);
+            var item = DC.DbConditions.FirstOrDefault(it => it.Option == OptionEnum.Count);
             if (item != null)
             {
                 str = $" {item.Option.ToEnumDesc<OptionEnum>()}(`{item.ColumnOne}`) ";
@@ -153,7 +153,7 @@ namespace Yunyong.DataExchange.Core
             var str = string.Empty;
             var list = new List<string>();
 
-            foreach (var dic in DC.Conditions)
+            foreach (var dic in DC.DbConditions)
             {
                 if (dic.Option != OptionEnum.Column
                     && dic.Option != OptionEnum.ColumnAs)
@@ -226,7 +226,7 @@ namespace Yunyong.DataExchange.Core
         {
             var str = string.Empty;
 
-            foreach (var item in DC.Conditions)
+            foreach (var item in DC.DbConditions)
             {
                 if (item.Crud != CrudTypeEnum.Join)
                 {
@@ -263,7 +263,7 @@ namespace Yunyong.DataExchange.Core
 
             var str = string.Empty;
 
-            foreach (var item in DC.Conditions)
+            foreach (var item in DC.DbConditions)
             {
                 switch (item.Action)
                 {
@@ -337,7 +337,7 @@ namespace Yunyong.DataExchange.Core
             }
 
             if (!string.IsNullOrWhiteSpace(str)
-                && DC.Conditions.All(it => it.Action != ActionEnum.Where))
+                && DC.DbConditions.All(it => it.Action != ActionEnum.Where))
             {
                 var aIdx = str.IndexOf(" and ", StringComparison.Ordinal);
                 var oIdx = str.IndexOf(" or ", StringComparison.Ordinal);
@@ -356,21 +356,17 @@ namespace Yunyong.DataExchange.Core
 
         internal string GetUpdates()
         {
-            if (//!DC.Conditions.Any(it => it.Action == ActionEnum.Set)
-            //    && !DC.Conditions.Any(it => it.Action == ActionEnum.Change)
-                !DC.Conditions.Any(it => it.Action == ActionEnum.Update))
+            if (!DC.DbConditions.Any(it => it.Action == ActionEnum.Update))
             {
                 throw new Exception("没有设置任何要更新的字段!");
             }
 
             var list = new List<string>();
 
-            foreach (var item in DC.Conditions)
+            foreach (var item in DC.DbConditions)
             {
                 switch (item.Action)
                 {
-                    //case ActionEnum.Set:
-                    //case ActionEnum.Change:
                     case ActionEnum.Update:
                         switch (item.Option)
                         {
@@ -413,7 +409,7 @@ namespace Yunyong.DataExchange.Core
         internal string GetColumns()
         {
             var list = new List<string>();
-            foreach (var item in DC.Conditions)
+            foreach (var item in DC.DbConditions)
             {
                 if (item.TvpIndex == 0)
                 {
@@ -425,10 +421,10 @@ namespace Yunyong.DataExchange.Core
         internal string GetValues()
         {
             var list = new List<string>();
-            for (var i = 0; i < DC.Conditions.Max(it => it.TvpIndex) + 1; i++)
+            for (var i = 0; i < DC.DbConditions.Max(it => it.TvpIndex) + 1; i++)
             {
                 var values = new List<string>();
-                foreach (var item in DC.Conditions)
+                foreach (var item in DC.DbConditions)
                 {
                     if (item.TvpIndex == i)
                     {
@@ -441,6 +437,23 @@ namespace Yunyong.DataExchange.Core
         }
 
 
+        internal DynamicParameters GetParameters()
+        {
+            var paras = new DynamicParameters();
+
+            //
+            foreach (var item in DC.DbConditions)
+            {
+                if (DC.IsParameter(item))
+                {
+                    paras.Add(item.Param, item.DbValue, item.DbType);
+                }
+            }
+
+            //
+            return paras;
+        }
+
         internal string GetTableName(Type mType)
         {
             var tableName = string.Empty;
@@ -450,7 +463,6 @@ namespace Yunyong.DataExchange.Core
                 throw new Exception("DB Entity 缺少 TableAttribute 指定的表名!");
             }
             return $"`{tableName}`";
-            //return $"`{DC.TableAttributeName(mType)}`";
         }
 
         internal OptionEnum GetChangeOption(ChangeEnum change)
@@ -506,16 +518,16 @@ namespace Yunyong.DataExchange.Core
                 case UiMethodEnum.QueryPagingListAsync:
                     var wherePart8 = Wheres();
                     list.Add($"select count(*) {From()} {Table<M>(type)} {wherePart8} ; ");
-                    list.Add($"select {Columns()} {From()} {Table<M>(type)} {wherePart8} {GetOrderByPart<M>()} {Limit(pageIndex,pageSize)}  ; ");
+                    list.Add($"select {Columns()} {From()} {Table<M>(type)} {wherePart8} {GetOrderByPart<M>()} {Limit(pageIndex, pageSize)}  ; ");
                     break;
                 case UiMethodEnum.JoinQueryPagingListAsync:
                     var wherePart9 = Wheres();
                     list.Add($"select count(*) {From()} {Joins()} {wherePart9} ; ");
-                    list.Add($"select {Columns()} {From()} {Joins()} {wherePart9} {GetOrderByPart()} {Limit(pageIndex,pageSize)}  ; ");
+                    list.Add($"select {Columns()} {From()} {Joins()} {wherePart9} {GetOrderByPart()} {Limit(pageIndex, pageSize)}  ; ");
                     break;
                 case UiMethodEnum.QueryAllPagingListAsync:
                     list.Add($"select count(*) {From()} {Table<M>(type)} ; ");
-                    list.Add($"select * {From()} {Table<M>(type)} {GetOrderByPart<M>()} {Limit(pageIndex,pageSize)}  ; ");
+                    list.Add($"select * {From()} {Table<M>(type)} {GetOrderByPart<M>()} {Limit(pageIndex, pageSize)}  ; ");
                     break;
                 case UiMethodEnum.QuerySingleValueAsync:
                     list.Add($" select {GetSingleValuePart()} {From()} {Table<M>(type)} {Wheres()} ; ");
@@ -533,13 +545,14 @@ namespace Yunyong.DataExchange.Core
             if (XDebug.Hint)
             {
                 XDebug.SQL = list;
-                var paras = DC.GetParameters();
+                var paras = DC.SqlProvider.GetParameters();
                 XDebug.Parameters = DC
-                    .Conditions
+                    .DbConditions
                     .Where(it => DC.IsParameter(it))
-                    .Select(it =>
+                    .Select(dbM =>
                     {
-                        return $"key:【{it.Param}】;val:【{it.CsValue}】;param【{it.DbValue}】.";
+                        var uiM = DC.UiConditions.FirstOrDefault(ui => dbM.Param.Equals(ui.Param, StringComparison.OrdinalIgnoreCase));
+                        return $"参数名:【{dbM.Param}】;C#值:【{uiM.CsValue}】;DB值:【{(dbM.DbValue == null ? string.Empty : dbM.DbValue.ToString())}】.";
                     })
                     .ToList();
             }

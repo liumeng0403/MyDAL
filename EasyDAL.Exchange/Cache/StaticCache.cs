@@ -16,23 +16,6 @@ namespace Yunyong.DataExchange.Cache
         }
 
         /*****************************************************************************************************************************************************/
-        
-        private static ConcurrentDictionary<string, List<PropertyInfo>> ModelPropertiesCache { get; } = new ConcurrentDictionary<string, List<PropertyInfo>>();
-        internal List<PropertyInfo> GetModelProperys(string key)
-        {
-            return ModelPropertiesCache[key];
-        }
-        internal void SetModelProperys(Type mType, Context dc)
-        {
-            var key = GetKey(mType.FullName, dc.Conn.Database);
-            if (!ModelPropertiesCache.ContainsKey(key))
-            {
-                var props = dc.GH.GetPropertyInfos(mType);
-                ModelPropertiesCache[key] = props;
-            }
-        }
-
-        /*****************************************************************************************************************************************************/
 
         internal static ConcurrentDictionary<string, ConcurrentDictionary<Int32, String>> EHCache { get; } = new ConcurrentDictionary<string, ConcurrentDictionary<Int32, String>>();
 
@@ -52,36 +35,10 @@ namespace Yunyong.DataExchange.Cache
 
         /*****************************************************************************************************************************************************/
 
-        private static ConcurrentDictionary<string, List<ColumnInfo>> ModelColumnInfosCache { get; } = new ConcurrentDictionary<string, List<ColumnInfo>>();
-        internal List<ColumnInfo> GetColumnInfos(string key)
-        {
-            return ModelColumnInfosCache[key];
-        }
-        internal async Task SetModelColumnInfos(string key, Context dc)
-        {
-            if (!ModelColumnInfosCache.ContainsKey(key))
-            {
-                var columns = await dc.SqlProvider.GetColumnsInfos(dc.SC.GetModelTableName(key));
-                ModelColumnInfosCache[key] = columns;
-            }
-        }
-
-        /*****************************************************************************************************************************************************/
-
-        private static ConcurrentDictionary<string, Type> ModelTypeCache { get; } = new ConcurrentDictionary<string, Type>();
-
-        internal Type GetModelType<M>(string key)
-        {
-            return ModelTypeCache[key];
-        }
-
-        internal void SetModelType(string key,Type type)
-        {
-            if (!ModelTypeCache.ContainsKey(key))
-            {
-                ModelTypeCache[key] = type;
-            }
-        }
+        /// <summary>
+        /// Cache Data
+        /// </summary>
+        internal static ConcurrentDictionary<string, string> Cache { get; } = new ConcurrentDictionary<string, string>();
 
         /*****************************************************************************************************************************************************/
 
@@ -99,10 +56,53 @@ namespace Yunyong.DataExchange.Cache
 
         /*****************************************************************************************************************************************************/
 
-        /// <summary>
-        /// Cache Data
-        /// </summary>
-        internal static ConcurrentDictionary<string, string> Cache { get; } = new ConcurrentDictionary<string, string>();
+        private static ConcurrentDictionary<string, Type> ModelTypeCache { get; } = new ConcurrentDictionary<string, Type>();
+
+        internal Type GetModelType<M>(string key)
+        {
+            return ModelTypeCache[key];
+        }
+
+        internal void SetModelType(string key, Type type)
+        {
+            if (!ModelTypeCache.ContainsKey(key))
+            {
+                ModelTypeCache[key] = type;
+            }
+        }
+
+        /*****************************************************************************************************************************************************/
+
+        private static ConcurrentDictionary<string, List<PropertyInfo>> ModelPropertiesCache { get; } = new ConcurrentDictionary<string, List<PropertyInfo>>();
+        internal List<PropertyInfo> GetModelProperys(string key)
+        {
+            return ModelPropertiesCache[key];
+        }
+        internal void SetModelProperys(Type mType, Context dc)
+        {
+            var key = GetKey(mType.FullName, dc.Conn.Database);
+            if (!ModelPropertiesCache.ContainsKey(key))
+            {
+                var props = dc.GH.GetPropertyInfos(mType);
+                ModelPropertiesCache[key] = props;
+            }
+        }
+
+        /*****************************************************************************************************************************************************/
+
+        private static ConcurrentDictionary<string, List<ColumnInfo>> ModelColumnInfosCache { get; } = new ConcurrentDictionary<string, List<ColumnInfo>>();
+        internal List<ColumnInfo> GetColumnInfos(string key)
+        {
+            return ModelColumnInfosCache[key];
+        }
+        internal async Task SetModelColumnInfos(string key, Context dc)
+        {
+            if (!ModelColumnInfosCache.ContainsKey(key))
+            {
+                var columns = await dc.SqlProvider.GetColumnsInfos(dc.SC.GetModelTableName(key));
+                ModelColumnInfosCache[key] = columns;
+            }
+        }
 
     }
 }

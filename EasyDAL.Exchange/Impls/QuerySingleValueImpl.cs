@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Yunyong.DataExchange.Common;
 using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Enums;
@@ -7,21 +7,19 @@ using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.Impls
 {
-    internal class CreateImpl<M>
-        : Impler, ICreate<M>
+    internal class QuerySingleValueImpl<M>
+        : Impler, IQuerySingleValue<M>
     {
-        public CreateImpl(Context dc) 
+        internal QuerySingleValueImpl(Context dc) 
             : base(dc)
         {
         }
 
-        public async Task<int> CreateAsync(M m)
+        public async Task<V> QuerySingleValueAsync<V>()
         {
-            DC.GetProperties(m);
-            DC.IP.ConvertDic();
-            return await SqlHelper.ExecuteAsync(
+            return await SqlHelper.ExecuteScalarAsync<V>(
                 DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.CreateAsync)[0],
+                DC.SqlProvider.GetSQL<M>(UiMethodEnum.QuerySingleValueAsync)[0],
                 DC.SqlProvider.GetParameters());
         }
     }

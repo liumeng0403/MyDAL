@@ -20,7 +20,7 @@ namespace Yunyong.DataExchange.Impls
             return await SqlHelper.ExecuteAsync(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.DeleteAsync)[0],
-                DC.GetParameters());
+                DC.SqlProvider.GetParameters());
         }
     }
 }

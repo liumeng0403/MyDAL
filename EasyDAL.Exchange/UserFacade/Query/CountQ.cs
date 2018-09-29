@@ -1,13 +1,12 @@
 using System.Threading.Tasks;
 using Yunyong.DataExchange.Core;
-using Yunyong.DataExchange.Enums;
-using Yunyong.DataExchange.Helper;
+using Yunyong.DataExchange.Impls;
 using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.UserFacade.Query
 {
     public class CountQ<M> 
-        : Operator, IQuerySingleValue
+        : Operator, IQuerySingleValue<M>
     {
 
         internal CountQ(Context dc)
@@ -20,10 +19,7 @@ namespace Yunyong.DataExchange.UserFacade.Query
         /// <typeparam name="V">int/long/decimal/...</typeparam>
         public async Task<V> QuerySingleValueAsync<V>()
         {
-            return await SqlHelper.ExecuteScalarAsync<V>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.QuerySingleValueAsync)[0],
-                DC.GetParameters());
+            return await new QuerySingleValueImpl<M>(DC).QuerySingleValueAsync<V>();
         }
 
     }

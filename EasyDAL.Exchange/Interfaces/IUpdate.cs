@@ -2,7 +2,7 @@
 
 namespace Yunyong.DataExchange.Interfaces
 {
-    internal interface IUpdate
+    internal interface IUpdate<M>
     {
         Task<int> UpdateAsync();
     }

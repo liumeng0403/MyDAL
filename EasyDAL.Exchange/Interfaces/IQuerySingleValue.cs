@@ -2,7 +2,7 @@
 
 namespace Yunyong.DataExchange.Interfaces
 {
-    internal interface IQuerySingleValue
+    internal interface IQuerySingleValue<M>
     {
         Task<V> QuerySingleValueAsync<V>();
     }

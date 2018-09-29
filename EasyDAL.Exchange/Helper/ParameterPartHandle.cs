@@ -22,41 +22,36 @@ namespace Yunyong.DataExchange.Helper
             };
         }
 
-        public ParamInfo BoolParamHandle(DicModel item)
+        public ParamInfo BoolParamHandle(string colType, DicModelUI item)
         {
-            if (!string.IsNullOrWhiteSpace(item.ColumnType)
-                && item.ColumnType.Equals("bit", StringComparison.OrdinalIgnoreCase))
+            if (!string.IsNullOrWhiteSpace(colType)
+                && colType.Equals("bit", StringComparison.OrdinalIgnoreCase))
             {
                 if (item.CsValue.ToBool())
                 {
-                    item.DbValue = 1.ToString();
                     return GetDefault(item.Param, 1, DbType.UInt16);
                 }
                 else
                 {
-                    item.DbValue = 0.ToString();
                     return GetDefault(item.Param, 0, DbType.UInt16);
                 }
             }
             else
             {
-                item.DbValue = item.CsValue.ToBool().ToString();
                 return GetDefault(item.Param, item.CsValue.ToBool(), DbType.Boolean);
             }
         }
 
-        public ParamInfo EnumParamHandle(DicModel item)
+        public ParamInfo EnumParamHandle(string colType, DicModelUI item)
         {
-            if (!string.IsNullOrWhiteSpace(item.ColumnType)
-                && item.ColumnType.Equals("int", StringComparison.OrdinalIgnoreCase))
+            if (!string.IsNullOrWhiteSpace(colType)
+                && colType.Equals("int", StringComparison.OrdinalIgnoreCase))
             {
                 var val = (int)(Enum.Parse(item.ValueType, item.CsValue, true));
-                item.DbValue=val.ToString();
                 return GetDefault(item.Param, val, DbType.Int32);
             }
             else
             {
-                item.DbValue = item.CsValue;
                 return GetDefault(item.Param, item.CsValue.ToBool(), DbType.Boolean);
             }
         }
