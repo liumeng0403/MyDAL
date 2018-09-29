@@ -1,19 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Yunyong.Core;
 using Yunyong.DataExchange.Core;
-using Yunyong.DataExchange.Enums;
-using Yunyong.DataExchange.Helper;
 using Yunyong.DataExchange.Impls;
 using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.UserFacade.Join
 {
     public class WhereX
-        : Operator, IQueryFirstOrDefaultX, IQueryListX, IQueryPagingListX
+        : Operator, IQueryFirstOrDefaultX, IQueryListX, IQueryPagingListX, IQueryPagingListXO
     {
 
         internal WhereX(Context dc)
@@ -52,15 +49,7 @@ namespace Yunyong.DataExchange.UserFacade.Join
         /// <param name="pageSize">每页条数</param>
         public async Task<PagingList<M>> QueryPagingListAsync<M>(int pageIndex, int pageSize)
         {
-            SelectMHandle<M>();
-            var result = new PagingList<M>();
-            result.PageIndex = pageIndex;
-            result.PageSize = pageSize;
-            var paras = DC.GetParameters();
-            var sql = DC.SqlProvider.GetSQL<M>(UiMethodEnum.JoinQueryPagingListAsync, result.PageIndex, result.PageSize);
-            result.TotalCount = await SqlHelper.ExecuteScalarAsync<int>(DC.Conn, sql[0], paras);
-            result.Data = (await SqlHelper.QueryAsync<M>(DC.Conn, sql[1], paras)).ToList();
-            return result;
+            return await new QueryPagingListXImpl(DC).QueryPagingListAsync<M>(pageIndex, pageSize);
         }
         /// <summary>
         /// 多表分页查询
@@ -70,15 +59,7 @@ namespace Yunyong.DataExchange.UserFacade.Join
         /// <param name="pageSize">每页条数</param>
         public async Task<PagingList<VM>> QueryPagingListAsync<VM>(int pageIndex, int pageSize, Expression<Func<VM>> func)
         {
-            SelectMHandle(func);
-            var result = new PagingList<VM>();
-            result.PageIndex = pageIndex;
-            result.PageSize = pageSize;
-            var paras = DC.GetParameters();
-            var sql = DC.SqlProvider.GetSQL<VM>(UiMethodEnum.JoinQueryPagingListAsync, result.PageIndex, result.PageSize);
-            result.TotalCount = await SqlHelper.ExecuteScalarAsync<int>(DC.Conn, sql[0], paras);
-            result.Data = (await SqlHelper.QueryAsync<VM>(DC.Conn, sql[1], paras)).ToList();
-            return result;
+            return await new QueryPagingListXImpl(DC).QueryPagingListAsync<VM>(pageIndex, pageSize, func);
         }
 
         /// <summary>
@@ -88,16 +69,7 @@ namespace Yunyong.DataExchange.UserFacade.Join
         /// <param name="pageSize">每页条数</param>
         public async Task<PagingList<M>> QueryPagingListAsync<M>(PagingQueryOption option)
         {
-            SelectMHandle<M>();
-            OrderByOptionHandle(option);
-            var result = new PagingList<M>();
-            result.PageIndex = option.PageIndex;
-            result.PageSize = option.PageSize;
-            var paras = DC.GetParameters();
-            var sql = DC.SqlProvider.GetSQL<M>(UiMethodEnum.JoinQueryPagingListAsync, result.PageIndex, result.PageSize);
-            result.TotalCount = await SqlHelper.ExecuteScalarAsync<int>(DC.Conn, sql[0], paras);
-            result.Data = (await SqlHelper.QueryAsync<M>(DC.Conn, sql[1], paras)).ToList();
-            return result;
+            return await new QueryPagingListXOImpl(DC).QueryPagingListAsync<M>(option);
         }
         /// <summary>
         /// 多表分页查询
@@ -107,16 +79,7 @@ namespace Yunyong.DataExchange.UserFacade.Join
         /// <param name="pageSize">每页条数</param>
         public async Task<PagingList<VM>> QueryPagingListAsync<VM>(PagingQueryOption option, Expression<Func<VM>> func)
         {
-            SelectMHandle(func);
-            OrderByOptionHandle(option);
-            var result = new PagingList<VM>();
-            result.PageIndex = option.PageIndex;
-            result.PageSize = option.PageSize;
-            var paras = DC.GetParameters();
-            var sql = DC.SqlProvider.GetSQL<VM>(UiMethodEnum.JoinQueryPagingListAsync, result.PageIndex, result.PageSize);
-            result.TotalCount = await SqlHelper.ExecuteScalarAsync<int>(DC.Conn, sql[0], paras);
-            result.Data = (await SqlHelper.QueryAsync<VM>(DC.Conn, sql[1], paras)).ToList();
-            return result;
+            return await new QueryPagingListXOImpl(DC).QueryPagingListAsync<VM>(option, func);
         }
 
     }
