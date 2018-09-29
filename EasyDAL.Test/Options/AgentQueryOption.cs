@@ -9,6 +9,7 @@ namespace MyDAL.Test.Options
     {
         public Guid? Id { get; set; }
 
+        [QueryColumn("Name", CompareEnum.Like)]
         public string Name { get; set; }
 
         [QueryColumn("CreatedOn", CompareEnum.GreaterThanOrEqual)]

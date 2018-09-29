@@ -116,7 +116,9 @@ namespace Yunyong.DataExchange.Core
                     var mp = objx.GetType().GetProperty(prop.VmField);
                     valType = mp.PropertyType;
                     val = DC.GH.GetTypeValue(valType, mp, objx);
-                    if (val == null)
+                    if (val == null
+                        || "0".Equals(val,StringComparison.OrdinalIgnoreCase)
+                        || (valType==typeof(DateTime) && "0001-01-01 00:00:00.000000".Equals(val,StringComparison.OrdinalIgnoreCase)))
                     {
                         continue;
                     }
@@ -196,14 +198,14 @@ namespace Yunyong.DataExchange.Core
 
         internal void WhereJoinHandle(Operator op, Expression<Func<bool>> func, ActionEnum action)
         {
-            var dic = op.DC.EH.ExpressionHandle(func, action);
+            var dic = op.DC.EH.ExpressionHandle(func, action, CrudTypeEnum.Join);
             dic.Crud = CrudTypeEnum.Join;
             op.DC.AddConditions(dic);
         }
 
         internal void WhereHandle<T>(Expression<Func<T, bool>> func, CrudTypeEnum crud)
         {
-            var field = DC.EH.ExpressionHandle(func);
+            var field = DC.EH.ExpressionHandle(crud,ActionEnum.Where,func);
             field.ClassFullName = typeof(T).FullName;
             field.Action = ActionEnum.Where;
             field.Crud = crud;
@@ -227,26 +229,27 @@ namespace Yunyong.DataExchange.Core
                 {
                     action = ActionEnum.And;
                 }
-                DC.AddConditions(new DicModel
+                var crud = CrudTypeEnum.Query;
+
+                //
+                if (tp.compare == CompareEnum.Like)
                 {
-                    ClassFullName = fullName,
-                    ColumnOne = tp.key,
-                    Param = tp.param,
-                    ParamRaw = tp.param,
-                    CsValue = tp.val,
-                    ValueType = tp.valType,
-                    ColumnType = tp.colType,
-                    Action = action,
-                    Option = OptionEnum.Compare,
-                    Compare = tp.compare,
-                    Crud = CrudTypeEnum.Query
-                });
+                    DC.AddConditions(DicHandle.CallLikeHandle(crud,action,fullName,tp.key, string.Empty, tp.val, tp.valType));
+                }
+                else if(tp.compare== CompareEnum.In)
+                {
+                    DC.AddConditions(DicHandle.CallInHandle(crud,action,fullName,tp.key, string.Empty, tp.val, tp.valType));
+                }
+                else
+                {
+                    DC.AddConditions(DicHandle.BinaryCompareHandle(crud, action, fullName, tp.key, string.Empty, tp.val, tp.valType, tp.compare));
+                }
             }
         }
 
         internal void AndHandle<T>(Expression<Func<T, bool>> func, CrudTypeEnum crud)
         {
-            var field = DC.EH.ExpressionHandle(func);
+            var field = DC.EH.ExpressionHandle(crud,ActionEnum.And,func);
             field.Action = ActionEnum.And;
             field.Crud = crud;
             DC.AddConditions(field);
@@ -254,7 +257,7 @@ namespace Yunyong.DataExchange.Core
 
         internal void OrHandle<T>(Expression<Func<T, bool>> func, CrudTypeEnum crud)
         {
-            var field = DC.EH.ExpressionHandle(func);
+            var field = DC.EH.ExpressionHandle(crud,ActionEnum.Or,func);
             field.Action = ActionEnum.Or;
             field.Crud = crud;
             DC.AddConditions(field);

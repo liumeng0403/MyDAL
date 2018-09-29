@@ -42,9 +42,24 @@ namespace MyDAL.Test.Query
                 .Selecter<Agent>()
                 .Where(option2)
                 .QueryListAsync();
-            //Assert.True(res2.Count == 555);
+            Assert.True(res2.Count == 28619);
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters);
+
+            /*****************************************************************************************************************************/
+
+            var xx3 = "";
+
+            var option3 = new AgentQueryOption();
+            option3.Name = "张";
+
+            var res3 = await Conn
+                .Selecter<Agent>()
+                .Where(option3)
+                .QueryListAsync();
+            Assert.True(res3.Count == 2002);
+
+            var tuple3 = (XDebug.SQL, XDebug.Parameters);
 
             /*****************************************************************************************************************************/
 

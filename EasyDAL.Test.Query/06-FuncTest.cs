@@ -51,7 +51,7 @@ namespace MyDAL.Test.Query
                 .On(() => agent.Id == record.AgentId)
                 .Where(() => agent.Name.Length > 2)
                 .QueryListAsync<Agent>();
-            Assert.True(res2.Count == 457);
+            Assert.True(res2.Count == 574);
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters);
 
