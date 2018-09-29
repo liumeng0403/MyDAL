@@ -28,7 +28,75 @@ namespace Yunyong.DataExchange.Core
             return false;
         }
 
-        private List<(string key, string param, string val, Type valType, string colType, CompareEnum compare)> GetKPV<M>(object objx)
+        private List<(string key, string param, string val, Type valType, string colType, CompareEnum compare)> GetSetKPV<M>(object objx)
+        {
+            var list = new List<DicQueryModel>();
+            var dic = default(IDictionary<string, object>);
+
+            if (objx is ExpandoObject)
+            {
+                dic = objx as IDictionary<string, object>;
+                foreach (var mp in typeof(M).GetProperties())
+                {
+                    foreach (var sp in dic.Keys)
+                    {
+                        if (mp.Name.Equals(sp, StringComparison.OrdinalIgnoreCase))
+                        {
+                            list.Add(new DicQueryModel
+                            {
+                                MField = mp.Name,
+                                VmField = mp.Name,
+                                Compare = CompareEnum.Equal
+                            });
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (var mp in typeof(M).GetProperties())
+                {
+                    foreach (var sp in objx.GetType().GetProperties())
+                    {
+                        if (mp.Name.Equals(sp.Name, StringComparison.OrdinalIgnoreCase))
+                        {
+                            list.Add(new DicQueryModel
+                            {
+                                MField = mp.Name,
+                                VmField = mp.Name,
+                                Compare = CompareEnum.Equal
+                            });
+                        }
+                    }
+                }
+            }
+
+            //
+            var result = new List<(string key, string param, string val, Type valType, string colType, CompareEnum compare)>();
+            var columns = DC.SC.GetColumnInfos(DC.SC.GetKey(typeof(M).FullName, DC.Conn.Database));
+            foreach (var prop in list)
+            {
+                var val = string.Empty;
+                var valType = default(Type);
+                var columnType = columns.First(it => it.ColumnName.Equals(prop.MField, StringComparison.OrdinalIgnoreCase)).DataType;
+                if (objx is ExpandoObject)
+                {
+                    var obj = dic[prop.MField];
+                    valType = obj.GetType();
+                    val = DC.GH.GetTypeValue(valType, obj);
+                    result.Add((prop.MField, prop.VmField, val, valType, columnType, prop.Compare));
+                }
+                else
+                {
+                    var mp = objx.GetType().GetProperty(prop.MField);
+                    valType = mp.PropertyType;
+                    val = DC.GH.GetTypeValue(valType, mp, objx);
+                    result.Add((prop.MField, prop.VmField, val, valType, columnType, prop.Compare));
+                }
+            }
+            return result;
+        }
+        private List<(string key, string param, string val, Type valType, string colType, CompareEnum compare)> GetWhereKPV<M>(object objx)
         {
             var list = new List<DicQueryModel>();
             var dic = default(IDictionary<string, object>);
@@ -117,8 +185,8 @@ namespace Yunyong.DataExchange.Core
                     valType = mp.PropertyType;
                     val = DC.GH.GetTypeValue(valType, mp, objx);
                     if (val == null
-                        || "0".Equals(val,StringComparison.OrdinalIgnoreCase)
-                        || (valType==typeof(DateTime) && "0001-01-01 00:00:00.000000".Equals(val,StringComparison.OrdinalIgnoreCase)))
+                        || (valType.IsEnum && "0".Equals(val, StringComparison.OrdinalIgnoreCase))
+                        || (valType == typeof(DateTime) && "0001-01-01 00:00:00.000000".Equals(val, StringComparison.OrdinalIgnoreCase)))
                     {
                         continue;
                     }
@@ -163,7 +231,7 @@ namespace Yunyong.DataExchange.Core
             }
             DC.AddConditions(new DicModel
             {
-                ClassFullName=typeof(M).FullName,
+                ClassFullName = typeof(M).FullName,
                 ColumnOne = key,
                 Param = key,
                 ParamRaw = key,
@@ -177,13 +245,13 @@ namespace Yunyong.DataExchange.Core
 
         internal void SetDynamicHandle<M>(object mSet)
         {
-            var tuples = GetKPV<M>(mSet);
+            var tuples = GetSetKPV<M>(mSet);
             var fullName = typeof(M).FullName;
             foreach (var tp in tuples)
             {
                 DC.AddConditions(new DicModel
                 {
-                    ClassFullName=fullName,
+                    ClassFullName = fullName,
                     ColumnOne = tp.key,
                     Param = tp.param,
                     ParamRaw = tp.param,
@@ -205,7 +273,7 @@ namespace Yunyong.DataExchange.Core
 
         internal void WhereHandle<T>(Expression<Func<T, bool>> func, CrudTypeEnum crud)
         {
-            var field = DC.EH.ExpressionHandle(crud,ActionEnum.Where,func);
+            var field = DC.EH.ExpressionHandle(crud, ActionEnum.Where, func);
             field.ClassFullName = typeof(T).FullName;
             field.Action = ActionEnum.Where;
             field.Crud = crud;
@@ -214,7 +282,7 @@ namespace Yunyong.DataExchange.Core
 
         internal void WhereDynamicHandle<M>(object mWhere)
         {
-            var tuples = GetKPV<M>(mWhere);
+            var tuples = GetWhereKPV<M>(mWhere);
             var count = 0;
             var action = ActionEnum.None;
             var fullName = typeof(M).FullName;
@@ -234,11 +302,11 @@ namespace Yunyong.DataExchange.Core
                 //
                 if (tp.compare == CompareEnum.Like)
                 {
-                    DC.AddConditions(DicHandle.CallLikeHandle(crud,action,fullName,tp.key, string.Empty, tp.val, tp.valType));
+                    DC.AddConditions(DicHandle.CallLikeHandle(crud, action, fullName, tp.key, string.Empty, tp.val, tp.valType));
                 }
-                else if(tp.compare== CompareEnum.In)
+                else if (tp.compare == CompareEnum.In)
                 {
-                    DC.AddConditions(DicHandle.CallInHandle(crud,action,fullName,tp.key, string.Empty, tp.val, tp.valType));
+                    DC.AddConditions(DicHandle.CallInHandle(crud, action, fullName, tp.key, string.Empty, tp.val, tp.valType));
                 }
                 else
                 {
@@ -249,7 +317,7 @@ namespace Yunyong.DataExchange.Core
 
         internal void AndHandle<T>(Expression<Func<T, bool>> func, CrudTypeEnum crud)
         {
-            var field = DC.EH.ExpressionHandle(crud,ActionEnum.And,func);
+            var field = DC.EH.ExpressionHandle(crud, ActionEnum.And, func);
             field.Action = ActionEnum.And;
             field.Crud = crud;
             DC.AddConditions(field);
@@ -257,7 +325,7 @@ namespace Yunyong.DataExchange.Core
 
         internal void OrHandle<T>(Expression<Func<T, bool>> func, CrudTypeEnum crud)
         {
-            var field = DC.EH.ExpressionHandle(crud,ActionEnum.Or,func);
+            var field = DC.EH.ExpressionHandle(crud, ActionEnum.Or, func);
             field.Action = ActionEnum.Or;
             field.Crud = crud;
             DC.AddConditions(field);
