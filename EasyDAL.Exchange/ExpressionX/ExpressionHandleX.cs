@@ -168,12 +168,12 @@ namespace MyDAL.ExpressionX
             }
         }
         // 02
-        private object HandMember(MemberExpression binRight)
+        private object HandMember(MemberExpression binRight, string funcStr)
         {
             var result = default(object);
             if (binRight.NodeType == ExpressionType.MemberAccess)
             {
-                result = DC.VH.GetMemExprVal(binRight);
+                result = DC.VH.GetMemExprVal(binRight,funcStr);
             }
             else
             {
@@ -182,7 +182,7 @@ namespace MyDAL.ExpressionX
             return result;
         }
         // 02
-        private object HandConvert(Expression binRight)
+        private object HandConvert(Expression binRight, string funcStr)
         {
             var result = default(object);
             if (binRight.NodeType == ExpressionType.Convert)
@@ -199,7 +199,11 @@ namespace MyDAL.ExpressionX
                 }
                 else if (expr.Operand.NodeType == ExpressionType.MemberAccess)
                 {
-                    result = DC.VH.GetMemExprVal(expr.Operand as MemberExpression);
+                    result = DC.VH.GetMemExprVal(expr.Operand as MemberExpression,funcStr);
+                }
+                else if(expr.Operand.NodeType==ExpressionType.Constant)
+                {
+                    result = DC.VH.GetConstantVal(expr.Operand as ConstantExpression, expr.Operand.Type);
                 }
             }
             else
@@ -209,7 +213,7 @@ namespace MyDAL.ExpressionX
             return result;
         }
         // 01
-        private object HandBinary(Expression binRight)
+        private object HandBinary(Expression binRight, string funcStr)
         {
             var val = default(object);
 
@@ -222,13 +226,13 @@ namespace MyDAL.ExpressionX
                     break;
                 case ExpressionType.Call:
                     var rightExpr = binRight as MethodCallExpression;
-                    val = DC.VH.GetCallVal(rightExpr);
+                    val = DC.VH.GetCallVal(rightExpr,funcStr);
                     break;
                 case ExpressionType.MemberAccess:
-                    val = HandMember(binRight as MemberExpression);
+                    val = HandMember(binRight as MemberExpression,funcStr);
                     break;
                 case ExpressionType.Convert:
-                    val = HandConvert(binRight);
+                    val = HandConvert(binRight,funcStr);
                     break;
                 default:
                     throw new Exception();
@@ -240,7 +244,7 @@ namespace MyDAL.ExpressionX
 
         /********************************************************************************************************************/
 
-        private DicModelUI StringLike(MethodCallExpression mcExpr, StringLikeEnum type,ActionEnum action,CrudTypeEnum crud)
+        private DicModelUI StringLike(MethodCallExpression mcExpr, StringLikeEnum type,ActionEnum action,CrudTypeEnum crud, string funcStr)
         {
             if (mcExpr.Object == null)
             {
@@ -261,13 +265,13 @@ namespace MyDAL.ExpressionX
                         switch (type)
                         {
                             case StringLikeEnum.Contains:
-                                val = DC.VH.GetCallVal(mcExpr);
+                                val = DC.VH.GetCallVal(mcExpr,funcStr);
                                 break;
                             case StringLikeEnum.StartsWith:
-                                val = $"{DC.VH.GetCallVal(mcExpr)}%";
+                                val = $"{DC.VH.GetCallVal(mcExpr,funcStr)}%";
                                 break;
                             case StringLikeEnum.EndsWith:
-                                val = $"%{DC.VH.GetCallVal(mcExpr)}";
+                                val = $"%{DC.VH.GetCallVal(mcExpr,funcStr)}";
                                 break;
                         }
                         return DicHandle.CallLikeHandle(crud,action,keyTuple.classFullName,keyTuple.key, keyTuple.alias, val, keyTuple.valType);
@@ -278,13 +282,11 @@ namespace MyDAL.ExpressionX
             return null;
         }
 
-        private DicModelUI CollectionIn(Expression expr, MemberExpression memExpr,ActionEnum action,CrudTypeEnum crud)
+        private DicModelUI CollectionIn(Expression expr, MemberExpression memExpr,ActionEnum action,CrudTypeEnum crud, string funcStr)
         {
             var keyTuple = GetKey(expr, OptionEnum.In);
-            var val = HandMember(memExpr);
+            var val = HandMember(memExpr,funcStr);
             return DicHandle.CallInHandle(crud,action,keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType);
-            //dic.ClassFullName = keyTuple.classFullName;
-            //return dic;
         }
 
         private DicModelUI NewCollectionIn(ExpressionType nodeType, Expression keyExpr, Expression valExpr,ActionEnum action,CrudTypeEnum crud)
@@ -324,7 +326,7 @@ namespace MyDAL.ExpressionX
 
         /********************************************************************************************************************/
 
-        private DicModelUI HandConditionBinary(CrudTypeEnum crud, ActionEnum action, BinaryExpression binExpr, List<string> pres)
+        private DicModelUI HandConditionBinary(CrudTypeEnum crud, ActionEnum action, BinaryExpression binExpr, List<string> pres, string funcStr)
         {
             var binTuple = HandBinExpr(pres, binExpr);
             if ((binTuple.node == ExpressionType.Equal || binTuple.node == ExpressionType.NotEqual)
@@ -356,7 +358,7 @@ namespace MyDAL.ExpressionX
             }
             else
             {
-                var val = HandBinary(binTuple.right);
+                var val = HandBinary(binTuple.right,funcStr);
                 var leftStr = binTuple.left.ToString();
                 if (leftStr.Contains(".Length")
                     && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
@@ -370,13 +372,11 @@ namespace MyDAL.ExpressionX
                 {
                     var keyTuple = GetKey(binTuple.left, OptionEnum.Compare);
                     return DicHandle.BinaryCompareHandle(crud,action, keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType, DicHandle.GetOption(binTuple.node, binTuple.isR));
-                    //dic.ClassFullName = keyTuple.classFullName;
-                    //return dic;
                 }
             }
         }
 
-        private DicModelUI HandConditionCall(MethodCallExpression mcExpr,ActionEnum action,CrudTypeEnum crud)
+        private DicModelUI HandConditionCall(MethodCallExpression mcExpr,ActionEnum action,CrudTypeEnum crud, string funcStr)
         {
             var exprStr = mcExpr.ToString();
             if (exprStr.Contains(".Contains("))
@@ -387,7 +387,7 @@ namespace MyDAL.ExpressionX
                     var memVal = mcExpr.Arguments[0];
                     if (memVal.NodeType == ExpressionType.MemberAccess)
                     {
-                        return CollectionIn(memKey, memVal as MemberExpression,action,crud);
+                        return CollectionIn(memKey, memVal as MemberExpression,action,crud,funcStr);
                     }
                     else if (memVal.NodeType == ExpressionType.NewArrayInit)
                     {
@@ -406,11 +406,11 @@ namespace MyDAL.ExpressionX
                             && memType.GetInterfaces().Contains(typeof(IList))
                             && !memType.IsArray)
                         {
-                            return CollectionIn(mcExpr, memO,action,crud);
+                            return CollectionIn(mcExpr, memO,action,crud,funcStr);
                         }
                         else if (memType == typeof(string))
                         {
-                            return StringLike(mcExpr, StringLikeEnum.Contains,action,crud);
+                            return StringLike(mcExpr, StringLikeEnum.Contains,action,crud,funcStr);
                         }
                     }
                     else if (objNodeType == ExpressionType.ListInit)
@@ -421,11 +421,11 @@ namespace MyDAL.ExpressionX
             }
             else if (exprStr.Contains(".StartsWith("))
             {
-                return StringLike(mcExpr, StringLikeEnum.StartsWith,action,crud);
+                return StringLike(mcExpr, StringLikeEnum.StartsWith,action,crud,funcStr);
             }
             else if (exprStr.Contains(".EndsWith("))
             {
-                return StringLike(mcExpr, StringLikeEnum.EndsWith,action,crud);
+                return StringLike(mcExpr, StringLikeEnum.EndsWith,action,crud,funcStr);
             }
 
             return null;
@@ -537,6 +537,19 @@ namespace MyDAL.ExpressionX
                     var miExpr = func.Body as MemberInitExpression;
                     result = HandSelectMemberInit(miExpr);
                 }
+                else if(nodeType==ExpressionType.Convert)
+                {
+                    var tuple = GetKey(body, OptionEnum.None);
+                    var key = tuple.key;
+                    if(!string.IsNullOrWhiteSpace(key))
+                    {
+                        result.Add(new DicModelUI
+                        {
+                            ClassFullName = tuple.classFullName,
+                            ColumnOne = key
+                        });
+                    }
+                }
 
                 if (result != null
                     && result.Count > 0)
@@ -581,13 +594,13 @@ namespace MyDAL.ExpressionX
                     {
                         func.Parameters[0].Name
                     };
-                    result = HandConditionBinary(crud,action,binExpr, pres);
+                    result = HandConditionBinary(crud,action,binExpr, pres,func.ToString());
                 }
                 else if (nodeType == ExpressionType.Call)
                 {
 
                     var mcExpr = body as MethodCallExpression;
-                    result = HandConditionCall(mcExpr,action,crud);
+                    result = HandConditionCall(mcExpr,action,crud,func.ToString());
                 }
                 else if (nodeType == ExpressionType.Constant)
                 {
@@ -717,13 +730,13 @@ namespace MyDAL.ExpressionX
                         || action == ActionEnum.Or)
                     {
                         var pres = DC.UiConditions.Select(it => it.TableAliasOne).ToList();
-                        result = HandConditionBinary(crud,action, binExpr, pres);
+                        result = HandConditionBinary(crud,action, binExpr, pres,func.ToString());
                     }
                 }
                 else if (nodeType == ExpressionType.Call)
                 {
                     var mcExpr = body as MethodCallExpression;
-                    result = HandConditionCall(mcExpr,action,crud);
+                    result = HandConditionCall(mcExpr,action,crud,func.ToString());
                     result.Action = action;
                 }
                 else if (nodeType == ExpressionType.Constant)

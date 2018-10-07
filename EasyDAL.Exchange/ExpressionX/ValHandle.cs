@@ -103,9 +103,10 @@ namespace MyDAL.ExpressionX
         /*******************************************************************************************************/
 
         // -02-03-
-        internal object GetMemExprVal(MemberExpression memExpr)
+        internal object GetMemExprVal(MemberExpression memExpr, string funcStr)
         {
             var objx = default(object);
+            var fName = string.Empty;
 
             //
             if (memExpr.Expression == null                                                                                    //  null   Property   
@@ -114,6 +115,7 @@ namespace MyDAL.ExpressionX
                 var targetProp = memExpr.Member as PropertyInfo;
                 var type = memExpr.Type as Type;
                 var instance = Activator.CreateInstance(type);
+                fName = targetProp.Name;
                 objx = DC.GH.GetTypeValue(targetProp, instance); // targetProp.GetValue(instance, null).ToString();
             }
             else if (memExpr.Expression.NodeType == ExpressionType.Constant                     //  Constant   Field 
@@ -128,10 +130,12 @@ namespace MyDAL.ExpressionX
                 {
                     var type = memExpr.Type as Type;
                     var vals = fInfo.GetValue(obj);
+                    fName = fInfo.Name;
                     objx = InValueForListT(type, vals, fType.IsArray);
                 }
                 else
                 {
+                    fName = fInfo.Name;
                     objx = fInfo.GetValue(obj);//.ToString();
                 }
             }
@@ -146,10 +150,12 @@ namespace MyDAL.ExpressionX
                 if (IsListT(valType)
                     || valType.IsArray)
                 {
+                    fName = pInfo.Name;
                     objx = InValueForListT(valType, valObj, valType.IsArray);
                 }
                 else
                 {
+                    fName = pInfo.Name;
                     objx = DC.GH.GetTypeValue(pInfo, obj);    // 此项 可能 有问题 
                 }
             }
@@ -170,10 +176,12 @@ namespace MyDAL.ExpressionX
                     {
                         var type = memExpr.Type as Type;
                         var vals = targetProp.GetValue(valObj);
+                        fName = targetProp.Name;
                         objx = InValueForListT(type, vals, fType.IsArray);
                     }
                     else
                     {
+                        fName = targetProp.Name;
                         objx = DC.GH.GetTypeValue(targetProp, valObj);
                     }
                 }
@@ -184,23 +192,33 @@ namespace MyDAL.ExpressionX
                     var obj = cExpr.Value;
                     var valObj = fInfo.GetValue(obj);
                     var valType = targetProp.PropertyType;
+                    fName = targetProp.Name;
                     objx = DC.GH.GetTypeValue(targetProp, valObj);
                 }
             }
 
             //
             //if (!string.IsNullOrWhiteSpace(objx))
-            if (objx != null)
+            //if (objx != null)
+            //{
+            //    return objx;
+            //}
+            //else if( objx==null
+            //    && )
+            //else
+            //{
+            //    throw new Exception();
+            //}
+
+            if (objx == null)
             {
-                return objx;
+                throw new Exception($"条件筛选表达式【{funcStr}】中,条件值【{fName}】不能为 Null !");
             }
-            else
-            {
-                throw new Exception();
-            }
+
+            return objx;
         }
         // 01
-        internal object GetCallVal(MethodCallExpression mcExpr)
+        internal object GetCallVal(MethodCallExpression mcExpr, string funcStr)
         {
             var val = default(object);
 
@@ -217,7 +235,7 @@ namespace MyDAL.ExpressionX
                 }
                 else if (mcExpr.Object.NodeType == ExpressionType.MemberAccess)
                 {
-                    var obj = Convert.ToDateTime(GetMemExprVal(mcExpr.Object as MemberExpression));
+                    var obj = Convert.ToDateTime(GetMemExprVal(mcExpr.Object as MemberExpression,funcStr));
                     var method = mcExpr.Method.Name;
                     var args = new List<object>();
                     foreach (var arg in mcExpr.Arguments)
@@ -238,15 +256,9 @@ namespace MyDAL.ExpressionX
             }
             else if (pExpr.NodeType == ExpressionType.MemberAccess)
             {
-                val = GetMemExprVal(pExpr as MemberExpression);
+                val = GetMemExprVal(pExpr as MemberExpression,funcStr);
             }
-            //else
-            //{
-            //    val = string.Empty;
-            //}
 
-            //
-            //if (!string.IsNullOrWhiteSpace(val))
             if (val != null)
             {
                 return val;
@@ -259,11 +271,9 @@ namespace MyDAL.ExpressionX
         // 01
         internal object GetConstantVal(ConstantExpression con, Type valType)
         {
-            //var con = conExpr as ConstantExpression;
-
             if (valType.IsEnum)
             {
-                return (int)(con.Value); // ((int)(con.Value)).ToString();
+                return con.Value; // (int)(con.Value); // ((int)(con.Value)).ToString();
             }
             else
             {

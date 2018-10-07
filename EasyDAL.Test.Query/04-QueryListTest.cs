@@ -140,6 +140,7 @@ namespace MyDAL.Test.Query
                     XXXX = agent.Name,
                     YYYY = agent.PathId
                 });
+            Assert.True(res7.Count == 555);
 
             var tuple7 = (XDebug.SQL, XDebug.Parameters);
 

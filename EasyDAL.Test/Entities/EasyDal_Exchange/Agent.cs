@@ -41,7 +41,7 @@ namespace MyDAL.Test.Entities.EasyDal_Exchange
         
         public string CrmUserId { get; set; }
         
-        public AgentLevel AgentLevel { get; set; }
+        public AgentLevel? AgentLevel { get; set; }
         
         public DateTime? ActivedOn { get; set; }
         

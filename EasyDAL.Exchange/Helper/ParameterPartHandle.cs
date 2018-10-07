@@ -47,7 +47,8 @@ namespace MyDAL.Helper
             if (!string.IsNullOrWhiteSpace(colType)
                 && colType.Equals("int", StringComparison.OrdinalIgnoreCase))
             {
-                var val = (int)(Enum.Parse(item.ValueType, item.CsValue.ToString(), true));
+                //var val = (int)(Enum.Parse(item.ValueType, item.CsValue.ToString(), true));
+                var val = (int)item.CsValue;
                 return GetDefault(item.Param, val, DbType.Int32);
             }
             else

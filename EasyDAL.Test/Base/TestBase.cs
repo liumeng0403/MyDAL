@@ -21,13 +21,14 @@ namespace MyDAL.Test
                     DateTime_大于等于 = DateTime.Now.AddDays(-30),
                     DateTime_小于等于 = DateTime.Now,
                     AgentLevelXX = AgentLevel.DistiAgent,
+                    AgentLevelNull=null,
                     ContainStr = "~00-d-3-1-",
-                    In_List_枚举 = new List<AgentLevel>
+                    In_List_枚举 = new List<AgentLevel?>
                     {
                         AgentLevel.CityAgent,
                         AgentLevel.DistiAgent
                     },
-                    In_Array_枚举 = new AgentLevel[]
+                    In_Array_枚举 = new AgentLevel?[]
                     {
                         AgentLevel.CityAgent,
                         AgentLevel.DistiAgent

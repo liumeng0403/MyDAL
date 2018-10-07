@@ -150,6 +150,30 @@ namespace MyDAL.Test.Create
 
             /********************************************************************************************************************************/
 
+            var xx5 = "";
+
+            var res5 = await Conn
+                .Creater<Agent>()
+                .CreateAsync(new Agent
+                {
+                    Id = Guid.NewGuid(),
+                    CreatedOn = Convert.ToDateTime("2018-10-07 17:02:05"),
+                    UserId = Guid.NewGuid(),
+                    PathId = "xx-yy-zz-mm-nn",
+                    Name = "meng-net",
+                    Phone = "17600000000",
+                    IdCardNo = "876987698798",
+                    CrmUserId = Guid.NewGuid().ToString(),
+                    AgentLevel = null,
+                    ActivedOn = null,
+                    ActiveOrderId = null,
+                    DirectorStarCount = 1
+                });
+
+            var tuple5 = (XDebug.SQL, XDebug.Parameters);
+
+            /********************************************************************************************************************************/
+
             var xx = "";
         }
 

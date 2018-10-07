@@ -37,7 +37,7 @@ namespace MyDAL.Test.Query
                 .Selecter<Agent>()
                 .Where(it => it.AgentLevel == (AgentLevel)2)
                 .QueryPagingListAsync(1, 10);
-            Assert.True(res2.TotalCount == 28064);
+            Assert.True(res2.TotalPage == 2807);
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters);
 

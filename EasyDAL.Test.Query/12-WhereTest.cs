@@ -1,6 +1,7 @@
 ﻿using MyDAL.Test.Entities.EasyDal_Exchange;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -10,14 +11,27 @@ namespace MyDAL.Test.Query
     public class _12_WhereTest:TestBase
     {
 
-        public async void PreData3()
+        public async Task<Agent> PreData3()
         {
-            WhereTest.AgentLevelXX = null;
+            var m = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.Id == Guid.Parse("0001c614-dbef-4335-94b4-01654433a215"))
+                .QueryFirstOrDefaultAsync();
 
             await Conn
                 .Updater<Agent>()
-                .Set(it => it.AgentLevel, WhereTest.AgentLevelXX)
-                .Where(it => it.Id == Guid.Parse("0001c614-dbef-4335-94b4-01654433a215"))
+                .Set(it => it.AgentLevel, WhereTest.AgentLevelNull)
+                .Where(it => it.Id == m.Id)
+                .UpdateAsync();
+
+            return m;
+        }
+        public async Task ClearData3(Agent m)
+        {
+            await Conn
+                .Updater<Agent>()
+                .Set(it => it.AgentLevel, m.AgentLevel)
+                .Where(it => it.Id == m.Id)
                 .UpdateAsync();
         }
 
@@ -52,19 +66,25 @@ namespace MyDAL.Test.Query
             var tuple2 = (XDebug.SQL, XDebug.Parameters);
 
             /************************************************************************************************************************/
-
+           
             var xx3 = "";
 
-            PreData3();
-            WhereTest.AgentLevelXX = null;
+            var m = await PreData3();
             // 
-            var res3 = await Conn
-                .Selecter<Agent>()
-                .Where(it => it.AgentLevel == WhereTest.AgentLevelXX)
-                .QueryListAsync();
-            Assert.True(res2.Count == 1);
+            try
+            {
+                var res3 = await Conn
+                    .Selecter<Agent>()
+                    .Where(it => it.AgentLevel == WhereTest.AgentLevelNull)
+                    .QueryListAsync();
+            }
+            catch(Exception ex)
+            {
+                var tuple3 = (XDebug.SQL, XDebug.Parameters);
+                Assert.True(ex.Message.Equals("条件筛选表达式【it => (Convert(it.AgentLevel, Nullable`1) == Convert(value(MyDAL.Test.Query._12_WhereTest).WhereTest.AgentLevelNull, Nullable`1))】中,条件值【AgentLevelNull】不能为 Null !"));
+            }
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters);
+            await ClearData3(m);
 
             /************************************************************************************************************************/
 

@@ -11,8 +11,8 @@ namespace MyDAL.Test.Query
 {
     public class _06_InTest : TestBase
     {
-        private List<AgentLevel> EnumList { get; set; }
-        private AgentLevel[] EnumArray { get; set; }
+        private List<AgentLevel?> EnumList { get; set; }
+        private AgentLevel?[] EnumArray { get; set; }
         private List<string> StringList { get; set; }
         private string[] StringArray { get; set; }
         private async Task PereValue()
@@ -45,7 +45,7 @@ namespace MyDAL.Test.Query
 
             var xx1 = "";
 
-            var enums = new List<AgentLevel>
+            var enums = new List<AgentLevel?>
             {
                 AgentLevel.CityAgent,
                 AgentLevel.DistiAgent
@@ -198,7 +198,7 @@ namespace MyDAL.Test.Query
             // where in -- List<enum> init
             var res11 = await Conn
                 .Selecter<Agent>()
-                .Where(it => new List<AgentLevel> { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel))
+                .Where(it => new List<AgentLevel?> { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel))
                 .QueryListAsync();
             Assert.True(res11.Count == 555);
 
@@ -208,7 +208,7 @@ namespace MyDAL.Test.Query
 
             var xx12 = "";
 
-            var enumArray = new AgentLevel[]
+            var enumArray = new AgentLevel?[]
             {
                 AgentLevel.CityAgent,
                 AgentLevel.DistiAgent
@@ -360,7 +360,7 @@ namespace MyDAL.Test.Query
             // where in -- enum[] init
             var res22 = await Conn
                 .Selecter<Agent>()
-                .Where(it => new AgentLevel[] { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel))
+                .Where(it => new AgentLevel?[] { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel))
                 .QueryListAsync();
             Assert.True(res22.Count == 555);
 
@@ -376,7 +376,7 @@ namespace MyDAL.Test.Query
                 .From(() => agent)
                 .InnerJoin(() => record)
                 .On(() => agent.Id == record.AgentId)
-                .Where(() => new AgentLevel[] { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(agent.AgentLevel))
+                .Where(() => new AgentLevel?[] { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(agent.AgentLevel))
                 .QueryListAsync<Agent>();
             Assert.True(res23.Count == 574);
 

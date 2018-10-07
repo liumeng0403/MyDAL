@@ -18,7 +18,7 @@ namespace MyDAL.Impls
 
         public async Task<int> CreateBatchAsync(IEnumerable<M> mList)
         {
-            return await DC.BDH.StepProcess(mList, 15, async list =>
+            return await DC.BDH.StepProcess(mList, 35, async list =>
             {
                 DC.ResetConditions();
                 DC.GetProperties(list);

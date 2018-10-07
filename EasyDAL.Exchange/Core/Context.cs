@@ -131,24 +131,25 @@ namespace MyDAL.Core
                 }
                 UiConditions.Remove(dic);
             }
-            else if (!string.IsNullOrWhiteSpace(dic.Param)
-                && UiConditions.Any(it => dic.Param.Equals(it.Param, StringComparison.OrdinalIgnoreCase)))
-            {
-                if (dic.Param.Contains("__"))
-                {
-                    var arr = dic.Param.Split(new string[] { "__" }, StringSplitOptions.RemoveEmptyEntries);
-                    var val = Convert.ToInt32(arr[arr.Length - 1]);
-                    val++;
-                    dic.Param = dic.ParamRaw + "__" + val.ToString();
-                }
-                else
-                {
-                    dic.Param += "__1";
-                }
-                AddConditions(dic);
-            }
+            //else if (!string.IsNullOrWhiteSpace(dic.Param)
+            //    && UiConditions.Any(it => dic.Param.Equals(it.Param, StringComparison.OrdinalIgnoreCase)))
+            //{
+            //    if (dic.Param.Contains("__"))
+            //    {
+            //        var arr = dic.Param.Split(new string[] { "__" }, StringSplitOptions.RemoveEmptyEntries);
+            //        var val = Convert.ToInt32(arr[arr.Length - 1]);
+            //        val++;
+            //        dic.Param = dic.ParamRaw + "__" + val.ToString();
+            //    }
+            //    else
+            //    {
+            //        dic.Param += "__1";
+            //    }
+            //    AddConditions(dic);
+            //}
             else
             {
+                //
                 if(UiConditions.Count==0)
                 {
                     dic.ID = 0;
@@ -157,6 +158,14 @@ namespace MyDAL.Core
                 {
                     dic.ID = UiConditions.Max(it => it.ID) + 1;
                 }
+
+                //
+                if(!string.IsNullOrWhiteSpace(dic.ParamRaw))
+                {
+                    dic.Param = $"{dic.ParamRaw}__{dic.ID}";
+                }
+
+                //
                 UiConditions.Add(dic);
             }
         }

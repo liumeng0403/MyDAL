@@ -1,6 +1,5 @@
 ﻿using MyDAL.Core;
 using MyDAL.Enums;
-using MyDAL.Extensions;
 using System;
 using System.Data;
 using System.Linq;
@@ -10,7 +9,7 @@ namespace MyDAL.Common
     internal abstract class Impler
         : Operator
     {
-        private void GetDbVal(DicModelUI ui,DicModelDB db)
+        private void GetDbVal(DicModelUI ui,DicModelDB db,Type realType)
         {
 
             //
@@ -28,36 +27,42 @@ namespace MyDAL.Common
                 }
 
                 //
-                if (ui.ValueType == typeof(bool)
-                     || ui.ValueType == typeof(bool?))
+                if (realType == typeof(bool)
+                     || realType == typeof(bool?))
                 {
                     var para = DC.PPH.BoolParamHandle(db.ColumnType, ui);
                     db.DbValue = para.Value;
                     db.DbType = para.DbType;
                 }
-                else if (ui.ValueType == typeof(short)
-                        || ui.ValueType == typeof(short?))
+                else if (realType == typeof(short)
+                        || realType == typeof(short?))
                 {
                     db.DbValue = ui.CsValue;//.ToShort();
                     db.DbType = DbType.Int16;
                 }
-                else if (ui.ValueType == typeof(int)
-                        || ui.ValueType == typeof(int?))
+                else if (realType == typeof(int)
+                        || realType == typeof(int?))
                 {
                     db.DbValue = ui.CsValue;//.ToInt();
                     db.DbType = DbType.Int32;
                 }
-                else if (ui.ValueType == typeof(long)
-                        || ui.ValueType == typeof(long?))
+                else if (realType == typeof(long)
+                        || realType == typeof(long?))
                 {
                     db.DbValue = ui.CsValue;//.ToLong();
                     db.DbType = DbType.Int64;
                 }
-                else if (ui.ValueType.IsEnum)
+                else if (realType.IsEnum)
                 {
                     var para = DC.PPH.EnumParamHandle(db.ColumnType, ui);
                     db.DbValue = para.Value;
                     db.DbType = para.DbType;
+                }
+                else if(realType.IsGenericType
+                    && realType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                {
+                    var type = realType.GetGenericArguments()[0];
+                    GetDbVal(ui, db, type);
                 }
                 else
                 {
@@ -98,7 +103,7 @@ namespace MyDAL.Common
                     db.Param = ui.Param;
                     db.ParamRaw = ui.ParamRaw;
                     db.TvpIndex = ui.TvpIndex;
-                    GetDbVal(ui, db);
+                    GetDbVal(ui, db, ui.ValueType);
                     DC.DbConditions.Add(db);
                 }
             }
