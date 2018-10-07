@@ -14,7 +14,7 @@ namespace MyDAL.Test.Entities
         public DateTime DateTime_大于等于 { get; set; }
         public DateTime DateTime_小于等于 { get; set; }
 
-        public AgentLevel AgentLevelXX { get; set; }
+        public AgentLevel? AgentLevelXX { get; set; }
 
         public string ContainStr { get; set; }
 
@@ -24,5 +24,7 @@ namespace MyDAL.Test.Entities
 
         public List<string> In_List_String { get; set; }
         public string[] In_Array_String { get; set; }
+
+        public string Name { get; set; }
     }
 }

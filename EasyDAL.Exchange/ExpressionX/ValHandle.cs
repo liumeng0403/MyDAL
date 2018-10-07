@@ -190,7 +190,7 @@ namespace MyDAL.ExpressionX
 
             //
             //if (!string.IsNullOrWhiteSpace(objx))
-            if (objx == null)
+            if (objx != null)
             {
                 return objx;
             }
