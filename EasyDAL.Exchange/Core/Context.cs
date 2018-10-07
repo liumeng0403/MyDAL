@@ -86,11 +86,12 @@ namespace MyDAL.Core
 
         internal void AddConditions(DicModelUI dic)
         {
-            if (!string.IsNullOrWhiteSpace(dic.CsValue)
-                && dic.CsValue.Contains(",")
-                && dic.Option == OptionEnum.In)
+            if (/*!string.IsNullOrWhiteSpace(dic.CsValue)*/
+                dic.CsValue!=null
+                && dic.Option == OptionEnum.In
+                && dic.CsValue.ToString().Contains(","))
             {
-                var vals = dic.CsValue.Split(',').Select(it => it);
+                var vals = dic.CsValue.ToString().Split(',').Select(it => it);
                 var i = 0;
                 foreach (var val in vals)
                 {
@@ -189,7 +190,7 @@ namespace MyDAL.Core
 
             foreach (var prop in props)
             {
-                var val = GH.GetTypeValue(prop.PropertyType, prop, m);
+                var val = GH.GetTypeValue(prop, m);
                 AddConditions(new DicModelUI
                 {
                     ClassFullName=fullName,

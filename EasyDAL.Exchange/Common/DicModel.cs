@@ -40,7 +40,7 @@ namespace MyDAL.Common
         public string ColumnAlias { get; set; }
         public string Param { get; set; }
         public string ParamRaw { get; set; }
-        public string CsValue { get; set; }
+        public object CsValue { get; set; }
         public Type ValueType { get; set; }
         
         public int TvpIndex { get; set; }

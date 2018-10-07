@@ -168,9 +168,9 @@ namespace MyDAL.ExpressionX
             }
         }
         // 02
-        private string HandMember(MemberExpression binRight)
+        private object HandMember(MemberExpression binRight)
         {
-            var result = default(string);
+            var result = default(object);
             if (binRight.NodeType == ExpressionType.MemberAccess)
             {
                 result = DC.VH.GetMemExprVal(binRight);
@@ -182,9 +182,9 @@ namespace MyDAL.ExpressionX
             return result;
         }
         // 02
-        private string HandConvert(Expression binRight)
+        private object HandConvert(Expression binRight)
         {
-            var result = default(string);
+            var result = default(object);
             if (binRight.NodeType == ExpressionType.Convert)
             {
                 var expr = binRight as UnaryExpression;
@@ -195,7 +195,7 @@ namespace MyDAL.ExpressionX
                     var memCon = memExpr.Expression as ConstantExpression;
                     var memObj = memCon.Value;
                     var memFiled = memExpr.Member as FieldInfo;
-                    result = memFiled.GetValue(memObj).ToString();
+                    result = memFiled.GetValue(memObj);//.ToString();
                 }
                 else if (expr.Operand.NodeType == ExpressionType.MemberAccess)
                 {
@@ -209,9 +209,9 @@ namespace MyDAL.ExpressionX
             return result;
         }
         // 01
-        private string HandBinary(Expression binRight)
+        private object HandBinary(Expression binRight)
         {
-            var val = string.Empty;
+            var val = default(object);
 
             //
             switch (binRight.NodeType)
@@ -257,7 +257,7 @@ namespace MyDAL.ExpressionX
                     if (memType == typeof(string))
                     {
                         var keyTuple = GetKey(memO, OptionEnum.Like);
-                        var val = string.Empty;
+                        var val = default(object);
                         switch (type)
                         {
                             case StringLikeEnum.Contains:
@@ -271,8 +271,6 @@ namespace MyDAL.ExpressionX
                                 break;
                         }
                         return DicHandle.CallLikeHandle(crud,action,keyTuple.classFullName,keyTuple.key, keyTuple.alias, val, keyTuple.valType);
-                        //dic.ClassFullName = keyTuple.classFullName;
-                        //return dic;
                     }
                 }
             }
@@ -295,7 +293,7 @@ namespace MyDAL.ExpressionX
             {
                 var naExpr = valExpr as NewArrayExpression;
                 var keyTuple = GetKey(keyExpr, OptionEnum.In);
-                var vals = new List<string>();
+                var vals = new List<object>();
                 foreach (var exp in naExpr.Expressions)
                 {
                     vals.Add(DC.VH.GetConstantVal(exp as ConstantExpression, keyTuple.valType));
@@ -310,7 +308,7 @@ namespace MyDAL.ExpressionX
             {
                 var liExpr = valExpr as ListInitExpression;
                 var keyTuple = GetKey(keyExpr, OptionEnum.In);
-                var vals = new List<string>();
+                var vals = new List<object>();
                 foreach (var ini in liExpr.Initializers)
                 {
                     var arg = ini.Arguments[0];
@@ -319,8 +317,6 @@ namespace MyDAL.ExpressionX
 
                 var val = string.Join(",", vals);
                 return DicHandle.CallInHandle(crud,action, keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType);
-                //dic.ClassFullName = keyTuple.classFullName;
-                //return dic;
             }
 
             return null;

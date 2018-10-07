@@ -42,7 +42,7 @@ namespace MyDAL.ExpressionX
 
         /*******************************************************************************************************/
 
-        internal static DicModelUI BinaryCharLengthHandle(string key, string alias, string value, Type valType, ExpressionType nodeType, bool isR)
+        internal static DicModelUI BinaryCharLengthHandle(string key, string alias, object value, Type valType, ExpressionType nodeType, bool isR)
         {
             return new DicModelUI
             {
@@ -57,7 +57,7 @@ namespace MyDAL.ExpressionX
             };
         }
         // 01
-        internal static DicModelUI BinaryCompareHandle(CrudTypeEnum crud, ActionEnum action,string classFullName,string key, string alias, string value, Type valType,CompareEnum compare)
+        internal static DicModelUI BinaryCompareHandle(CrudTypeEnum crud, ActionEnum action,string classFullName,string key, string alias, object value, Type valType,CompareEnum compare)
         {
             return new DicModelUI
             {
@@ -75,7 +75,7 @@ namespace MyDAL.ExpressionX
             };
         }
         // 01
-        internal static DicModelUI CallInHandle(CrudTypeEnum crud,ActionEnum action, string classFullName, string key, string alias, string value, Type valType)
+        internal static DicModelUI CallInHandle(CrudTypeEnum crud,ActionEnum action, string classFullName, string key, string alias, object value, Type valType)
         {
             return new DicModelUI
             {
@@ -92,7 +92,7 @@ namespace MyDAL.ExpressionX
             };
         }
         // 01
-        internal static DicModelUI CallLikeHandle(CrudTypeEnum crud, ActionEnum action, string classFullName, string key, string alias, string value, Type valType)
+        internal static DicModelUI CallLikeHandle(CrudTypeEnum crud, ActionEnum action, string classFullName, string key, string alias, object value, Type valType)
         {
             return new DicModelUI
             {
@@ -109,7 +109,7 @@ namespace MyDAL.ExpressionX
             };
         }
         // 01
-        internal static DicModelUI ConstantBoolHandle(string value, Type valType)
+        internal static DicModelUI ConstantBoolHandle(object value, Type valType)
         {
             return new DicModelUI
             {

@@ -73,7 +73,7 @@ namespace MyDAL.ExpressionX
             }
             else
             {
-                var currAssembly = DC.SC.GetAssembly(typeT.FullName,DC);
+                var currAssembly = DC.SC.GetAssembly(typeT.FullName, DC);
                 valType = currAssembly.GetType(typeT.FullName);
             }
 
@@ -91,7 +91,7 @@ namespace MyDAL.ExpressionX
             }
             for (var i = 0; i < num; i++)
             {
-                intVals.Add(DC.GH.GetTypeValue(valType, ds[i]));
+                intVals.Add(DC.GH.GetTypeValue(ds[i]));
             }
             str = string.Join(",", intVals.Select(it => it.ToString()));
 
@@ -103,9 +103,9 @@ namespace MyDAL.ExpressionX
         /*******************************************************************************************************/
 
         // -02-03-
-        internal string GetMemExprVal(MemberExpression memExpr)
+        internal object GetMemExprVal(MemberExpression memExpr)
         {
-            var str = string.Empty;
+            var objx = default(object);
 
             //
             if (memExpr.Expression == null                                                                                    //  null   Property   
@@ -114,7 +114,7 @@ namespace MyDAL.ExpressionX
                 var targetProp = memExpr.Member as PropertyInfo;
                 var type = memExpr.Type as Type;
                 var instance = Activator.CreateInstance(type);
-                str = targetProp.GetValue(instance, null).ToString();
+                objx = DC.GH.GetTypeValue(targetProp, instance); // targetProp.GetValue(instance, null).ToString();
             }
             else if (memExpr.Expression.NodeType == ExpressionType.Constant                     //  Constant   Field 
                 && memExpr.Member.MemberType == MemberTypes.Field)
@@ -128,11 +128,11 @@ namespace MyDAL.ExpressionX
                 {
                     var type = memExpr.Type as Type;
                     var vals = fInfo.GetValue(obj);
-                    str = InValueForListT(type, vals, fType.IsArray);
+                    objx = InValueForListT(type, vals, fType.IsArray);
                 }
                 else
                 {
-                    str = fInfo.GetValue(obj).ToString();
+                    objx = fInfo.GetValue(obj);//.ToString();
                 }
             }
             else if (memExpr.Expression.NodeType == ExpressionType.Constant                     //  Constant   Property
@@ -146,11 +146,11 @@ namespace MyDAL.ExpressionX
                 if (IsListT(valType)
                     || valType.IsArray)
                 {
-                    str = InValueForListT(valType, valObj, valType.IsArray);
+                    objx = InValueForListT(valType, valObj, valType.IsArray);
                 }
                 else
                 {
-                    str = DC.GH.GetTypeValue(valType, pInfo, obj);    // 此项 可能 有问题 
+                    objx = DC.GH.GetTypeValue(pInfo, obj);    // 此项 可能 有问题 
                 }
             }
             else if (memExpr.Expression.NodeType == ExpressionType.MemberAccess          //  MemberAccess   Property
@@ -170,11 +170,11 @@ namespace MyDAL.ExpressionX
                     {
                         var type = memExpr.Type as Type;
                         var vals = targetProp.GetValue(valObj);
-                        str = InValueForListT(type, vals, fType.IsArray);
+                        objx = InValueForListT(type, vals, fType.IsArray);
                     }
                     else
                     {
-                        str = DC.GH.GetTypeValue(fType, targetProp, valObj);
+                        objx = DC.GH.GetTypeValue(targetProp, valObj);
                     }
                 }
                 else if (innerMember.Member.MemberType == MemberTypes.Field)
@@ -184,14 +184,15 @@ namespace MyDAL.ExpressionX
                     var obj = cExpr.Value;
                     var valObj = fInfo.GetValue(obj);
                     var valType = targetProp.PropertyType;
-                    str = DC.GH.GetTypeValue(valType, targetProp, valObj);
+                    objx = DC.GH.GetTypeValue(targetProp, valObj);
                 }
             }
 
             //
-            if (!string.IsNullOrWhiteSpace(str))
+            //if (!string.IsNullOrWhiteSpace(objx))
+            if (objx == null)
             {
-                return str;
+                return objx;
             }
             else
             {
@@ -199,9 +200,9 @@ namespace MyDAL.ExpressionX
             }
         }
         // 01
-        internal string GetCallVal(MethodCallExpression mcExpr)
+        internal object GetCallVal(MethodCallExpression mcExpr)
         {
-            var val = string.Empty;
+            var val = default(object);
 
             //
             var type = mcExpr.Type;
@@ -227,7 +228,7 @@ namespace MyDAL.ExpressionX
                             args.Add(carg.Value);
                         }
                     }
-                    val = (type.InvokeMember(method, BindingFlags.Default | BindingFlags.InvokeMethod, null, obj, args.ToArray())).ToString();
+                    val = type.InvokeMember(method, BindingFlags.Default | BindingFlags.InvokeMethod, null, obj, args.ToArray());//.ToString();
                 }
             }
             else if (pExpr.NodeType == ExpressionType.Constant)
@@ -239,13 +240,14 @@ namespace MyDAL.ExpressionX
             {
                 val = GetMemExprVal(pExpr as MemberExpression);
             }
-            else
-            {
-                val = string.Empty;
-            }
+            //else
+            //{
+            //    val = string.Empty;
+            //}
 
             //
-            if (!string.IsNullOrWhiteSpace(val))
+            //if (!string.IsNullOrWhiteSpace(val))
+            if (val != null)
             {
                 return val;
             }
@@ -255,17 +257,17 @@ namespace MyDAL.ExpressionX
             }
         }
         // 01
-        internal string GetConstantVal(ConstantExpression con, Type valType)
+        internal object GetConstantVal(ConstantExpression con, Type valType)
         {
             //var con = conExpr as ConstantExpression;
 
             if (valType.IsEnum)
             {
-                return ((int)(con.Value)).ToString();
+                return (int)(con.Value); // ((int)(con.Value)).ToString();
             }
             else
             {
-                return con.Value.ToString();
+                return con.Value; // .ToString();
             }
         }
 
