@@ -28,7 +28,7 @@ namespace Yunyong.DataExchange.Core
             return false;
         }
 
-        private List<(string key, string param, string val, Type valType, string colType, CompareEnum compare)> GetSetKPV<M>(object objx)
+        private List<(string key, string param, object val, Type valType, string colType, CompareEnum compare)> GetSetKPV<M>(object objx)
         {
             var list = new List<DicQueryModel>();
             var dic = default(IDictionary<string, object>);
@@ -72,31 +72,31 @@ namespace Yunyong.DataExchange.Core
             }
 
             //
-            var result = new List<(string key, string param, string val, Type valType, string colType, CompareEnum compare)>();
+            var result = new List<(string key, string param, object val, Type valType, string colType, CompareEnum compare)>();
             var columns = DC.SC.GetColumnInfos(DC.SC.GetKey(typeof(M).FullName, DC.Conn.Database));
             foreach (var prop in list)
             {
-                var val = string.Empty;
+                var val = default(object);
                 var valType = default(Type);
                 var columnType = columns.First(it => it.ColumnName.Equals(prop.MField, StringComparison.OrdinalIgnoreCase)).DataType;
                 if (objx is ExpandoObject)
                 {
                     var obj = dic[prop.MField];
                     valType = obj.GetType();
-                    val = DC.GH.GetTypeValue(valType, obj);
+                    val = DC.GH.GetTypeValue(obj);
                     result.Add((prop.MField, prop.VmField, val, valType, columnType, prop.Compare));
                 }
                 else
                 {
                     var mp = objx.GetType().GetProperty(prop.MField);
                     valType = mp.PropertyType;
-                    val = DC.GH.GetTypeValue(valType, mp, objx);
+                    val = DC.GH.GetTypeValue(mp, objx);
                     result.Add((prop.MField, prop.VmField, val, valType, columnType, prop.Compare));
                 }
             }
             return result;
         }
-        private List<(string key, string param, string val, Type valType, string colType, CompareEnum compare)> GetWhereKPV<M>(object objx)
+        private List<(string key, string param, object val, Type valType, string colType, CompareEnum compare)> GetWhereKPV<M>(object objx)
         {
             var list = new List<DicQueryModel>();
             var dic = default(IDictionary<string, object>);
@@ -172,21 +172,21 @@ namespace Yunyong.DataExchange.Core
             }
 
             //
-            var result = new List<(string key, string param, string val, Type valType, string colType, CompareEnum compare)>();
+            var result = new List<(string key, string param, object val, Type valType, string colType, CompareEnum compare)>();
             var columns = DC.SC.GetColumnInfos(DC.SC.GetKey(typeof(M).FullName, DC.Conn.Database));
             foreach (var prop in list)
             {
-                var val = string.Empty;
+                var val = default(object);
                 var valType = default(Type);
                 var columnType = columns.First(it => it.ColumnName.Equals(prop.MField, StringComparison.OrdinalIgnoreCase)).DataType;
                 if (objx is PagingQueryOption)
                 {
                     var mp = objx.GetType().GetProperty(prop.VmField);
                     valType = mp.PropertyType;
-                    val = DC.GH.GetTypeValue(valType, mp, objx);
+                    val = DC.GH.GetTypeValue(mp, objx);
                     if (val == null
-                        || (valType.IsEnum && "0".Equals(val, StringComparison.OrdinalIgnoreCase))
-                        || (valType == typeof(DateTime) && "0001-01-01 00:00:00.000000".Equals(val, StringComparison.OrdinalIgnoreCase)))
+                        || (valType.IsEnum && "0".Equals(val.ToString(), StringComparison.OrdinalIgnoreCase))
+                        || (valType == typeof(DateTime) && "0001-01-01 00:00:00.000000".Equals(val.ToString(), StringComparison.OrdinalIgnoreCase)))
                     {
                         continue;
                     }
@@ -196,14 +196,14 @@ namespace Yunyong.DataExchange.Core
                 {
                     var obj = dic[prop.MField];
                     valType = obj.GetType();
-                    val = DC.GH.GetTypeValue(valType, obj);
+                    val = DC.GH.GetTypeValue(obj);
                     result.Add((prop.MField, prop.VmField, val, valType, columnType, prop.Compare));
                 }
                 else
                 {
                     var mp = objx.GetType().GetProperty(prop.MField);
                     valType = mp.PropertyType;
-                    val = DC.GH.GetTypeValue(valType, mp, objx);
+                    val = DC.GH.GetTypeValue(mp, objx);
                     result.Add((prop.MField, prop.VmField, val, valType, columnType, prop.Compare));
                 }
             }
@@ -220,14 +220,14 @@ namespace Yunyong.DataExchange.Core
         {
             var keyDic = DC.EH.ExpressionHandle(func)[0];
             var key = keyDic.ColumnOne;
-            var val = string.Empty;
+            var val =default(object);
             if (modVal == null)
             {
                 val = null;
             }
             else
             {
-                val = DC.GH.GetTypeValue(modVal.GetType(), modVal);
+                val = DC.GH.GetTypeValue( modVal);
             }
             DC.AddConditions(new DicModelUI
             {

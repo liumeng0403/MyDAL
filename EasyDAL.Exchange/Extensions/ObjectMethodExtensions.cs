@@ -22,5 +22,19 @@ namespace Yunyong.DataExchange.Extensions
             return result;
         }
 
+        public static bool ToBool(this object obj)
+        {
+            var result = false;
+            try
+            {
+                result = Convert.ToBoolean(obj);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("bool ToBool(this object obj) -- error", ex);
+            }
+            return result;
+        }
+
     }
 }
