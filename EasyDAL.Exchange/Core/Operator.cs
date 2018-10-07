@@ -186,7 +186,7 @@ namespace Yunyong.DataExchange.Core
                     val = DC.GH.GetTypeValue(mp, objx);
                     if (val == null
                         || (valType.IsEnum && "0".Equals(val.ToString(), StringComparison.OrdinalIgnoreCase))
-                        || (valType == typeof(DateTime) && "0001-01-01 00:00:00.000000".Equals(val.ToString(), StringComparison.OrdinalIgnoreCase)))
+                        || (valType == typeof(DateTime) && Convert.ToDateTime("0001-01-01 00:00:00.000000").Equals(val)))
                     {
                         continue;
                     }
@@ -220,14 +220,14 @@ namespace Yunyong.DataExchange.Core
         {
             var keyDic = DC.EH.ExpressionHandle(func)[0];
             var key = keyDic.ColumnOne;
-            var val =default(object);
+            var val = default(object);
             if (modVal == null)
             {
                 val = null;
             }
             else
             {
-                val = DC.GH.GetTypeValue( modVal);
+                val = DC.GH.GetTypeValue(modVal);
             }
             DC.AddConditions(new DicModelUI
             {
@@ -400,7 +400,7 @@ namespace Yunyong.DataExchange.Core
             else
             {
                 var fullNames = DC.UiConditions.Where(it => !string.IsNullOrWhiteSpace(it.ClassFullName)).Distinct();
-                throw new Exception($"请使用 [[Task<List<VM>> QueryListAsync<VM>(Expression<Func<VM>> func)]] 方法! 或者 {vmType.Name} 必须为 [[{string.Join(",", fullNames.Select(it => it.ClassName))}]] 其中之一 !");                
+                throw new Exception($"请使用 [[Task<List<VM>> QueryListAsync<VM>(Expression<Func<VM>> func)]] 方法! 或者 {vmType.Name} 必须为 [[{string.Join(",", fullNames.Select(it => it.ClassName))}]] 其中之一 !");
             }
         }
 
