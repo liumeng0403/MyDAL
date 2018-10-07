@@ -42,14 +42,25 @@ namespace Yunyong.DataExchange.Helper
             }
         }
 
-        public ParamInfo EnumParamHandle(string colType, DicModelUI item)
+        public ParamInfo EnumParamHandle(string colType, DicModelUI item,Type realType)
         {
             if (!string.IsNullOrWhiteSpace(colType)
                 && colType.Equals("int", StringComparison.OrdinalIgnoreCase))
             {
-                //var val = (int)(Enum.Parse(item.ValueType, item.CsValue.ToString(), true));
-                var val = (int)item.CsValue;
-                return GetDefault(item.Param, val, DbType.Int32);
+                if (item.CsValue is string)
+                {
+                    var val = (int)(Enum.Parse(realType, item.CsValue.ToString(), true));
+                    return GetDefault(item.Param, val, DbType.Int32);
+                }
+                else if(item.CsValue==null)
+                {
+                    return GetDefault(item.Param, null, DbType.Int32);
+                }
+                else
+                {
+                    var val = (int)item.CsValue;
+                    return GetDefault(item.Param, val, DbType.Int32);
+                }
             }
             else
             {
