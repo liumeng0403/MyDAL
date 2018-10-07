@@ -416,7 +416,7 @@ namespace Yunyong.DataExchange.Core
                     list.Add($"`{item.ColumnOne}`");
                 }
             }
-            return $" ({ string.Join(",", list)}) ";
+            return $" \r\n ({ string.Join(",", list)}) ";
         }
         internal string GetValues()
         {
@@ -431,9 +431,9 @@ namespace Yunyong.DataExchange.Core
                         values.Add($"@{item.Param}");
                     }
                 }
-                list.Add($"({string.Join(",", values)})");
+                list.Add($" \r\n ({string.Join(",", values)})");
             }
-            return string.Join(", \r\n ", list);
+            return string.Join(",", list);
         }
 
 
@@ -486,7 +486,7 @@ namespace Yunyong.DataExchange.Core
             switch (type)
             {
                 case UiMethodEnum.CreateAsync:
-                    list.Add($" insert into {Table<M>(type)} {GetColumns()} values {GetValues()} ;");
+                    list.Add($" insert into {Table<M>(type)} {GetColumns()} \r\n values {GetValues()} ;");
                     break;
                 case UiMethodEnum.CreateBatchAsync:
                     list.Add(
@@ -552,7 +552,7 @@ namespace Yunyong.DataExchange.Core
                     .Select(dbM =>
                     {
                         var uiM = DC.UiConditions.FirstOrDefault(ui => dbM.Param.Equals(ui.Param, StringComparison.OrdinalIgnoreCase));
-                        return $"参数名:【{dbM.Param}】;C#值:【{uiM.CsValue}】;DB值:【{(dbM.DbValue == null ? string.Empty : dbM.DbValue.ToString())}】.";
+                        return $"参数名:【{dbM.Param}】;C#值:【{(uiM.CsValue == null ? "Null" : uiM.CsValue.ToString())}】;DB值:【{(dbM.DbValue == null ? "DbNull" : dbM.DbValue.ToString())}】.";
                     })
                     .ToList();
             }
