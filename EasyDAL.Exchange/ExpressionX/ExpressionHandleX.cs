@@ -181,37 +181,7 @@ namespace MyDAL.ExpressionX
             }
             return result;
         }
-        // 02
-        private object HandConvert(Expression binRight, string funcStr)
-        {
-            var result = default(object);
-            if (binRight.NodeType == ExpressionType.Convert)
-            {
-                var expr = binRight as UnaryExpression;
-                if (expr.Operand.NodeType == ExpressionType.Convert)
-                {
-                    var exprExpr = expr.Operand as UnaryExpression;
-                    var memExpr = exprExpr.Operand as MemberExpression;
-                    var memCon = memExpr.Expression as ConstantExpression;
-                    var memObj = memCon.Value;
-                    var memFiled = memExpr.Member as FieldInfo;
-                    result = memFiled.GetValue(memObj);//.ToString();
-                }
-                else if (expr.Operand.NodeType == ExpressionType.MemberAccess)
-                {
-                    result = DC.VH.GetMemExprVal(expr.Operand as MemberExpression,funcStr);
-                }
-                else if(expr.Operand.NodeType==ExpressionType.Constant)
-                {
-                    result = DC.VH.GetConstantVal(expr.Operand as ConstantExpression, expr.Operand.Type);
-                }
-            }
-            else
-            {
-                throw new Exception();
-            }
-            return result;
-        }
+
         // 01
         private object HandBinary(Expression binRight, string funcStr)
         {
@@ -232,7 +202,7 @@ namespace MyDAL.ExpressionX
                     val = HandMember(binRight as MemberExpression,funcStr);
                     break;
                 case ExpressionType.Convert:
-                    val = HandConvert(binRight,funcStr);
+                    val = DC.VH.GetConvertVal(binRight,funcStr);
                     break;
                 default:
                     throw new Exception();
@@ -289,7 +259,7 @@ namespace MyDAL.ExpressionX
             return DicHandle.CallInHandle(crud,action,keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType);
         }
 
-        private DicModelUI NewCollectionIn(ExpressionType nodeType, Expression keyExpr, Expression valExpr,ActionEnum action,CrudTypeEnum crud)
+        private DicModelUI NewCollectionIn(ExpressionType nodeType, Expression keyExpr, Expression valExpr,ActionEnum action,CrudTypeEnum crud, string funcStr)
         {
             if (nodeType == ExpressionType.NewArrayInit)
             {
@@ -298,7 +268,14 @@ namespace MyDAL.ExpressionX
                 var vals = new List<object>();
                 foreach (var exp in naExpr.Expressions)
                 {
-                    vals.Add(DC.VH.GetConstantVal(exp as ConstantExpression, keyTuple.valType));
+                    if (exp.NodeType == ExpressionType.Constant)
+                    {
+                        vals.Add(DC.VH.GetConstantVal(exp as ConstantExpression, keyTuple.valType));
+                    }
+                    else if(exp.NodeType==ExpressionType.Convert)
+                    {
+                        vals.Add(DC.VH.GetConvertVal(exp, funcStr));
+                    }
                 }
 
                 var val = string.Join(",", vals);
@@ -314,7 +291,14 @@ namespace MyDAL.ExpressionX
                 foreach (var ini in liExpr.Initializers)
                 {
                     var arg = ini.Arguments[0];
-                    vals.Add(DC.VH.GetConstantVal(ini.Arguments[0] as ConstantExpression, keyTuple.valType));
+                    if (arg.NodeType == ExpressionType.Constant)
+                    {
+                        vals.Add(DC.VH.GetConstantVal(arg as ConstantExpression, keyTuple.valType));
+                    }
+                    else if (arg.NodeType== ExpressionType.Convert)
+                    {
+                        vals.Add(DC.VH.GetConvertVal(arg, funcStr));
+                    }
                 }
 
                 var val = string.Join(",", vals);
@@ -391,7 +375,7 @@ namespace MyDAL.ExpressionX
                     }
                     else if (memVal.NodeType == ExpressionType.NewArrayInit)
                     {
-                        return NewCollectionIn(memVal.NodeType, memKey, memVal,action,crud);
+                        return NewCollectionIn(memVal.NodeType, memKey, memVal,action,crud,funcStr);
                     }
                 }
                 else
@@ -415,7 +399,7 @@ namespace MyDAL.ExpressionX
                     }
                     else if (objNodeType == ExpressionType.ListInit)
                     {
-                        return NewCollectionIn(objNodeType, mcExpr, objExpr,action,crud);
+                        return NewCollectionIn(objNodeType, mcExpr, objExpr,action,crud,funcStr);
                     }
                 }
             }

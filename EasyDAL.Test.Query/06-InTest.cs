@@ -1,5 +1,4 @@
-﻿using MyDAL;
-using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.EasyDal_Exchange;
 using MyDAL.Test.Enums;
 using System;
 using System.Collections.Generic;

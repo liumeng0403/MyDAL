@@ -65,17 +65,23 @@ namespace MyDAL.ExpressionX
             else
             {
                 typeT = type.GetGenericArguments()[0];
+                if (typeT.IsGenericType
+                    && typeT.GetGenericTypeDefinition() == typeof(Nullable<>))
+                {
+                    typeT = typeT.GetGenericArguments()[0];
+                }
             }
 
-            if (IsSysType(typeT))
-            {
-                valType = typeT;
-            }
-            else
-            {
-                var currAssembly = DC.SC.GetAssembly(typeT.FullName, DC);
-                valType = currAssembly.GetType(typeT.FullName);
-            }
+            //if (IsSysType(typeT))
+            //{
+            //    valType = typeT;
+            //}
+            //else
+            //{
+            //    var currAssembly = DC.SC.GetAssembly(typeT.FullName, DC);
+            //    valType = currAssembly.GetType(typeT.FullName);
+            //}
+            valType = typeT;
 
             //
             var ds = vals as dynamic;
@@ -235,7 +241,7 @@ namespace MyDAL.ExpressionX
                 }
                 else if (mcExpr.Object.NodeType == ExpressionType.MemberAccess)
                 {
-                    var obj = Convert.ToDateTime(GetMemExprVal(mcExpr.Object as MemberExpression,funcStr));
+                    var obj = Convert.ToDateTime(GetMemExprVal(mcExpr.Object as MemberExpression, funcStr));
                     var method = mcExpr.Method.Name;
                     var args = new List<object>();
                     foreach (var arg in mcExpr.Arguments)
@@ -256,7 +262,7 @@ namespace MyDAL.ExpressionX
             }
             else if (pExpr.NodeType == ExpressionType.MemberAccess)
             {
-                val = GetMemExprVal(pExpr as MemberExpression,funcStr);
+                val = GetMemExprVal(pExpr as MemberExpression, funcStr);
             }
 
             if (val != null)
@@ -279,6 +285,38 @@ namespace MyDAL.ExpressionX
             {
                 return con.Value; // .ToString();
             }
+        }
+
+        // 02
+        internal object GetConvertVal(Expression binRight, string funcStr)
+        {
+            var result = default(object);
+            if (binRight.NodeType == ExpressionType.Convert)
+            {
+                var expr = binRight as UnaryExpression;
+                if (expr.Operand.NodeType == ExpressionType.Convert)
+                {
+                    var exprExpr = expr.Operand as UnaryExpression;
+                    var memExpr = exprExpr.Operand as MemberExpression;
+                    var memCon = memExpr.Expression as ConstantExpression;
+                    var memObj = memCon.Value;
+                    var memFiled = memExpr.Member as FieldInfo;
+                    result = memFiled.GetValue(memObj);//.ToString();
+                }
+                else if (expr.Operand.NodeType == ExpressionType.MemberAccess)
+                {
+                    result = DC.VH.GetMemExprVal(expr.Operand as MemberExpression, funcStr);
+                }
+                else if (expr.Operand.NodeType == ExpressionType.Constant)
+                {
+                    result = DC.VH.GetConstantVal(expr.Operand as ConstantExpression, expr.Operand.Type);
+                }
+            }
+            else
+            {
+                throw new Exception();
+            }
+            return result;
         }
 
         /*******************************************************************************************************/

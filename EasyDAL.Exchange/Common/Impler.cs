@@ -54,7 +54,7 @@ namespace MyDAL.Common
                 }
                 else if (realType.IsEnum)
                 {
-                    var para = DC.PPH.EnumParamHandle(db.ColumnType, ui);
+                    var para = DC.PPH.EnumParamHandle(db.ColumnType, ui,realType);
                     db.DbValue = para.Value;
                     db.DbType = para.DbType;
                 }
