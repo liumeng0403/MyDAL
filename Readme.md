@@ -1,4 +1,4 @@
-# MyDAL(原:EasyDAL.Exchange)
+# MyDAL
   -- EasyDAL.Exchange 0.2.3 版本后 更名为 MyDAL 
   
 ** <b>Nuget Logo</b> ** ：
