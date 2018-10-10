@@ -383,6 +383,21 @@ namespace MyDAL.Core
             }
         }
 
+        //internal void CountMHandle<M>(string field)
+        //{
+        //    var fullName = typeof(M).FullName;
+        //    var any= DC.UiConditions.FirstOrDefault(it => fullName.Equals(it.ClassFullName, StringComparison.OrdinalIgnoreCase));
+        //    if(any!=null)
+        //    {
+        //        DC.AddConditions(DicHandle.ConditionCountHandle(CrudTypeEnum.Join, field, any.TableAliasOne));
+        //    }
+        //    else
+        //    {
+        //        var fullNames = DC.UiConditions.Where(it => !string.IsNullOrWhiteSpace(it.ClassFullName)).Distinct();
+        //        throw new Exception($"{typeof(M).Name} 必须为 [[{string.Join(",", fullNames.Select(it => it.ClassName))}]] 其中之一 !");
+        //    }
+        //}
+
         internal void SelectMHandle<M>()
         {
             var vmType = typeof(M);

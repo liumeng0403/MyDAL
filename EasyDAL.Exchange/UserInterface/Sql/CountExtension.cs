@@ -1,4 +1,5 @@
-﻿using MyDAL.ExpressionX;
+﻿using MyDAL.Enums;
+using MyDAL.ExpressionX;
 using MyDAL.UserFacade.Query;
 using System;
 using System.Linq.Expressions;
@@ -17,7 +18,7 @@ namespace MyDAL
         {
             var keyDic = where.DC.EH.ExpressionHandle(func)[0];
             var key = keyDic.ColumnOne;
-            where.DC.AddConditions(DicHandle.ConditionCountHandle(key));
+            where.DC.AddConditions(DicHandle.ConditionCountHandle(CrudTypeEnum.Query,key));
             return new CountQ<M>(where.DC);
         }
 

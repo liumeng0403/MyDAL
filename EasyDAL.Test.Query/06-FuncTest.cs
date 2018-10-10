@@ -1,5 +1,4 @@
-﻿using MyDAL;
-using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.EasyDal_Exchange;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -54,46 +53,6 @@ namespace MyDAL.Test.Query
             Assert.True(res2.Count == 574);
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters);
-
-            /*
-             *count
-             */
-            /************************************************************************************************************************/
-
-            var xx3 = "";
-
-            // count(id)  like "陈%"
-            var res3 = await Conn
-                .Selecter<Agent>()
-                .Where(it => it.Name.Contains(LikeTest.百分号))
-                .Count(it => it.Id)
-                .QuerySingleValueAsync<long>();
-            Assert.True(res3 == 1421);
-
-            var tuple3 = (XDebug.SQL, XDebug.Parameters);
-
-            /************************************************************************************************************************/
-
-            var xx4 = "";
-
-            // count(id)  like "陈%"
-            var res4 = await Conn
-                .Selecter<Agent>()
-                .Where(it => it.Name.Contains(LikeTest.百分号))
-                .CountAsync(it => it.Id);
-            Assert.True(res4 == 1421);
-
-            var tuple4 = (XDebug.SQL, XDebug.Parameters);
-
-            var xx42 = "";
-
-            var res42 = await Conn
-                .Selecter<Agent>()
-                .Where(it => it.Name.Contains(LikeTest.百分号))
-                .CountAsync();
-            Assert.True(res42 == 1421);
-
-            var tuple42 = (XDebug.SQL, XDebug.Parameters);
 
             /************************************************************************************************************************/
 

@@ -20,6 +20,8 @@ namespace MyDAL.Impls
 
         public async Task<long> CountAsync()
         {
+            DC.AddConditions(DicHandle.ConditionCountHandle(CrudTypeEnum.Query,"*"));
+            DC.IP.ConvertDic();
             return await SqlHelper.ExecuteScalarAsync<long>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.CountAsync)[0],
@@ -30,11 +32,44 @@ namespace MyDAL.Impls
         {
             var keyDic = DC.EH.ExpressionHandle(func)[0];
             var key = keyDic.ColumnOne;
-            DC.AddConditions(DicHandle.ConditionCountHandle(key));
+            DC.AddConditions(DicHandle.ConditionCountHandle(CrudTypeEnum.Query,key));
+            DC.IP.ConvertDic();
             return await SqlHelper.ExecuteScalarAsync<long>(
                  DC.Conn,
                  DC.SqlProvider.GetSQL<M>(UiMethodEnum.CountAsync)[0],
                  DC.SqlProvider.GetParameters());
+        }
+    }
+
+    internal class CountXImpl
+        : Impler, ICountX
+    {
+        public CountXImpl(Context dc) 
+            : base(dc)
+        {
+        }
+        
+        public async Task<long> CountAsync()
+        {
+            //CountMHandle<M>("*");
+            DC.AddConditions(DicHandle.ConditionCountHandle(CrudTypeEnum.Join, "*", string.Empty));
+            DC.IP.ConvertDic();
+            return await SqlHelper.ExecuteScalarAsync<long>(
+                DC.Conn,
+                DC.SqlProvider.GetSQL<None>(UiMethodEnum.JoinCountAsync)[0],
+                DC.SqlProvider.GetParameters());
+        }
+
+        public async Task<long> CountAsync<F>(Expression<Func<F>> func)
+        {
+            //CountMHandle<M>("*");
+            var dic = DC.EH.ExpressionHandle(func)[0];
+            DC.AddConditions(DicHandle.ConditionCountHandle(CrudTypeEnum.Join, dic.ColumnOne, dic.TableAliasOne));
+            DC.IP.ConvertDic();
+            return await SqlHelper.ExecuteScalarAsync<long>(
+                DC.Conn,
+                DC.SqlProvider.GetSQL<None>(UiMethodEnum.JoinCountAsync)[0],
+                DC.SqlProvider.GetParameters());
         }
     }
 }

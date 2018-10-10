@@ -9,12 +9,21 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Join
 {
     public class WhereX
-        : Operator, IQueryFirstOrDefaultX, IQueryListX, IQueryPagingListX, IQueryPagingListXO
+        : Operator, IQueryFirstOrDefaultX, IQueryListX, IQueryPagingListX, IQueryPagingListXO,ICountX
     {
 
         internal WhereX(Context dc)
             : base(dc)
         { }
+
+        public async Task<long> CountAsync()
+        {
+            return await new CountXImpl(DC).CountAsync();
+        }
+        public async Task<long> CountAsync<F>(Expression<Func<F>> func)
+        {
+            return await new CountXImpl(DC).CountAsync(func);
+        }
 
         /// <summary>
         /// 多表单条数据查询

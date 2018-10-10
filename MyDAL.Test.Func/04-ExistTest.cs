@@ -1,10 +1,9 @@
-﻿using MyDAL;
-using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.EasyDal_Exchange;
 using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace MyDAL.Test.Query
+namespace MyDAL.Test.Func
 {
     public class _04_ExistTest : TestBase
     {
@@ -24,6 +23,6 @@ namespace MyDAL.Test.Query
 
             var xx = "";
         }
-        
+
     }
 }
