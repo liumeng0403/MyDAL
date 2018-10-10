@@ -202,7 +202,7 @@ namespace MyDAL.ExpressionX
                     val = HandMember(binRight as MemberExpression, funcStr);
                     break;
                 case ExpressionType.Convert:
-                    val = DC.VH.GetConvertVal(binRight, funcStr);
+                    val = DC.VH.GetConvertVal(binRight as UnaryExpression, funcStr);
                     break;
                 default:
                     throw new Exception();
@@ -274,7 +274,7 @@ namespace MyDAL.ExpressionX
                     }
                     else if (exp.NodeType == ExpressionType.Convert)
                     {
-                        vals.Add(DC.VH.GetConvertVal(exp, funcStr));
+                        vals.Add(DC.VH.GetConvertVal(exp as UnaryExpression, funcStr));
                     }
                 }
 
@@ -297,7 +297,7 @@ namespace MyDAL.ExpressionX
                     }
                     else if (arg.NodeType == ExpressionType.Convert)
                     {
-                        vals.Add(DC.VH.GetConvertVal(arg, funcStr));
+                        vals.Add(DC.VH.GetConvertVal(arg as UnaryExpression, funcStr));
                     }
                 }
 
@@ -335,7 +335,7 @@ namespace MyDAL.ExpressionX
                     Param = tuple.key,
                     ParamRaw = tuple.key,
                     CsValue = null,
-                    ValueType = tuple.valType,
+                    CsType = tuple.valType,
                     Option = optionx,
                     Compare = CompareEnum.None
                 };
@@ -463,7 +463,7 @@ namespace MyDAL.ExpressionX
                     ClassFullName = tuple.classFullName,
                     TableAliasOne = tuple.alias,
                     ColumnOne = tuple.key,
-                    ColumnAlias = colAlias
+                    ColumnOneAlias = colAlias
                 });
             }
 
@@ -482,8 +482,8 @@ namespace MyDAL.ExpressionX
                 ClassFullName = tuple1.classFullName,
                 ColumnOne = tuple1.key,
                 TableAliasOne = tuple1.alias,
-                KeyTwo = tuple2.key,
-                AliasTwo = tuple2.alias,
+                ColumnTwo = tuple2.key,
+                TableAliasTwo = tuple2.alias,
                 Option = option,
                 Compare = DicHandle.GetOption(binExpr.NodeType, false)
             };
@@ -636,7 +636,7 @@ namespace MyDAL.ExpressionX
                             ClassFullName = tuple.classFullName,
                             TableAliasOne = tuple.alias,
                             ColumnOne = tuple.key,
-                            ColumnAlias = colAlias
+                            ColumnOneAlias = colAlias
                         });
                     }
 

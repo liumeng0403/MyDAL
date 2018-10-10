@@ -51,7 +51,7 @@ namespace MyDAL.ExpressionX
                 Param = key,
                 ParamRaw = key,
                 CsValue = value,
-                ValueType = valType,
+                CsType = valType,
                 Option = OptionEnum.CharLength,
                 Compare = GetOption(nodeType, isR)
             };
@@ -65,7 +65,7 @@ namespace MyDAL.ExpressionX
                 ColumnOne = key,
                 TableAliasOne = alias,
                 CsValue = value,
-                ValueType = valType,
+                CsType = valType,
                 Param = key,
                 ParamRaw = key,
                 Crud = crud,
@@ -83,7 +83,7 @@ namespace MyDAL.ExpressionX
                 ColumnOne = key,
                 TableAliasOne = alias,
                 CsValue = value,
-                ValueType = valType,
+                CsType = valType,
                 Param = key,
                 ParamRaw = key,
                 Crud = crud,
@@ -100,7 +100,7 @@ namespace MyDAL.ExpressionX
                 ColumnOne = key,
                 TableAliasOne = alias,
                 CsValue = value,
-                ValueType = valType,
+                CsType = valType,
                 Param = key,
                 ParamRaw = key,
                 Crud = crud,
@@ -117,7 +117,7 @@ namespace MyDAL.ExpressionX
                 Param = "OneEqualOne",
                 ParamRaw = "OneEqualOne",
                 CsValue = value,
-                ValueType = valType,
+                CsType = valType,
                 Option = OptionEnum.OneEqualOne
             };
         }
@@ -131,7 +131,7 @@ namespace MyDAL.ExpressionX
                 Param = key,
                 ParamRaw = key,
                 CsValue = true.ToString(),
-                ValueType = valType,
+                CsType = valType,
                 Option = OptionEnum.Compare,
                 Compare = CompareEnum.Equal
             };

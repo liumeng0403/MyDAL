@@ -288,34 +288,34 @@ namespace MyDAL.ExpressionX
         }
 
         // 02
-        internal object GetConvertVal(Expression binRight, string funcStr)
+        internal object GetConvertVal(UnaryExpression expr, string funcStr)
         {
             var result = default(object);
-            if (binRight.NodeType == ExpressionType.Convert)
+            //if (binRight.NodeType == ExpressionType.Convert)
+            //{
+            //var expr = binRight as UnaryExpression;
+            if (expr.Operand.NodeType == ExpressionType.Convert)
             {
-                var expr = binRight as UnaryExpression;
-                if (expr.Operand.NodeType == ExpressionType.Convert)
-                {
-                    var exprExpr = expr.Operand as UnaryExpression;
-                    var memExpr = exprExpr.Operand as MemberExpression;
-                    var memCon = memExpr.Expression as ConstantExpression;
-                    var memObj = memCon.Value;
-                    var memFiled = memExpr.Member as FieldInfo;
-                    result = memFiled.GetValue(memObj);//.ToString();
-                }
-                else if (expr.Operand.NodeType == ExpressionType.MemberAccess)
-                {
-                    result = DC.VH.GetMemExprVal(expr.Operand as MemberExpression, funcStr);
-                }
-                else if (expr.Operand.NodeType == ExpressionType.Constant)
-                {
-                    result = DC.VH.GetConstantVal(expr.Operand as ConstantExpression, expr.Operand.Type);
-                }
+                var exprExpr = expr.Operand as UnaryExpression;
+                var memExpr = exprExpr.Operand as MemberExpression;
+                var memCon = memExpr.Expression as ConstantExpression;
+                var memObj = memCon.Value;
+                var memFiled = memExpr.Member as FieldInfo;
+                result = memFiled.GetValue(memObj);//.ToString();
             }
-            else
+            else if (expr.Operand.NodeType == ExpressionType.MemberAccess)
             {
-                throw new Exception();
+                result = DC.VH.GetMemExprVal(expr.Operand as MemberExpression, funcStr);
             }
+            else if (expr.Operand.NodeType == ExpressionType.Constant)
+            {
+                result = DC.VH.GetConstantVal(expr.Operand as ConstantExpression, expr.Operand.Type);
+            }
+            //}
+            //else
+            //{
+            //    throw new Exception();
+            //}
             return result;
         }
 

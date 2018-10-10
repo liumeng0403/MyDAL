@@ -1,4 +1,5 @@
-﻿using MyDAL.Core;
+﻿using MyDAL.Common;
+using MyDAL.Core;
 using MyDAL.UserFacade.Create;
 using MyDAL.UserFacade.Delete;
 using MyDAL.UserFacade.Join;
@@ -12,6 +13,9 @@ namespace MyDAL
 {
     public static class DbExtension
     {
+
+        /******************************************************************************************************************************/
+
         /// <summary>
         /// 新建数据 方法簇
         /// </summary>
@@ -48,14 +52,14 @@ namespace MyDAL
             return new Selecter<M>(new DbContext<M>(connection));
         }
 
-        /// <summary>
-        /// 连接查询 方法簇
-        /// </summary>
-        public static Joiner Joiner<M1>(this IDbConnection connection, out M1 table1)
-        {
-            table1 = Activator.CreateInstance<M1>();
-            return new Joiner(new DbContext<M1>(connection));
-        }
+        ///// <summary>
+        ///// 连接查询 方法簇
+        ///// </summary>
+        //public static Joiner Joiner<M1>(this IDbConnection connection, out M1 table1)
+        //{
+        //    table1 = Activator.CreateInstance<M1>();
+        //    return new Joiner(new DbContext<M1>(connection));
+        //}
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
@@ -113,21 +117,38 @@ namespace MyDAL
         }
 
         /// <summary>
-        /// Sql 调试跟踪 开启
-        /// </summary>
-        public static IDbConnection OpenDebug(this IDbConnection connection)
-        {
-            XDebug.Hint = true;
-            return connection;
-        }
-
-        /// <summary>
         /// 事务单元
         /// </summary>
         public static Transactioner Transactioner(this IDbConnection connection)
         {
             return new Transactioner(new DbContext(connection));
         }
+
+        /******************************************************************************************************************************/
+
+        public static IDbConnection OpenDB(this IDbConnection connection)
+        {
+            connection.Open();
+            return connection;
+        }
+
+        /// <summary>
+        /// Sql 调试跟踪 开启
+        /// </summary>
+        public static IDbConnection OpenDebug(this IDbConnection connection)
+        {
+            XConfig.IsDebug = true;
+            return connection;
+        }
+
+        public static IDbConnection OpenCodeFirst(this IDbConnection connection)
+        {
+            XConfig.IsCodeFirst = true;
+
+            return connection;
+        }
+
+
 
     }
 }

@@ -33,15 +33,15 @@ namespace MyDAL.Common
         public string TableOne { get; set; }
         public string TableAliasOne { get; set; }
         public string ColumnOne { get; set; }
+        public string ColumnOneAlias { get; set; }
         public string TableTwo { get; set; }
-        public string KeyTwo { get; set; }
-        public string AliasTwo { get; set; }
+        public string TableAliasTwo { get; set; }
+        public string ColumnTwo { get; set; }
 
-        public string ColumnAlias { get; set; }
         public string Param { get; set; }
         public string ParamRaw { get; set; }
         public object CsValue { get; set; }
-        public Type ValueType { get; set; }
+        public Type CsType { get; set; }
         
         public int TvpIndex { get; set; }
     }

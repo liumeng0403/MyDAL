@@ -1,5 +1,4 @@
-﻿using MyDAL;
-using MyDAL.Test.Entities;
+﻿using MyDAL.Test.Entities;
 using MyDAL.Test.Enums;
 using MyDAL.Test.TestModels;
 using MySql.Data.MySqlClient;
@@ -21,7 +20,7 @@ namespace MyDAL.Test
                     DateTime_大于等于 = DateTime.Now.AddDays(-30),
                     DateTime_小于等于 = DateTime.Now,
                     AgentLevelXX = AgentLevel.DistiAgent,
-                    AgentLevelNull=null,
+                    AgentLevelNull = null,
                     ContainStr = "~00-d-3-1-",
                     In_List_枚举 = new List<AgentLevel?>
                     {
@@ -84,9 +83,11 @@ namespace MyDAL.Test
             /*
              * 
             */
-            var conn = new MySqlConnection($"Server=localhost; Database={name}; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;");
-            conn.Open();
-            XConfig.OpenDebug();  // 全局 debug 配置, 生产环境不要开启 
+            var conn =
+                new MySqlConnection($"Server=localhost; Database={name}; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;")
+                .OpenCodeFirst()
+                .OpenDebug()  // 全局 debug 配置, 生产环境不要开启 
+                .OpenDB();  // 建议 每次新实例并打开,以获得更好的性能体验
             return conn;
         }
 
