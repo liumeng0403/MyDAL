@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using Yunyong.DataExchange.Common;
 using Yunyong.DataExchange.Core;
+using Yunyong.DataExchange.Helper;
 using Yunyong.DataExchange.UserFacade.Create;
 using Yunyong.DataExchange.UserFacade.Delete;
 using Yunyong.DataExchange.UserFacade.Join;
@@ -144,7 +145,10 @@ namespace Yunyong.DataExchange
         public static IDbConnection OpenCodeFirst(this IDbConnection connection)
         {
             XConfig.IsCodeFirst = true;
-
+            if (XConfig.IsNeedChangeDb)
+            {
+                CodeFirstHelper.Instance.CodeFirstProcess(connection);
+            }
             return connection;
         }
 
