@@ -77,6 +77,14 @@ namespace MyDAL.Test
             get { return GetOpenConnection("rainbow_unicorn_db20180901"); }
         }
 
+        protected IDbConnection Conn3
+        {
+            /*
+             * CREATE DATABASE `EasyDal_Exchange2` 
+             */
+            get { return GetOpenConnection("EasyDal_Exchange2"); }
+        }
+
 
         private static IDbConnection GetOpenConnection(string name)
         {
@@ -85,7 +93,7 @@ namespace MyDAL.Test
             */
             var conn =
                 new MySqlConnection($"Server=localhost; Database={name}; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;")
-                .OpenCodeFirst()
+                .OpenCodeFirst()  // 开启 CodeFirst 模式
                 .OpenDebug()  // 全局 debug 配置, 生产环境不要开启 
                 .OpenDB();  // 建议 每次新实例并打开,以获得更好的性能体验
             return conn;

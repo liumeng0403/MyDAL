@@ -1,5 +1,6 @@
 ﻿using MyDAL.Common;
 using MyDAL.Core;
+using MyDAL.Helper;
 using MyDAL.UserFacade.Create;
 using MyDAL.UserFacade.Delete;
 using MyDAL.UserFacade.Join;
@@ -144,7 +145,10 @@ namespace MyDAL
         public static IDbConnection OpenCodeFirst(this IDbConnection connection)
         {
             XConfig.IsCodeFirst = true;
-
+            if (XConfig.IsNeedChangeDb)
+            {
+                CodeFirstHelper.Instance.CodeFirstProcess(connection);
+            }
             return connection;
         }
 
