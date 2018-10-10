@@ -12,10 +12,11 @@ namespace Yunyong.DataExchange.Enums
         JoinQueryListAsync,
         QueryPagingListAsync,
         JoinQueryPagingListAsync,
+        QueryAllAsync,
         QueryAllPagingListAsync,
         QuerySingleValueAsync,
         ExistAsync,
         CountAsync,
-        QueryAllAsync
+        JoinCountAsync
     }
 }

@@ -115,6 +115,41 @@ namespace Yunyong.DataExchange.Core
             return $" \r\n limit {(pageIndex - 1) * pageSize},{pageSize}";
         }
 
+        private void XDebugValue(List<string> list)
+        {
+
+            if (XDebug.Hint)
+            {
+                XDebug.SQL = list;
+                var paras = DC.SqlProvider.GetParameters();
+                XDebug.Parameters = DC
+                    .DbConditions
+                    .Where(it => DC.IsParameter(it))
+                    .Select(dbM =>
+                    {
+                        var uiM = DC.UiConditions.FirstOrDefault(ui => dbM.Param.Equals(ui.Param, StringComparison.OrdinalIgnoreCase));
+                        var field = string.Empty;
+                        if (dbM.Crud == CrudTypeEnum.Query)
+                        {
+                            field = dbM.ColumnOne;
+                        }
+                        else if (dbM.Crud == CrudTypeEnum.Join)
+                        {
+                            field = $"{dbM.TableAliasOne}.{dbM.ColumnOne}";
+                        }
+                        var csVal = string.Empty;
+                        csVal = uiM.CsValue == null ? "Null" : uiM.CsValue.ToString();
+                        var dbVal = string.Empty;
+                        dbVal = dbM.DbValue == null ? "DbNull" : dbM.DbValue.ToString();
+                        return $"字段:【{field}】-->【{csVal}】;参数:【{dbM.Param}】-->【{dbVal}】.";
+                    })
+                    .ToList();
+            }
+
+        }
+
+        /****************************************************************************************************************/
+
         internal string GetSingleValuePart()
         {
             var str = string.Empty;
@@ -136,13 +171,27 @@ namespace Yunyong.DataExchange.Core
             var str = string.Empty;
 
             var item = DC.DbConditions.FirstOrDefault(it => it.Option == OptionEnum.Count);
-            if (item != null)
+            if (item.Crud == CrudTypeEnum.Query)
             {
-                str = $" {item.Option.ToEnumDesc<OptionEnum>()}(`{item.ColumnOne}`) ";
+                if ("*".Equals(item.ColumnOne, StringComparison.OrdinalIgnoreCase))
+                {
+                    str = $" {item.Option.ToEnumDesc<OptionEnum>()}({item.ColumnOne}) ";
+                }
+                else
+                {
+                    str = $" {item.Option.ToEnumDesc<OptionEnum>()}(`{item.ColumnOne}`) ";
+                }
             }
-            else
+            else if (item.Crud == CrudTypeEnum.Join)
             {
-                str = " count(*) ";
+                if ("*".Equals(item.ColumnOne, StringComparison.OrdinalIgnoreCase))
+                {
+                    str = $" {item.Option.ToEnumDesc<OptionEnum>()}({item.ColumnOne}) ";
+                }
+                else
+                {
+                    str = $" {item.Option.ToEnumDesc<OptionEnum>()}({item.TableAliasOne}.`{item.ColumnOne}`) ";
+                }
             }
 
             return str;
@@ -525,6 +574,9 @@ namespace Yunyong.DataExchange.Core
                     list.Add($"select count(*) {From()} {Joins()} {wherePart9} ; ");
                     list.Add($"select {Columns()} {From()} {Joins()} {wherePart9} {GetOrderByPart()} {Limit(pageIndex, pageSize)}  ; ");
                     break;
+                case UiMethodEnum.QueryAllAsync:
+                    list.Add($" select * {From()} {Table<M>(type)} {GetOrderByPart<M>()} ; ");
+                    break;
                 case UiMethodEnum.QueryAllPagingListAsync:
                     list.Add($"select count(*) {From()} {Table<M>(type)} ; ");
                     list.Add($"select * {From()} {Table<M>(type)} {GetOrderByPart<M>()} {Limit(pageIndex, pageSize)}  ; ");
@@ -536,26 +588,13 @@ namespace Yunyong.DataExchange.Core
                 case UiMethodEnum.CountAsync:
                     list.Add($" select {GetCountPart()} {From()} {Table<M>(type)} {Wheres()} ; ");
                     break;
-                case UiMethodEnum.QueryAllAsync:
-                    list.Add($" select * {From()} {Table<M>(type)} {GetOrderByPart<M>()} ; ");
+                case UiMethodEnum.JoinCountAsync:
+                    list.Add($" select {GetCountPart()} {From()} {Joins()} {Wheres()} ");
                     break;
             }
 
             //
-            if (XDebug.Hint)
-            {
-                XDebug.SQL = list;
-                var paras = DC.SqlProvider.GetParameters();
-                XDebug.Parameters = DC
-                    .DbConditions
-                    .Where(it => DC.IsParameter(it))
-                    .Select(dbM =>
-                    {
-                        var uiM = DC.UiConditions.FirstOrDefault(ui => dbM.Param.Equals(ui.Param, StringComparison.OrdinalIgnoreCase));
-                        return $"参数名:【{dbM.Param}】;C#值:【{(uiM.CsValue == null ? "Null" : uiM.CsValue.ToString())}】;DB值:【{(dbM.DbValue == null ? "DbNull" : dbM.DbValue.ToString())}】.";
-                    })
-                    .ToList();
-            }
+            XDebugValue(list);
 
             //
             return list;

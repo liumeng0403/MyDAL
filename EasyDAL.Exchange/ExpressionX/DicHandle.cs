@@ -57,25 +57,25 @@ namespace Yunyong.DataExchange.ExpressionX
             };
         }
         // 01
-        internal static DicModelUI BinaryCompareHandle(CrudTypeEnum crud, ActionEnum action,string classFullName,string key, string alias, object value, Type valType,CompareEnum compare)
+        internal static DicModelUI BinaryCompareHandle(CrudTypeEnum crud, ActionEnum action, string classFullName, string key, string alias, object value, Type valType, CompareEnum compare)
         {
             return new DicModelUI
             {
-                ClassFullName=classFullName,
+                ClassFullName = classFullName,
                 ColumnOne = key,
                 TableAliasOne = alias,
                 CsValue = value,
                 ValueType = valType,
                 Param = key,
                 ParamRaw = key,
-                Crud= crud,
+                Crud = crud,
                 Action = action,
                 Option = OptionEnum.Compare,
                 Compare = compare
             };
         }
         // 01
-        internal static DicModelUI CallInHandle(CrudTypeEnum crud,ActionEnum action, string classFullName, string key, string alias, object value, Type valType)
+        internal static DicModelUI CallInHandle(CrudTypeEnum crud, ActionEnum action, string classFullName, string key, string alias, object value, Type valType)
         {
             return new DicModelUI
             {
@@ -153,16 +153,17 @@ namespace Yunyong.DataExchange.ExpressionX
 
         /*******************************************************************************************************/
 
-        internal static DicModelUI ConditionCountHandle(string key)
+        internal static DicModelUI ConditionCountHandle(CrudTypeEnum crud, string key, string alias = "")
         {
             return new DicModelUI
             {
+                TableAliasOne = alias,
                 ColumnOne = key,
                 Param = key,
                 ParamRaw = key,
                 Action = ActionEnum.Select,
                 Option = OptionEnum.Count,
-                Crud = CrudTypeEnum.Query
+                Crud = crud
             };
         }
 

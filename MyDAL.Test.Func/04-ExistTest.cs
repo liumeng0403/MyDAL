@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Xunit;
 using Yunyong.DataExchange;
 
-namespace MyDAL.Test.Query
+namespace MyDAL.Test.Func
 {
     public class _04_ExistTest : TestBase
     {
@@ -24,6 +24,6 @@ namespace MyDAL.Test.Query
 
             var xx = "";
         }
-        
+
     }
 }

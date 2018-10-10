@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using Yunyong.DataExchange.Enums;
 using Yunyong.DataExchange.ExpressionX;
 using Yunyong.DataExchange.UserFacade.Query;
 
@@ -17,7 +18,7 @@ namespace Yunyong.DataExchange
         {
             var keyDic = where.DC.EH.ExpressionHandle(func)[0];
             var key = keyDic.ColumnOne;
-            where.DC.AddConditions(DicHandle.ConditionCountHandle(key));
+            where.DC.AddConditions(DicHandle.ConditionCountHandle(CrudTypeEnum.Query,key));
             return new CountQ<M>(where.DC);
         }
 
