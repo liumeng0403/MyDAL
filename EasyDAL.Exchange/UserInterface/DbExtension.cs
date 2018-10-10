@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using Yunyong.DataExchange.Common;
 using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.UserFacade.Create;
 using Yunyong.DataExchange.UserFacade.Delete;
