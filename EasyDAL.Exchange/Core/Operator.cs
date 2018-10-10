@@ -236,7 +236,7 @@ namespace Yunyong.DataExchange.Core
                 Param = key,
                 ParamRaw = key,
                 CsValue = val,
-                ValueType = typeof(F),
+                CsType = typeof(F),
                 Option = option,
                 Action = action,
                 Crud = CrudTypeEnum.Update
@@ -256,7 +256,7 @@ namespace Yunyong.DataExchange.Core
                     Param = tp.param,
                     ParamRaw = tp.param,
                     CsValue = tp.val,
-                    ValueType = tp.valType,
+                    CsType = tp.valType,
                     Action = ActionEnum.Update,
                     Option = OptionEnum.Set,
                     Crud = CrudTypeEnum.Update
@@ -384,101 +384,7 @@ namespace Yunyong.DataExchange.Core
             }
         }
 
-        //internal void CountMHandle<M>(string field)
-        //{
-        //    var fullName = typeof(M).FullName;
-        //    var any= DC.UiConditions.FirstOrDefault(it => fullName.Equals(it.ClassFullName, StringComparison.OrdinalIgnoreCase));
-        //    if(any!=null)
-        //    {
-        //        DC.AddConditions(DicHandle.ConditionCountHandle(CrudTypeEnum.Join, field, any.TableAliasOne));
-        //    }
-        //    else
-        //    {
-        //        var fullNames = DC.UiConditions.Where(it => !string.IsNullOrWhiteSpace(it.ClassFullName)).Distinct();
-        //        throw new Exception($"{typeof(M).Name} 必须为 [[{string.Join(",", fullNames.Select(it => it.ClassName))}]] 其中之一 !");
-        //    }
-        //}
-
-        internal void SelectMHandle<M>()
-        {
-            var vmType = typeof(M);
-            var vmName = vmType.FullName;
-            var vmProps = DC.GH.GetPropertyInfos(vmType);
-            var tab = DC.UiConditions.FirstOrDefault(it => vmName.Equals(it.ClassFullName, StringComparison.OrdinalIgnoreCase));
-            if (tab != null)
-            {
-                foreach (var prop in vmProps)
-                {
-                    DC.AddConditions(DicHandle.SelectColumnHandle(prop.Name, tab.TableAliasOne));
-                }
-            }
-            else
-            {
-                var fullNames = DC.UiConditions.Where(it => !string.IsNullOrWhiteSpace(it.ClassFullName)).Distinct();
-                throw new Exception($"请使用 [[Task<List<VM>> QueryListAsync<VM>(Expression<Func<VM>> func)]] 方法! 或者 {vmType.Name} 必须为 [[{string.Join(",", fullNames.Select(it => it.ClassName))}]] 其中之一 !");
-            }
-        }
-
-        internal void SelectMHandle<VM>(Expression<Func<VM>> func)
-        {
-            var list = DC.EH.ExpressionHandle(func);
-            foreach (var dic in list)
-            {
-                dic.Action = ActionEnum.Select;
-                dic.Option = OptionEnum.ColumnAs;
-                dic.Crud = CrudTypeEnum.Join;
-                DC.AddConditions(dic);
-            }
-        }
-
-        internal void SelectMHandle<M, VM>(Expression<Func<M, VM>> func)
-        {
-            var list = DC.EH.ExpressionHandle(func);
-            foreach (var dic in list)
-            {
-                dic.Action = ActionEnum.Select;
-                dic.Option = OptionEnum.ColumnAs;
-                dic.Crud = CrudTypeEnum.Query;
-                DC.AddConditions(dic);
-            }
-        }
-
         /****************************************************************************************************************************************/
 
-        protected async Task<VM> QueryFirstOrDefaultAsyncHandle<DM, VM>()
-        {
-            return await SqlHelper.QueryFirstOrDefaultAsync<VM>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<DM>(UiMethodEnum.QueryFirstOrDefaultAsync)[0],
-                DC.SqlProvider.GetParameters());
-        }
-
-        protected async Task<List<VM>> QueryListAsyncHandle<DM, VM>()
-        {
-            return (await SqlHelper.QueryAsync<VM>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<DM>(UiMethodEnum.QueryListAsync)[0],
-                DC.SqlProvider.GetParameters())).ToList();
-        }
-
-        internal async Task<PagingList<VM>> QueryPagingListAsyncHandle<DM, VM>(int pageIndex, int pageSize, UiMethodEnum sqlType)
-        {
-            var result = new PagingList<VM>();
-            result.PageIndex = pageIndex;
-            result.PageSize = pageSize;
-            var paras = DC.SqlProvider.GetParameters();
-            var sql = DC.SqlProvider.GetSQL<DM>(sqlType, result.PageIndex, result.PageSize);
-            result.TotalCount = await SqlHelper.ExecuteScalarAsync<int>(DC.Conn, sql[0], paras);
-            result.Data = (await SqlHelper.QueryAsync<VM>(DC.Conn, sql[1], paras)).ToList();
-            return result;
-        }
-
-        protected async Task<List<VM>> QueryAllAsyncHandle<DM, VM>()
-        {
-            return (await SqlHelper.QueryAsync<VM>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<DM>(UiMethodEnum.QueryAllAsync)[0],
-                DC.SqlProvider.GetParameters())).ToList();
-        }
     }
 }

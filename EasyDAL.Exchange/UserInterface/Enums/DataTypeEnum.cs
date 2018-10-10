@@ -4,6 +4,12 @@ namespace Yunyong.DataExchange
     {
         None,
 
+        /**************************************************************************************************/
+
+        /*
+         * 整数类型
+         */
+
         /// <summary>
         /// 1byte
         /// </summary>
@@ -29,6 +35,12 @@ namespace Yunyong.DataExchange
         /// </summary>
         BigInt,
 
+        /**************************************************************************************************/
+
+        /*
+         * 浮点数类型和定点数类型
+         */
+
         /// <summary>
         /// 4byte -- [0,7]位小数
         /// </summary>
@@ -44,10 +56,16 @@ namespace Yunyong.DataExchange
         /// </summary>
         Decimal,
 
+        /**************************************************************************************************/
+
+        /*
+         * 日期与时间类型
+         */
+
         /// <summary>
-        /// 3byte -- yyyy-MM-dd -- [1000-01-01,9999-12-31]
+        /// 1byte -- yyyy -- [1901,2155]
         /// </summary>
-        Date,
+        Year,
 
         /// <summary>
         /// 3byte -- HH:mm:ss
@@ -55,9 +73,9 @@ namespace Yunyong.DataExchange
         Time,
 
         /// <summary>
-        /// 1byte -- yyyy -- [1901,2155]
+        /// 3byte -- yyyy-MM-dd -- [1000-01-01,9999-12-31]
         /// </summary>
-        Year,
+        Date,
 
         /// <summary>
         /// 8byte -- yyyy-MM-dd HH:mm:ss -- [1000-01-01 00:00:00,9999-12-31 23:59:59]
@@ -68,6 +86,12 @@ namespace Yunyong.DataExchange
         /// 8byte -- yyyy-MM-dd HH:mm:ss -- [1070,2037]
         /// </summary>
         TimeStamp,
+
+        /**************************************************************************************************/
+
+        /*
+         * 文本字符串类型
+         */
 
         /// <summary>
         /// [0,255]byte
@@ -109,6 +133,27 @@ namespace Yunyong.DataExchange
         /// </summary>
         Set,
 
+        /**************************************************************************************************/
+
+        /*
+         * 二进制字符串类型
+         */
+
+        /// <summary>
+        /// [1,64]bit
+        /// </summary>
+        Bit,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        Binary,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        VarBinary,
+        
         /// <summary>
         /// [0,255]byte
         /// </summary>
@@ -127,12 +172,7 @@ namespace Yunyong.DataExchange
         /// <summary>
         /// [0,4294967295]byte
         /// </summary>
-        LongBlob,
-
-        /// <summary>
-        /// [1,64]bit
-        /// </summary>
-        Bit
+        LongBlob
 
     }
 }

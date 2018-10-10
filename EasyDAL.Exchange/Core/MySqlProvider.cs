@@ -118,7 +118,7 @@ namespace Yunyong.DataExchange.Core
         private void XDebugValue(List<string> list)
         {
 
-            if (XDebug.Hint)
+            if (XConfig.IsDebug)
             {
                 XDebug.SQL = list;
                 var paras = DC.SqlProvider.GetParameters();

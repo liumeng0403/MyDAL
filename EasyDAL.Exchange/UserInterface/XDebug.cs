@@ -8,7 +8,7 @@ namespace Yunyong.DataExchange
         private static List<string> _sql { get; set; } = new List<string>();
         private static List<string> _parameters { get; set; } = new List<string>();
 
-        internal static bool Hint { get; set; }
+        //internal static bool Hint { get; set; }
 
         public static List<string> SQL
         {
