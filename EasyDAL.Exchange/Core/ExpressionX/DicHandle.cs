@@ -139,10 +139,11 @@ namespace Yunyong.DataExchange.Core.ExpressionX
 
         /*******************************************************************************************************/
 
-        internal static DicModelUI SelectColumnHandle(string columnOne, string tableAliasOne)
+        internal static DicModelUI SelectColumnHandle(string columnOne, string tableAliasOne,string fullName)
         {
             return new DicModelUI
             {
+                ClassFullName=fullName,
                 ColumnOne = columnOne,
                 TableAliasOne = tableAliasOne,
                 Action = ActionEnum.Select,
@@ -153,10 +154,11 @@ namespace Yunyong.DataExchange.Core.ExpressionX
 
         /*******************************************************************************************************/
 
-        internal static DicModelUI ConditionCountHandle(CrudTypeEnum crud, string key, string alias = "")
+        internal static DicModelUI ConditionCountHandle(CrudTypeEnum crud,string fullName, string key, string alias = "")
         {
             return new DicModelUI
             {
+                ClassFullName=fullName,
                 TableAliasOne = alias,
                 ColumnOne = key,
                 Param = key,

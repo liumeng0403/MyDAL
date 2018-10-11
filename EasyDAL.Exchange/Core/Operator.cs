@@ -353,7 +353,7 @@ namespace Yunyong.DataExchange.Core
             });
         }
 
-        protected void OrderByOptionHandle(PagingQueryOption option)
+        protected void OrderByOptionHandle(PagingQueryOption option,string fullName)
         {
             if (option.OrderBys != null
               && option.OrderBys.Any())
@@ -373,6 +373,7 @@ namespace Yunyong.DataExchange.Core
                         }
                         DC.AddConditions(new DicModelUI
                         {
+                            ClassFullName=fullName,
                             ColumnOne = item.Field,
                             Action = ActionEnum.OrderBy,
                             Option = op

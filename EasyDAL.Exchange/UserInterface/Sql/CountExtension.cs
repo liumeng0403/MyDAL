@@ -18,7 +18,7 @@ namespace Yunyong.DataExchange
         {
             var keyDic = where.DC.EH.ExpressionHandle(func)[0];
             var key = keyDic.ColumnOne;
-            where.DC.AddConditions(DicHandle.ConditionCountHandle(CrudTypeEnum.Query,key));
+            where.DC.AddConditions(DicHandle.ConditionCountHandle(CrudTypeEnum.Query,keyDic.ClassFullName,key));
             return new CountQ<M>(where.DC);
         }
 

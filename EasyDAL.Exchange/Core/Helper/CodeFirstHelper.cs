@@ -1,9 +1,9 @@
-﻿using MyDAL.Core.Extensions;
-using System;
+﻿using System;
 using System.Data;
 using Yunyong.DataExchange.Core.Common;
+using Yunyong.DataExchange.Core.Extensions;
 
-namespace MyDAL.Core.Helper
+namespace Yunyong.DataExchange.Core.Helper
 {
     internal class CodeFirstHelper
         : ClassInstance<CodeFirstHelper>

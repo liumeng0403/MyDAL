@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyDAL.Core.Extensions
+namespace Yunyong.DataExchange.Core.Extensions
 {
     internal static class StringMethodExtensions
     {

@@ -13,6 +13,8 @@ namespace MyDAL.Test.Query
     public class _10_MethodParamsTest : TestBase, IMethodParamsTest
     {
 
+        public Guid AgentId { get; set; }
+
         [Fact]
         public async Task MethodParamTest()
         {
@@ -112,6 +114,21 @@ namespace MyDAL.Test.Query
             var tuple2 = (XDebug.SQL, XDebug.Parameters);
         }
 
+        [Fact]
+        public async Task PropertyFieldTest()
+        {
+            var xx1 = "";
+
+            AgentId = Guid.Parse("00079c84-a511-418b-bd5b-0165442eb30a");
+            var res1 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.Id == AgentId)
+                .QueryFirstOrDefaultAsync<AgentVM>();
+
+            var tuple1 = (XDebug.SQL, XDebug.Parameters);
+
+            var xx = "";
+        }
 
     }
 }

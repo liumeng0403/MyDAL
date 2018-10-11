@@ -18,7 +18,7 @@ namespace Yunyong.DataExchange.Impls
 
         public async Task<bool> ExistAsync()
         {
-            DC.AddConditions(DicHandle.ConditionCountHandle(CrudTypeEnum.Query, "*"));
+            DC.AddConditions(DicHandle.ConditionCountHandle(CrudTypeEnum.Query,typeof(M).FullName, "*"));
             DC.IP.ConvertDic();
             var count = await SqlHelper.ExecuteScalarAsync<long>(
                 DC.Conn,

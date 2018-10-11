@@ -1,8 +1,8 @@
-using MyDAL.Core.Extensions;
 using System;
 using System.Data;
 using Yunyong.DataExchange.AdoNet;
 using Yunyong.DataExchange.Core.Common;
+using Yunyong.DataExchange.Core.Extensions;
 
 namespace Yunyong.DataExchange.Core.Helper
 {

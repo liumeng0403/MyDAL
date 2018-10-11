@@ -20,7 +20,7 @@ namespace Yunyong.DataExchange.Impls
 
         public async Task<long> CountAsync()
         {
-            DC.AddConditions(DicHandle.ConditionCountHandle(CrudTypeEnum.Query,"*"));
+            DC.AddConditions(DicHandle.ConditionCountHandle(CrudTypeEnum.Query,typeof(M).FullName,"*"));
             DC.IP.ConvertDic();
             return await SqlHelper.ExecuteScalarAsync<long>(
                 DC.Conn,
@@ -32,7 +32,7 @@ namespace Yunyong.DataExchange.Impls
         {
             var keyDic = DC.EH.ExpressionHandle(func)[0];
             var key = keyDic.ColumnOne;
-            DC.AddConditions(DicHandle.ConditionCountHandle(CrudTypeEnum.Query,key));
+            DC.AddConditions(DicHandle.ConditionCountHandle(CrudTypeEnum.Query,typeof(M).FullName,key));
             DC.IP.ConvertDic();
             return await SqlHelper.ExecuteScalarAsync<long>(
                  DC.Conn,
@@ -52,7 +52,7 @@ namespace Yunyong.DataExchange.Impls
         public async Task<long> CountAsync()
         {
             //CountMHandle<M>("*");
-            DC.AddConditions(DicHandle.ConditionCountHandle(CrudTypeEnum.Join, "*", string.Empty));
+            DC.AddConditions(DicHandle.ConditionCountHandle(CrudTypeEnum.Join,string.Empty, "*", string.Empty));
             DC.IP.ConvertDic();
             return await SqlHelper.ExecuteScalarAsync<long>(
                 DC.Conn,
@@ -64,7 +64,7 @@ namespace Yunyong.DataExchange.Impls
         {
             //CountMHandle<M>("*");
             var dic = DC.EH.ExpressionHandle(func)[0];
-            DC.AddConditions(DicHandle.ConditionCountHandle(CrudTypeEnum.Join, dic.ColumnOne, dic.TableAliasOne));
+            DC.AddConditions(DicHandle.ConditionCountHandle(CrudTypeEnum.Join,dic.ClassFullName, dic.ColumnOne, dic.TableAliasOne));
             DC.IP.ConvertDic();
             return await SqlHelper.ExecuteScalarAsync<long>(
                 DC.Conn,

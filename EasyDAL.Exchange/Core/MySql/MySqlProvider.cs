@@ -88,9 +88,9 @@ namespace Yunyong.DataExchange.Core.MySql
         private string GetOrderByPart()
         {
             var str = string.Empty;
-            var dic = DC.DbConditions.First(it => !string.IsNullOrWhiteSpace(it.ClassFullName));
-            var key = DC.SC.GetKey(dic.ClassFullName, DC.Conn.Database);
-            var cols = DC.SC.GetColumnInfos(key);
+            var dic = DC.DbConditions.First(it => !string.IsNullOrWhiteSpace(it.Key));
+            //var key = DC.SC.GetKey(dic.ClassFullName, DC.Conn.Database);
+            var cols = DC.SC.GetColumnInfos(dic.Key);
 
             if (DC.DbConditions.Any(it => it.Action == ActionEnum.OrderBy))
             {
@@ -102,7 +102,7 @@ namespace Yunyong.DataExchange.Core.MySql
             }
             else
             {
-                str = $" {dic.TableAliasOne}.`{DC.SC.GetModelProperys(key).First().Name}` desc ";
+                str = $" {dic.TableAliasOne}.`{DC.SC.GetModelProperys(dic.Key).First().Name}` desc ";
             }
 
             str = $" \r\n order by {str}";

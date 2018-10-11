@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Yunyong.Core;
 
-namespace MyDAL.Core.Helper
+namespace Yunyong.DataExchange.Core.Helper
 {
     internal class GenericHelper : ClassInstance<GenericHelper>
     {

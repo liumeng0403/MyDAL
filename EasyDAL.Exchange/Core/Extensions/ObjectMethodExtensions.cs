@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Yunyong.DataExchange.Core.Common;
 
-namespace MyDAL.Core.Extensions
+namespace Yunyong.DataExchange.Core.Extensions
 {
     internal static class ObjectMethodExtensions
     {

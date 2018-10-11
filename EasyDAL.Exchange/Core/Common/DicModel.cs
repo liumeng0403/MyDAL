@@ -7,7 +7,6 @@ namespace Yunyong.DataExchange.Core.Common
     internal class DicModelBase
     {
         public int ID { get; set; }
-        public string ClassFullName { get; set; }
         public CrudTypeEnum Crud { get; set; }
         public ActionEnum Action { get; set; }
         public OptionEnum Option { get; set; }
@@ -29,8 +28,9 @@ namespace Yunyong.DataExchange.Core.Common
                 var arr = ClassFullName.Split('.');
                 return arr[arr.Length - 1];
             }
-        }        
-        public string TableOne { get; set; }
+        }
+        public string ClassFullName { get; set; }
+        //public string TableOne { get; set; }
         public string TableAliasOne { get; set; }
         public string ColumnOne { get; set; }
         public string ColumnOneAlias { get; set; }
@@ -48,7 +48,8 @@ namespace Yunyong.DataExchange.Core.Common
 
     internal class DicModelDB : DicModelBase
     {
-        
+        //public string ClassFullName { get; set; }
+        public string Key { get; set; }
         public string TableOne { get; set; }
         public string TableAliasOne { get; set; }
         public string ColumnOne { get; set; }

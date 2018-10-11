@@ -1,8 +1,8 @@
-using MyDAL.Core.Helper;
 using System;
 using System.Data;
 using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Core.Common;
+using Yunyong.DataExchange.Core.Helper;
 using Yunyong.DataExchange.UserFacade.Create;
 using Yunyong.DataExchange.UserFacade.Delete;
 using Yunyong.DataExchange.UserFacade.Join;
