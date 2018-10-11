@@ -1,5 +1,6 @@
 ﻿using MyDAL.Core.Enums;
 using MyDAL.Core.ExpressionX;
+using MyDAL.Core.Extensions;
 using MyDAL.Core.Helper;
 using System;
 using System.Collections.Generic;
@@ -97,14 +98,22 @@ namespace MyDAL.Core.Common
 
                     //
                     db.ID = ui.ID;
-                    db.ClassFullName = ui.ClassFullName;
+                    //db.ClassFullName = ui.ClassFullName;
                     db.Crud = ui.Crud;
                     db.Action = ui.Action;
                     db.Option = ui.Option;
                     db.Compare = ui.Compare;
 
                     //
-                    db.TableOne = ui.TableOne;
+                    if (ui.ClassFullName.IsNullStr())
+                    {
+                        db.Key = string.Empty;
+                    }
+                    else
+                    {
+                        db.Key = DC.SC.GetKey(ui.ClassFullName, DC.Conn.Database);
+                        db.TableOne = DC.SC.GetModelTableName(db.Key); //ui.TableOne;
+                    }
                     db.TableAliasOne = ui.TableAliasOne;
                     db.ColumnOne = ui.ColumnOne;
                     db.KeyTwo = ui.ColumnTwo;
@@ -162,14 +171,14 @@ namespace MyDAL.Core.Common
         internal void SelectMHandle<M>()
         {
             var vmType = typeof(M);
-            var vmName = vmType.FullName;
+            var fullName = vmType.FullName;
             var vmProps = DC.GH.GetPropertyInfos(vmType);
-            var tab = DC.UiConditions.FirstOrDefault(it => vmName.Equals(it.ClassFullName, StringComparison.OrdinalIgnoreCase));
+            var tab = DC.UiConditions.FirstOrDefault(it => fullName.Equals(it.ClassFullName, StringComparison.OrdinalIgnoreCase));
             if (tab != null)
             {
                 foreach (var prop in vmProps)
                 {
-                    DC.AddConditions(DicHandle.SelectColumnHandle(prop.Name, tab.TableAliasOne));
+                    DC.AddConditions(DicHandle.SelectColumnHandle(prop.Name, tab.TableAliasOne,fullName));
                 }
             }
             else

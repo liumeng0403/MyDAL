@@ -84,8 +84,7 @@ namespace MyDAL.Core
 
         internal void AddConditions(DicModelUI dic)
         {
-            if (/*!string.IsNullOrWhiteSpace(dic.CsValue)*/
-                dic.CsValue!=null
+            if (dic.CsValue!=null
                 && dic.Option == OptionEnum.In
                 && dic.CsValue.ToString().Contains(","))
             {
@@ -108,7 +107,7 @@ namespace MyDAL.Core
                     //
                     var dicx = new DicModelUI
                     {
-                        TableOne = dic.TableOne,
+                        //TableOne = dic.TableOne,
                         ClassFullName = dic.ClassFullName,
                         ColumnOne = dic.ColumnOne,
                         TableAliasOne = dic.TableAliasOne,
@@ -129,22 +128,6 @@ namespace MyDAL.Core
                 }
                 UiConditions.Remove(dic);
             }
-            //else if (!string.IsNullOrWhiteSpace(dic.Param)
-            //    && UiConditions.Any(it => dic.Param.Equals(it.Param, StringComparison.OrdinalIgnoreCase)))
-            //{
-            //    if (dic.Param.Contains("__"))
-            //    {
-            //        var arr = dic.Param.Split(new string[] { "__" }, StringSplitOptions.RemoveEmptyEntries);
-            //        var val = Convert.ToInt32(arr[arr.Length - 1]);
-            //        val++;
-            //        dic.Param = dic.ParamRaw + "__" + val.ToString();
-            //    }
-            //    else
-            //    {
-            //        dic.Param += "__1";
-            //    }
-            //    AddConditions(dic);
-            //}
             else
             {
                 //

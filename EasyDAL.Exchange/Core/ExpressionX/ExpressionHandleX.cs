@@ -646,10 +646,10 @@ namespace MyDAL.Core.ExpressionX
                     if (body.Expression.NodeType == ExpressionType.Constant)
                     {
                         var alias = body.Member.Name;
-                        var table = DC.SC.GetModelTableName(DC.SC.GetKey(body.Type.FullName, DC.Conn.Database));
+                        //var table = DC.SC.GetModelTableName(DC.SC.GetKey(body.Type.FullName, DC.Conn.Database));
                         result.Add(new DicModelUI
                         {
-                            TableOne = table,
+                            //TableOne = table,
                             ClassFullName = body.Type.FullName,
                             TableAliasOne = alias
                         });

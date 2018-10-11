@@ -46,14 +46,14 @@ namespace MyDAL.Impls
 
         public async Task<PagingList<M>> QueryPagingListAsync(PagingQueryOption option)
         {
-            OrderByOptionHandle(option);
+            OrderByOptionHandle(option,typeof(M).FullName);
             DC.IP.ConvertDic();
             return await QueryPagingListAsyncHandle<M, M>(option.PageIndex, option.PageSize, UiMethodEnum.QueryPagingListAsync);
         }
 
         public async Task<PagingList<VM>> QueryPagingListAsync<VM>(PagingQueryOption option)
         {
-            OrderByOptionHandle(option);
+            OrderByOptionHandle(option,typeof(M).FullName);
             DC.IP.ConvertDic();
             return await QueryPagingListAsyncHandle<M, VM>(option.PageIndex, option.PageSize, UiMethodEnum.QueryPagingListAsync);
         }
@@ -61,7 +61,7 @@ namespace MyDAL.Impls
         public async Task<PagingList<VM>> QueryPagingListAsync<VM>(PagingQueryOption option, Expression<Func<M, VM>> func)
         {
             SelectMHandle(func);
-            OrderByOptionHandle(option);
+            OrderByOptionHandle(option,typeof(M).FullName);
             DC.IP.ConvertDic();
             return await QueryPagingListAsyncHandle<M, VM>(option.PageIndex, option.PageSize, UiMethodEnum.QueryPagingListAsync);
         }
@@ -115,7 +115,7 @@ namespace MyDAL.Impls
         public async Task<PagingList<M>> QueryPagingListAsync<M>(PagingQueryOption option)
         {
             SelectMHandle<M>();
-            OrderByOptionHandle(option);
+            OrderByOptionHandle(option,typeof(M).FullName);
             DC.IP.ConvertDic();
             var result = new PagingList<M>();
             result.PageIndex = option.PageIndex;
@@ -130,7 +130,7 @@ namespace MyDAL.Impls
         public async Task<PagingList<VM>> QueryPagingListAsync<VM>(PagingQueryOption option, Expression<Func<VM>> func)
         {
             SelectMHandle(func);
-            OrderByOptionHandle(option);
+            OrderByOptionHandle(option,string.Empty);
             DC.IP.ConvertDic();
             var result = new PagingList<VM>();
             result.PageIndex = option.PageIndex;
