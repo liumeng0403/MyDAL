@@ -1,4 +1,6 @@
 using MyDAL.Test.Entities.EasyDal_Exchange;
+using MyDAL.Test.Interfaces;
+using MyDAL.Test.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +10,7 @@ using Yunyong.DataExchange;
 
 namespace MyDAL.Test.Query
 {
-    public class _10_MethodParamsTest : TestBase
+    public class _10_MethodParamsTest : TestBase, IMethodParamsTest
     {
 
         [Fact]
@@ -83,6 +85,33 @@ namespace MyDAL.Test.Query
 
             var xxx = "";
         }
+
+        //[Fact]
+        //public async Task ExistTest()
+        //{
+
+        //    var vm = new ApplyStockholderAwardAccountingVM();
+        //    vm.Year = 2018;
+        //    vm.Month = Month.October;
+
+        //    await eee(vm);
+        //}
+        public async Task eee(ApplyStockholderAwardAccountingVM vm)
+        {
+            var xx2 = "";
+
+            if (!await Conn
+                    .Selecter<PlatformMonthlyPerformance>()
+                    .Where(it => it.Year == vm.Year)
+                    .And(it => it.Month == vm.Month)
+                    .ExistAsync())
+            {
+                Assert.True(true);
+            }
+
+            var tuple2 = (XDebug.SQL, XDebug.Parameters);
+        }
+
 
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Yunyong.DataExchange.Core;
 
 namespace Yunyong.DataExchange.Core.ExpressionX
 {
@@ -194,27 +193,25 @@ namespace Yunyong.DataExchange.Core.ExpressionX
                 else if (innerMember.Member.MemberType == MemberTypes.Field)
                 {
                     var fInfo = innerMember.Member as FieldInfo;
-                    var cExpr = innerMember.Expression as ConstantExpression;
-                    var obj = cExpr.Value;
+                    var obj = default(object);
+                    if (innerMember.Expression.NodeType == ExpressionType.Constant)
+                    {
+                        var cExpr = innerMember.Expression as ConstantExpression;
+                        obj = cExpr.Value;
+                    }
+                    else if(innerMember.Expression.NodeType== ExpressionType.MemberAccess)
+                    {
+                        var cExpr = innerMember.Expression as MemberExpression;
+                        var opy = cExpr.Member as PropertyInfo;
+                        var op = cExpr.Expression as ConstantExpression;
+                        var opj = op.Value;
+                        obj = opy.GetValue(opj);
+                    }
                     var valObj = fInfo.GetValue(obj);
-                    var valType = targetProp.PropertyType;
                     fName = targetProp.Name;
                     objx = DC.GH.GetTypeValue(targetProp, valObj);
                 }
             }
-
-            //
-            //if (!string.IsNullOrWhiteSpace(objx))
-            //if (objx != null)
-            //{
-            //    return objx;
-            //}
-            //else if( objx==null
-            //    && )
-            //else
-            //{
-            //    throw new Exception();
-            //}
 
             if (objx == null)
             {
