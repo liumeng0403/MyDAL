@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using Yunyong.DataExchange.Core.Helper;
 using Yunyong.DataExchange.Helper;
 
 namespace Yunyong.DataExchange.Cache

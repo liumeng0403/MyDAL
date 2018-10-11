@@ -1,6 +1,6 @@
 using System;
 using System.Linq.Expressions;
-using Yunyong.DataExchange.Enums;
+using Yunyong.DataExchange.Core.Enums;
 using Yunyong.DataExchange.UserFacade.Update;
 
 namespace Yunyong.DataExchange

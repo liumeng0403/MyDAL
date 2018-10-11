@@ -3,8 +3,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
-using Yunyong.DataExchange.Common;
 using Yunyong.DataExchange.Core;
+using Yunyong.DataExchange.Core.Common;
 
 namespace Yunyong.DataExchange.Cache
 {

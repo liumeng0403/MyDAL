@@ -1,6 +1,6 @@
 using System;
 using System.Linq.Expressions;
-using Yunyong.DataExchange.Enums;
+using Yunyong.DataExchange.Core.Enums;
 using Yunyong.DataExchange.UserFacade.Delete;
 using Yunyong.DataExchange.UserFacade.Join;
 using Yunyong.DataExchange.UserFacade.Query;

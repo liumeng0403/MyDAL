@@ -3,8 +3,7 @@ using System.Data;
 using Yunyong.DataExchange.AdoNet.Interfaces;
 using Yunyong.DataExchange.Cache;
 using Yunyong.DataExchange.Core;
-using Yunyong.DataExchange.Helper;
-using Yunyong.DataExchange.Others;
+using Yunyong.DataExchange.Core.Helper;
 
 namespace Yunyong.DataExchange.AdoNet
 {

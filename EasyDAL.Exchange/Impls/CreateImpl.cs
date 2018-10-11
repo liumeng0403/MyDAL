@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
-using Yunyong.DataExchange.Common;
 using Yunyong.DataExchange.Core;
-using Yunyong.DataExchange.Enums;
-using Yunyong.DataExchange.Helper;
+using Yunyong.DataExchange.Core.Common;
+using Yunyong.DataExchange.Core.Enums;
+using Yunyong.DataExchange.Core.Helper;
 using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.Impls

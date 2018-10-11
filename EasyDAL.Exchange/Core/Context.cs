@@ -1,13 +1,12 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using Yunyong.DataExchange.AdoNet;
 using Yunyong.DataExchange.Cache;
-using Yunyong.DataExchange.Common;
-using Yunyong.DataExchange.Enums;
-using Yunyong.DataExchange.ExpressionX;
-using Yunyong.DataExchange.Extensions;
+using Yunyong.DataExchange.Core.Common;
+using Yunyong.DataExchange.Core.Enums;
+using Yunyong.DataExchange.Core.ExpressionX;
+using Yunyong.DataExchange.Core.Helper;
+using Yunyong.DataExchange.Core.MySql;
 using Yunyong.DataExchange.Helper;
 
 namespace Yunyong.DataExchange.Core

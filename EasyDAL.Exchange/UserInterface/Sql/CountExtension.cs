@@ -1,7 +1,7 @@
 using System;
 using System.Linq.Expressions;
-using Yunyong.DataExchange.Enums;
-using Yunyong.DataExchange.ExpressionX;
+using Yunyong.DataExchange.Core.Enums;
+using Yunyong.DataExchange.Core.ExpressionX;
 using Yunyong.DataExchange.UserFacade.Query;
 
 namespace Yunyong.DataExchange

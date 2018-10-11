@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 using Yunyong.Core;
-using Yunyong.DataExchange.Common;
-using Yunyong.DataExchange.Enums;
-using Yunyong.DataExchange.ExpressionX;
-using Yunyong.DataExchange.Helper;
+using Yunyong.DataExchange.Core.Common;
+using Yunyong.DataExchange.Core.Enums;
+using Yunyong.DataExchange.Core.ExpressionX;
 using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.Core

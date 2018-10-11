@@ -1,7 +1,6 @@
 using System;
 using System.Data;
 using Yunyong.DataExchange.Core;
-using Yunyong.DataExchange.Others;
 
 namespace Yunyong.DataExchange.AdoNet
 {
