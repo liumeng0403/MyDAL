@@ -104,6 +104,44 @@ namespace Yunyong.DataExchange.Core.ExpressionX
             return str;
         }
 
+        private object GetMemObj(Expression exprX,MemberInfo memX)
+        {
+            if (memX.MemberType == MemberTypes.Field)
+            {
+                var fInfo = memX as FieldInfo;
+                var obj = default(object);
+                if (exprX.NodeType == ExpressionType.Constant)
+                {
+                    var cExpr = exprX as ConstantExpression;
+                    obj = cExpr.Value;
+                }
+                else if (exprX.NodeType == ExpressionType.MemberAccess)
+                {
+                    var expr = exprX as MemberExpression;
+                    obj = GetMemObj(expr.Expression, expr.Member);
+                }
+                return fInfo.GetValue(obj);
+            }
+            else if(memX.MemberType== MemberTypes.Property)
+            {
+                var fInfo = memX as PropertyInfo;
+                var obj = default(object);
+                if (exprX.NodeType == ExpressionType.Constant)
+                {
+                    var cExpr = exprX as ConstantExpression;
+                    obj = cExpr.Value;
+                }
+                else if (exprX.NodeType == ExpressionType.MemberAccess)
+                {
+                    var expr = exprX as MemberExpression;
+                    obj = GetMemObj(expr.Expression, expr.Member);
+                }
+                return fInfo.GetValue(obj);
+            }
+
+            return null;
+        }
+
 
         /*******************************************************************************************************/
 
@@ -121,42 +159,45 @@ namespace Yunyong.DataExchange.Core.ExpressionX
                 var type = memExpr.Type as Type;
                 var instance = Activator.CreateInstance(type);
                 fName = targetProp.Name;
-                objx = DC.GH.GetTypeValue(targetProp, instance); // targetProp.GetValue(instance, null).ToString();
+                objx = DC.GH.GetTypeValue(targetProp, instance); 
             }
             else if (memExpr.Expression.NodeType == ExpressionType.Constant                     //  Constant   Field 
                 && memExpr.Member.MemberType == MemberTypes.Field)
             {
                 var fInfo = memExpr.Member as FieldInfo;
-                var cExpr = memExpr.Expression as ConstantExpression;
-                var obj = cExpr.Value;
+                //var cExpr = memExpr.Expression as ConstantExpression;
+                var obj = GetMemObj(memExpr.Expression, memExpr.Member);
+                //var obj = cExpr.Value;
                 var fType = fInfo.FieldType;
                 if (IsListT(fType)
                     || fType.IsArray)
                 {
                     var type = memExpr.Type as Type;
-                    var vals = fInfo.GetValue(obj);
+                    //var vals = fInfo.GetValue(obj);
                     fName = fInfo.Name;
-                    objx = InValueForListT(type, vals, fType.IsArray);
+                    objx = InValueForListT(type, obj, fType.IsArray);
                 }
                 else
                 {
                     fName = fInfo.Name;
-                    objx = fInfo.GetValue(obj);//.ToString();
+                    //objx = fInfo.GetValue(obj);
+                    objx = obj;
                 }
             }
             else if (memExpr.Expression.NodeType == ExpressionType.Constant                     //  Constant   Property
                 && memExpr.Member.MemberType == MemberTypes.Property)
             {
                 var pInfo = memExpr.Member as PropertyInfo;
-                var cExpr = memExpr.Expression as ConstantExpression;
-                var obj = cExpr.Value;
-                var valObj = pInfo.GetValue(obj);
+                //var cExpr = memExpr.Expression as ConstantExpression;
+                //var obj = cExpr.Value;
+                var obj = GetMemObj(memExpr.Expression, memExpr.Member);
+                //var valObj = pInfo.GetValue(obj);
                 var valType = pInfo.PropertyType;
                 if (IsListT(valType)
                     || valType.IsArray)
                 {
                     fName = pInfo.Name;
-                    objx = InValueForListT(valType, valObj, valType.IsArray);
+                    objx = InValueForListT(valType, obj, valType.IsArray);
                 }
                 else
                 {
@@ -171,10 +212,11 @@ namespace Yunyong.DataExchange.Core.ExpressionX
                 MemberExpression innerMember = memExpr.Expression as MemberExpression;
                 if (innerMember.Member.MemberType == MemberTypes.Property)
                 {
-                    var pInfo = innerMember.Member as PropertyInfo;
-                    var cExpr = innerMember.Expression as ConstantExpression;
-                    var obj = cExpr.Value;
-                    var valObj = pInfo.GetValue(obj);
+                    //var pInfo = innerMember.Member as PropertyInfo;
+                    //var cExpr = innerMember.Expression as ConstantExpression;
+                    //var obj = cExpr.Value;
+                    var valObj = GetMemObj(innerMember.Expression, innerMember.Member);
+                    //var valObj = pInfo.GetValue(obj);
                     var fType = targetProp.PropertyType;
                     if (IsListT(fType)
                         || fType.IsArray)
@@ -192,24 +234,33 @@ namespace Yunyong.DataExchange.Core.ExpressionX
                 }
                 else if (innerMember.Member.MemberType == MemberTypes.Field)
                 {
-                    var fInfo = innerMember.Member as FieldInfo;
-                    var obj = default(object);
-                    if (innerMember.Expression.NodeType == ExpressionType.Constant)
-                    {
-                        var cExpr = innerMember.Expression as ConstantExpression;
-                        obj = cExpr.Value;
-                    }
-                    else if(innerMember.Expression.NodeType== ExpressionType.MemberAccess)
-                    {
-                        var cExpr = innerMember.Expression as MemberExpression;
-                        var opy = cExpr.Member as PropertyInfo;
-                        var op = cExpr.Expression as ConstantExpression;
-                        var opj = op.Value;
-                        obj = opy.GetValue(opj);
-                    }
-                    var valObj = fInfo.GetValue(obj);
+                    var expr = innerMember.Expression;
+                    var mem = innerMember.Member;
+                    var objX = GetMemObj(expr, mem);
+                    
+                    //var fInfo = innerMember.Member as FieldInfo;
+                    //var obj = default(object);
+                    //if (innerMember.Expression.NodeType == ExpressionType.Constant)
+                    //{
+                    //    var cExpr = innerMember.Expression as ConstantExpression;
+                    //    obj = cExpr.Value;
+                    //}
+                    //else if(innerMember.Expression.NodeType== ExpressionType.MemberAccess)
+                    //{
+                    //    var cExpr = innerMember.Expression as MemberExpression;
+                    //    var opy = cExpr.Member as FieldInfo;
+                    //    var op = cExpr.Expression as MemberExpression ;
+                    //    var opj = op.Member as FieldInfo;
+                    //    var ojj = op.Expression as ConstantExpression;
+                    //    var _1 = ojj.Value;
+                    //    var oppj = opj.GetValue(ojj.Value);
+
+                    //    obj = opy.GetValue(opj);
+                    //}
+                    //var valObj = fInfo.GetValue(obj);
+
                     fName = targetProp.Name;
-                    objx = DC.GH.GetTypeValue(targetProp, valObj);
+                    objx = DC.GH.GetTypeValue(targetProp, objX);
                 }
             }
 
