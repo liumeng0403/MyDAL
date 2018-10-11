@@ -1,5 +1,5 @@
-﻿using MyDAL.Common;
-using MyDAL.Core;
+﻿using MyDAL.Core;
+using MyDAL.Core.Common;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;

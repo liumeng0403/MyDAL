@@ -1,14 +1,12 @@
-﻿using MyDAL.Common;
-using MyDAL.Enums;
-using MyDAL.ExpressionX;
-using MyDAL.Helper;
+﻿using MyDAL.Core.Common;
+using MyDAL.Core.Enums;
+using MyDAL.Core.ExpressionX;
 using MyDAL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace MyDAL.Core
 {

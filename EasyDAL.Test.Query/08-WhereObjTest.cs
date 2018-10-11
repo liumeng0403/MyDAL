@@ -1,5 +1,4 @@
-﻿using MyDAL.Extensions;
-using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.EasyDal_Exchange;
 using MyDAL.Test.Enums;
 using MyDAL.Test.Options;
 using MyDAL.Test.ViewModels;

@@ -1,5 +1,5 @@
-﻿using MyDAL.Enums;
-using MyDAL.ExpressionX;
+﻿using MyDAL.Core.Enums;
+using MyDAL.Core.ExpressionX;
 using MyDAL.UserFacade.Query;
 using System;
 using System.Linq.Expressions;

@@ -1,6 +1,6 @@
-﻿using MyDAL.Common;
-using MyDAL.Core;
-using MyDAL.Enums;
+﻿using MyDAL.Core;
+using MyDAL.Core.Common;
+using MyDAL.Core.Enums;
 using MyDAL.Interfaces;
 using System.Threading.Tasks;
 

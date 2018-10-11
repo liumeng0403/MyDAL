@@ -1,4 +1,4 @@
-﻿using MyDAL.Enums;
+﻿using MyDAL.Core.Enums;
 using MyDAL.UserFacade.Update;
 using System;
 using System.Linq.Expressions;

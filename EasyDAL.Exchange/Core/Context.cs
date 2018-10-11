@@ -1,11 +1,9 @@
-﻿using MyDAL.AdoNet;
-using MyDAL.Cache;
-using MyDAL.Common;
-using MyDAL.Enums;
-using MyDAL.ExpressionX;
-using MyDAL.Extensions;
-using MyDAL.Helper;
-using System;
+﻿using MyDAL.Cache;
+using MyDAL.Core.Common;
+using MyDAL.Core.Enums;
+using MyDAL.Core.ExpressionX;
+using MyDAL.Core.Helper;
+using MyDAL.Core.MySql;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;

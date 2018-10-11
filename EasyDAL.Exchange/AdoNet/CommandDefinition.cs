@@ -1,5 +1,4 @@
 ﻿using MyDAL.Core;
-using MyDAL.Others;
 using System;
 using System.Data;
 

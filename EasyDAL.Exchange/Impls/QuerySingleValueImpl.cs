@@ -1,11 +1,8 @@
-﻿using MyDAL.Common;
-using MyDAL.Core;
-using MyDAL.Enums;
-using MyDAL.Helper;
+﻿using MyDAL.Core;
+using MyDAL.Core.Common;
+using MyDAL.Core.Enums;
+using MyDAL.Core.Helper;
 using MyDAL.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MyDAL.Impls

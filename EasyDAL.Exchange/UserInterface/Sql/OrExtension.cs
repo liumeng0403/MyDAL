@@ -1,10 +1,10 @@
-﻿using MyDAL.Enums;
+﻿using MyDAL.Core.Enums;
 using MyDAL.UserFacade.Delete;
+using MyDAL.UserFacade.Join;
 using MyDAL.UserFacade.Query;
 using MyDAL.UserFacade.Update;
 using System;
 using System.Linq.Expressions;
-using MyDAL.UserFacade.Join;
 
 namespace MyDAL
 {

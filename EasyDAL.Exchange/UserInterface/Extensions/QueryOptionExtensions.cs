@@ -1,4 +1,4 @@
-﻿using MyDAL.Common;
+﻿using MyDAL.Core.Common;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Reflection;

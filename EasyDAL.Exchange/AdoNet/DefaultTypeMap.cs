@@ -1,5 +1,5 @@
 ﻿using MyDAL.AdoNet.Interfaces;
-using MyDAL.Others;
+using MyDAL.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
