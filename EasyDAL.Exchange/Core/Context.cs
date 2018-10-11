@@ -1,3 +1,4 @@
+using MyDAL.Core.Helper;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -7,7 +8,6 @@ using Yunyong.DataExchange.Core.Enums;
 using Yunyong.DataExchange.Core.ExpressionX;
 using Yunyong.DataExchange.Core.Helper;
 using Yunyong.DataExchange.Core.MySql;
-using Yunyong.DataExchange.Helper;
 
 namespace Yunyong.DataExchange.Core
 {
