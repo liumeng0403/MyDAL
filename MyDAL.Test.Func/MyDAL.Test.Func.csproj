@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\EasyDAL.Test.Query\MyDAL.Test.Query.csproj" />
     <ProjectReference Include="..\EasyDAL.Test\MyDAL.Test.csproj" />
   </ItemGroup>
 

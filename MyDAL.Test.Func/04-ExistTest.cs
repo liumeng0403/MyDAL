@@ -1,7 +1,9 @@
 ﻿using MyDAL.Test.Entities.EasyDal_Exchange;
 using MyDAL.Test.Enums;
+using MyDAL.Test.Interfaces;
+using MyDAL.Test.Query;
+using MyDAL.Test.ViewModels;
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -9,14 +11,8 @@ namespace MyDAL.Test.Func
 {
     public class _04_ExistTest : TestBase
     {
-        public class ApplyStockholderAwardAccountingVM
-        {
-            [Display(Name = "年")]
-            public int Year { get; set; }
 
-            [Display(Name = "月")]
-            public Month Month { get; set; }
-        }
+        public IMethodParamsTest ExistXTest { get; set; }
 
         // 查询 是否存在
         [Fact]
@@ -40,11 +36,13 @@ namespace MyDAL.Test.Func
             var vm = new ApplyStockholderAwardAccountingVM();
             vm.Year = 2018;
             vm.Month = Month.October;
-            var res2 = await Conn
-                .Selecter<PlatformMonthlyPerformance>()
-                .Where(it => it.Year==vm.Year)
-                .And(it=>it.Month==vm.Month)
-                .ExistAsync();
+            //var res2 = await Conn
+            //    .Selecter<PlatformMonthlyPerformance>()
+            //    .Where(it => it.Year==vm.Year)
+            //    .And(it=>it.Month==vm.Month)
+            //    .ExistAsync();
+            ExistXTest = new _10_MethodParamsTest();
+            await ExistXTest.eee(vm);
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters);
 
