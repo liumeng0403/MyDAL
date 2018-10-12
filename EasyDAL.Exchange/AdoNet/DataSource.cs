@@ -22,23 +22,23 @@ namespace MyDAL.AdoNet
          * ado.net -- DbCommand.[Task<DbDataReader> ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)]
          * select -- 所有行
          */
-        internal async Task<IEnumerable<T>> ExecuteReaderMultiRowAsync<T>(IDbConnection cnn, string sql, DynamicParameters paramx) //=>
-                                                                                                                                   //ExecuteReaderMultiRowImplAsync<T>(cnn, typeof(T), new CommandDefinition(sql, param, CommandType.Text, CommandFlags.Buffered));
+        internal async Task<IEnumerable<T>> ExecuteReaderMultiRowAsync<T>(IDbConnection conn, string sql, DynamicParameters paramx)
         {
+            paramx = paramx ?? new DynamicParameters();
             var command = new CommandDefinition(sql, paramx, CommandType.Text, CommandFlags.Buffered);
             var effectiveType = typeof(T);
             DynamicParameters param = command.Parameters;
-            var identity = new Identity(command.CommandText, command.CommandType, cnn, effectiveType, param?.GetType());
+            var identity = new Identity(command.CommandText, command.CommandType, conn, effectiveType, param?.GetType());
             var info = SqlHelper.GetCacheInfo(identity);
-            bool needClose = cnn.State == ConnectionState.Closed;
-            using (var cmd = command.TrySetupAsyncCommand(cnn, info.ParamReader))
+            bool needClose = conn.State == ConnectionState.Closed;
+            using (var cmd = command.TrySetupAsyncCommand(conn, info.ParamReader))
             {
                 DbDataReader reader = null;
                 try
                 {
                     if (needClose)
                     {
-                        await cnn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
+                        await conn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
                     }
                     reader = await SqlHelper.ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, CommandBehavior.SequentialAccess | CommandBehavior.SingleResult, default(CancellationToken)).ConfigureAwait(false);
 
@@ -90,7 +90,7 @@ namespace MyDAL.AdoNet
                     using (reader) { /* dispose if non-null */ }
                     if (needClose)
                     {
-                        cnn.Close();
+                        conn.Close();
                     }
                 }
             }
@@ -100,24 +100,24 @@ namespace MyDAL.AdoNet
          * ado.net -- DbCommand.[Task<DbDataReader> ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)]
          * select -- 第一行
          */
-        internal async Task<T> ExecuteReaderSingleRowAsync<T>(IDbConnection cnn, string sql, DynamicParameters paramx) //=>
-                                                                                                                       //ExecuteReaderSingleRowImplAsync<T>(cnn, RowEnum.FirstOrDefault, typeof(T), new CommandDefinition(sql, param, CommandType.Text, CommandFlags.None));
+        internal async Task<T> ExecuteReaderSingleRowAsync<T>(IDbConnection conn, string sql, DynamicParameters paramx)
         {
+            paramx = paramx ?? new DynamicParameters();
             var command = new CommandDefinition(sql, paramx, CommandType.Text, CommandFlags.None);
             var effectiveType = typeof(T);
             var row = RowEnum.FirstOrDefault;
             DynamicParameters param = command.Parameters;
-            var identity = new Identity(command.CommandText, command.CommandType, cnn, effectiveType, param?.GetType());
+            var identity = new Identity(command.CommandText, command.CommandType, conn, effectiveType, param?.GetType());
             var info = SqlHelper.GetCacheInfo(identity);
-            bool needClose = cnn.State == ConnectionState.Closed;
-            using (var cmd = command.TrySetupAsyncCommand(cnn, info.ParamReader))
+            bool needClose = conn.State == ConnectionState.Closed;
+            using (var cmd = command.TrySetupAsyncCommand(conn, info.ParamReader))
             {
                 DbDataReader reader = null;
                 try
                 {
                     if (needClose)
                     {
-                        await cnn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
+                        await conn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
                     }
                     reader = await SqlHelper.ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, (row & RowEnum.Single) != 0
                     ? CommandBehavior.SequentialAccess | CommandBehavior.SingleResult // need to allow multiple rows, to check fail condition
@@ -166,7 +166,7 @@ namespace MyDAL.AdoNet
                     { /* dispose if non-null */ }
                     if (needClose)
                     {
-                        cnn.Close();
+                        conn.Close();
                     }
                 }
             }
@@ -177,22 +177,22 @@ namespace MyDAL.AdoNet
          * Update,Insert,Delete -- 执行成功是返回值为该命令所影响的行数，如果影响的行数为0时返回的值为0，如果数据操作回滚得话返回值为-1
          * 对数据库结构的操作 -- 操作成功时返回的却是-1 , 操作失败的话（如数据表已经存在）往往会发生异常
          */
-        internal async Task<int> ExecuteNonQueryAsync(IDbConnection cnn, string sql, DynamicParameters paramx) //=>
-                                                                                                               //ExecuteNonQueryImplAsync(cnn, new CommandDefinition(sql, param, CommandType.Text, CommandFlags.Buffered));
+        internal async Task<int> ExecuteNonQueryAsync(IDbConnection conn, string sql, DynamicParameters paramx)
         {
+            paramx = paramx ?? new DynamicParameters();
             var command = new CommandDefinition(sql, paramx, CommandType.Text, CommandFlags.Buffered);
             DynamicParameters param = command.Parameters;
 
-            var identity = new Identity(command.CommandText, command.CommandType, cnn, null, param?.GetType());
+            var identity = new Identity(command.CommandText, command.CommandType, conn, null, param?.GetType());
             var info = SqlHelper.GetCacheInfo(identity);
-            bool needClose = cnn.State == ConnectionState.Closed;
-            using (var cmd = command.TrySetupAsyncCommand(cnn, info.ParamReader))
+            bool needClose = conn.State == ConnectionState.Closed;
+            using (var cmd = command.TrySetupAsyncCommand(conn, info.ParamReader))
             {
                 try
                 {
                     if (needClose)
                     {
-                        await cnn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
+                        await conn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
                     }
                     var result = await cmd.ExecuteNonQueryAsync(default(CancellationToken)).ConfigureAwait(false);
                     return result;
@@ -201,7 +201,7 @@ namespace MyDAL.AdoNet
                 {
                     if (needClose)
                     {
-                        cnn.Close();
+                        conn.Close();
                     }
                 }
             }
@@ -212,27 +212,27 @@ namespace MyDAL.AdoNet
          * select -- 返回结果是查询后的第一行的第一列
          * 非select -- 返回一个未实例化的对象
          */
-        internal async Task<T> ExecuteScalarAsync<T>(IDbConnection cnn, string sql, DynamicParameters paramx) //=>
-                                                                                                              //ExecuteScalarImplAsync<T>(cnn, new CommandDefinition(sql, param, CommandType.Text, CommandFlags.Buffered));
+        internal async Task<T> ExecuteScalarAsync<T>(IDbConnection conn, string sql, DynamicParameters paramx)
         {
+            paramx = paramx ?? new DynamicParameters();
             var command = new CommandDefinition(sql, paramx, CommandType.Text, CommandFlags.Buffered);
             Action<IDbCommand, DynamicParameters> paramReader = null;
             object param = command.Parameters;
             if (param != null)
             {
-                var identity = new Identity(command.CommandText, command.CommandType, cnn, null, param.GetType());
+                var identity = new Identity(command.CommandText, command.CommandType, conn, null, param.GetType());
                 paramReader = SqlHelper.GetCacheInfo(identity).ParamReader;
             }
 
             DbCommand cmd = null;
-            bool needClose = cnn.State == ConnectionState.Closed;
+            bool needClose = conn.State == ConnectionState.Closed;
             object result;
             try
             {
-                cmd = command.TrySetupAsyncCommand(cnn, paramReader);
+                cmd = command.TrySetupAsyncCommand(conn, paramReader);
                 if (needClose)
                 {
-                    await cnn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
+                    await conn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
                 }
                 result = await cmd.ExecuteScalarAsync(default(CancellationToken)).ConfigureAwait(false);
             }
@@ -240,7 +240,7 @@ namespace MyDAL.AdoNet
             {
                 if (needClose)
                 {
-                    cnn.Close();
+                    conn.Close();
                 }
                 cmd?.Dispose();
             }

@@ -1,7 +1,10 @@
-﻿using MyDAL.Core.Common;
+﻿using MyDAL.AdoNet;
+using MyDAL.Core.Common;
 using MyDAL.Core.Extensions;
+using MyDAL.Core.MySql.Models;
 using System;
 using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MyDAL.Core.Helper
@@ -10,9 +13,24 @@ namespace MyDAL.Core.Helper
         : ClassInstance<CodeFirstHelper>
     {
 
-        private async  Task CompareDb(IDbConnection conn)
+        private async Task CompareDb(IDbConnection conn, string targetDb)
         {
-            //var dbs= 
+            var dbs = await DataSource.Instance.ExecuteReaderMultiRowAsync<DbModel>(conn, " show databases; ", null);
+            if(dbs.Any(it=>it.Database.Equals(targetDb,StringComparison.OrdinalIgnoreCase)))
+            {
+                return;
+            }
+            else
+            {
+                try
+                {
+                    var res = await DataSource.Instance.ExecuteNonQueryAsync(conn, $" create database {targetDb} default charset utf8; ", null);
+                }
+                catch(Exception ex)
+                {
+                    throw new Exception("CodeFirst 创建数据库失败!", ex);
+                }
+            }
         }
         private void CompareTable()
         {
@@ -46,7 +64,7 @@ namespace MyDAL.Core.Helper
                 {
                     try
                     {
-                        await CompareDb(dbConn);
+                        await CompareDb(dbConn, conn.Database);
                         CompareTable();
                         CompareField();
 

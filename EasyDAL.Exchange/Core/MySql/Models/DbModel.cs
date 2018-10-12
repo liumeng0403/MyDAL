@@ -4,7 +4,8 @@ using System.Text;
 
 namespace MyDAL.Core.MySql.Models
 {
-    internal class DbList
+    internal class DbModel
     {
+        public string Database { get; set; }
     }
 }
