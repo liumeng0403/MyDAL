@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Core.Common;
+using Yunyong.DataExchange.Core.Helper;
 
 namespace Yunyong.DataExchange.Cache
 {
@@ -22,13 +23,13 @@ namespace Yunyong.DataExchange.Cache
         /*****************************************************************************************************************************************************/
 
         private static ConcurrentDictionary<string, Assembly> AssemblyCache { get; } = new ConcurrentDictionary<string, Assembly>();
-        internal Assembly GetAssembly(string fullName, Context dc)
+        internal Assembly GetAssembly(string key)
         {
             var ass = default(Assembly);
-            if (!AssemblyCache.TryGetValue(fullName, out ass))
+            if (!AssemblyCache.TryGetValue(key, out ass))
             {
-                ass = dc.GH.LoadAssembly(fullName);
-                AssemblyCache[fullName] = ass;
+                ass = GenericHelper.Instance.LoadAssembly(key.Split(':')[1]);
+                AssemblyCache[key] = ass;
             }
             return ass;
         }

@@ -9,6 +9,59 @@ namespace Yunyong.DataExchange.Core.Helper
 {
     internal class GenericHelper : ClassInstance<GenericHelper>
     {
+
+        private Assembly LoadAssemblyR(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return null;
+            }
+
+            //
+            var ass = name.Substring(0, name.LastIndexOf('.'));
+            var assD = $"{ass}.dll";
+            var assE = $"{ass}.exe";
+            var assemD = default(Assembly);
+            var assemE = default(Assembly);
+
+            //
+            try
+            {
+                assemD = Assembly.LoadFrom(assD);
+            }
+            catch
+            {
+                assemD = LoadAssemblyR(ass);
+            }
+            if (assemD == null)
+            {
+                try
+                {
+                    assemE = Assembly.LoadFrom(assE);
+                }
+                catch
+                {
+                    assemE = LoadAssemblyR(ass);
+                }
+            }
+
+            //
+            if (assemD != null)
+            {
+                return assemD;
+            }
+            else if (assemE != null)
+            {
+                return assemE;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /*******************************************************************************************************************/
+
         public object GetTypeValue(PropertyInfo outerProp, object outerObj)
         {
             return outerProp.GetValue(outerObj);
@@ -24,19 +77,17 @@ namespace Yunyong.DataExchange.Core.Helper
             return props;
         }
 
-        public Assembly LoadAssembly(string fullClassName)
+        public Assembly LoadAssembly(string fullName)
         {
 
-
-            if (string.IsNullOrWhiteSpace(fullClassName))
+            if (string.IsNullOrWhiteSpace(fullName))
             {
                 return null;
             }
 
             //
-            var ass = fullClassName.Substring(0, fullClassName.LastIndexOf('.'));
-            var assD = $"{ass}.dll";
-            var assE = $"{ass}.exe";
+            var assD = $"{fullName}.dll";
+            var assE = $"{fullName}.exe";
             var assemD = default(Assembly);
             var assemE = default(Assembly);
 
@@ -47,7 +98,7 @@ namespace Yunyong.DataExchange.Core.Helper
             }
             catch
             {
-                assemD = LoadAssembly(ass);
+                assemD = LoadAssemblyR(fullName);
             }
             if (assemD == null)
             {
@@ -57,7 +108,7 @@ namespace Yunyong.DataExchange.Core.Helper
                 }
                 catch
                 {
-                    assemE = LoadAssembly(ass);
+                    assemE = LoadAssemblyR(fullName);
                 }
             }
 

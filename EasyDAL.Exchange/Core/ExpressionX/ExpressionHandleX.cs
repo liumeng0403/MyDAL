@@ -96,9 +96,9 @@ namespace Yunyong.DataExchange.Core.ExpressionX
                     .GetOrAdd($"{paramType.FullName}:{info.Module.GetHashCode()}", moduleKey => new ConcurrentDictionary<Int32, String>())
                     .GetOrAdd(info.MetadataToken, innnerKey =>
                     {
-                        if (info.IsDefined(typeof(TableColumnAttribute), false))
+                        if (info.IsDefined(typeof(XColumnAttribute), false))
                         {
-                            var attr = (TableColumnAttribute)info.GetCustomAttributes(typeof(TableColumnAttribute), false)[0];
+                            var attr = (XColumnAttribute)info.GetCustomAttributes(typeof(XColumnAttribute), false)[0];
                             return attr.Name;
                         }
                         return info.Name;

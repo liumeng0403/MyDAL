@@ -142,9 +142,10 @@ namespace Yunyong.DataExchange
             return connection;
         }
 
-        public static IDbConnection OpenCodeFirst(this IDbConnection connection)
+        public static IDbConnection OpenCodeFirst(this IDbConnection connection,string modelsNamespace)
         {
             XConfig.IsCodeFirst = true;
+            XConfig.TablesNamespace = modelsNamespace;
             if (XConfig.IsNeedChangeDb)
             {
                 (CodeFirstHelper.Instance.CodeFirstProcess(connection)).GetAwaiter().GetResult();
