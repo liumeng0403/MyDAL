@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Enums;
-using Yunyong.DataExchange.Core.Helper;
 using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.Impls
@@ -17,7 +16,7 @@ namespace Yunyong.DataExchange.Impls
 
         public async Task<int> UpdateAsync()
         {
-            return await SqlHelper.ExecuteAsync(
+            return await DC.DS.ExecuteNonQueryAsync(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.UpdateAsync)[0],
                 DC.SqlProvider.GetParameters());

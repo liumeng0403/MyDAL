@@ -7,7 +7,6 @@ using Yunyong.Core;
 using Yunyong.DataExchange.AdoNet;
 using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Enums;
-using Yunyong.DataExchange.Core.Helper;
 
 namespace Yunyong.DataExchange.Core.MySql
 {
@@ -452,7 +451,7 @@ namespace Yunyong.DataExchange.Core.MySql
                                             and  TABLE_NAME = '{tableName.TrimStart('`').TrimEnd('`').ToLower()}'
                                         ;
                                   ";
-            return (await SqlHelper.QueryAsync<ColumnInfo>(DC.Conn, sql, new DynamicParameters())).ToList();
+            return (await DC.DS.ExecuteReaderMultiRowAsync<ColumnInfo>(DC.Conn, sql, new DynamicParameters())).ToList();
         }
 
         internal string GetColumns()

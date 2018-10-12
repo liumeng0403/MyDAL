@@ -133,7 +133,7 @@ namespace Yunyong.DataExchange.Core.Common
 
         protected async Task<VM> QueryFirstOrDefaultAsyncHandle<DM, VM>()
         {
-            return await SqlHelper.QueryFirstOrDefaultAsync<VM>(
+            return await DC.DS.ExecuteReaderSingleRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<DM>(UiMethodEnum.QueryFirstOrDefaultAsync)[0],
                 DC.SqlProvider.GetParameters());
@@ -141,7 +141,7 @@ namespace Yunyong.DataExchange.Core.Common
 
         protected async Task<List<VM>> QueryAllAsyncHandle<DM, VM>()
         {
-            return (await SqlHelper.QueryAsync<VM>(
+            return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<DM>(UiMethodEnum.QueryAllAsync)[0],
                 DC.SqlProvider.GetParameters())).ToList();
@@ -149,7 +149,7 @@ namespace Yunyong.DataExchange.Core.Common
 
         protected async Task<List<VM>> QueryListAsyncHandle<DM, VM>()
         {
-            return (await SqlHelper.QueryAsync<VM>(
+            return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<DM>(UiMethodEnum.QueryListAsync)[0],
                 DC.SqlProvider.GetParameters())).ToList();
@@ -162,8 +162,8 @@ namespace Yunyong.DataExchange.Core.Common
             result.PageSize = pageSize;
             var paras = DC.SqlProvider.GetParameters();
             var sql = DC.SqlProvider.GetSQL<DM>(sqlType, result.PageIndex, result.PageSize);
-            result.TotalCount = await SqlHelper.ExecuteScalarAsync<int>(DC.Conn, sql[0], paras);
-            result.Data = (await SqlHelper.QueryAsync<VM>(DC.Conn, sql[1], paras)).ToList();
+            result.TotalCount = await DC.DS.ExecuteScalarAsync<int>(DC.Conn, sql[0], paras);
+            result.Data = (await DC.DS.ExecuteReaderMultiRowAsync<VM>(DC.Conn, sql[1], paras)).ToList();
             return result;
         }
 

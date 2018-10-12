@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Enums;
-using Yunyong.DataExchange.Core.Helper;
 using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.Impls
@@ -23,7 +22,7 @@ namespace Yunyong.DataExchange.Impls
                 DC.ResetConditions();
                 DC.GetProperties(list);
                 DC.IP.ConvertDic();
-                return await SqlHelper.ExecuteAsync(
+                return await DC.DS.ExecuteNonQueryAsync(
                     DC.Conn,
                     DC.SqlProvider.GetSQL<M>(UiMethodEnum.CreateBatchAsync)[0],
                     DC.SqlProvider.GetParameters());

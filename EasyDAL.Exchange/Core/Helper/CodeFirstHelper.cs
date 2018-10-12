@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Threading.Tasks;
 using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Extensions;
 
@@ -9,9 +10,9 @@ namespace Yunyong.DataExchange.Core.Helper
         : ClassInstance<CodeFirstHelper>
     {
 
-        private void CompareDb(IDbConnection conn)
+        private async  Task CompareDb(IDbConnection conn)
         {
-
+            //var dbs= 
         }
         private void CompareTable()
         {
@@ -22,7 +23,7 @@ namespace Yunyong.DataExchange.Core.Helper
 
         }
 
-        internal void CodeFirstProcess(IDbConnection conn)
+        internal async Task CodeFirstProcess(IDbConnection conn)
         {
             XConfig.IsNeedChangeDb = false;
 
@@ -45,7 +46,7 @@ namespace Yunyong.DataExchange.Core.Helper
                 {
                     try
                     {
-                        CompareDb(dbConn);
+                        await CompareDb(dbConn);
                         CompareTable();
                         CompareField();
 

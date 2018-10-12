@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Enums;
-using Yunyong.DataExchange.Core.Helper;
 using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.Impls
@@ -49,7 +48,7 @@ namespace Yunyong.DataExchange.Impls
         {
             SelectMHandle<M>();
             DC.IP.ConvertDic();
-            return (await SqlHelper.QueryAsync<M>(
+            return (await DC.DS.ExecuteReaderMultiRowAsync<M>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.JoinQueryListAsync)[0],
                 DC.SqlProvider.GetParameters())).ToList();
@@ -59,7 +58,7 @@ namespace Yunyong.DataExchange.Impls
         {
             SelectMHandle(func);
             DC.IP.ConvertDic();
-            return (await SqlHelper.QueryAsync<VM>(
+            return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<VM>(UiMethodEnum.JoinQueryListAsync)[0],
                 DC.SqlProvider.GetParameters())).ToList();
