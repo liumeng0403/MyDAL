@@ -176,7 +176,12 @@ namespace Yunyong.DataExchange.Core
             {
                 var val = default(object);
                 var valType = default(Type);
-                var columnType = columns.First(it => it.ColumnName.Equals(prop.MField, StringComparison.OrdinalIgnoreCase)).DataType;
+                var columnType = string.Empty;
+                var xx = columns.FirstOrDefault(it => it.ColumnName.Equals(prop.MField, StringComparison.OrdinalIgnoreCase));
+                if (xx != null)
+                {
+                    columnType = xx.DataType;
+                }
                 if (objx is PagingQueryOption)
                 {
                     var mp = objx.GetType().GetProperty(prop.VmField);
