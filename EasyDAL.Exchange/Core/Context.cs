@@ -1,4 +1,5 @@
-﻿using MyDAL.Cache;
+﻿using MyDAL.AdoNet;
+using MyDAL.Cache;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Core.ExpressionX;
@@ -13,7 +14,7 @@ namespace MyDAL.Core
     internal abstract class Context
     {
 
-
+        /************************************************************************************************************************/
 
         internal void Init(IDbConnection conn)
         {
@@ -28,7 +29,39 @@ namespace MyDAL.Core
             PPH = ParameterPartHandle.Instance;
             BDH = BatchDataHelper.Instance;
             SqlProvider = new MySqlProvider(this);
+            DS = DataSource.Instance;
         }
+
+        /************************************************************************************************************************/
+
+        internal AttributeHelper AH { get; private set; }
+
+        internal GenericHelper GH { get; private set; }
+        internal XDebug Hint { get; set; }
+        internal ExpressionHandleX EH { get; private set; }
+
+        internal StaticCache SC { get; private set; }
+
+        internal ParameterPartHandle PPH { get; private set; }
+
+        internal ValHandle VH { get; private set; }
+
+        internal BatchDataHelper BDH { get; private set; }
+
+        internal List<DicModelUI> UiConditions { get; private set; }
+        internal List<DicModelDB> DbConditions { get; private set; }
+
+        internal IDbConnection Conn { get; private set; }
+        internal IDbTransaction Tran { get; set; }
+
+        internal MySqlProvider SqlProvider { get; set; }
+
+        internal Operator OP { get; set; }
+        internal Impler IP { get; set; }
+
+        internal DataSource DS { get; private set; }
+
+        /************************************************************************************************************************/
 
         internal bool IsParameter(DicModelUI item)
         {
@@ -56,31 +89,6 @@ namespace MyDAL.Core
             }
             return false;
         }
-
-        internal AttributeHelper AH { get; private set; }
-
-        internal GenericHelper GH { get; private set; }
-        internal XDebug Hint { get; set; }
-        internal ExpressionHandleX EH { get; private set; }
-
-        internal StaticCache SC { get; private set; }
-
-        internal ParameterPartHandle PPH { get; private set; }
-
-        internal ValHandle VH { get; private set; }
-
-        internal BatchDataHelper BDH { get; private set; }
-
-        internal List<DicModelUI> UiConditions { get; private set; }
-        internal List<DicModelDB> DbConditions { get; private set; }
-
-        internal IDbConnection Conn { get; private set; }
-        internal IDbTransaction Tran { get; set; }
-
-        internal MySqlProvider SqlProvider { get; set; }
-
-        internal Operator OP { get; set; }
-        internal Impler IP { get; set; }
 
         internal void AddConditions(DicModelUI dic)
         {

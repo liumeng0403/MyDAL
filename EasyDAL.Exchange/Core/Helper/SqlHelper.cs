@@ -132,20 +132,32 @@ namespace MyDAL.Core.Helper
         internal static void ThrowMultipleRows(RowEnum row)
         {
             switch (row)
-            {  // get the standard exception from the runtime
-                case RowEnum.Single: ErrTwoRows.Single(); break;
-                case RowEnum.SingleOrDefault: ErrTwoRows.SingleOrDefault(); break;
-                default: throw new InvalidOperationException();
+            {
+                // get the standard exception from the runtime
+                case RowEnum.Single:
+                    ErrTwoRows.Single();
+                    break;
+                case RowEnum.SingleOrDefault:
+                    ErrTwoRows.SingleOrDefault();
+                    break;
+                default:
+                    throw new InvalidOperationException();
             }
         }
 
         internal static void ThrowZeroRows(RowEnum row)
         {
             switch (row)
-            { // get the standard exception from the runtime
-                case RowEnum.First: ErrZeroRows.First(); break;
-                case RowEnum.Single: ErrZeroRows.Single(); break;
-                default: throw new InvalidOperationException();
+            {
+                // get the standard exception from the runtime
+                case RowEnum.First:
+                    ErrZeroRows.First();
+                    break;
+                case RowEnum.Single:
+                    ErrZeroRows.Single();
+                    break;
+                default:
+                    throw new InvalidOperationException();
             }
         }
 
@@ -203,23 +215,6 @@ namespace MyDAL.Core.Helper
             }
 
             return value;
-        }
-        
-        private static T Parse<T>(object value)
-        {
-            if (value == null || value is DBNull) return default(T);
-            if (value is T) return (T)value;
-            var type = typeof(T);
-            type = Nullable.GetUnderlyingType(type) ?? type;
-            if (type.IsEnum)
-            {
-                if (value is float || value is double || value is decimal)
-                {
-                    value = Convert.ChangeType(value, Enum.GetUnderlyingType(type), CultureInfo.InvariantCulture);
-                }
-                return (T)Enum.ToObject(type, value);
-            }
-            return (T)Convert.ChangeType(value, type, CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -448,7 +443,7 @@ namespace MyDAL.Core.Helper
                         // Store the value in the property/field
                         if (item.Property != null)
                         {
-                            il.Emit( OpCodes.Callvirt, DefaultTypeMap.GetPropertySetter(item.Property, mType));
+                            il.Emit(OpCodes.Callvirt, DefaultTypeMap.GetPropertySetter(item.Property, mType));
                         }
                         else
                         {
@@ -490,7 +485,7 @@ namespace MyDAL.Core.Helper
                         // Store the value in the property/field
                         if (item.Property != null)
                         {
-                            il.Emit( OpCodes.Callvirt, DefaultTypeMap.GetPropertySetter(item.Property, mType));
+                            il.Emit(OpCodes.Callvirt, DefaultTypeMap.GetPropertySetter(item.Property, mType));
                             // stack is now [target]
                         }
                         else
@@ -763,8 +758,8 @@ namespace MyDAL.Core.Helper
         }
 
         /******************************************************************************************/
-        
-        private static IEnumerable<T> ExecuteReaderSync<T>(IDataReader reader, Func<IDataReader, object> func, object parameters)
+
+        internal static IEnumerable<T> ExecuteReaderSync<T>(IDataReader reader, Func<IDataReader, object> func, object parameters)
         {
             using (reader)
             {
@@ -782,35 +777,7 @@ namespace MyDAL.Core.Helper
         /*
          * Common
          */
-        /// <summary>
-        /// Attempts setup a <see cref="DbCommand"/> on a <see cref="DbConnection"/>, with a better error message for unsupported usages.
-        /// </summary>
-        private static DbCommand TrySetupAsyncCommand(this CommandDefinition command, IDbConnection cnn, Action<IDbCommand, DynamicParameters> paramReader)
-        {
-            if (command.SetupCommand(cnn, paramReader) is DbCommand dbCommand)
-            {
-                return dbCommand;
-            }
-            else
-            {
-                throw new InvalidOperationException("Async operations require use of a DbConnection or an IDbConnection where .CreateCommand() returns a DbCommand");
-            }
-        }
-        /// <summary>
-        /// Attempts to open a connection asynchronously, with a better error message for unsupported usages.
-        /// </summary>
-        private static Task TryOpenAsync(this IDbConnection cnn, CancellationToken cancel)
-        {
-            if (cnn is DbConnection dbConn)
-            {
-                return dbConn.OpenAsync(cancel);
-            }
-            else
-            {
-                throw new InvalidOperationException("Async operations require use of a DbConnection or an already-open IDbConnection");
-            }
-        }
-        private static Task<DbDataReader> ExecuteReaderWithFlagsFallbackAsync(DbCommand cmd, bool wasClosed, CommandBehavior behavior, CancellationToken cancellationToken)
+        internal static Task<DbDataReader> ExecuteReaderWithFlagsFallbackAsync(DbCommand cmd, bool wasClosed, CommandBehavior behavior, CancellationToken cancellationToken)
         {
             var task = cmd.ExecuteReaderAsync(GetBehavior(wasClosed, behavior), cancellationToken);
             if (task.Status == TaskStatus.Faulted && Settings.DisableCommandBehaviorOptimizations(behavior, task.Exception.InnerException))
@@ -842,239 +809,7 @@ namespace MyDAL.Core.Helper
                     break;
             }
         }
-
-        /******************************************************************************************/
-
-        private static async Task<IEnumerable<T>> QueryAsync<T>(this IDbConnection cnn, Type effectiveType, CommandDefinition command)
-        {
-            DynamicParameters param = command.Parameters;
-            var identity = new Identity(command.CommandText, command.CommandType, cnn, effectiveType, param?.GetType());
-            var info = GetCacheInfo(identity);
-            bool needClose = cnn.State == ConnectionState.Closed;
-            using (var cmd = command.TrySetupAsyncCommand(cnn, info.ParamReader))
-            {
-                DbDataReader reader = null;
-                try
-                {
-                    if (needClose)
-                    {
-                        await cnn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
-                    }
-                    reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, CommandBehavior.SequentialAccess | CommandBehavior.SingleResult, default(CancellationToken)).ConfigureAwait(false);
-
-                    var tuple = info.Deserializer;
-                    int hash = GetColumnHash(reader);
-                    if (tuple.Func == null || tuple.Hash != hash)
-                    {
-                        if (reader.FieldCount == 0)
-                        {
-                            return Enumerable.Empty<T>();
-                        }
-                        info.Deserializer = new DeserializerState(hash, GetDeserializer(effectiveType, reader, 0, -1, false));
-                        tuple = info.Deserializer;
-                    }
-
-                    var func = tuple.Func;
-
-                    if (command.Buffered)
-                    {
-                        var buffer = new List<T>();
-                        var convertToType = Nullable.GetUnderlyingType(effectiveType) ?? effectiveType;
-                        while (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
-                        {
-                            object val = func(reader);
-                            if (val == null || val is T)
-                            {
-                                buffer.Add((T)val);
-                            }
-                            else
-                            {
-                                buffer.Add((T)Convert.ChangeType(val, convertToType, CultureInfo.InvariantCulture));
-                            }
-                        }
-                        while (await reader.NextResultAsync(default(CancellationToken)).ConfigureAwait(false))
-                        { /* ignore subsequent result sets */ }
-                        return buffer;
-                    }
-                    else
-                    {
-                        // can't use ReadAsync / cancellation; but this will have to do
-                        needClose = false; // don't close if handing back an open reader; rely on the command-behavior
-                        var deferred = ExecuteReaderSync<T>(reader, func, command.Parameters);
-                        reader = null; // to prevent it being disposed before the caller gets to see it
-                        return deferred;
-                    }
-                }
-                finally
-                {
-                    using (reader) { /* dispose if non-null */ }
-                    if (needClose)
-                    {
-                        cnn.Close();
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// 查询单行
-        /// </summary>
-        private static async Task<T> QueryRowAsync<T>(this IDbConnection cnn, RowEnum row, Type effectiveType, CommandDefinition command)
-        {
-            DynamicParameters param = command.Parameters;
-            var identity = new Identity(command.CommandText, command.CommandType, cnn, effectiveType, param?.GetType());
-            var info = GetCacheInfo(identity);
-            bool needClose = cnn.State == ConnectionState.Closed;
-            using (var cmd = command.TrySetupAsyncCommand(cnn, info.ParamReader))
-            {
-                DbDataReader reader = null;
-                try
-                {
-                    if (needClose)
-                    {
-                        await cnn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
-                    }
-                    reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, (row & RowEnum.Single) != 0
-                    ? CommandBehavior.SequentialAccess | CommandBehavior.SingleResult // need to allow multiple rows, to check fail condition
-                    : CommandBehavior.SequentialAccess | CommandBehavior.SingleResult | CommandBehavior.SingleRow, default(CancellationToken)).ConfigureAwait(false);
-
-                    T result = default(T);
-                    if (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false) && reader.FieldCount != 0)
-                    {
-                        var tuple = info.Deserializer;
-                        int hash = GetColumnHash(reader);
-                        if (tuple.Func == null || tuple.Hash != hash)
-                        {
-                            tuple = info.Deserializer = new DeserializerState(hash, GetDeserializer(effectiveType, reader, 0, -1, false));
-                        }
-
-                        var func = tuple.Func;
-
-                        object val = func(reader);
-                        if (val == null || val is T)
-                        {
-                            result = (T)val;
-                        }
-                        else
-                        {
-                            var convertToType = Nullable.GetUnderlyingType(effectiveType) ?? effectiveType;
-                            result = (T)Convert.ChangeType(val, convertToType, CultureInfo.InvariantCulture);
-                        }
-                        if ((row & RowEnum.Single) != 0 && await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
-                        {
-                            ThrowMultipleRows(row);
-                        }
-                        while (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
-                        { /* ignore rows after the first */ }
-                    }
-                    else if ((row & RowEnum.FirstOrDefault) == 0) // demanding a row, and don't have one
-                    {
-                        ThrowZeroRows(row);
-                    }
-                    while (await reader.NextResultAsync(default(CancellationToken)).ConfigureAwait(false))
-                    { /* ignore result sets after the first */ }
-                    return result;
-                }
-                finally
-                {
-                    using (reader)
-                    { /* dispose if non-null */ }
-                    if (needClose)
-                    {
-                        cnn.Close();
-                    }
-                }
-            }
-        }
-
-        private static async Task<int> ExecuteAsync(this IDbConnection cnn, CommandDefinition command)
-        {
-            DynamicParameters param = command.Parameters;
-            //return ExecuteImplAsync(cnn, command, param);
-
-            var identity = new Identity(command.CommandText, command.CommandType, cnn, null, param?.GetType());
-            var info = GetCacheInfo(identity);
-            bool needClose = cnn.State == ConnectionState.Closed;
-            using (var cmd = command.TrySetupAsyncCommand(cnn, info.ParamReader))
-            {
-                try
-                {
-                    if (needClose)
-                    {
-                        await cnn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
-                    }
-                    var result = await cmd.ExecuteNonQueryAsync(default(CancellationToken)).ConfigureAwait(false);
-                    return result;
-                }
-                finally
-                {
-                    if (needClose)
-                    {
-                        cnn.Close();
-                    }
-                }
-            }
-        }
-
-        private static async Task<T> ExecuteScalarImplAsync<T>(IDbConnection cnn, CommandDefinition command)
-        {
-            Action<IDbCommand, DynamicParameters> paramReader = null;
-            object param = command.Parameters;
-            if (param != null)
-            {
-                var identity = new Identity(command.CommandText, command.CommandType, cnn, null, param.GetType());
-                paramReader = GetCacheInfo(identity).ParamReader;
-            }
-
-            DbCommand cmd = null;
-            bool needClose = cnn.State == ConnectionState.Closed;
-            object result;
-            try
-            {
-                cmd = command.TrySetupAsyncCommand(cnn, paramReader);
-                if (needClose)
-                {
-                    await cnn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
-                }
-                result = await cmd.ExecuteScalarAsync(default(CancellationToken)).ConfigureAwait(false);
-            }
-            finally
-            {
-                if (needClose)
-                {
-                    cnn.Close();
-                }
-                cmd?.Dispose();
-            }
-            return Parse<T>(result);
-        }
-
-        /******************************************************************************************/
-
-        /// <summary>
-        /// Execute a query asynchronously
-        /// </summary>
-        internal static Task<IEnumerable<T>> QueryAsync<T>(IDbConnection cnn, string sql, DynamicParameters param) =>
-            QueryAsync<T>(cnn, typeof(T), new CommandDefinition(sql, param, CommandType.Text, CommandFlags.Buffered));
-
-        /// <summary>
-        /// Execute a single-row query asynchronously
-        /// </summary>
-        internal static Task<T> QueryFirstOrDefaultAsync<T>(IDbConnection cnn, string sql, DynamicParameters param) =>
-            QueryRowAsync<T>(cnn, RowEnum.FirstOrDefault, typeof(T), new CommandDefinition(sql, param, CommandType.Text, CommandFlags.None));
-
-        /// <summary>
-        /// Execute a command asynchronously
-        /// </summary>
-        internal static Task<int> ExecuteAsync(IDbConnection cnn, string sql, DynamicParameters param) =>
-            ExecuteAsync(cnn, new CommandDefinition(sql, param, CommandType.Text, CommandFlags.Buffered));
-
-        /// <summary>
-        /// Execute parameterized SQL that selects a single value.
-        /// </summary>
-        internal static Task<T> ExecuteScalarAsync<T>(IDbConnection cnn, string sql, DynamicParameters param) =>
-            ExecuteScalarImplAsync<T>(cnn, new CommandDefinition(sql, param, CommandType.Text, CommandFlags.Buffered));
-
+        
 
 
     }

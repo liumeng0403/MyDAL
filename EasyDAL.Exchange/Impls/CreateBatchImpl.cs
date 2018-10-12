@@ -1,7 +1,6 @@
 ﻿using MyDAL.Core;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
-using MyDAL.Core.Helper;
 using MyDAL.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -23,7 +22,7 @@ namespace MyDAL.Impls
                 DC.ResetConditions();
                 DC.GetProperties(list);
                 DC.IP.ConvertDic();
-                return await SqlHelper.ExecuteAsync(
+                return await DC.DS.ExecuteNonQueryAsync(
                     DC.Conn,
                     DC.SqlProvider.GetSQL<M>(UiMethodEnum.CreateBatchAsync)[0],
                     DC.SqlProvider.GetParameters());

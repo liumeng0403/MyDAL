@@ -2,6 +2,7 @@
 using MyDAL.Core.Extensions;
 using System;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace MyDAL.Core.Helper
 {
@@ -9,9 +10,9 @@ namespace MyDAL.Core.Helper
         : ClassInstance<CodeFirstHelper>
     {
 
-        private void CompareDb(IDbConnection conn)
+        private async  Task CompareDb(IDbConnection conn)
         {
-
+            //var dbs= 
         }
         private void CompareTable()
         {
@@ -22,7 +23,7 @@ namespace MyDAL.Core.Helper
 
         }
 
-        internal void CodeFirstProcess(IDbConnection conn)
+        internal async Task CodeFirstProcess(IDbConnection conn)
         {
             XConfig.IsNeedChangeDb = false;
 
@@ -45,7 +46,7 @@ namespace MyDAL.Core.Helper
                 {
                     try
                     {
-                        CompareDb(dbConn);
+                        await CompareDb(dbConn);
                         CompareTable();
                         CompareField();
 

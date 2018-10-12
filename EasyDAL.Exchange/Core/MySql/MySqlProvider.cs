@@ -3,7 +3,6 @@ using MyDAL.AdoNet;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
-using MyDAL.Core.Helper;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -453,7 +452,7 @@ namespace MyDAL.Core.MySql
                                             and  TABLE_NAME = '{tableName.TrimStart('`').TrimEnd('`').ToLower()}'
                                         ;
                                   ";
-            return (await SqlHelper.QueryAsync<ColumnInfo>(DC.Conn, sql, new DynamicParameters())).ToList();
+            return (await DC.DS.ExecuteReaderMultiRowAsync<ColumnInfo>(DC.Conn, sql, new DynamicParameters())).ToList();
         }
 
         internal string GetColumns()

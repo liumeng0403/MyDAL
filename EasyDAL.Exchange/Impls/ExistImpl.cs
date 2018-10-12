@@ -2,7 +2,6 @@
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Core.ExpressionX;
-using MyDAL.Core.Helper;
 using MyDAL.Interfaces;
 using System.Threading.Tasks;
 
@@ -20,7 +19,7 @@ namespace MyDAL.Impls
         {
             DC.AddConditions(DicHandle.ConditionCountHandle(CrudTypeEnum.Query,typeof(M).FullName, "*"));
             DC.IP.ConvertDic();
-            var count = await SqlHelper.ExecuteScalarAsync<long>(
+            var count = await DC.DS.ExecuteScalarAsync<long>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.ExistAsync)[0],
                 DC.SqlProvider.GetParameters());

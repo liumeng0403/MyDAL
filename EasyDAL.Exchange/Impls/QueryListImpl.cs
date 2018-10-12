@@ -1,7 +1,6 @@
 ﻿using MyDAL.Core;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
-using MyDAL.Core.Helper;
 using MyDAL.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -49,7 +48,7 @@ namespace MyDAL.Impls
         {
             SelectMHandle<M>();
             DC.IP.ConvertDic();
-            return (await SqlHelper.QueryAsync<M>(
+            return (await DC.DS.ExecuteReaderMultiRowAsync<M>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.JoinQueryListAsync)[0],
                 DC.SqlProvider.GetParameters())).ToList();
@@ -59,7 +58,7 @@ namespace MyDAL.Impls
         {
             SelectMHandle(func);
             DC.IP.ConvertDic();
-            return (await SqlHelper.QueryAsync<VM>(
+            return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<VM>(UiMethodEnum.JoinQueryListAsync)[0],
                 DC.SqlProvider.GetParameters())).ToList();

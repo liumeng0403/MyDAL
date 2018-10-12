@@ -2,7 +2,6 @@
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Core.ExpressionX;
-using MyDAL.Core.Helper;
 using MyDAL.Interfaces;
 using System;
 using System.Linq.Expressions;
@@ -22,7 +21,7 @@ namespace MyDAL.Impls
         {
             DC.AddConditions(DicHandle.ConditionCountHandle(CrudTypeEnum.Query,typeof(M).FullName,"*"));
             DC.IP.ConvertDic();
-            return await SqlHelper.ExecuteScalarAsync<long>(
+            return await DC.DS.ExecuteScalarAsync<long>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.CountAsync)[0],
                 DC.SqlProvider.GetParameters());
@@ -34,7 +33,7 @@ namespace MyDAL.Impls
             var key = keyDic.ColumnOne;
             DC.AddConditions(DicHandle.ConditionCountHandle(CrudTypeEnum.Query,typeof(M).FullName,key));
             DC.IP.ConvertDic();
-            return await SqlHelper.ExecuteScalarAsync<long>(
+            return await DC.DS.ExecuteScalarAsync<long>(
                  DC.Conn,
                  DC.SqlProvider.GetSQL<M>(UiMethodEnum.CountAsync)[0],
                  DC.SqlProvider.GetParameters());
@@ -54,7 +53,7 @@ namespace MyDAL.Impls
             //CountMHandle<M>("*");
             DC.AddConditions(DicHandle.ConditionCountHandle(CrudTypeEnum.Join,string.Empty, "*", string.Empty));
             DC.IP.ConvertDic();
-            return await SqlHelper.ExecuteScalarAsync<long>(
+            return await DC.DS.ExecuteScalarAsync<long>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<None>(UiMethodEnum.JoinCountAsync)[0],
                 DC.SqlProvider.GetParameters());
@@ -66,7 +65,7 @@ namespace MyDAL.Impls
             var dic = DC.EH.ExpressionHandle(func)[0];
             DC.AddConditions(DicHandle.ConditionCountHandle(CrudTypeEnum.Join,dic.ClassFullName, dic.ColumnOne, dic.TableAliasOne));
             DC.IP.ConvertDic();
-            return await SqlHelper.ExecuteScalarAsync<long>(
+            return await DC.DS.ExecuteScalarAsync<long>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<None>(UiMethodEnum.JoinCountAsync)[0],
                 DC.SqlProvider.GetParameters());
