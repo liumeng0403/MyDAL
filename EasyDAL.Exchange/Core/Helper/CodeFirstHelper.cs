@@ -24,7 +24,7 @@ namespace Yunyong.DataExchange.Core.Helper
             {
                 try
                 {
-                    var res = await DataSource.Instance.ExecuteNonQueryAsync(conn, $" create database {targetDb} default charset utf8; ", null);
+                    var res = await DataSource.Instance.ExecuteNonQueryAsync(conn, $" create database if not exists {targetDb} default charset utf8; ", null);
                 }
                 catch(Exception ex)
                 {
