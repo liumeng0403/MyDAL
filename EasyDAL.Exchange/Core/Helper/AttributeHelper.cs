@@ -75,13 +75,11 @@ namespace MyDAL.Core.Helper
             return GetAttributeValue(type, attributeValueFunc, null);
         }
 
-        public Attribute GetAttribute<M, A>(M m, PropertyInfo prop)
+        public Attribute GetAttribute<A>(Type mType)
         {
             try
             {
-                return m
-                    .GetType()
-                    .GetMember(prop.Name, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance)[0]
+                return mType
                     .GetCustomAttribute(typeof(A), false);
             }
             catch (Exception ex)

@@ -1,5 +1,6 @@
 ﻿using MyDAL.Core;
 using MyDAL.Core.Common;
+using MyDAL.Core.Helper;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -22,13 +23,13 @@ namespace MyDAL.Cache
         /*****************************************************************************************************************************************************/
 
         private static ConcurrentDictionary<string, Assembly> AssemblyCache { get; } = new ConcurrentDictionary<string, Assembly>();
-        internal Assembly GetAssembly(string fullName, Context dc)
+        internal Assembly GetAssembly(string key)
         {
             var ass = default(Assembly);
-            if (!AssemblyCache.TryGetValue(fullName, out ass))
+            if (!AssemblyCache.TryGetValue(key, out ass))
             {
-                ass = dc.GH.LoadAssembly(fullName);
-                AssemblyCache[fullName] = ass;
+                ass = GenericHelper.Instance.LoadAssembly(key.Split(':')[1]);
+                AssemblyCache[key] = ass;
             }
             return ass;
         }

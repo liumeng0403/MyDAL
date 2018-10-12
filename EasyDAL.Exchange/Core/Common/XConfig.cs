@@ -6,6 +6,7 @@
 
         internal static bool IsCodeFirst { get; set; } = false;
         internal static bool IsNeedChangeDb { get; set; } = true;
+        internal static string TablesNamespace { get; set; } = string.Empty;
 
     }
 }

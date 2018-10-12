@@ -2,7 +2,7 @@
 
 namespace MyDAL
 {
-    public class TableColumnAttribute : Attribute
+    public class XColumnAttribute : Attribute
     {
         /// <summary>
         /// DB 列名
