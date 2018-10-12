@@ -147,7 +147,7 @@ namespace Yunyong.DataExchange
             XConfig.IsCodeFirst = true;
             if (XConfig.IsNeedChangeDb)
             {
-                CodeFirstHelper.Instance.CodeFirstProcess(connection);
+                (CodeFirstHelper.Instance.CodeFirstProcess(connection)).GetAwaiter().GetResult();
             }
             return connection;
         }
