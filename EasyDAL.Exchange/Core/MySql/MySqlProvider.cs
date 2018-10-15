@@ -359,6 +359,21 @@ namespace Yunyong.DataExchange.Core.MySql
                                         break;
                                 }
                                 break;
+                            case OptionEnum.Trim:
+                            case OptionEnum.LTrim:
+                            case OptionEnum.RTrim:
+                                switch (item.Crud)
+                                {
+                                    case CrudTypeEnum.Join:
+                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.Option.ToEnumDesc<OptionEnum>()}({item.TableAliasOne}.`{item.ColumnOne}`){item.Compare.ToEnumDesc<CompareEnum>()}@{item.Param} ";
+                                        break;
+                                    case CrudTypeEnum.Delete:
+                                    case CrudTypeEnum.Update:
+                                    case CrudTypeEnum.Query:
+                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.Option.ToEnumDesc<OptionEnum>()}(`{item.ColumnOne}`){item.Compare.ToEnumDesc<CompareEnum>()}@{item.Param} ";
+                                        break;
+                                }
+                                break;
                             case OptionEnum.OneEqualOne:
                                 str += $" {item.Action.ToEnumDesc<ActionEnum>()} @{item.Param} ";
                                 break;

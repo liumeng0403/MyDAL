@@ -3,13 +3,13 @@ using System.Threading.Tasks;
 using Xunit;
 using Yunyong.DataExchange;
 
-namespace MyDAL.Test.Query
+namespace MyDAL.Test.Func
 {
-    public class _06_FuncTest : TestBase
+    public class _01_Char_LengthTest : TestBase
     {
 
         [Fact]
-        public async Task FuncTest()
+        public async Task Char_LengthTest()
         {
 
             /*

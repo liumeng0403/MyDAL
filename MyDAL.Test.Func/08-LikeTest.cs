@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using Xunit;
 using Yunyong.DataExchange;
 
-namespace MyDAL.Test.Query
+namespace MyDAL.Test.Func
 {
-    public class _06_LikeTest : TestBase
+    public class _08_LikeTest : TestBase
     {
         private async Task<BodyFitRecord> Pre01()
         {

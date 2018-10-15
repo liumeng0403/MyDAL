@@ -110,9 +110,16 @@ namespace Yunyong.DataExchange.Core.ExpressionX
             else if (bodyL.NodeType == ExpressionType.Call)
             {
                 var mcExpr = bodyL as MethodCallExpression;
-                var mem = mcExpr.Arguments[0];
-                if (option == OptionEnum.In)
+                if(option== OptionEnum.Trim
+                    || option == OptionEnum.LTrim
+                    || option== OptionEnum.RTrim)
                 {
+                    var mem = mcExpr.Object;
+                    return GetKey(mem, option);
+                }
+                else if (option == OptionEnum.In)
+                {
+                    var mem = mcExpr.Arguments[0];
                     return GetKey(mem, option);
                 }
             }
@@ -349,6 +356,30 @@ namespace Yunyong.DataExchange.Core.ExpressionX
                     var keyTuple = GetKey(binTuple.left, OptionEnum.CharLength);
                     var dic = DicHandle.BinaryCharLengthHandle(keyTuple.key, keyTuple.alias, val, keyTuple.valType, binTuple.node, binTuple.isR);
                     dic.ClassFullName = keyTuple.classFullName;
+                    return dic;
+                }
+                else if(leftStr.Contains(".Trim(")
+                    && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
+                {
+                    var tuple = GetKey(binTuple.left, OptionEnum.Trim);
+                    var dic = DicHandle.BinaryTrimHandle(tuple.key, tuple.alias, val, tuple.valType, binTuple.node, binTuple.isR);
+                    dic.ClassFullName = tuple.classFullName;
+                    return dic;
+                }
+                else if(leftStr.Contains(".TrimStart(")
+                    && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
+                {
+                    var tuple = GetKey(binTuple.left, OptionEnum.LTrim);
+                    var dic = DicHandle.BinaryLTrimHandle(tuple.key, tuple.alias, val, tuple.valType, binTuple.node, binTuple.isR);
+                    dic.ClassFullName = tuple.classFullName;
+                    return dic;
+                }
+                else if (leftStr.Contains(".TrimEnd(")
+                    && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
+                {
+                    var tuple = GetKey(binTuple.left, OptionEnum.RTrim);
+                    var dic = DicHandle.BinaryRTrimHandle(tuple.key, tuple.alias, val, tuple.valType, binTuple.node, binTuple.isR);
+                    dic.ClassFullName = tuple.classFullName;
                     return dic;
                 }
                 else
