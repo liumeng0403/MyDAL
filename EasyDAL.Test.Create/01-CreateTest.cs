@@ -174,6 +174,36 @@ namespace MyDAL.Test.Create
 
             /********************************************************************************************************************************/
 
+            var xx6 = "";
+
+            var m6 = new Agent
+            {
+                Id = Guid.Parse("ea1ad309-56f7-4e3e-af12-0165c9121e9b"),
+                CreatedOn = Convert.ToDateTime("2018-10-07 17:02:05"),
+                UserId = Guid.NewGuid(),
+                PathId = "xx-yy-zz-mm-nn",
+                Name = "meng-net",
+                Phone = "17600000000",
+                IdCardNo = "876987698798",
+                CrmUserId = Guid.NewGuid().ToString(),
+                AgentLevel = AgentLevel.DistiAgent,
+                ActivedOn = null,
+                ActiveOrderId = null,
+                DirectorStarCount = 1
+            };
+            var res6 = await Conn
+                .Creater<Agent>()
+                .CreateAsync(m6);
+            var res61 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.Id == Guid.Parse("ea1ad309-56f7-4e3e-af12-0165c9121e9b"))
+                .QueryFirstOrDefaultAsync();
+            Assert.True(res61.AgentLevel == AgentLevel.DistiAgent);
+
+            var tuple6 = (XDebug.SQL, XDebug.Parameters);
+
+            /********************************************************************************************************************************/
+
             var xx = "";
         }
 
