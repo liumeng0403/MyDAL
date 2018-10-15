@@ -1,12 +1,13 @@
-﻿using MyDAL;
-using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.EasyDal_Exchange;
 using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace MyDAL.Test.Query
+namespace MyDAL.Test.Func
 {
-    public class _06_LikeTest : TestBase
+    public class _08_LikeTest : TestBase
     {
         private async Task<BodyFitRecord> Pre01()
         {

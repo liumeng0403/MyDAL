@@ -56,6 +56,50 @@ namespace MyDAL.Core.ExpressionX
                 Compare = GetOption(nodeType, isR)
             };
         }
+
+        internal static DicModelUI BinaryTrimHandle(string key, string alias, object value, Type valType, ExpressionType nodeType, bool isR)
+        {
+            return new DicModelUI
+            {
+                ColumnOne = key,
+                TableAliasOne = alias,
+                Param = key,
+                ParamRaw = key,
+                CsValue = value,
+                CsType = valType,
+                Option = OptionEnum.Trim,
+                Compare = GetOption(nodeType, isR)
+            };
+        }
+        internal static DicModelUI BinaryLTrimHandle(string key, string alias, object value, Type valType, ExpressionType nodeType, bool isR)
+        {
+            return new DicModelUI
+            {
+                ColumnOne = key,
+                TableAliasOne = alias,
+                Param = key,
+                ParamRaw = key,
+                CsValue = value,
+                CsType = valType,
+                Option = OptionEnum.LTrim,
+                Compare = GetOption(nodeType, isR)
+            };
+        }
+        internal static DicModelUI BinaryRTrimHandle(string key, string alias, object value, Type valType, ExpressionType nodeType, bool isR)
+        {
+            return new DicModelUI
+            {
+                ColumnOne = key,
+                TableAliasOne = alias,
+                Param = key,
+                ParamRaw = key,
+                CsValue = value,
+                CsType = valType,
+                Option = OptionEnum.RTrim,
+                Compare = GetOption(nodeType, isR)
+            };
+        }
+
         // 01
         internal static DicModelUI BinaryCompareHandle(CrudTypeEnum crud, ActionEnum action, string classFullName, string key, string alias, object value, Type valType, CompareEnum compare)
         {

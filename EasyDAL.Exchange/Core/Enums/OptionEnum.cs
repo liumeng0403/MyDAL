@@ -79,6 +79,24 @@ namespace MyDAL.Core.Enums
         CharLength,
 
         /// <summary>
+        /// " trim"
+        /// </summary>
+        [Description(" trim")]
+        Trim,
+
+        /// <summary>
+        /// " ltrim"
+        /// </summary>
+        [Description(" ltrim")]
+        LTrim,
+
+        /// <summary>
+        /// " rtrim"
+        /// </summary>
+        [Description(" rtrim")]
+        RTrim,
+
+        /// <summary>
         /// ""
         /// </summary>
         [Description("")]

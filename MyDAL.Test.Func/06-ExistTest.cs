@@ -9,7 +9,7 @@ using Xunit;
 
 namespace MyDAL.Test.Func
 {
-    public class _04_ExistTest : TestBase
+    public class _06_ExistTest : TestBase
     {
 
         public IMethodParamsTest ExistXTest { get; set; }

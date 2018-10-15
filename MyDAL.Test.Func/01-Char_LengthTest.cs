@@ -1,14 +1,17 @@
 ﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace MyDAL.Test.Query
+namespace MyDAL.Test.Func
 {
-    public class _06_FuncTest : TestBase
+    public class _01_Char_LengthTest : TestBase
     {
 
         [Fact]
-        public async Task FuncTest()
+        public async Task Char_LengthTest()
         {
 
             /*

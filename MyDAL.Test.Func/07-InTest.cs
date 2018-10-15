@@ -6,9 +6,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace MyDAL.Test.Query
+namespace MyDAL.Test.Func
 {
-    public class _06_InTest : TestBase
+    public class _07_InTest : TestBase
     {
         private List<AgentLevel?> EnumList { get; set; }
         private AgentLevel?[] EnumArray { get; set; }
