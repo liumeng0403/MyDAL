@@ -1,4 +1,5 @@
 using MyDAL.Test.Entities.EasyDal_Exchange;
+using MyDAL.Test.Enums;
 using System;
 using System.Dynamic;
 using System.Threading.Tasks;
@@ -190,6 +191,23 @@ namespace MyDAL.Test.Update
                 .Where(it => it.Id == guid7)
                 .QueryFirstOrDefaultAsync();
             Assert.True(resxx7.VipProduct);
+
+            /***************************************************************************************************************************/
+
+            var xx8 = "";
+
+            var res8 = await Conn
+                .Updater<Agent>()
+                .Set(it => it.AgentLevel, AgentLevel.NewCustomer)
+                .Where(it => it.Id == Guid.Parse("0014f62d-2a96-4b5b-b4bd-01654438e3d4"))
+                .UpdateAsync();
+            var res81 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.Id == Guid.Parse("0014f62d-2a96-4b5b-b4bd-01654438e3d4"))
+                .QueryFirstOrDefaultAsync();
+            Assert.True(res81.AgentLevel == AgentLevel.NewCustomer);
+
+            var tuple8 = (XDebug.SQL, XDebug.Parameters);
 
             /***************************************************************************************************************************/
 

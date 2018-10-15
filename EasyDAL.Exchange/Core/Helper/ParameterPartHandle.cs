@@ -45,7 +45,7 @@ namespace Yunyong.DataExchange.Core.Helper
         public ParamInfo EnumParamHandle(string colType, DicModelUI item,Type realType)
         {
             if (!string.IsNullOrWhiteSpace(colType)
-                && colType.Equals("int", StringComparison.OrdinalIgnoreCase))
+                && (colType.Equals("int", StringComparison.OrdinalIgnoreCase)))
             {
                 if (item.CsValue is string)
                 {
@@ -64,7 +64,7 @@ namespace Yunyong.DataExchange.Core.Helper
             }
             else
             {
-                return GetDefault(item.Param, item.CsValue.ToBool(), DbType.Boolean);
+                return GetDefault(item.Param, item.CsValue, DbType.Int32);
             }
         }
 
