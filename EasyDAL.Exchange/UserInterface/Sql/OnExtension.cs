@@ -10,8 +10,7 @@ namespace MyDAL
 
         public static OnX On(this JoinX join, Expression<Func<bool>> func)
         {
-            var field = join.DC.EH.ExpressionHandle(func, ActionEnum.On, CrudTypeEnum.Join);
-            field.Crud = CrudTypeEnum.Join;
+            var field = join.DC.EH.ExpressionHandle(func, ActionEnum.On);
             join.DC.AddConditions(field);
             return new OnX(join.DC);
         }
