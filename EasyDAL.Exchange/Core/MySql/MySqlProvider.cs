@@ -463,7 +463,7 @@ namespace Yunyong.DataExchange.Core.MySql
                                         FROM
                                             information_schema.COLUMNS
                                         WHERE  table_schema='{DC.Conn.Database}'
-                                            and  TABLE_NAME = '{tableName.TrimStart('`').TrimEnd('`').ToLower()}'
+                                            and  ( TABLE_NAME = '{tableName.TrimStart('`').TrimEnd('`').ToLower()}' or TABLE_NAME = '{tableName.TrimStart('`').TrimEnd('`')}' )
                                         ;
                                   ";
             return (await DC.DS.ExecuteReaderMultiRowAsync<ColumnInfo>(DC.Conn, sql, new DynamicParameters())).ToList();
