@@ -30,6 +30,8 @@ namespace Yunyong.DataExchange.Core
             BDH = BatchDataHelper.Instance;
             SqlProvider = new MySqlProvider(this);
             DS = DataSource.Instance;
+            DH = DicHandle.Instance;
+            DH.DC = this;
         }
 
         /************************************************************************************************************************/
@@ -47,6 +49,13 @@ namespace Yunyong.DataExchange.Core
         internal ValHandle VH { get; private set; }
 
         internal BatchDataHelper BDH { get; private set; }
+
+        internal CrudTypeEnum Crud { get; set; } = CrudTypeEnum.None;
+        internal ActionEnum Action { get; set; } = ActionEnum.None;
+        internal OptionEnum Option { get; set; } = OptionEnum.None;
+        internal CompareEnum Compare { get; set; } = CompareEnum.None;
+
+        internal DicHandle DH { get; private set; }
 
         internal List<DicModelUI> UiConditions { get; private set; }
         internal List<DicModelDB> DbConditions { get; private set; }
@@ -113,25 +122,7 @@ namespace Yunyong.DataExchange.Core
                     }
 
                     //
-                    var dicx = new DicModelUI
-                    {
-                        //TableOne = dic.TableOne,
-                        ClassFullName = dic.ClassFullName,
-                        ColumnOne = dic.ColumnOne,
-                        TableAliasOne = dic.TableAliasOne,
-                        TableTwo = dic.TableTwo,
-                        ColumnTwo = dic.ColumnTwo,
-                        TableAliasTwo = dic.TableAliasTwo,
-                        Param = dic.Param,
-                        ParamRaw = dic.ParamRaw,
-                        CsValue = val,
-                        CsType = dic.CsType,
-                        Option = op,
-                        Action = dic.Action,
-                        Crud = dic.Crud,
-                        Compare = dic.Compare,
-                        TvpIndex = dic.TvpIndex
-                    };
+                    var dicx = DicHandle.UiDicCopy(dic, val, op);
                     AddConditions(dicx);
                 }
                 UiConditions.Remove(dic);
@@ -189,18 +180,21 @@ namespace Yunyong.DataExchange.Core
             foreach (var prop in props)
             {
                 var val = GH.GetTypeValue(prop, m);
-                AddConditions(new DicModelUI
-                {
-                    ClassFullName=fullName,
-                    ColumnOne = prop.Name,
-                    Param = prop.Name,
-                    ParamRaw = prop.Name,
-                    CsValue = val,
-                    CsType = prop.PropertyType,
-                    Action = ActionEnum.Insert,
-                    Option = option,
-                    TvpIndex = index
-                });
+                Option = option;
+                Compare = CompareEnum.None;
+                AddConditions(DH.InsertDic(fullName, prop.Name, val, prop.PropertyType, option, index));
+                //    new DicModelUI
+                //{
+                //    ClassFullName=fullName,
+                //    ColumnOne = prop.Name,
+                //    Param = prop.Name,
+                //    ParamRaw = prop.Name,
+                //    CsValue = val,
+                //    CsType = prop.PropertyType,
+                //    Action = ActionEnum.Insert,
+                //    Option = option,
+                //    TvpIndex = index
+                //});
             }
         }
         internal void GetProperties<M>(M m)

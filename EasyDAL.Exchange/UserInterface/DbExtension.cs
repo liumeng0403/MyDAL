@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Core.Common;
+using Yunyong.DataExchange.Core.Enums;
 using Yunyong.DataExchange.Core.Helper;
 using Yunyong.DataExchange.UserFacade.Create;
 using Yunyong.DataExchange.UserFacade.Delete;
@@ -23,7 +24,9 @@ namespace Yunyong.DataExchange
         /// <typeparam name="M">M:与DB Table 一 一对应</typeparam>
         public static Creater<M> Creater<M>(this IDbConnection connection)
         {
-            return new Creater<M>(new DbContext<M>(connection));
+            var dc = new DbContext<M>(connection);
+            dc.Crud = CrudTypeEnum.Create;
+            return new Creater<M>(dc);
         }
 
         /// <summary>
@@ -32,7 +35,9 @@ namespace Yunyong.DataExchange
         /// <typeparam name="M">M:与DB Table 一 一对应</typeparam>
         public static Deleter<M> Deleter<M>(this IDbConnection connection)
         {
-            return new Deleter<M>(new DbContext<M>(connection));
+            var dc = new DbContext<M>(connection);
+            dc.Crud = CrudTypeEnum.Delete;
+            return new Deleter<M>(dc);
         }
 
         /// <summary>
@@ -41,7 +46,9 @@ namespace Yunyong.DataExchange
         /// <typeparam name="M">M:与DB Table 一 一对应</typeparam>
         public static Updater<M> Updater<M>(this IDbConnection connection)
         {
-            return new Updater<M>(new DbContext<M>(connection));
+            var dc = new DbContext<M>(connection);
+            dc.Crud = CrudTypeEnum.Update;
+            return new Updater<M>(dc);
         }
 
         /// <summary>
@@ -50,7 +57,9 @@ namespace Yunyong.DataExchange
         /// <typeparam name="M">M:与DB Table 一 一对应</typeparam>
         public static Selecter<M> Selecter<M>(this IDbConnection connection)
         {
-            return new Selecter<M>(new DbContext<M>(connection));
+            var dc = new DbContext<M>(connection);
+            dc.Crud = CrudTypeEnum.Query;
+            return new Selecter<M>(dc);
         }
 
         ///// <summary>
@@ -68,7 +77,9 @@ namespace Yunyong.DataExchange
         {
             table1 = Activator.CreateInstance<M1>();
             table2 = Activator.CreateInstance<M2>();
-            return new Joiner(new DbContext<M1, M2>(connection));
+            var dc = new DbContext<M1, M2>(connection);
+            dc.Crud = CrudTypeEnum.Join;
+            return new Joiner(dc);
         }
         /// <summary>
         /// 连接查询 方法簇
@@ -78,7 +89,9 @@ namespace Yunyong.DataExchange
             table1 = Activator.CreateInstance<M1>();
             table2 = Activator.CreateInstance<M2>();
             table3 = Activator.CreateInstance<M3>();
-            return new Joiner(new DbContext<M1, M2, M3>(connection));
+            var dc = new DbContext<M1, M2, M3>(connection);
+            dc.Crud = CrudTypeEnum.Join;
+            return new Joiner(dc);
         }
         /// <summary>
         /// 连接查询 方法簇
@@ -89,7 +102,9 @@ namespace Yunyong.DataExchange
             table2 = Activator.CreateInstance<M2>();
             table3 = Activator.CreateInstance<M3>();
             table4 = Activator.CreateInstance<M4>();
-            return new Joiner(new DbContext<M1, M2, M3, M4>(connection));
+            var dc = new DbContext<M1, M2, M3, M4>(connection);
+            dc.Crud = CrudTypeEnum.Join;
+            return new Joiner(dc);
         }
         /// <summary>
         /// 连接查询 方法簇
@@ -101,7 +116,9 @@ namespace Yunyong.DataExchange
             table3 = Activator.CreateInstance<M3>();
             table4 = Activator.CreateInstance<M4>();
             table5 = Activator.CreateInstance<M5>();
-            return new Joiner(new DbContext<M1, M2, M3, M4, M5>(connection));
+            var dc = new DbContext<M1, M2, M3, M4, M5>(connection);
+            dc.Crud = CrudTypeEnum.Join;
+            return new Joiner(dc);
         }
         /// <summary>
         /// 连接查询 方法簇
@@ -114,7 +131,9 @@ namespace Yunyong.DataExchange
             table4 = Activator.CreateInstance<M4>();
             table5 = Activator.CreateInstance<M5>();
             table6 = Activator.CreateInstance<M6>();
-            return new Joiner(new DbContext<M1, M2, M3, M4, M5, M6>(connection));
+            var dc = new DbContext<M1, M2, M3, M4, M5, M6>(connection);
+            dc.Crud = CrudTypeEnum.Join;
+            return new Joiner(dc);
         }
 
         /// <summary>
@@ -142,7 +161,7 @@ namespace Yunyong.DataExchange
             return connection;
         }
 
-        public static IDbConnection OpenCodeFirst(this IDbConnection connection,string modelsNamespace)
+        public static IDbConnection OpenCodeFirst(this IDbConnection connection, string modelsNamespace)
         {
             XConfig.IsCodeFirst = true;
             XConfig.TablesNamespace = modelsNamespace;

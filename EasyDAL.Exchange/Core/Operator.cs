@@ -221,7 +221,7 @@ namespace Yunyong.DataExchange.Core
 
         internal void SetChangeHandle<M, F>(Expression<Func<M, F>> func, F modVal, ActionEnum action, OptionEnum option)
         {
-            var keyDic = DC.EH.ExpressionHandle(func)[0];
+            var keyDic = DC.EH.ExpressionHandle(action, func)[0];
             var key = keyDic.ColumnOne;
             var val = default(object);
             if (modVal == null)
@@ -232,18 +232,21 @@ namespace Yunyong.DataExchange.Core
             {
                 val = DC.GH.GetTypeValue(modVal);
             }
-            DC.AddConditions(new DicModelUI
-            {
-                ClassFullName = typeof(M).FullName,
-                ColumnOne = key,
-                Param = key,
-                ParamRaw = key,
-                CsValue = val,
-                CsType = typeof(F),
-                Option = option,
-                Action = action,
-                Crud = CrudTypeEnum.Update
-            });
+            DC.Option = option;
+            DC.Compare = CompareEnum.None;
+            DC.AddConditions(DC.DH.SetDic(typeof(M).FullName, key, key, val, typeof(F), action));
+            //    new DicModelUI
+            //{
+            //    ClassFullName = typeof(M).FullName,
+            //    ColumnOne = key,
+            //    Param = key,
+            //    ParamRaw = key,
+            //    CsValue = val,
+            //    CsType = typeof(F),
+            //    Option = option,
+            //    Action = action,
+            //    Crud = CrudTypeEnum.Update
+            //});
         }
 
         internal void SetDynamicHandle<M>(object mSet)
@@ -252,34 +255,36 @@ namespace Yunyong.DataExchange.Core
             var fullName = typeof(M).FullName;
             foreach (var tp in tuples)
             {
-                DC.AddConditions(new DicModelUI
-                {
-                    ClassFullName = fullName,
-                    ColumnOne = tp.key,
-                    Param = tp.param,
-                    ParamRaw = tp.param,
-                    CsValue = tp.val,
-                    CsType = tp.valType,
-                    Action = ActionEnum.Update,
-                    Option = OptionEnum.Set,
-                    Crud = CrudTypeEnum.Update
-                });
+                DC.Option = OptionEnum.Set;
+                DC.Compare = CompareEnum.None;
+                DC.AddConditions(DC.DH.SetDic(fullName, tp.key, tp.param, tp.val, tp.valType,  ActionEnum.Update));
+                //    new DicModelUI
+                //{
+                //    ClassFullName = fullName,
+                //    ColumnOne = tp.key,
+                //    Param = tp.param,
+                //    ParamRaw = tp.param,
+                //    CsValue = tp.val,
+                //    CsType = tp.valType,
+                //    Option = OptionEnum.Set,
+                //    Action = ActionEnum.Update,
+                //    Crud = CrudTypeEnum.Update
+                //});
             }
         }
 
         internal void WhereJoinHandle(Operator op, Expression<Func<bool>> func, ActionEnum action)
         {
-            var dic = op.DC.EH.ExpressionHandle(func, action, CrudTypeEnum.Join);
+            var dic = op.DC.EH.ExpressionHandle(func, action);
             dic.Crud = CrudTypeEnum.Join;
             op.DC.AddConditions(dic);
         }
 
-        internal void WhereHandle<T>(Expression<Func<T, bool>> func, CrudTypeEnum crud)
+        internal void WhereHandle<T>(Expression<Func<T, bool>> func)
         {
-            var field = DC.EH.ExpressionHandle(crud, ActionEnum.Where, func);
+            var field = DC.EH.ExpressionHandle( ActionEnum.Where, func);
             field.ClassFullName = typeof(T).FullName;
             field.Action = ActionEnum.Where;
-            field.Crud = crud;
             DC.AddConditions(field);
         }
 
@@ -300,43 +305,46 @@ namespace Yunyong.DataExchange.Core
                 {
                     action = ActionEnum.And;
                 }
-                var crud = CrudTypeEnum.Query;
 
                 //
                 if (tp.compare == CompareEnum.Like)
                 {
-                    DC.AddConditions(DicHandle.CallLikeHandle(crud, action, fullName, tp.key, string.Empty, tp.val, tp.valType));
+                    DC.Option = OptionEnum.Like;
+                    DC.Compare = CompareEnum.None;
+                    DC.AddConditions(DC.DH.LikeDic( action, fullName, tp.key, string.Empty, tp.val, tp.valType));
                 }
                 else if (tp.compare == CompareEnum.In)
                 {
-                    DC.AddConditions(DicHandle.CallInHandle(crud, action, fullName, tp.key, string.Empty, tp.val, tp.valType));
+                    DC.Option = OptionEnum.In;
+                    DC.Compare = CompareEnum.None;
+                    DC.AddConditions(DC.DH.InDic( action, fullName, tp.key, string.Empty, tp.val, tp.valType));
                 }
                 else
                 {
-                    DC.AddConditions(DicHandle.BinaryCompareHandle(crud, action, fullName, tp.key, string.Empty, tp.val, tp.valType, tp.compare));
+                    DC.Option = OptionEnum.Compare;
+                    DC.Compare = tp.compare;
+                    DC.AddConditions(DC.DH.CompareDic(action, fullName, tp.key, string.Empty, tp.val, tp.valType ));
                 }
             }
         }
 
-        internal void AndHandle<T>(Expression<Func<T, bool>> func, CrudTypeEnum crud)
+        internal void AndHandle<T>(Expression<Func<T, bool>> func)
         {
-            var field = DC.EH.ExpressionHandle(crud, ActionEnum.And, func);
+            var field = DC.EH.ExpressionHandle( ActionEnum.And, func);
             field.Action = ActionEnum.And;
-            field.Crud = crud;
             DC.AddConditions(field);
         }
 
-        internal void OrHandle<T>(Expression<Func<T, bool>> func, CrudTypeEnum crud)
+        internal void OrHandle<T>(Expression<Func<T, bool>> func)
         {
-            var field = DC.EH.ExpressionHandle(crud, ActionEnum.Or, func);
+            var field = DC.EH.ExpressionHandle( ActionEnum.Or, func);
             field.Action = ActionEnum.Or;
-            field.Crud = crud;
             DC.AddConditions(field);
         }
 
         internal void OrderByHandle<M, F>(Expression<Func<M, F>> func, OrderByEnum orderBy)
         {
-            var keyDic = DC.EH.ExpressionHandle(func)[0];
+            var keyDic = DC.EH.ExpressionHandle( ActionEnum.OrderBy, func)[0];
             var key = keyDic.ColumnOne;
             var option = OptionEnum.None;
             switch (orderBy)
@@ -376,13 +384,16 @@ namespace Yunyong.DataExchange.Core
                         {
                             op = OptionEnum.Asc;
                         }
-                        DC.AddConditions(new DicModelUI
-                        {
-                            ClassFullName=fullName,
-                            ColumnOne = item.Field,
-                            Action = ActionEnum.OrderBy,
-                            Option = op
-                        });
+                        DC.Option = op;
+                        DC.Compare = CompareEnum.None;
+                        DC.AddConditions(DC.DH.OrderbyDic(fullName, item.Field));
+                        //    new DicModelUI
+                        //{
+                        //    ClassFullName=fullName,
+                        //    ColumnOne = item.Field,
+                        //    Action = ActionEnum.OrderBy,
+                        //    Option = op
+                        //});
                     }
                 }
             }

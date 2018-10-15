@@ -179,7 +179,7 @@ namespace Yunyong.DataExchange.Core.Common
             {
                 foreach (var prop in vmProps)
                 {
-                    DC.AddConditions(DicHandle.SelectColumnHandle(prop.Name, tab.TableAliasOne,fullName));
+                    DC.AddConditions(DicHandle.ColumnDic(prop.Name, tab.TableAliasOne,fullName));
                 }
             }
             else
@@ -191,24 +191,24 @@ namespace Yunyong.DataExchange.Core.Common
 
         internal void SelectMHandle<VM>(Expression<Func<VM>> func)
         {
-            var list = DC.EH.ExpressionHandle(func);
+            var list = DC.EH.ExpressionHandle( ActionEnum.Select, func);
             foreach (var dic in list)
             {
-                dic.Action = ActionEnum.Select;
+                //dic.Action = ActionEnum.Select;
                 dic.Option = OptionEnum.ColumnAs;
-                dic.Crud = CrudTypeEnum.Join;
+                //dic.Crud = CrudTypeEnum.Join;
                 DC.AddConditions(dic);
             }
         }
 
         internal void SelectMHandle<M, VM>(Expression<Func<M, VM>> func)
         {
-            var list = DC.EH.ExpressionHandle(func);
+            var list = DC.EH.ExpressionHandle( ActionEnum.Select, func);
             foreach (var dic in list)
             {
-                dic.Action = ActionEnum.Select;
+                //dic.Action = ActionEnum.Select;
                 dic.Option = OptionEnum.ColumnAs;
-                dic.Crud = CrudTypeEnum.Query;
+                //dic.Crud = CrudTypeEnum.Query;
                 DC.AddConditions(dic);
             }
         }

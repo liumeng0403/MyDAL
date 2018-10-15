@@ -16,9 +16,11 @@ namespace Yunyong.DataExchange
         /// <param name="func">格式: it => it.Id</param>
         public static CountQ<M> Count<M,F>(this WhereQ<M> where, Expression<Func<M, F>> func)
         {
-            var keyDic = where.DC.EH.ExpressionHandle(func)[0];
+            var keyDic = where.DC.EH.ExpressionHandle(ActionEnum.Select,func)[0];
             var key = keyDic.ColumnOne;
-            where.DC.AddConditions(DicHandle.ConditionCountHandle(CrudTypeEnum.Query,keyDic.ClassFullName,key));
+            where.DC.Option = OptionEnum.Count;
+            where.DC.Compare = CompareEnum.None;
+            where.DC.AddConditions(where.DC.DH.CountDic(keyDic.ClassFullName,key));
             return new CountQ<M>(where.DC);
         }
 

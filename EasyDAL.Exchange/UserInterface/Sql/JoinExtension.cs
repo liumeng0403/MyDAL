@@ -12,18 +12,18 @@ namespace Yunyong.DataExchange
 
         public static JoinX InnerJoin<M>(this FromX from, Expression<Func<M>> func)
         {
-            var dic = from.DC.EH.ExpressionHandle(func)[0];
-            dic.Action = ActionEnum.InnerJoin;
-            dic.Crud = CrudTypeEnum.Join;
+            var dic = from.DC.EH.ExpressionHandle( ActionEnum.InnerJoin, func)[0];
+            //dic.Action = ActionEnum.InnerJoin;
+            //dic.Crud = CrudTypeEnum.Join;
             from.DC.AddConditions(dic);
             return new JoinX(from.DC);
         }
 
         public static JoinX LeftJoin<M>(this FromX from, Expression<Func<M>> func)
         {
-            var dic = from.DC.EH.ExpressionHandle(func)[0];
-            dic.Action = ActionEnum.LeftJoin;
-            dic.Crud = CrudTypeEnum.Join;
+            var dic = from.DC.EH.ExpressionHandle( ActionEnum.LeftJoin, func)[0];
+            //dic.Action = ActionEnum.LeftJoin;
+            //dic.Crud = CrudTypeEnum.Join;
             from.DC.AddConditions(dic);
             return new JoinX(from.DC);
         }
@@ -32,18 +32,18 @@ namespace Yunyong.DataExchange
 
         public static JoinX InnerJoin<M>(this OnX on, Expression<Func<M>> func)
         {
-            var dic = on.DC.EH.ExpressionHandle(func)[0];
-            dic.Action = ActionEnum.InnerJoin;
-            dic.Crud = CrudTypeEnum.Join;
+            var dic = on.DC.EH.ExpressionHandle( ActionEnum.InnerJoin, func)[0];
+            //dic.Action = ActionEnum.InnerJoin;
+            //dic.Crud = CrudTypeEnum.Join;
             on.DC.AddConditions(dic);
             return new JoinX(on.DC);
         }
 
         public static JoinX LeftJoin<M>(this OnX on, Expression<Func<M>> func)
         {
-            var dic = on.DC.EH.ExpressionHandle(func)[0];
-            dic.Action = ActionEnum.LeftJoin;
-            dic.Crud = CrudTypeEnum.Join;
+            var dic = on.DC.EH.ExpressionHandle( ActionEnum.LeftJoin, func)[0];
+            //dic.Action = ActionEnum.LeftJoin;
+            //dic.Crud = CrudTypeEnum.Join;
             on.DC.AddConditions(dic);
             return new JoinX(on.DC);
         }

@@ -19,7 +19,7 @@ namespace Yunyong.DataExchange
         /// <param name="func">格式: it => it.Id == m.Id </param>
         public static WhereD<M> Where<M>(this Deleter<M> deleter, Expression<Func<M, bool>> func)
         {
-            deleter.DC.OP.WhereHandle(func, CrudTypeEnum.Delete);
+            deleter.DC.OP.WhereHandle(func);
             return new WhereD<M>(deleter.DC);
         }
 
@@ -31,7 +31,7 @@ namespace Yunyong.DataExchange
         /// <param name="func">格式: it => it.AgentId == id2</param>
         public static WhereU<M> Where<M>(this SetU<M> set, Expression<Func<M, bool>> func)
         {
-            set.DC.OP.WhereHandle(func, CrudTypeEnum.Update);
+            set.DC.OP.WhereHandle(func);
             return new WhereU<M>(set.DC);
         }
 
@@ -43,7 +43,7 @@ namespace Yunyong.DataExchange
         /// <param name="func">格式: it => it.CreatedOn >= WhereTest.CreatedOn</param>
         public static WhereQ<M> Where<M>(this Selecter<M> selecter, Expression<Func<M, bool>> func)
         {
-            selecter.DC.OP.WhereHandle(func, CrudTypeEnum.Query);
+            selecter.DC.OP.WhereHandle(func);
             return new WhereQ<M>(selecter.DC);
         }
         /// <summary>
