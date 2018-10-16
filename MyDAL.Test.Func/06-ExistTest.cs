@@ -26,6 +26,7 @@ namespace MyDAL.Test.Func
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
                 .ExistAsync();
+            Assert.True(res1);
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
 

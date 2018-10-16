@@ -54,6 +54,7 @@ namespace MyDAL.Test.Func
                 .Selecter<Agent>()
                 .Where(it => enums.Contains(it.AgentLevel))
                 .QueryListAsync();
+            Assert.True(res1.Count == 555);
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
 

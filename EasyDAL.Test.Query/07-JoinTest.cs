@@ -23,8 +23,9 @@ namespace MyDAL.Test.Query
                 .InnerJoin(() => record1)
                 .On(() => agent1.Id == record1.AgentId)
                 .Where(() => agent1.Id == Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef"))
-                .And(() => record1.CreatedOn >= DateTime.Now.AddDays(-60))
+                .And(() => record1.CreatedOn >= WhereTest.CreatedOn.AddDays(-60))
                 .QueryListAsync<Agent>();
+            Assert.True(res1.Count == 1);
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
@@ -44,6 +45,7 @@ namespace MyDAL.Test.Query
                     zz = agent2.Name,
                     mm = record2.LockedCount
                 });
+            Assert.True(res2.Count == 574);
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters);
             var yy2 = res2.First().nn;

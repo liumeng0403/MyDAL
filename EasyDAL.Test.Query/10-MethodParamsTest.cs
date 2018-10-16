@@ -21,6 +21,7 @@ namespace MyDAL.Test.Query
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("000a9465-8665-40bf-90e3-0165442d9120"))
                 .QueryFirstOrDefaultAsync();
+            Assert.NotNull(res);
 
             await xxx(res.Id);
             var id = Guid.Parse("000a9465-8665-40bf-90e3-0165442d9120");
@@ -35,6 +36,7 @@ namespace MyDAL.Test.Query
                 .Selecter<Agent>()
                 .Where(it => it.Id == id)
                 .QueryFirstOrDefaultAsync();
+            Assert.NotNull(res1);
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
@@ -45,6 +47,7 @@ namespace MyDAL.Test.Query
                 .Selecter<Agent>()
                 .Where(it => id == it.Id)
                 .QueryFirstOrDefaultAsync();
+            Assert.NotNull(resR1);
 
             var tupleR1 = (XDebug.SQL, XDebug.Parameters);
 
@@ -72,6 +75,7 @@ namespace MyDAL.Test.Query
                 .Selecter<Agent>()
                 .Where(it => list.Contains(it.Id))
                 .QueryListAsync();
+            Assert.True(res.Count == 2);
 
             var xxx = "";
         }
@@ -83,6 +87,7 @@ namespace MyDAL.Test.Query
                 .Selecter<Agent>()
                 .Where(it => arrays.Contains(it.Id))
                 .QueryListAsync();
+            Assert.True(res.Count == 2);
 
             var xxx = "";
         }
@@ -123,6 +128,7 @@ namespace MyDAL.Test.Query
                 .Selecter<Agent>()
                 .Where(it => it.Id == AgentId)
                 .QueryFirstOrDefaultAsync<AgentVM>();
+            Assert.NotNull(res1);
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
 

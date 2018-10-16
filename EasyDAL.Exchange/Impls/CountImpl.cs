@@ -31,7 +31,8 @@ namespace MyDAL.Impls
 
         public async Task<long> CountAsync<F>(Expression<Func<M, F>> func)
         {
-            var keyDic = DC.EH.ExpressionHandle(ActionEnum.Select,func)[0];
+            DC.Action = ActionEnum.Select;
+            var keyDic = DC.EH.ExpressionHandle(func)[0];
             var key = keyDic.ColumnOne;
             DC.Option = OptionEnum.Count;
             DC.Compare = CompareEnum.None;
@@ -67,8 +68,8 @@ namespace MyDAL.Impls
 
         public async Task<long> CountAsync<F>(Expression<Func<F>> func)
         {
-            //CountMHandle<M>("*");
-            var dic = DC.EH.ExpressionHandle(ActionEnum.Select,func)[0];
+            DC.Action = ActionEnum.Select;
+            var dic = DC.EH.ExpressionHandle(func)[0];
             DC.Option = OptionEnum.Count;
             DC.Compare = CompareEnum.None;
             DC.AddConditions(DC.DH.CountDic(dic.ClassFullName, dic.ColumnOne, dic.TableAliasOne));
