@@ -14,8 +14,6 @@ namespace MyDAL.Core
     internal abstract class Context
     {
 
-        /************************************************************************************************************************/
-
         internal void Init(IDbConnection conn)
         {
             Conn = conn;
@@ -26,7 +24,7 @@ namespace MyDAL.Core
             GH = GenericHelper.Instance;
             EH = new ExpressionHandleX(this);
             SC = StaticCache.Instance;
-            PPH = ParameterHandle.Instance;
+            PH = ParameterHelper.Instance;
             BDH = BatchDataHelper.Instance;
             SqlProvider = new MySqlProvider(this);
             DS = DataSource.Instance;
@@ -37,37 +35,44 @@ namespace MyDAL.Core
         /************************************************************************************************************************/
 
         internal AttributeHelper AH { get; private set; }
-
         internal GenericHelper GH { get; private set; }
-        internal XDebug Hint { get; set; }
-        internal ExpressionHandleX EH { get; private set; }
-
-        internal StaticCache SC { get; private set; }
-
-        internal ParameterHandle PPH { get; private set; }
-
-        internal ValHandle VH { get; private set; }
-
+        internal ParameterHelper PH { get; private set; }
         internal BatchDataHelper BDH { get; private set; }
+
+        /************************************************************************************************************************/
+
+        internal XDebug Hint { get; set; }
+
+        internal ExpressionHandleX EH { get; private set; }
+        internal ValHandle VH { get; private set; }
+        internal DicHandle DH { get; private set; }
+
+        /************************************************************************************************************************/
 
         internal CrudTypeEnum Crud { get; set; } = CrudTypeEnum.None;
         internal ActionEnum Action { get; set; } = ActionEnum.None;
         internal OptionEnum Option { get; set; } = OptionEnum.None;
         internal CompareEnum Compare { get; set; } = CompareEnum.None;
 
-        internal DicHandle DH { get; private set; }
+        /************************************************************************************************************************/
 
         internal List<DicModelUI> UiConditions { get; private set; }
         internal List<DicModelDB> DbConditions { get; private set; }
 
+        /************************************************************************************************************************/
+
         internal IDbConnection Conn { get; private set; }
         internal IDbTransaction Tran { get; set; }
 
-        internal MySqlProvider SqlProvider { get; set; }
+        /************************************************************************************************************************/
 
+        internal MySqlProvider SqlProvider { get; set; }
         internal Operator OP { get; set; }
         internal Impler IP { get; set; }
 
+        /************************************************************************************************************************/
+
+        internal StaticCache SC { get; private set; }
         internal DataSource DS { get; private set; }
 
         /************************************************************************************************************************/
