@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Yunyong.Core;
+using Yunyong.DataExchange.AdoNet;
 using Yunyong.DataExchange.Core.Enums;
 using Yunyong.DataExchange.Core.ExpressionX;
 using Yunyong.DataExchange.Core.Extensions;
-using Yunyong.DataExchange.Core.Helper;
 
 namespace Yunyong.DataExchange.Core.Common
 {
@@ -18,7 +17,7 @@ namespace Yunyong.DataExchange.Core.Common
 
         /**********************************************************************************************************/
 
-        private void GetDbVal(DicModelUI ui,DicModelDB db,Type realType)
+        private void GetDbVal(DicModelUI ui, DicModelDB db, Type realType)
         {
 
             //
@@ -36,48 +35,101 @@ namespace Yunyong.DataExchange.Core.Common
                 }
 
                 //
-                if (realType == typeof(bool)
-                     || realType == typeof(bool?))
+                var para = default(ParamInfo);
+                if (realType == typeof(bool))
                 {
-                    var para = DC.PPH.BoolParamHandle(db.ColumnType, ui);
-                    db.DbValue = para.Value;
-                    db.DbType = para.DbType;
+                    para = DC.PPH.BoolParam(db.ColumnType, ui, realType);
                 }
-                else if (realType == typeof(short)
-                        || realType == typeof(short?))
+                else if (realType == typeof(byte))
                 {
-                    db.DbValue = ui.CsValue;//.ToShort();
-                    db.DbType = DbType.Int16;
+                    para = DC.PPH.ByteParam(db.ColumnType, ui, realType);
                 }
-                else if (realType == typeof(int)
-                        || realType == typeof(int?))
+                else if (realType == typeof(char))
                 {
-                    db.DbValue = ui.CsValue;//.ToInt();
-                    db.DbType = DbType.Int32;
+                    para = DC.PPH.CharParam(db.ColumnType, ui, realType);
                 }
-                else if (realType == typeof(long)
-                        || realType == typeof(long?))
+                else if (realType == typeof(decimal))
                 {
-                    db.DbValue = ui.CsValue;//.ToLong();
-                    db.DbType = DbType.Int64;
+                    para = DC.PPH.DecimalParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == typeof(double))
+                {
+                    para = DC.PPH.DoubleParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == typeof(float))
+                {
+                    para = DC.PPH.FloatParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == typeof(int))
+                {
+                    para = DC.PPH.IntParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == typeof(long))
+                {
+                    para = DC.PPH.LongParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == typeof(sbyte))
+                {
+                    para = DC.PPH.SbyteParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == typeof(short))
+                {
+                    para = DC.PPH.ShortParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == typeof(uint))
+                {
+                    para = DC.PPH.UintParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == typeof(ulong))
+                {
+                    para = DC.PPH.UlongParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == typeof(ushort))
+                {
+                    para = DC.PPH.UshortParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == typeof(string))
+                {
+                    para = DC.PPH.StringParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == typeof(DateTime))
+                {
+                    para = DC.PPH.DateTimeParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == typeof(TimeSpan))
+                {
+                    para = DC.PPH.TimeSpanParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == typeof(Guid))
+                {
+                    para = DC.PPH.GuidParam(db.ColumnType, ui, realType);
                 }
                 else if (realType.IsEnum)
                 {
-                    var para = DC.PPH.EnumParamHandle(db.ColumnType, ui,realType);
-                    db.DbValue = para.Value;
-                    db.DbType = para.DbType;
+                    para = DC.PPH.EnumParam(db.ColumnType, ui, realType);
                 }
-                else if(realType.IsGenericType
+                else if (realType.IsGenericType
                     && realType.GetGenericTypeDefinition() == typeof(Nullable<>))
                 {
                     var type = realType.GetGenericArguments()[0];
-                    GetDbVal(ui, db, type);
+                    if (ui.CsValue == null)
+                    {
+                        para = DC.PPH.NullParam(db.ColumnType, ui, type);
+                    }
+                    else
+                    {
+                        GetDbVal(ui, db, type);
+                        return;
+                    }
                 }
                 else
                 {
-                    db.DbValue = ui.CsValue;
-                    db.DbType = null;
+                    throw new Exception($"不支持的字段参数类型:[[{realType}]]!");
                 }
+
+                //
+                db.DbValue = para.Value;
+                db.DbType = para.DbType;
             }
 
         }
@@ -179,7 +231,7 @@ namespace Yunyong.DataExchange.Core.Common
             {
                 foreach (var prop in vmProps)
                 {
-                    DC.AddConditions(DicHandle.ColumnDic(prop.Name, tab.TableAliasOne,fullName));
+                    DC.AddConditions(DicHandle.ColumnDic(prop.Name, tab.TableAliasOne, fullName));
                 }
             }
             else
@@ -192,7 +244,7 @@ namespace Yunyong.DataExchange.Core.Common
         internal void SelectMHandle<VM>(Expression<Func<VM>> func)
         {
             DC.Action = ActionEnum.Select;
-            var list = DC.EH.ExpressionHandle( func);
+            var list = DC.EH.ExpressionHandle(func);
             foreach (var dic in list)
             {
                 dic.Option = OptionEnum.ColumnAs;
@@ -203,7 +255,7 @@ namespace Yunyong.DataExchange.Core.Common
         internal void SelectMHandle<M, VM>(Expression<Func<M, VM>> func)
         {
             DC.Action = ActionEnum.Select;
-            var list = DC.EH.ExpressionHandle( func);
+            var list = DC.EH.ExpressionHandle(func);
             foreach (var dic in list)
             {
                 //dic.Action = ActionEnum.Select;

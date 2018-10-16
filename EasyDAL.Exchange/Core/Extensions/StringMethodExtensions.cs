@@ -1,5 +1,3 @@
-﻿using System;
-
 namespace Yunyong.DataExchange.Core.Extensions
 {
     internal static class StringMethodExtensions
@@ -8,21 +6,12 @@ namespace Yunyong.DataExchange.Core.Extensions
         /// <summary>
         /// Is null/empty/whitespace ?
         /// </summary>
-        public static bool IsNullStr(this string str)  // LM
+        public static bool IsNullStr(this string str)
         {
-            bool result = false;
-            try
-            {
-                result = string.IsNullOrWhiteSpace(str);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("bool IsNullStr(this string str) -- error", ex);
-            }
-            return result;
+            return string.IsNullOrWhiteSpace(str);
         }
 
         /************************************************************************************************************************************************/
-        
+
     }
 }
