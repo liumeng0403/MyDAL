@@ -44,5 +44,6 @@ namespace MyDAL
                 }
             }
         }
+        public static List<string> SqlWithParam { get; set; }
     }
 }

@@ -362,7 +362,7 @@ namespace MyDAL.Core.Helper
             //
             if(type== DbType.AnsiString)
             {
-                val = ui.CsValue.ToString();
+                val = ui.CsValue?.ToString();
             }
             else
             {
@@ -575,11 +575,11 @@ namespace MyDAL.Core.Helper
             //
             if (type == DbType.String)
             {
-                val = ui.CsValue.ToString();
+                val = ui.CsValue?.ToString();
             }
             else if(type== DbType.AnsiString)
             {
-                val = ui.CsValue.ToString();
+                val = ui.CsValue?.ToString();
             }
             else
             {
@@ -640,7 +640,7 @@ namespace MyDAL.Core.Helper
             //
             if (type == DbType.AnsiStringFixedLength)
             {
-                val = ui.CsValue.ToString();
+                val = ui.CsValue?.ToString();
             }
             else if(type == DbType.Guid)
             {
@@ -665,7 +665,7 @@ namespace MyDAL.Core.Helper
             {
                 if (ui.CsValue is string)
                 {
-                    val = (int)(Enum.Parse(realType, ui.CsValue.ToString(), true));
+                    val = (int)(Enum.Parse(realType, ui.CsValue?.ToString(), true));
                 }
                 else if (ui.CsValue == null)
                 {
