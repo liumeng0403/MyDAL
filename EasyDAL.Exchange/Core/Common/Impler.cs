@@ -243,7 +243,7 @@ namespace MyDAL.Core.Common
         internal void SelectMHandle<VM>(Expression<Func<VM>> func)
         {
             DC.Action = ActionEnum.Select;
-            var list = DC.EH.ExpressionHandle(func);
+            var list = DC.EH.FuncMExpression(func);
             foreach (var dic in list)
             {
                 dic.Option = OptionEnum.ColumnAs;
@@ -254,7 +254,7 @@ namespace MyDAL.Core.Common
         internal void SelectMHandle<M, VM>(Expression<Func<M, VM>> func)
         {
             DC.Action = ActionEnum.Select;
-            var list = DC.EH.ExpressionHandle(func);
+            var list = DC.EH.FuncMFExpression(func);
             foreach (var dic in list)
             {
                 //dic.Action = ActionEnum.Select;

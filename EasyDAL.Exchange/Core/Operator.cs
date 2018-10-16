@@ -234,7 +234,7 @@ namespace MyDAL.Core
         internal void SetChangeHandle<M, F>(Expression<Func<M, F>> func, F modVal, ActionEnum action, OptionEnum option)
         {
             DC.Action = action;
-            var keyDic = DC.EH.ExpressionHandle( func)[0];
+            var keyDic = DC.EH.FuncMFExpression( func)[0];
             var key = keyDic.ColumnOne;
             var val = default(object);
             if (modVal == null)
@@ -276,13 +276,13 @@ namespace MyDAL.Core
 
         internal void WhereJoinHandle(Operator op, Expression<Func<bool>> func)
         {
-            var dic = op.DC.EH.ExpressionHandle(func);
+            var dic = op.DC.EH.FuncBoolExpression(func);
             op.DC.AddConditions(dic);
         }
 
         internal void WhereHandle<T>(Expression<Func<T, bool>> func)
         {
-            var field = DC.EH.ExpressionHandle( ActionEnum.Where, func);
+            var field = DC.EH.FuncMBoolExpression( ActionEnum.Where, func);
             field.ClassFullName = typeof(T).FullName;
             field.Action = ActionEnum.Where;
             DC.AddConditions(field);
@@ -329,21 +329,21 @@ namespace MyDAL.Core
 
         internal void AndHandle<T>(Expression<Func<T, bool>> func)
         {
-            var field = DC.EH.ExpressionHandle( ActionEnum.And, func);
+            var field = DC.EH.FuncMBoolExpression( ActionEnum.And, func);
             field.Action = ActionEnum.And;
             DC.AddConditions(field);
         }
 
         internal void OrHandle<T>(Expression<Func<T, bool>> func)
         {
-            var field = DC.EH.ExpressionHandle( ActionEnum.Or, func);
+            var field = DC.EH.FuncMBoolExpression( ActionEnum.Or, func);
             field.Action = ActionEnum.Or;
             DC.AddConditions(field);
         }
 
         internal void OrderByHandle<M, F>(Expression<Func<M, F>> func, OrderByEnum orderBy)
         {
-            var keyDic = DC.EH.ExpressionHandle( func)[0];
+            var keyDic = DC.EH.FuncMFExpression( func)[0];
             var key = keyDic.ColumnOne;
             var option = OptionEnum.None;
             switch (orderBy)
@@ -374,25 +374,17 @@ namespace MyDAL.Core
                 {
                     if (!string.IsNullOrWhiteSpace(item.Field))
                     {
-                        var op = OptionEnum.None;
+                        DC.Action = ActionEnum.OrderBy;
                         if (item.Desc)
                         {
-                            op = OptionEnum.Desc;
+                            DC.Option = OptionEnum.Desc;
                         }
                         else
                         {
-                            op = OptionEnum.Asc;
+                            DC.Option = OptionEnum.Asc;
                         }
-                        DC.Option = op;
                         DC.Compare = CompareEnum.None;
                         DC.AddConditions(DC.DH.OrderbyDic(fullName, item.Field));
-                        //    new DicModelUI
-                        //{
-                        //    ClassFullName=fullName,
-                        //    ColumnOne = item.Field,
-                        //    Action = ActionEnum.OrderBy,
-                        //    Option = op
-                        //});
                     }
                 }
             }
