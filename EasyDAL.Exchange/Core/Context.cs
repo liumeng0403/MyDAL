@@ -26,7 +26,7 @@ namespace MyDAL.Core
             GH = GenericHelper.Instance;
             EH = new ExpressionHandleX(this);
             SC = StaticCache.Instance;
-            PPH = ParameterPartHandle.Instance;
+            PPH = ParameterHandle.Instance;
             BDH = BatchDataHelper.Instance;
             SqlProvider = new MySqlProvider(this);
             DS = DataSource.Instance;
@@ -44,7 +44,7 @@ namespace MyDAL.Core
 
         internal StaticCache SC { get; private set; }
 
-        internal ParameterPartHandle PPH { get; private set; }
+        internal ParameterHandle PPH { get; private set; }
 
         internal ValHandle VH { get; private set; }
 
