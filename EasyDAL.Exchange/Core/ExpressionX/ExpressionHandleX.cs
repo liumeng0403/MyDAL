@@ -562,7 +562,7 @@ namespace Yunyong.DataExchange.Core.ExpressionX
 
         /********************************************************************************************************************/
 
-        internal List<DicModelUI> ExpressionHandle<M, F>( Expression<Func<M, F>> func)
+        internal List<DicModelUI> FuncMFExpression<M, F>( Expression<Func<M, F>> func)
         {
             try
             {
@@ -577,7 +577,7 @@ namespace Yunyong.DataExchange.Core.ExpressionX
 
                     if (!string.IsNullOrWhiteSpace(key))
                     {
-                        result.Add(DicHandle.ColumnDic(keyTuple.classFullName, key));
+                        result.Add(DC.DH.ColumnDic(keyTuple.classFullName, key));
                     }
                 }
                 else if (nodeType == ExpressionType.MemberInit)
@@ -591,7 +591,7 @@ namespace Yunyong.DataExchange.Core.ExpressionX
                     var key = tuple.key;
                     if (!string.IsNullOrWhiteSpace(key))
                     {
-                        result.Add(DicHandle.ColumnDic(tuple.classFullName, key));
+                        result.Add(DC.DH.ColumnDic(tuple.classFullName, key));
                     }
                 }
 
@@ -617,7 +617,73 @@ namespace Yunyong.DataExchange.Core.ExpressionX
                 }
             }
         }
-        internal DicModelUI ExpressionHandle<M>( ActionEnum action, Expression<Func<M, bool>> func)
+        internal List<DicModelUI> FuncMExpression<M>(Expression<Func<M>> func)
+        {
+            try
+            {
+                var result = new List<DicModelUI>();
+                var nodeType = func.Body.NodeType;
+                if (nodeType == ExpressionType.New)
+                {
+                    var nExpr = func.Body as NewExpression;
+                    var args = nExpr.Arguments;
+                    var mems = nExpr.Members;
+                    for (var i = 0; i < args.Count; i++)
+                    {
+                        var tuple = GetMemTuple(args[i] as MemberExpression);
+                        var colAlias = mems[i].Name;
+                        DC.Option = OptionEnum.None;
+                        DC.Compare = CompareEnum.None;
+                        result.Add(DC.DH.SelectMemberInitDic(tuple.classFullName, tuple.key, tuple.alias, colAlias));
+                    }
+
+                }
+                else if (nodeType == ExpressionType.MemberAccess)
+                {
+                    var body = func.Body as MemberExpression;
+                    if (body.Expression.NodeType == ExpressionType.Constant)
+                    {
+                        var alias = body.Member.Name;
+                        result.Add(DC.DH.TableDic(body.Type.FullName, alias));
+                    }
+                    else if (body.Expression.NodeType == ExpressionType.MemberAccess)
+                    {
+                        var exp2 = body.Expression as MemberExpression;
+                        var alias = exp2.Member.Name;
+                        var field = body.Member.Name;
+                        result.Add(DC.DH.JoinColumnDic(exp2.Type.FullName, field, alias));
+                    }
+                }
+                else if (nodeType == ExpressionType.MemberInit)
+                {
+                    var miExpr = func.Body as MemberInitExpression;
+                    result = HandSelectMemberInit(miExpr);
+                }
+
+                //
+                if (result != null
+                    && result.Count > 0)
+                {
+                    return result;
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                if (!string.IsNullOrWhiteSpace(ex.Message))
+                {
+                    throw ex;
+                }
+                else
+                {
+                    throw new Exception($"不支持的表达式:[{func.ToString()}]");
+                }
+            }
+        }
+        internal DicModelUI FuncMBoolExpression<M>( ActionEnum action, Expression<Func<M, bool>> func)
         {
             try
             {
@@ -679,73 +745,7 @@ namespace Yunyong.DataExchange.Core.ExpressionX
                 }
             }
         }
-        internal List<DicModelUI> ExpressionHandle<M>( Expression<Func<M>> func)
-        {
-            try
-            {
-                var result = new List<DicModelUI>();
-                var nodeType = func.Body.NodeType;
-                if (nodeType == ExpressionType.New)
-                {
-                    var nExpr = func.Body as NewExpression;
-                    var args = nExpr.Arguments;
-                    var mems = nExpr.Members;
-                    for (var i = 0; i < args.Count; i++)
-                    {
-                        var tuple = GetMemTuple(args[i] as MemberExpression);
-                        var colAlias = mems[i].Name;
-                        DC.Option = OptionEnum.None;
-                        DC.Compare = CompareEnum.None;
-                        result.Add(DC.DH.SelectMemberInitDic( tuple.classFullName, tuple.key, tuple.alias, colAlias));
-                    }
-
-                }
-                else if (nodeType == ExpressionType.MemberAccess)
-                {
-                    var body = func.Body as MemberExpression;
-                    if (body.Expression.NodeType == ExpressionType.Constant)
-                    {
-                        var alias = body.Member.Name;
-                        result.Add(DC.DH.TableDic(body.Type.FullName, alias));
-                    }
-                    else if (body.Expression.NodeType == ExpressionType.MemberAccess)
-                    {
-                        var exp2 = body.Expression as MemberExpression;
-                        var alias = exp2.Member.Name;
-                        var field = body.Member.Name;
-                        result.Add(DC.DH.JoinColumnDic(exp2.Type.FullName, field, alias));
-                    }
-                }
-                else if (nodeType == ExpressionType.MemberInit)
-                {
-                    var miExpr = func.Body as MemberInitExpression;
-                    result = HandSelectMemberInit( miExpr);
-                }
-
-                //
-                if (result != null
-                    && result.Count > 0)
-                {
-                    return result;
-                }
-                else
-                {
-                    throw new Exception();
-                }
-            }
-            catch (Exception ex)
-            {
-                if (!string.IsNullOrWhiteSpace(ex.Message))
-                {
-                    throw ex;
-                }
-                else
-                {
-                    throw new Exception($"不支持的表达式:[{func.ToString()}]");
-                }
-            }
-        }
-        internal DicModelUI ExpressionHandle(Expression<Func<bool>> func)
+        internal DicModelUI FuncBoolExpression(Expression<Func<bool>> func)
         {
             try
             {

@@ -11,7 +11,7 @@ namespace Yunyong.DataExchange
         public static FromX From<M>(this Joiner join, Expression<Func<M>> func)
         {
             join.DC.Action = ActionEnum.From;
-            var dic = join.DC.EH.ExpressionHandle( func)[0];
+            var dic = join.DC.EH.FuncMExpression( func)[0];
             join.DC.AddConditions(dic);
             return new FromX(join.DC);
         }

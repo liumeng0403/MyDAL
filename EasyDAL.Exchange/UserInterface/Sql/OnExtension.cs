@@ -11,7 +11,7 @@ namespace Yunyong.DataExchange
         public static OnX On(this JoinX join, Expression<Func<bool>> func)
         {
             join.DC.Action = ActionEnum.On;
-            var field = join.DC.EH.ExpressionHandle(func);
+            var field = join.DC.EH.FuncBoolExpression(func);
             join.DC.AddConditions(field);
             return new OnX(join.DC);
         }
