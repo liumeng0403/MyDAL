@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 using Yunyong.DataExchange;
@@ -81,6 +82,11 @@ namespace MyDAL.Test.Create
 
             var xx4 = "";
 
+            Assert.True(!list.Any(it => it.RootUser));
+            Assert.True(!list.Any(it => it.InvitedCount > 0));
+            Assert.True(!list.Any(it => !string.IsNullOrWhiteSpace(it.ArrangePathId)));
+            Assert.True(!list.Any(it => it.IsVIP));
+            Assert.True(!list.Any(it => it.IsActived));
             var res4 = await Conn
                 .Creater<UserInfo>()
                 .CreateBatchAsync(list);

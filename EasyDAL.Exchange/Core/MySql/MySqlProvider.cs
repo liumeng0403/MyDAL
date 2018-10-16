@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Yunyong.Core;
@@ -120,10 +121,8 @@ namespace Yunyong.DataExchange.Core.MySql
             if (XConfig.IsDebug)
             {
                 XDebug.SQL = list;
-                var paras = DC.SqlProvider.GetParameters();
-                XDebug.Parameters = DC
-                    .DbConditions
-                    .Where(it => DC.IsParameter(it))
+                var parax = DC.DbConditions.Where(it => DC.IsParameter(it)).ToList();
+                XDebug.Parameters = parax
                     .Select(dbM =>
                     {
                         var uiM = DC.UiConditions.FirstOrDefault(ui => dbM.Param.Equals(ui.Param, StringComparison.OrdinalIgnoreCase));
@@ -146,6 +145,32 @@ namespace Yunyong.DataExchange.Core.MySql
                         return $"字段:【{field}】-->【{csVal}】;参数:【{dbM.Param}】-->【{dbVal}】.";
                     })
                     .ToList();
+                XDebug.SqlWithParam = new List<string>();
+                foreach(var sql in XDebug.SQL)
+                {
+                    var sqlStr = sql;
+                    foreach(var par in parax)
+                    {
+                        if(par.DbType == DbType.Boolean
+                            || par.DbType== DbType.Decimal
+                            || par.DbType == DbType.Double
+                            || par.DbType == DbType.Int16
+                            || par.DbType== DbType.Int32
+                            || par.DbType== DbType.Int64
+                            || par.DbType == DbType.Single
+                            || par.DbType == DbType.UInt16
+                            || par.DbType == DbType.UInt32
+                            || par.DbType == DbType.UInt64)
+                        {
+                            sqlStr = sqlStr.Replace($"@{par.Param}", par.DbValue == null ? "DbNull" : par.DbValue.ToString());
+                        }
+                        else
+                        {
+                            sqlStr = sqlStr.Replace($"@{par.Param}", par.DbValue == null ? "DbNull" : $"'{par.DbValue.ToString()}'");
+                        }
+                    }
+                    XDebug.SqlWithParam.Add(sqlStr);
+                }
             }
 
         }

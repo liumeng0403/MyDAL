@@ -44,5 +44,6 @@ namespace Yunyong.DataExchange
                 }
             }
         }
+        public static List<string> SqlWithParam { get; set; }
     }
 }
