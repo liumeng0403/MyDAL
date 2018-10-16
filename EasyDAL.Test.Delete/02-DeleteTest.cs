@@ -47,6 +47,7 @@ namespace MyDAL.Test.Delete
                 .Deleter<BodyFitRecord>()
                 .Where(it => it.Id == m.Id)
                 .DeleteAsync();
+            Assert.True(res1 == 1);
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
@@ -60,6 +61,7 @@ namespace MyDAL.Test.Delete
                 .Where(it => it.PathId == path)
                 .And(it => it.AgentLevel == (AgentLevel)level)
                 .DeleteAsync();
+            Assert.True(res3 == 1);
 
             var tuple3 = (XDebug.SQL, XDebug.Parameters);
 
@@ -71,6 +73,7 @@ namespace MyDAL.Test.Delete
                 .Where(it => it.PathId == path)
                 .Or(it => it.AgentLevel == (AgentLevel)level)
                 .DeleteAsync();
+            Assert.True(res2 == 28063);
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters);
 

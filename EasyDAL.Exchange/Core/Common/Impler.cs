@@ -191,19 +191,19 @@ namespace Yunyong.DataExchange.Core.Common
 
         internal void SelectMHandle<VM>(Expression<Func<VM>> func)
         {
-            var list = DC.EH.ExpressionHandle( ActionEnum.Select, func);
+            DC.Action = ActionEnum.Select;
+            var list = DC.EH.ExpressionHandle( func);
             foreach (var dic in list)
             {
-                //dic.Action = ActionEnum.Select;
                 dic.Option = OptionEnum.ColumnAs;
-                //dic.Crud = CrudTypeEnum.Join;
                 DC.AddConditions(dic);
             }
         }
 
         internal void SelectMHandle<M, VM>(Expression<Func<M, VM>> func)
         {
-            var list = DC.EH.ExpressionHandle( ActionEnum.Select, func);
+            DC.Action = ActionEnum.Select;
+            var list = DC.EH.ExpressionHandle( func);
             foreach (var dic in list)
             {
                 //dic.Action = ActionEnum.Select;

@@ -23,45 +23,6 @@ namespace MyDAL.Test.Create
                 .Where(it => it.Id == Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"))
                 .DeleteAsync();
         }
-        private async Task<List<AddressInfo>> PreCreateBatch()
-        {
-            var res1 = await Conn
-                .Deleter<AddressInfo>()
-                .Where(a => true)
-                .DeleteAsync();
-
-            var list = new List<AddressInfo>();
-            for (var i = 0; i < 10; i++)
-            {
-                if (i % 2 == 0)
-                {
-                    list.Add(new AddressInfo
-                    {
-                        Id = Guid.NewGuid(),
-                        CreatedOn = DateTime.Now,
-                        ContactName = "Name_" + i.ToString(),
-                        ContactPhone = "1800000000" + i.ToString(),
-                        DetailAddress = "Address_" + i.ToString(),
-                        IsDefault = true,   // f:bool c:bit(1)
-                        UserId = Guid.NewGuid()
-                    });
-                }
-                else
-                {
-                    list.Add(new AddressInfo
-                    {
-                        Id = Guid.NewGuid(),
-                        CreatedOn = DateTime.Now,
-                        ContactName = "Name_" + i.ToString(),
-                        ContactPhone = "1800000000" + i.ToString(),
-                        DetailAddress = "Address_" + i.ToString(),
-                        IsDefault = false,   // f:bool c:bit(1)
-                        UserId = Guid.NewGuid()
-                    });
-                }
-            }
-            return list;
-        }
 
         // 创建一个新对象
         [Fact]
@@ -115,38 +76,6 @@ namespace MyDAL.Test.Create
             Assert.True(res2 == 1);
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters);
-
-            /********************************************************************************************************************************/
-
-            var list3 = await PreCreateBatch();
-
-            var xx3 = "";
-
-            var res3 = await Conn
-                .Creater<AddressInfo>()
-                .CreateBatchAsync(list3);
-            Assert.True(res3 == 10);
-
-            var tuple3 = (XDebug.SQL, XDebug.Parameters);
-
-            /********************************************************************************************************************************/
-
-            var json = File.ReadAllText(@"C:\Users\liume\Desktop\工作\DalTestDB\ProfileData.json");
-            var list = JsonConvert.DeserializeObject<List<UserInfo>>(json);
-            foreach (var item in list)
-            {
-                item.Id = Guid.NewGuid();
-                item.CreatedOn = DateTime.Now;
-            }
-
-            var xx4 = "";
-
-            var res4 = await Conn
-                .Creater<UserInfo>()
-                .CreateBatchAsync(list);
-            Assert.True(res4 == list.Count);
-
-            var tuple4 = (XDebug.SQL, XDebug.Parameters);
 
             /********************************************************************************************************************************/
 

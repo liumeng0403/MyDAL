@@ -21,9 +21,16 @@ namespace Yunyong.DataExchange.Core
             DC.OP = this;
         }
 
-        private bool CheckQueryVal()
+        private bool CheckWhereVal(object val,Type valType)
         {
-            return false;
+            if (val == null
+                || (valType.IsEnum && "0".Equals(val.ToString(), StringComparison.OrdinalIgnoreCase))
+                || (valType == typeof(DateTime) && Convert.ToDateTime("0001-01-01 00:00:00.000000").Equals(val)))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         private List<(string key, string param, object val, Type valType, string colType, CompareEnum compare)> GetSetKPV<M>(object objx)
@@ -187,9 +194,7 @@ namespace Yunyong.DataExchange.Core
                     var mp = objx.GetType().GetProperty(prop.VmField);
                     valType = mp.PropertyType;
                     val = DC.GH.GetTypeValue(mp, objx);
-                    if (val == null
-                        || (valType.IsEnum && "0".Equals(val.ToString(), StringComparison.OrdinalIgnoreCase))
-                        || (valType == typeof(DateTime) && Convert.ToDateTime("0001-01-01 00:00:00.000000").Equals(val)))
+                    if(!CheckWhereVal(val,valType))
                     {
                         continue;
                     }
@@ -200,6 +205,10 @@ namespace Yunyong.DataExchange.Core
                     var obj = dic[prop.MField];
                     valType = obj.GetType();
                     val = DC.GH.GetTypeValue(obj);
+                    if (!CheckWhereVal(val, valType))
+                    {
+                        continue;
+                    }
                     result.Add((prop.MField, prop.VmField, val, valType, columnType, prop.Compare));
                 }
                 else
@@ -207,6 +216,10 @@ namespace Yunyong.DataExchange.Core
                     var mp = objx.GetType().GetProperty(prop.MField);
                     valType = mp.PropertyType;
                     val = DC.GH.GetTypeValue(mp, objx);
+                    if(!CheckWhereVal(val,valType))
+                    {
+                        continue;
+                    }
                     result.Add((prop.MField, prop.VmField, val, valType, columnType, prop.Compare));
                 }
             }
@@ -221,7 +234,8 @@ namespace Yunyong.DataExchange.Core
 
         internal void SetChangeHandle<M, F>(Expression<Func<M, F>> func, F modVal, ActionEnum action, OptionEnum option)
         {
-            var keyDic = DC.EH.ExpressionHandle(action, func)[0];
+            DC.Action = action;
+            var keyDic = DC.EH.ExpressionHandle( func)[0];
             var key = keyDic.ColumnOne;
             var val = default(object);
             if (modVal == null)
@@ -258,25 +272,12 @@ namespace Yunyong.DataExchange.Core
                 DC.Option = OptionEnum.Set;
                 DC.Compare = CompareEnum.None;
                 DC.AddConditions(DC.DH.SetDic(fullName, tp.key, tp.param, tp.val, tp.valType,  ActionEnum.Update));
-                //    new DicModelUI
-                //{
-                //    ClassFullName = fullName,
-                //    ColumnOne = tp.key,
-                //    Param = tp.param,
-                //    ParamRaw = tp.param,
-                //    CsValue = tp.val,
-                //    CsType = tp.valType,
-                //    Option = OptionEnum.Set,
-                //    Action = ActionEnum.Update,
-                //    Crud = CrudTypeEnum.Update
-                //});
             }
         }
 
-        internal void WhereJoinHandle(Operator op, Expression<Func<bool>> func, ActionEnum action)
+        internal void WhereJoinHandle(Operator op, Expression<Func<bool>> func)
         {
-            var dic = op.DC.EH.ExpressionHandle(func, action);
-            dic.Crud = CrudTypeEnum.Join;
+            var dic = op.DC.EH.ExpressionHandle(func);
             op.DC.AddConditions(dic);
         }
 
@@ -292,18 +293,17 @@ namespace Yunyong.DataExchange.Core
         {
             var tuples = GetWhereKPV<M>(mWhere);
             var count = 0;
-            var action = ActionEnum.None;
             var fullName = typeof(M).FullName;
             foreach (var tp in tuples)
             {
                 count++;
                 if (count == 1)
                 {
-                    action = ActionEnum.Where;
+                    DC.Action = ActionEnum.Where;
                 }
                 else
                 {
-                    action = ActionEnum.And;
+                    DC.Action = ActionEnum.And;
                 }
 
                 //
@@ -311,19 +311,19 @@ namespace Yunyong.DataExchange.Core
                 {
                     DC.Option = OptionEnum.Like;
                     DC.Compare = CompareEnum.None;
-                    DC.AddConditions(DC.DH.LikeDic( action, fullName, tp.key, string.Empty, tp.val, tp.valType));
+                    DC.AddConditions(DC.DH.LikeDic(fullName, tp.key, string.Empty, tp.val, tp.valType));
                 }
                 else if (tp.compare == CompareEnum.In)
                 {
                     DC.Option = OptionEnum.In;
                     DC.Compare = CompareEnum.None;
-                    DC.AddConditions(DC.DH.InDic( action, fullName, tp.key, string.Empty, tp.val, tp.valType));
+                    DC.AddConditions(DC.DH.InDic(  fullName, tp.key, string.Empty, tp.val, tp.valType));
                 }
                 else
                 {
                     DC.Option = OptionEnum.Compare;
                     DC.Compare = tp.compare;
-                    DC.AddConditions(DC.DH.CompareDic(action, fullName, tp.key, string.Empty, tp.val, tp.valType ));
+                    DC.AddConditions(DC.DH.CompareDic( fullName, tp.key, string.Empty, tp.val, tp.valType ));
                 }
             }
         }
@@ -344,7 +344,7 @@ namespace Yunyong.DataExchange.Core
 
         internal void OrderByHandle<M, F>(Expression<Func<M, F>> func, OrderByEnum orderBy)
         {
-            var keyDic = DC.EH.ExpressionHandle( ActionEnum.OrderBy, func)[0];
+            var keyDic = DC.EH.ExpressionHandle( func)[0];
             var key = keyDic.ColumnOne;
             var option = OptionEnum.None;
             switch (orderBy)

@@ -128,7 +128,10 @@ namespace Yunyong.DataExchange.Core.MySql
                     {
                         var uiM = DC.UiConditions.FirstOrDefault(ui => dbM.Param.Equals(ui.Param, StringComparison.OrdinalIgnoreCase));
                         var field = string.Empty;
-                        if (dbM.Crud == CrudTypeEnum.Query)
+                        if (dbM.Crud == CrudTypeEnum.Query
+                            || dbM.Crud == CrudTypeEnum.Update
+                            || dbM.Crud == CrudTypeEnum.Create
+                            || dbM.Crud == CrudTypeEnum.Delete)
                         {
                             field = dbM.ColumnOne;
                         }
@@ -445,7 +448,7 @@ namespace Yunyong.DataExchange.Core.MySql
                 }
             }
 
-            return string.Join(",", list);
+            return string.Join(", \r\n\t", list);
         }
 
         internal async Task<List<ColumnInfo>> GetColumnsInfos(string tableName)
@@ -564,13 +567,13 @@ namespace Yunyong.DataExchange.Core.MySql
                     list.Add($" delete {From()} {Table<M>(type)} {Wheres()} ; ");
                     break;
                 case UiMethodEnum.UpdateAsync:
-                    list.Add($" update {Table<M>(type)} \r\n set {DC.SqlProvider.GetUpdates()} {Wheres()} ;");
+                    list.Add($" update {Table<M>(type)} \r\n set {GetUpdates()} {Wheres()} ;");
                     break;
                 case UiMethodEnum.QueryFirstOrDefaultAsync:
-                    list.Add($"select {Columns()} {From()} {Table<M>(type)} {Wheres()} ; ");
+                    list.Add($"select {Columns()} {From()} {Table<M>(type)} {Wheres()} {GetOrderByPart<M>()} ; ");
                     break;
                 case UiMethodEnum.JoinQueryFirstOrDefaultAsync:
-                    list.Add($" select {Columns()} {From()} {Joins()} {Wheres()} ; ");
+                    list.Add($" select {Columns()} {From()} {Joins()} {Wheres()} {GetOrderByPart()} ; ");
                     break;
                 case UiMethodEnum.QueryListAsync:
                     list.Add($"select {Columns()} {From()} {Table<M>(type)} {Wheres()} {GetOrderByPart<M>()} ; ");

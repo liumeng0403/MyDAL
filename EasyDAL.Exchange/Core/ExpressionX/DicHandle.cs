@@ -166,7 +166,7 @@ namespace Yunyong.DataExchange.Core.ExpressionX
             //};
         }
 
-        internal DicModelUI CompareDic(ActionEnum action, string classFullName, string key, string alias, object value, Type valType)//, CompareEnum compare)
+        internal DicModelUI CompareDic(string classFullName, string key, string alias, object value, Type valType)//, CompareEnum compare)
         {
             var dic = SetDicBase();
             dic.ClassFullName = classFullName;
@@ -176,31 +176,11 @@ namespace Yunyong.DataExchange.Core.ExpressionX
             dic.CsType = valType;
             dic.Param = key;
             dic.ParamRaw = key;
-
-
-            dic.Action = action;
-            //dic.Option = OptionEnum.Compare;
-            //dic.Compare = compare;
-
+            
             return dic;
-
-            //return new DicModelUI
-            //{
-            //    ClassFullName = classFullName,
-            //    ColumnOne = key,
-            //    TableAliasOne = alias,
-            //    CsValue = value,
-            //    CsType = valType,
-            //    Param = key,
-            //    ParamRaw = key,
-
-            //    Action = action,
-            //    Option = OptionEnum.Compare,
-            //    Compare = compare
-            //};
         }
 
-        internal DicModelUI InDic(ActionEnum action, string classFullName, string key, string alias, object value, Type valType)
+        internal DicModelUI InDic(string classFullName, string key, string alias, object value, Type valType)
         {
             var dic = SetDicBase();
             dic.ClassFullName = classFullName;
@@ -210,28 +190,11 @@ namespace Yunyong.DataExchange.Core.ExpressionX
             dic.CsType = valType;
             dic.Param = key;
             dic.ParamRaw = key;
-
-            dic.Action = action;
-            //dic.Option = OptionEnum.In
-
+            
             return dic;
-
-            //return new DicModelUI
-            //{
-            //    ClassFullName = classFullName,
-            //    ColumnOne = key,
-            //    TableAliasOne = alias,
-            //    CsValue = value,
-            //    CsType = valType,
-            //    Param = key,
-            //    ParamRaw = key,
-
-            //    Action = action,
-            //    Option = OptionEnum.In
-            //};
         }
 
-        internal DicModelUI LikeDic(ActionEnum action, string classFullName, string key, string alias, object value, Type valType)
+        internal DicModelUI LikeDic( string classFullName, string key, string alias, object value, Type valType)
         {
             var dic = SetDicBase();
             dic.ClassFullName = classFullName;
@@ -241,39 +204,19 @@ namespace Yunyong.DataExchange.Core.ExpressionX
             dic.CsType = valType;
             dic.Param = key;
             dic.ParamRaw = key;
-
-
-            dic.Action = action;
-            //dic.Option = OptionEnum.Like
-
+            
             return dic;
-
-            //return new DicModelUI
-            //{
-            //    ClassFullName = classFullName,
-            //    ColumnOne = key,
-            //    TableAliasOne = alias,
-            //    CsValue = value,
-            //    CsType = valType,
-            //    Param = key,
-            //    ParamRaw = key,
-
-            //    Action = action,
-            //    Option = OptionEnum.Like
-            //};
         }
 
-        internal static DicModelUI OneEqualOneDic(object value, Type valType)
+        internal DicModelUI OneEqualOneDic(object value, Type valType)
         {
-            return new DicModelUI
-            {
-                ColumnOne = "OneEqualOne",
-                Param = "OneEqualOne",
-                ParamRaw = "OneEqualOne",
-                CsValue = value,
-                CsType = valType,
-                Option = OptionEnum.OneEqualOne
-            };
+            var dic = SetDicBase();
+            dic.ColumnOne = "OneEqualOne";
+            dic.Param = "OneEqualOne";
+            dic.ParamRaw = "OneEqualOne";
+            dic.CsValue = value;
+            dic.CsType = valType;
+            return dic;
         }
 
         internal DicModelUI IsNullDic(string classFullName, string key, string alias, Type valType)
@@ -307,28 +250,15 @@ namespace Yunyong.DataExchange.Core.ExpressionX
 
         /*******************************************************************************************************/
 
-        internal DicModelUI SelectMemberInitDic(ActionEnum action, string fullName, string key, string alias, string colAlias)
+        internal DicModelUI SelectMemberInitDic( string fullName, string key, string alias, string colAlias)
         {
             var dic = SetDicBase();
             dic.ClassFullName = fullName;
             dic.TableAliasOne = alias;
             dic.ColumnOne = key;
             dic.ColumnOneAlias = colAlias;
-
-
-            dic.Action = action;
-
+            
             return dic;
-
-            //return new DicModelUI
-            //{
-            //    ClassFullName = fullName,  // tuple.classFullName,
-            //    TableAliasOne = alias,  // tuple.alias,
-            //    ColumnOne = key, // tuple.key,
-            //    ColumnOneAlias = colAlias,
-
-            //    Action = action
-            //};
         }
 
         internal static DicModelUI ColumnDic(string columnOne, string tableAliasOne, string fullName)
@@ -501,13 +431,12 @@ namespace Yunyong.DataExchange.Core.ExpressionX
 
         /*******************************************************************************************************/
 
-        internal static DicModelUI TableDic(string fullName, string alias)
+        internal DicModelUI TableDic(string fullName, string alias)
         {
-            return new DicModelUI
-            {
-                ClassFullName = fullName,  // body.Type.FullName,
-                TableAliasOne = alias
-            };
+            var dic = SetDicBase();
+            dic.ClassFullName = fullName;
+            dic.TableAliasOne = alias;
+            return dic;
         }
 
         internal static DicModelUI ColumnDic(string fullName, string key)
@@ -519,14 +448,13 @@ namespace Yunyong.DataExchange.Core.ExpressionX
             };
         }
 
-        internal static DicModelUI JoinColumnDic(string fullName, string key, string alias)
+        internal DicModelUI JoinColumnDic(string fullName, string key, string alias)
         {
-            return new DicModelUI
-            {
-                ClassFullName = fullName, // exp2.Type.FullName,
-                TableAliasOne = alias,
-                ColumnOne = key  // field
-            };
+            var dic = SetDicBase();
+            dic.ClassFullName = fullName;
+            dic.TableAliasOne = alias;
+            dic.ColumnOne = key;
+            return dic;
         }
 
     }
