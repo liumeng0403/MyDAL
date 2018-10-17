@@ -21,51 +21,6 @@ namespace MyDAL.Core.ExpressionX
         }
 
         /*******************************************************************************************************/
-        
-        private string InValueForListT(Type type, object vals, bool isArray)
-        {
-            var str = string.Empty;
-
-            //
-            var valType = default(Type);
-            var typeT = default(Type);
-            if (isArray)
-            {
-                typeT = type.GetElementType();
-            }
-            else
-            {
-                typeT = type.GetGenericArguments()[0];
-                if (typeT.IsGenericType
-                    && typeT.GetGenericTypeDefinition() == typeof(Nullable<>))
-                {
-                    typeT = typeT.GetGenericArguments()[0];
-                }
-            }
-
-            valType = typeT;
-
-            //
-            var ds = vals as dynamic;
-            var intVals = new List<object>();
-            var num = default(int);
-            if (isArray)
-            {
-                num = ds.Length;
-            }
-            else
-            {
-                num = ds.Count;
-            }
-            for (var i = 0; i < num; i++)
-            {
-                intVals.Add(DC.GH.GetTypeValue(ds[i]));
-            }
-            str = string.Join(",", intVals.Select(it => it.ToString()));
-
-            //
-            return str;
-        }
 
         private object GetMemObj(Expression exprX, MemberInfo memX)
         {
@@ -116,7 +71,7 @@ namespace MyDAL.Core.ExpressionX
         }
 
         /*******************************************************************************************************/
-        
+
         internal (object val, string valStr) MemberValue(MemberExpression memExpr, string funcStr, Type valTypex)
         {
             var objx = default((object val, string valStr));
@@ -143,9 +98,8 @@ namespace MyDAL.Core.ExpressionX
                 if (fType.IsList()
                     || fType.IsArray)
                 {
-                    var type = memExpr.Type as Type;
                     fName = fInfo.Name;
-                    var val = InValueForListT(type, obj, fType.IsArray);
+                    var val = InValue(fType, obj).val;
                     var valStr = DateTimeProcess(val, valTypex);
                     objx = (val, valStr);
                 }
@@ -167,7 +121,7 @@ namespace MyDAL.Core.ExpressionX
                     || valType.IsArray)
                 {
                     fName = pInfo.Name;
-                    var val = InValueForListT(valType, obj, valType.IsArray);
+                    var val = InValue(valType, obj).val;
                     var valStr = DateTimeProcess(val, valTypex);
                     objx = (val, valStr);
                 }
@@ -183,37 +137,24 @@ namespace MyDAL.Core.ExpressionX
                 && memExpr.Member.MemberType == MemberTypes.Property)
             {
                 var targetProp = memExpr.Member as PropertyInfo;
-                MemberExpression innerMember = memExpr.Expression as MemberExpression;
-                if (innerMember.Member.MemberType == MemberTypes.Property)
-                {
-                    var valObj = GetMemObj(innerMember.Expression, innerMember.Member);
-                    var fType = targetProp.PropertyType;
-                    if (fType.IsList()
-                        || fType.IsArray)
-                    {
-                        var type = memExpr.Type as Type;
-                        var vals = targetProp.GetValue(valObj);
-                        fName = targetProp.Name;
-                        var val = InValueForListT(type, vals, fType.IsArray);
-                        var valStr = DateTimeProcess(val, valTypex);
-                        objx = (val, valStr);
-                    }
-                    else
-                    {
-                        fName = targetProp.Name;
-                        var val = DC.GH.GetTypeValue(targetProp, valObj);
-                        var valStr = DateTimeProcess(val, valTypex);
-                        objx = (val, valStr);
-                    }
-                }
-                else if (innerMember.Member.MemberType == MemberTypes.Field)
-                {
-                    var expr = innerMember.Expression;
-                    var mem = innerMember.Member;
-                    var objX = GetMemObj(expr, mem);
+                var innerMember = memExpr.Expression as MemberExpression;
 
-                    fName = targetProp.Name;
-                    var val = DC.GH.GetTypeValue(targetProp, objX);
+                var valObj = GetMemObj(innerMember.Expression, innerMember.Member);
+                fName = targetProp.Name;
+
+                //
+                var fType = targetProp.PropertyType;
+                if (fType.IsList()
+                    || fType.IsArray)
+                {
+                    var vals = targetProp.GetValue(valObj);
+                    var val = InValue(fType, vals).val;
+                    var valStr = DateTimeProcess(val, valTypex);
+                    objx = (val, valStr);
+                }
+                else
+                {
+                    var val = DC.GH.GetTypeValue(targetProp, valObj);
                     var valStr = DateTimeProcess(val, valTypex);
                     objx = (val, valStr);
                 }
@@ -244,7 +185,7 @@ namespace MyDAL.Core.ExpressionX
                 }
                 else if (mcExpr.Object.NodeType == ExpressionType.MemberAccess)
                 {
-                    var obj = Convert.ToDateTime(MemberValue(mcExpr.Object as MemberExpression, funcStr,valType).val);
+                    var obj = Convert.ToDateTime(MemberValue(mcExpr.Object as MemberExpression, funcStr, valType).val);
                     var method = mcExpr.Method.Name;
                     var args = new List<object>();
                     foreach (var arg in mcExpr.Arguments)
@@ -267,7 +208,7 @@ namespace MyDAL.Core.ExpressionX
             }
             else if (pExpr.NodeType == ExpressionType.MemberAccess)
             {
-                val = MemberValue(pExpr as MemberExpression, funcStr,valType);
+                val = MemberValue(pExpr as MemberExpression, funcStr, valType);
             }
 
             if (val.val != null)
@@ -286,7 +227,7 @@ namespace MyDAL.Core.ExpressionX
             var valStr = DateTimeProcess(val, valType);
             return (val, valStr);
         }
-        
+
         internal (object val, string valStr) ConvertValue(UnaryExpression expr, string funcStr, Type valType)
         {
             var result = default((object, string));
@@ -306,7 +247,7 @@ namespace MyDAL.Core.ExpressionX
             }
             else if (expr.Operand.NodeType == ExpressionType.MemberAccess)
             {
-                result = MemberValue(expr.Operand as MemberExpression, funcStr,valType);
+                result = MemberValue(expr.Operand as MemberExpression, funcStr, valType);
             }
             else if (expr.Operand.NodeType == ExpressionType.Constant)
             {
@@ -315,7 +256,7 @@ namespace MyDAL.Core.ExpressionX
             return result;
         }
 
-        internal (object val, string valStr) PropertyValue(PropertyInfo prop ,object obj)
+        internal (object val, string valStr) PropertyValue(PropertyInfo prop, object obj)
         {
             var valType = prop.PropertyType;
             var val = DC.GH.GetTypeValue(prop, obj);
@@ -329,6 +270,46 @@ namespace MyDAL.Core.ExpressionX
             var val = DC.GH.GetTypeValue(obj);
             var valStr = DateTimeProcess(val, valType);
             return (val, valStr);
+        }
+
+        internal (string val,Type valType) InValue(Type type, object vals)
+        {
+            var valType = default(Type);
+            var typeT = default(Type);
+            if (type.IsArray)
+            {
+                typeT = type.GetElementType();
+            }
+            else
+            {
+                typeT = type.GetGenericArguments()[0];
+            }
+            if (typeT.IsNullable())
+            {
+                typeT = Nullable.GetUnderlyingType(typeT);
+            }
+            valType = typeT;
+
+            //
+            var ds = vals as dynamic;
+            var intVals = new List<object>();
+            var num = default(int);
+            if (type.IsArray)
+            {
+                num = ds.Length;
+            }
+            else
+            {
+                num = ds.Count;
+            }
+            for (var i = 0; i < num; i++)
+            {
+                intVals.Add(DC.GH.GetTypeValue(ds[i]));
+            }
+            var val = string.Join(",", intVals.Select(it => it.ToString()));
+
+            //
+            return (val,valType);
         }
 
     }

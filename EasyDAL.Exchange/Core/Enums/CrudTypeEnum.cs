@@ -1,6 +1,6 @@
 ﻿namespace MyDAL.Core.Enums
 {
-    public enum CrudTypeEnum
+    internal enum CrudTypeEnum
     {
 
         None,

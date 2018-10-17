@@ -49,6 +49,7 @@ namespace MyDAL
             selecter.DC.OP.WhereHandle(func);
             return new WhereQ<M>(selecter.DC);
         }
+
         /// <summary>
         /// 过滤条件起点 -- 设置多个条件
         /// </summary>

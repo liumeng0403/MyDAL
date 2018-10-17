@@ -1,5 +1,6 @@
 ﻿using MyDAL.Test.Enums;
 using System;
+using System.Collections.Generic;
 
 namespace MyDAL.Test.Options
 {
@@ -17,5 +18,8 @@ namespace MyDAL.Test.Options
         public DateTime EndTime { get; set; }
 
         public AgentLevel AgentLevel { get; set; }
+
+        [QueryColumn("AgentLevel", CompareEnum.In)]
+        public List<AgentLevel> EnumListIn { get; set; } 
     }
 }

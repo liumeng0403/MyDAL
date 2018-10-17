@@ -1,6 +1,6 @@
 ﻿using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
-using MyDAL.Core.ExpressionX;
+using MyDAL.Core.Extensions;
 using MyDAL.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -20,11 +20,13 @@ namespace MyDAL.Core
             DC.OP = this;
         }
 
-        private bool CheckWhereVal(object val,Type valType)
+        private bool CheckWhereVal(object val, Type valType)
         {
             if (val == null
                 || (valType.IsEnum && "0".Equals(val.ToString(), StringComparison.OrdinalIgnoreCase))
-                || (valType == typeof(DateTime) && Convert.ToDateTime("0001-01-01 00:00:00.000000").Equals(val)))
+                || (valType == typeof(DateTime) && Convert.ToDateTime("0001-01-01 00:00:00.000000").Equals(val))
+                || (valType.IsList() && (val as dynamic).Count <= 0)
+                || (valType.IsArray && (val as dynamic).Length <= 0))
             {
                 return false;
             }
@@ -100,6 +102,7 @@ namespace MyDAL.Core
             }
             return result;
         }
+        [Obsolete("作废方法,仅作参考!")]
         private List<(string key, string param, (object val, string valStr) val, Type valType, string colType, CompareEnum compare)> GetWhereKPV<M>(object objx)
         {
             var list = new List<DicQueryModel>();
@@ -193,9 +196,16 @@ namespace MyDAL.Core
                     var mp = objx.GetType().GetProperty(prop.VmField);
                     valType = mp.PropertyType;
                     val = DC.VH.PropertyValue(mp, objx);
-                    if(!CheckWhereVal(val.val,valType))
+                    if (!CheckWhereVal(val.val, valType))
                     {
                         continue;
+                    }
+                    if(valType.IsList()
+                        || valType.IsArray)
+                    {
+                        var ox = DC.VH.InValue(valType, val.val);
+                        valType = ox.valType;
+                        val = (ox.val,string.Empty);
                     }
                     result.Add((prop.MField, prop.VmField, val, valType, columnType, prop.Compare));
                 }
@@ -215,7 +225,7 @@ namespace MyDAL.Core
                     var mp = objx.GetType().GetProperty(prop.MField);
                     valType = mp.PropertyType;
                     val = DC.VH.PropertyValue(mp, objx);
-                    if(!CheckWhereVal(val.val,valType))
+                    if (!CheckWhereVal(val.val, valType))
                     {
                         continue;
                     }
@@ -234,12 +244,12 @@ namespace MyDAL.Core
         internal void SetChangeHandle<M, F>(Expression<Func<M, F>> func, F modVal, ActionEnum action, OptionEnum option)
         {
             DC.Action = action;
-            var keyDic = DC.EH.FuncMFExpression( func)[0];
+            var keyDic = DC.EH.FuncMFExpression(func)[0];
             var key = keyDic.ColumnOne;
             var val = default((object val, string valStr));
             if (modVal == null)
             {
-                val = (null,string.Empty);
+                val = (null, string.Empty);
             }
             else
             {
@@ -259,7 +269,7 @@ namespace MyDAL.Core
             {
                 DC.Option = OptionEnum.Set;
                 DC.Compare = CompareEnum.None;
-                DC.AddConditions(DC.DH.SetDic(fullName, tp.key, tp.param, tp.val, tp.valType,  ActionEnum.Update));
+                DC.AddConditions(DC.DH.SetDic(fullName, tp.key, tp.param, tp.val, tp.valType, ActionEnum.Update));
             }
         }
 
@@ -271,12 +281,13 @@ namespace MyDAL.Core
 
         internal void WhereHandle<T>(Expression<Func<T, bool>> func)
         {
-            var field = DC.EH.FuncMBoolExpression( ActionEnum.Where, func);
+            var field = DC.EH.FuncMBoolExpression(ActionEnum.Where, func);
             field.ClassFullName = typeof(T).FullName;
             field.Action = ActionEnum.Where;
             DC.AddConditions(field);
         }
 
+        [Obsolete("作废方法,做参考用!")]
         internal void WhereDynamicHandle<M>(object mWhere)
         {
             var tuples = GetWhereKPV<M>(mWhere);
@@ -305,34 +316,34 @@ namespace MyDAL.Core
                 {
                     DC.Option = OptionEnum.In;
                     DC.Compare = CompareEnum.None;
-                    DC.AddConditions(DC.DH.InDic(  fullName, tp.key, string.Empty, tp.val, tp.valType));
+                    DC.AddConditions(DC.DH.InDic(fullName, tp.key, string.Empty, tp.val, tp.valType));
                 }
                 else
                 {
                     DC.Option = OptionEnum.Compare;
                     DC.Compare = tp.compare;
-                    DC.AddConditions(DC.DH.CompareDic( fullName, tp.key, string.Empty, tp.val, tp.valType ));
+                    DC.AddConditions(DC.DH.CompareDic(fullName, tp.key, string.Empty, tp.val, tp.valType));
                 }
             }
         }
 
         internal void AndHandle<T>(Expression<Func<T, bool>> func)
         {
-            var field = DC.EH.FuncMBoolExpression( ActionEnum.And, func);
+            var field = DC.EH.FuncMBoolExpression(ActionEnum.And, func);
             field.Action = ActionEnum.And;
             DC.AddConditions(field);
         }
 
         internal void OrHandle<T>(Expression<Func<T, bool>> func)
         {
-            var field = DC.EH.FuncMBoolExpression( ActionEnum.Or, func);
+            var field = DC.EH.FuncMBoolExpression(ActionEnum.Or, func);
             field.Action = ActionEnum.Or;
             DC.AddConditions(field);
         }
 
         internal void OrderByHandle<M, F>(Expression<Func<M, F>> func, OrderByEnum orderBy)
         {
-            var keyDic = DC.EH.FuncMFExpression( func)[0];
+            var keyDic = DC.EH.FuncMFExpression(func)[0];
             switch (orderBy)
             {
                 case OrderByEnum.Asc:
@@ -346,7 +357,7 @@ namespace MyDAL.Core
             DC.AddConditions(DC.DH.OrderbyDic(keyDic.ClassFullName, keyDic.ColumnOne));
         }
 
-        protected void OrderByOptionHandle(PagingQueryOption option,string fullName)
+        protected void OrderByOptionHandle(PagingQueryOption option, string fullName)
         {
             if (option.OrderBys != null
               && option.OrderBys.Any())

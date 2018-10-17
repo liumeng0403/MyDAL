@@ -30,7 +30,6 @@ namespace MyDAL.Core.Common
             }
         }
         public string ClassFullName { get; set; }
-        //public string TableOne { get; set; }
         public string TableAliasOne { get; set; }
         public string ColumnOne { get; set; }
         public string ColumnOneAlias { get; set; }

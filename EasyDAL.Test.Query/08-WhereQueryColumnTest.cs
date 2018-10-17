@@ -3,7 +3,6 @@ using MyDAL.Test.Enums;
 using MyDAL.Test.Options;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -23,6 +22,7 @@ namespace MyDAL.Test.Query
             option1.EndTime = DateTime.Now;
             option1.AgentLevel = AgentLevel.DistiAgent;
 
+            //   =    >=    <=
             var res1 = await Conn
                 .Selecter<Agent>()
                 .Where(option1)
@@ -39,6 +39,7 @@ namespace MyDAL.Test.Query
             option2.StartTime = WhereTest.CreatedOn;
             option2.EndTime = DateTime.Now;
 
+            //   >=   <=  
             var res2 = await Conn
                 .Selecter<Agent>()
                 .Where(option2)
@@ -54,6 +55,7 @@ namespace MyDAL.Test.Query
             var option3 = new AgentQueryOption();
             option3.Name = "张";
 
+            //   like  
             var res3 = await Conn
                 .Selecter<Agent>()
                 .Where(option3)
@@ -61,6 +63,26 @@ namespace MyDAL.Test.Query
             Assert.True(res3.Count == 2002);
 
             var tuple3 = (XDebug.SQL, XDebug.Parameters);
+
+            /*****************************************************************************************************************************/
+
+            var xx4 = "";
+
+            var option4 = new AgentQueryOption();
+            option4.EnumListIn = new List<AgentLevel>
+            {
+                AgentLevel.CityAgent,
+                AgentLevel.DistiAgent
+            };
+
+            // in
+            var res4 = await Conn
+                .Selecter<Agent>()
+                .Where(option4)
+                .QueryListAsync();
+            Assert.True(res4.Count == 555);
+
+            var tuple4 = (XDebug.SQL, XDebug.Parameters);
 
             /*****************************************************************************************************************************/
 
