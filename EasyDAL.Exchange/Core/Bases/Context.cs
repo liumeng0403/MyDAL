@@ -5,11 +5,10 @@ using Yunyong.DataExchange.AdoNet;
 using Yunyong.DataExchange.Cache;
 using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Enums;
-using Yunyong.DataExchange.Core.ExpressionX;
 using Yunyong.DataExchange.Core.Helper;
 using Yunyong.DataExchange.Core.MySql;
 
-namespace Yunyong.DataExchange.Core
+namespace Yunyong.DataExchange.Core.Bases
 {
     internal abstract class Context
     {
@@ -20,16 +19,15 @@ namespace Yunyong.DataExchange.Core
             UiConditions = new List<DicModelUI>();
             DbConditions = new List<DicModelDB>();
             AH = AttributeHelper.Instance;
-            VH = new ValHandle(this);
+            VH = new CsValueHelper(this);
             GH = GenericHelper.Instance;
-            EH = new ExpressionHandleX(this);
+            EH = new XExpression(this);
             SC = StaticCache.Instance;
-            PH = ParameterHelper.Instance;
+            PH = new ParameterHelper(this);
             BDH = BatchDataHelper.Instance;
             SqlProvider = new MySqlProvider(this);
             DS = DataSource.Instance;
-            DH = DicHandle.Instance;
-            DH.DC = this;
+            DH = new DicModelHelper(this);
         }
 
         /************************************************************************************************************************/
@@ -43,9 +41,9 @@ namespace Yunyong.DataExchange.Core
 
         internal XDebug Hint { get; set; }
 
-        internal ExpressionHandleX EH { get; private set; }
-        internal ValHandle VH { get; private set; }
-        internal DicHandle DH { get; private set; }
+        internal XExpression EH { get; private set; }
+        internal CsValueHelper VH { get; private set; }
+        internal DicModelHelper DH { get; private set; }
 
         /************************************************************************************************************************/
 
@@ -127,7 +125,7 @@ namespace Yunyong.DataExchange.Core
                     }
 
                     //
-                    var dicx = DicHandle.UiDicCopy(dic, val,dic.CsValueStr, op);
+                    var dicx = DicModelHelper.UiDicCopy(dic, val,dic.CsValueStr, op);
                     AddConditions(dicx);
                 }
                 UiConditions.Remove(dic);

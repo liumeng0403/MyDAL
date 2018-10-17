@@ -1,11 +1,11 @@
 using System.Threading.Tasks;
-using Yunyong.DataExchange.Core;
+using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Impls;
 using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.UserFacade.Query
 {
-    public class CountQ<M> 
+    public sealed  class CountQ<M> 
         : Operator, IQuerySingleValue<M>
     {
 

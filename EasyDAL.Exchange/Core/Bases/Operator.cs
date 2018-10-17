@@ -9,7 +9,7 @@ using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Enums;
 using Yunyong.DataExchange.Interfaces;
 
-namespace Yunyong.DataExchange.Core
+namespace Yunyong.DataExchange.Core.Bases
 {
     public abstract class Operator
         : IObjectMethod
@@ -113,7 +113,7 @@ namespace Yunyong.DataExchange.Core
             {
                 foreach (var mp in typeof(M).GetProperties())
                 {
-                    foreach (var sp in objx.GetType().GetProperties(Configs.ClassSelfMember))
+                    foreach (var sp in objx.GetType().GetProperties(XConfig.ClassSelfMember))
                     {
                         var spAttr = DC.AH.GetAttribute<QueryColumnAttribute>(objx.GetType(), sp) as QueryColumnAttribute;
                         var spName = string.Empty;

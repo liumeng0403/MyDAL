@@ -44,7 +44,7 @@ namespace Yunyong.DataExchange.Cache
             {
                 length = reader.FieldCount - startBound;
             }
-            int hash = SqlHelper. GetColumnHash(reader, startBound, length);
+            int hash = AdoNetHelper. GetColumnHash(reader, startBound, length);
             if (returnNullIfFirstMissing)
             {
                 hash *= -27;
@@ -59,7 +59,7 @@ namespace Yunyong.DataExchange.Cache
                     return deser;
                 }
             }
-            deser = SqlHelper. GetTypeDeserializerImpl(type, reader, startBound, length, returnNullIfFirstMissing);
+            deser = AdoNetHelper. GetTypeDeserializerImpl(type, reader, startBound, length, returnNullIfFirstMissing);
             // get a more expensive key: true means copy the values down so it can be used as a key later
             key = new DeserializerKey(hash, startBound, length, returnNullIfFirstMissing, reader, true);
             lock (readers)

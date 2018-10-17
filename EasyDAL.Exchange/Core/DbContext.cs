@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using Yunyong.DataExchange.Core.Bases;
 
 namespace Yunyong.DataExchange.Core
 {

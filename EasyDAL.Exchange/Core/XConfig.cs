@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
-namespace Yunyong.DataExchange.Core.Common
+namespace Yunyong.DataExchange.Core
 {
     internal class XConfig
     {
@@ -12,6 +13,17 @@ namespace Yunyong.DataExchange.Core.Common
         internal static bool IsCodeFirst { get; set; } = false;
         internal static bool IsNeedChangeDb { get; set; } = true;
         internal static string TablesNamespace { get; set; } = string.Empty;
+
+        /************************************************************************************************************/
+
+        public static int CommandTimeout { get; set; } = 10;  // 10s 
+
+        /// <summary>
+        /// Default is 4000, any value larger than this field will not have the default value applied.
+        /// </summary>
+        internal static int StringDefaultLength { get; private set; } = 4000;
+
+        internal static BindingFlags ClassSelfMember { get; private set; } = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public;
 
         /************************************************************************************************************/
 

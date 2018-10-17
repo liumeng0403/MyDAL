@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Yunyong.DataExchange
 {
-    public class XDebug
+    public sealed class XDebug
     {
         private static object _lock { get; } = new object();
         private static List<string> _sql { get; set; } = new List<string>();

@@ -3,10 +3,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Yunyong.Core;
-using Yunyong.DataExchange.Core;
-using Yunyong.DataExchange.Core.Common;
+using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Core.Enums;
-using Yunyong.DataExchange.Core.Helper;
 using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.Impls

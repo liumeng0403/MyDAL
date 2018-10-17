@@ -6,7 +6,7 @@ namespace Yunyong.DataExchange.AdoNet.Interfaces
     /// <summary>
     /// Implement this interface to change default mapping of reader columns to type members
     /// </summary>
-    public interface ITypeMap
+    internal interface ITypeMap
     {
         /// <summary>
         /// Finds best constructor

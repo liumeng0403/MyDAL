@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Yunyong.DataExchange.Core;
-using Yunyong.DataExchange.Core.Common;
+using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.Impls

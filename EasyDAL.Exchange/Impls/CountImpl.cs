@@ -2,9 +2,8 @@ using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Yunyong.DataExchange.Core;
-using Yunyong.DataExchange.Core.Common;
+using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Core.Enums;
-using Yunyong.DataExchange.Core.ExpressionX;
 using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.Impls

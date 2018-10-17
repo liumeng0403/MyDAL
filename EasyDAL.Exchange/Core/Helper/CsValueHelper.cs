@@ -4,19 +4,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Extensions;
 
-namespace Yunyong.DataExchange.Core.ExpressionX
+namespace Yunyong.DataExchange.Core.Helper
 {
-    internal class ValHandle
+    internal class CsValueHelper
     {
 
         private Context DC { get; set; }
 
-        private ValHandle() { }
+        private CsValueHelper() { }
 
-        internal ValHandle(Context dc)
+        internal CsValueHelper(Context dc)
         {
             DC = dc;
         }

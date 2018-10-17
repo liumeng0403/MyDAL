@@ -1,11 +1,11 @@
 using System.Threading.Tasks;
-using Yunyong.DataExchange.Core;
+using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Impls;
 using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.UserFacade.Update
 {
-    public class WhereU<M> 
+    public sealed class WhereU<M> 
         : Operator, IUpdate<M>
     {
         internal WhereU(Context dc)

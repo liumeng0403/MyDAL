@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
-using Yunyong.DataExchange.Core;
-using Yunyong.DataExchange.Core.Common;
+using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Core.Enums;
 using Yunyong.DataExchange.Interfaces;
 

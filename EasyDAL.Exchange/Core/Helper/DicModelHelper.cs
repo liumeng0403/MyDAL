@@ -1,13 +1,20 @@
 using System;
+using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Enums;
 
-namespace Yunyong.DataExchange.Core.ExpressionX
+namespace Yunyong.DataExchange.Core.Helper
 {
-    internal class DicHandle
-        : ClassInstance<DicHandle>
+    internal class DicModelHelper
     {
         internal Context DC { get; set; }
+
+        internal DicModelHelper(Context dc)
+        {
+            DC = dc;
+        }
+
+        /*******************************************************************************************************/
 
         internal static DicModelUI UiDicCopy(DicModelUI ui, object csVal,string csValStr, OptionEnum option)
         {

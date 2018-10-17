@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Yunyong.Core;
-using Yunyong.DataExchange.Core;
+using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Impls;
 using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.UserFacade.Query
 {
-    public class WhereQ<M> 
+    public sealed class WhereQ<M> 
         : Operator, IExist, IQueryFirstOrDefault<M>, IQueryList<M>, IQueryPagingList<M>, IQueryPagingListO<M>, ICount<M>
     {
         internal WhereQ(Context dc)

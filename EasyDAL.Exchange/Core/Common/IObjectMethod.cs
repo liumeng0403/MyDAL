@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace Yunyong.DataExchange.Interfaces
+namespace Yunyong.DataExchange.Core.Common
 {
     internal interface IObjectMethod
     {

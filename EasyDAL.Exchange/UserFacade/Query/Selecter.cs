@@ -2,12 +2,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Yunyong.Core;
 using Yunyong.DataExchange.Core;
+using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Impls;
 using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.UserFacade.Query
 {
-    public class Selecter<M> 
+    public sealed class Selecter<M> 
         : Operator, IQueryAll<M>, IQueryAllPagingList<M>
     {
         internal Selecter(Context dc)

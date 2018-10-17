@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using Yunyong.DataExchange.Core;
+using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Helper;
+using Yunyong.DataExchange.Core.MySql.Models;
 
 namespace Yunyong.DataExchange.Cache
 {

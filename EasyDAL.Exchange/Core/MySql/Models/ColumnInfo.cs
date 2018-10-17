@@ -1,6 +1,7 @@
-﻿namespace Yunyong.DataExchange.Core.Common
+
+namespace Yunyong.DataExchange.Core.MySql.Models
 {
-    public class ColumnInfo
+    internal class ColumnInfo
     {
         public string TableName { get; set; }
         public string ColumnName { get; set; }

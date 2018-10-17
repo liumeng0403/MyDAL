@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Yunyong.DataExchange.Core;
+using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.UserFacade.Transaction

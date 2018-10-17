@@ -6,8 +6,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Yunyong.Core;
 using Yunyong.DataExchange.AdoNet;
+using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Enums;
+using Yunyong.DataExchange.Core.MySql.Models;
 
 namespace Yunyong.DataExchange.Core.MySql
 {

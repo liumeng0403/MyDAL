@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Core.Common;
 
 namespace System.Collections.Core.Extensions

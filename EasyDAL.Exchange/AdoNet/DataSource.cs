@@ -29,7 +29,7 @@ namespace Yunyong.DataExchange.AdoNet
             var effectiveType = typeof(T);
             DynamicParameters param = command.Parameters;
             var identity = new Identity(command.CommandText, command.CommandType, conn, effectiveType, param?.GetType());
-            var info = SqlHelper.GetCacheInfo(identity);
+            var info = AdoNetHelper.GetCacheInfo(identity);
             bool needClose = conn.State == ConnectionState.Closed;
             using (var cmd = command.TrySetupAsyncCommand(conn, info.ParamReader))
             {
@@ -40,17 +40,17 @@ namespace Yunyong.DataExchange.AdoNet
                     {
                         await conn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
                     }
-                    reader = await SqlHelper.ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, CommandBehavior.SequentialAccess | CommandBehavior.SingleResult, default(CancellationToken)).ConfigureAwait(false);
+                    reader = await AdoNetHelper.ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, CommandBehavior.SequentialAccess | CommandBehavior.SingleResult, default(CancellationToken)).ConfigureAwait(false);
 
                     var tuple = info.Deserializer;
-                    int hash = SqlHelper.GetColumnHash(reader);
+                    int hash = AdoNetHelper.GetColumnHash(reader);
                     if (tuple.Func == null || tuple.Hash != hash)
                     {
                         if (reader.FieldCount == 0)
                         {
                             return Enumerable.Empty<T>();
                         }
-                        info.Deserializer = new DeserializerState(hash, SqlHelper.GetDeserializer(effectiveType, reader, 0, -1, false));
+                        info.Deserializer = new DeserializerState(hash, AdoNetHelper.GetDeserializer(effectiveType, reader, 0, -1, false));
                         tuple = info.Deserializer;
                     }
 
@@ -80,7 +80,7 @@ namespace Yunyong.DataExchange.AdoNet
                     {
                         // can't use ReadAsync / cancellation; but this will have to do
                         needClose = false; // don't close if handing back an open reader; rely on the command-behavior
-                        var deferred = SqlHelper.ExecuteReaderSync<T>(reader, func, command.Parameters);
+                        var deferred = AdoNetHelper.ExecuteReaderSync<T>(reader, func, command.Parameters);
                         reader = null; // to prevent it being disposed before the caller gets to see it
                         return deferred;
                     }
@@ -108,7 +108,7 @@ namespace Yunyong.DataExchange.AdoNet
             var row = RowEnum.FirstOrDefault;
             DynamicParameters param = command.Parameters;
             var identity = new Identity(command.CommandText, command.CommandType, conn, effectiveType, param?.GetType());
-            var info = SqlHelper.GetCacheInfo(identity);
+            var info = AdoNetHelper.GetCacheInfo(identity);
             bool needClose = conn.State == ConnectionState.Closed;
             using (var cmd = command.TrySetupAsyncCommand(conn, info.ParamReader))
             {
@@ -119,7 +119,7 @@ namespace Yunyong.DataExchange.AdoNet
                     {
                         await conn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
                     }
-                    reader = await SqlHelper.ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, (row & RowEnum.Single) != 0
+                    reader = await AdoNetHelper.ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, (row & RowEnum.Single) != 0
                     ? CommandBehavior.SequentialAccess | CommandBehavior.SingleResult // need to allow multiple rows, to check fail condition
                     : CommandBehavior.SequentialAccess | CommandBehavior.SingleResult | CommandBehavior.SingleRow, default(CancellationToken)).ConfigureAwait(false);
 
@@ -127,10 +127,10 @@ namespace Yunyong.DataExchange.AdoNet
                     if (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false) && reader.FieldCount != 0)
                     {
                         var tuple = info.Deserializer;
-                        int hash = SqlHelper.GetColumnHash(reader);
+                        int hash = AdoNetHelper.GetColumnHash(reader);
                         if (tuple.Func == null || tuple.Hash != hash)
                         {
-                            tuple = info.Deserializer = new DeserializerState(hash, SqlHelper.GetDeserializer(effectiveType, reader, 0, -1, false));
+                            tuple = info.Deserializer = new DeserializerState(hash, AdoNetHelper.GetDeserializer(effectiveType, reader, 0, -1, false));
                         }
 
                         var func = tuple.Func;
@@ -147,14 +147,14 @@ namespace Yunyong.DataExchange.AdoNet
                         }
                         if ((row & RowEnum.Single) != 0 && await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
                         {
-                            SqlHelper.ThrowMultipleRows(row);
+                            AdoNetHelper.ThrowMultipleRows(row);
                         }
                         while (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
                         { /* ignore rows after the first */ }
                     }
                     else if ((row & RowEnum.FirstOrDefault) == 0) // demanding a row, and don't have one
                     {
-                        SqlHelper.ThrowZeroRows(row);
+                        AdoNetHelper.ThrowZeroRows(row);
                     }
                     while (await reader.NextResultAsync(default(CancellationToken)).ConfigureAwait(false))
                     { /* ignore result sets after the first */ }
@@ -184,7 +184,7 @@ namespace Yunyong.DataExchange.AdoNet
             DynamicParameters param = command.Parameters;
 
             var identity = new Identity(command.CommandText, command.CommandType, conn, null, param?.GetType());
-            var info = SqlHelper.GetCacheInfo(identity);
+            var info = AdoNetHelper.GetCacheInfo(identity);
             bool needClose = conn.State == ConnectionState.Closed;
             using (var cmd = command.TrySetupAsyncCommand(conn, info.ParamReader))
             {
@@ -221,7 +221,7 @@ namespace Yunyong.DataExchange.AdoNet
             if (param != null)
             {
                 var identity = new Identity(command.CommandText, command.CommandType, conn, null, param.GetType());
-                paramReader = SqlHelper.GetCacheInfo(identity).ParamReader;
+                paramReader = AdoNetHelper.GetCacheInfo(identity).ParamReader;
             }
 
             DbCommand cmd = null;

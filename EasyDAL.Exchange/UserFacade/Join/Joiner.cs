@@ -1,8 +1,9 @@
-using Yunyong.DataExchange.Core;
+
+using Yunyong.DataExchange.Core.Bases;
 
 namespace Yunyong.DataExchange.UserFacade.Join
 {
-    public class Joiner 
+    public sealed class Joiner 
         : Operator
     {
         internal Joiner(Context dc)

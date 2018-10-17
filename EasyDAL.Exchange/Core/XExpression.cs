@@ -6,12 +6,13 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Yunyong.DataExchange.Cache;
+using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Enums;
 
-namespace Yunyong.DataExchange.Core.ExpressionX
+namespace Yunyong.DataExchange.Core
 {
-    internal class ExpressionHandleX
+    internal class XExpression
     {
 
         internal static CompareEnum GetCompareType(ExpressionType nodeType, bool isR)
@@ -49,8 +50,8 @@ namespace Yunyong.DataExchange.Core.ExpressionX
 
         private Context DC { get; set; }
 
-        private ExpressionHandleX() { }
-        internal ExpressionHandleX(Context dc)
+        private XExpression() { }
+        internal XExpression(Context dc)
         {
             DC = dc;
         }

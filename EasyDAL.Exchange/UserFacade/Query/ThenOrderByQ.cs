@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Yunyong.Core;
-using Yunyong.DataExchange.Core;
+using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Impls;
 using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.UserFacade.Query
 {
-    public class ThenOrderByQ<M> 
+    public sealed class ThenOrderByQ<M> 
         : Operator, IQueryList<M>, IQueryPagingList<M>, IQueryPagingListO<M>
     {
 

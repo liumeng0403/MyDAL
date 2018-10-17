@@ -2,7 +2,7 @@
 
 namespace Yunyong.DataExchange
 {
-    public class QueryColumnAttribute : Attribute
+    public sealed class QueryColumnAttribute : Attribute
     {
 
         /// <summary>

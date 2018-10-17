@@ -1,8 +1,9 @@
-using Yunyong.DataExchange.Core;
+
+using Yunyong.DataExchange.Core.Bases;
 
 namespace Yunyong.DataExchange.UserFacade.Update
 {
-    public class SetU<M> 
+    public sealed class SetU<M> 
         : Operator
     {
 

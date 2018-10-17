@@ -6,7 +6,7 @@ namespace Yunyong.DataExchange.AdoNet.Interfaces
     /// <summary>
     /// Implements this interface to provide custom member mapping
     /// </summary>
-    public interface IMemberMap
+    internal interface IMemberMap
     {
         /// <summary>
         /// Source DataReader column name

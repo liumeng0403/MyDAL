@@ -1,4 +1,5 @@
-using Yunyong.DataExchange.Core;
+
+using Yunyong.DataExchange.Core.Bases;
 
 namespace Yunyong.DataExchange.UserFacade.Update
 {
