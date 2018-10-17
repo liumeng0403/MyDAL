@@ -2,7 +2,8 @@
 
 namespace MyDAL
 {
-    public class XColumnAttribute : Attribute
+
+    public sealed class XColumnAttribute : Attribute
     {
         /// <summary>
         /// DB 列名

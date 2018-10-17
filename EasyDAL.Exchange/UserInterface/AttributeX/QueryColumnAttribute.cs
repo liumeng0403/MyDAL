@@ -2,7 +2,7 @@
 
 namespace MyDAL
 {
-    public class QueryColumnAttribute : Attribute
+    public sealed class QueryColumnAttribute : Attribute
     {
 
         /// <summary>

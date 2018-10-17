@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.Common;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -17,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Core.Helper
 {
-    internal static class SqlHelper
+    internal static class AdoNetHelper
     {
 
         /// <summary>
@@ -43,7 +42,7 @@ namespace MyDAL.Core.Helper
 
         private static Dictionary<Type, DbType> typeMap { get; set; }
 
-        static SqlHelper()
+        static AdoNetHelper()
         {
             typeMap = new Dictionary<Type, DbType>
             {
@@ -374,8 +373,8 @@ namespace MyDAL.Core.Helper
 
                     if (memberType == typeof(char) || memberType == typeof(char?))
                     {
-                        il.EmitCall(OpCodes.Call, typeof(SqlHelper).GetMethod(
-                            memberType == typeof(char) ? nameof(SqlHelper.ReadChar) : nameof(SqlHelper.ReadNullableChar), BindingFlags.Static | BindingFlags.Public), null); // stack is now [target][target][typed-value]
+                        il.EmitCall(OpCodes.Call, typeof(AdoNetHelper).GetMethod(
+                            memberType == typeof(char) ? nameof(AdoNetHelper.ReadChar) : nameof(AdoNetHelper.ReadNullableChar), BindingFlags.Static | BindingFlags.Public), null); // stack is now [target][target][typed-value]
                     }
                     else
                     {
@@ -529,7 +528,7 @@ namespace MyDAL.Core.Helper
             il.Emit(OpCodes.Ldloc_0); // stack is Exception, index
             il.Emit(OpCodes.Ldarg_0); // stack is Exception, index, reader
             LoadLocal(il, valueCopyLocal); // stack is Exception, index, reader, value
-            il.EmitCall(OpCodes.Call, typeof(SqlHelper).GetMethod(nameof(SqlHelper.ThrowDataException)), null);
+            il.EmitCall(OpCodes.Call, typeof(AdoNetHelper).GetMethod(nameof(AdoNetHelper.ThrowDataException)), null);
             il.EndExceptionBlock();
 
             il.Emit(OpCodes.Ldloc_1); // stack is [rval]

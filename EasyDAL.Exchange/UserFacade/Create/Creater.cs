@@ -1,4 +1,4 @@
-﻿using MyDAL.Core;
+﻿using MyDAL.Core.Bases;
 using MyDAL.Impls;
 using MyDAL.Interfaces;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyDAL.UserFacade.Create
 {
-    public class Creater<M> 
+    public sealed class Creater<M> 
         : Operator, ICreate<M>, ICreateBatch<M>
     {
         internal Creater(Context dc) 

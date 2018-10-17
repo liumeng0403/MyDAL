@@ -1,11 +1,11 @@
-﻿using MyDAL.Core;
+﻿using MyDAL.Core.Bases;
 using MyDAL.Impls;
 using MyDAL.Interfaces;
 using System.Threading.Tasks;
 
 namespace MyDAL.UserFacade.Delete
 {
-    public class WhereD<M> 
+    public sealed class WhereD<M> 
         : Operator, IDelete
     {
         internal WhereD(Context dc)

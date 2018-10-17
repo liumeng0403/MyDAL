@@ -1,5 +1,4 @@
-﻿using MyDAL.Core;
-using MyDAL.Core.Common;
+﻿using MyDAL.Core.Bases;
 using MyDAL.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;

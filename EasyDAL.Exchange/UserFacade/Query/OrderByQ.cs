@@ -1,4 +1,4 @@
-﻿using MyDAL.Core;
+﻿using MyDAL.Core.Bases;
 using MyDAL.Impls;
 using MyDAL.Interfaces;
 using System;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MyDAL.UserFacade.Query
 {
-    public class OrderByQ<M> 
+    public sealed class OrderByQ<M> 
         : Operator, IQueryList<M>, IQueryPagingList<M>, IQueryPagingListO<M>
     {
         internal OrderByQ(Context dc)

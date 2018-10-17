@@ -1,4 +1,4 @@
-﻿using MyDAL.Core.Common;
+﻿using MyDAL.Core.Bases;
 using MyDAL.Core.Extensions;
 using System;
 using System.Collections.Generic;
@@ -6,16 +6,16 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace MyDAL.Core.ExpressionX
+namespace MyDAL.Core.Helper
 {
-    internal class ValHandle
+    internal class CsValueHelper
     {
 
         private Context DC { get; set; }
 
-        private ValHandle() { }
+        private CsValueHelper() { }
 
-        internal ValHandle(Context dc)
+        internal CsValueHelper(Context dc)
         {
             DC = dc;
         }

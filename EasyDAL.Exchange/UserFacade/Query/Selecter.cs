@@ -1,4 +1,4 @@
-﻿using MyDAL.Core;
+﻿using MyDAL.Core.Bases;
 using MyDAL.Impls;
 using MyDAL.Interfaces;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyDAL.UserFacade.Query
 {
-    public class Selecter<M> 
+    public sealed class Selecter<M> 
         : Operator, IQueryAll<M>, IQueryAllPagingList<M>
     {
         internal Selecter(Context dc)

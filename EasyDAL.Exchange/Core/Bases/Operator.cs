@@ -1,14 +1,13 @@
 ﻿using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
-using MyDAL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace MyDAL.Core
+namespace MyDAL.Core.Bases
 {
     public abstract class Operator
         : IObjectMethod
@@ -112,7 +111,7 @@ namespace MyDAL.Core
             {
                 foreach (var mp in typeof(M).GetProperties())
                 {
-                    foreach (var sp in objx.GetType().GetProperties(Configs.ClassSelfMember))
+                    foreach (var sp in objx.GetType().GetProperties(XConfig.ClassSelfMember))
                     {
                         var spAttr = DC.AH.GetAttribute<QueryColumnAttribute>(objx.GetType(), sp) as QueryColumnAttribute;
                         var spName = string.Empty;

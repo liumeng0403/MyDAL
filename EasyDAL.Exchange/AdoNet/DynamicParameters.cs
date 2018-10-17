@@ -98,7 +98,7 @@ namespace MyDAL.AdoNet
                 if (dbType == null && val != null)
                 {
 #pragma warning disable 618
-                    dbType = SqlHelper.LookupDbType(val.GetType(), name, true/*, out handler*/);
+                    dbType = AdoNetHelper.LookupDbType(val.GetType(), name, true/*, out handler*/);
 #pragma warning disable 618
                 }
 
@@ -118,16 +118,16 @@ namespace MyDAL.AdoNet
                 //if (handler == null)
                 //{
 #pragma warning disable 0618
-                    p.Value = SqlHelper.SanitizeParameterValue(val);
+                    p.Value = AdoNetHelper.SanitizeParameterValue(val);
 #pragma warning restore 0618
                     if (dbType != null && p.DbType != dbType)
                     {
                         p.DbType = dbType.Value;
                     }
                     var s = val as string;
-                    if (s?.Length <= Configs.StringDefaultLength)
+                    if (s?.Length <= XConfig.StringDefaultLength)
                     {
-                        p.Size = Configs.StringDefaultLength;
+                        p.Size = XConfig.StringDefaultLength;
                     }
                     if (param.Size != null) p.Size = param.Size.Value;
                     if (param.Precision != null) p.Precision = param.Precision.Value;

@@ -7,7 +7,7 @@ namespace MyDAL.Core.Common
     /// <summary>
     /// 深度复制 / Surrogate
     /// </summary>
-    public class NonSerialiazableTypeSurrogateSelector 
+    internal class NonSerialiazableTypeSurrogateSelector 
         : ISerializationSurrogate, ISurrogateSelector
     {
         /// <summary>

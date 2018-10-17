@@ -1,6 +1,6 @@
 ﻿namespace MyDAL.Core.Enums
 {
-    public enum StringLikeEnum
+    internal enum StringLikeEnum
     {
         Contains,
         StartsWith,

@@ -1,11 +1,11 @@
-﻿using MyDAL.Core;
+﻿using MyDAL.Core.Bases;
 using MyDAL.Impls;
 using MyDAL.Interfaces;
 using System.Threading.Tasks;
 
 namespace MyDAL.UserFacade.Update
 {
-    public class WhereU<M> 
+    public sealed class WhereU<M> 
         : Operator, IUpdate<M>
     {
         internal WhereU(Context dc)

@@ -1,137 +1,18 @@
-﻿using MyDAL.AdoNet;
+﻿using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
-using MyDAL.Core.ExpressionX;
 using MyDAL.Core.Extensions;
+using MyDAL.Core.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace MyDAL.Core.Common
+namespace MyDAL.Core.Bases
 {
     internal abstract class Impler
         : Operator
     {
-
-        /**********************************************************************************************************/
-
-        private void GetDbVal(DicModelUI ui, DicModelDB db, Type realType)
-        {
-
-            //
-            if (DC.IsParameter(ui))
-            {
-                //
-                if (ui.Option != OptionEnum.OneEqualOne)
-                {
-                    var columns = DC.SC.GetColumnInfos(DC.SC.GetKey(ui.ClassFullName, DC.Conn.Database));
-                    var col = columns.FirstOrDefault(it => it.ColumnName.Equals(ui.ColumnOne, StringComparison.OrdinalIgnoreCase));
-                    if (col != null)
-                    {
-                        db.ColumnType = col.DataType;
-                    }
-                }
-
-                //
-                var para = default(ParamInfo);
-                if (realType == XConfig.Bool)
-                {
-                    para = DC.PH.BoolParam(db.ColumnType, ui, realType);
-                }
-                else if (realType == XConfig.Byte)
-                {
-                    para = DC.PH.ByteParam(db.ColumnType, ui, realType);
-                }
-                else if (realType == XConfig.Char)
-                {
-                    para = DC.PH.CharParam(db.ColumnType, ui, realType);
-                }
-                else if (realType == XConfig.Decimal)
-                {
-                    para = DC.PH.DecimalParam(db.ColumnType, ui, realType);
-                }
-                else if (realType == XConfig.Double)
-                {
-                    para = DC.PH.DoubleParam(db.ColumnType, ui, realType);
-                }
-                else if (realType == XConfig.Float)
-                {
-                    para = DC.PH.FloatParam(db.ColumnType, ui, realType);
-                }
-                else if (realType == XConfig.Int)
-                {
-                    para = DC.PH.IntParam(db.ColumnType, ui, realType);
-                }
-                else if (realType == XConfig.Long)
-                {
-                    para = DC.PH.LongParam(db.ColumnType, ui, realType);
-                }
-                else if (realType == XConfig.Sbyte)
-                {
-                    para = DC.PH.SbyteParam(db.ColumnType, ui, realType);
-                }
-                else if (realType == XConfig.Short)
-                {
-                    para = DC.PH.ShortParam(db.ColumnType, ui, realType);
-                }
-                else if (realType == XConfig.Uint)
-                {
-                    para = DC.PH.UintParam(db.ColumnType, ui, realType);
-                }
-                else if (realType == XConfig.Ulong)
-                {
-                    para = DC.PH.UlongParam(db.ColumnType, ui, realType);
-                }
-                else if (realType == XConfig.Ushort)
-                {
-                    para = DC.PH.UshortParam(db.ColumnType, ui, realType);
-                }
-                else if (realType == XConfig.String)
-                {
-                    para = DC.PH.StringParam(db.ColumnType, ui, realType);
-                }
-                else if (realType == XConfig.DateTime)
-                {
-                    para = DC.PH.DateTimeParam(db.ColumnType, ui, realType);
-                }
-                else if (realType == XConfig.TimeSpan)
-                {
-                    para = DC.PH.TimeSpanParam(db.ColumnType, ui, realType);
-                }
-                else if (realType == XConfig.Guid)
-                {
-                    para = DC.PH.GuidParam(db.ColumnType, ui, realType);
-                }
-                else if (realType.IsEnum)
-                {
-                    para = DC.PH.EnumParam(db.ColumnType, ui, realType);
-                }
-                else if (realType.IsNullable())
-                {
-                    //var type = realType.GetGenericArguments()[0];
-                    var type = Nullable.GetUnderlyingType(realType);
-                    if (ui.CsValue == null)
-                    {
-                        para = DC.PH.NullParam(db.ColumnType, ui, type);
-                    }
-                    else
-                    {
-                        GetDbVal(ui, db, type);
-                        return;
-                    }
-                }
-                else
-                {
-                    throw new Exception($"不支持的字段参数类型:[[{realType}]]!");
-                }
-
-                //
-                db.DbValue = para.Value;
-                db.DbType = para.DbType;
-            }
-
-        }
 
         /**********************************************************************************************************/
 
@@ -173,7 +54,7 @@ namespace MyDAL.Core.Common
                     db.Param = ui.Param;
                     db.ParamRaw = ui.ParamRaw;
                     db.TvpIndex = ui.TvpIndex;
-                    GetDbVal(ui, db, ui.CsType);
+                    DC.PH.GetDbVal(ui, db, ui.CsType);
                     DC.DbConditions.Add(db);
                 }
             }
@@ -229,7 +110,7 @@ namespace MyDAL.Core.Common
             {
                 foreach (var prop in vmProps)
                 {
-                    DC.AddConditions(DicHandle.ColumnDic(prop.Name, tab.TableAliasOne, fullName));
+                    DC.AddConditions(DicModelHelper.ColumnDic(prop.Name, tab.TableAliasOne, fullName));
                 }
             }
             else

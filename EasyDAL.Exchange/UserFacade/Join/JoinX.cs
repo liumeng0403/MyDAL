@@ -1,8 +1,8 @@
-﻿using MyDAL.Core;
+﻿using MyDAL.Core.Bases;
 
 namespace MyDAL.UserFacade.Join
 {
-    public class JoinX 
+    public sealed class JoinX 
         : Operator
     {
 

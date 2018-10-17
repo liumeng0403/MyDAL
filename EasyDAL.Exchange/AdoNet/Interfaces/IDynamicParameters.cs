@@ -6,7 +6,7 @@ namespace MyDAL.AdoNet.Interfaces
     /// <summary>
     /// Implement this interface to pass an arbitrary db specific set of parameters to Dapper
     /// </summary>
-    public interface IDynamicParameters
+    internal interface IDynamicParameters
     {
         /// <summary>
         /// Add all the parameters needed to the command just before it executes

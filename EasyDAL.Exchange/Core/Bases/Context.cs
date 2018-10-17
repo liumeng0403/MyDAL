@@ -2,14 +2,13 @@
 using MyDAL.Cache;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
-using MyDAL.Core.ExpressionX;
 using MyDAL.Core.Helper;
 using MyDAL.Core.MySql;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-namespace MyDAL.Core
+namespace MyDAL.Core.Bases
 {
     internal abstract class Context
     {
@@ -20,16 +19,15 @@ namespace MyDAL.Core
             UiConditions = new List<DicModelUI>();
             DbConditions = new List<DicModelDB>();
             AH = AttributeHelper.Instance;
-            VH = new ValHandle(this);
+            VH = new CsValueHelper(this);
             GH = GenericHelper.Instance;
-            EH = new ExpressionHandleX(this);
+            EH = new XExpression(this);
             SC = StaticCache.Instance;
-            PH = ParameterHelper.Instance;
+            PH = new ParameterHelper(this);
             BDH = BatchDataHelper.Instance;
             SqlProvider = new MySqlProvider(this);
             DS = DataSource.Instance;
-            DH = DicHandle.Instance;
-            DH.DC = this;
+            DH = new DicModelHelper(this);
         }
 
         /************************************************************************************************************************/
@@ -43,9 +41,9 @@ namespace MyDAL.Core
 
         internal XDebug Hint { get; set; }
 
-        internal ExpressionHandleX EH { get; private set; }
-        internal ValHandle VH { get; private set; }
-        internal DicHandle DH { get; private set; }
+        internal XExpression EH { get; private set; }
+        internal CsValueHelper VH { get; private set; }
+        internal DicModelHelper DH { get; private set; }
 
         /************************************************************************************************************************/
 
@@ -127,7 +125,7 @@ namespace MyDAL.Core
                     }
 
                     //
-                    var dicx = DicHandle.UiDicCopy(dic, val,dic.CsValueStr, op);
+                    var dicx = DicModelHelper.UiDicCopy(dic, val,dic.CsValueStr, op);
                     AddConditions(dicx);
                 }
                 UiConditions.Remove(dic);

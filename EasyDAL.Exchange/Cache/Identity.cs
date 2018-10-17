@@ -7,7 +7,7 @@ namespace MyDAL.Cache
     /// <summary>
     /// Identity of a cached query in Dapper, used for extensibility.
     /// </summary>
-    public class Identity : IEquatable<Identity>
+    internal class Identity : IEquatable<Identity>
     {
         /// <summary>
         /// 

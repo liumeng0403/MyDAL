@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using MyDAL.Core.Bases;
+using System.Data;
 
 namespace MyDAL.Core
 {

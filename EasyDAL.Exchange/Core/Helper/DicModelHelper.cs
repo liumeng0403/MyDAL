@@ -1,13 +1,20 @@
-﻿using MyDAL.Core.Common;
+﻿using MyDAL.Core.Bases;
+using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using System;
 
-namespace MyDAL.Core.ExpressionX
+namespace MyDAL.Core.Helper
 {
-    internal class DicHandle
-        : ClassInstance<DicHandle>
+    internal class DicModelHelper
     {
         internal Context DC { get; set; }
+
+        internal DicModelHelper(Context dc)
+        {
+            DC = dc;
+        }
+
+        /*******************************************************************************************************/
 
         internal static DicModelUI UiDicCopy(DicModelUI ui, object csVal,string csValStr, OptionEnum option)
         {

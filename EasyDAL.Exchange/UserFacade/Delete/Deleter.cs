@@ -1,8 +1,8 @@
-﻿using MyDAL.Core;
+﻿using MyDAL.Core.Bases;
 
 namespace MyDAL.UserFacade.Delete
 {
-    public class Deleter<M> 
+    public sealed class Deleter<M> 
         : Operator
     {
         internal Deleter(Context dc)

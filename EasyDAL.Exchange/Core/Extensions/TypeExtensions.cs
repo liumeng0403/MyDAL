@@ -1,5 +1,4 @@
-﻿using MyDAL.Core.Common;
-using System;
+﻿using System;
 
 namespace MyDAL.Core.Extensions
 {

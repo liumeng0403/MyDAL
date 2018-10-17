@@ -1,6 +1,7 @@
-﻿using MyDAL.Core;
+﻿using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Helper;
+using MyDAL.Core.MySql.Models;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;

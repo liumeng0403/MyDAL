@@ -1,11 +1,11 @@
-﻿using MyDAL.Core;
+﻿using MyDAL.Core.Bases;
 using MyDAL.Impls;
 using MyDAL.Interfaces;
 using System.Threading.Tasks;
 
 namespace MyDAL.UserFacade.Query
 {
-    public class CountQ<M> 
+    public sealed  class CountQ<M> 
         : Operator, IQuerySingleValue<M>
     {
 

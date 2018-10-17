@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace MyDAL.Interfaces
+namespace MyDAL.Core.Common
 {
     internal interface IObjectMethod
     {

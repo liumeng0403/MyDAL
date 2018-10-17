@@ -1,4 +1,5 @@
 ﻿using MyDAL.Cache;
+using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using System;
@@ -9,9 +10,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace MyDAL.Core.ExpressionX
+namespace MyDAL.Core
 {
-    internal class ExpressionHandleX
+    internal class XExpression
     {
 
         internal static CompareEnum GetCompareType(ExpressionType nodeType, bool isR)
@@ -49,8 +50,8 @@ namespace MyDAL.Core.ExpressionX
 
         private Context DC { get; set; }
 
-        private ExpressionHandleX() { }
-        internal ExpressionHandleX(Context dc)
+        private XExpression() { }
+        internal XExpression(Context dc)
         {
             DC = dc;
         }

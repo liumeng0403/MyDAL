@@ -1,8 +1,8 @@
-﻿using MyDAL.Core;
+﻿using MyDAL.Core.Bases;
 
 namespace MyDAL.UserFacade.Update
 {
-    public class SetU<M> 
+    public sealed class SetU<M> 
         : Operator
     {
 

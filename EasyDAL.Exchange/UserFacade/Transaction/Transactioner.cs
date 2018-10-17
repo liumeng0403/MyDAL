@@ -1,4 +1,4 @@
-﻿using MyDAL.Core;
+﻿using MyDAL.Core.Bases;
 using MyDAL.Interfaces;
 using System;
 using System.Threading.Tasks;

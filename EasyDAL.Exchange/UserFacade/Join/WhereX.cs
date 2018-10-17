@@ -1,4 +1,4 @@
-﻿using MyDAL.Core;
+﻿using MyDAL.Core.Bases;
 using MyDAL.Impls;
 using MyDAL.Interfaces;
 using System;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MyDAL.UserFacade.Join
 {
-    public class WhereX
+    public sealed  class WhereX
         : Operator, IQueryFirstOrDefaultX, IQueryListX, IQueryPagingListX, IQueryPagingListXO,ICountX
     {
 

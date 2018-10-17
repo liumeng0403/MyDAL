@@ -57,7 +57,7 @@ namespace MyDAL.AdoNet
         {
             var cmd = cnn.CreateCommand();
             cmd.CommandText = CommandText;
-            cmd.CommandTimeout = Configs.CommandTimeout;
+            cmd.CommandTimeout = XConfig.CommandTimeout;
             cmd.CommandType = CommandType;
             paramReader?.Invoke(cmd, Parameters);
             return cmd;

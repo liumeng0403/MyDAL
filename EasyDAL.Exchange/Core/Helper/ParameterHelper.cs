@@ -1,14 +1,25 @@
 ﻿using MyDAL.AdoNet;
+using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
+using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
 using System;
 using System.Data;
+using System.Linq;
 
 namespace MyDAL.Core.Helper
 {
     internal class ParameterHelper
-        : ClassInstance<ParameterHelper>
     {
+
+        private Context DC { get; set; }
+        internal ParameterHelper(Context dc)
+        {
+            DC = dc;
+        }
+
+        /**********************************************************************************************************/
+
         private static ParamInfo GetDefault(string name, object value, DbType? dbType)
         {
             return new ParamInfo
@@ -305,10 +316,7 @@ namespace MyDAL.Core.Helper
             //
             return type;
         }
-
-        /*************************************************************************************************************************************/
-
-        internal ParamInfo BoolParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo BoolParam(string colType, DicModelUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -337,8 +345,7 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-
-        internal ParamInfo ByteParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo ByteParam(string colType, DicModelUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -356,7 +363,6 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-
         internal ParamInfo CharParam(string colType, DicModelUI ui, Type realType)
         {
             var type = GetType(colType, realType);
@@ -375,8 +381,7 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-
-        internal ParamInfo DecimalParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo DecimalParam(string colType, DicModelUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -394,8 +399,7 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-
-        internal ParamInfo DoubleParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo DoubleParam(string colType, DicModelUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -413,8 +417,7 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-
-        internal ParamInfo FloatParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo FloatParam(string colType, DicModelUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -432,8 +435,7 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-
-        internal ParamInfo IntParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo IntParam(string colType, DicModelUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -451,8 +453,7 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-
-        internal ParamInfo LongParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo LongParam(string colType, DicModelUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -470,8 +471,7 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-
-        internal ParamInfo SbyteParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo SbyteParam(string colType, DicModelUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -493,8 +493,7 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-
-        internal ParamInfo ShortParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo ShortParam(string colType, DicModelUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -512,8 +511,7 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-
-        internal ParamInfo UintParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo UintParam(string colType, DicModelUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -531,8 +529,7 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-
-        internal ParamInfo UlongParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo UlongParam(string colType, DicModelUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -550,8 +547,7 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-
-        internal ParamInfo UshortParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo UshortParam(string colType, DicModelUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -569,8 +565,7 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-
-        internal ParamInfo StringParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo StringParam(string colType, DicModelUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -592,8 +587,7 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-
-        internal ParamInfo DateTimeParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo DateTimeParam(string colType, DicModelUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -615,8 +609,7 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-
-        internal ParamInfo TimeSpanParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo TimeSpanParam(string colType, DicModelUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -634,8 +627,7 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-
-        internal ParamInfo GuidParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo GuidParam(string colType, DicModelUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -657,8 +649,7 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-
-        internal ParamInfo EnumParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo EnumParam(string colType, DicModelUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -691,11 +682,129 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-
-        public ParamInfo NullParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo NullParam(string colType, DicModelUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             return GetDefault(ui.Param, null, type);
+        }
+
+        /*************************************************************************************************************************************/
+
+        internal void GetDbVal(DicModelUI ui, DicModelDB db, Type realType)
+        {
+
+            //
+            if (DC.IsParameter(ui))
+            {
+                //
+                if (ui.Option != OptionEnum.OneEqualOne)
+                {
+                    var columns = DC.SC.GetColumnInfos(DC.SC.GetKey(ui.ClassFullName, DC.Conn.Database));
+                    var col = columns.FirstOrDefault(it => it.ColumnName.Equals(ui.ColumnOne, StringComparison.OrdinalIgnoreCase));
+                    if (col != null)
+                    {
+                        db.ColumnType = col.DataType;
+                    }
+                }
+
+                //
+                var para = default(ParamInfo);
+                if (realType == XConfig.Bool)
+                {
+                    para = DC.PH.BoolParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == XConfig.Byte)
+                {
+                    para = DC.PH.ByteParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == XConfig.Char)
+                {
+                    para = DC.PH.CharParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == XConfig.Decimal)
+                {
+                    para = DC.PH.DecimalParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == XConfig.Double)
+                {
+                    para = DC.PH.DoubleParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == XConfig.Float)
+                {
+                    para = DC.PH.FloatParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == XConfig.Int)
+                {
+                    para = DC.PH.IntParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == XConfig.Long)
+                {
+                    para = DC.PH.LongParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == XConfig.Sbyte)
+                {
+                    para = DC.PH.SbyteParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == XConfig.Short)
+                {
+                    para = DC.PH.ShortParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == XConfig.Uint)
+                {
+                    para = DC.PH.UintParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == XConfig.Ulong)
+                {
+                    para = DC.PH.UlongParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == XConfig.Ushort)
+                {
+                    para = DC.PH.UshortParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == XConfig.String)
+                {
+                    para = DC.PH.StringParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == XConfig.DateTime)
+                {
+                    para = DC.PH.DateTimeParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == XConfig.TimeSpan)
+                {
+                    para = DC.PH.TimeSpanParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == XConfig.Guid)
+                {
+                    para = DC.PH.GuidParam(db.ColumnType, ui, realType);
+                }
+                else if (realType.IsEnum)
+                {
+                    para = DC.PH.EnumParam(db.ColumnType, ui, realType);
+                }
+                else if (realType.IsNullable())
+                {
+                    //var type = realType.GetGenericArguments()[0];
+                    var type = Nullable.GetUnderlyingType(realType);
+                    if (ui.CsValue == null)
+                    {
+                        para = DC.PH.NullParam(db.ColumnType, ui, type);
+                    }
+                    else
+                    {
+                        GetDbVal(ui, db, type);
+                        return;
+                    }
+                }
+                else
+                {
+                    throw new Exception($"不支持的字段参数类型:[[{realType}]]!");
+                }
+
+                //
+                db.DbValue = para.Value;
+                db.DbType = para.DbType;
+            }
+
         }
 
     }

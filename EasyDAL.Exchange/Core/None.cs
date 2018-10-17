@@ -1,4 +1,4 @@
-﻿namespace MyDAL.Core.Common
+﻿namespace MyDAL.Core
 {
     internal class None
     {

@@ -1,4 +1,4 @@
-﻿using MyDAL.Core;
+﻿using MyDAL.Core.Bases;
 using MyDAL.Impls;
 using MyDAL.Interfaces;
 using System;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MyDAL.UserFacade.Query
 {
-    public class WhereQ<M> 
+    public sealed class WhereQ<M> 
         : Operator, IExist, IQueryFirstOrDefault<M>, IQueryList<M>, IQueryPagingList<M>, IQueryPagingListO<M>, ICount<M>
     {
         internal WhereQ(Context dc)

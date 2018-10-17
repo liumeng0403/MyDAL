@@ -10,7 +10,7 @@ namespace MyDAL.AdoNet
     /// <summary>
     /// 默认类型映射策略
     /// </summary>
-    public sealed class DefaultTypeMap : ITypeMap
+    internal sealed class DefaultTypeMap : ITypeMap
     {
         private readonly List<FieldInfo> _fields;
         private readonly Type _type;
