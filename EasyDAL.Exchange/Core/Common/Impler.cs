@@ -107,10 +107,10 @@ namespace MyDAL.Core.Common
                 {
                     para = DC.PH.EnumParam(db.ColumnType, ui, realType);
                 }
-                else if (realType.IsGenericType
-                    && realType.GetGenericTypeDefinition() == XConfig.NullableT)
+                else if (realType.IsNullable())
                 {
-                    var type = realType.GetGenericArguments()[0];
+                    //var type = realType.GetGenericArguments()[0];
+                    var type = Nullable.GetUnderlyingType(realType);
                     if (ui.CsValue == null)
                     {
                         para = DC.PH.NullParam(db.ColumnType, ui, type);
@@ -150,7 +150,6 @@ namespace MyDAL.Core.Common
 
                     //
                     db.ID = ui.ID;
-                    //db.ClassFullName = ui.ClassFullName;
                     db.Crud = ui.Crud;
                     db.Action = ui.Action;
                     db.Option = ui.Option;

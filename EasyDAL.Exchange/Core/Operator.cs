@@ -333,25 +333,17 @@ namespace MyDAL.Core
         internal void OrderByHandle<M, F>(Expression<Func<M, F>> func, OrderByEnum orderBy)
         {
             var keyDic = DC.EH.FuncMFExpression( func)[0];
-            var key = keyDic.ColumnOne;
-            var option = OptionEnum.None;
             switch (orderBy)
             {
                 case OrderByEnum.Asc:
-                    option = OptionEnum.Asc;
+                    DC.Option = OptionEnum.Asc;
                     break;
                 case OrderByEnum.Desc:
-                    option = OptionEnum.Desc;
+                    DC.Option = OptionEnum.Desc;
                     break;
             }
 
-            DC.AddConditions(new DicModelUI
-            {
-                ColumnOne = key,
-                Option = option,
-                Action = ActionEnum.OrderBy,
-                Crud = CrudTypeEnum.Query
-            });
+            DC.AddConditions(DC.DH.OrderbyDic(keyDic.ClassFullName, keyDic.ColumnOne));
         }
 
         protected void OrderByOptionHandle(PagingQueryOption option,string fullName)

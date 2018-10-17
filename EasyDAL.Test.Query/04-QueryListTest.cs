@@ -116,36 +116,6 @@ namespace MyDAL.Test.Query
 
             /********************************************************************************************************************************/
 
-            var xx6 = "";
-
-            var res6 = await Conn
-                .Selecter<Agent>()
-                .Where(it => it.CreatedOn >= testQ.DateTime_大于等于)
-                .QueryListAsync<AgentVM>();
-            Assert.True(res6.Count == 28619);
-            Assert.NotNull(res6.First().Name);
-            Assert.Null(res6.First().XXXX);
-
-            var tuple6 = (XDebug.SQL, XDebug.Parameters);
-
-            /********************************************************************************************************************************/
-
-            var xx7 = "";
-
-            var res7 = await Conn
-                .Selecter<Agent>()
-                .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
-                .QueryListAsync(agent => new AgentVM
-                {
-                    XXXX = agent.Name,
-                    YYYY = agent.PathId
-                });
-            Assert.True(res7.Count == 555);
-
-            var tuple7 = (XDebug.SQL, XDebug.Parameters);
-
-            /********************************************************************************************************************************/
-
             var xx = "";
 
         }
