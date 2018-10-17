@@ -127,7 +127,7 @@ namespace Yunyong.DataExchange.Core
                     }
 
                     //
-                    var dicx = DicHandle.UiDicCopy(dic, val, op);
+                    var dicx = DicHandle.UiDicCopy(dic, val,dic.CsValueStr, op);
                     AddConditions(dicx);
                 }
                 UiConditions.Remove(dic);
@@ -184,22 +184,11 @@ namespace Yunyong.DataExchange.Core
 
             foreach (var prop in props)
             {
-                var val = GH.GetTypeValue(prop, m);
+                //var val = GH.GetTypeValue(prop, m);
+                var val = VH.PropertyValue(prop, m);
                 Option = option;
                 Compare = CompareEnum.None;
                 AddConditions(DH.InsertDic(fullName, prop.Name, val, prop.PropertyType, option, index));
-                //    new DicModelUI
-                //{
-                //    ClassFullName=fullName,
-                //    ColumnOne = prop.Name,
-                //    Param = prop.Name,
-                //    ParamRaw = prop.Name,
-                //    CsValue = val,
-                //    CsType = prop.PropertyType,
-                //    Action = ActionEnum.Insert,
-                //    Option = option,
-                //    TvpIndex = index
-                //});
             }
         }
         internal void GetProperties<M>(M m)

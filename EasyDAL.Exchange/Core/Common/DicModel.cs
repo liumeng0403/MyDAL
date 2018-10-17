@@ -41,6 +41,7 @@ namespace Yunyong.DataExchange.Core.Common
         public string Param { get; set; }
         public string ParamRaw { get; set; }
         public object CsValue { get; set; }
+        public string CsValueStr { get; set; }
         public Type CsType { get; set; }
         
         public int TvpIndex { get; set; }
