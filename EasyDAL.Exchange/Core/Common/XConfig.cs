@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Yunyong.DataExchange.Core.Common
 {
@@ -32,6 +33,7 @@ namespace Yunyong.DataExchange.Core.Common
         internal static Type TimeSpan { get; private set; } = typeof(TimeSpan);
         internal static Type Guid { get; private set; } = typeof(Guid);
         internal static Type NullableT { get; private set; } = typeof(Nullable<>);
+        internal static Type ListT { get; private set; } = typeof(List<>);
 
     }
 }

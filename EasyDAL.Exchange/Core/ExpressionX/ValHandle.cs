@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Core.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -21,21 +22,7 @@ namespace Yunyong.DataExchange.Core.ExpressionX
         }
 
         /*******************************************************************************************************/
-
-        // 03 04
-        private bool IsListT(Type type)
-        {
-            if (type.IsGenericType
-                && "System.Collections.Generic".Equals(type.Namespace, StringComparison.OrdinalIgnoreCase)
-                && "List`1".Equals(type.Name, StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        // 03 04
+        
         private string InValueForListT(Type type, object vals, bool isArray)
         {
             var str = string.Empty;
@@ -154,7 +141,7 @@ namespace Yunyong.DataExchange.Core.ExpressionX
                 var fInfo = memExpr.Member as FieldInfo;
                 var obj = GetMemObj(memExpr.Expression, memExpr.Member);
                 var fType = fInfo.FieldType;
-                if (IsListT(fType)
+                if (fType.IsList()
                     || fType.IsArray)
                 {
                     var type = memExpr.Type as Type;
@@ -177,7 +164,7 @@ namespace Yunyong.DataExchange.Core.ExpressionX
                 var pInfo = memExpr.Member as PropertyInfo;
                 var obj = GetMemObj(memExpr.Expression, memExpr.Member);
                 var valType = pInfo.PropertyType;
-                if (IsListT(valType)
+                if (valType.IsList()
                     || valType.IsArray)
                 {
                     fName = pInfo.Name;
@@ -202,7 +189,7 @@ namespace Yunyong.DataExchange.Core.ExpressionX
                 {
                     var valObj = GetMemObj(innerMember.Expression, innerMember.Member);
                     var fType = targetProp.PropertyType;
-                    if (IsListT(fType)
+                    if (fType.IsList()
                         || fType.IsArray)
                     {
                         var type = memExpr.Type as Type;
