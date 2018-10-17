@@ -84,7 +84,7 @@ namespace MyDAL.Test.Update
                 .Where(it => it.AgentId == id2)
                 .Or(it => it.CreatedOn == Convert.ToDateTime("2018-08-19 11:34:42.577074"))
                 .UpdateAsync();
-            Assert.True(res2 == 1);
+            Assert.True(res2 == 2);
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParam);
 

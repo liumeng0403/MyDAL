@@ -32,7 +32,7 @@ namespace MyDAL.Core
             return true;
         }
 
-        private List<(string key, string param, object val, Type valType, string colType, CompareEnum compare)> GetSetKPV<M>(object objx)
+        private List<(string key, string param, (object val, string valStr) val, Type valType, string colType, CompareEnum compare)> GetSetKPV<M>(object objx)
         {
             var list = new List<DicQueryModel>();
             var dic = default(IDictionary<string, object>);
@@ -76,31 +76,31 @@ namespace MyDAL.Core
             }
 
             //
-            var result = new List<(string key, string param, object val, Type valType, string colType, CompareEnum compare)>();
+            var result = new List<(string key, string param, (object val, string valStr) val, Type valType, string colType, CompareEnum compare)>();
             var columns = DC.SC.GetColumnInfos(DC.SC.GetKey(typeof(M).FullName, DC.Conn.Database));
             foreach (var prop in list)
             {
-                var val = default(object);
+                var val = default((object val, string valStr));
                 var valType = default(Type);
                 var columnType = columns.First(it => it.ColumnName.Equals(prop.MField, StringComparison.OrdinalIgnoreCase)).DataType;
                 if (objx is ExpandoObject)
                 {
                     var obj = dic[prop.MField];
                     valType = obj.GetType();
-                    val = DC.GH.GetTypeValue(obj);
+                    val = DC.VH.ExpandoObjectValue(obj);
                     result.Add((prop.MField, prop.VmField, val, valType, columnType, prop.Compare));
                 }
                 else
                 {
                     var mp = objx.GetType().GetProperty(prop.MField);
                     valType = mp.PropertyType;
-                    val = DC.GH.GetTypeValue(mp, objx);
+                    val = DC.VH.PropertyValue(mp, objx);
                     result.Add((prop.MField, prop.VmField, val, valType, columnType, prop.Compare));
                 }
             }
             return result;
         }
-        private List<(string key, string param, object val, Type valType, string colType, CompareEnum compare)> GetWhereKPV<M>(object objx)
+        private List<(string key, string param, (object val, string valStr) val, Type valType, string colType, CompareEnum compare)> GetWhereKPV<M>(object objx)
         {
             var list = new List<DicQueryModel>();
             var dic = default(IDictionary<string, object>);
@@ -176,11 +176,11 @@ namespace MyDAL.Core
             }
 
             //
-            var result = new List<(string key, string param, object val, Type valType, string colType, CompareEnum compare)>();
+            var result = new List<(string key, string param, (object val, string valStr) val, Type valType, string colType, CompareEnum compare)>();
             var columns = DC.SC.GetColumnInfos(DC.SC.GetKey(typeof(M).FullName, DC.Conn.Database));
             foreach (var prop in list)
             {
-                var val = default(object);
+                var val = default((object val, string valStr));
                 var valType = default(Type);
                 var columnType = string.Empty;
                 var xx = columns.FirstOrDefault(it => it.ColumnName.Equals(prop.MField, StringComparison.OrdinalIgnoreCase));
@@ -192,8 +192,8 @@ namespace MyDAL.Core
                 {
                     var mp = objx.GetType().GetProperty(prop.VmField);
                     valType = mp.PropertyType;
-                    val = DC.GH.GetTypeValue(mp, objx);
-                    if(!CheckWhereVal(val,valType))
+                    val = DC.VH.PropertyValue(mp, objx);
+                    if(!CheckWhereVal(val.val,valType))
                     {
                         continue;
                     }
@@ -203,8 +203,8 @@ namespace MyDAL.Core
                 {
                     var obj = dic[prop.MField];
                     valType = obj.GetType();
-                    val = DC.GH.GetTypeValue(obj);
-                    if (!CheckWhereVal(val, valType))
+                    val = DC.VH.ExpandoObjectValue(obj);
+                    if (!CheckWhereVal(val.val, valType))
                     {
                         continue;
                     }
@@ -214,8 +214,8 @@ namespace MyDAL.Core
                 {
                     var mp = objx.GetType().GetProperty(prop.MField);
                     valType = mp.PropertyType;
-                    val = DC.GH.GetTypeValue(mp, objx);
-                    if(!CheckWhereVal(val,valType))
+                    val = DC.VH.PropertyValue(mp, objx);
+                    if(!CheckWhereVal(val.val,valType))
                     {
                         continue;
                     }
@@ -236,30 +236,19 @@ namespace MyDAL.Core
             DC.Action = action;
             var keyDic = DC.EH.FuncMFExpression( func)[0];
             var key = keyDic.ColumnOne;
-            var val = default(object);
+            var val = default((object val, string valStr));
             if (modVal == null)
             {
-                val = null;
+                val = (null,string.Empty);
             }
             else
             {
-                val = DC.GH.GetTypeValue(modVal);
+                val = DC.VH.ExpandoObjectValue(modVal);
+                //val = DC.GH.GetTypeValue(modVal);
             }
             DC.Option = option;
             DC.Compare = CompareEnum.None;
             DC.AddConditions(DC.DH.SetDic(typeof(M).FullName, key, key, val, typeof(F), action));
-            //    new DicModelUI
-            //{
-            //    ClassFullName = typeof(M).FullName,
-            //    ColumnOne = key,
-            //    Param = key,
-            //    ParamRaw = key,
-            //    CsValue = val,
-            //    CsType = typeof(F),
-            //    Option = option,
-            //    Action = action,
-            //    Crud = CrudTypeEnum.Update
-            //});
         }
 
         internal void SetDynamicHandle<M>(object mSet)

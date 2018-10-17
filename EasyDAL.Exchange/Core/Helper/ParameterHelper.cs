@@ -241,15 +241,15 @@ namespace MyDAL.Core.Helper
             {
                 if (colType.IsNullStr())
                 {
-                    type = DbType.DateTime2;
+                    type = DbType.AnsiString;
                 }
                 else if (colType.Equals("datetime",StringComparison.OrdinalIgnoreCase))
                 {
-                    type = DbType.DateTime2;
+                    type = DbType.AnsiString;
                 }
                 else
                 {
-                    type = DbType.DateTime;
+                    type = DbType.DateTime2;
                 }
             }
             else if (realType == XConfig.TimeSpan)
@@ -599,13 +599,13 @@ namespace MyDAL.Core.Helper
             var val = default(object);
 
             //
-            if (type == DbType.DateTime2 )
+            if (type == DbType.AnsiString )
             {
-                val = ui.CsValue.ToDateTime();
+                val = ui.CsValueStr;  
             }
-            else if (type == DbType.DateTime)
+            else if (type == DbType.DateTime2)
             {
-                val = ui.CsValue.ToDateTime();
+                val = ui.CsValueStr.ToDateTime();
             }
             else
             {
@@ -623,8 +623,8 @@ namespace MyDAL.Core.Helper
 
             //
             if (type ==DbType.Time)
-            {            
-                val = ui.CsValue.ToDateTime();                    
+            {
+                val = ui.CsValueStr.ToDateTime();                    
             }
             else
             {
@@ -680,7 +680,7 @@ namespace MyDAL.Core.Helper
                 }
                 else
                 {
-                    val = ui.CsValue;
+                    val = (int)(ui.CsValue);
                 }
             }
             else

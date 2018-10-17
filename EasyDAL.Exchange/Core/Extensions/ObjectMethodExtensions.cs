@@ -215,6 +215,19 @@ namespace MyDAL.Core.Extensions
             }
             return result;
         }
+        internal static string ToDateTimeStr(this object obj)
+        {
+            var result = string.Empty;
+            try
+            {
+                result = Convert.ToDateTime(obj).ToString("yyyy-MM-dd HH:mm:ss.ffffff");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"string ToDateTimeStr(this object obj) -- {obj?.ToString()}", ex);
+            }
+            return result;
+        }
 
         internal static Guid ToGuid(this object obj)
         {
