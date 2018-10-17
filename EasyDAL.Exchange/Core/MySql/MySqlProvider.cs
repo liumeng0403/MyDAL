@@ -580,11 +580,12 @@ namespace Yunyong.DataExchange.Core.MySql
                     list.Add($" insert into {Table<M>(type)} {GetColumns()} \r\n values {GetValues()} ;");
                     break;
                 case UiMethodEnum.CreateBatchAsync:
+                    var tablex = Table<M>(type);
                     list.Add(
-                                  $" LOCK TABLES {Table<M>(type)} WRITE; " +
-                                  $" \r\n /*!40000 ALTER TABLE {Table<M>(type)} DISABLE KEYS */; " +
-                                  $" \r\n insert into  {Table<M>(type)} {GetColumns()} \r\n VALUES {GetValues()} ; " +
-                                  $" \r\n /*!40000 ALTER TABLE {Table<M>(type)} ENABLE KEYS */; " +
+                                  $" LOCK TABLES {tablex} WRITE; " +
+                                  $" \r\n /*!40000 ALTER TABLE {tablex} DISABLE KEYS */; " +
+                                  $" \r\n insert into  {tablex} {GetColumns()} \r\n VALUES {GetValues()} ; " +
+                                  $" \r\n /*!40000 ALTER TABLE {tablex} ENABLE KEYS */; " +
                                   $" \r\n UNLOCK TABLES; "
                                  );
                     break;
@@ -608,8 +609,9 @@ namespace Yunyong.DataExchange.Core.MySql
                     break;
                 case UiMethodEnum.QueryPagingListAsync:
                     var wherePart8 = Wheres();
-                    list.Add($"select count(*) {From()} {Table<M>(type)} {wherePart8} ; ");
-                    list.Add($"select {Columns()} {From()} {Table<M>(type)} {wherePart8} {GetOrderByPart<M>()} {Limit(pageIndex, pageSize)}  ; ");
+                    var table8 = Table<M>(type);
+                    list.Add($"select count(*) {From()} {table8} {wherePart8} ; ");
+                    list.Add($"select {Columns()} {From()} {table8} {wherePart8} {GetOrderByPart<M>()} {Limit(pageIndex, pageSize)}  ; ");
                     break;
                 case UiMethodEnum.JoinQueryPagingListAsync:
                     var wherePart9 = Wheres();
@@ -620,8 +622,9 @@ namespace Yunyong.DataExchange.Core.MySql
                     list.Add($" select * {From()} {Table<M>(type)} {GetOrderByPart<M>()} ; ");
                     break;
                 case UiMethodEnum.QueryAllPagingListAsync:
-                    list.Add($"select count(*) {From()} {Table<M>(type)} ; ");
-                    list.Add($"select * {From()} {Table<M>(type)} {GetOrderByPart<M>()} {Limit(pageIndex, pageSize)}  ; ");
+                    var table11 = Table<M>(type);
+                    list.Add($"select count(*) {From()} {table11} ; ");
+                    list.Add($"select * {From()} {table11} {GetOrderByPart<M>()} {Limit(pageIndex, pageSize)}  ; ");
                     break;
                 case UiMethodEnum.QuerySingleValueAsync:
                     list.Add($" select {GetSingleValuePart()} {From()} {Table<M>(type)} {Wheres()} ; ");
