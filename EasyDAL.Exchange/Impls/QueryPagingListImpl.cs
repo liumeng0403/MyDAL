@@ -51,6 +51,7 @@ namespace MyDAL.Impls
 
         public async Task<PagingList<VM>> QueryPagingListAsync<VM>(PagingQueryOption option)
         {
+            SelectMHandle<M,VM>();
             OrderByOptionHandle(option,typeof(M).FullName);
             DC.IP.ConvertDic();
             return await QueryPagingListAsyncHandle<M, VM>(option.PageIndex, option.PageSize, UiMethodEnum.QueryPagingListAsync);

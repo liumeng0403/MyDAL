@@ -80,6 +80,8 @@ namespace MyDAL.Core.Bases
 
         protected async Task<List<VM>> QueryListAsyncHandle<DM, VM>()
         {
+            SelectMHandle<DM, VM>();
+            DC.IP.ConvertDic();
             return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<DM>(UiMethodEnum.QueryListAsync)[0],
@@ -102,21 +104,54 @@ namespace MyDAL.Core.Bases
 
         internal void SelectMHandle<M>()
         {
+            DC.Action = ActionEnum.Select;
             var vmType = typeof(M);
             var fullName = vmType.FullName;
             var vmProps = DC.GH.GetPropertyInfos(vmType);
             var tab = DC.UiConditions.FirstOrDefault(it => fullName.Equals(it.ClassFullName, StringComparison.OrdinalIgnoreCase));
             if (tab != null)
             {
+                DC.Option = OptionEnum.Column;
+                DC.Compare = CompareEnum.None;
                 foreach (var prop in vmProps)
                 {
-                    DC.AddConditions(DicModelHelper.ColumnDic(prop.Name, tab.TableAliasOne, fullName));
+                    DC.AddConditions(DC.DH.ColumnDic(prop.Name, tab.TableAliasOne, fullName));
                 }
             }
             else
             {
                 var fullNames = DC.UiConditions.Where(it => !string.IsNullOrWhiteSpace(it.ClassFullName)).Distinct();
                 throw new Exception($"请使用 [[Task<List<VM>> QueryListAsync<VM>(Expression<Func<VM>> func)]] 方法! 或者 {vmType.Name} 必须为 [[{string.Join(",", fullNames.Select(it => it.ClassName))}]] 其中之一 !");
+            }
+        }
+
+        internal void SelectMHandle<M,VM>()
+        {
+            DC.Action = ActionEnum.Select;
+            var mType = typeof(M);
+            var fullName = mType.FullName;
+            var mProps = DC.GH.GetPropertyInfos(mType);
+            var tab = DC.UiConditions.FirstOrDefault(it => fullName.Equals(it.ClassFullName, StringComparison.OrdinalIgnoreCase));
+            var vmProps = DC.GH.GetPropertyInfos(typeof(VM));
+            if (tab != null)
+            {
+                DC.Option = OptionEnum.Column;
+                DC.Compare = CompareEnum.None;
+                foreach (var prop in mProps)
+                {
+                    foreach(var vProp in vmProps)
+                    {
+                        if (prop.Name.Equals(vProp.Name, StringComparison.OrdinalIgnoreCase))
+                        {
+                            DC.AddConditions(DC.DH.ColumnDic(prop.Name, tab.TableAliasOne, fullName));
+                        }
+                    }
+                }
+            }
+            else
+            {
+                var fullNames = DC.UiConditions.Where(it => !string.IsNullOrWhiteSpace(it.ClassFullName)).Distinct();
+                throw new Exception($"请使用 [[Task<List<VM>> QueryListAsync<VM>(Expression<Func<VM>> func)]] 方法! 或者 {mType.Name} 必须为 [[{string.Join(",", fullNames.Select(it => it.ClassName))}]] 其中之一 !");
             }
         }
 
@@ -137,9 +172,7 @@ namespace MyDAL.Core.Bases
             var list = DC.EH.FuncMFExpression(func);
             foreach (var dic in list)
             {
-                //dic.Action = ActionEnum.Select;
                 dic.Option = OptionEnum.ColumnAs;
-                //dic.Crud = CrudTypeEnum.Query;
                 DC.AddConditions(dic);
             }
         }

@@ -38,10 +38,12 @@ namespace MyDAL.Core.Bases
             var list = new List<DicQueryModel>();
             var dic = default(IDictionary<string, object>);
 
+            //
+            var mProps = typeof(M).GetProperties();
             if (objx is ExpandoObject)
             {
                 dic = objx as IDictionary<string, object>;
-                foreach (var mp in typeof(M).GetProperties())
+                foreach (var mp in mProps)
                 {
                     foreach (var sp in dic.Keys)
                     {
@@ -59,9 +61,10 @@ namespace MyDAL.Core.Bases
             }
             else
             {
-                foreach (var mp in typeof(M).GetProperties())
+                var oProps = objx.GetType().GetProperties();
+                foreach (var mp in mProps)
                 {
-                    foreach (var sp in objx.GetType().GetProperties())
+                    foreach (var sp in oProps)
                     {
                         if (mp.Name.Equals(sp.Name, StringComparison.OrdinalIgnoreCase))
                         {
@@ -105,14 +108,17 @@ namespace MyDAL.Core.Bases
         {
             var list = new List<DicQueryModel>();
             var dic = default(IDictionary<string, object>);
-
+            //
+            var mProps = typeof(M).GetProperties();
+            var oType = objx.GetType();
             if (objx is IQueryOption)
             {
-                foreach (var mp in typeof(M).GetProperties())
+                var oProps = oType.GetProperties(XConfig.ClassSelfMember);
+                foreach (var mp in mProps)
                 {
-                    foreach (var sp in objx.GetType().GetProperties(XConfig.ClassSelfMember))
+                    foreach (var sp in oProps)
                     {
-                        var spAttr = DC.AH.GetAttribute<QueryColumnAttribute>(objx.GetType(), sp) as QueryColumnAttribute;
+                        var spAttr = DC.AH.GetAttribute<QueryColumnAttribute>(oType, sp) as QueryColumnAttribute;
                         var spName = string.Empty;
                         var compare = CompareEnum.Equal;
                         if (spAttr != null
@@ -141,7 +147,7 @@ namespace MyDAL.Core.Bases
             else if (objx is ExpandoObject)
             {
                 dic = objx as IDictionary<string, object>;
-                foreach (var mp in typeof(M).GetProperties())
+                foreach (var mp in mProps)
                 {
                     foreach (var sp in dic.Keys)
                     {
@@ -159,9 +165,10 @@ namespace MyDAL.Core.Bases
             }
             else
             {
-                foreach (var mp in typeof(M).GetProperties())
+                var oProps = oType.GetProperties();
+                foreach (var mp in mProps)
                 {
-                    foreach (var sp in objx.GetType().GetProperties())
+                    foreach (var sp in oProps)
                     {
                         if (mp.Name.Equals(sp.Name, StringComparison.OrdinalIgnoreCase))
                         {
@@ -189,7 +196,7 @@ namespace MyDAL.Core.Bases
                 {
                     columnType = xx.DataType;
                 }
-                if (objx is PagingQueryOption)
+                if (objx is IQueryOption)
                 {
                     var mp = objx.GetType().GetProperty(prop.VmField);
                     valType = mp.PropertyType;

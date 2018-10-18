@@ -16,7 +16,7 @@ namespace MyDAL.Core.Helper
 
         /*******************************************************************************************************/
 
-        internal static DicModelUI UiDicCopy(DicModelUI ui, object csVal,string csValStr, OptionEnum option)
+        internal static DicModelUI UiDicCopy(DicModelUI ui, object csVal, string csValStr, OptionEnum option)
         {
             var cp = new DicModelUI
             {
@@ -38,7 +38,7 @@ namespace MyDAL.Core.Helper
                 Param = ui.Param,
                 ParamRaw = ui.ParamRaw,
                 CsValue = ui.CsValue,
-                CsValueStr=ui.CsValueStr,
+                CsValueStr = ui.CsValueStr,
                 CsType = ui.CsType,
                 TvpIndex = ui.TvpIndex
             };
@@ -76,7 +76,7 @@ namespace MyDAL.Core.Helper
             dic.CsValue = value.val;
             dic.CsValueStr = value.valStr;
             dic.CsType = valType;
-            
+
             return dic;
         }
 
@@ -90,7 +90,7 @@ namespace MyDAL.Core.Helper
             dic.CsValue = value.val;
             dic.CsValueStr = value.valStr;
             dic.CsType = valType;
-            
+
             return dic;
         }
         internal DicModelUI LTrimDic(string key, string alias, (object val, string valStr) value, Type valType)
@@ -103,7 +103,7 @@ namespace MyDAL.Core.Helper
             dic.CsValue = value.val;
             dic.CsValueStr = value.valStr;
             dic.CsType = valType;
-            
+
             return dic;
         }
         internal DicModelUI RTrimDic(string key, string alias, (object val, string valStr) value, Type valType)
@@ -116,7 +116,7 @@ namespace MyDAL.Core.Helper
             dic.CsValue = value.val;
             dic.CsValueStr = value.valStr;
             dic.CsType = valType;
-            
+
             return dic;
         }
 
@@ -205,17 +205,14 @@ namespace MyDAL.Core.Helper
             return dic;
         }
 
-        internal static DicModelUI ColumnDic(string columnOne, string tableAliasOne, string fullName)
+        internal DicModelUI ColumnDic(string columnOne, string tableAliasOne, string fullName)
         {
-            return new DicModelUI
-            {
-                ClassFullName = fullName,
-                ColumnOne = columnOne,
-                TableAliasOne = tableAliasOne,
-                Action = ActionEnum.Select,
-                Option = OptionEnum.Column,
-                Crud = CrudTypeEnum.Join
-            };
+            var dic = SetDicBase();
+            dic.ClassFullName = fullName;
+            dic.ColumnOne = columnOne;
+            dic.TableAliasOne = tableAliasOne;
+
+            return dic;
         }
 
         internal DicModelUI CountDic(string fullName, string key, string alias = "")
@@ -237,7 +234,7 @@ namespace MyDAL.Core.Helper
             var dic = SetDicBase();
             dic.ClassFullName = fullName;
             dic.ColumnOne = key;
-            
+
             return dic;
         }
 
@@ -254,7 +251,7 @@ namespace MyDAL.Core.Helper
             dic.CsValueStr = val.valStr;
             dic.CsType = valType;
             dic.TvpIndex = tvpIdx;
-            
+
             dic.Action = ActionEnum.Insert;
 
             return dic;
@@ -272,7 +269,7 @@ namespace MyDAL.Core.Helper
             dic.CsValue = val.val;
             dic.CsValueStr = val.valStr;
             dic.CsType = valType;
-            
+
             dic.Action = action;
 
             return dic;
@@ -288,7 +285,7 @@ namespace MyDAL.Core.Helper
             dic.TableAliasOne = alias1;
             dic.ColumnTwo = key2;
             dic.TableAliasTwo = alias2;
-            
+
             return dic;
         }
 
