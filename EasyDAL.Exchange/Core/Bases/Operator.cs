@@ -101,13 +101,12 @@ namespace MyDAL.Core.Bases
             }
             return result;
         }
-        [Obsolete("作废方法,仅作参考!")]
         private List<(string key, string param, (object val, string valStr) val, Type valType, string colType, CompareEnum compare)> GetWhereKPV<M>(object objx)
         {
             var list = new List<DicQueryModel>();
             var dic = default(IDictionary<string, object>);
 
-            if (objx is PagingQueryOption)
+            if (objx is IQueryOption)
             {
                 foreach (var mp in typeof(M).GetProperties())
                 {
@@ -285,8 +284,7 @@ namespace MyDAL.Core.Bases
             field.Action = ActionEnum.Where;
             DC.AddConditions(field);
         }
-
-        [Obsolete("作废方法,做参考用!")]
+        
         internal void WhereDynamicHandle<M>(object mWhere)
         {
             var tuples = GetWhereKPV<M>(mWhere);

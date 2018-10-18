@@ -24,6 +24,16 @@ namespace MyDAL
             return new WhereD<M>(deleter.DC);
         }
 
+        /// <summary>
+        /// 过滤条件起点 -- 设置多个条件
+        /// </summary>
+        public static WhereD<M> Where<M>(this Deleter<M> deleter, object mWhere)
+        {
+            deleter.DC.Action = ActionEnum.Where;
+            deleter.DC.OP.WhereDynamicHandle<M>(mWhere);
+            return new WhereD<M>(deleter.DC);
+        }
+
         /**************************************************************************************************************/
 
         /// <summary>
@@ -34,6 +44,16 @@ namespace MyDAL
         {
             set.DC.Action = ActionEnum.Where;
             set.DC.OP.WhereHandle(func);
+            return new WhereU<M>(set.DC);
+        }
+
+        /// <summary>
+        /// 过滤条件起点 -- 设置多个条件
+        /// </summary>
+        public static WhereU<M> Where<M>(this SetU<M> set, object mWhere)
+        {
+            set.DC.Action = ActionEnum.Where;
+            set.DC.OP.WhereDynamicHandle<M>(mWhere);
             return new WhereU<M>(set.DC);
         }
 
