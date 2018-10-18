@@ -3,6 +3,8 @@ using MyDAL.Test.ViewModels;
 using System;
 using System.Threading.Tasks;
 using Xunit;
+using Yunyong.Core;
+using Yunyong.DataExchange;
 
 namespace MyDAL.Test.QuickAPI
 {

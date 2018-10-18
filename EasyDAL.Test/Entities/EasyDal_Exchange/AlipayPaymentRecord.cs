@@ -1,4 +1,5 @@
 ﻿using System;
+using Yunyong.DataExchange;
 
 namespace MyDAL.Test.Entities.EasyDal_Exchange
 {
