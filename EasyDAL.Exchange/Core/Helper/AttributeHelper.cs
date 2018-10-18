@@ -1,81 +1,45 @@
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using Yunyong.DataExchange.Cache;
-using Yunyong.DataExchange.Core.Common;
+using Yunyong.DataExchange.Core.Bases;
+using Yunyong.DataExchange.Core.Extensions;
 
 namespace Yunyong.DataExchange.Core.Helper
 {
-    internal class AttributeHelper : ClassInstance<AttributeHelper>
+    internal class AttributeHelper 
     {
-        /// <summary>
-        /// 缓存Collection Name Key
-        /// </summary>
-        private string BuildKey(Type type, string name)
+
+        private Context DC { get; set; }
+
+        internal AttributeHelper(Context dc)
         {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                return type.FullName;
-            }
-            return $"{type.FullName}.{name}";
+            DC = dc;
         }
 
-        private string GetValue<T>(Type type, Func<T, string> attributeValueFunc, string name)
-            where T : Attribute
-        {
-            object attribute = null;
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                attribute = type.GetCustomAttributes(typeof(T), false).FirstOrDefault();
-            }
-            else
-            {
-                var propertyInfo = type.GetProperty(name);
-                if (propertyInfo != null)
-                {
-                    attribute = propertyInfo.GetCustomAttributes(typeof(T), false).FirstOrDefault();
-                }
-                var fieldInfo = type.GetField(name);
-                if (fieldInfo != null)
-                {
-                    attribute = fieldInfo.GetCustomAttributes(typeof(T), false).FirstOrDefault();
-                }
-            }
-            return attribute == null ?
-                string.Empty :
-                attributeValueFunc((T)attribute);
-        }
-
-        private string GetAttributeValue<A>(Type type, Func<A, string> attributeValueFunc, string name)
+        /*************************************************************************************************************************************/
+        
+        internal string GetAttributePropVal<M,A>(Expression<Func<A, string>> attrPropFunc)
             where A : Attribute
         {
-            var key = BuildKey(type, name);
-            if (!StaticCache.Cache.ContainsKey(key))
+            var dic = DC.EH.FuncMFExpression(attrPropFunc)[0];
+            var mType = typeof(M);
+            var key = DC.SC.GetKey(dic.ColumnOne, typeof(A).FullName, mType.FullName, DC.Conn.Database);
+            if (!StaticCache.ModelAttributePropValCache.ContainsKey(key))
             {
-                var value = GetValue(type, attributeValueFunc, name);
-                if (!StaticCache.Cache.ContainsKey(key))
+                var attr = mType.GetCustomAttributes(typeof(A), false).FirstOrDefault();
+                var  value = attr == null ? string.Empty : attrPropFunc.Compile()((A)attr);
+                if (!StaticCache.ModelAttributePropValCache.ContainsKey(key)
+                    && !value.IsNullStr())
                 {
-                    StaticCache.Cache[key] = value;
+                    StaticCache.ModelAttributePropValCache[key] = value;
                 }
+                return value;
             }
-            return StaticCache.Cache[key];
+            return StaticCache.ModelAttributePropValCache[key];
         }
-
-        /************************************************************************************************************************************/
-
-        public string GetPropertyValue<M, A>(M m, Func<A, string> attributeValueFunc, string name)
-            where A : Attribute
-        {
-            return GetAttributeValue(m.GetType(), attributeValueFunc, name);
-        }
-
-        public string GetAttributePropVal<A>(Type type, Func<A, string> attributeValueFunc)
-            where A : Attribute
-        {
-            return GetAttributeValue(type, attributeValueFunc, null);
-        }
-
-        public Attribute GetAttribute<A>(Type mType)
+        internal Attribute GetAttribute<A>(Type mType)
         {
             try
             {
@@ -87,7 +51,7 @@ namespace Yunyong.DataExchange.Core.Helper
                 throw new Exception("方法 Attribute GetAttribute<M,A>(M m, PropertyInfo prop) 出错:" + ex.Message);
             }
         }
-        public Attribute GetAttribute<A>(Type mType, PropertyInfo prop)
+        internal Attribute GetAttribute<A>(Type mType, PropertyInfo prop)
         {
             try
             {
@@ -100,5 +64,6 @@ namespace Yunyong.DataExchange.Core.Helper
                 throw new Exception("方法 Attribute GetAttribute<M,A>(M m, PropertyInfo prop) 出错:" + ex.Message);
             }
         }
+
     }
 }

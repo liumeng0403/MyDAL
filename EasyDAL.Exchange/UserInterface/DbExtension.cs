@@ -414,7 +414,7 @@ namespace Yunyong.DataExchange
             XConfig.TablesNamespace = modelsNamespace;
             if (XConfig.IsNeedChangeDb)
             {
-                (CodeFirstHelper.Instance.CodeFirstProcess(conn)).GetAwaiter().GetResult();
+                (new CodeFirstHelper(new DbContext(conn)).CodeFirstProcess(conn)).GetAwaiter().GetResult();
             }
             return conn;
         }

@@ -18,7 +18,7 @@ namespace Yunyong.DataExchange.Core.Bases
             Conn = conn;
             UiConditions = new List<DicModelUI>();
             DbConditions = new List<DicModelDB>();
-            AH = AttributeHelper.Instance;
+            AH = new AttributeHelper(this);
             VH = new CsValueHelper(this);
             GH = GenericHelper.Instance;
             EH = new XExpression(this);
@@ -166,7 +166,7 @@ namespace Yunyong.DataExchange.Core.Bases
             var key = SC.GetKey(type.FullName, Conn.Database);
 
             //
-            var table = SqlProvider.GetTableName(type);
+            var table = SqlProvider.GetTableName<M>();
             SC.SetModelTableName(key, table);
             SC.SetModelType(key, type);
             SC.SetModelProperys(type, this);

@@ -63,39 +63,39 @@ namespace Yunyong.DataExchange.Core.Bases
 
         /**********************************************************************************************************/
 
-        protected async Task<VM> QueryFirstOrDefaultAsyncHandle<DM, VM>()
+        protected async Task<VM> QueryFirstOrDefaultAsyncHandle<M, VM>()
         {
             return await DC.DS.ExecuteReaderSingleRowAsync<VM>(
                 DC.Conn,
-                DC.SqlProvider.GetSQL<DM>(UiMethodEnum.QueryFirstOrDefaultAsync)[0],
+                DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryFirstOrDefaultAsync)[0],
                 DC.SqlProvider.GetParameters());
         }
 
-        protected async Task<List<VM>> QueryAllAsyncHandle<DM, VM>()
+        protected async Task<List<VM>> QueryAllAsyncHandle<M, VM>()
         {
             return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
                 DC.Conn,
-                DC.SqlProvider.GetSQL<DM>(UiMethodEnum.QueryAllAsync)[0],
+                DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryAllAsync)[0],
                 DC.SqlProvider.GetParameters())).ToList();
         }
 
-        protected async Task<List<VM>> QueryListAsyncHandle<DM, VM>()
+        protected async Task<List<VM>> QueryListAsyncHandle<M, VM>()
         {
-            SelectMHandle<DM, VM>();
+            SelectMHandle<M, VM>();
             DC.IP.ConvertDic();
             return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
                 DC.Conn,
-                DC.SqlProvider.GetSQL<DM>(UiMethodEnum.QueryListAsync)[0],
+                DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryListAsync)[0],
                 DC.SqlProvider.GetParameters())).ToList();
         }
 
-        protected async Task<PagingList<VM>> QueryPagingListAsyncHandle<DM, VM>(int pageIndex, int pageSize, UiMethodEnum sqlType)
+        protected async Task<PagingList<VM>> QueryPagingListAsyncHandle<M, VM>(int pageIndex, int pageSize, UiMethodEnum sqlType)
         {
             var result = new PagingList<VM>();
             result.PageIndex = pageIndex;
             result.PageSize = pageSize;
             var paras = DC.SqlProvider.GetParameters();
-            var sql = DC.SqlProvider.GetSQL<DM>(sqlType, result.PageIndex, result.PageSize);
+            var sql = DC.SqlProvider.GetSQL<M>(sqlType, result.PageIndex, result.PageSize);
             result.TotalCount = await DC.DS.ExecuteScalarAsync<int>(DC.Conn, sql[0], paras);
             result.Data = (await DC.DS.ExecuteReaderMultiRowAsync<VM>(DC.Conn, sql[1], paras)).ToList();
             return result;
@@ -128,12 +128,19 @@ namespace Yunyong.DataExchange.Core.Bases
 
         internal void SelectMHandle<M,VM>()
         {
-            DC.Action = ActionEnum.Select;
             var mType = typeof(M);
+            var vmType = typeof(VM);
+            if (mType==vmType)
+            {
+                return;
+            }
+
+            //
+            DC.Action = ActionEnum.Select;
             var fullName = mType.FullName;
             var mProps = DC.GH.GetPropertyInfos(mType);
             var tab = DC.UiConditions.FirstOrDefault(it => fullName.Equals(it.ClassFullName, StringComparison.OrdinalIgnoreCase));
-            var vmProps = DC.GH.GetPropertyInfos(typeof(VM));
+            var vmProps = DC.GH.GetPropertyInfos(vmType);
             if (tab != null)
             {
                 DC.Option = OptionEnum.Column;
