@@ -18,7 +18,10 @@ using Yunyong.DataExchange.UserFacade.Update;
 namespace Yunyong.DataExchange
 {
     /// <summary>
-    /// This is ORM lite start point.
+    /// This is ORM lite start point. 
+    /// 博客:  https://www.cnblogs.com/Meng-NET/  
+    /// GitHub:  https://github.com/liumeng0403/MyDAL  
+    /// NuGet:  https://www.nuget.org/packages/MyDAL/ 
     /// </summary>
     public static class DbExtension
     {
@@ -363,21 +366,21 @@ namespace Yunyong.DataExchange
         /// </summary>
         public static async Task<PagingList<M>> QueryPagingListAsync<M>(this IDbConnection conn, PagingQueryOption option)
         {
-            return await conn.Selecter<M>().Where(option.GetCondition()).QueryPagingListAsync(option);
+            return await conn.Selecter<M>().Where(option).QueryPagingListAsync(option);
         }
         /// <summary>
         /// Selecter 快速 QueryPagingListAsync 方法
         /// </summary>
         public static async Task<PagingList<VM>> QueryPagingListAsync<M, VM>(this IDbConnection conn, PagingQueryOption option)
         {
-            return await conn.Selecter<M>().Where(option.GetCondition()).QueryPagingListAsync<VM>(option);
+            return await conn.Selecter<M>().Where(option).QueryPagingListAsync<VM>(option);
         }
         /// <summary>
         /// Selecter 快速 QueryPagingListAsync 方法
         /// </summary>
         public static async Task<PagingList<VM>> QueryPagingListAsync<M, VM>(this IDbConnection conn, PagingQueryOption option, Expression<Func<M, VM>> func)
         {
-            return await conn.Selecter<M>().Where(option.GetCondition()).QueryPagingListAsync<VM>(option, func);
+            return await conn.Selecter<M>().Where(option).QueryPagingListAsync<VM>(option, func);
         }
 
         /******************************************************************************************************************************/

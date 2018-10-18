@@ -10,7 +10,7 @@ namespace Yunyong.DataExchange.AdoNet
     /// <summary>
     /// A bag of parameters that can be passed to the Dapper Query and Execute methods
     /// </summary>
-    internal class DynamicParameters : IDynamicParameters
+    internal class DynamicParameters 
     {
         internal static DbType EnumerableMultiParameter {get;} = (DbType)(-1);
         private Dictionary<string, ParamInfo> parameters { get; } = new Dictionary<string, ParamInfo>();
@@ -19,10 +19,7 @@ namespace Yunyong.DataExchange.AdoNet
         /// If true, the command-text is inspected and only values that are clearly used are included on the connection
         /// </summary>
         public bool RemoveUnused { get; set; }
-
-        object IDynamicParameters.this[string name] =>
-            parameters.TryGetValue(name, out ParamInfo param) ? param.Value : null;
-
+        
         // used
         public DynamicParameters()
         {
@@ -53,10 +50,6 @@ namespace Yunyong.DataExchange.AdoNet
                 Scale = scale
             };
         }
-        public void Add(ParamInfo param)
-        {
-            parameters[CleanKeyStr(param.Name)] = param;
-        }
 
         /// <summary>
         /// 清理 key str 中的特殊字符
@@ -75,12 +68,7 @@ namespace Yunyong.DataExchange.AdoNet
             }
             return name;
         }
-
-        void IDynamicParameters.AddParameters(IDbCommand command, Identity identity)
-        {
-            AddParameters(command, identity);
-        }
-
+        
         /// <summary>
         /// Add all the parameters needed to the command just before it executes
         /// </summary>
