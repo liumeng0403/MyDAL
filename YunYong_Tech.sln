@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.Create", "EasyDA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.Func", "MyDAL.Test.Func\MyDAL.Test.Func.csproj", "{BF35B9CD-BAE0-49D8-AE0C-D88F5F2962CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDAL.Test.CodeFirst", "MyDAL.Test.CodeFirst\MyDAL.Test.CodeFirst.csproj", "{6A0A52E9-C847-4AAC-95BC-F3B7BA9858AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.CodeFirst", "MyDAL.Test.CodeFirst\MyDAL.Test.CodeFirst.csproj", "{6A0A52E9-C847-4AAC-95BC-F3B7BA9858AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDAL.Test.QuickAPI", "MyDAL.Test.QuickAPI\MyDAL.Test.QuickAPI.csproj", "{054CCDC0-CB13-4AFC-AFA7-76651EF0947A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{6A0A52E9-C847-4AAC-95BC-F3B7BA9858AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A0A52E9-C847-4AAC-95BC-F3B7BA9858AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A0A52E9-C847-4AAC-95BC-F3B7BA9858AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{054CCDC0-CB13-4AFC-AFA7-76651EF0947A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{054CCDC0-CB13-4AFC-AFA7-76651EF0947A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{054CCDC0-CB13-4AFC-AFA7-76651EF0947A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{054CCDC0-CB13-4AFC-AFA7-76651EF0947A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

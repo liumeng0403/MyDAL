@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,7 +25,7 @@ namespace Yunyong.DataExchange.Core.Helper
             {
                 if (type.FullName.StartsWith(XConfig.TablesNamespace))
                 {
-                    var table = AttributeHelper.Instance.GetAttribute<TableAttribute>(type) as TableAttribute;
+                    var table = AttributeHelper.Instance.GetAttribute<XTableAttribute>(type) as XTableAttribute;
                     if (table != null)
                     {
                         cmTypes.Add(new NameTypeModel

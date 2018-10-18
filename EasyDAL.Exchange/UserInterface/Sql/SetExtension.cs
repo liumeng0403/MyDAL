@@ -30,19 +30,17 @@ namespace Yunyong.DataExchange
             set.DC.OP.SetChangeHandle<M, F>(func, newVal, ActionEnum.Update, OptionEnum.Set);
             return set;
         }
-
-
+        
         /// <summary>
         /// set 多个字段数据
         /// </summary>
-        public static SetU<M> Set<M>(this Updater<M> updater, object mSet)
+        public static SetU<M> Set<M>(this Updater<M> updater, object filedsObject)
         {
             updater.DC.Action = ActionEnum.Update;
-            updater.DC.OP.SetDynamicHandle<M>(mSet);
+            updater.DC.OP.SetDynamicHandle<M>(filedsObject);
             return new SetU<M>(updater.DC);
         }
-
-
+        
         /// <summary>
         /// set 单个字段变更
         /// </summary>
