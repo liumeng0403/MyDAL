@@ -16,6 +16,11 @@ namespace MyDAL.Cache
         {
             return $"{dbName}:{classFullName}";
         }
+        internal string GetKey(string propName,string attrFullName,string classFullName, string dbName)
+        {
+            return $"{GetKey(classFullName, dbName)}:{attrFullName}:{propName}";
+        }
+
 
         /*****************************************************************************************************************************************************/
 
@@ -40,7 +45,7 @@ namespace MyDAL.Cache
         /// <summary>
         /// Cache Data
         /// </summary>
-        internal static ConcurrentDictionary<string, string> Cache { get; } = new ConcurrentDictionary<string, string>();
+        internal static ConcurrentDictionary<string, string> ModelAttributePropValCache { get; } = new ConcurrentDictionary<string, string>();
 
         /*****************************************************************************************************************************************************/
 

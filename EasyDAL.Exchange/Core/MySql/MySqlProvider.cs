@@ -548,17 +548,17 @@ namespace MyDAL.Core.MySql
             return paras;
         }
 
-        internal string GetTableName(Type mType)
+        internal string GetTableName<M>()
         {
             var tableName = string.Empty;
-            tableName = DC.AH.GetAttributePropVal<XTableAttribute>(mType, a => a.Name);
+            tableName = DC.AH.GetAttributePropVal<M,XTableAttribute>(a => a.Name);
             if (tableName.IsNullStr())
             {
-                tableName = DC.AH.GetAttributePropVal<TableAttribute>(mType, a => a.Name);
+                tableName = DC.AH.GetAttributePropVal<M,TableAttribute>(a => a.Name);
             }
             if (string.IsNullOrWhiteSpace(tableName))
             {
-                throw new Exception($"类 [[{mType.FullName}]] 必须是与 DB Table 对应的实体类,并且要由 TableAttribute 指定对应的表名!");
+                throw new Exception($"类 [[{typeof(M).FullName}]] 必须是与 DB Table 对应的实体类,并且要由 TableAttribute 指定对应的表名!");
             }
             return $"`{tableName}`";
         }

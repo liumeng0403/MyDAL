@@ -1,5 +1,6 @@
 ﻿using MyDAL.AdoNet;
 using MyDAL.Cache;
+using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Extensions;
 using MyDAL.Core.MySql.Models;
@@ -13,8 +14,16 @@ using System.Threading.Tasks;
 namespace MyDAL.Core.Helper
 {
     internal class CodeFirstHelper
-        : ClassInstance<CodeFirstHelper>
     {
+        private Context DC { get; set; }
+
+        internal CodeFirstHelper(Context dc)
+        {
+            DC = dc;
+        }
+
+        /********************************************************************************************************************/
+
         private List<NameTypeModel> GetTableAndTypes(string key)
         {
             var cmTypes = new List<NameTypeModel>();
@@ -26,7 +35,7 @@ namespace MyDAL.Core.Helper
             {
                 if (type.FullName.StartsWith(XConfig.TablesNamespace))
                 {
-                    var table = AttributeHelper.Instance.GetAttribute<XTableAttribute>(type) as XTableAttribute;
+                    var table = DC.AH.GetAttribute<XTableAttribute>(type) as XTableAttribute;
                     if (table != null)
                     {
                         cmTypes.Add(new NameTypeModel
