@@ -9,8 +9,8 @@ using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.UserFacade.Join
 {
-    public sealed  class WhereX
-        : Operator, IQueryFirstOrDefaultX, IQueryListX, IQueryPagingListX, IQueryPagingListXO,ICountX
+    public sealed class WhereX
+        : Operator, IQueryFirstOrDefaultX, IQueryListX, IQueryPagingListX, IQueryPagingListXO, ICountX
     {
 
         internal WhereX(Context dc)
@@ -21,9 +21,9 @@ namespace Yunyong.DataExchange.UserFacade.Join
         {
             return await new CountXImpl(DC).CountAsync();
         }
-        public async Task<long> CountAsync<F>(Expression<Func<F>> func)
+        public async Task<long> CountAsync<F>(Expression<Func<F>> propertyFunc)
         {
-            return await new CountXImpl(DC).CountAsync(func);
+            return await new CountXImpl(DC).CountAsync(propertyFunc);
         }
 
         /// <summary>
@@ -37,18 +37,18 @@ namespace Yunyong.DataExchange.UserFacade.Join
         /// 单表单条数据查询
         /// </summary>
         /// <typeparam name="VM">ViewModel</typeparam>
-        public async Task<VM> QueryFirstOrDefaultAsync<VM>(Expression<Func<VM>> func)
+        public async Task<VM> QueryFirstOrDefaultAsync<VM>(Expression<Func<VM>> columnMapFunc)
         {
-            return await new QueryFirstOrDefaultXImpl(DC).QueryFirstOrDefaultAsync<VM>(func);
+            return await new QueryFirstOrDefaultXImpl(DC).QueryFirstOrDefaultAsync<VM>(columnMapFunc);
         }
 
         public async Task<List<M>> QueryListAsync<M>()
         {
             return await new QueryListXImpl(DC).QueryListAsync<M>();
         }
-        public async Task<List<VM>> QueryListAsync<VM>(Expression<Func<VM>> func)
+        public async Task<List<VM>> QueryListAsync<VM>(Expression<Func<VM>> columnMapFunc)
         {
-            return await new QueryListXImpl(DC).QueryListAsync<VM>(func);
+            return await new QueryListXImpl(DC).QueryListAsync<VM>(columnMapFunc);
         }
 
         /// <summary>
@@ -66,9 +66,9 @@ namespace Yunyong.DataExchange.UserFacade.Join
         /// <typeparam name="VM">ViewModel</typeparam>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
-        public async Task<PagingList<VM>> QueryPagingListAsync<VM>(int pageIndex, int pageSize, Expression<Func<VM>> func)
+        public async Task<PagingList<VM>> QueryPagingListAsync<VM>(int pageIndex, int pageSize, Expression<Func<VM>> columnMapFunc)
         {
-            return await new QueryPagingListXImpl(DC).QueryPagingListAsync<VM>(pageIndex, pageSize, func);
+            return await new QueryPagingListXImpl(DC).QueryPagingListAsync<VM>(pageIndex, pageSize, columnMapFunc);
         }
 
         /// <summary>
@@ -86,9 +86,9 @@ namespace Yunyong.DataExchange.UserFacade.Join
         /// <typeparam name="VM">ViewModel</typeparam>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
-        public async Task<PagingList<VM>> QueryPagingListAsync<VM>(PagingQueryOption option, Expression<Func<VM>> func)
+        public async Task<PagingList<VM>> QueryPagingListAsync<VM>(PagingQueryOption option, Expression<Func<VM>> columnMapFunc)
         {
-            return await new QueryPagingListXOImpl(DC).QueryPagingListAsync<VM>(option, func);
+            return await new QueryPagingListXOImpl(DC).QueryPagingListAsync<VM>(option, columnMapFunc);
         }
 
     }

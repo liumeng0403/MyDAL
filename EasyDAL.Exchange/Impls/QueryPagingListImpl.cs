@@ -11,8 +11,9 @@ namespace Yunyong.DataExchange.Impls
 {
     internal class QueryPagingListImpl<M>
         : Impler, IQueryPagingList<M>
+            where M : class
     {
-        internal QueryPagingListImpl(Context dc) 
+        internal QueryPagingListImpl(Context dc)
             : base(dc)
         {
         }
@@ -37,23 +38,24 @@ namespace Yunyong.DataExchange.Impls
 
     internal class QueryPagingListOImpl<M>
         : Impler, IQueryPagingListO<M>
+            where M : class
     {
-        internal QueryPagingListOImpl(Context dc) 
+        internal QueryPagingListOImpl(Context dc)
             : base(dc)
         {
         }
 
         public async Task<PagingList<M>> QueryPagingListAsync(PagingQueryOption option)
         {
-            OrderByOptionHandle(option,typeof(M).FullName);
+            OrderByOptionHandle(option, typeof(M).FullName);
             DC.IP.ConvertDic();
             return await QueryPagingListAsyncHandle<M, M>(option.PageIndex, option.PageSize, UiMethodEnum.QueryPagingListAsync);
         }
 
         public async Task<PagingList<VM>> QueryPagingListAsync<VM>(PagingQueryOption option)
         {
-            SelectMHandle<M,VM>();
-            OrderByOptionHandle(option,typeof(M).FullName);
+            SelectMHandle<M, VM>();
+            OrderByOptionHandle(option, typeof(M).FullName);
             DC.IP.ConvertDic();
             return await QueryPagingListAsyncHandle<M, VM>(option.PageIndex, option.PageSize, UiMethodEnum.QueryPagingListAsync);
         }
@@ -61,7 +63,7 @@ namespace Yunyong.DataExchange.Impls
         public async Task<PagingList<VM>> QueryPagingListAsync<VM>(PagingQueryOption option, Expression<Func<M, VM>> func)
         {
             SelectMHandle(func);
-            OrderByOptionHandle(option,typeof(M).FullName);
+            OrderByOptionHandle(option, typeof(M).FullName);
             DC.IP.ConvertDic();
             return await QueryPagingListAsyncHandle<M, VM>(option.PageIndex, option.PageSize, UiMethodEnum.QueryPagingListAsync);
         }
@@ -70,7 +72,7 @@ namespace Yunyong.DataExchange.Impls
     internal class QueryPagingListXImpl
         : Impler, IQueryPagingListX
     {
-        internal QueryPagingListXImpl(Context dc) 
+        internal QueryPagingListXImpl(Context dc)
             : base(dc)
         {
         }
@@ -107,7 +109,7 @@ namespace Yunyong.DataExchange.Impls
     internal class QueryPagingListXOImpl
         : Impler, IQueryPagingListXO
     {
-        internal QueryPagingListXOImpl(Context dc) 
+        internal QueryPagingListXOImpl(Context dc)
             : base(dc)
         {
         }
@@ -115,7 +117,7 @@ namespace Yunyong.DataExchange.Impls
         public async Task<PagingList<M>> QueryPagingListAsync<M>(PagingQueryOption option)
         {
             SelectMHandle<M>();
-            OrderByOptionHandle(option,typeof(M).FullName);
+            OrderByOptionHandle(option, typeof(M).FullName);
             DC.IP.ConvertDic();
             var result = new PagingList<M>();
             result.PageIndex = option.PageIndex;
@@ -130,7 +132,7 @@ namespace Yunyong.DataExchange.Impls
         public async Task<PagingList<VM>> QueryPagingListAsync<VM>(PagingQueryOption option, Expression<Func<VM>> func)
         {
             SelectMHandle(func);
-            OrderByOptionHandle(option,string.Empty);
+            OrderByOptionHandle(option, string.Empty);
             DC.IP.ConvertDic();
             var result = new PagingList<VM>();
             result.PageIndex = option.PageIndex;

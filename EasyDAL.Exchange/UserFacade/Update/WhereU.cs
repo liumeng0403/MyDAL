@@ -5,7 +5,7 @@ using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.UserFacade.Update
 {
-    public sealed class WhereU<M> 
+    public sealed class WhereU<M>
         : Operator, IUpdate<M>
     {
         internal WhereU(Context dc)

@@ -140,14 +140,29 @@ namespace Yunyong.DataExchange.Core.MySql
                         {
                             field = $"{dbM.TableAliasOne}.{dbM.ColumnOne}";
                         }
+
+                        //
                         var csVal = string.Empty;
-                        csVal = uiM.CsValue == null ? "Null" : uiM.CsValue.ToString();
+                        if (uiM.CsValue == null)
+                        {
+                            csVal = "Null";
+                        }
+                        else if (uiM.CsType == XConfig.DateTime)
+                        {
+                            csVal = uiM.CsValue.ToDateTimeStr();
+                        }
+                        else
+                        {
+                            csVal = uiM.CsValue.ToString();
+                        }
+
+                        //
                         var dbVal = string.Empty;
                         dbVal = dbM.DbValue == null ? "DbNull" : dbM.DbValue.ToString();
                         return $"字段:【{field}】-->【{csVal}】;参数:【{dbM.Param}】-->【{dbVal}】.";
                     })
                     .ToList();
-                XDebug.SqlWithParam = new List<string>();
+                XDebug.SqlWithParams = new List<string>();
                 foreach (var sql in XDebug.SQL)
                 {
                     var sqlStr = sql;
@@ -171,7 +186,7 @@ namespace Yunyong.DataExchange.Core.MySql
                             sqlStr = sqlStr.Replace($"@{par.Param}", par.DbValue == null ? "DbNull" : $"'{par.DbValue.ToString()}'");
                         }
                     }
-                    XDebug.SqlWithParam.Add(sqlStr);
+                    XDebug.SqlWithParams.Add(sqlStr);
                 }
             }
 

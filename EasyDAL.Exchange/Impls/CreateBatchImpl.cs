@@ -16,10 +16,11 @@ namespace Yunyong.DataExchange.Impls
 
         public async Task<int> CreateBatchAsync(IEnumerable<M> mList)
         {
+            DC.Action = ActionEnum.Insert;
             return await DC.BDH.StepProcess(mList, 35, async list =>
             {
                 DC.ResetConditions();
-                DC.GetProperties(list);
+                CreateMHandle(list);
                 DC.IP.ConvertDic();
                 return await DC.DS.ExecuteNonQueryAsync(
                     DC.Conn,

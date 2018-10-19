@@ -209,12 +209,12 @@ namespace Yunyong.DataExchange.Core
             }
         }
         // 02
-        private (object val,string valStr) HandleMember(MemberExpression binRight, string funcStr,Type valType)
+        private (object val, string valStr) HandleMember(MemberExpression binRight, string funcStr, Type valType)
         {
             var result = default((object val, string valStr));
             if (binRight.NodeType == ExpressionType.MemberAccess)
             {
-                result = DC.VH.MemberValue(binRight, funcStr,valType);
+                result = DC.VH.MemberValue(binRight, funcStr, valType);
             }
             else
             {
@@ -224,7 +224,7 @@ namespace Yunyong.DataExchange.Core
         }
 
         // 01
-        private (object val, string valStr) HandleBinary(Expression binRight, string funcStr,Type valType)
+        private (object val, string valStr) HandleBinary(Expression binRight, string funcStr, Type valType)
         {
             var val = default((object val, string valStr));
 
@@ -237,13 +237,13 @@ namespace Yunyong.DataExchange.Core
                     break;
                 case ExpressionType.Call:
                     var rightExpr = binRight as MethodCallExpression;
-                    val = DC.VH.MethodCallValue(rightExpr, funcStr,valType);
+                    val = DC.VH.MethodCallValue(rightExpr, funcStr, valType);
                     break;
                 case ExpressionType.MemberAccess:
-                    val = HandleMember(binRight as MemberExpression, funcStr,valType);
+                    val = HandleMember(binRight as MemberExpression, funcStr, valType);
                     break;
                 case ExpressionType.Convert:
-                    val = DC.VH.ConvertValue(binRight as UnaryExpression, funcStr,valType);
+                    val = DC.VH.ConvertValue(binRight as UnaryExpression, funcStr, valType);
                     break;
                 default:
                     throw new Exception();
@@ -255,7 +255,7 @@ namespace Yunyong.DataExchange.Core
 
         /********************************************************************************************************************/
 
-        private DicModelUI StringLike(MethodCallExpression mcExpr, StringLikeEnum type ,string funcStr)
+        private DicModelUI StringLike(MethodCallExpression mcExpr, StringLikeEnum type, string funcStr)
         {
             if (mcExpr.Object == null)
             {
@@ -279,15 +279,15 @@ namespace Yunyong.DataExchange.Core
                                 val = DC.VH.MethodCallValue(mcExpr, funcStr, keyTuple.valType);
                                 break;
                             case StringLikeEnum.StartsWith:
-                                val = ($"{DC.VH.MethodCallValue(mcExpr, funcStr, keyTuple.valType).val}%",string.Empty);
+                                val = ($"{DC.VH.MethodCallValue(mcExpr, funcStr, keyTuple.valType).val}%", string.Empty);
                                 break;
                             case StringLikeEnum.EndsWith:
-                                val = ($"%{DC.VH.MethodCallValue(mcExpr, funcStr, keyTuple.valType).val}",string.Empty);
+                                val = ($"%{DC.VH.MethodCallValue(mcExpr, funcStr, keyTuple.valType).val}", string.Empty);
                                 break;
                         }
                         DC.Option = OptionEnum.Like;
-                        DC.Compare =  CompareEnum.None;
-                        return DC.DH.LikeDic( keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType);
+                        DC.Compare = CompareEnum.None;
+                        return DC.DH.LikeDic(keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType);
                     }
                 }
             }
@@ -295,16 +295,16 @@ namespace Yunyong.DataExchange.Core
             return null;
         }
 
-        private DicModelUI CollectionIn(Expression expr, MemberExpression memExpr,  string funcStr)
+        private DicModelUI CollectionIn(Expression expr, MemberExpression memExpr, string funcStr)
         {
             var keyTuple = GetKey(expr, OptionEnum.In);
             var val = HandleMember(memExpr, funcStr, keyTuple.valType);
             DC.Option = OptionEnum.In;
             DC.Compare = CompareEnum.None;
-            return DC.DH.InDic(  keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType);
+            return DC.DH.InDic(keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType);
         }
 
-        private DicModelUI NewCollectionIn(ExpressionType nodeType, Expression keyExpr, Expression valExpr ,string funcStr)
+        private DicModelUI NewCollectionIn(ExpressionType nodeType, Expression keyExpr, Expression valExpr, string funcStr)
         {
             if (nodeType == ExpressionType.NewArrayInit)
             {
@@ -323,10 +323,10 @@ namespace Yunyong.DataExchange.Core
                     }
                 }
 
-                var val = (string.Join(",", vals.Select(it=>it.val)),string.Empty);
+                var val = (string.Join(",", vals.Select(it => it.val)), string.Empty);
                 DC.Option = OptionEnum.In;
                 DC.Compare = CompareEnum.None;
-                return DC.DH.InDic(  keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType);
+                return DC.DH.InDic(keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType);
             }
             else if (nodeType == ExpressionType.ListInit)
             {
@@ -346,10 +346,10 @@ namespace Yunyong.DataExchange.Core
                     }
                 }
 
-                var val = (string.Join(",", vals.Select(it=>it.val)),string.Empty);
+                var val = (string.Join(",", vals.Select(it => it.val)), string.Empty);
                 DC.Option = OptionEnum.In;
                 DC.Compare = CompareEnum.None;
-                return DC.DH.InDic( keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType);
+                return DC.DH.InDic(keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType);
             }
 
             return null;
@@ -357,7 +357,7 @@ namespace Yunyong.DataExchange.Core
 
         /********************************************************************************************************************/
 
-        private DicModelUI HandConditionBinary( BinaryExpression binExpr, List<string> pres, string funcStr)
+        private DicModelUI HandConditionBinary(BinaryExpression binExpr, List<string> pres, string funcStr)
         {
             var binTuple = HandBinExpr(pres, binExpr);
             if ((binTuple.node == ExpressionType.Equal || binTuple.node == ExpressionType.NotEqual)
@@ -384,10 +384,10 @@ namespace Yunyong.DataExchange.Core
                     && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
                 {
                     var keyTuple = GetKey(binTuple.left, OptionEnum.CharLength);
-                    var val = HandleBinary(binTuple.right, funcStr,keyTuple.valType);
+                    var val = HandleBinary(binTuple.right, funcStr, keyTuple.valType);
                     DC.Option = OptionEnum.CharLength;
                     DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
-                    var dic = DC.DH.CharLengthDic(keyTuple.key, keyTuple.alias, val, keyTuple.valType );
+                    var dic = DC.DH.CharLengthDic(keyTuple.key, keyTuple.alias, val, keyTuple.valType);
                     dic.ClassFullName = keyTuple.classFullName;
                     return dic;
                 }
@@ -395,7 +395,7 @@ namespace Yunyong.DataExchange.Core
                     && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
                 {
                     var tuple = GetKey(binTuple.left, OptionEnum.Trim);
-                    var val = HandleBinary(binTuple.right, funcStr,tuple.valType);
+                    var val = HandleBinary(binTuple.right, funcStr, tuple.valType);
                     DC.Option = OptionEnum.Trim;
                     DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
                     var dic = DC.DH.TrimDic(tuple.key, tuple.alias, val, tuple.valType);
@@ -406,7 +406,7 @@ namespace Yunyong.DataExchange.Core
                     && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
                 {
                     var tuple = GetKey(binTuple.left, OptionEnum.LTrim);
-                    var val = HandleBinary(binTuple.right, funcStr,tuple.valType);
+                    var val = HandleBinary(binTuple.right, funcStr, tuple.valType);
                     DC.Option = OptionEnum.LTrim;
                     DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
                     var dic = DC.DH.LTrimDic(tuple.key, tuple.alias, val, tuple.valType);
@@ -417,25 +417,25 @@ namespace Yunyong.DataExchange.Core
                     && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
                 {
                     var tuple = GetKey(binTuple.left, OptionEnum.RTrim);
-                    var val = HandleBinary(binTuple.right, funcStr,tuple.valType);
+                    var val = HandleBinary(binTuple.right, funcStr, tuple.valType);
                     DC.Option = OptionEnum.RTrim;
                     DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
-                    var dic = DC.DH.RTrimDic(tuple.key, tuple.alias, val, tuple.valType );
+                    var dic = DC.DH.RTrimDic(tuple.key, tuple.alias, val, tuple.valType);
                     dic.ClassFullName = tuple.classFullName;
                     return dic;
                 }
                 else
                 {
                     var keyTuple = GetKey(binTuple.left, OptionEnum.Compare);
-                    var val = HandleBinary(binTuple.right, funcStr,keyTuple.valType);
+                    var val = HandleBinary(binTuple.right, funcStr, keyTuple.valType);
                     DC.Option = OptionEnum.Compare;
                     DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
-                    return DC.DH.CompareDic( keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType );
+                    return DC.DH.CompareDic(keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType);
                 }
             }
         }
 
-        private DicModelUI HandConditionCall(MethodCallExpression mcExpr,   string funcStr)
+        private DicModelUI HandConditionCall(MethodCallExpression mcExpr, string funcStr)
         {
             var exprStr = mcExpr.ToString();
             if (exprStr.Contains(".Contains("))
@@ -450,7 +450,7 @@ namespace Yunyong.DataExchange.Core
                     }
                     else if (memVal.NodeType == ExpressionType.NewArrayInit)
                     {
-                        return NewCollectionIn(memVal.NodeType, memKey, memVal,  funcStr);
+                        return NewCollectionIn(memVal.NodeType, memKey, memVal, funcStr);
                     }
                 }
                 else
@@ -465,32 +465,32 @@ namespace Yunyong.DataExchange.Core
                             && memType.GetInterfaces().Contains(typeof(IList))
                             && !memType.IsArray)
                         {
-                            return CollectionIn(mcExpr, memO,  funcStr);
+                            return CollectionIn(mcExpr, memO, funcStr);
                         }
                         else if (memType == typeof(string))
                         {
-                            return StringLike(mcExpr, StringLikeEnum.Contains,  funcStr);
+                            return StringLike(mcExpr, StringLikeEnum.Contains, funcStr);
                         }
                     }
                     else if (objNodeType == ExpressionType.ListInit)
                     {
-                        return NewCollectionIn(objNodeType, mcExpr, objExpr,  funcStr);
+                        return NewCollectionIn(objNodeType, mcExpr, objExpr, funcStr);
                     }
                 }
             }
             else if (exprStr.Contains(".StartsWith("))
             {
-                return StringLike(mcExpr, StringLikeEnum.StartsWith,  funcStr);
+                return StringLike(mcExpr, StringLikeEnum.StartsWith, funcStr);
             }
             else if (exprStr.Contains(".EndsWith("))
             {
-                return StringLike(mcExpr, StringLikeEnum.EndsWith,  funcStr);
+                return StringLike(mcExpr, StringLikeEnum.EndsWith, funcStr);
             }
 
             return null;
         }
 
-        private DicModelUI HandConditionConstant(ConstantExpression cExpr,Type valType)
+        private DicModelUI HandConditionConstant(ConstantExpression cExpr, Type valType)
         {
             var val = DC.VH.ConstantValue(cExpr, valType);
             if (cExpr.Type == typeof(bool))
@@ -510,7 +510,7 @@ namespace Yunyong.DataExchange.Core
             {
                 DC.Option = OptionEnum.Compare;
                 DC.Compare = CompareEnum.Equal;
-                return DC.DH.CompareDic(tuple.classFullName, tuple.key, tuple.alias, (true.ToString(),string.Empty), tuple.valType );
+                return DC.DH.CompareDic(tuple.classFullName, tuple.key, tuple.alias, (true.ToString(), string.Empty), tuple.valType);
             }
 
             return null;
@@ -524,7 +524,7 @@ namespace Yunyong.DataExchange.Core
 
         /********************************************************************************************************************/
 
-        private List<DicModelUI> HandSelectMemberInit( MemberInitExpression miExpr)
+        private List<DicModelUI> HandSelectMemberInit(MemberInitExpression miExpr)
         {
             var result = new List<DicModelUI>();
 
@@ -536,7 +536,7 @@ namespace Yunyong.DataExchange.Core
                 var colAlias = mbEx.Member.Name;
                 DC.Option = OptionEnum.None;
                 DC.Compare = CompareEnum.None;
-                result.Add(DC.DH.SelectMemberInitDic( tuple.classFullName, tuple.key, tuple.alias, colAlias));
+                result.Add(DC.DH.SelectMemberInitDic(tuple.classFullName, tuple.key, tuple.alias, colAlias));
             }
 
             return result;
@@ -566,7 +566,8 @@ namespace Yunyong.DataExchange.Core
 
         /********************************************************************************************************************/
 
-        internal List<DicModelUI> FuncMFExpression<M, F>( Expression<Func<M, F>> func)
+        internal List<DicModelUI> FuncMFExpression<M, F>(Expression<Func<M, F>> func)
+            where M : class
         {
             try
             {
@@ -587,7 +588,7 @@ namespace Yunyong.DataExchange.Core
                 else if (nodeType == ExpressionType.MemberInit)
                 {
                     var miExpr = func.Body as MemberInitExpression;
-                    result = HandSelectMemberInit( miExpr);
+                    result = HandSelectMemberInit(miExpr);
                 }
                 else if (nodeType == ExpressionType.Convert)
                 {
@@ -687,7 +688,8 @@ namespace Yunyong.DataExchange.Core
                 }
             }
         }
-        internal DicModelUI FuncMBoolExpression<M>( ActionEnum action, Expression<Func<M, bool>> func)
+        internal DicModelUI FuncMBoolExpression<M>(ActionEnum action, Expression<Func<M, bool>> func)
+            where M : class
         {
             try
             {
@@ -704,23 +706,23 @@ namespace Yunyong.DataExchange.Core
                     {
                         func.Parameters[0].Name
                     };
-                    result = HandConditionBinary(  binExpr, pres, func.ToString());
+                    result = HandConditionBinary(binExpr, pres, func.ToString());
                 }
                 else if (nodeType == ExpressionType.Call)
                 {
 
                     var mcExpr = body as MethodCallExpression;
-                    result = HandConditionCall(mcExpr,  func.ToString());
+                    result = HandConditionCall(mcExpr, func.ToString());
                 }
                 else if (nodeType == ExpressionType.Constant)
                 {
                     var cExpr = body as ConstantExpression;
-                    result = HandConditionConstant(cExpr,cExpr.Type);
+                    result = HandConditionConstant(cExpr, cExpr.Type);
                 }
                 else if (nodeType == ExpressionType.MemberAccess)
                 {
                     var memExpr = body as MemberExpression;
-                    result = HandConditionMemberAccess(  memExpr);
+                    result = HandConditionMemberAccess(memExpr);
                 }
                 else
                 {
@@ -771,23 +773,23 @@ namespace Yunyong.DataExchange.Core
                         || DC.Action == ActionEnum.Or)
                     {
                         var pres = DC.UiConditions.Select(it => it.TableAliasOne).ToList();
-                        result = HandConditionBinary( binExpr, pres, func.ToString());
+                        result = HandConditionBinary(binExpr, pres, func.ToString());
                     }
                 }
                 else if (nodeType == ExpressionType.Call)
                 {
                     var mcExpr = body as MethodCallExpression;
-                    result = HandConditionCall(mcExpr,  func.ToString());
+                    result = HandConditionCall(mcExpr, func.ToString());
                 }
                 else if (nodeType == ExpressionType.Constant)
                 {
                     var cExpr = body as ConstantExpression;
-                    result = HandConditionConstant(cExpr,cExpr.Type);
+                    result = HandConditionConstant(cExpr, cExpr.Type);
                 }
                 else if (nodeType == ExpressionType.MemberAccess)
                 {
                     var memExpr = body as MemberExpression;
-                    result = HandConditionMemberAccess( memExpr);
+                    result = HandConditionMemberAccess(memExpr);
                 }
                 else
                 {

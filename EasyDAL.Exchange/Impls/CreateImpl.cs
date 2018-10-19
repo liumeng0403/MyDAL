@@ -15,7 +15,8 @@ namespace Yunyong.DataExchange.Impls
 
         public async Task<int> CreateAsync(M m)
         {
-            DC.GetProperties(m);
+            DC.Action = ActionEnum.Insert;
+            CreateMHandle(m);
             DC.IP.ConvertDic();
             return await DC.DS.ExecuteNonQueryAsync(
                 DC.Conn,

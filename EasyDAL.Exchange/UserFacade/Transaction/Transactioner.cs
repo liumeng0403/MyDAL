@@ -19,7 +19,7 @@ namespace Yunyong.DataExchange.UserFacade.Transaction
         /// 业务单元 -- 已处理 using(connection) / using(transaction) / try(exception)
         /// </summary>
         /// <returns>异常信息</returns>
-        public async Task<string> BusinessUnitOption(Func<Task<string>> businessFunc)
+        public async Task<string> BusinessUnitOption(Func<Task<string>> businessUnitFunc)
         {
             var errorMsg = string.Empty;
             using (DC.Conn)
@@ -28,7 +28,7 @@ namespace Yunyong.DataExchange.UserFacade.Transaction
                 {
                     try
                     {
-                        errorMsg = await businessFunc();
+                        errorMsg = await businessUnitFunc();
                         DC.Tran.Commit();
                         return errorMsg;
                     }
@@ -59,7 +59,7 @@ namespace Yunyong.DataExchange.UserFacade.Transaction
         /// </summary>
         /// <typeparam name="M">期望得到的数据</typeparam>
         /// <returns>errMsg - 异常信息; data - 期望得到的数据;</returns>
-        public async Task<(string errMsg, M data)> BusinessUnitOption<M>(Func<Task<M>> businessFunc)
+        public async Task<(string errMsg, M data)> BusinessUnitOption<M>(Func<Task<M>> businessUnitFunc)
         {
             var errMsg = string.Empty;
             using (DC.Conn)
@@ -68,7 +68,7 @@ namespace Yunyong.DataExchange.UserFacade.Transaction
                 {
                     try
                     {
-                        var result = await businessFunc();
+                        var result = await businessUnitFunc();
                         DC.Tran.Commit();
                         return (errMsg, result);
                     }
@@ -99,7 +99,7 @@ namespace Yunyong.DataExchange.UserFacade.Transaction
         /// </summary>
         /// <typeparam name="M">期望得到的数据</typeparam>
         /// <returns>errMsg - 异常信息或自定义错误提示; data - 期望得到的数据;</returns>
-        public async Task<(string errMsg, M data)> BusinessUnitOption<M>(Func<Task<(string errMsg, M data)>> businessFunc)
+        public async Task<(string errMsg, M data)> BusinessUnitOption<M>(Func<Task<(string errMsg, M data)>> businessUnitFunc)
         {
             using (DC.Conn)
             {
@@ -107,7 +107,7 @@ namespace Yunyong.DataExchange.UserFacade.Transaction
                 {
                     try
                     {
-                        var tuple = await businessFunc();
+                        var tuple = await businessUnitFunc();
                         DC.Tran.Commit();
                         return tuple;
                     }

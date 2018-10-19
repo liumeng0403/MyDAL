@@ -173,35 +173,5 @@ namespace Yunyong.DataExchange.Core.Bases
             (SC.SetModelColumnInfos(key, this)).GetAwaiter().GetResult();
         }
 
-        private void SetInsertValue<M>(M m, OptionEnum option, int index)
-        {
-            var key = SC.GetKey(m.GetType().FullName, Conn.Database);
-            var props = SC.GetModelProperys(key);
-            var columns = SC.GetColumnInfos(key);
-            var fullName = typeof(M).FullName;
-
-            foreach (var prop in props)
-            {
-                //var val = GH.GetTypeValue(prop, m);
-                var val = VH.PropertyValue(prop, m);
-                Option = option;
-                Compare = CompareEnum.None;
-                AddConditions(DH.InsertDic(fullName, prop.Name, val, prop.PropertyType, option, index));
-            }
-        }
-        internal void GetProperties<M>(M m)
-        {
-            SetInsertValue(m, OptionEnum.Insert, 0);
-        }
-        internal void GetProperties<M>(IEnumerable<M> mList)
-        {
-            var i = 0;
-            foreach (var m in mList)
-            {
-                SetInsertValue(m, OptionEnum.InsertTVP, i);
-                i++;
-            }
-        }
-
     }
 }

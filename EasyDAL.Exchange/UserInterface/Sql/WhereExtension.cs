@@ -17,10 +17,11 @@ namespace Yunyong.DataExchange
         /// 过滤条件起点
         /// </summary>
         /// <param name="func">格式: it => it.Id == m.Id </param>
-        public static WhereD<M> Where<M>(this Deleter<M> deleter, Expression<Func<M, bool>> func)
+        public static WhereD<M> Where<M>(this Deleter<M> deleter, Expression<Func<M, bool>> compareFunc)
+            where M : class
         {
             deleter.DC.Action = ActionEnum.Where;
-            deleter.DC.OP.WhereHandle(func);
+            deleter.DC.OP.WhereHandle(compareFunc);
             return new WhereD<M>(deleter.DC);
         }
 
@@ -40,10 +41,11 @@ namespace Yunyong.DataExchange
         /// 过滤条件起点
         /// </summary>
         /// <param name="func">格式: it => it.AgentId == id2</param>
-        public static WhereU<M> Where<M>(this SetU<M> set, Expression<Func<M, bool>> func)
+        public static WhereU<M> Where<M>(this SetU<M> set, Expression<Func<M, bool>> compareFunc)
+            where M : class
         {
             set.DC.Action = ActionEnum.Where;
-            set.DC.OP.WhereHandle(func);
+            set.DC.OP.WhereHandle(compareFunc);
             return new WhereU<M>(set.DC);
         }
 
@@ -63,10 +65,11 @@ namespace Yunyong.DataExchange
         /// 过滤条件起点
         /// </summary>
         /// <param name="func">格式: it => it.CreatedOn >= WhereTest.CreatedOn</param>
-        public static WhereQ<M> Where<M>(this Selecter<M> selecter, Expression<Func<M, bool>> func)
+        public static WhereQ<M> Where<M>(this Selecter<M> selecter, Expression<Func<M, bool>> compareFunc)
+            where M : class
         {
             selecter.DC.Action = ActionEnum.Where;
-            selecter.DC.OP.WhereHandle(func);
+            selecter.DC.OP.WhereHandle(compareFunc);
             return new WhereQ<M>(selecter.DC);
         }
 
@@ -74,6 +77,7 @@ namespace Yunyong.DataExchange
         /// 过滤条件起点 -- 设置多个条件
         /// </summary>
         public static WhereQ<M> Where<M>(this Selecter<M> selecter, object mWhere)
+            where M : class
         {
             selecter.DC.Action = ActionEnum.Where;
             selecter.DC.OP.WhereDynamicHandle<M>(mWhere);
@@ -82,10 +86,10 @@ namespace Yunyong.DataExchange
 
         /**************************************************************************************************************/
 
-        public static WhereX Where(this OnX on, Expression<Func<bool>> func)
+        public static WhereX Where(this OnX on, Expression<Func<bool>> compareFunc)
         {
             on.DC.Action = ActionEnum.Where;
-            on.DC.OP.WhereJoinHandle(on, func);
+            on.DC.OP.WhereJoinHandle(on, compareFunc);
             return new WhereX(on.DC);
         }
 

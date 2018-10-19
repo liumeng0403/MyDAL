@@ -15,6 +15,8 @@ namespace Yunyong.DataExchange.Impls
 
         public async Task<bool> ExistAsync()
         {
+            DC.Action = ActionEnum.Select;
+
             DC.Option = OptionEnum.Count;
             DC.Compare = CompareEnum.None;
             DC.AddConditions(DC.DH.CountDic(typeof(M).FullName, "*"));
