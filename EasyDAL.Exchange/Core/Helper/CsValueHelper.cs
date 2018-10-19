@@ -67,6 +67,10 @@ namespace MyDAL.Core.Helper
             {
                 valStr = val.ToDateTimeStr();
             }
+            else if(valType.IsNullable())
+            {
+                return DateTimeProcess(val, Nullable.GetUnderlyingType(valType));
+            }
             return valStr;
         }
 
