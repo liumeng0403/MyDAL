@@ -205,12 +205,12 @@ namespace MyDAL.Core.Bases
                     {
                         continue;
                     }
-                    if(valType.IsList()
+                    if (valType.IsList()
                         || valType.IsArray)
                     {
                         var ox = DC.VH.InValue(valType, val.val);
                         valType = ox.valType;
-                        val = (ox.val,string.Empty);
+                        val = (ox.val, string.Empty);
                     }
                     result.Add((prop.MField, prop.VmField, val, valType, columnType, prop.Compare));
                 }
@@ -246,9 +246,9 @@ namespace MyDAL.Core.Bases
 
         /****************************************************************************************************************************************/
 
-        internal void SetChangeHandle<M, F>(Expression<Func<M, F>> func, F modVal, ActionEnum action, OptionEnum option)
+        internal void SetChangeHandle<M, F>(Expression<Func<M, F>> func, F modVal, OptionEnum option)
+            where M : class
         {
-            DC.Action = action;
             var keyDic = DC.EH.FuncMFExpression(func)[0];
             var key = keyDic.ColumnOne;
             var val = default((object val, string valStr));
@@ -259,11 +259,10 @@ namespace MyDAL.Core.Bases
             else
             {
                 val = DC.VH.ExpandoObjectValue(modVal);
-                //val = DC.GH.GetTypeValue(modVal);
             }
             DC.Option = option;
             DC.Compare = CompareEnum.None;
-            DC.AddConditions(DC.DH.SetDic(typeof(M).FullName, key, key, val, typeof(F), action));
+            DC.AddConditions(DC.DH.SetDic(typeof(M).FullName, key, key, val, typeof(F)));
         }
 
         internal void SetDynamicHandle<M>(object mSet)
@@ -274,7 +273,7 @@ namespace MyDAL.Core.Bases
             {
                 DC.Option = OptionEnum.Set;
                 DC.Compare = CompareEnum.None;
-                DC.AddConditions(DC.DH.SetDic(fullName, tp.key, tp.param, tp.val, tp.valType, ActionEnum.Update));
+                DC.AddConditions(DC.DH.SetDic(fullName, tp.key, tp.param, tp.val, tp.valType));
             }
         }
 
@@ -284,14 +283,15 @@ namespace MyDAL.Core.Bases
             op.DC.AddConditions(dic);
         }
 
-        internal void WhereHandle<T>(Expression<Func<T, bool>> func)
+        internal void WhereHandle<M>(Expression<Func<M, bool>> func)
+            where M : class
         {
             var field = DC.EH.FuncMBoolExpression(ActionEnum.Where, func);
-            field.ClassFullName = typeof(T).FullName;
+            field.ClassFullName = typeof(M).FullName;
             field.Action = ActionEnum.Where;
             DC.AddConditions(field);
         }
-        
+
         internal void WhereDynamicHandle<M>(object mWhere)
         {
             var tuples = GetWhereKPV<M>(mWhere);
@@ -331,14 +331,16 @@ namespace MyDAL.Core.Bases
             }
         }
 
-        internal void AndHandle<T>(Expression<Func<T, bool>> func)
+        internal void AndHandle<M>(Expression<Func<M, bool>> func)
+            where M : class
         {
             var field = DC.EH.FuncMBoolExpression(ActionEnum.And, func);
             field.Action = ActionEnum.And;
             DC.AddConditions(field);
         }
 
-        internal void OrHandle<T>(Expression<Func<T, bool>> func)
+        internal void OrHandle<M>(Expression<Func<M, bool>> func)
+            where M : class
         {
             var field = DC.EH.FuncMBoolExpression(ActionEnum.Or, func);
             field.Action = ActionEnum.Or;
@@ -346,6 +348,7 @@ namespace MyDAL.Core.Bases
         }
 
         internal void OrderByHandle<M, F>(Expression<Func<M, F>> func, OrderByEnum orderBy)
+            where M : class
         {
             var keyDic = DC.EH.FuncMFExpression(func)[0];
             switch (orderBy)

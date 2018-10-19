@@ -38,12 +38,15 @@ namespace MyDAL
             }
             set
             {
-                lock(_lock)
+                lock (_lock)
                 {
                     _parameters = value;
                 }
             }
         }
-        public static List<string> SqlWithParam { get; set; }
+        /// <summary>
+        /// 不一定准确,仅供参考!
+        /// </summary>
+        public static List<string> SqlWithParams { get; set; }
     }
 }

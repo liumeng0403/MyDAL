@@ -17,10 +17,11 @@ namespace MyDAL
         /// 或 条件
         /// </summary>
         /// <param name="func">格式: it => it.Id == m.Id</param>
-        public static WhereD<M> Or<M>(this WhereD<M> where, Expression<Func<M, bool>> func)
+        public static WhereD<M> Or<M>(this WhereD<M> where, Expression<Func<M, bool>> compareFunc)
+            where M : class
         {
             where.DC.Action = ActionEnum.Or;
-            where.DC.OP. OrHandle(func);
+            where.DC.OP.OrHandle(compareFunc);
             return where;
         }
 
@@ -30,10 +31,11 @@ namespace MyDAL
         /// 或条件
         /// </summary>
         /// <param name="func">格式: it => it.CreatedOn == Convert.ToDateTime("2018-08-19 11:34:42.577074")</param>
-        public static WhereU<M> Or<M>(this WhereU<M> where, Expression<Func<M, bool>> func)
+        public static WhereU<M> Or<M>(this WhereU<M> where, Expression<Func<M, bool>> compareFunc)
+            where M : class
         {
             where.DC.Action = ActionEnum.Or;
-            where.DC.OP. OrHandle(func);
+            where.DC.OP.OrHandle(compareFunc);
             return where;
         }
 
@@ -43,19 +45,20 @@ namespace MyDAL
         /// 或条件
         /// </summary>
         /// <param name="func">格式: it => it.AgentLevel == testQ.AgentLevelXX</param>
-        public static WhereQ<M> Or<M>(this WhereQ<M> where, Expression<Func<M, bool>> func)
+        public static WhereQ<M> Or<M>(this WhereQ<M> where, Expression<Func<M, bool>> compareFunc)
+            where M : class
         {
             where.DC.Action = ActionEnum.Or;
-            where.DC.OP. OrHandle(func);
+            where.DC.OP.OrHandle(compareFunc);
             return where;
         }
 
         /****************************************************************************************************************************************/
 
-        public static WhereX Or(this WhereX where, Expression<Func<bool>> func)
+        public static WhereX Or(this WhereX where, Expression<Func<bool>> compareFunc)
         {
             where.DC.Action = ActionEnum.Or;
-            where.DC.OP.WhereJoinHandle(where, func);
+            where.DC.OP.WhereJoinHandle(where, compareFunc);
             return where;
         }
 

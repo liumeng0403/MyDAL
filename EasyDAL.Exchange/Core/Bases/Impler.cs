@@ -1,7 +1,6 @@
 ﻿using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
-using MyDAL.Core.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,31 +61,23 @@ namespace MyDAL.Core.Bases
 
         /**********************************************************************************************************/
 
-        protected async Task<VM> QueryFirstOrDefaultAsyncHandle<M, VM>()
+        private void SetInsertValue<M>(M m, int index)
         {
-            return await DC.DS.ExecuteReaderSingleRowAsync<VM>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryFirstOrDefaultAsync)[0],
-                DC.SqlProvider.GetParameters());
+            var key = DC.SC.GetKey(m.GetType().FullName, DC.Conn.Database);
+            var props = DC.SC.GetModelProperys(key);
+            var columns = DC.SC.GetColumnInfos(key);
+            var fullName = typeof(M).FullName;
+
+            foreach (var prop in props)
+            {
+                var val = DC.VH.PropertyValue(prop, m);
+                //DC.Option = option;
+                DC.Compare = CompareEnum.None;
+                DC.AddConditions(DC.DH.InsertDic(fullName, prop.Name, val, prop.PropertyType, index));
+            }
         }
 
-        protected async Task<List<VM>> QueryAllAsyncHandle<M, VM>()
-        {
-            return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryAllAsync)[0],
-                DC.SqlProvider.GetParameters())).ToList();
-        }
-
-        protected async Task<List<VM>> QueryListAsyncHandle<M, VM>()
-        {
-            SelectMHandle<M, VM>();
-            DC.IP.ConvertDic();
-            return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryListAsync)[0],
-                DC.SqlProvider.GetParameters())).ToList();
-        }
+        /**********************************************************************************************************/
 
         protected async Task<PagingList<VM>> QueryPagingListAsyncHandle<M, VM>(int pageIndex, int pageSize, UiMethodEnum sqlType)
         {
@@ -125,11 +116,11 @@ namespace MyDAL.Core.Bases
             }
         }
 
-        internal void SelectMHandle<M,VM>()
+        internal void SelectMHandle<M, VM>()
         {
             var mType = typeof(M);
             var vmType = typeof(VM);
-            if (mType==vmType)
+            if (mType == vmType)
             {
                 return;
             }
@@ -146,7 +137,7 @@ namespace MyDAL.Core.Bases
                 DC.Compare = CompareEnum.None;
                 foreach (var prop in mProps)
                 {
-                    foreach(var vProp in vmProps)
+                    foreach (var vProp in vmProps)
                     {
                         if (prop.Name.Equals(vProp.Name, StringComparison.OrdinalIgnoreCase))
                         {
@@ -174,6 +165,7 @@ namespace MyDAL.Core.Bases
         }
 
         internal void SelectMHandle<M, VM>(Expression<Func<M, VM>> func)
+            where M : class
         {
             DC.Action = ActionEnum.Select;
             var list = DC.EH.FuncMFExpression(func);
@@ -181,6 +173,24 @@ namespace MyDAL.Core.Bases
             {
                 dic.Option = OptionEnum.ColumnAs;
                 DC.AddConditions(dic);
+            }
+        }
+
+        /**********************************************************************************************************/
+
+        internal void CreateMHandle<M>(M m)
+        {
+            DC.Option = OptionEnum.Insert;
+            SetInsertValue(m, 0);
+        }
+        internal void CreateMHandle<M>(IEnumerable<M> mList)
+        {
+            var i = 0;
+            DC.Option = OptionEnum.InsertTVP;
+            foreach (var m in mList)
+            {
+                SetInsertValue(m, i);
+                i++;
             }
         }
 

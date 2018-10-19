@@ -8,10 +8,10 @@ namespace MyDAL
     public static class OnExtension
     {
 
-        public static OnX On(this JoinX join, Expression<Func<bool>> func)
+        public static OnX On(this JoinX join, Expression<Func<bool>> compareFunc)
         {
             join.DC.Action = ActionEnum.On;
-            var field = join.DC.EH.FuncBoolExpression(func);
+            var field = join.DC.EH.FuncBoolExpression(compareFunc);
             join.DC.AddConditions(field);
             return new OnX(join.DC);
         }

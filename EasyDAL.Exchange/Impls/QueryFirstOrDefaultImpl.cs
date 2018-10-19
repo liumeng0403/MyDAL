@@ -9,34 +9,49 @@ namespace MyDAL.Impls
 {
     internal class QueryFirstOrDefaultImpl<M>
         : Impler, IQueryFirstOrDefault<M>
+        where M : class
     {
-        internal QueryFirstOrDefaultImpl(Context dc) 
+        internal QueryFirstOrDefaultImpl(Context dc)
             : base(dc)
         {
         }
 
         public async Task<M> QueryFirstOrDefaultAsync()
         {
-            return await QueryFirstOrDefaultAsyncHandle<M, M>();
+            //return await QueryFirstOrDefaultAsyncHandle<M, M>();
+            return await DC.DS.ExecuteReaderSingleRowAsync<M>(
+                DC.Conn,
+                DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryFirstOrDefaultAsync)[0],
+                DC.SqlProvider.GetParameters());
         }
 
         public async Task<VM> QueryFirstOrDefaultAsync<VM>()
         {
-            return await QueryFirstOrDefaultAsyncHandle<M, VM>();
+            SelectMHandle<M, VM>();
+            DC.IP.ConvertDic();
+            //return await QueryFirstOrDefaultAsyncHandle<M, VM>();
+            return await DC.DS.ExecuteReaderSingleRowAsync<VM>(
+                DC.Conn,
+                DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryFirstOrDefaultAsync)[0],
+                DC.SqlProvider.GetParameters());
         }
 
         public async Task<VM> QueryFirstOrDefaultAsync<VM>(Expression<Func<M, VM>> func)
         {
             SelectMHandle(func);
             DC.IP.ConvertDic();
-            return await QueryFirstOrDefaultAsyncHandle<M, VM>();
+            //return await QueryFirstOrDefaultAsyncHandle<M, VM>();
+            return await DC.DS.ExecuteReaderSingleRowAsync<VM>(
+                DC.Conn,
+                DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryFirstOrDefaultAsync)[0],
+                DC.SqlProvider.GetParameters());
         }
     }
 
     internal class QueryFirstOrDefaultXImpl
         : Impler, IQueryFirstOrDefaultX
     {
-        internal QueryFirstOrDefaultXImpl(Context dc) 
+        internal QueryFirstOrDefaultXImpl(Context dc)
             : base(dc)
         {
         }
@@ -53,7 +68,7 @@ namespace MyDAL.Impls
 
         public async Task<VM> QueryFirstOrDefaultAsync<VM>(Expression<Func<VM>> func)
         {
-            SelectMHandle(func);           
+            SelectMHandle(func);
             DC.IP.ConvertDic();
             return await DC.DS.ExecuteReaderSingleRowAsync<VM>(
                 DC.Conn,

@@ -86,7 +86,7 @@ namespace MyDAL.Test.Update
                 .UpdateAsync();
             Assert.True(res2 == 2);
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParam);
+            var tuple2 = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /***************************************************************************************************************************/
 

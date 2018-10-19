@@ -174,6 +174,7 @@ namespace MyDAL.Core.Helper
             dic.CsValue = value.val;
             dic.CsValueStr = value.valStr;
             dic.CsType = valType;
+
             return dic;
         }
 
@@ -223,9 +224,7 @@ namespace MyDAL.Core.Helper
             dic.ColumnOne = key;
             dic.Param = key;
             dic.ParamRaw = key;
-
-            dic.Action = ActionEnum.Select;
-
+            
             return dic;
         }
 
@@ -240,7 +239,7 @@ namespace MyDAL.Core.Helper
 
         /*******************************************************************************************************/
 
-        internal DicModelUI InsertDic(string fullName, string key, (object val, string valStr) val, Type valType, OptionEnum option, int tvpIdx)
+        internal DicModelUI InsertDic(string fullName, string key, (object val, string valStr) val, Type valType, int tvpIdx)
         {
             var dic = SetDicBase();
             dic.ClassFullName = fullName;
@@ -252,14 +251,12 @@ namespace MyDAL.Core.Helper
             dic.CsType = valType;
             dic.TvpIndex = tvpIdx;
 
-            dic.Action = ActionEnum.Insert;
-
             return dic;
         }
 
         /*******************************************************************************************************/
 
-        internal DicModelUI SetDic(string fullName, string key, string param, (object val, string valStr) val, Type valType, ActionEnum action)
+        internal DicModelUI SetDic(string fullName, string key, string param, (object val, string valStr) val, Type valType)
         {
             var dic = SetDicBase();
             dic.ClassFullName = fullName;
@@ -269,9 +266,7 @@ namespace MyDAL.Core.Helper
             dic.CsValue = val.val;
             dic.CsValueStr = val.valStr;
             dic.CsType = valType;
-
-            dic.Action = action;
-
+            
             return dic;
         }
 

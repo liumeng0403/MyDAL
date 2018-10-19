@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MyDAL.UserFacade.Update
 {
-    public sealed class WhereU<M> 
+    public sealed class WhereU<M>
         : Operator, IUpdate<M>
     {
         internal WhereU(Context dc)

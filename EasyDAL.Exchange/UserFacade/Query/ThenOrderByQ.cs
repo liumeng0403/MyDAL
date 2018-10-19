@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace MyDAL.UserFacade.Query
 {
-    public sealed class ThenOrderByQ<M> 
+    public sealed class ThenOrderByQ<M>
         : Operator, IQueryList<M>, IQueryPagingList<M>, IQueryPagingListO<M>
+            where M : class
     {
 
         internal ThenOrderByQ(Context dc)
@@ -34,9 +35,9 @@ namespace MyDAL.UserFacade.Query
         /// <summary>
         /// 单表多条数据查询
         /// </summary>
-        public async Task<List<VM>> QueryListAsync<VM>(Expression<Func<M, VM>> func)
+        public async Task<List<VM>> QueryListAsync<VM>(Expression<Func<M, VM>> columnMapFunc)
         {
-            return await new QueryListImpl<M>(DC).QueryListAsync<VM>(func);
+            return await new QueryListImpl<M>(DC).QueryListAsync<VM>(columnMapFunc);
         }
 
         /// <summary>
@@ -64,9 +65,9 @@ namespace MyDAL.UserFacade.Query
         /// <typeparam name="VM">ViewModel</typeparam>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
-        public async Task<PagingList<VM>> QueryPagingListAsync<VM>(int pageIndex, int pageSize, Expression<Func<M, VM>> func)
+        public async Task<PagingList<VM>> QueryPagingListAsync<VM>(int pageIndex, int pageSize, Expression<Func<M, VM>> columnMapFunc)
         {
-            return await new QueryPagingListImpl<M>(DC).QueryPagingListAsync<VM>(pageIndex, pageSize, func);
+            return await new QueryPagingListImpl<M>(DC).QueryPagingListAsync<VM>(pageIndex, pageSize, columnMapFunc);
         }
 
         /// <summary>
@@ -94,9 +95,9 @@ namespace MyDAL.UserFacade.Query
         /// <typeparam name="VM">ViewModel</typeparam>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
-        public async Task<PagingList<VM>> QueryPagingListAsync<VM>(PagingQueryOption option, Expression<Func<M, VM>> func)
+        public async Task<PagingList<VM>> QueryPagingListAsync<VM>(PagingQueryOption option, Expression<Func<M, VM>> columnMapFunc)
         {
-            return await new QueryPagingListOImpl<M>(DC).QueryPagingListAsync<VM>(option, func);
+            return await new QueryPagingListOImpl<M>(DC).QueryPagingListAsync<VM>(option, columnMapFunc);
         }
 
     }

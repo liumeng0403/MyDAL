@@ -1,6 +1,8 @@
 ﻿using MyDAL.Core.Bases;
+using MyDAL.Core.Enums;
 using MyDAL.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MyDAL.Impls
@@ -15,12 +17,20 @@ namespace MyDAL.Impls
 
         public async Task<List<M>> QueryAllAsync()
         {
-            return await QueryAllAsyncHandle<M, M>();
+            //return await QueryAllAsyncHandle<M, M>();
+            return (await DC.DS.ExecuteReaderMultiRowAsync<M>(
+                DC.Conn,
+                DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryAllAsync)[0],
+                DC.SqlProvider.GetParameters())).ToList();
         }
 
         public async Task<List<VM>> QueryAllAsync<VM>()
         {
-            return await QueryAllAsyncHandle<M, VM>();
+            //return await QueryAllAsyncHandle<M, VM>();
+            return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
+                DC.Conn,
+                DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryAllAsync)[0],
+                DC.SqlProvider.GetParameters())).ToList();
         }
     }
 }
