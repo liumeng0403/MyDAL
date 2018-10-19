@@ -22,7 +22,7 @@
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
     <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.3.0" />
-    <PackageReference Include="Yunyong.Core" Version="1.0.0" />
+    <PackageReference Include="Yunyong.Core" Version="1.0.1" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Yunyong.Core">
