@@ -109,6 +109,10 @@ namespace MyDAL.Core.Bases
                     DC.AddConditions(DC.DH.ColumnDic(prop.Name, tab.TableAliasOne, fullName));
                 }
             }
+            else if (DC.UiConditions.Count == 0)
+            {
+                // none
+            }
             else
             {
                 var fullNames = DC.UiConditions.Where(it => !string.IsNullOrWhiteSpace(it.ClassFullName)).Distinct();
@@ -145,6 +149,10 @@ namespace MyDAL.Core.Bases
                         }
                     }
                 }
+            }
+            else if (DC.UiConditions.Count == 0)
+            {
+                // none
             }
             else
             {
