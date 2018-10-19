@@ -7,6 +7,5 @@ namespace MyDAL.Core.Common
     /// </summary>
     public interface IQueryOption
     {
-        List<OrderBy> OrderBys { get; set; }
     }
 }
