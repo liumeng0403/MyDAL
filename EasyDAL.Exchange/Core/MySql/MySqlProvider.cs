@@ -179,11 +179,11 @@ namespace Yunyong.DataExchange.Core.MySql
                             || par.DbType == DbType.UInt32
                             || par.DbType == DbType.UInt64)
                         {
-                            sqlStr = sqlStr.Replace($"@{par.Param}", par.DbValue == null ? "DbNull" : par.DbValue.ToString());
+                            sqlStr = sqlStr.Replace($"@{par.Param}", par.DbValue == null ? "null" : par.DbValue.ToString());
                         }
                         else
                         {
-                            sqlStr = sqlStr.Replace($"@{par.Param}", par.DbValue == null ? "DbNull" : $"'{par.DbValue.ToString()}'");
+                            sqlStr = sqlStr.Replace($"@{par.Param}", par.DbValue == null ? "null" : $"'{par.DbValue.ToString()}'");
                         }
                     }
                     XDebug.SqlWithParams.Add(sqlStr);

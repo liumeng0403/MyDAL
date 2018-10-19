@@ -36,7 +36,7 @@ namespace Yunyong.DataExchange
         /// <summary>
         /// set 多个字段数据
         /// </summary>
-        public static SetU<M> Set<M>(this Updater<M> updater, object filedsObject)
+        public static SetU<M> Set<M>(this Updater<M> updater, dynamic filedsObject)
         {
             updater.DC.Action = ActionEnum.Update;
             updater.DC.OP.SetDynamicHandle<M>(filedsObject);

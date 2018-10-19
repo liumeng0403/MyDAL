@@ -197,42 +197,42 @@ namespace Yunyong.DataExchange
         /// <summary>
         /// Updater 快速 UpdateAsync update fields by pk 方法
         /// </summary>
-        public static async Task<int> UpdateAsync<M>(this IDbConnection conn, int pkValue, object filedsObject)
+        public static async Task<int> UpdateAsync<M>(this IDbConnection conn, int pkValue, dynamic filedsObject)
         {
             var updater = conn.Updater<M>();
-            var option = new QuickOption() as IDictionary<string, object>;
+            var option = new QuickOption().GetCondition() as IDictionary<string, object>;
             option[updater.DC.SqlProvider.GetTablePK(typeof(M).FullName)] = pkValue;
-            return await updater.Set(filedsObject).Where(option).UpdateAsync();
+            return await updater.Set(filedsObject as object).Where(option).UpdateAsync();
         }
         /// <summary>
         /// Updater 快速 UpdateAsync update fields by pk 方法
         /// </summary>
-        public static async Task<int> UpdateAsync<M>(this IDbConnection conn, long pkValue, object filedsObject)
+        public static async Task<int> UpdateAsync<M>(this IDbConnection conn, long pkValue, dynamic filedsObject)
         {
             var updater = conn.Updater<M>();
-            var option = new QuickOption() as IDictionary<string, object>;
+            var option = new QuickOption().GetCondition() as IDictionary<string, object>;
             option[updater.DC.SqlProvider.GetTablePK(typeof(M).FullName)] = pkValue;
-            return await updater.Set(filedsObject).Where(option).UpdateAsync();
+            return await updater.Set(filedsObject as object).Where(option).UpdateAsync();
         }
         /// <summary>
         /// Updater 快速 UpdateAsync update fields by pk 方法
         /// </summary>
-        public static async Task<int> UpdateAsync<M>(this IDbConnection conn, string pkValue, object filedsObject)
+        public static async Task<int> UpdateAsync<M>(this IDbConnection conn, string pkValue, dynamic filedsObject)
         {
             var updater = conn.Updater<M>();
-            var option = new QuickOption() as IDictionary<string, object>;
+            var option = new QuickOption().GetCondition() as IDictionary<string, object>;
             option[updater.DC.SqlProvider.GetTablePK(typeof(M).FullName)] = pkValue;
-            return await updater.Set(filedsObject).Where(option).UpdateAsync();
+            return await updater.Set(filedsObject as object).Where(option).UpdateAsync();
         }
         /// <summary>
         /// Updater 快速 UpdateAsync update fields by pk 方法
         /// </summary>
-        public static async Task<int> UpdateAsync<M>(this IDbConnection conn, Guid pkValue, object filedsObject)
+        public static async Task<int> UpdateAsync<M>(this IDbConnection conn, Guid pkValue, dynamic filedsObject)
         {
             var updater = conn.Updater<M>();
-            var option = new QuickOption() as IDictionary<string, object>;
+            var option = new QuickOption().GetCondition() as IDictionary<string, object>;
             option[updater.DC.SqlProvider.GetTablePK(typeof(M).FullName)] = pkValue;
-            return await updater.Set(filedsObject).Where(option).UpdateAsync();
+            return await updater.Set(filedsObject as object).Where(option).UpdateAsync();
         }
 
         /// <summary>

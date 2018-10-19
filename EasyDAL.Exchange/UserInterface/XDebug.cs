@@ -7,9 +7,10 @@ namespace Yunyong.DataExchange
         private static object _lock { get; } = new object();
         private static List<string> _sql { get; set; } = new List<string>();
         private static List<string> _parameters { get; set; } = new List<string>();
-
-        //internal static bool Hint { get; set; }
-
+        
+        /// <summary>
+        /// 准确,SQL 集合
+        /// </summary>
         public static List<string> SQL
         {
             get
@@ -27,6 +28,9 @@ namespace Yunyong.DataExchange
                 }
             }
         }
+        /// <summary>
+        /// 准确,SQL 参数集合
+        /// </summary>
         public static List<string> Parameters
         {
             get
