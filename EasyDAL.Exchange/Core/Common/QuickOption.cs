@@ -1,10 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace MyDAL.Core.Common
+﻿namespace MyDAL.Core.Common
 {
     internal class QuickOption
-        : IQueryOption
+        : QueryOption
     {
-        public List<OrderBy> OrderBys { get; set; }
     }
 }
