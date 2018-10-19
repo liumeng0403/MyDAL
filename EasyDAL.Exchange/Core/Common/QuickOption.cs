@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
 using Yunyong.Core;
 
 namespace Yunyong.DataExchange.Core.Common
 {
     internal class QuickOption
-        : IQueryOption
+        : QueryOption
     {
-        public List<OrderBy> OrderBys { get; set; }
     }
 }

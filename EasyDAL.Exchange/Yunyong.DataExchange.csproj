@@ -25,11 +25,6 @@
     <PackageReference Include="Yunyong.Core" Version="1.0.1" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Yunyong.Core">
-      <HintPath>..\..\..\..\.nuget\packages\yunyong.core\1.0.0\lib\netstandard2.0\Yunyong.Core.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Update="SourceLink.Create.GitHub" Version="2.8.3" />
   </ItemGroup>
 
