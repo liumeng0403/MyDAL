@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
+using Yunyong.Core;
 using Yunyong.DataExchange;
 
 namespace MyDAL.Test.Query
@@ -245,6 +246,25 @@ namespace MyDAL.Test.Query
 
             var tuple12 = (XDebug.SQL, XDebug.Parameters);
             var yy2 = res12.First().nn;
+
+            /*************************************************************************************************************************/
+
+            var xx13 = "";
+
+            var option13 = new AgentQueryOption();
+            var res13 = await Conn
+                .Selecter<Agent>()
+                .Where(option13.GetCondition())
+                .QueryPagingListAsync<AgentVM>(option13);
+            Assert.True(res13.TotalCount == 28620);
+            Assert.True(res13.Data.Count == 10);
+
+            var tuple13 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*************************************************************************************************************************/
+
+            var xx = "";
+
 
         }
 
