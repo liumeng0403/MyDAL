@@ -117,81 +117,6 @@ namespace Yunyong.DataExchange.Core.MySql
             return $" \r\n limit {(pageIndex - 1) * pageSize},{pageSize}";
         }
 
-        private void XDebugValue(List<string> list)
-        {
-
-            if (XConfig.IsDebug)
-            {
-                XDebug.SQL = list;
-                var parax = DC.DbConditions.Where(it => DC.IsParameter(it)).ToList();
-                XDebug.Parameters = parax
-                    .Select(dbM =>
-                    {
-                        var uiM = DC.UiConditions.FirstOrDefault(ui => dbM.Param.Equals(ui.Param, StringComparison.OrdinalIgnoreCase));
-                        var field = string.Empty;
-                        if (dbM.Crud == CrudTypeEnum.Query
-                            || dbM.Crud == CrudTypeEnum.Update
-                            || dbM.Crud == CrudTypeEnum.Create
-                            || dbM.Crud == CrudTypeEnum.Delete)
-                        {
-                            field = dbM.ColumnOne;
-                        }
-                        else if (dbM.Crud == CrudTypeEnum.Join)
-                        {
-                            field = $"{dbM.TableAliasOne}.{dbM.ColumnOne}";
-                        }
-
-                        //
-                        var csVal = string.Empty;
-                        if (uiM.CsValue == null)
-                        {
-                            csVal = "Null";
-                        }
-                        else if (uiM.CsType == XConfig.DateTime)
-                        {
-                            csVal = uiM.CsValue.ToDateTimeStr();
-                        }
-                        else
-                        {
-                            csVal = uiM.CsValue.ToString();
-                        }
-
-                        //
-                        var dbVal = string.Empty;
-                        dbVal = dbM.DbValue == null ? "DbNull" : dbM.DbValue.ToString();
-                        return $"字段:【{field}】-->【{csVal}】;参数:【{dbM.Param}】-->【{dbVal}】.";
-                    })
-                    .ToList();
-                XDebug.SqlWithParams = new List<string>();
-                foreach (var sql in XDebug.SQL)
-                {
-                    var sqlStr = sql;
-                    foreach (var par in parax)
-                    {
-                        if (par.DbType == DbType.Boolean
-                            || par.DbType == DbType.Decimal
-                            || par.DbType == DbType.Double
-                            || par.DbType == DbType.Int16
-                            || par.DbType == DbType.Int32
-                            || par.DbType == DbType.Int64
-                            || par.DbType == DbType.Single
-                            || par.DbType == DbType.UInt16
-                            || par.DbType == DbType.UInt32
-                            || par.DbType == DbType.UInt64)
-                        {
-                            sqlStr = sqlStr.Replace($"@{par.Param}", par.DbValue == null ? "null" : par.DbValue.ToString());
-                        }
-                        else
-                        {
-                            sqlStr = sqlStr.Replace($"@{par.Param}", par.DbValue == null ? "null" : $"'{par.DbValue.ToString()}'");
-                        }
-                    }
-                    XDebug.SqlWithParams.Add(sqlStr);
-                }
-            }
-
-        }
-
         /****************************************************************************************************************/
 
         internal string GetSingleValuePart()
@@ -511,7 +436,7 @@ namespace Yunyong.DataExchange.Core.MySql
                                             and  ( TABLE_NAME = '{tableName.TrimStart('`').TrimEnd('`').ToLower()}' or TABLE_NAME = '{tableName.TrimStart('`').TrimEnd('`')}' )
                                         ;
                                   ";
-            return (await DC.DS.ExecuteReaderMultiRowAsync<ColumnInfo>(DC.Conn, sql, new DynamicParameters())).ToList();
+            return (await DC.DS.ExecuteReaderMultiRowAsync<ColumnInfo>(DC.Conn, sql, null)).ToList();
         }
 
         internal string GetColumns()
@@ -545,9 +470,9 @@ namespace Yunyong.DataExchange.Core.MySql
         }
 
 
-        internal DynamicParameters GetParameters()
+        internal DbParameters GetParameters()
         {
-            var paras = new DynamicParameters();
+            var paras = new DbParameters();
 
             //
             foreach (var item in DC.DbConditions)
@@ -586,19 +511,6 @@ namespace Yunyong.DataExchange.Core.MySql
                 throw new Exception($"类 [[{fullName}]] 对应的表 [[{col.TableName}]] 没有主键!");
             }
             return col.ColumnName;
-        }
-
-        internal OptionEnum GetChangeOption(ChangeEnum change)
-        {
-            switch (change)
-            {
-                case ChangeEnum.Add:
-                    return OptionEnum.ChangeAdd;
-                case ChangeEnum.Minus:
-                    return OptionEnum.ChangeMinus;
-                default:
-                    return OptionEnum.ChangeAdd;
-            }
         }
 
         internal List<string> GetSQL<M>(UiMethodEnum type, int? pageIndex = null, int? pageSize = null)
@@ -671,7 +583,7 @@ namespace Yunyong.DataExchange.Core.MySql
             }
 
             //
-            XDebugValue(list);
+            XDebug.SetValue(DC,list);
 
             //
             return list;

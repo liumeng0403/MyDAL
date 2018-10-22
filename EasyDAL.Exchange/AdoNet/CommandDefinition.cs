@@ -18,7 +18,7 @@ namespace Yunyong.DataExchange.AdoNet
         /// <summary>
         /// The parameters associated with the command
         /// </summary>
-        public DynamicParameters Parameters { get; }
+        public DbParameters Parameters { get; }
 
         /// <summary>
         /// The type of command that the command-text represents
@@ -45,7 +45,7 @@ namespace Yunyong.DataExchange.AdoNet
         /// <param name="commandType">The <see cref="CommandType"/> for this command.</param>
         /// <param name="flags">The behavior flags for this command.</param>
         /// <param name="cancellationToken">The cancellation token for this command.</param>
-        public CommandDefinition(string commandText, DynamicParameters parameters, CommandType commandType, CommandFlags flags = CommandFlags.Buffered)
+        public CommandDefinition(string commandText, DbParameters parameters, CommandType commandType, CommandFlags flags = CommandFlags.Buffered)
         {
             CommandText = commandText;
             Parameters = parameters;
@@ -53,7 +53,7 @@ namespace Yunyong.DataExchange.AdoNet
             Flags = flags;
         }
 
-        internal IDbCommand SetupCommand(IDbConnection cnn, Action<IDbCommand, DynamicParameters> paramReader)
+        internal IDbCommand SetupCommand(IDbConnection cnn, Action<IDbCommand, DbParameters> paramReader)
         {
             var cmd = cnn.CreateCommand();
             cmd.CommandText = CommandText;
