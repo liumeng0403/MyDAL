@@ -366,6 +366,22 @@ namespace Yunyong.DataExchange.Core.Bases
             DC.AddConditions(DC.DH.OrderbyDic(keyDic.ClassFullName, keyDic.ColumnOne));
         }
 
+        internal void OrderByHandle<F>(Expression<Func<F>> func, OrderByEnum orderBy)
+        {
+            var keyDic = DC.EH.FuncMExpression(func)[0];
+            switch (orderBy)
+            {
+                case OrderByEnum.Asc:
+                    DC.Option = OptionEnum.Asc;
+                    break;
+                case OrderByEnum.Desc:
+                    DC.Option = OptionEnum.Desc;
+                    break;
+            }
+
+            DC.AddConditions(DC.DH.OrderbyDic(keyDic.ClassFullName, keyDic.ColumnOne));
+        }
+
         protected void OrderByOptionHandle(PagingQueryOption option, string fullName)
         {
             if (option.OrderBys != null

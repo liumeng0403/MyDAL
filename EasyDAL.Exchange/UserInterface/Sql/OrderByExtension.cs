@@ -1,6 +1,7 @@
 using System;
 using System.Linq.Expressions;
 using Yunyong.DataExchange.Core.Enums;
+using Yunyong.DataExchange.UserFacade.Join;
 using Yunyong.DataExchange.UserFacade.Query;
 
 namespace Yunyong.DataExchange
@@ -27,6 +28,20 @@ namespace Yunyong.DataExchange
         }
 
         /**************************************************************************************************************/
+
+        public static OrderByX OrderBy<F>(this OnX join,Expression<Func<F>> propertyFunc,OrderByEnum orderBy= OrderByEnum.Desc)
+        {
+            join.DC.Action = ActionEnum.OrderBy;
+            join.DC.OP.OrderByHandle(propertyFunc, orderBy);
+            return new OrderByX(join.DC);
+        }
+
+        public static ThenOrderByX ThenOrderBy<F>(this OrderByX orderByX,Expression<Func<F>> propertyFunc,OrderByEnum orderBy = OrderByEnum.Desc)
+        {
+            orderByX.DC.Action = ActionEnum.OrderBy;
+            orderByX.DC.OP.OrderByHandle(propertyFunc, orderBy);
+            return new ThenOrderByX(orderByX.DC);
+        }
 
     }
 }

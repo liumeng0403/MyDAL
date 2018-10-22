@@ -1,4 +1,3 @@
-
 using Yunyong.DataExchange.Core.Bases;
 
 namespace Yunyong.DataExchange.UserFacade.Join
@@ -10,6 +9,8 @@ namespace Yunyong.DataExchange.UserFacade.Join
         internal JoinX(Context dc)
             : base(dc)
         { }
+
+
 
     }
 }
