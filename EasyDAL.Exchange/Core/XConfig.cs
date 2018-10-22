@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Data;
 using System.Reflection;
 
 namespace MyDAL.Core
@@ -49,11 +51,71 @@ namespace MyDAL.Core
 
         /************************************************************************************************************/
 
-        internal static Type XTableAttribute = typeof(XTableAttribute);
-        internal static string XTableFullName = typeof(XTableAttribute).FullName;
+        internal static Type XTableAttribute { get; private set; } = typeof(XTableAttribute);
+        internal static string XTableFullName { get; private set; } = typeof(XTableAttribute).FullName;
 
-        internal static Type XColumnAttribute = typeof(XColumnAttribute);
-        internal static string XColumnFullName = typeof(XColumnAttribute).FullName;
+        internal static Type XColumnAttribute { get; private set; } = typeof(XColumnAttribute);
+        internal static string XColumnFullName { get; private set; } = typeof(XColumnAttribute).FullName;
 
+        /************************************************************************************************************/
+
+        internal static ConcurrentDictionary<Type, DbType> TypeDBTypeDic { get; private set; } = new ConcurrentDictionary<Type, DbType>
+        {
+            [typeof(byte)] = DbType.Byte,
+            [typeof(byte[])] = DbType.Binary,
+            [typeof(byte?)] = DbType.Byte,
+
+            [typeof(sbyte)] = DbType.SByte,
+            [typeof(sbyte?)] = DbType.SByte,
+
+            [typeof(short)] = DbType.Int16,
+            [typeof(short?)] = DbType.Int16,
+
+            [typeof(ushort)] = DbType.UInt16,
+            [typeof(ushort?)] = DbType.UInt16,
+
+            [typeof(int)] = DbType.Int32,
+            [typeof(int?)] = DbType.Int32,
+
+            [typeof(uint)] = DbType.UInt32,
+            [typeof(uint?)] = DbType.UInt32,
+
+            [typeof(long)] = DbType.Int64,
+            [typeof(long?)] = DbType.Int64,
+
+            [typeof(ulong)] = DbType.UInt64,
+            [typeof(ulong?)] = DbType.UInt64,
+
+            [typeof(float)] = DbType.Single,
+            [typeof(float?)] = DbType.Single,
+
+            [typeof(double)] = DbType.Double,
+            [typeof(double?)] = DbType.Double,
+
+            [typeof(decimal)] = DbType.Decimal,
+            [typeof(decimal?)] = DbType.Decimal,
+
+            [typeof(bool)] = DbType.Boolean,
+            [typeof(bool?)] = DbType.Boolean,
+
+            [typeof(string)] = DbType.String,
+
+            [typeof(char)] = DbType.StringFixedLength,
+            [typeof(char?)] = DbType.StringFixedLength,
+
+            [typeof(Guid)] = DbType.Guid,
+            [typeof(Guid?)] = DbType.Guid,
+
+            [typeof(DateTime)] = DbType.DateTime,
+            [typeof(DateTime?)] = DbType.DateTime,
+
+            [typeof(DateTimeOffset)] = DbType.DateTimeOffset,
+            [typeof(DateTimeOffset?)] = DbType.DateTimeOffset,
+
+            [typeof(TimeSpan)] = DbType.Time,
+            [typeof(TimeSpan?)] = DbType.Time,
+
+            [typeof(object)] = DbType.Object
+        };
     }
 }

@@ -39,93 +39,7 @@ namespace MyDAL.Core.Helper
                 return hash;
             }
         }
-
-        private static Dictionary<Type, DbType> typeMap { get; set; }
-
-        static AdoNetHelper()
-        {
-            typeMap = new Dictionary<Type, DbType>
-            {
-                [typeof(byte)] = DbType.Byte,
-                [typeof(sbyte)] = DbType.SByte,
-                [typeof(short)] = DbType.Int16,
-                [typeof(ushort)] = DbType.UInt16,
-                [typeof(int)] = DbType.Int32,
-                [typeof(uint)] = DbType.UInt32,
-                [typeof(long)] = DbType.Int64,
-                [typeof(ulong)] = DbType.UInt64,
-                [typeof(float)] = DbType.Single,
-                [typeof(double)] = DbType.Double,
-                [typeof(decimal)] = DbType.Decimal,
-                [typeof(bool)] = DbType.Boolean,
-                [typeof(string)] = DbType.String,
-                [typeof(char)] = DbType.StringFixedLength,
-                [typeof(Guid)] = DbType.Guid,
-                [typeof(DateTime)] = DbType.DateTime,
-                [typeof(DateTimeOffset)] = DbType.DateTimeOffset,
-                [typeof(TimeSpan)] = DbType.Time,
-                [typeof(byte[])] = DbType.Binary,
-                [typeof(byte?)] = DbType.Byte,
-                [typeof(sbyte?)] = DbType.SByte,
-                [typeof(short?)] = DbType.Int16,
-                [typeof(ushort?)] = DbType.UInt16,
-                [typeof(int?)] = DbType.Int32,
-                [typeof(uint?)] = DbType.UInt32,
-                [typeof(long?)] = DbType.Int64,
-                [typeof(ulong?)] = DbType.UInt64,
-                [typeof(float?)] = DbType.Single,
-                [typeof(double?)] = DbType.Double,
-                [typeof(decimal?)] = DbType.Decimal,
-                [typeof(bool?)] = DbType.Boolean,
-                [typeof(char?)] = DbType.StringFixedLength,
-                [typeof(Guid?)] = DbType.Guid,
-                [typeof(DateTime?)] = DbType.DateTime,
-                [typeof(DateTimeOffset?)] = DbType.DateTimeOffset,
-                [typeof(TimeSpan?)] = DbType.Time,
-                [typeof(object)] = DbType.Object
-            };
-        }
-
-        /// <summary>
-        /// OBSOLETE: For internal usage only. Lookup the DbType and handler for a given Type and member
-        /// </summary>
-        /// <param name="type">The type to lookup.</param>
-        /// <param name="name">The name (for error messages).</param>
-        /// <param name="demand">Whether to demand a value (throw if missing).</param>
-        /// <param name="handler">The handler for <paramref name="type"/>.</param>
-        [Browsable(false)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static DbType LookupDbType(Type type, string name, bool demand/*, out ITypeHandler handler*/)
-        {
-            //handler = null;
-            var nullUnderlyingType = Nullable.GetUnderlyingType(type);
-            if (nullUnderlyingType != null)
-            {
-                type = nullUnderlyingType;
-            }
-            if (type.IsEnum && !typeMap.ContainsKey(type))
-            {
-                type = Enum.GetUnderlyingType(type);
-            }
-            if (typeMap.TryGetValue(type, out DbType dbType))
-            {
-                return dbType;
-            }
-            if (type.FullName == Settings.LinqBinary)
-            {
-                return DbType.Binary;
-            }
-            if (typeof(IEnumerable).IsAssignableFrom(type))
-            {
-                return DynamicParameters.EnumerableMultiParameter;
-            }
-            if (demand)
-            {
-                throw new NotSupportedException($"The member {name} of type {type.FullName} cannot be used as a parameter value");
-            }
-            return DbType.Object;
-        }
-
+        
         private static int[] ErrTwoRows { get; } = new int[2];
         private static int[] ErrZeroRows { get; } = new int[0];
         internal static void ThrowMultipleRows(RowEnum row)
@@ -168,7 +82,7 @@ namespace MyDAL.Core.Helper
         internal static CacheInfo GetCacheInfo(Identity identity)
         {
             var info = new CacheInfo();
-            Action<IDbCommand, DynamicParameters> reader = (cmd, paras) => paras.AddParameters(cmd, identity);
+            Action<IDbCommand, DbParameters> reader = (cmd, paras) => paras.AddParameters(cmd, identity);
             info.ParamReader = reader;
 
             return info;
@@ -200,20 +114,6 @@ namespace MyDAL.Core.Helper
             var s = value as string;
             if (s == null || s.Length != 1) throw new ArgumentException("A single-character was expected", nameof(value));
             return s[0];
-        }
-
-        /// <summary>
-        /// OBSOLETE: For internal usage only. Sanitizes the paramter value with proper type casting.
-        /// </summary>
-        /// <param name="value">The value to sanitize.</param>
-        public static object SanitizeParameterValue(object value)
-        {
-            if (value == null)
-            {
-                return DBNull.Value;
-            }
-
-            return value;
         }
 
         /// <summary>

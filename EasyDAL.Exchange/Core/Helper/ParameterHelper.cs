@@ -20,7 +20,7 @@ namespace MyDAL.Core.Helper
 
         /**********************************************************************************************************/
 
-        private static ParamInfo GetDefault(string name, object value, DbType? dbType)
+        private static ParamInfo GetDefault(string name, object value, DbType dbType)
         {
             return new ParamInfo
             {

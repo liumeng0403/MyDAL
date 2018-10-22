@@ -59,7 +59,7 @@ namespace MyDAL.Core.Common
         public string Param { get; set; }
         public string ParamRaw { get; set; }
         public object DbValue { get; set; }
-        public DbType? DbType { get; set; }
+        public DbType DbType { get; set; }
 
         public string ColumnType { get; set; }
 

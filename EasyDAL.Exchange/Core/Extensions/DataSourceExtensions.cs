@@ -12,7 +12,7 @@ namespace MyDAL.Core.Extensions
         /// <summary>
         /// Attempts setup a <see cref="DbCommand"/> on a <see cref="DbConnection"/>, with a better error message for unsupported usages.
         /// </summary>
-        internal static DbCommand TrySetupAsyncCommand(this CommandDefinition command, IDbConnection cnn, Action<IDbCommand, DynamicParameters> paramReader)
+        internal static DbCommand TrySetupAsyncCommand(this CommandDefinition command, IDbConnection cnn, Action<IDbCommand, DbParameters> paramReader)
         {
             if (command.SetupCommand(cnn, paramReader) is DbCommand dbCommand)
             {

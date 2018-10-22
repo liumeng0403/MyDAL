@@ -102,6 +102,19 @@ namespace MyDAL.Core.Bases
             return false;
         }
 
+        internal OptionEnum GetChangeOption(ChangeEnum change)
+        {
+            switch (change)
+            {
+                case ChangeEnum.Add:
+                    return OptionEnum.ChangeAdd;
+                case ChangeEnum.Minus:
+                    return OptionEnum.ChangeMinus;
+                default:
+                    return OptionEnum.ChangeAdd;
+            }
+        }
+
         internal void AddConditions(DicModelUI dic)
         {
             if (dic.CsValue!=null

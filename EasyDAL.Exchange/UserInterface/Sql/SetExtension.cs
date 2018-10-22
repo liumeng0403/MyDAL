@@ -53,7 +53,7 @@ namespace MyDAL
             where M : class
         {
             updater.DC.Action = ActionEnum.Update;
-            updater.DC.OP.SetChangeHandle<M, F>(propertyFunc, modifyVal, updater.DC.SqlProvider.GetChangeOption(change));
+            updater.DC.OP.SetChangeHandle<M, F>(propertyFunc, modifyVal, updater.DC.GetChangeOption(change));
             return new SetU<M>(updater.DC);
         }
         /// <summary>
@@ -66,7 +66,7 @@ namespace MyDAL
             where M : class
         {
             set.DC.Action = ActionEnum.Update;
-            set.DC.OP.SetChangeHandle<M, F>(propertyFunc, modifyVal, set.DC.SqlProvider.GetChangeOption(change));
+            set.DC.OP.SetChangeHandle<M, F>(propertyFunc, modifyVal, set.DC.GetChangeOption(change));
             return set;
         }
 

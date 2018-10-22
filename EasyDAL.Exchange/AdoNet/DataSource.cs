@@ -22,12 +22,12 @@ namespace MyDAL.AdoNet
          * ado.net -- DbCommand.[Task<DbDataReader> ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)]
          * select -- 所有行
          */
-        internal async Task<IEnumerable<T>> ExecuteReaderMultiRowAsync<T>(IDbConnection conn, string sql, DynamicParameters paramx)
+        internal async Task<IEnumerable<T>> ExecuteReaderMultiRowAsync<T>(IDbConnection conn, string sql, DbParameters paramx)
         {
-            paramx = paramx ?? new DynamicParameters();
+            paramx = paramx ?? new DbParameters();
             var command = new CommandDefinition(sql, paramx, CommandType.Text, CommandFlags.Buffered);
             var effectiveType = typeof(T);
-            DynamicParameters param = command.Parameters;
+            DbParameters param = command.Parameters;
             var identity = new Identity(command.CommandText, command.CommandType, conn, effectiveType, param?.GetType());
             var info = AdoNetHelper.GetCacheInfo(identity);
             bool needClose = conn.State == ConnectionState.Closed;
@@ -100,13 +100,13 @@ namespace MyDAL.AdoNet
          * ado.net -- DbCommand.[Task<DbDataReader> ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)]
          * select -- 第一行
          */
-        internal async Task<T> ExecuteReaderSingleRowAsync<T>(IDbConnection conn, string sql, DynamicParameters paramx)
+        internal async Task<T> ExecuteReaderSingleRowAsync<T>(IDbConnection conn, string sql, DbParameters paramx)
         {
-            paramx = paramx ?? new DynamicParameters();
+            paramx = paramx ?? new DbParameters();
             var command = new CommandDefinition(sql, paramx, CommandType.Text, CommandFlags.None);
             var effectiveType = typeof(T);
             var row = RowEnum.FirstOrDefault;
-            DynamicParameters param = command.Parameters;
+            DbParameters param = command.Parameters;
             var identity = new Identity(command.CommandText, command.CommandType, conn, effectiveType, param?.GetType());
             var info = AdoNetHelper.GetCacheInfo(identity);
             bool needClose = conn.State == ConnectionState.Closed;
@@ -177,11 +177,11 @@ namespace MyDAL.AdoNet
          * Update,Insert,Delete -- 执行成功是返回值为该命令所影响的行数，如果影响的行数为0时返回的值为0，如果数据操作回滚得话返回值为-1
          * 对数据库结构的操作 -- 操作成功时返回的却是-1 , 操作失败的话（如数据表已经存在）往往会发生异常
          */
-        internal async Task<int> ExecuteNonQueryAsync(IDbConnection conn, string sql, DynamicParameters paramx)
+        internal async Task<int> ExecuteNonQueryAsync(IDbConnection conn, string sql, DbParameters paramx)
         {
-            paramx = paramx ?? new DynamicParameters();
+            paramx = paramx ?? new DbParameters();
             var command = new CommandDefinition(sql, paramx, CommandType.Text, CommandFlags.Buffered);
-            DynamicParameters param = command.Parameters;
+            var param = command.Parameters;
 
             var identity = new Identity(command.CommandText, command.CommandType, conn, null, param?.GetType());
             var info = AdoNetHelper.GetCacheInfo(identity);
@@ -212,11 +212,11 @@ namespace MyDAL.AdoNet
          * select -- 返回结果是查询后的第一行的第一列
          * 非select -- 返回一个未实例化的对象
          */
-        internal async Task<T> ExecuteScalarAsync<T>(IDbConnection conn, string sql, DynamicParameters paramx)
+        internal async Task<T> ExecuteScalarAsync<T>(IDbConnection conn, string sql, DbParameters paramx)
         {
-            paramx = paramx ?? new DynamicParameters();
+            paramx = paramx ?? new DbParameters();
             var command = new CommandDefinition(sql, paramx, CommandType.Text, CommandFlags.Buffered);
-            Action<IDbCommand, DynamicParameters> paramReader = null;
+            Action<IDbCommand, DbParameters> paramReader = null;
             object param = command.Parameters;
             if (param != null)
             {
