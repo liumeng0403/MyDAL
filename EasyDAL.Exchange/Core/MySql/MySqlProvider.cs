@@ -68,11 +68,17 @@ namespace Yunyong.DataExchange.Core.MySql
         private string GetOrderByPart<M>()
         {
             var str = string.Empty;
-            var cols = DC.SC.GetColumnInfos(DC.SC.GetKey(typeof(M).FullName, DC.Conn.Database));
+            var key = DC.SC.GetKey(typeof(M).FullName, DC.Conn.Database);
+            var cols = DC.SC.GetColumnInfos(key);
+            var props = DC.SC.GetModelProperys(key);
 
             if (DC.DbConditions.Any(it => it.Action == ActionEnum.OrderBy))
             {
                 str = string.Join(",", DC.DbConditions.Where(it => it.Action == ActionEnum.OrderBy).Select(it => $" `{it.ColumnOne}` {it.Option.ToEnumDesc<OptionEnum>()} "));
+            }
+            else if (props.Any(it => "CreatedOn".Equals(it.Name, StringComparison.OrdinalIgnoreCase)))
+            {
+                str = $" `{props.First(it => "CreatedOn".Equals(it.Name, StringComparison.OrdinalIgnoreCase)).Name}` desc ";
             }
             else if (cols.Any(it => "PRI".Equals(it.KeyType, StringComparison.OrdinalIgnoreCase)))
             {
@@ -91,12 +97,16 @@ namespace Yunyong.DataExchange.Core.MySql
         {
             var str = string.Empty;
             var dic = DC.DbConditions.First(it => !string.IsNullOrWhiteSpace(it.Key));
-            //var key = DC.SC.GetKey(dic.ClassFullName, DC.Conn.Database);
             var cols = DC.SC.GetColumnInfos(dic.Key);
+            var props = DC.SC.GetModelProperys(dic.Key);
 
             if (DC.DbConditions.Any(it => it.Action == ActionEnum.OrderBy))
             {
                 str = string.Join(",", DC.DbConditions.Where(it => it.Action == ActionEnum.OrderBy).Select(it => $" {dic.TableAliasOne}.`{it.ColumnOne}` {it.Option.ToEnumDesc<OptionEnum>()} "));
+            }
+            else if (props.Any(it => "CreatedOn".Equals(it.Name, StringComparison.OrdinalIgnoreCase)))
+            {
+                str = $" {dic.TableAliasOne}.`{props.First(it => "CreatedOn".Equals(it.Name, StringComparison.OrdinalIgnoreCase)).Name}` desc ";
             }
             else if (cols.Any(it => "PRI".Equals(it.KeyType, StringComparison.OrdinalIgnoreCase)))
             {
