@@ -19,3 +19,5 @@
 /MyDAL.Test.CodeFirst/obj/
 /MyDAL.Test.QuickAPI/bin/
 /MyDAL.Test.QuickAPI/obj/
+/MyDAL.Test.Join.Query/bin/
+/MyDAL.Test.Join.Query/obj/

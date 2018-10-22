@@ -20,9 +20,6 @@ namespace MyDAL.Impls
 
         public async Task<List<M>> QueryListAsync()
         {
-            //return await QueryListAsyncHandle<M, M>();
-            //SelectMHandle<M>();
-            //DC.IP.ConvertDic();
             return (await DC.DS.ExecuteReaderMultiRowAsync<M>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryListAsync)[0],
@@ -31,7 +28,6 @@ namespace MyDAL.Impls
 
         public async Task<List<VM>> QueryListAsync<VM>()
         {
-            //return await QueryListAsyncHandle<M, VM>();
             SelectMHandle<M, VM>();
             DC.IP.ConvertDic();
             return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
@@ -44,9 +40,6 @@ namespace MyDAL.Impls
         {
             SelectMHandle(func);
             DC.IP.ConvertDic();
-            //return await QueryListAsyncHandle<M, VM>();
-            //SelectMHandle<M, VM>();
-            //DC.IP.ConvertDic();
             return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryListAsync)[0],

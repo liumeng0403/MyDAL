@@ -4,25 +4,17 @@ using MyDAL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace MyDAL.UserFacade.Join
 {
-    public sealed class WhereX
-        : Operator, IQueryFirstOrDefaultX, IQueryListX, IQueryPagingListX, IQueryPagingListXO, ICountX
+    public class OrderByX
+        : Operator, IQueryFirstOrDefaultX, IQueryListX, IQueryPagingListX, IQueryPagingListXO
     {
-
-        internal WhereX(Context dc)
+        internal OrderByX(Context dc) 
             : base(dc)
-        { }
-
-        public async Task<long> CountAsync()
         {
-            return await new CountXImpl(DC).CountAsync();
-        }
-        public async Task<long> CountAsync<F>(Expression<Func<F>> propertyFunc)
-        {
-            return await new CountXImpl(DC).CountAsync(propertyFunc);
         }
 
         /// <summary>
@@ -95,6 +87,5 @@ namespace MyDAL.UserFacade.Join
         {
             return await new QueryPagingListXOImpl(DC).QueryPagingListAsync<VM>(option, columnMapFunc);
         }
-
     }
 }

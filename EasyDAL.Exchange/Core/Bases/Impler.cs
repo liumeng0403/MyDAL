@@ -96,27 +96,23 @@ namespace MyDAL.Core.Bases
         internal void SelectMHandle<M>()
         {
             DC.Action = ActionEnum.Select;
-            var vmType = typeof(M);
-            var fullName = vmType.FullName;
-            var vmProps = DC.GH.GetPropertyInfos(vmType);
+            var mType = typeof(M);
+            var fullName = mType.FullName;
             var tab = DC.UiConditions.FirstOrDefault(it => fullName.Equals(it.ClassFullName, StringComparison.OrdinalIgnoreCase));
             if (tab != null)
             {
                 DC.Option = OptionEnum.Column;
                 DC.Compare = CompareEnum.None;
-                foreach (var prop in vmProps)
-                {
-                    DC.AddConditions(DC.DH.ColumnDic(prop.Name, tab.TableAliasOne, fullName));
-                }
+                DC.AddConditions(DC.DH.ColumnDic("*", tab.TableAliasOne, fullName));
             }
             else if (DC.UiConditions.Count == 0)
             {
-                // none
+                // important
             }
             else
             {
                 var fullNames = DC.UiConditions.Where(it => !string.IsNullOrWhiteSpace(it.ClassFullName)).Distinct();
-                throw new Exception($"请使用 [[Task<List<VM>> QueryListAsync<VM>(Expression<Func<VM>> func)]] 方法! 或者 {vmType.Name} 必须为 [[{string.Join(",", fullNames.Select(it => it.ClassName))}]] 其中之一 !");
+                throw new Exception($"请使用 [[Task<List<VM>> QueryListAsync<VM>(Expression<Func<VM>> func)]] 方法! 或者 {mType.Name} 必须为 [[{string.Join(",", fullNames.Select(it => it.ClassName))}]] 其中之一 !");
             }
         }
 
@@ -152,7 +148,7 @@ namespace MyDAL.Core.Bases
             }
             else if (DC.UiConditions.Count == 0)
             {
-                // none
+                // important
             }
             else
             {

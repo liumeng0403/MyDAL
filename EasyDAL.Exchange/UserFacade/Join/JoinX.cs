@@ -1,4 +1,8 @@
-﻿using MyDAL.Core.Bases;
+﻿using System;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using MyDAL.Core.Bases;
+using MyDAL.Interfaces;
 
 namespace MyDAL.UserFacade.Join
 {
@@ -9,6 +13,8 @@ namespace MyDAL.UserFacade.Join
         internal JoinX(Context dc)
             : base(dc)
         { }
+
+
 
     }
 }
