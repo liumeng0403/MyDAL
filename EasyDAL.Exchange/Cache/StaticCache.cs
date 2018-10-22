@@ -1,4 +1,5 @@
-﻿using MyDAL.Core.Bases;
+﻿using MyDAL.Core;
+using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Helper;
 using MyDAL.Core.MySql.Models;
@@ -20,11 +21,29 @@ namespace MyDAL.Cache
         {
             return $"{GetKey(classFullName, dbName)}:{attrFullName}:{propName}";
         }
-
+        internal string GetAttrKey(string attrFullName,string propName,string classFullName,string dbName)
+        {
+            return $"{GetKey(classFullName, dbName)}:{propName}:{attrFullName}";
+        }
 
         /*****************************************************************************************************************************************************/
-
-        internal static ConcurrentDictionary<string, ConcurrentDictionary<Int32, String>> EHCache { get; } = new ConcurrentDictionary<string, ConcurrentDictionary<Int32, String>>();
+        
+        private static ConcurrentDictionary<string, XColumnAttribute> XColumnAttributeCache { get; } = new ConcurrentDictionary<string, XColumnAttribute>();
+        internal XColumnAttribute GetXColumnAttribute(PropertyInfo info,string key)
+        {
+            var attr = default(XColumnAttribute);
+            if (!XColumnAttributeCache.TryGetValue(key, out attr))
+            {
+                if (info.IsDefined(XConfig.XColumnAttribute, false))
+                {
+                    attr = (XColumnAttribute)info.GetCustomAttributes(XConfig.XColumnAttribute, false)[0];
+                    XColumnAttributeCache[key] = attr;
+                    return attr;
+                }
+                return null;
+            }
+            return attr;
+        }
 
         /*****************************************************************************************************************************************************/
 

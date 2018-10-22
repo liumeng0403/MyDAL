@@ -126,18 +126,16 @@ namespace MyDAL.Core
 
                 //
                 var type = info.PropertyType;
-                var field = StaticCache
-                    .EHCache
-                    .GetOrAdd($"{paramType.FullName}:{info.Module.GetHashCode()}", moduleKey => new ConcurrentDictionary<Int32, String>())
-                    .GetOrAdd(info.MetadataToken, innnerKey =>
-                    {
-                        if (info.IsDefined(typeof(XColumnAttribute), false))
-                        {
-                            var attr = (XColumnAttribute)info.GetCustomAttributes(typeof(XColumnAttribute), false)[0];
-                            return attr.Name;
-                        }
-                        return info.Name;
-                    });
+                var attr = DC.SC.GetXColumnAttribute(info, DC.SC.GetAttrKey(XConfig.XColumnFullName, info.Name, paramType.FullName, DC.Conn.Database));
+                var field = string.Empty;
+                if(attr!=null)
+                {
+                    field = attr.Name;
+                }
+                else
+                {
+                    field = info.Name;
+                }
 
                 //
                 return (field, alias, type, paramType.FullName);
