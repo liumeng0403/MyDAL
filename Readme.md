@@ -15,4 +15,5 @@ Nuget Gallery：
 
 Clone&Fork:  <b>克隆</b>的同学不要忘了<b>右上角</b>给点个<b>Star</b>(星).
 
-文章&&教程：
+文章&&教程：<br/>
+* <a href="https://www.cnblogs.com/Meng-NET/p/9831746.html" target="_blank">MyDAL - 简介&安装&快速使用</a>
