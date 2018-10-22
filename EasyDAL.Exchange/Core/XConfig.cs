@@ -47,5 +47,13 @@ namespace Yunyong.DataExchange.Core
         internal static Type NullableT { get; private set; } = typeof(Nullable<>);
         internal static Type ListT { get; private set; } = typeof(List<>);
 
+        /************************************************************************************************************/
+
+        internal static Type XTableAttribute = typeof(XTableAttribute);
+        internal static string XTableFullName = typeof(XTableAttribute).FullName;
+
+        internal static Type XColumnAttribute = typeof(XColumnAttribute);
+        internal static string XColumnFullName = typeof(XColumnAttribute).FullName;
+
     }
 }

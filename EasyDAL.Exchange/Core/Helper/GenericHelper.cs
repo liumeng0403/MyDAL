@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using Yunyong.Core;
+using Yunyong.DataExchange.Core.Common;
 
 namespace Yunyong.DataExchange.Core.Helper
 {
