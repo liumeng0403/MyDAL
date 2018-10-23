@@ -22,6 +22,9 @@ namespace MyDAL.Test.Options
         public AgentLevel AgentLevel { get; set; }
 
         [QueryColumn("AgentLevel", CompareEnum.In)]
-        public List<AgentLevel> EnumListIn { get; set; } 
+        public List<AgentLevel> EnumListIn { get; set; }
+
+        [QueryColumn("AgentLevel", CompareEnum.NotIn)]
+        public List<AgentLevel> EnumListNotIn { get; set; }
     }
 }
