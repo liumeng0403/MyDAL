@@ -16,7 +16,7 @@ namespace Yunyong.DataExchange.Impls
 
         public async Task<PagingList<M>> QueryAllPagingListAsync(int pageIndex, int pageSize)
         {
-            return await QueryPagingListAsyncHandle<M, M>(pageIndex, pageSize, UiMethodEnum.QueryAllPagingListAsync);
+            return await QueryPagingListAsyncHandle<M>(pageIndex, pageSize, UiMethodEnum.QueryAllPagingListAsync);
         }
 
         public async Task<PagingList<VM>> QueryAllPagingListAsync<VM>(int pageIndex, int pageSize)

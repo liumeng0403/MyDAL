@@ -374,7 +374,7 @@ namespace Yunyong.DataExchange.Core.Bases
 
         internal void OrderByHandle<F>(Expression<Func<F>> func, OrderByEnum orderBy)
         {
-            var keyDic = DC.EH.FuncMExpression(func)[0];
+            var keyDic = DC.EH.FuncTExpression(func)[0];
             switch (orderBy)
             {
                 case OrderByEnum.Asc:

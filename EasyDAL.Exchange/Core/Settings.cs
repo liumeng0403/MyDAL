@@ -42,9 +42,11 @@ namespace Yunyong.DataExchange.Core
         internal static string LinqBinary { get; } = "System.Data.Linq.Binary";
 
         internal static MethodInfo EnumParse { get; } = typeof(Enum).GetMethod(nameof(Enum.Parse), new Type[] { typeof(Type), typeof(string), typeof(bool) });
-        internal static MethodInfo GetItem { get; } = typeof(IDataRecord).GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                        .Where(p => p.GetIndexParameters().Length > 0 && p.GetIndexParameters()[0].ParameterType == typeof(int))
-                        .Select(p => p.GetGetMethod()).First();
+        internal static MethodInfo GetItem { get; } = typeof(IDataRecord)
+            .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+            .Where(p => p.GetIndexParameters().Length > 0 && p.GetIndexParameters()[0].ParameterType == typeof(int))
+            .Select(p => p.GetGetMethod())
+            .First();
 
     }
 }

@@ -15,7 +15,7 @@ namespace Yunyong.DataExchange.Cache
 
         private static Hashtable byType { get; } = new Hashtable();
         private Type type { get; }
-       
+
 
         internal static Func<IDataReader, object> GetReader(Type type, IDataReader reader, int startBound, int length, bool returnNullIfFirstMissing)
         {
@@ -44,7 +44,7 @@ namespace Yunyong.DataExchange.Cache
             {
                 length = reader.FieldCount - startBound;
             }
-            int hash = AdoNetHelper. GetColumnHash(reader, startBound, length);
+            int hash = AdoNetHelper.GetColumnHash(reader, startBound, length);
             if (returnNullIfFirstMissing)
             {
                 hash *= -27;
@@ -59,7 +59,7 @@ namespace Yunyong.DataExchange.Cache
                     return deser;
                 }
             }
-            deser = AdoNetHelper. GetTypeDeserializerImpl(type, reader, startBound, length, returnNullIfFirstMissing);
+            deser = AdoNetHelper.RowDeserializer(type, reader, startBound, length, returnNullIfFirstMissing);
             // get a more expensive key: true means copy the values down so it can be used as a key later
             key = new DeserializerKey(hash, startBound, length, returnNullIfFirstMissing, reader, true);
             lock (readers)

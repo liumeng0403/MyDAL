@@ -20,7 +20,7 @@ namespace Yunyong.DataExchange.Impls
 
         public async Task<PagingList<M>> QueryPagingListAsync(int pageIndex, int pageSize)
         {
-            return await QueryPagingListAsyncHandle<M, M>(pageIndex, pageSize, UiMethodEnum.QueryPagingListAsync);
+            return await QueryPagingListAsyncHandle<M>(pageIndex, pageSize, UiMethodEnum.QueryPagingListAsync);
         }
 
         public async Task<PagingList<VM>> QueryPagingListAsync<VM>(int pageIndex, int pageSize)
@@ -49,7 +49,7 @@ namespace Yunyong.DataExchange.Impls
         {
             OrderByOptionHandle(option, typeof(M).FullName);
             DC.DH.UiToDbCopy();
-            return await QueryPagingListAsyncHandle<M, M>(option.PageIndex, option.PageSize, UiMethodEnum.QueryPagingListAsync);
+            return await QueryPagingListAsyncHandle<M>(option.PageIndex, option.PageSize, UiMethodEnum.QueryPagingListAsync);
         }
 
         public async Task<PagingList<VM>> QueryPagingListAsync<VM>(PagingQueryOption option)

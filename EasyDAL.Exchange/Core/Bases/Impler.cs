@@ -4,9 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Yunyong.Core;
-using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Enums;
-using Yunyong.DataExchange.Core.Extensions;
 
 namespace Yunyong.DataExchange.Core.Bases
 {
@@ -32,6 +30,18 @@ namespace Yunyong.DataExchange.Core.Bases
         }
 
         /**********************************************************************************************************/
+
+        protected async Task<PagingList<M>> QueryPagingListAsyncHandle<M>(int pageIndex, int pageSize, UiMethodEnum sqlType)
+        {
+            var result = new PagingList<M>();
+            result.PageIndex = pageIndex;
+            result.PageSize = pageSize;
+            var paras = DC.SqlProvider.GetParameters();
+            var sql = DC.SqlProvider.GetSQL<M>(sqlType, result.PageIndex, result.PageSize);
+            result.TotalCount = await DC.DS.ExecuteScalarAsync<int>(DC.Conn, sql[0], paras);
+            result.Data = (await DC.DS.ExecuteReaderMultiRowAsync<M>(DC.Conn, sql[1], paras)).ToList();
+            return result;
+        }
 
         protected async Task<PagingList<VM>> QueryPagingListAsyncHandle<M, VM>(int pageIndex, int pageSize, UiMethodEnum sqlType)
         {
@@ -114,7 +124,7 @@ namespace Yunyong.DataExchange.Core.Bases
         internal void SelectMHandle<VM>(Expression<Func<VM>> func)
         {
             DC.Action = ActionEnum.Select;
-            var list = DC.EH.FuncMExpression(func);
+            var list = DC.EH.FuncTExpression(func);
             foreach (var dic in list)
             {
                 dic.Option = OptionEnum.ColumnAs;

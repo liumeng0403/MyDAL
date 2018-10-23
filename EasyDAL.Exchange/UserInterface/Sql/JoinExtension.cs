@@ -13,7 +13,7 @@ namespace Yunyong.DataExchange
         public static JoinX InnerJoin<M>(this FromX from, Expression<Func<M>> tableModelFunc)
         {
             from.DC.Action = ActionEnum.InnerJoin;
-            var dic = from.DC.EH.FuncMExpression(tableModelFunc)[0];
+            var dic = from.DC.EH.FuncTExpression(tableModelFunc)[0];
             from.DC.AddConditions(dic);
             return new JoinX(from.DC);
         }
@@ -21,7 +21,7 @@ namespace Yunyong.DataExchange
         public static JoinX LeftJoin<M>(this FromX from, Expression<Func<M>> tableModelFunc)
         {
             from.DC.Action = ActionEnum.LeftJoin;
-            var dic = from.DC.EH.FuncMExpression(tableModelFunc)[0];
+            var dic = from.DC.EH.FuncTExpression(tableModelFunc)[0];
             from.DC.AddConditions(dic);
             return new JoinX(from.DC);
         }
@@ -31,7 +31,7 @@ namespace Yunyong.DataExchange
         public static JoinX InnerJoin<M>(this OnX on, Expression<Func<M>> tableModelFunc)
         {
             on.DC.Action = ActionEnum.InnerJoin;
-            var dic = on.DC.EH.FuncMExpression(tableModelFunc)[0];
+            var dic = on.DC.EH.FuncTExpression(tableModelFunc)[0];
             on.DC.AddConditions(dic);
             return new JoinX(on.DC);
         }
@@ -39,7 +39,7 @@ namespace Yunyong.DataExchange
         public static JoinX LeftJoin<M>(this OnX on, Expression<Func<M>> tableModelFunc)
         {
             on.DC.Action = ActionEnum.LeftJoin;
-            var dic = on.DC.EH.FuncMExpression(tableModelFunc)[0];
+            var dic = on.DC.EH.FuncTExpression(tableModelFunc)[0];
             on.DC.AddConditions(dic);
             return new JoinX(on.DC);
         }
