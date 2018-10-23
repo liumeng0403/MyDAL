@@ -83,7 +83,7 @@ namespace MyDAL.Test.Query
                 .QueryListAsync();
             Assert.True(res4.Count == 555);
 
-            var tuple4 = (XDebug.SQL, XDebug.Parameters);
+            var tuple4 = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*****************************************************************************************************************************/
 

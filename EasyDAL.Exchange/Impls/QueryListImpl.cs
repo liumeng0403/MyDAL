@@ -29,7 +29,7 @@ namespace Yunyong.DataExchange.Impls
         public async Task<List<VM>> QueryListAsync<VM>()
         {
             SelectMHandle<M, VM>();
-            DC.IP.ConvertDic();
+            DC.DH.UiToDbCopy();
             return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryListAsync)[0],
@@ -39,7 +39,7 @@ namespace Yunyong.DataExchange.Impls
         public async Task<List<VM>> QueryListAsync<VM>(Expression<Func<M, VM>> func)
         {
             SelectMHandle(func);
-            DC.IP.ConvertDic();
+            DC.DH.UiToDbCopy();
             return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryListAsync)[0],
@@ -58,7 +58,7 @@ namespace Yunyong.DataExchange.Impls
         public async Task<List<M>> QueryListAsync<M>()
         {
             SelectMHandle<M>();
-            DC.IP.ConvertDic();
+            DC.DH.UiToDbCopy();
             return (await DC.DS.ExecuteReaderMultiRowAsync<M>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.JoinQueryListAsync)[0],
@@ -68,7 +68,7 @@ namespace Yunyong.DataExchange.Impls
         public async Task<List<VM>> QueryListAsync<VM>(Expression<Func<VM>> func)
         {
             SelectMHandle(func);
-            DC.IP.ConvertDic();
+            DC.DH.UiToDbCopy();
             return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<VM>(UiMethodEnum.JoinQueryListAsync)[0],

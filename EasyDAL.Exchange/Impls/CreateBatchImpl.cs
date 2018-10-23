@@ -21,7 +21,7 @@ namespace Yunyong.DataExchange.Impls
             {
                 DC.ResetConditions();
                 CreateMHandle(list);
-                DC.IP.ConvertDic();
+                DC.DH.UiToDbCopy();
                 return await DC.DS.ExecuteNonQueryAsync(
                     DC.Conn,
                     DC.SqlProvider.GetSQL<M>(UiMethodEnum.CreateBatchAsync)[0],

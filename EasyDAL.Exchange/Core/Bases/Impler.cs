@@ -13,53 +13,6 @@ namespace Yunyong.DataExchange.Core.Bases
     internal abstract class Impler
         : Operator
     {
-
-        /**********************************************************************************************************/
-
-        internal void ConvertDic()
-        {
-            if (DC.UiConditions != null)
-            {
-                foreach (var ui in DC.UiConditions)
-                {
-                    if (DC.DbConditions.Any(dm => dm.ID == ui.ID))
-                    {
-                        continue;
-                    }
-
-                    var db = new DicModelDB();
-
-                    //
-                    db.ID = ui.ID;
-                    db.Crud = ui.Crud;
-                    db.Action = ui.Action;
-                    db.Option = ui.Option;
-                    db.Compare = ui.Compare;
-
-                    //
-                    if (ui.ClassFullName.IsNullStr())
-                    {
-                        db.Key = string.Empty;
-                    }
-                    else
-                    {
-                        db.Key = DC.SC.GetKey(ui.ClassFullName, DC.Conn.Database);
-                        db.TableOne = DC.SC.GetModelTableName(db.Key); //ui.TableOne;
-                    }
-                    db.TableAliasOne = ui.TableAliasOne;
-                    db.ColumnOne = ui.ColumnOne;
-                    db.KeyTwo = ui.ColumnTwo;
-                    db.AliasTwo = ui.TableAliasTwo;
-                    db.ColumnAlias = ui.ColumnOneAlias;
-                    db.Param = ui.Param;
-                    db.ParamRaw = ui.ParamRaw;
-                    db.TvpIndex = ui.TvpIndex;
-                    DC.PH.GetDbVal(ui, db, ui.CsType);
-                    DC.DbConditions.Add(db);
-                }
-            }
-        }
-
         /**********************************************************************************************************/
 
         private void SetInsertValue<M>(M m, int index)
@@ -205,7 +158,7 @@ namespace Yunyong.DataExchange.Core.Bases
             : base(dc)
         {
             DC.IP = this;
-            ConvertDic();
+            DC.DH.UiToDbCopy();
         }
     }
 }

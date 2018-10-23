@@ -17,7 +17,7 @@ namespace Yunyong.DataExchange.Impls
         {
             DC.Action = ActionEnum.Insert;
             CreateMHandle(m);
-            DC.IP.ConvertDic();
+            DC.DH.UiToDbCopy();
             return await DC.DS.ExecuteNonQueryAsync(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.CreateAsync)[0],

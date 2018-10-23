@@ -46,15 +46,32 @@ namespace MyDAL.Test.Func
 
             // .Where(a => a.Name.Length > 0)
             var res2 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var agent, out var record)
-                .From(() => agent)
-                .InnerJoin(() => record)
-                .On(() => agent.Id == record.AgentId)
-                .Where(() => agent.Name.Length > 2)
+                .Joiner<Agent, AgentInventoryRecord>(out var agent2, out var record2)
+                .From(() => agent2)
+                .InnerJoin(() => record2)
+                .On(() => agent2.Id == record2.AgentId)
+                .Where(() => agent2.Name.Length > 2)
                 .QueryListAsync<Agent>();
             Assert.True(res2.Count == 457);
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters);
+
+            /************************************************************************************************************************/
+
+            var xx3 = "";
+
+            // .Where(a => a.Name.Length > 0)
+            var res3 = await Conn
+                .Joiner<Agent, AgentInventoryRecord>(out var agent3, out var record3)
+                .From(() => agent3)
+                    .InnerJoin(() => record3)
+                        .On(() => agent3.Id == record3.AgentId)
+                .Where(() => agent3.Name.Length > 2)
+                .OrderBy(()=>agent3.Name.Length)
+                .QueryListAsync<Agent>();
+            Assert.True(res3.Count == 457);
+
+            var tuple3 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /************************************************************************************************************************/
 

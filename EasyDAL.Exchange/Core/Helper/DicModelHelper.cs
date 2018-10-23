@@ -1,7 +1,9 @@
 using System;
+using System.Linq;
 using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Enums;
+using Yunyong.DataExchange.Core.Extensions;
 
 namespace Yunyong.DataExchange.Core.Helper
 {
@@ -26,6 +28,7 @@ namespace Yunyong.DataExchange.Core.Helper
                 Action = ui.Action,
                 Option = ui.Option,
                 Compare = ui.Compare,
+                Func= ui.Func,
 
                 //
                 ClassFullName = ui.ClassFullName,
@@ -51,7 +54,104 @@ namespace Yunyong.DataExchange.Core.Helper
             //
             return cp;
         }
+        internal void UiToDbCopy()
+        {
+            if (DC.UiConditions != null)
+            {
+                foreach (var ui in DC.UiConditions)
+                {
+                    if (DC.DbConditions.Any(dm => dm.ID == ui.ID))
+                    {
+                        continue;
+                    }
 
+                    var db = new DicModelDB();
+
+                    //
+                    db.ID = ui.ID;
+                    db.Crud = ui.Crud;
+                    db.Action = ui.Action;
+                    db.Option = ui.Option;
+                    db.Compare = ui.Compare;
+                    db.Func = ui.Func;
+
+                    //
+                    if (ui.ClassFullName.IsNullStr())
+                    {
+                        db.Key = string.Empty;
+                    }
+                    else
+                    {
+                        db.Key = DC.SC.GetKey(ui.ClassFullName, DC.Conn.Database);
+                        db.TableOne = DC.SC.GetModelTableName(db.Key); 
+                    }
+                    db.TableAliasOne = ui.TableAliasOne;
+                    db.ColumnOne = ui.ColumnOne;
+                    db.KeyTwo = ui.ColumnTwo;
+                    db.AliasTwo = ui.TableAliasTwo;
+                    db.ColumnAlias = ui.ColumnOneAlias;
+                    db.Param = ui.Param;
+                    db.ParamRaw = ui.ParamRaw;
+                    db.TvpIndex = ui.TvpIndex;
+                    DC.PH.GetDbVal(ui, db, ui.CsType);
+                    DC.DbConditions.Add(db);
+                }
+            }
+        }
+
+        internal void InNotInDicProcess(DicModelUI dic)
+        {
+            var vals = dic.CsValue.ToString().Split(',').Select(it => it);
+            var i = 0;
+            foreach (var val in vals)
+            {
+                //
+                i++;
+                var op = OptionEnum.None;
+                if (i == 1)
+                {
+                    if (dic.Option == OptionEnum.In)
+                    {
+                        op = OptionEnum.In;
+                    }
+                    else if (dic.Option == OptionEnum.NotIn)
+                    {
+                        op = OptionEnum.NotIn;
+                    }
+                }
+                else
+                {
+                    op = OptionEnum.InHelper;
+                }
+
+                //
+                var dicx = DicModelHelper.UiDicCopy(dic, val, dic.CsValueStr, op);
+                DC.AddConditions(dicx);
+            }
+            DC.UiConditions.Remove(dic);
+        }
+        internal void DicAddContext(DicModelUI dic)
+        {
+            //
+            if (DC.UiConditions.Count == 0)
+            {
+                dic.ID = 0;
+            }
+            else
+            {
+                dic.ID = DC.UiConditions.Max(it => it.ID) + 1;
+            }
+
+            //
+            if (!string.IsNullOrWhiteSpace(dic.ParamRaw))
+            {
+                dic.Param = $"{dic.ParamRaw}__{dic.ID}";
+            }
+
+            //
+            DC.UiConditions.Add(dic);
+        }
+        
         private DicModelUI SetDicBase()
         {
             return new DicModelUI
@@ -60,15 +160,17 @@ namespace Yunyong.DataExchange.Core.Helper
                 Crud = DC.Crud,
                 Action = DC.Action,
                 Option = DC.Option,
-                Compare = DC.Compare
+                Compare = DC.Compare,
+                Func= DC.Func
             };
         }
 
         /*******************************************************************************************************/
 
-        internal DicModelUI CharLengthDic(string key, string alias, (object val, string valStr) value, Type valType)
+        internal DicModelUI CharLengthDic(string fullName,string key, string alias, (object val, string valStr) value, Type valType)
         {
             var dic = SetDicBase();
+            dic.ClassFullName = fullName;
             dic.ColumnOne = key;
             dic.TableAliasOne = alias;
             dic.Param = key;
@@ -242,11 +344,12 @@ namespace Yunyong.DataExchange.Core.Helper
             return dic;
         }
 
-        internal DicModelUI OrderbyDic(string fullName, string key)
+        internal DicModelUI OrderbyDic(string fullName, string key,string alias)
         {
             var dic = SetDicBase();
             dic.ClassFullName = fullName;
             dic.ColumnOne = key;
+            dic.TableAliasOne = alias;
 
             return dic;
         }
