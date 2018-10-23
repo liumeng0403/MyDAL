@@ -359,6 +359,7 @@ namespace MyDAL.Core.MySql
                                 str += $" {item.Action.ToEnumDesc<ActionEnum>()} @{item.Param} ";
                                 break;
                             case OptionEnum.In:
+                            case OptionEnum.NotIn:
                                 switch (item.Crud)
                                 {
                                     case CrudTypeEnum.Join:

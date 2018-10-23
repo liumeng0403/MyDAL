@@ -56,7 +56,13 @@ namespace MyDAL
         /// " in "
         /// </summary>
         [Description(" in ")]
-        In
+        In,
+
+        /// <summary>
+        /// " not in "
+        /// </summary>
+        [Description(" not in ")]
+        NotIn
 
     }
 }

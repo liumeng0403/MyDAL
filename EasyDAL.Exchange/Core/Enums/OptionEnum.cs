@@ -65,6 +65,11 @@ namespace MyDAL.Core.Enums
         [Description(" in ")]
         In,
         InHelper,
+        /// <summary>
+        /// " not in "
+        /// </summary>
+        [Description(" not in ")]
+        NotIn,
 
         /// <summary>
         /// " count"

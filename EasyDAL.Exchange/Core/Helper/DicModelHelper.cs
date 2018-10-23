@@ -149,6 +149,20 @@ namespace MyDAL.Core.Helper
 
             return dic;
         }
+        internal DicModelUI NotInDic(string classFullName, string key, string alias, (object val, string valStr) value, Type valType)
+        {
+            var dic = SetDicBase();
+            dic.ClassFullName = classFullName;
+            dic.ColumnOne = key;
+            dic.TableAliasOne = alias;
+            dic.CsValue = value.val;
+            dic.CsValueStr = value.valStr;
+            dic.CsType = valType;
+            dic.Param = key;
+            dic.ParamRaw = key;
+
+            return dic;
+        }
 
         internal DicModelUI LikeDic(string classFullName, string key, string alias, (object val, string valStr) value, Type valType)
         {

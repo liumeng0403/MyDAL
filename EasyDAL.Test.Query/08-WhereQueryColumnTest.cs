@@ -86,6 +86,26 @@ namespace MyDAL.Test.Query
 
             /*****************************************************************************************************************************/
 
+            var xx5 = "";
+
+            var option5 = new AgentQueryOption();
+            option5.EnumListNotIn = new List<AgentLevel>
+            {
+                AgentLevel.CityAgent,
+                AgentLevel.DistiAgent
+            };
+
+            // in
+            var res5 = await Conn
+                .Selecter<Agent>()
+                .Where(option5)
+                .QueryListAsync();
+            Assert.True(res5.Count == 28065);
+
+            var tuple5 = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
+
+            /*****************************************************************************************************************************/
+
             var xx = "";
 
         }

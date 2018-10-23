@@ -322,6 +322,12 @@ namespace MyDAL.Core.Bases
                     DC.Compare = CompareEnum.None;
                     DC.AddConditions(DC.DH.InDic(fullName, tp.key, string.Empty, tp.val, tp.valType));
                 }
+                else if(tp.compare== CompareEnum.NotIn)
+                {
+                    DC.Option = OptionEnum.NotIn;
+                    DC.Compare = CompareEnum.None;
+                    DC.AddConditions(DC.DH.NotInDic(fullName, tp.key, string.Empty, tp.val, tp.valType));
+                }
                 else
                 {
                     DC.Option = OptionEnum.Compare;
