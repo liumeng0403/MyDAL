@@ -50,7 +50,7 @@ namespace MyDAL.AdoNet
                         {
                             return Enumerable.Empty<T>();
                         }
-                        info.Deserializer = new DeserializerState(hash, AdoNetHelper.GetDeserializer(effectiveType, reader, 0, -1, false));
+                        info.Deserializer = new DeserializerState(hash, AdoNetHelper.GetDeserializer(effectiveType, reader, false));
                         tuple = info.Deserializer;
                     }
 
@@ -130,7 +130,7 @@ namespace MyDAL.AdoNet
                         int hash = AdoNetHelper.GetColumnHash(reader);
                         if (tuple.Func == null || tuple.Hash != hash)
                         {
-                            tuple = info.Deserializer = new DeserializerState(hash, AdoNetHelper.GetDeserializer(effectiveType, reader, 0, -1, false));
+                            tuple = info.Deserializer = new DeserializerState(hash, AdoNetHelper.GetDeserializer(effectiveType, reader, false));
                         }
 
                         var func = tuple.Func;

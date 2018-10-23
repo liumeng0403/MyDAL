@@ -25,13 +25,13 @@ namespace MyDAL.Core.Helper
         /// <returns>Type map instance, default is to create new instance of DefaultTypeMap</returns>
         internal static Func<Type, ITypeMap> TypeMapProvider { get; } = (Type type) => new DefaultTypeMap(type);
 
-        internal static int GetColumnHash(IDataReader reader, int startBound = 0, int length = -1)
+        internal static int GetColumnHash(IDataReader reader)
         {
             unchecked
             {
-                int max = length < 0 ? reader.FieldCount : startBound + length;
-                int hash = (-37 * startBound) + max;
-                for (int i = startBound; i < max; i++)
+                int max = reader.FieldCount;
+                int hash = max;
+                for (int i = 0; i < max; i++)
                 {
                     object tmp = reader.GetName(i);
                     hash = (-79 * ((hash * 31) + (tmp?.GetHashCode() ?? 0))) + (reader.GetFieldType(i)?.GetHashCode() ?? 0);
@@ -157,9 +157,9 @@ namespace MyDAL.Core.Helper
         /// <param name="length"></param>
         /// <param name="returnNullIfFirstMissing"></param>
         /// <returns></returns>
-        public static Func<IDataReader, object> GetTypeDeserializer(Type type, IDataReader reader, int startBound = 0, int length = -1, bool returnNullIfFirstMissing = false)
+        public static Func<IDataReader, object> GetTypeDeserializer(Type type, IDataReader reader, bool returnNullIfFirstMissing = false)
         {
-            return TypeDeserializerCache.GetReader(type, reader, startBound, length, returnNullIfFirstMissing);
+            return TypeDeserializerCache.GetReader(type, reader, returnNullIfFirstMissing);
         }
 
         private static LocalBuilder GetTempLocal(ILGenerator il, ref Dictionary<Type, LocalBuilder> locals, Type type, bool initAndLoad)
@@ -182,7 +182,7 @@ namespace MyDAL.Core.Helper
         }
 
         // 
-        internal static Func<IDataReader, object> RowDeserializer(Type mType, IDataReader reader, int startBound = 0, int length = -1, bool returnNullIfFirstMissing = false)
+        internal static Func<IDataReader, object> RowDeserializer(Type mType, IDataReader reader, int length, bool returnNullIfFirstMissing = false)
         {
             var dm = new DynamicMethod("Deserialize" + Guid.NewGuid().ToString(), mType, new[] { typeof(IDataReader) }, mType, true);
             var il = dm.GetILGenerator();
@@ -191,24 +191,19 @@ namespace MyDAL.Core.Helper
             il.Emit(OpCodes.Ldc_I4_0);
             il.Emit(OpCodes.Stloc_0);
 
-            if (length == -1)
-            {
-                length = reader.FieldCount - startBound;
-            }
-
-            var names = Enumerable.Range(startBound, length).Select(i => reader.GetName(i)).ToArray();
+            var names = Enumerable.Range(0, length).Select(i => reader.GetName(i)).ToArray();
 
             ITypeMap typeMap = GetTypeMap(mType);
 
-            int index = startBound;
+            int index = 0;
             ConstructorInfo specializedConstructor = null;
 
             bool supportInitialize = false;
             Dictionary<Type, LocalBuilder> structLocals = null;
             var types = new Type[length];
-            for (int i = startBound; i < startBound + length; i++)
+            for (int i = 0; i < length; i++)
             {
-                types[i - startBound] = reader.GetFieldType(i);
+                types[i] = reader.GetFieldType(i);
             }
 
             var ctor = typeMap.FindConstructor(names, types);
@@ -437,7 +432,7 @@ namespace MyDAL.Core.Helper
             return (Func<IDataReader, object>)dm.CreateDelegate(funcType);
         }
         // 
-        internal static Func<IDataReader, object> ColumnDeserializer(Type type, IDataReader reader, int startBound = 0, int length = -1, bool returnNullIfFirstMissing = false)
+        internal static Func<IDataReader, object> ColumnDeserializer(Type type, IDataReader reader, int length, bool returnNullIfFirstMissing = false)
         {
             var returnType = typeof(object);
             var dm = new DynamicMethod("Deserialize" + Guid.NewGuid().ToString(), returnType, new[] { typeof(IDataReader) }, type, true);
@@ -447,20 +442,12 @@ namespace MyDAL.Core.Helper
             il.Emit(OpCodes.Ldc_I4_0);
             il.Emit(OpCodes.Stloc_0);
 
-            if (length == -1)
-            {
-                length = reader.FieldCount - startBound;
-            }
-
-            var names = Enumerable.Range(startBound, length).Select(i => reader.GetName(i)).ToArray();
+            var names = Enumerable.Range(0, length).Select(i => reader.GetName(i)).ToArray();
 
             ITypeMap typeMap = GetTypeMap(type);
 
-            int index = startBound;
-
-
-            bool supportInitialize = false;
-
+            int index = 0;
+            
             Dictionary<Type, LocalBuilder> structLocals = null;
 
             il.Emit(OpCodes.Ldloca_S, (byte)1);
@@ -470,11 +457,9 @@ namespace MyDAL.Core.Helper
 
             il.Emit(OpCodes.Ldloca_S, (byte)1);// [target]
 
-
             var members = names.Select(n => typeMap.GetMember(n)).ToList();
 
             // stack is now [target]
-
             bool first = true;
             var allDone = il.DefineLabel();
             int enumDeclareLocal = -1,
@@ -854,14 +839,9 @@ namespace MyDAL.Core.Helper
             }
         }
 
-        internal static Func<IDataReader, object> GetDeserializer(Type type, IDataReader reader, int startBound, int length, bool returnNullIfFirstMissing)
+        internal static Func<IDataReader, object> GetDeserializer(Type type, IDataReader reader, bool returnNullIfFirstMissing)
         {
-            //Type underlyingType = null;
-            //if (!(typeMap.ContainsKey(type) || type.IsEnumX() || type.FullName == Settings.LinqBinary
-            //    || (type.IsValueTypeX() && (underlyingType = Nullable.GetUnderlyingType(type)) != null && underlyingType.IsEnumX())))  
-            //{
-            return GetTypeDeserializer(type, reader, startBound, length, returnNullIfFirstMissing);
-            //}
+            return GetTypeDeserializer(type, reader, returnNullIfFirstMissing);
         }
 
         /******************************************************************************************/
