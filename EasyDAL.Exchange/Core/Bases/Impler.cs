@@ -1,6 +1,4 @@
-﻿using MyDAL.Core.Common;
-using MyDAL.Core.Enums;
-using MyDAL.Core.Extensions;
+﻿using MyDAL.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +29,18 @@ namespace MyDAL.Core.Bases
         }
 
         /**********************************************************************************************************/
+
+        protected async Task<PagingList<M>> QueryPagingListAsyncHandle<M>(int pageIndex, int pageSize, UiMethodEnum sqlType)
+        {
+            var result = new PagingList<M>();
+            result.PageIndex = pageIndex;
+            result.PageSize = pageSize;
+            var paras = DC.SqlProvider.GetParameters();
+            var sql = DC.SqlProvider.GetSQL<M>(sqlType, result.PageIndex, result.PageSize);
+            result.TotalCount = await DC.DS.ExecuteScalarAsync<long>(DC.Conn, sql[0], paras);
+            result.Data = (await DC.DS.ExecuteReaderMultiRowAsync<M>(DC.Conn, sql[1], paras)).ToList();
+            return result;
+        }
 
         protected async Task<PagingList<VM>> QueryPagingListAsyncHandle<M, VM>(int pageIndex, int pageSize, UiMethodEnum sqlType)
         {
@@ -113,7 +123,7 @@ namespace MyDAL.Core.Bases
         internal void SelectMHandle<VM>(Expression<Func<VM>> func)
         {
             DC.Action = ActionEnum.Select;
-            var list = DC.EH.FuncMExpression(func);
+            var list = DC.EH.FuncTExpression(func);
             foreach (var dic in list)
             {
                 dic.Option = OptionEnum.ColumnAs;

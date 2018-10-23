@@ -620,7 +620,7 @@ namespace MyDAL.Core
                 }
             }
         }
-        internal List<DicModelUI> FuncMExpression<M>(Expression<Func<M>> func)
+        internal List<DicModelUI> FuncTExpression<T>(Expression<Func<T>> func)
         {
             try
             {

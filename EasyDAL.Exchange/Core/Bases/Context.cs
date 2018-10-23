@@ -6,7 +6,6 @@ using MyDAL.Core.Helper;
 using MyDAL.Core.MySql;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 
 namespace MyDAL.Core.Bases
 {

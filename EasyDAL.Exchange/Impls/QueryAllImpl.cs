@@ -10,14 +10,13 @@ namespace MyDAL.Impls
     internal class QueryAllImpl<M>
         : Impler, IQueryAll<M>
     {
-        internal QueryAllImpl(Context dc) 
+        internal QueryAllImpl(Context dc)
             : base(dc)
         {
         }
 
         public async Task<List<M>> QueryAllAsync()
         {
-            //return await QueryAllAsyncHandle<M, M>();
             return (await DC.DS.ExecuteReaderMultiRowAsync<M>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryAllAsync)[0],
@@ -26,7 +25,6 @@ namespace MyDAL.Impls
 
         public async Task<List<VM>> QueryAllAsync<VM>()
         {
-            //return await QueryAllAsyncHandle<M, VM>();
             return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryAllAsync)[0],

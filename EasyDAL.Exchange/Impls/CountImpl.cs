@@ -72,7 +72,7 @@ namespace MyDAL.Impls
         public async Task<long> CountAsync<F>(Expression<Func<F>> func)
         {
             DC.Action = ActionEnum.Select;
-            var dic = DC.EH.FuncMExpression(func)[0];
+            var dic = DC.EH.FuncTExpression(func)[0];
             DC.Option = OptionEnum.Count;
             DC.Compare = CompareEnum.None;
             DC.AddConditions(DC.DH.CountDic(dic.ClassFullName, dic.ColumnOne, dic.TableAliasOne));
