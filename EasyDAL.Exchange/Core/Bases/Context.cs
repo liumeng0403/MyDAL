@@ -13,6 +13,8 @@ namespace MyDAL.Core.Bases
     internal abstract class Context
     {
 
+        /************************************************************************************************************************/
+
         internal void Init(IDbConnection conn)
         {
             Conn = conn;
@@ -51,6 +53,7 @@ namespace MyDAL.Core.Bases
         internal ActionEnum Action { get; set; } = ActionEnum.None;
         internal OptionEnum Option { get; set; } = OptionEnum.None;
         internal CompareEnum Compare { get; set; } = CompareEnum.None;
+        internal FuncEnum Func { get; set; } = FuncEnum.None;
 
         /************************************************************************************************************************/
 
@@ -117,60 +120,20 @@ namespace MyDAL.Core.Bases
 
         internal void AddConditions(DicModelUI dic)
         {
-            if (dic.CsValue!=null
-                && (dic.Option == OptionEnum.In || dic.Option== OptionEnum.NotIn)
+            if (dic.CsValue != null
+                && (dic.Option == OptionEnum.In || dic.Option == OptionEnum.NotIn)
                 && dic.CsValue.ToString().Contains(","))
             {
-                var vals = dic.CsValue.ToString().Split(',').Select(it => it);
-                var i = 0;
-                foreach (var val in vals)
-                {
-                    //
-                    i++;
-                    var op = OptionEnum.None;
-                    if (i == 1)
-                    {
-                        if (dic.Option == OptionEnum.In)
-                        {
-                            op = OptionEnum.In;
-                        }
-                        else if(dic.Option ==  OptionEnum.NotIn)
-                        {
-                            op = OptionEnum.NotIn;
-                        }
-                    }
-                    else
-                    {
-                        op = OptionEnum.InHelper;
-                    }
-
-                    //
-                    var dicx = DicModelHelper.UiDicCopy(dic, val,dic.CsValueStr, op);
-                    AddConditions(dicx);
-                }
-                UiConditions.Remove(dic);
+                DH.InNotInDicProcess(dic);
             }
             else
             {
-                //
-                if(UiConditions.Count==0)
-                {
-                    dic.ID = 0;
-                }
-                else
-                {
-                    dic.ID = UiConditions.Max(it => it.ID) + 1;
-                }
-
-                //
-                if(!string.IsNullOrWhiteSpace(dic.ParamRaw))
-                {
-                    dic.Param = $"{dic.ParamRaw}__{dic.ID}";
-                }
-
-                //
-                UiConditions.Add(dic);
+                DH.DicAddContext(dic);
             }
+
+            //
+            Compare = CompareEnum.None;
+            Func = FuncEnum.None;
         }
 
         internal void ResetConditions()

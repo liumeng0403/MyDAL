@@ -29,11 +29,18 @@ namespace MyDAL
 
         /**************************************************************************************************************/
 
-        public static OrderByX OrderBy<F>(this OnX join,Expression<Func<F>> propertyFunc,OrderByEnum orderBy= OrderByEnum.Desc)
+        public static OrderByX OrderBy<F>(this OnX onX,Expression<Func<F>> propertyFunc,OrderByEnum orderBy= OrderByEnum.Desc)
         {
-            join.DC.Action = ActionEnum.OrderBy;
-            join.DC.OP.OrderByHandle(propertyFunc, orderBy);
-            return new OrderByX(join.DC);
+            onX.DC.Action = ActionEnum.OrderBy;
+            onX.DC.OP.OrderByHandle(propertyFunc, orderBy);
+            return new OrderByX(onX.DC);
+        }
+
+        public static OrderByX OrderBy<F>(this WhereX whereX, Expression<Func<F>> propertyFunc, OrderByEnum orderBy = OrderByEnum.Desc)
+        {
+            whereX.DC.Action = ActionEnum.OrderBy;
+            whereX.DC.OP.OrderByHandle(propertyFunc, orderBy);
+            return new OrderByX(whereX.DC);
         }
 
         public static ThenOrderByX ThenOrderBy<F>(this OrderByX orderByX,Expression<Func<F>> propertyFunc,OrderByEnum orderBy = OrderByEnum.Desc)

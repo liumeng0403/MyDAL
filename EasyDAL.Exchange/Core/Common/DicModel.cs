@@ -11,6 +11,7 @@ namespace MyDAL.Core.Common
         public ActionEnum Action { get; set; }
         public OptionEnum Option { get; set; }
         public CompareEnum Compare { get; set; }
+        public FuncEnum Func { get; set; }
 
     }
 

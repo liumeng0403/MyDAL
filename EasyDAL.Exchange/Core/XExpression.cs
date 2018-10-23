@@ -385,9 +385,9 @@ namespace MyDAL.Core
                     var val = HandleBinary(binTuple.right, funcStr, keyTuple.valType);
                     DC.Option = OptionEnum.CharLength;
                     DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
-                    var dic = DC.DH.CharLengthDic(keyTuple.key, keyTuple.alias, val, keyTuple.valType);
-                    dic.ClassFullName = keyTuple.classFullName;
-                    return dic;
+                    return DC.DH.CharLengthDic(keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType);
+                    //dic.ClassFullName = ;
+                    //return dic;
                 }
                 else if (leftStr.Contains(".Trim(")
                     && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
@@ -651,10 +651,22 @@ namespace MyDAL.Core
                     }
                     else if (body.Expression.NodeType == ExpressionType.MemberAccess)
                     {
-                        var exp2 = body.Expression as MemberExpression;
-                        var alias = exp2.Member.Name;
-                        var field = body.Member.Name;
-                        result.Add(DC.DH.JoinColumnDic(exp2.Type.FullName, field, alias));
+                        var leftStr = body.ToString();
+                        if (leftStr.Contains(".Length")
+                            && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
+                        {
+                            var keyTuple = GetKey(body, OptionEnum.CharLength);
+                            DC.Func = FuncEnum.CharLength;
+                            DC.Compare = CompareEnum.None;
+                            result.Add(DC.DH.CharLengthDic(keyTuple.classFullName, keyTuple.key, keyTuple.alias, (null, string.Empty), keyTuple.valType));
+                        }
+                        else
+                        {
+                            var exp2 = body.Expression as MemberExpression;
+                            var alias = exp2.Member.Name;
+                            var field = body.Member.Name;
+                            result.Add(DC.DH.JoinColumnDic(exp2.Type.FullName, field, alias));
+                        }
                     }
                 }
                 else if (nodeType == ExpressionType.MemberInit)

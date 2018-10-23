@@ -24,7 +24,7 @@ namespace MyDAL.Impls
             DC.Option = OptionEnum.Count;
             DC.Compare = CompareEnum.None;
             DC.AddConditions(DC.DH.CountDic(typeof(M).FullName, "*"));
-            DC.IP.ConvertDic();
+            DC.DH.UiToDbCopy();
             return await DC.DS.ExecuteScalarAsync<long>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.CountAsync)[0],
@@ -39,7 +39,7 @@ namespace MyDAL.Impls
             DC.Option = OptionEnum.Count;
             DC.Compare = CompareEnum.None;
             DC.AddConditions(DC.DH.CountDic(typeof(M).FullName, key));
-            DC.IP.ConvertDic();
+            DC.DH.UiToDbCopy();
             return await DC.DS.ExecuteScalarAsync<long>(
                  DC.Conn,
                  DC.SqlProvider.GetSQL<M>(UiMethodEnum.CountAsync)[0],
@@ -62,7 +62,7 @@ namespace MyDAL.Impls
             DC.Option = OptionEnum.Count;
             DC.Compare = CompareEnum.None;
             DC.AddConditions(DC.DH.CountDic(string.Empty, "*", string.Empty));
-            DC.IP.ConvertDic();
+            DC.DH.UiToDbCopy();
             return await DC.DS.ExecuteScalarAsync<long>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<None>(UiMethodEnum.JoinCountAsync)[0],
@@ -76,7 +76,7 @@ namespace MyDAL.Impls
             DC.Option = OptionEnum.Count;
             DC.Compare = CompareEnum.None;
             DC.AddConditions(DC.DH.CountDic(dic.ClassFullName, dic.ColumnOne, dic.TableAliasOne));
-            DC.IP.ConvertDic();
+            DC.DH.UiToDbCopy();
             return await DC.DS.ExecuteScalarAsync<long>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<None>(UiMethodEnum.JoinCountAsync)[0],

@@ -75,7 +75,21 @@ namespace MyDAL.Core.MySql
 
             if (DC.DbConditions.Any(it => it.Action == ActionEnum.OrderBy))
             {
-                str = string.Join(",", DC.DbConditions.Where(it => it.Action == ActionEnum.OrderBy).Select(it => $" `{it.ColumnOne}` {it.Option.ToEnumDesc<OptionEnum>()} "));
+                var list = new List<string>();
+                var orders = DC.DbConditions.Where(it => it.Action == ActionEnum.OrderBy);
+                foreach(var o in orders)
+                {
+                    if(o.Func== FuncEnum.None
+                        || o.Func== FuncEnum.Column)
+                    {
+                        list.Add($" `{o.ColumnOne}` {o.Option.ToEnumDesc<OptionEnum>()} ");
+                    }
+                    else if(o.Func== FuncEnum.CharLength)
+                    {
+                        list.Add($" {o.Func.ToEnumDesc<FuncEnum>()}(`{o.ColumnOne}`) {o.Option.ToEnumDesc<OptionEnum>()} ");
+                    }
+                }
+                str = string.Join(",", list);
             }
             else if (props.Any(it => "CreatedOn".Equals(it.Name, StringComparison.OrdinalIgnoreCase)))
             {
@@ -103,7 +117,21 @@ namespace MyDAL.Core.MySql
 
             if (DC.DbConditions.Any(it => it.Action == ActionEnum.OrderBy))
             {
-                str = string.Join(",", DC.DbConditions.Where(it => it.Action == ActionEnum.OrderBy).Select(it => $" {dic.TableAliasOne}.`{it.ColumnOne}` {it.Option.ToEnumDesc<OptionEnum>()} "));
+                var list = new List<string>();
+                var orders = DC.DbConditions.Where(it => it.Action == ActionEnum.OrderBy);
+                foreach (var o in orders)
+                {
+                    if (o.Func == FuncEnum.None
+                        || o.Func == FuncEnum.Column)
+                    {
+                        list.Add($" {o.TableAliasOne}.`{o.ColumnOne}` {o.Option.ToEnumDesc<OptionEnum>()} ");
+                    }
+                    else if (o.Func == FuncEnum.CharLength)
+                    {
+                        list.Add($" {o.Func.ToEnumDesc<FuncEnum>()}({o.TableAliasOne}.`{o.ColumnOne}`) {o.Option.ToEnumDesc<OptionEnum>()} ");
+                    }
+                }
+                str = string.Join(",", list);
             }
             else if (props.Any(it => "CreatedOn".Equals(it.Name, StringComparison.OrdinalIgnoreCase)))
             {
@@ -272,7 +300,7 @@ namespace MyDAL.Core.MySql
                         str += $" \r\n \t {item.Action.ToEnumDesc<ActionEnum>()} {item.TableOne} as {item.TableAliasOne} ";
                         break;
                     case ActionEnum.On:
-                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.TableAliasOne}.`{item.ColumnOne}`={item.AliasTwo}.`{item.KeyTwo}` ";
+                        str += $" \r\n \t \t {item.Action.ToEnumDesc<ActionEnum>()} {item.TableAliasOne}.`{item.ColumnOne}`={item.AliasTwo}.`{item.KeyTwo}` ";
                         break;
                 }
             }
