@@ -7,6 +7,7 @@ namespace MyDAL.Impls
 {
     internal class QueryAllPagingListImpl<M>
         : Impler, IQueryAllPagingList<M>
+        where M:class
     {
         internal QueryAllPagingListImpl(Context dc) 
             : base(dc)
@@ -19,6 +20,7 @@ namespace MyDAL.Impls
         }
 
         public async Task<PagingList<VM>> QueryAllPagingListAsync<VM>(int pageIndex, int pageSize)
+            where VM:class
         {
             return await QueryPagingListAsyncHandle<M, VM>(pageIndex, pageSize, UiMethodEnum.QueryAllPagingListAsync);
         }

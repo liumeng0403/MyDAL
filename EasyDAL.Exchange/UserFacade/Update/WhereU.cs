@@ -7,6 +7,7 @@ namespace MyDAL.UserFacade.Update
 {
     public sealed class WhereU<M>
         : Operator, IUpdate<M>
+        where M:class
     {
         internal WhereU(Context dc)
             : base(dc)

@@ -7,6 +7,7 @@ namespace MyDAL.Impls
 {
     internal class ExistImpl<M>
         : Impler, IExist
+        where M:class
     {
         internal ExistImpl(Context dc) 
             : base(dc)

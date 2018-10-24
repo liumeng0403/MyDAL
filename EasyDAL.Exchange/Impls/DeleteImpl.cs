@@ -7,6 +7,7 @@ namespace MyDAL.Impls
 {
     internal class DeleteImpl<M>
         : Impler, IDelete
+        where M:class
     {
         internal DeleteImpl(Context dc) 
             : base(dc)

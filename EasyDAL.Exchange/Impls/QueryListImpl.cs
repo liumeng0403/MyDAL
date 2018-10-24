@@ -27,6 +27,7 @@ namespace MyDAL.Impls
         }
 
         public async Task<List<VM>> QueryListAsync<VM>()
+            where VM:class
         {
             SelectMHandle<M, VM>();
             DC.DH.UiToDbCopy();
@@ -37,6 +38,7 @@ namespace MyDAL.Impls
         }
 
         public async Task<List<VM>> QueryListAsync<VM>(Expression<Func<M, VM>> func)
+            where VM:class
         {
             SelectMHandle(func);
             DC.DH.UiToDbCopy();
@@ -56,6 +58,7 @@ namespace MyDAL.Impls
         }
 
         public async Task<List<M>> QueryListAsync<M>()
+            where M:class
         {
             SelectMHandle<M>();
             DC.DH.UiToDbCopy();
@@ -66,6 +69,7 @@ namespace MyDAL.Impls
         }
 
         public async Task<List<VM>> QueryListAsync<VM>(Expression<Func<VM>> func)
+            where VM:class
         {
             SelectMHandle(func);
             DC.DH.UiToDbCopy();

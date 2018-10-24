@@ -7,6 +7,7 @@ namespace MyDAL.Impls
 {
     internal class QuerySingleValueImpl<M>
         : Impler, IQuerySingleValue<M>
+        where M: class
     {
         internal QuerySingleValueImpl(Context dc) 
             : base(dc)

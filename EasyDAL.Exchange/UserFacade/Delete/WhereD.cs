@@ -7,6 +7,7 @@ namespace MyDAL.UserFacade.Delete
 {
     public sealed class WhereD<M> 
         : Operator, IDelete
+        where M:class
     {
         internal WhereD(Context dc)
             : base(dc)

@@ -7,6 +7,7 @@ namespace MyDAL.UserFacade.Query
 {
     public sealed  class CountQ<M> 
         : Operator, IQuerySingleValue<M>
+        where M:class
     {
 
         internal CountQ(Context dc)

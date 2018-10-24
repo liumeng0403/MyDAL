@@ -8,6 +8,7 @@ namespace MyDAL.Impls
 {
     internal class CreateBatchImpl<M>
         : Impler, ICreateBatch<M>
+        where M:class
     {
         internal CreateBatchImpl(Context dc) 
             : base(dc)

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 namespace MyDAL.Interfaces
 {
     internal interface ICount<M>
+        where M:class
     {
         Task<long> CountAsync();
         Task<long> CountAsync<F>(Expression<Func<M, F>> func);

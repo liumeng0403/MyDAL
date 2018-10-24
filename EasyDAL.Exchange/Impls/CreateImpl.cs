@@ -7,6 +7,7 @@ namespace MyDAL.Impls
 {
     internal class CreateImpl<M>
         : Impler, ICreate<M>
+        where M:class
     {
         public CreateImpl(Context dc) 
             : base(dc)
