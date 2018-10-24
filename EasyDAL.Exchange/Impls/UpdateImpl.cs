@@ -7,6 +7,7 @@ namespace Yunyong.DataExchange.Impls
 {
     internal class UpdateImpl<M>
         : Impler, IUpdate<M>
+        where M:class
     {
         internal UpdateImpl(Context dc) 
             : base(dc)

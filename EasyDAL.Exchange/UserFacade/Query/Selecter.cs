@@ -10,6 +10,7 @@ namespace Yunyong.DataExchange.UserFacade.Query
 {
     public sealed class Selecter<M> 
         : Operator, IQueryAll<M>, IQueryAllPagingList<M>
+        where M:class
     {
         internal Selecter(Context dc)
             : base(dc)
@@ -29,6 +30,7 @@ namespace Yunyong.DataExchange.UserFacade.Query
         /// <typeparam name="VM">ViewModel</typeparam>
         /// <returns>返回全表数据</returns>
         public async Task<List<VM>> QueryAllAsync<VM>()
+            where VM:class
         {
             return await new QueryAllImpl<M>(DC).QueryAllAsync<VM>();
         }
@@ -51,6 +53,7 @@ namespace Yunyong.DataExchange.UserFacade.Query
         /// <param name="pageSize">每页条数</param>
         /// <returns>返回全表分页数据</returns>
         public async Task<PagingList<VM>> QueryAllPagingListAsync<VM>(int pageIndex, int pageSize)
+            where VM:class
         {
             return await new QueryAllPagingListImpl<M>(DC).QueryAllPagingListAsync<VM>(pageIndex, pageSize);
         }

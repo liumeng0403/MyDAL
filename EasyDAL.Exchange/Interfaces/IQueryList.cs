@@ -6,15 +6,20 @@ using System.Threading.Tasks;
 namespace Yunyong.DataExchange.Interfaces
 {
     internal interface IQueryList<M>
+        where M : class
     {
         Task<List<M>> QueryListAsync();
-        Task<List<VM>> QueryListAsync<VM>();
-        Task<List<VM>> QueryListAsync<VM>(Expression<Func<M, VM>> func);
+        Task<List<VM>> QueryListAsync<VM>()
+            where VM : class;
+        Task<List<VM>> QueryListAsync<VM>(Expression<Func<M, VM>> func)
+            where VM : class;
     }
 
     public interface IQueryListX
     {
-        Task<List<M>> QueryListAsync<M>();
-        Task<List<VM>> QueryListAsync<VM>(Expression<Func<VM>> func);
+        Task<List<M>> QueryListAsync<M>()
+            where M : class;
+        Task<List<VM>> QueryListAsync<VM>(Expression<Func<VM>> func)
+            where VM : class;
     }
 }

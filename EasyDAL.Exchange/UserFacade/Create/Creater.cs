@@ -8,6 +8,7 @@ namespace Yunyong.DataExchange.UserFacade.Create
 {
     public sealed class Creater<M> 
         : Operator, ICreate<M>, ICreateBatch<M>
+        where M:class
     {
         internal Creater(Context dc) 
             : base(dc)

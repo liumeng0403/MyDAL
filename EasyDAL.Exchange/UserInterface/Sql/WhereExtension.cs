@@ -29,6 +29,7 @@ namespace Yunyong.DataExchange
         /// 过滤条件起点 -- 设置多个条件
         /// </summary>
         public static WhereD<M> Where<M>(this Deleter<M> deleter, object mWhere)
+            where M:class
         {
             deleter.DC.Action = ActionEnum.Where;
             deleter.DC.OP.WhereDynamicHandle<M>(mWhere);
@@ -53,6 +54,7 @@ namespace Yunyong.DataExchange
         /// 过滤条件起点 -- 设置多个条件
         /// </summary>
         public static WhereU<M> Where<M>(this SetU<M> set, object mWhere)
+            where M:class
         {
             set.DC.Action = ActionEnum.Where;
             set.DC.OP.WhereDynamicHandle<M>(mWhere);

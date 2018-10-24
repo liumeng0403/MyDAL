@@ -9,6 +9,7 @@ namespace Yunyong.DataExchange.Impls
 {
     internal class QueryAllImpl<M>
         : Impler, IQueryAll<M>
+        where M:class
     {
         internal QueryAllImpl(Context dc)
             : base(dc)
@@ -24,6 +25,7 @@ namespace Yunyong.DataExchange.Impls
         }
 
         public async Task<List<VM>> QueryAllAsync<VM>()
+            where VM:class
         {
             return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
                 DC.Conn,

@@ -26,6 +26,7 @@ namespace Yunyong.DataExchange.Impls
         }
 
         public async Task<VM> QueryFirstOrDefaultAsync<VM>()
+            where VM:class
         {
             SelectMHandle<M, VM>();
             DC.DH.UiToDbCopy();
@@ -36,6 +37,7 @@ namespace Yunyong.DataExchange.Impls
         }
 
         public async Task<VM> QueryFirstOrDefaultAsync<VM>(Expression<Func<M, VM>> func)
+            where VM:class
         {
             SelectMHandle(func);
             DC.DH.UiToDbCopy();
@@ -55,6 +57,7 @@ namespace Yunyong.DataExchange.Impls
         }
 
         public async Task<M> QueryFirstOrDefaultAsync<M>()
+            where M:class
         {
             SelectMHandle<M>();
             DC.DH.UiToDbCopy();
@@ -65,6 +68,7 @@ namespace Yunyong.DataExchange.Impls
         }
 
         public async Task<VM> QueryFirstOrDefaultAsync<VM>(Expression<Func<VM>> func)
+            where VM:class
         {
             SelectMHandle(func);
             DC.DH.UiToDbCopy();
