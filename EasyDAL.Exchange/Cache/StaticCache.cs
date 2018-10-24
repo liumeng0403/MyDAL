@@ -15,15 +15,15 @@ namespace MyDAL.Cache
     {
         internal string GetKey(string classFullName, string dbName)
         {
-            return $"{dbName}:{classFullName}";
+            return $"{classFullName}:{dbName}";
         }
         internal string GetKey(string propName,string attrFullName,string classFullName, string dbName)
         {
-            return $"{GetKey(classFullName, dbName)}:{attrFullName}:{propName}";
+            return $"{propName}:{attrFullName}:{GetKey(classFullName, dbName)}";
         }
         internal string GetAttrKey(string attrFullName,string propName,string classFullName,string dbName)
         {
-            return $"{GetKey(classFullName, dbName)}:{propName}:{attrFullName}";
+            return $"{attrFullName}:{propName}:{GetKey(classFullName, dbName)}";
         }
 
         /*****************************************************************************************************************************************************/

@@ -6,17 +6,15 @@ namespace MyDAL.Cache
     internal struct DeserializerKey : IEquatable<DeserializerKey>
     {
         private readonly int length;
-        private readonly bool returnNullIfFirstMissing;
         private readonly IDataReader reader;
         private readonly string[] names;
         private readonly Type[] types;
         private readonly int hashCode;
 
-        public DeserializerKey(int hashCode, int length, bool returnNullIfFirstMissing, IDataReader reader, bool copyDown)
+        public DeserializerKey(int hashCode, int length, IDataReader reader, bool copyDown)
         {
             this.hashCode = hashCode;
             this.length = length;
-            this.returnNullIfFirstMissing = returnNullIfFirstMissing;
 
             if (copyDown)
             {
@@ -48,8 +46,7 @@ namespace MyDAL.Cache
         public bool Equals(DeserializerKey other)
         {
             if (hashCode != other.hashCode
-                || length != other.length
-                || returnNullIfFirstMissing != other.returnNullIfFirstMissing)
+                || length != other.length)
             {
                 return false; // clearly different
             }

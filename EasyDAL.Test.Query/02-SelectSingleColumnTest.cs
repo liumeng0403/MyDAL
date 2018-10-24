@@ -16,9 +16,13 @@ namespace MyDAL.Test.Query
 
             var xx1 = "";
 
-            //var res1 = await Conn
-            //    .Selecter<Agent>()
-            //    .QueryAllAsync<Guid>();
+            var res1 = await Conn
+                .Selecter<Agent>()
+                .QueryAllAsync(it => it.Id);
+
+            var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            var xx = "";
 
         }
 

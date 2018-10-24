@@ -17,13 +17,13 @@ namespace MyDAL.AdoNet.Interfaces
         ConstructorInfo FindConstructor(string[] names, Type[] types);
 
 
-        /// <summary>
-        /// Gets mapping for constructor parameter
-        /// </summary>
-        /// <param name="constructor">Constructor to resolve</param>
-        /// <param name="columnName">DataReader column name</param>
-        /// <returns>Mapping implementation</returns>
-        IMemberMap GetConstructorParameter(ConstructorInfo constructor, string columnName);
+        ///// <summary>
+        ///// Gets mapping for constructor parameter
+        ///// </summary>
+        ///// <param name="constructor">Constructor to resolve</param>
+        ///// <param name="columnName">DataReader column name</param>
+        ///// <returns>Mapping implementation</returns>
+        //IMemberMap GetConstructorParameter(ConstructorInfo constructor, string columnName);
 
         /// <summary>
         /// Gets member mapping for column
