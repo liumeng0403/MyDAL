@@ -1,9 +1,7 @@
 ﻿using MyDAL.Test.Entities.EasyDal_Exchange;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using Yunyong.DataExchange;
 
 namespace MyDAL.Test.Query
 {
@@ -16,9 +14,13 @@ namespace MyDAL.Test.Query
 
             var xx1 = "";
 
-            //var res1 = await Conn
-            //    .Selecter<Agent>()
-            //    .QueryAllAsync<Guid>();
+            var res1 = await Conn
+                .Selecter<Agent>()
+                .QueryAllAsync(it => it.Id);
+
+            var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            var xx = "";
 
         }
 

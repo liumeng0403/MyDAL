@@ -14,6 +14,10 @@ namespace Yunyong.DataExchange.AdoNet
     {
         private readonly List<FieldInfo> _fields;
         private readonly Type _type;
+        /// <summary>
+        /// The settable properties for this typemap
+        /// </summary>
+        private List<PropertyInfo> Properties { get; }
 
         /// <summary>
         /// Creates default type map
@@ -101,18 +105,18 @@ namespace Yunyong.DataExchange.AdoNet
             return null;
         }
 
-        /// <summary>
-        /// Gets mapping for constructor parameter
-        /// </summary>
-        /// <param name="constructor">Constructor to resolve</param>
-        /// <param name="columnName">DataReader column name</param>
-        /// <returns>Mapping implementation</returns>
-        public IMemberMap GetConstructorParameter(ConstructorInfo constructor, string columnName)
-        {
-            var parameters = constructor.GetParameters();
+        ///// <summary>
+        ///// Gets mapping for constructor parameter
+        ///// </summary>
+        ///// <param name="constructor">Constructor to resolve</param>
+        ///// <param name="columnName">DataReader column name</param>
+        ///// <returns>Mapping implementation</returns>
+        //public IMemberMap GetConstructorParameter(ConstructorInfo constructor, string columnName)
+        //{
+        //    var parameters = constructor.GetParameters();
 
-            return new SimpleMemberMap(columnName, parameters.FirstOrDefault(p => string.Equals(p.Name, columnName, StringComparison.OrdinalIgnoreCase)));
-        }
+        //    return new SimpleMemberMap(columnName, parameters.FirstOrDefault(p => string.Equals(p.Name, columnName, StringComparison.OrdinalIgnoreCase)));
+        //}
 
         /// <summary>
         /// Gets member mapping for column
@@ -168,9 +172,5 @@ namespace Yunyong.DataExchange.AdoNet
         /// </summary>
         public static bool MatchNamesWithUnderscores { get; set; }
 
-        /// <summary>
-        /// The settable properties for this typemap
-        /// </summary>
-        public List<PropertyInfo> Properties { get; }
     }
 }

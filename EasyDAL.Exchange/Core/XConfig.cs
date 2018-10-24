@@ -48,6 +48,7 @@ namespace Yunyong.DataExchange.Core
         internal static Type Guid { get; private set; } = typeof(Guid);
         internal static Type NullableT { get; private set; } = typeof(Nullable<>);
         internal static Type ListT { get; private set; } = typeof(List<>);
+        internal static Type Object { get; private set; } = typeof(object);
 
         /************************************************************************************************************/
 

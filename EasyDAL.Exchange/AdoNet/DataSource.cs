@@ -50,7 +50,7 @@ namespace Yunyong.DataExchange.AdoNet
                         {
                             return Enumerable.Empty<T>();
                         }
-                        info.Deserializer = new DeserializerState(hash, AdoNetHelper.GetDeserializer(effectiveType, reader, false));
+                        info.Deserializer = new DeserializerState(hash, AdoNetHelper.GetDeserializer(effectiveType, reader));
                         tuple = info.Deserializer;
                     }
 
@@ -130,7 +130,7 @@ namespace Yunyong.DataExchange.AdoNet
                         int hash = AdoNetHelper.GetColumnHash(reader);
                         if (tuple.Func == null || tuple.Hash != hash)
                         {
-                            tuple = info.Deserializer = new DeserializerState(hash, AdoNetHelper.GetDeserializer(effectiveType, reader, false));
+                            tuple = info.Deserializer = new DeserializerState(hash, AdoNetHelper.GetDeserializer(effectiveType, reader));
                         }
 
                         var func = tuple.Func;
@@ -164,6 +164,66 @@ namespace Yunyong.DataExchange.AdoNet
                 {
                     using (reader)
                     { /* dispose if non-null */ }
+                    if (needClose)
+                    {
+                        conn.Close();
+                    }
+                }
+            }
+        }
+
+        /*
+         * ado.net -- DbCommand.[Task<DbDataReader> ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)]
+         * select -- 单列
+         */
+        internal async Task<IEnumerable<F>> ExecuteReaderSingleColumnAsync<M,F>(IDbConnection conn, string sql, DbParameters paramx, Func<M, F> propertyFunc)
+            where M:class
+        {
+            paramx = paramx ?? new DbParameters();
+            var command = new CommandDefinition(sql, paramx, CommandType.Text, CommandFlags.Buffered);
+            var effectiveType = typeof(M);
+            DbParameters param = command.Parameters;
+            var identity = new Identity(command.CommandText, command.CommandType, conn, effectiveType, param?.GetType());
+            var info = AdoNetHelper.GetCacheInfo(identity);
+            bool needClose = conn.State == ConnectionState.Closed;
+            using (var cmd = command.TrySetupAsyncCommand(conn, info.ParamReader))
+            {
+                var reader = default(DbDataReader);
+                try
+                {
+                    if (needClose)
+                    {
+                        await conn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
+                    }
+
+                    reader = await AdoNetHelper.ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, CommandBehavior.SequentialAccess | CommandBehavior.SingleResult, default(CancellationToken)).ConfigureAwait(false);
+                    
+                    var result = new List<F>();
+                    var convertToType = Nullable.GetUnderlyingType(effectiveType) ?? effectiveType;
+                    var col =IL.Row(effectiveType,reader);
+                    var m = default(M);
+                    while (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
+                    {
+                        var val =col.Handle(reader);
+                        if (val == null 
+                            || val is M)
+                        {
+                            m = val as M;
+                        }
+                        else
+                        {
+                            m = (M)Convert.ChangeType(val, convertToType, CultureInfo.InvariantCulture);
+                        }
+                        result.Add(propertyFunc(m));
+                    }
+                    while (await reader.NextResultAsync(default(CancellationToken)).ConfigureAwait(false))
+                    { /* ignore subsequent result sets */ }
+                    return result;
+
+                }
+                finally
+                {
+                    using (reader) { /* dispose if non-null */ }
                     if (needClose)
                     {
                         conn.Close();

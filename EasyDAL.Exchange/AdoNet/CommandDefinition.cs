@@ -53,15 +53,15 @@ namespace Yunyong.DataExchange.AdoNet
             Flags = flags;
         }
 
-        internal IDbCommand SetupCommand(IDbConnection cnn, Action<IDbCommand, DbParameters> paramReader)
-        {
-            var cmd = cnn.CreateCommand();
-            cmd.CommandText = CommandText;
-            cmd.CommandTimeout = XConfig.CommandTimeout;
-            cmd.CommandType = CommandType;
-            paramReader?.Invoke(cmd, Parameters);
-            return cmd;
-        }
+        //internal IDbCommand SetupCommand(IDbConnection cnn, Action<IDbCommand, DbParameters> paramReader)
+        //{
+        //    var cmd = cnn.CreateCommand();
+        //    cmd.CommandText = CommandText;
+        //    cmd.CommandTimeout = XConfig.CommandTimeout;
+        //    cmd.CommandType = CommandType;
+        //    paramReader?.Invoke(cmd, Parameters);
+        //    return cmd;
+        //}
 
     }
 }
