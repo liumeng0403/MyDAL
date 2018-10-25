@@ -21,3 +21,11 @@
 /MyDAL.Test.QuickAPI/obj/
 /MyDAL.Test.Join.Query/bin/
 /MyDAL.Test.Join.Query/obj/
+/MyDAL.Test.QueryVM/bin/
+/MyDAL.Test.QueryVM/obj/
+/MyDAL.Test.QueryVmColumn/bin/
+/MyDAL.Test.QueryVmColumn/obj/
+/MyDAL.Test.JoinQueryVM/bin/
+/MyDAL.Test.JoinQueryVM/obj/
+/MyDAL.Test.JoinQueryVmColumn/bin/
+/MyDAL.Test.JoinQueryVmColumn/obj/
