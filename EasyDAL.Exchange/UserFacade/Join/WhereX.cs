@@ -10,7 +10,7 @@ using Yunyong.DataExchange.Interfaces;
 namespace Yunyong.DataExchange.UserFacade.Join
 {
     public sealed class WhereX
-        : Operator, IQueryFirstOrDefaultX, IQueryListX, IQueryPagingListX, IQueryPagingListXO, ICountX
+        : Operator, IQueryFirstOrDefaultX, IQueryListX, IQueryPagingListX, IQueryPagingListXO, ICountX, ITopX
     {
 
         internal WhereX(Context dc)
@@ -60,6 +60,22 @@ namespace Yunyong.DataExchange.UserFacade.Join
         {
             return await new QueryListXImpl(DC).QueryListAsync<VM>(columnMapFunc);
         }
+        /// <summary>
+        /// 多表多条数据查询
+        /// </summary>
+        public async Task<List<M>> QueryListAsync<M>(int topCount) 
+            where M : class
+        {
+            return await new QueryListXImpl(DC).QueryListAsync<M>(topCount);
+        }
+        /// <summary>
+        /// 多表多条数据查询
+        /// </summary>
+        public async Task<List<VM>> QueryListAsync<VM>(int topCount, Expression<Func<VM>> columnMapFunc) 
+            where VM : class
+        {
+            return await new QueryListXImpl(DC).QueryListAsync<VM>(topCount, columnMapFunc);
+        }
 
         /// <summary>
         /// 多表分页查询
@@ -105,5 +121,21 @@ namespace Yunyong.DataExchange.UserFacade.Join
             return await new QueryPagingListXOImpl(DC).QueryPagingListAsync<VM>(option, columnMapFunc);
         }
 
+        /// <summary>
+        /// 多表多条数据查询
+        /// </summary>
+        public async Task<List<M>> TopAsync<M>(int count) 
+            where M : class
+        {
+            return await new TopXImpl(DC).TopAsync<M>(count);
+        }
+        /// <summary>
+        /// 多表多条数据查询
+        /// </summary>
+        public async Task<List<VM>> TopAsync<VM>(int count, Expression<Func<VM>> columnMapFunc) 
+            where VM : class
+        {
+            return await new TopXImpl(DC).TopAsync<VM>(count, columnMapFunc);
+        }
     }
 }

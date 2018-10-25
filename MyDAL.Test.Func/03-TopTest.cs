@@ -96,6 +96,80 @@ namespace MyDAL.Test.Func
 
             /*******************************************************************************************************************************/
 
+            var xx7 = "";
+
+            var res7 = await Conn
+                .Joiner<Agent, AgentInventoryRecord>(out var agent7, out var record7)
+                .From(() => agent7)
+                    .InnerJoin(() => record7)
+                        .On(() => agent7.Id == record7.AgentId)
+                .Where(() => record7.CreatedOn >= WhereTest.CreatedOn)
+                .TopAsync(25,() => new AgentVM
+                {
+                    nn = agent7.PathId,
+                    yy = record7.Id,
+                    xx = agent7.Id,
+                    zz = agent7.Name,
+                    mm = record7.LockedCount
+                });
+            Assert.True(res7.Count == 25);
+
+            var tuple7 = (XDebug.SQL, XDebug.Parameters);
+
+            /*******************************************************************************************************************************/
+
+            var xx8 = "";
+
+            var res8 = await Conn
+                .Joiner<Agent, AgentInventoryRecord>(out var agent8, out var record8)
+                .From(() => agent8)
+                    .InnerJoin(() => record8)
+                        .On(() => agent8.Id == record8.AgentId)
+                .Where(() => record8.CreatedOn >= WhereTest.CreatedOn)
+                .TopAsync<Agent>(25);
+            Assert.True(res8.Count == 25);
+
+            var tuple8 = (XDebug.SQL, XDebug.Parameters);
+
+            /*******************************************************************************************************************************/
+
+            var xx9 = "";
+
+            var res9 = await Conn
+                .Joiner<Agent, AgentInventoryRecord>(out var agent9, out var record9)
+                .From(() => agent9)
+                    .InnerJoin(() => record9)
+                        .On(() => agent9.Id == record9.AgentId)
+                .Where(() => record9.CreatedOn >= WhereTest.CreatedOn)
+                .QueryListAsync(25, () => new AgentVM
+                {
+                    nn = agent9.PathId,
+                    yy = record9.Id,
+                    xx = agent9.Id,
+                    zz = agent9.Name,
+                    mm = record9.LockedCount
+                });
+            Assert.True(res9.Count == 25);
+
+            var tuple9 = (XDebug.SQL, XDebug.Parameters);
+
+            /*******************************************************************************************************************************/
+
+            var xx10 = "";
+
+            var res10 = await Conn
+                .Joiner<Agent, AgentInventoryRecord>(out var agent10, out var record10)
+                .From(() => agent10)
+                    .InnerJoin(() => record10)
+                        .On(() => agent10.Id == record10.AgentId)
+                .Where(() => record10.CreatedOn >= WhereTest.CreatedOn)
+                .QueryListAsync<Agent>(25);
+            Assert.True(res10.Count == 25);
+
+            var tuple10 = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
+
+            /*******************************************************************************************************************************/
+
             var xx = "";
 
         }

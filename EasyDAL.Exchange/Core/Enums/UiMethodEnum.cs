@@ -11,6 +11,7 @@ namespace Yunyong.DataExchange.Core.Enums
         QueryListAsync,
         TopAsync,
         JoinQueryListAsync,
+        JoinTopAsync,
         QueryPagingListAsync,
         JoinQueryPagingListAsync,
         QueryAllAsync,
