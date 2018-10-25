@@ -9,6 +9,7 @@
         QueryFirstOrDefaultAsync,
         JoinQueryFirstOrDefaultAsync,
         QueryListAsync,
+        TopAsync,
         JoinQueryListAsync,
         QueryPagingListAsync,
         JoinQueryPagingListAsync,
