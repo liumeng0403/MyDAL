@@ -10,7 +10,7 @@ using Yunyong.DataExchange.Interfaces;
 namespace Yunyong.DataExchange.UserFacade.Query
 {
     public sealed class WhereQ<M>
-        : Operator, IExist, IQueryFirstOrDefault<M>, IQueryList<M>, IQueryPagingList<M>, IQueryPagingListO<M>, ICount<M>
+        : Operator, IExist, IQueryFirstOrDefault<M>, IQueryList<M>, IQueryPagingList<M>, IQueryPagingListO<M>, ICount<M>,ITop<M>
         where M : class
     {
         internal WhereQ(Context dc)
@@ -90,6 +90,29 @@ namespace Yunyong.DataExchange.UserFacade.Query
         {
             return await new QueryListImpl<M>(DC).QueryListAsync<VM>(columnMapFunc);
         }
+        /// <summary>
+        /// 单表多条数据查询
+        /// </summary>
+        public async Task<List<M>> QueryListAsync(int topCount)
+        {
+            return await new QueryListImpl<M>(DC).QueryListAsync(topCount);
+        }
+        /// <summary>
+        /// 单表多条数据查询
+        /// </summary>
+        public async Task<List<VM>> QueryListAsync<VM>(int topCount) 
+            where VM : class
+        {
+            return await new QueryListImpl<M>(DC).QueryListAsync<VM>(topCount);
+        }
+        /// <summary>
+        /// 单表多条数据查询
+        /// </summary>
+        public async Task<List<VM>> QueryListAsync<VM>(int topCount, Expression<Func<M, VM>> columnMapFunc) 
+            where VM : class
+        {
+            return await new QueryListImpl<M>(DC).QueryListAsync<VM>(topCount, columnMapFunc);
+        }
 
         /// <summary>
         /// 单表分页查询
@@ -154,6 +177,37 @@ namespace Yunyong.DataExchange.UserFacade.Query
         {
             return await new QueryPagingListOImpl<M>(DC).QueryPagingListAsync<VM>(option, columnMapFunc);
         }
+
+        /// <summary>
+        /// 单表数据查询
+        /// </summary>
+        /// <param name="count">top count</param>
+        /// <returns>返回 top count 条数据</returns>
+        public async Task<List<M>> TopAsync(int count)
+        {
+            return await new TopImpl<M>(DC).TopAsync(count);
+        }
+        /// <summary>
+        /// 单表数据查询
+        /// </summary>
+        /// <param name="count">top count</param>
+        /// <returns>返回 top count 条数据</returns>
+        public async Task<List<VM>> TopAsync<VM>(int count)
+            where VM : class
+        {
+            return await new TopImpl<M>(DC).TopAsync<VM>(count);
+        }
+        /// <summary>
+        /// 单表数据查询
+        /// </summary>
+        /// <param name="count">top count</param>
+        /// <returns>返回 top count 条数据</returns>
+        public async Task<List<VM>> TopAsync<VM>(int count, Expression<Func<M, VM>> columnMapFunc)
+            where VM : class
+        {
+            return await new TopImpl<M>(DC).TopAsync<VM>(count, columnMapFunc);
+        }
+
 
     }
 }

@@ -9,6 +9,7 @@ namespace Yunyong.DataExchange.Core.Enums
         QueryFirstOrDefaultAsync,
         JoinQueryFirstOrDefaultAsync,
         QueryListAsync,
+        TopAsync,
         JoinQueryListAsync,
         QueryPagingListAsync,
         JoinQueryPagingListAsync,

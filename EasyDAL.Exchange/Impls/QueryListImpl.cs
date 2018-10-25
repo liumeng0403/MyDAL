@@ -37,15 +37,32 @@ namespace Yunyong.DataExchange.Impls
                 DC.SqlProvider.GetParameters())).ToList();
         }
 
-        public async Task<List<VM>> QueryListAsync<VM>(Expression<Func<M, VM>> func)
+        public async Task<List<VM>> QueryListAsync<VM>(Expression<Func<M, VM>> columnMapFunc)
             where VM:class
         {
-            SelectMHandle(func);
+            SelectMHandle(columnMapFunc);
             DC.DH.UiToDbCopy();
             return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryListAsync)[0],
                 DC.SqlProvider.GetParameters())).ToList();
+        }
+
+        public async Task<List<M>> QueryListAsync(int topCount)
+        {
+            return await new TopImpl<M>(DC).TopAsync(topCount);
+        }
+
+        public async Task<List<VM>> QueryListAsync<VM>(int topCount) 
+            where VM : class
+        {
+            return await new TopImpl<M>(DC).TopAsync<VM>(topCount);
+        }
+
+        public async Task<List<VM>> QueryListAsync<VM>(int topCount, Expression<Func<M, VM>> columnMapFunc) 
+            where VM : class
+        {
+            return await new TopImpl<M>(DC).TopAsync<VM>(topCount, columnMapFunc);
         }
     }
 

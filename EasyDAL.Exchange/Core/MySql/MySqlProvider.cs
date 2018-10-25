@@ -152,7 +152,20 @@ namespace Yunyong.DataExchange.Core.MySql
 
         private string Limit(int? pageIndex, int? pageSize)
         {
-            return $" \r\n limit {(pageIndex - 1) * pageSize},{pageSize}";
+            if (pageIndex.HasValue
+                && pageSize.HasValue)
+            {
+                var start = default(int);
+                if (pageIndex > 0)
+                {
+                    start = ((pageIndex - 1) * pageSize).ToInt();
+                }
+                return $" \r\n limit {start},{pageSize}";
+            }
+            else
+            {
+                return string.Empty;
+            }
         }
 
         /****************************************************************************************************************/
@@ -585,7 +598,8 @@ namespace Yunyong.DataExchange.Core.MySql
                     list.Add($" select {Columns()} {From()} {Joins()} {Wheres()} {GetOrderByPart()} ; ");
                     break;
                 case UiMethodEnum.QueryListAsync:
-                    list.Add($"select {Columns()} {From()} {Table<M>(type)} {Wheres()} {GetOrderByPart<M>()} ; ");
+                case UiMethodEnum.TopAsync:
+                    list.Add($"select {Columns()} {From()} {Table<M>(type)} {Wheres()} {GetOrderByPart<M>()} {Limit(pageIndex, pageSize)} ; ");
                     break;
                 case UiMethodEnum.JoinQueryListAsync:
                     list.Add($" select {Columns()} {From()} {Joins()} {Wheres()} {GetOrderByPart()} ; ");
