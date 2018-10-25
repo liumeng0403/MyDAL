@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using Yunyong.Core;
+using Yunyong.DataExchange;
 
 namespace MyDAL.Test.QueryVM
 {

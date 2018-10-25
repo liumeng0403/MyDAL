@@ -2,6 +2,7 @@
 using MyDAL.Test.ViewModels;
 using System.Threading.Tasks;
 using Xunit;
+using Yunyong.DataExchange;
 
 namespace MyDAL.Test.QueryVmColumn
 {
