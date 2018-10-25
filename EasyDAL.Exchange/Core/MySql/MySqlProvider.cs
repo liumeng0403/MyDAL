@@ -603,7 +603,8 @@ namespace MyDAL.Core.MySql
                     list.Add($"select {Columns()} {From()} {Table<M>(type)} {Wheres()} {GetOrderByPart<M>()} {Limit(pageIndex, pageSize)} ; ");
                     break;
                 case UiMethodEnum.JoinQueryListAsync:
-                    list.Add($" select {Columns()} {From()} {Joins()} {Wheres()} {GetOrderByPart()} ; ");
+                case UiMethodEnum.JoinTopAsync:
+                    list.Add($" select {Columns()} {From()} {Joins()} {Wheres()} {GetOrderByPart()} {Limit(pageIndex,pageSize)} ; ");
                     break;
                 case UiMethodEnum.QueryPagingListAsync:
                     var wherePart8 = Wheres();

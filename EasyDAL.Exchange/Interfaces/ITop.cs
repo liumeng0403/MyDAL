@@ -14,4 +14,12 @@ namespace MyDAL.Interfaces
         Task<List<VM>> TopAsync<VM>(int count, Expression<Func<M, VM>> columnMapFunc)
             where VM : class;
     }
+
+    public interface ITopX
+    {
+        Task<List<M>> TopAsync<M>(int count)
+            where M : class;
+        Task<List<VM>> TopAsync<VM>(int count,Expression<Func<VM>> columnMapFunc)
+            where VM : class;
+    }
 }

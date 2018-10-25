@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Join
 {
     public sealed  class OnX 
-        : Operator, IQueryFirstOrDefaultX, IQueryListX, IQueryPagingListX, IQueryPagingListXO
+        : Operator, IQueryFirstOrDefaultX, IQueryListX, IQueryPagingListX, IQueryPagingListXO,ITopX
     {
 
         internal OnX(Context dc)
@@ -49,6 +49,22 @@ namespace MyDAL.UserFacade.Join
             where VM:class
         {
             return await new QueryListXImpl(DC).QueryListAsync<VM>(columnMapFunc);
+        }
+        /// <summary>
+        /// 多表多条数据查询
+        /// </summary>
+        public async Task<List<M>> QueryListAsync<M>(int topCount)
+            where M : class
+        {
+            return await new QueryListXImpl(DC).QueryListAsync<M>(topCount);
+        }
+        /// <summary>
+        /// 多表多条数据查询
+        /// </summary>
+        public async Task<List<VM>> QueryListAsync<VM>(int topCount, Expression<Func<VM>> columnMapFunc)
+            where VM : class
+        {
+            return await new QueryListXImpl(DC).QueryListAsync<VM>(topCount, columnMapFunc);
         }
 
         /// <summary>
@@ -95,5 +111,21 @@ namespace MyDAL.UserFacade.Join
             return await new QueryPagingListXOImpl(DC).QueryPagingListAsync<VM>(option, columnMapFunc);
         }
 
+        /// <summary>
+        /// 多表多条数据查询
+        /// </summary>
+        public async Task<List<M>> TopAsync<M>(int count)
+            where M : class
+        {
+            return await new TopXImpl(DC).TopAsync<M>(count);
+        }
+        /// <summary>
+        /// 多表多条数据查询
+        /// </summary>
+        public async Task<List<VM>> TopAsync<VM>(int count, Expression<Func<VM>> columnMapFunc)
+            where VM : class
+        {
+            return await new TopXImpl(DC).TopAsync<VM>(count, columnMapFunc);
+        }
     }
 }

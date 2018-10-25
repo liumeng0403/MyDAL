@@ -11,6 +11,7 @@
         QueryListAsync,
         TopAsync,
         JoinQueryListAsync,
+        JoinTopAsync,
         QueryPagingListAsync,
         JoinQueryPagingListAsync,
         QueryAllAsync,

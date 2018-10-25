@@ -17,7 +17,7 @@ namespace MyDAL.Interfaces
         Task<List<M>> QueryListAsync(int topCount);
         Task<List<VM>> QueryListAsync<VM>(int topCount)
             where VM : class;
-        Task<List<VM>> QueryListAsync<VM>(int topCount,Expression<Func<M, VM>> columnMapFunc)
+        Task<List<VM>> QueryListAsync<VM>(int topCount, Expression<Func<M, VM>> columnMapFunc)
             where VM : class;
     }
 
@@ -26,6 +26,11 @@ namespace MyDAL.Interfaces
         Task<List<M>> QueryListAsync<M>()
             where M : class;
         Task<List<VM>> QueryListAsync<VM>(Expression<Func<VM>> columnMapFunc)
+            where VM : class;
+
+        Task<List<M>> QueryListAsync<M>(int topCount)
+            where M : class;
+        Task<List<VM>> QueryListAsync<VM>(int topCount, Expression<Func<VM>> columnMapFunc)
             where VM : class;
     }
 }

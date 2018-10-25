@@ -85,15 +85,27 @@ namespace MyDAL.Impls
                 DC.SqlProvider.GetParameters())).ToList();
         }
 
-        public async Task<List<VM>> QueryListAsync<VM>(Expression<Func<VM>> func)
+        public async Task<List<VM>> QueryListAsync<VM>(Expression<Func<VM>> columnMapFunc)
             where VM:class
         {
-            SelectMHandle(func);
+            SelectMHandle(columnMapFunc);
             DC.DH.UiToDbCopy();
             return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<VM>(UiMethodEnum.JoinQueryListAsync)[0],
                 DC.SqlProvider.GetParameters())).ToList();
+        }
+
+        public async Task<List<M>> QueryListAsync<M>(int topCount) 
+            where M : class
+        {
+            return await new TopXImpl(DC).TopAsync<M>(topCount);
+        }
+
+        public async Task<List<VM>> QueryListAsync<VM>(int topCount, Expression<Func<VM>> columnMapFunc) 
+            where VM : class
+        {
+            return await new TopXImpl(DC).TopAsync<VM>(topCount, columnMapFunc);
         }
     }
 }
