@@ -2,18 +2,16 @@ using MyDAL.Test.Entities;
 using MyDAL.Test.Entities.EasyDal_Exchange;
 using MyDAL.Test.Enums;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 using Yunyong.DataExchange;
 
-namespace MyDAL.Test.Query
+namespace MyDAL.Test.QueryM
 {
-    public class _04_QueryListTest : TestBase
+    public class _02_QueryListAsync:TestBase
     {
-
         [Fact]
-        public async Task Test01()
+        public async Task test()
         {
 
             /********************************************************************************************************************************/
@@ -118,7 +116,5 @@ namespace MyDAL.Test.Query
             var xx = "";
 
         }
-
-
     }
 }

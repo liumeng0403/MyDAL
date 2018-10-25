@@ -25,11 +25,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.JoinQueryM", "My
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.QueryVM", "MyDAL.Test.QueryVM\MyDAL.Test.QueryVM.csproj", "{5B8C3CDE-7898-48B9-9088-10DB1159DC6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDAL.Test.QueryVmColumn", "MyDAL.Test.QueryVmColumn\MyDAL.Test.QueryVmColumn.csproj", "{F226729C-F6F8-46AE-96ED-EA31BFBD94AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.QueryVmColumn", "MyDAL.Test.QueryVmColumn\MyDAL.Test.QueryVmColumn.csproj", "{F226729C-F6F8-46AE-96ED-EA31BFBD94AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDAL.Test.JoinQueryVM", "MyDAL.Test.JoinQueryVM\MyDAL.Test.JoinQueryVM.csproj", "{602BF9DD-9DEB-4237-AC32-B8542434F431}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.JoinQueryVM", "MyDAL.Test.JoinQueryVM\MyDAL.Test.JoinQueryVM.csproj", "{602BF9DD-9DEB-4237-AC32-B8542434F431}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDAL.Test.JoinQueryVmColumn", "MyDAL.Test.JoinQueryVmColumn\MyDAL.Test.JoinQueryVmColumn.csproj", "{78DF5419-A97D-4C48-B5C3-041E960F625D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.JoinQueryVmColumn", "MyDAL.Test.JoinQueryVmColumn\MyDAL.Test.JoinQueryVmColumn.csproj", "{78DF5419-A97D-4C48-B5C3-041E960F625D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDAL.Test.WhereEdge", "MyDAL.Test.WhereEdge\MyDAL.Test.WhereEdge.csproj", "{23BB258A-20BE-47A9-ACF7-F8D7D761C6E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,6 +95,10 @@ Global
 		{78DF5419-A97D-4C48-B5C3-041E960F625D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78DF5419-A97D-4C48-B5C3-041E960F625D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78DF5419-A97D-4C48-B5C3-041E960F625D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23BB258A-20BE-47A9-ACF7-F8D7D761C6E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23BB258A-20BE-47A9-ACF7-F8D7D761C6E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23BB258A-20BE-47A9-ACF7-F8D7D761C6E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23BB258A-20BE-47A9-ACF7-F8D7D761C6E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

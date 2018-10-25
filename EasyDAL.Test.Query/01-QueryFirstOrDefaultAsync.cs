@@ -1,45 +1,18 @@
 using MyDAL.Test.Entities.EasyDal_Exchange;
-using MyDAL.Test.ViewModels;
 using System;
 using System.Threading.Tasks;
 using Xunit;
 using Yunyong.DataExchange;
 
-namespace MyDAL.Test.Query
+namespace MyDAL.Test.QueryM
 {
-    public class _04_QueryFirstOrDefaultTest : TestBase
+    public class _01_QueryFirstOrDefaultAsync:TestBase
     {
-
-        private async Task<BodyFitRecord> PreQuery()
-        {
-
-
-            var m = new BodyFitRecord
-            {
-                Id = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"),
-                CreatedOn = Convert.ToDateTime("2018-08-23 13:36:58"),
-                UserId = Guid.NewGuid(),
-                BodyMeasureProperty = "xxxx"
-            };
-
-            // 清理数据
-            var resd = await Conn
-                .Deleter<BodyFitRecord>()
-                .Where(it => it.Id == m.Id)
-                .DeleteAsync();
-
-            // 造数据
-            var resc = await Conn
-                .Creater<BodyFitRecord>()
-                .CreateAsync(m);
-
-            return m;
-        }
-
         [Fact]
-        public async Task Test01()
+        public async Task test()
         {
-            var m = PreQuery();
+
+            await PreQuery();
 
             /****************************************************************************************************************************************/
 
@@ -74,7 +47,7 @@ namespace MyDAL.Test.Query
                 .QueryFirstOrDefaultAsync();
             Assert.NotNull(res2);
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
+            var tuple2 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             var resR2 = await Conn
                 .Selecter<BodyFitRecord>()
@@ -123,25 +96,32 @@ namespace MyDAL.Test.Query
 
             /****************************************************************************************************************************************/
 
-            var xx6 = "";
+        }
 
-            var guid6 = Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef");
-            var res6 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var agent6, out var record6)
-                .From(() => agent6)
-                .InnerJoin(() => record6)
-                .On(() => agent6.Id == record6.AgentId)
-                .Where(() => agent6.Id == guid6)
-                .QueryFirstOrDefaultAsync<Agent>();
-            Assert.NotNull(res6);
-            Assert.Equal("夏明君", res6.Name);
+        private async Task<BodyFitRecord> PreQuery()
+        {
 
-            var tuple6 = (XDebug.SQL, XDebug.Parameters);
 
-            /****************************************************************************************************************************************/
+            var m = new BodyFitRecord
+            {
+                Id = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"),
+                CreatedOn = Convert.ToDateTime("2018-08-23 13:36:58"),
+                UserId = Guid.NewGuid(),
+                BodyMeasureProperty = "xxxx"
+            };
 
-            var xx = "";
+            // 清理数据
+            var resd = await Conn
+                .Deleter<BodyFitRecord>()
+                .Where(it => it.Id == m.Id)
+                .DeleteAsync();
 
+            // 造数据
+            var resc = await Conn
+                .Creater<BodyFitRecord>()
+                .CreateAsync(m);
+
+            return m;
         }
 
     }

@@ -1,15 +1,17 @@
 ﻿using MyDAL.Test.Entities.EasyDal_Exchange;
 using MyDAL.Test.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using Yunyong.Core;
 using Yunyong.DataExchange;
 
-namespace MyDAL.Test.Query
+namespace MyDAL.Test.QueryVM
 {
-    public class _01_SelectVmTest:TestBase
+    public class _04_QueryAllPagingListAsync:TestBase
     {
-
         [Fact]
         public async Task test()
         {
@@ -29,8 +31,6 @@ namespace MyDAL.Test.Query
 
             var xx = "";
 
-
         }
-
     }
 }
