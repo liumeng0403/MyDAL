@@ -1,7 +1,6 @@
 ﻿using MyDAL.Core;
 using MyDAL.Core.Helper;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
@@ -15,6 +14,7 @@ namespace MyDAL.AdoNet
     {
         private static Func<IDataReader, object> SetFunc(Type mType, IDataReader reader)
         {
+            //
             var dm = new DynamicMethod("MyDAL" + Guid.NewGuid().ToString(), mType, new[] { typeof(IDataReader) }, mType, true);
             var il = dm.GetILGenerator();
             il.DeclareLocal(typeof(int));
@@ -22,28 +22,20 @@ namespace MyDAL.AdoNet
             il.Emit(OpCodes.Ldc_I4_0);
             il.Emit(OpCodes.Stloc_0);
 
+            //
             var length = reader.FieldCount;
-
             var names = Enumerable.Range(0, length).Select(i => reader.GetName(i)).ToArray();
-
             var typeMap = AdoNetHelper.GetTypeMap(mType);
-
             int index = 0;
-            ConstructorInfo specializedConstructor = null;
-
-
             bool supportInitialize = false;
-
-            Dictionary<Type, LocalBuilder> structLocals = null;
-
             var types = new Type[length];
             for (int i = 0; i < length; i++)
             {
                 types[i] = reader.GetFieldType(i);
             }
-
             var ctor = typeMap.FindConstructor();
 
+            //
             il.Emit(OpCodes.Newobj, ctor);
             il.Emit(OpCodes.Stloc_1);
             supportInitialize = typeof(ISupportInitialize).IsAssignableFrom(mType);
@@ -52,18 +44,12 @@ namespace MyDAL.AdoNet
                 il.Emit(OpCodes.Ldloc_1);
                 il.EmitCall(OpCodes.Callvirt, typeof(ISupportInitialize).GetMethod(nameof(ISupportInitialize.BeginInit)), null);
             }
-
             il.BeginExceptionBlock();
+            il.Emit(OpCodes.Ldloc_1);// [target]
 
-            if (specializedConstructor == null)
-            {
-                il.Emit(OpCodes.Ldloc_1);// [target]
-            }
-
+            //
             var members = names.Select(n => typeMap.GetMember(n)).ToList();
-
             // stack is now [target]
-
             bool first = true;
             var allDone = il.DefineLabel();
             int enumDeclareLocal = -1, valueCopyLocal = il.DeclareLocal(typeof(object)).LocalIndex;
@@ -72,8 +58,7 @@ namespace MyDAL.AdoNet
             {
                 if (item != null)
                 {
-                    if (specializedConstructor == null)
-                        il.Emit(OpCodes.Dup); // stack is now [target][target]
+                    il.Emit(OpCodes.Dup); // stack is now [target][target]
                     Label isDbNullLabel = il.DefineLabel();
                     Label finishLabel = il.DefineLabel();
 
@@ -85,7 +70,7 @@ namespace MyDAL.AdoNet
                     il.Emit(OpCodes.Dup); // stack is now [target][target][value-as-object][value-as-object]
                     AdoNetHelper.StoreLocal(il, valueCopyLocal);
                     Type colType = reader.GetFieldType(index);
-                    Type memberType = item.MemberType;
+                    Type memberType = item.MemberType();
 
                     if (memberType == typeof(char) || memberType == typeof(char?))
                     {
@@ -154,44 +139,26 @@ namespace MyDAL.AdoNet
                             }
                         }
                     }
-                    if (specializedConstructor == null)
+                    // Store the value in the property/field
+                    if (item.Property != null)
                     {
-                        // Store the value in the property/field
-                        if (item.Property != null)
-                        {
-                            il.Emit(OpCodes.Callvirt, AdoNetHelper.GetPropertySetter(item.Property, mType));
-                        }
-                        else
-                        {
-                            il.Emit(OpCodes.Stfld, item.Field); // stack is now [target]
-                        }
+                        il.Emit(OpCodes.Callvirt, AdoNetHelper.GetPropertySetter(item.Property, mType));
+                    }
+                    else
+                    {
+                        il.Emit(OpCodes.Stfld, item.Field); // stack is now [target]
                     }
 
                     il.Emit(OpCodes.Br_S, finishLabel); // stack is now [target]
-
                     il.MarkLabel(isDbNullLabel); // incoming stack: [target][target][value]
-                    if (specializedConstructor != null)
-                    {
-                        il.Emit(OpCodes.Pop);
-                        if (item.MemberType.IsValueType)
-                        {
-                            int localIndex = il.DeclareLocal(item.MemberType).LocalIndex;
-                            AdoNetHelper.LoadLocalAddress(il, localIndex);
-                            il.Emit(OpCodes.Initobj, item.MemberType);
-                            AdoNetHelper.LoadLocal(il, localIndex);
-                        }
-                        else
-                        {
-                            il.Emit(OpCodes.Ldnull);
-                        }
-                    }
-                    else if (applyNullSetting && (!memberType.IsValueType || Nullable.GetUnderlyingType(memberType) != null))
+
+                    if (applyNullSetting && (!memberType.IsValueType || Nullable.GetUnderlyingType(memberType) != null))
                     {
                         il.Emit(OpCodes.Pop); // stack is now [target][target]
                         // can load a null with this value
                         if (memberType.IsValueType)
                         { // must be Nullable<T> for some T
-                            AdoNetHelper.GetTempLocal(il, ref structLocals, memberType, true); // stack is now [target][target][null]
+                            AdoNetHelper.GetTempLocal(il, memberType, true); // stack is now [target][target][null]
                         }
                         else
                         { // regular reference-type
@@ -221,10 +188,6 @@ namespace MyDAL.AdoNet
                 index++;
             }
 
-            if (specializedConstructor != null)
-            {
-                il.Emit(OpCodes.Newobj, specializedConstructor);
-            }
             il.Emit(OpCodes.Stloc_1); // stack is empty
             if (supportInitialize)
             {

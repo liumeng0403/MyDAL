@@ -5,8 +5,8 @@ namespace MyDAL.Cache
 {
     internal struct DeserializerState
     {
-        public readonly int Hash;
-        public readonly Func<IDataReader, object> Func;
+        public int Hash { get; }
+        public Func<IDataReader, object> Func { get; }
 
         public DeserializerState(int hash, Func<IDataReader, object> func)
         {

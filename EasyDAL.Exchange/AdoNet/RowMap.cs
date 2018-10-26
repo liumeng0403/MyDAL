@@ -1,6 +1,4 @@
-﻿using MyDAL.AdoNet.Interfaces;
-using MyDAL.Core;
-using MyDAL.Core.Extensions;
+﻿using MyDAL.Core.Extensions;
 using MyDAL.Core.Helper;
 using System;
 using System.Collections.Generic;
@@ -31,7 +29,7 @@ namespace MyDAL.AdoNet
             }
             return cons[0];
         }
-        internal IMemberMap GetMember(string colName)
+        internal ColMemMap GetMember(string colName)
         {
             var property = default(PropertyInfo);
             foreach (var prop in Properties)
@@ -54,7 +52,7 @@ namespace MyDAL.AdoNet
             //
             if (property != null)
             {
-                return new SimpleMemberMap(colName, property);
+                return new ColMemMap(property);
             }
 
             // get-only prop
@@ -81,7 +79,7 @@ namespace MyDAL.AdoNet
             //
             if (field != null)
             {
-                return new SimpleMemberMap(colName, field);
+                return new ColMemMap(field);
             }
 
             return null;

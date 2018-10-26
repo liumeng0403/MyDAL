@@ -149,10 +149,10 @@ namespace MyDAL.Core.Helper
             return TypeDeserializerCache.GetReader(type, reader);
         }
 
-        internal static LocalBuilder GetTempLocal(ILGenerator il, ref Dictionary<Type, LocalBuilder> locals, Type type, bool initAndLoad)
+        internal static LocalBuilder GetTempLocal(ILGenerator il, Type type, bool initAndLoad)
         {
             if (type == null) throw new ArgumentNullException(nameof(type));
-            locals = locals ?? new Dictionary<Type, LocalBuilder>();
+            var locals = new Dictionary<Type, LocalBuilder>();
             if (!locals.TryGetValue(type, out LocalBuilder found))
             {
                 found = il.DeclareLocal(type);
