@@ -17,8 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.Create", "EasyDA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.Func", "MyDAL.Test.Func\MyDAL.Test.Func.csproj", "{BF35B9CD-BAE0-49D8-AE0C-D88F5F2962CC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.CodeFirst", "MyDAL.Test.CodeFirst\MyDAL.Test.CodeFirst.csproj", "{6A0A52E9-C847-4AAC-95BC-F3B7BA9858AD}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.QuickAPI", "MyDAL.Test.QuickAPI\MyDAL.Test.QuickAPI.csproj", "{054CCDC0-CB13-4AFC-AFA7-76651EF0947A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.JoinQueryM", "MyDAL.Test.Join.Query\MyDAL.Test.JoinQueryM.csproj", "{0F63F56A-B5CB-4100-907C-93CF3BF6DF2A}"
@@ -27,11 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.QueryVM", "MyDAL
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.QueryVmColumn", "MyDAL.Test.QueryVmColumn\MyDAL.Test.QueryVmColumn.csproj", "{F226729C-F6F8-46AE-96ED-EA31BFBD94AD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.JoinQueryVM", "MyDAL.Test.JoinQueryVM\MyDAL.Test.JoinQueryVM.csproj", "{602BF9DD-9DEB-4237-AC32-B8542434F431}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.JoinQueryVmColumn", "MyDAL.Test.JoinQueryVmColumn\MyDAL.Test.JoinQueryVmColumn.csproj", "{78DF5419-A97D-4C48-B5C3-041E960F625D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDAL.Test.WhereEdge", "MyDAL.Test.WhereEdge\MyDAL.Test.WhereEdge.csproj", "{23BB258A-20BE-47A9-ACF7-F8D7D761C6E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.WhereEdge", "MyDAL.Test.WhereEdge\MyDAL.Test.WhereEdge.csproj", "{23BB258A-20BE-47A9-ACF7-F8D7D761C6E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,10 +63,6 @@ Global
 		{BF35B9CD-BAE0-49D8-AE0C-D88F5F2962CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF35B9CD-BAE0-49D8-AE0C-D88F5F2962CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF35B9CD-BAE0-49D8-AE0C-D88F5F2962CC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6A0A52E9-C847-4AAC-95BC-F3B7BA9858AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6A0A52E9-C847-4AAC-95BC-F3B7BA9858AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6A0A52E9-C847-4AAC-95BC-F3B7BA9858AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6A0A52E9-C847-4AAC-95BC-F3B7BA9858AD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{054CCDC0-CB13-4AFC-AFA7-76651EF0947A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{054CCDC0-CB13-4AFC-AFA7-76651EF0947A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{054CCDC0-CB13-4AFC-AFA7-76651EF0947A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -87,10 +79,6 @@ Global
 		{F226729C-F6F8-46AE-96ED-EA31BFBD94AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F226729C-F6F8-46AE-96ED-EA31BFBD94AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F226729C-F6F8-46AE-96ED-EA31BFBD94AD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{602BF9DD-9DEB-4237-AC32-B8542434F431}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{602BF9DD-9DEB-4237-AC32-B8542434F431}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{602BF9DD-9DEB-4237-AC32-B8542434F431}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{602BF9DD-9DEB-4237-AC32-B8542434F431}.Release|Any CPU.Build.0 = Release|Any CPU
 		{78DF5419-A97D-4C48-B5C3-041E960F625D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{78DF5419-A97D-4C48-B5C3-041E960F625D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78DF5419-A97D-4C48-B5C3-041E960F625D}.Release|Any CPU.ActiveCfg = Release|Any CPU

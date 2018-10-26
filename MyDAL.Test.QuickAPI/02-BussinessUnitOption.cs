@@ -1,14 +1,17 @@
-﻿using MyDAL;
-using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace MyDAL.Test.Query
+namespace MyDAL.Test.QuickAPI
 {
-    public class _14_TransactionTest : TestBase
+    public class _02_BussinessUnitOption:TestBase
     {
+
         [Fact]
-        public async Task test01()
+        public async Task test()
         {
 
             /***********************************************************************************************************/
