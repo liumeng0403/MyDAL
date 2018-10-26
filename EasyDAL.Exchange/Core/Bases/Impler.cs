@@ -15,7 +15,7 @@ namespace Yunyong.DataExchange.Core.Bases
 
         private void SetInsertValue<M>(M m, int index)
         {
-            var key = DC.SC.GetKey(m.GetType().FullName, DC.Conn.Database);
+            var key = DC.SC.GetModelKey(m.GetType().FullName);
             var props = DC.SC.GetModelProperys(key);
             var columns = DC.SC.GetColumnInfos(key);
             var fullName = typeof(M).FullName;

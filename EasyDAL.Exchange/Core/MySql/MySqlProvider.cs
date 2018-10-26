@@ -68,7 +68,7 @@ namespace Yunyong.DataExchange.Core.MySql
         private string GetOrderByPart<M>()
         {
             var str = string.Empty;
-            var key = DC.SC.GetKey(typeof(M).FullName, DC.Conn.Database);
+            var key = DC.SC.GetModelKey(typeof(M).FullName);
             var cols = DC.SC.GetColumnInfos(key);
             var props = DC.SC.GetModelProperys(key);
 
@@ -100,7 +100,7 @@ namespace Yunyong.DataExchange.Core.MySql
             }
             else
             {
-                str = $" `{DC.SC.GetModelProperys(DC.SC.GetKey(typeof(M).FullName, DC.Conn.Database)).First().Name}` desc ";
+                str = $" `{DC.SC.GetModelProperys(DC.SC.GetModelKey(typeof(M).FullName)).First().Name}` desc ";
             }
 
             str = $" \r\n order by {str}";
@@ -284,7 +284,7 @@ namespace Yunyong.DataExchange.Core.MySql
             var tableName = string.Empty;
             if (type != UiMethodEnum.JoinQueryListAsync)
             {
-                var key = DC.SC.GetKey(typeof(M).FullName, DC.Conn.Database);
+                var key = DC.SC.GetModelKey(typeof(M).FullName);
                 tableName = DC.SC.GetModelTableName(key);
             }
 
@@ -556,7 +556,7 @@ namespace Yunyong.DataExchange.Core.MySql
 
         internal string GetTablePK(string fullName)
         {
-            var key = DC.SC.GetKey(fullName, DC.Conn.Database);
+            var key = DC.SC.GetModelKey(fullName);
             var col = DC.SC.GetColumnInfos(key).FirstOrDefault(it => "PRI".Equals(it.KeyType, StringComparison.OrdinalIgnoreCase));
             if (col == null)
             {

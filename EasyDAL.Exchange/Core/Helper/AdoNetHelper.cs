@@ -1,17 +1,14 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.Common;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Threading;
 using System.Threading.Tasks;
 using Yunyong.DataExchange.AdoNet;
-using Yunyong.DataExchange.AdoNet.Interfaces;
 using Yunyong.DataExchange.Cache;
 using Yunyong.DataExchange.Core.Enums;
 
@@ -19,12 +16,6 @@ namespace Yunyong.DataExchange.Core.Helper
 {
     internal static class AdoNetHelper
     {
-
-        /// <summary>
-        /// Gets type-map for the given type
-        /// </summary>
-        /// <returns>Type map instance, default is to create new instance of DefaultTypeMap</returns>
-        internal static Func<Type, ITypeMap> TypeMapProvider { get; } = (Type type) => new DefaultTypeMap(type);
 
         internal static int GetColumnHash(IDataReader reader)
         {
@@ -122,32 +113,15 @@ namespace Yunyong.DataExchange.Core.Helper
         /// </summary>
         /// <param name="type">The type to get a map for.</param>
         /// <returns>Type map implementation, DefaultTypeMap instance if no override present</returns>
-        public static ITypeMap GetTypeMap(Type type)
+        public static DefaultTypeMap GetTypeMap(Type mType)
         {
-            if (type == null)
+            if (!StaticCache.TypeMaps.TryGetValue(mType, out var map))
             {
-                throw new ArgumentNullException(nameof(type));
-            }
-            var map = (ITypeMap)_typeMaps[type];
-            if (map == null)
-            {
-                lock (_typeMaps)
-                {   // double-checked; store this to avoid reflection next time we see this type
-                    // since multiple queries commonly use the same domain-entity/DTO/view-model type
-                    map = (ITypeMap)_typeMaps[type];
-
-                    if (map == null)
-                    {
-                        map = TypeMapProvider(type);
-                        _typeMaps[type] = map;
-                    }
-                }
+                map = new DefaultTypeMap(mType);
+                StaticCache.TypeMaps[mType] = map;
             }
             return map;
         }
-
-        // use Hashtable to get free lockless reading
-        private static Hashtable _typeMaps { get; } = new Hashtable();
 
         /// <summary>
         /// Internal use only
@@ -181,7 +155,7 @@ namespace Yunyong.DataExchange.Core.Helper
             }
             return found;
         }
-        
+
         internal static void FlexibleConvertBoxedFromHeadOfStack(ILGenerator il, Type from, Type to, Type via)
         {
             MethodInfo op;

@@ -23,7 +23,7 @@ namespace Yunyong.DataExchange.Core.Bases
             VH = new CsValueHelper(this);
             GH = GenericHelper.Instance;
             EH = new XExpression(this);
-            SC = StaticCache.Instance;
+            SC = new StaticCache(this);
             PH = new ParameterHelper(this);
             BDH = BatchDataHelper.Instance;
             SqlProvider = new MySqlProvider(this);
@@ -145,7 +145,7 @@ namespace Yunyong.DataExchange.Core.Bases
         {
             //
             var type = typeof(M);
-            var key = SC.GetKey(type.FullName, Conn.Database);
+            var key = SC.GetModelKey(type.FullName);
 
             //
             var table = SqlProvider.GetTableName<M>();

@@ -700,7 +700,7 @@ namespace Yunyong.DataExchange.Core.Helper
                 //
                 if (ui.Option != OptionEnum.OneEqualOne)
                 {
-                    var columns = DC.SC.GetColumnInfos(DC.SC.GetKey(ui.ClassFullName, DC.Conn.Database));
+                    var columns = DC.SC.GetColumnInfos(DC.SC.GetModelKey(ui.ClassFullName));
                     var col = columns.FirstOrDefault(it => it.ColumnName.Equals(ui.ColumnOne, StringComparison.OrdinalIgnoreCase));
                     if (col != null)
                     {

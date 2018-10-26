@@ -83,7 +83,7 @@ namespace Yunyong.DataExchange.Core.Bases
 
             //
             var result = new List<(string key, string param, (object val, string valStr) val, Type valType, string colType, CompareEnum compare)>();
-            var columns = DC.SC.GetColumnInfos(DC.SC.GetKey(typeof(M).FullName, DC.Conn.Database));
+            var columns = DC.SC.GetColumnInfos(DC.SC.GetModelKey(typeof(M).FullName));
             foreach (var prop in list)
             {
                 var val = default((object val, string valStr));
@@ -187,7 +187,7 @@ namespace Yunyong.DataExchange.Core.Bases
 
             //
             var result = new List<(string key, string param, (object val, string valStr) val, Type valType, string colType, CompareEnum compare)>();
-            var columns = DC.SC.GetColumnInfos(DC.SC.GetKey(typeof(M).FullName, DC.Conn.Database));
+            var columns = DC.SC.GetColumnInfos(DC.SC.GetModelKey(typeof(M).FullName));
             foreach (var prop in list)
             {
                 var val = default((object val, string valStr));

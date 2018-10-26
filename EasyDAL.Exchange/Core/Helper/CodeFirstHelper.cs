@@ -27,7 +27,7 @@ namespace Yunyong.DataExchange.Core.Helper
             var cmTypes = new List<NameTypeModel>();
 
             //
-            var ass = StaticCache.Instance.GetAssembly(key);
+            var ass = new StaticCache(DC).GetAssembly(key);
             var types = ass.GetTypes();
             foreach (var type in types)
             {
@@ -71,7 +71,7 @@ namespace Yunyong.DataExchange.Core.Helper
         }
         private async Task CompareTable(IDbConnection conn)
         {
-            var key = StaticCache.Instance.GetKey(XConfig.TablesNamespace, conn.Database);
+            var key = new StaticCache(DC).GetAssemblyKey(XConfig.TablesNamespace);
             var dtNames = new List<TableModel>();
             var tupleCs = GetTableAndTypes(key);
             var ctNames = tupleCs.Select(it=>it.Name);

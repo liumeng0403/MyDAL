@@ -3,27 +3,41 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
+using Yunyong.DataExchange.AdoNet;
 using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Core.Bases;
-using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Helper;
 using Yunyong.DataExchange.Core.MySql.Models;
 
 namespace Yunyong.DataExchange.Cache
 {
-    internal class StaticCache : ClassInstance<StaticCache>
+    internal class StaticCache 
     {
-        internal string GetKey(string classFullName, string dbName)
+
+        private Context DC { get; set; }
+
+        internal StaticCache ( Context dc)
         {
-            return $"{classFullName}:{dbName}";
+            DC = dc;
         }
-        internal string GetKey(string propName,string attrFullName,string classFullName, string dbName)
+
+        /*****************************************************************************************************************************************************/
+
+        internal string GetAssemblyKey(string mFullNameOrNamespace)
         {
-            return $"{propName}:{attrFullName}:{GetKey(classFullName, dbName)}";
+            return $"{mFullNameOrNamespace}:{DC.Conn.Database}";
         }
-        internal string GetAttrKey(string attrFullName,string propName,string classFullName,string dbName)
+        internal string GetModelKey(string mFullName)
         {
-            return $"{attrFullName}:{propName}:{GetKey(classFullName, dbName)}";
+            return $"{mFullName}:{DC.Conn.Database}";
+        }
+        internal string GetAttrPropKey(string propName,string attrFullName,string mFullName)
+        {
+            return $"{propName}:{attrFullName}:{GetModelKey(mFullName)}";
+        }
+        internal string GetAttrKey(string attrFullName,string propName,string mFullName)
+        {
+            return $"{attrFullName}:{propName}:{GetModelKey(mFullName)}";
         }
 
         /*****************************************************************************************************************************************************/
@@ -50,8 +64,7 @@ namespace Yunyong.DataExchange.Cache
         private static ConcurrentDictionary<string, Assembly> AssemblyCache { get; } = new ConcurrentDictionary<string, Assembly>();
         internal Assembly GetAssembly(string key)
         {
-            var ass = default(Assembly);
-            if (!AssemblyCache.TryGetValue(key, out ass))
+            if (!AssemblyCache.TryGetValue(key, out var ass))
             {
                 ass = GenericHelper.Instance.LoadAssembly(key.Split(':')[1]);
                 AssemblyCache[key] = ass;
@@ -106,7 +119,7 @@ namespace Yunyong.DataExchange.Cache
         }
         internal void SetModelProperys(Type mType, Context dc)
         {
-            var key = GetKey(mType.FullName, dc.Conn.Database);
+            var key = GetModelKey(mType.FullName);
             if (!ModelPropertiesCache.ContainsKey(key))
             {
                 var props = dc.GH.GetPropertyInfos(mType);
@@ -129,6 +142,11 @@ namespace Yunyong.DataExchange.Cache
                 ModelColumnInfosCache[key] = columns;
             }
         }
+
+        /*****************************************************************************************************************************************************/
+
+        internal static ConcurrentDictionary<Type, DefaultTypeMap> TypeMaps { get; } = new ConcurrentDictionary<Type, DefaultTypeMap>();
+
 
     }
 }

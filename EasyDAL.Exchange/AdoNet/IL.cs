@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -6,7 +6,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
-using Yunyong.DataExchange.AdoNet.Interfaces;
 using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Core.Helper;
 
@@ -27,7 +26,7 @@ namespace Yunyong.DataExchange.AdoNet
 
             var names = Enumerable.Range(0, length).Select(i => reader.GetName(i)).ToArray();
 
-            ITypeMap typeMap = AdoNetHelper.GetTypeMap(mType);
+            DefaultTypeMap typeMap = AdoNetHelper.GetTypeMap(mType);
 
             int index = 0;
             ConstructorInfo specializedConstructor = null;
