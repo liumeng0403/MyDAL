@@ -1,8 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Yunyong.DataExchange.AdoNet.Interfaces;
 using Yunyong.DataExchange.Core.Extensions;
 using Yunyong.DataExchange.Core.Helper;
 
@@ -30,7 +29,7 @@ namespace Yunyong.DataExchange.AdoNet
             }
             return cons[0];
         }
-        internal IMemberMap GetMember(string colName)
+        internal ColMemMap GetMember(string colName)
         {
             var property = default(PropertyInfo);
             foreach (var prop in Properties)
@@ -53,7 +52,7 @@ namespace Yunyong.DataExchange.AdoNet
             //
             if (property != null)
             {
-                return new SimpleMemberMap(colName, property);
+                return new ColMemMap(property);
             }
 
             // get-only prop
@@ -80,7 +79,7 @@ namespace Yunyong.DataExchange.AdoNet
             //
             if (field != null)
             {
-                return new SimpleMemberMap(colName, field);
+                return new ColMemMap(field);
             }
 
             return null;
