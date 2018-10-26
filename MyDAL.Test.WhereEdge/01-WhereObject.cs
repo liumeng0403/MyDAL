@@ -10,13 +10,12 @@ using Xunit;
 using Yunyong.Core;
 using Yunyong.DataExchange;
 
-namespace MyDAL.Test.Query
+namespace MyDAL.Test.WhereEdge
 {
-    public class _08_WhereObjTest : TestBase
+    public class _01_WhereObject:TestBase
     {
-
         [Fact]
-        public async Task WhereObjQueryOptionTest()
+        public async Task test()
         {
 
             /*************************************************************************************************************************/
@@ -156,48 +155,6 @@ namespace MyDAL.Test.Query
 
             var tuple5 = (XDebug.SQL, XDebug.Parameters);
 
-
-            /*************************************************************************************************************************/
-
-            var option6 = new AgentQueryOption();
-            option6.AgentLevel = AgentLevel.DistiAgent;
-
-            var xx6 = "";
-
-            var res6 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var agent6, out var record6)
-                .From(() => agent6)
-                .InnerJoin(() => record6)
-                .On(() => agent6.Id == record6.AgentId)
-                .Where(() => agent6.AgentLevel == AgentLevel.DistiAgent)
-                .QueryPagingListAsync<Agent>(option6);
-            Assert.True(res6.TotalCount == 574);
-
-            var tuple6 = (XDebug.SQL, XDebug.Parameters);
-
-            /*************************************************************************************************************************/
-
-            var xx7 = "";
-            
-            // where method -- option orderby 
-            var res7 = await Conn
-                .Selecter<Agent>()
-                //.Where(option.GetCondition())
-                .Where(it=>it.Name== "樊士芹")
-                .QueryPagingListAsync(option, agent => new AgentVM
-                {
-                    XXXX = agent.Name,
-                    YYYY = agent.PathId
-                });
-            Assert.True(res7.Data.Count == 1);
-
-            var tuple7 = (XDebug.SQL, XDebug.Parameters);
-
-            /*************************************************************************************************************************/
-
-            var xx = "";
-
         }
-
     }
 }

@@ -13,8 +13,6 @@ namespace MyDAL.Test.Func
     public class _06_ExistTest : TestBase
     {
 
-        public IMethodParamsTest ExistXTest { get; set; }
-
         // 查询 是否存在
         [Fact]
         public async Task ExistAsyncTest()
@@ -30,23 +28,6 @@ namespace MyDAL.Test.Func
             Assert.True(res1);
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
-
-            /*****************************************************************************************/
-
-            var xx2 = "";
-
-            var vm = new ApplyStockholderAwardAccountingVM();
-            vm.Year = 2018;
-            vm.Month = Month.October;
-            //var res2 = await Conn
-            //    .Selecter<PlatformMonthlyPerformance>()
-            //    .Where(it => it.Year==vm.Year)
-            //    .And(it=>it.Month==vm.Month)
-            //    .ExistAsync();
-            ExistXTest = new _10_MethodParamsTest();
-            await ExistXTest.eee(vm);
-
-            var tuple2 = (XDebug.SQL, XDebug.Parameters);
 
             /*****************************************************************************************/
 

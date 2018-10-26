@@ -19,9 +19,9 @@ namespace Yunyong.DataExchange
 {
     /// <summary>
     /// This is ORM lite start point. 
-    /// 博客:  https://www.cnblogs.com/Meng-NET/  
+    /// 博客:  https://www.cnblogs.com/Meng-NET/p/8963476.html  
     /// GitHub:  https://github.com/liumeng0403/MyDAL  
-    /// NuGet:  https://www.nuget.org/packages/MyDAL/ 
+    /// NuGet:  https://www.nuget.org/packages/MyDAL/  
     /// </summary>
     public static class DbExtension
     {
@@ -496,16 +496,16 @@ namespace Yunyong.DataExchange
             XConfig.IsDebug = true;
             return conn;
         }
-        public static IDbConnection OpenCodeFirst(this IDbConnection conn, string modelsNamespace)
-        {
-            XConfig.IsCodeFirst = true;
-            XConfig.TablesNamespace = modelsNamespace;
-            if (XConfig.IsNeedChangeDb)
-            {
-                (new CodeFirstHelper(new DbContext(conn)).CodeFirstProcess(conn)).GetAwaiter().GetResult();
-            }
-            return conn;
-        }
+        //public static IDbConnection OpenCodeFirst(this IDbConnection conn, string modelsNamespace)
+        //{
+        //    XConfig.IsCodeFirst = true;
+        //    XConfig.TablesNamespace = modelsNamespace;
+        //    if (XConfig.IsNeedChangeDb)
+        //    {
+        //        (new CodeFirstHelper(new DbContext(conn)).CodeFirstProcess(conn)).GetAwaiter().GetResult();
+        //    }
+        //    return conn;
+        //}
 
     }
 }

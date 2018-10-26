@@ -1,22 +1,19 @@
 using MyDAL.Test.Entities.EasyDal_Exchange;
-using MyDAL.Test.Interfaces;
-using MyDAL.Test.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using Yunyong.DataExchange;
 
-namespace MyDAL.Test.Query
+namespace MyDAL.Test.WhereEdge
 {
-    public class _10_MethodParamsTest : TestBase, IMethodParamsTest
+    public class _04_WhereMethodParam:TestBase
     {
 
-        public Guid AgentId { get; set; }
-
         [Fact]
-        public async Task MethodParamTest()
+        public async Task MethodParam()
         {
             var res = await Conn
                 .Selecter<Agent>()
@@ -58,8 +55,9 @@ namespace MyDAL.Test.Query
             var xx = "";
         }
 
+
         [Fact]
-        public async Task MethodListParamTest()
+        public async Task MethodListParam()
         {
             var list = new List<Guid>();
             list.Add(Guid.Parse("00079c84-a511-418b-bd5b-0165442eb30a"));
@@ -93,48 +91,6 @@ namespace MyDAL.Test.Query
             var xxx = "";
         }
 
-        //[Fact]
-        //public async Task ExistTest()
-        //{
-
-        //    var vm = new ApplyStockholderAwardAccountingVM();
-        //    vm.Year = 2018;
-        //    vm.Month = Month.October;
-
-        //    await eee(vm);
-        //}
-        public async Task eee(ApplyStockholderAwardAccountingVM vm)
-        {
-            var xx2 = "";
-
-            if (!await Conn
-                    .Selecter<PlatformMonthlyPerformance>()
-                    .Where(it => it.Year == vm.Year)
-                    .And(it => it.Month == vm.Month)
-                    .ExistAsync())
-            {
-                Assert.True(true);
-            }
-
-            var tuple2 = (XDebug.SQL, XDebug.Parameters);
-        }
-
-        [Fact]
-        public async Task PropertyFieldTest()
-        {
-            var xx1 = "";
-
-            AgentId = Guid.Parse("00079c84-a511-418b-bd5b-0165442eb30a");
-            var res1 = await Conn
-                .Selecter<Agent>()
-                .Where(it => it.Id == AgentId)
-                .QueryFirstOrDefaultAsync<AgentVM>();
-            Assert.NotNull(res1);
-
-            var tuple1 = (XDebug.SQL, XDebug.Parameters);
-
-            var xx = "";
-        }
 
     }
 }

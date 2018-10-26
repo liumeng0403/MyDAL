@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 using Xunit;
 using Yunyong.DataExchange;
 
-namespace MyDAL.Test.Query
+namespace MyDAL.Test.WhereEdge
 {
-    public class _08_WhereQueryColumnTest:TestBase
+    public class _02_WhereOption:TestBase
     {
         [Fact]
-        public async Task ColumnTest()
+        public async Task test()
         {
+
             /*****************************************************************************************************************************/
 
             var xx1 = "";
@@ -83,7 +84,7 @@ namespace MyDAL.Test.Query
                 .QueryListAsync();
             Assert.True(res4.Count == 555);
 
-            var tuple4 = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
+            var tuple4 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*****************************************************************************************************************************/
 
@@ -103,7 +104,7 @@ namespace MyDAL.Test.Query
                 .QueryListAsync();
             Assert.True(res5.Count == 28065);
 
-            var tuple5 = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
+            var tuple5 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*****************************************************************************************************************************/
 

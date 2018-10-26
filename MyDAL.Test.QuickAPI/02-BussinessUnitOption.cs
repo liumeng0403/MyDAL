@@ -3,12 +3,13 @@ using System.Threading.Tasks;
 using Xunit;
 using Yunyong.DataExchange;
 
-namespace MyDAL.Test.Query
+namespace MyDAL.Test.QuickAPI
 {
-    public class _14_TransactionTest : TestBase
+    public class _02_BussinessUnitOption:TestBase
     {
+
         [Fact]
-        public async Task test01()
+        public async Task test()
         {
 
             /***********************************************************************************************************/

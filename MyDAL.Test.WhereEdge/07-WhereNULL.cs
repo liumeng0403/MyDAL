@@ -1,13 +1,12 @@
 ﻿using MyDAL.Test.Entities.EasyDal_Exchange;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 using Yunyong.DataExchange;
 
-namespace MyDAL.Test.Query
+namespace MyDAL.Test.WhereEdge
 {
-    public class _12_WhereTest:TestBase
+    public class _07_WhereNULL:TestBase
     {
 
         public async Task<Agent> PreData3()
@@ -65,7 +64,7 @@ namespace MyDAL.Test.Query
             var tuple2 = (XDebug.SQL, XDebug.Parameters);
 
             /************************************************************************************************************************/
-           
+
             var xx3 = "";
 
             var m = await PreData3();
@@ -77,10 +76,10 @@ namespace MyDAL.Test.Query
                     .Where(it => it.AgentLevel == WhereTest.AgentLevelNull)
                     .QueryListAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 var tuple3 = (XDebug.SQL, XDebug.Parameters);
-                Assert.Equal(ex.Message,"条件筛选表达式【it => (Convert(it.AgentLevel, Nullable`1) == Convert(value(MyDAL.Test.Query._12_WhereTest).WhereTest.AgentLevelNull, Nullable`1))】中,条件值【AgentLevelNull】不能为 Null !");
+                Assert.Equal(ex.Message, "条件筛选表达式【it => (Convert(it.AgentLevel, Nullable`1) == Convert(value(MyDAL.Test.Query._12_WhereTest).WhereTest.AgentLevelNull, Nullable`1))】中,条件值【AgentLevelNull】不能为 Null !");
             }
 
             await ClearData3(m);
