@@ -1,8 +1,4 @@
 using MyDAL.Test.Entities.EasyDal_Exchange;
-using MyDAL.Test.Enums;
-using MyDAL.Test.Interfaces;
-using MyDAL.Test.Query;
-using MyDAL.Test.ViewModels;
 using System;
 using System.Threading.Tasks;
 using Xunit;
