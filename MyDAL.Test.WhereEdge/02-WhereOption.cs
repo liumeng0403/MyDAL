@@ -8,7 +8,7 @@ using Xunit;
 
 namespace MyDAL.Test.WhereEdge
 {
-    public class _02_WhereOption:TestBase
+    public class _02_WhereOption : TestBase
     {
         [Fact]
         public async Task test()
@@ -101,7 +101,7 @@ namespace MyDAL.Test.WhereEdge
                 .Selecter<Agent>()
                 .Where(option5)
                 .QueryListAsync();
-            Assert.True(res5.Count == 28065);
+            Assert.True(res5.Count == 28064 || res5.Count == 28065);
 
             var tuple5 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 

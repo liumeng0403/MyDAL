@@ -80,7 +80,7 @@ namespace MyDAL.Test.WhereEdge
             catch (Exception ex)
             {
                 var tuple3 = (XDebug.SQL, XDebug.Parameters);
-                Assert.Equal(ex.Message, "条件筛选表达式【it => (Convert(it.AgentLevel, Nullable`1) == Convert(value(MyDAL.Test.Query._12_WhereTest).WhereTest.AgentLevelNull, Nullable`1))】中,条件值【AgentLevelNull】不能为 Null !");
+                Assert.True(ex.Message.Equals("条件筛选表达式【it => (Convert(it.AgentLevel, Nullable`1) == Convert(value(MyDAL.Test.WhereEdge._07_WhereNULL).WhereTest.AgentLevelNull, Nullable`1))】中,条件值【AgentLevelNull】不能为 Null !", StringComparison.OrdinalIgnoreCase));
             }
 
             await ClearData3(m);
