@@ -126,7 +126,7 @@ namespace MyDAL.Core
 
                 //
                 var type = info.PropertyType;
-                var attr = DC.SC.GetXColumnAttribute(info, DC.SC.GetAttrKey(XConfig.XColumnFullName, info.Name, paramType.FullName, DC.Conn.Database));
+                var attr = DC.SC.GetXColumnAttribute(info, DC.SC.GetAttrKey(XConfig.XColumnFullName, info.Name, paramType.FullName));
                 var field = string.Empty;
                 if(attr!=null)
                 {

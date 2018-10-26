@@ -25,7 +25,7 @@ namespace MyDAL.Core.Helper
         {
             var dic = DC.EH.FuncMFExpression(attrPropFunc)[0];
             var mType = typeof(M);
-            var key = DC.SC.GetKey(dic.ColumnOne, typeof(A).FullName, mType.FullName, DC.Conn.Database);
+            var key = DC.SC.GetAttrPropKey(dic.ColumnOne, typeof(A).FullName, mType.FullName);
             if (!StaticCache.ModelAttributePropValCache.ContainsKey(key))
             {
                 var attr = mType.GetCustomAttributes(typeof(A), false).FirstOrDefault();

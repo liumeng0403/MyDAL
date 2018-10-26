@@ -10,29 +10,21 @@ namespace MyDAL.AdoNet
     /// <summary>
     /// 默认类型映射策略
     /// </summary>
-    internal sealed class DefaultTypeMap : ITypeMap
+    internal sealed class DefaultTypeMap
     {
-        private readonly List<FieldInfo> _fields;
-        private readonly Type _type;
-        /// <summary>
-        /// The settable properties for this typemap
-        /// </summary>
+        private List<FieldInfo> Fields { get; }
         private List<PropertyInfo> Properties { get; }
+        private Type Type { get; }
 
         /// <summary>
         /// Creates default type map
         /// </summary>
         /// <param name="type">Entity type</param>
-        public DefaultTypeMap(Type type)
+        public DefaultTypeMap(Type mType)
         {
-            if (type == null)
-            {
-                throw new ArgumentNullException(nameof(type));
-            }
-
-            _fields = GetSettableFields(type);
-            Properties = GetSettableProps(type);
-            _type = type;
+            Fields = mType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).ToList();
+            Properties = mType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(p => GetPropertySetter(p, mType) != null).ToList();
+            Type = mType;
         }
 
         internal static MethodInfo GetPropertySetter(PropertyInfo propertyInfo, Type type)
@@ -41,28 +33,12 @@ namespace MyDAL.AdoNet
             {
                 return propertyInfo.GetSetMethod(true);
             }
-            return propertyInfo.DeclaringType.GetProperty(
-                   propertyInfo.Name,
-                   BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
-                   Type.DefaultBinder,
-                   propertyInfo.PropertyType,
-                   propertyInfo.GetIndexParameters().Select(p => p.ParameterType).ToArray(),
-                   null).GetSetMethod(true);
+            return propertyInfo
+                .DeclaringType
+                .GetProperty(propertyInfo.Name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, Type.DefaultBinder, propertyInfo.PropertyType, propertyInfo.GetIndexParameters().Select(p => p.ParameterType).ToArray(), null)
+                .GetSetMethod(true);
         }
-
-        internal static List<PropertyInfo> GetSettableProps(Type t)
-        {
-            return t
-                  .GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                  .Where(p => GetPropertySetter(p, t) != null)
-                  .ToList();
-        }
-
-        internal static List<FieldInfo> GetSettableFields(Type t)
-        {
-            return t.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).ToList();
-        }
-
+        
         /// <summary>
         /// Finds best constructor
         /// </summary>
@@ -71,7 +47,7 @@ namespace MyDAL.AdoNet
         /// <returns>Matching constructor or default one</returns>
         public ConstructorInfo FindConstructor(string[] names, Type[] types)
         {
-            var constructors = _type.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            var constructors = Type.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
             foreach (ConstructorInfo ctor in constructors.OrderBy(c => c.IsPublic ? 0 : (c.IsPrivate ? 2 : 1)).ThenBy(c => c.GetParameters().Length))
             {
                 ParameterInfo[] ctorParameters = ctor.GetParameters();
@@ -89,7 +65,7 @@ namespace MyDAL.AdoNet
                     if (types[i] == typeof(byte[]) && ctorParameters[i].ParameterType.FullName == Settings.LinqBinary)
                         continue;
                     var unboxedType = Nullable.GetUnderlyingType(ctorParameters[i].ParameterType) ?? ctorParameters[i].ParameterType;
-                    if (unboxedType != types[i] 
+                    if (unboxedType != types[i]
                         && !(unboxedType.IsEnum && Enum.GetUnderlyingType(unboxedType) == types[i])
                         && !(unboxedType == typeof(char) && types[i] == typeof(string))
                         && !(unboxedType.IsEnum && types[i] == typeof(string)))
@@ -104,19 +80,6 @@ namespace MyDAL.AdoNet
 
             return null;
         }
-
-        ///// <summary>
-        ///// Gets mapping for constructor parameter
-        ///// </summary>
-        ///// <param name="constructor">Constructor to resolve</param>
-        ///// <param name="columnName">DataReader column name</param>
-        ///// <returns>Mapping implementation</returns>
-        //public IMemberMap GetConstructorParameter(ConstructorInfo constructor, string columnName)
-        //{
-        //    var parameters = constructor.GetParameters();
-
-        //    return new SimpleMemberMap(columnName, parameters.FirstOrDefault(p => string.Equals(p.Name, columnName, StringComparison.OrdinalIgnoreCase)));
-        //}
 
         /// <summary>
         /// Gets member mapping for column
@@ -144,20 +107,20 @@ namespace MyDAL.AdoNet
 
             // preference order is:
             // exact match over underscre match, exact case over wrong case, backing fields over regular fields, match-inc-underscores over match-exc-underscores
-            var field = _fields.Find(p => string.Equals(p.Name, columnName, StringComparison.Ordinal))
-                ?? _fields.Find(p => string.Equals(p.Name, backingFieldName, StringComparison.Ordinal))
-                ?? _fields.Find(p => string.Equals(p.Name, columnName, StringComparison.OrdinalIgnoreCase))
-                ?? _fields.Find(p => string.Equals(p.Name, backingFieldName, StringComparison.OrdinalIgnoreCase));
+            var field = Fields.Find(p => string.Equals(p.Name, columnName, StringComparison.Ordinal))
+                ?? Fields.Find(p => string.Equals(p.Name, backingFieldName, StringComparison.Ordinal))
+                ?? Fields.Find(p => string.Equals(p.Name, columnName, StringComparison.OrdinalIgnoreCase))
+                ?? Fields.Find(p => string.Equals(p.Name, backingFieldName, StringComparison.OrdinalIgnoreCase));
 
             if (field == null && MatchNamesWithUnderscores)
             {
                 var effectiveColumnName = columnName.Replace("_", "");
                 backingFieldName = "<" + effectiveColumnName + ">k__BackingField";
 
-                field = _fields.Find(p => string.Equals(p.Name, effectiveColumnName, StringComparison.Ordinal))
-                    ?? _fields.Find(p => string.Equals(p.Name, backingFieldName, StringComparison.Ordinal))
-                    ?? _fields.Find(p => string.Equals(p.Name, effectiveColumnName, StringComparison.OrdinalIgnoreCase))
-                    ?? _fields.Find(p => string.Equals(p.Name, backingFieldName, StringComparison.OrdinalIgnoreCase));
+                field = Fields.Find(p => string.Equals(p.Name, effectiveColumnName, StringComparison.Ordinal))
+                    ?? Fields.Find(p => string.Equals(p.Name, backingFieldName, StringComparison.Ordinal))
+                    ?? Fields.Find(p => string.Equals(p.Name, effectiveColumnName, StringComparison.OrdinalIgnoreCase))
+                    ?? Fields.Find(p => string.Equals(p.Name, backingFieldName, StringComparison.OrdinalIgnoreCase));
             }
 
             if (field != null)

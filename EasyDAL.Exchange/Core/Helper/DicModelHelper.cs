@@ -82,7 +82,7 @@ namespace MyDAL.Core.Helper
                     }
                     else
                     {
-                        db.Key = DC.SC.GetKey(ui.ClassFullName, DC.Conn.Database);
+                        db.Key = DC.SC.GetModelKey(ui.ClassFullName);
                         db.TableOne = DC.SC.GetModelTableName(db.Key); 
                     }
                     db.TableAliasOne = ui.TableAliasOne;

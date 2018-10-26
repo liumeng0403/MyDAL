@@ -1,5 +1,4 @@
-﻿using MyDAL.AdoNet.Interfaces;
-using MyDAL.Core;
+﻿using MyDAL.Core;
 using MyDAL.Core.Helper;
 using System;
 using System.Collections.Generic;
@@ -27,7 +26,7 @@ namespace MyDAL.AdoNet
 
             var names = Enumerable.Range(0, length).Select(i => reader.GetName(i)).ToArray();
 
-            ITypeMap typeMap = AdoNetHelper.GetTypeMap(mType);
+            DefaultTypeMap typeMap = AdoNetHelper.GetTypeMap(mType);
 
             int index = 0;
             ConstructorInfo specializedConstructor = null;
