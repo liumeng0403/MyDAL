@@ -113,14 +113,26 @@ namespace MyDAL.Core.Helper
         /// </summary>
         /// <param name="type">The type to get a map for.</param>
         /// <returns>Type map implementation, DefaultTypeMap instance if no override present</returns>
-        public static DefaultTypeMap GetTypeMap(Type mType)
+        public static RowMap GetTypeMap(Type mType)
         {
             if (!StaticCache.TypeMaps.TryGetValue(mType, out var map))
             {
-                map = new DefaultTypeMap(mType);
+                map = new RowMap(mType);
                 StaticCache.TypeMaps[mType] = map;
             }
             return map;
+        }
+
+        internal static MethodInfo GetPropertySetter(PropertyInfo propertyInfo, Type mType)
+        {
+            if (propertyInfo.DeclaringType == mType)
+            {
+                return propertyInfo.GetSetMethod(true);
+            }
+            return propertyInfo
+                .DeclaringType
+                .GetProperty(propertyInfo.Name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, Type.DefaultBinder, propertyInfo.PropertyType, propertyInfo.GetIndexParameters().Select(p => p.ParameterType).ToArray(), null)
+                .GetSetMethod(true);
         }
 
         /// <summary>

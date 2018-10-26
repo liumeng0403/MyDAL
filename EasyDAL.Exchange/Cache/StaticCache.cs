@@ -145,7 +145,7 @@ namespace MyDAL.Cache
 
         /*****************************************************************************************************************************************************/
 
-        internal static ConcurrentDictionary<Type, DefaultTypeMap> TypeMaps { get; } = new ConcurrentDictionary<Type, DefaultTypeMap>();
+        internal static ConcurrentDictionary<Type, RowMap> TypeMaps { get; } = new ConcurrentDictionary<Type, RowMap>();
 
 
     }

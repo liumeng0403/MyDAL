@@ -18,7 +18,7 @@ namespace MyDAL.Core
 
         /************************************************************************************************************/
 
-        public static int CommandTimeout { get; set; } = 10;  // 10s 
+        internal static int CommandTimeout { get; set; } = 10;  // 10s 
 
         /// <summary>
         /// Default is 4000, any value larger than this field will not have the default value applied.
@@ -118,5 +118,8 @@ namespace MyDAL.Core
 
             [typeof(object)] = DbType.Object
         };
+
+
+
     }
 }
