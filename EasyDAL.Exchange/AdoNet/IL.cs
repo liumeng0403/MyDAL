@@ -26,7 +26,7 @@ namespace Yunyong.DataExchange.AdoNet
 
             var names = Enumerable.Range(0, length).Select(i => reader.GetName(i)).ToArray();
 
-            DefaultTypeMap typeMap = AdoNetHelper.GetTypeMap(mType);
+            var typeMap = AdoNetHelper.GetTypeMap(mType);
 
             int index = 0;
             ConstructorInfo specializedConstructor = null;
@@ -42,27 +42,15 @@ namespace Yunyong.DataExchange.AdoNet
                 types[i] = reader.GetFieldType(i);
             }
 
-            var ctor = typeMap.FindConstructor(names, types);
-            if (ctor == null)
-            {
-                string proposedTypes = "(" + string.Join(", ", types.Select((t, i) => t.FullName + " " + names[i]).ToArray()) + ")";
-                throw new InvalidOperationException($"A parameterless default constructor or one matching signature {proposedTypes} is required for {mType.FullName} materialization");
-            }
+            var ctor = typeMap.FindConstructor();
 
-            if (ctor.GetParameters().Length == 0)
+            il.Emit(OpCodes.Newobj, ctor);
+            il.Emit(OpCodes.Stloc_1);
+            supportInitialize = typeof(ISupportInitialize).IsAssignableFrom(mType);
+            if (supportInitialize)
             {
-                il.Emit(OpCodes.Newobj, ctor);
-                il.Emit(OpCodes.Stloc_1);
-                supportInitialize = typeof(ISupportInitialize).IsAssignableFrom(mType);
-                if (supportInitialize)
-                {
-                    il.Emit(OpCodes.Ldloc_1);
-                    il.EmitCall(OpCodes.Callvirt, typeof(ISupportInitialize).GetMethod(nameof(ISupportInitialize.BeginInit)), null);
-                }
-            }
-            else
-            {
-                specializedConstructor = ctor;
+                il.Emit(OpCodes.Ldloc_1);
+                il.EmitCall(OpCodes.Callvirt, typeof(ISupportInitialize).GetMethod(nameof(ISupportInitialize.BeginInit)), null);
             }
 
             il.BeginExceptionBlock();
@@ -171,7 +159,7 @@ namespace Yunyong.DataExchange.AdoNet
                         // Store the value in the property/field
                         if (item.Property != null)
                         {
-                            il.Emit(OpCodes.Callvirt, DefaultTypeMap.GetPropertySetter(item.Property, mType));
+                            il.Emit(OpCodes.Callvirt, AdoNetHelper.GetPropertySetter(item.Property, mType));
                         }
                         else
                         {
@@ -213,7 +201,7 @@ namespace Yunyong.DataExchange.AdoNet
                         // Store the value in the property/field
                         if (item.Property != null)
                         {
-                            il.Emit(OpCodes.Callvirt, DefaultTypeMap.GetPropertySetter(item.Property, mType));
+                            il.Emit(OpCodes.Callvirt, AdoNetHelper.GetPropertySetter(item.Property, mType));
                             // stack is now [target]
                         }
                         else
