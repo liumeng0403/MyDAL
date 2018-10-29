@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace MyDAL.AdoNet
+namespace Yunyong.DataExchange.AdoNet
 {
     internal sealed class MapType
     {
