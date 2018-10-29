@@ -22,6 +22,7 @@ namespace MyDAL.Test
                     AgentLevelXX = AgentLevel.DistiAgent,
                     AgentLevelNull = null,
                     ContainStr = "~00-d-3-1-",
+                    ContainStr2= "~00-d-3-",
                     In_List_枚举 = new List<AgentLevel?>
                     {
                         AgentLevel.CityAgent,
@@ -64,11 +65,11 @@ namespace MyDAL.Test
         protected IDbConnection Conn
         {
             /*
-             * CREATE DATABASE `EasyDal_Exchange`;
+             * CREATE DATABASE `MyDAL_TestDB`;
              */
             get
             {
-                return GetOpenConnection("EasyDal_Exchange");
+                return GetOpenConnection("MyDAL_TestDB");
             }
         }
         
