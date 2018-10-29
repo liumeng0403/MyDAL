@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Reflection;
 
 namespace MyDAL.Core
@@ -26,6 +27,10 @@ namespace MyDAL.Core
         internal static int StringDefaultLength { get; private set; } = 4000;
 
         internal static BindingFlags ClassSelfMember { get; private set; } = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public;
+
+        internal static string LinqBinary { get; } = "System.Data.Linq.Binary";
+
+        internal static MethodInfo EnumParse { get; } = typeof(Enum).GetMethod(nameof(Enum.Parse), new Type[] { typeof(Type), typeof(string), typeof(bool) });
 
         /************************************************************************************************************/
 
@@ -119,7 +124,15 @@ namespace MyDAL.Core
             [typeof(object)] = DbType.Object
         };
 
+        /************************************************************************************************************/
 
+        internal static MethodInfo GetItem { get; } = typeof(IDataRecord)
+            .GetProperties(BindingFlags.Instance | BindingFlags.Public)
+            .Where(p => p.GetIndexParameters().Length > 0 && p.GetIndexParameters()[0].ParameterType == typeof(int))
+            .Select(p => p.GetGetMethod())
+            .First();
+
+        /************************************************************************************************************/
 
     }
 }

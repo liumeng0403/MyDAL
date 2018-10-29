@@ -32,6 +32,35 @@ namespace MyDAL.Core.Helper
             }
         }
 
+        private static CommandBehavior DefaultAllowedCommandBehaviors { get; } = ~CommandBehavior.SingleResult;
+        internal static CommandBehavior AllowedCommandBehaviors { get; private set; } = DefaultAllowedCommandBehaviors;
+
+        private static void SetAllowedCommandBehaviors(CommandBehavior behavior, bool enabled)
+        {
+            if (enabled)
+            {
+                AllowedCommandBehaviors |= behavior;
+            }
+            else
+            {
+                AllowedCommandBehaviors &= ~behavior;
+            }
+        }
+        internal static bool DisableCommandBehaviorOptimizations(CommandBehavior behavior, Exception ex)
+        {
+            if (AllowedCommandBehaviors == DefaultAllowedCommandBehaviors
+                && (behavior & (CommandBehavior.SingleResult | CommandBehavior.SingleRow)) != 0)
+            {
+                if (ex.Message.Contains(nameof(CommandBehavior.SingleResult))
+                    || ex.Message.Contains(nameof(CommandBehavior.SingleRow)))
+                { // some providers just just allow these, so: try again without them and stop issuing them
+                    SetAllowedCommandBehaviors(CommandBehavior.SingleResult | CommandBehavior.SingleRow, false);
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private static int[] ErrTwoRows { get; } = new int[2];
         private static int[] ErrZeroRows { get; } = new int[0];
         internal static void ThrowMultipleRows(RowEnum row)
@@ -68,7 +97,7 @@ namespace MyDAL.Core.Helper
 
         private static CommandBehavior GetBehavior(bool close, CommandBehavior @default)
         {
-            return (close ? (@default | CommandBehavior.CloseConnection) : @default) & Settings.AllowedCommandBehaviors;
+            return (close ? (@default | CommandBehavior.CloseConnection) : @default) & AllowedCommandBehaviors;
         }
 
         internal static CacheInfo GetCacheInfo(Identity identity)
@@ -80,27 +109,14 @@ namespace MyDAL.Core.Helper
             return info;
         }
 
-        /// <summary>
-        /// Internal use only.
-        /// </summary>
-        /// <param name="value">The object to convert to a character.</param>
-        [Browsable(false)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static char ReadChar(object value)
+        internal static char ReadChar(object value)
         {
             if (value == null || value is DBNull) throw new ArgumentNullException(nameof(value));
             var s = value as string;
             if (s == null || s.Length != 1) throw new ArgumentException("A single-character was expected", nameof(value));
             return s[0];
         }
-
-        /// <summary>
-        /// Internal use only.
-        /// </summary>
-        /// <param name="value">The object to convert to a character.</param>
-        [Browsable(false)]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static char? ReadNullableChar(object value)
+        internal static char? ReadNullableChar(object value)
         {
             if (value == null || value is DBNull) return null;
             var s = value as string;
@@ -147,25 +163,6 @@ namespace MyDAL.Core.Helper
         public static Func<IDataReader, object> GetTypeDeserializer(Type type, IDataReader reader)
         {
             return TypeDeserializerCache.GetReader(type, reader);
-        }
-
-        internal static LocalBuilder GetTempLocal(ILGenerator il, Type type, bool initAndLoad)
-        {
-            if (type == null) throw new ArgumentNullException(nameof(type));
-            var locals = new Dictionary<Type, LocalBuilder>();
-            if (!locals.TryGetValue(type, out LocalBuilder found))
-            {
-                found = il.DeclareLocal(type);
-                locals.Add(type, found);
-            }
-            if (initAndLoad)
-            {
-                il.Emit(OpCodes.Ldloca, (short)found.LocalIndex);
-                il.Emit(OpCodes.Initobj, type);
-                il.Emit(OpCodes.Ldloca, (short)found.LocalIndex);
-                il.Emit(OpCodes.Ldobj, type);
-            }
-            return found;
         }
 
         internal static void FlexibleConvertBoxedFromHeadOfStack(ILGenerator il, Type from, Type to, Type via)
@@ -294,20 +291,6 @@ namespace MyDAL.Core.Helper
             }
         }
 
-        internal static void LoadLocalAddress(ILGenerator il, int index)
-        {
-            if (index < 0 || index >= short.MaxValue) throw new ArgumentNullException(nameof(index));
-
-            if (index <= 255)
-            {
-                il.Emit(OpCodes.Ldloca_S, (byte)index);
-            }
-            else
-            {
-                il.Emit(OpCodes.Ldloca, (short)index);
-            }
-        }
-
         /// <summary>
         /// Throws a data exception, only used internally
         /// </summary>
@@ -349,33 +332,6 @@ namespace MyDAL.Core.Helper
             throw toThrow;
         }
 
-        internal static void EmitInt32(ILGenerator il, int value)
-        {
-            switch (value)
-            {
-                case -1: il.Emit(OpCodes.Ldc_I4_M1); break;
-                case 0: il.Emit(OpCodes.Ldc_I4_0); break;
-                case 1: il.Emit(OpCodes.Ldc_I4_1); break;
-                case 2: il.Emit(OpCodes.Ldc_I4_2); break;
-                case 3: il.Emit(OpCodes.Ldc_I4_3); break;
-                case 4: il.Emit(OpCodes.Ldc_I4_4); break;
-                case 5: il.Emit(OpCodes.Ldc_I4_5); break;
-                case 6: il.Emit(OpCodes.Ldc_I4_6); break;
-                case 7: il.Emit(OpCodes.Ldc_I4_7); break;
-                case 8: il.Emit(OpCodes.Ldc_I4_8); break;
-                default:
-                    if (value >= -128 && value <= 127)
-                    {
-                        il.Emit(OpCodes.Ldc_I4_S, (sbyte)value);
-                    }
-                    else
-                    {
-                        il.Emit(OpCodes.Ldc_I4, value);
-                    }
-                    break;
-            }
-        }
-
         internal static Func<IDataReader, object> GetDeserializer(Type type, IDataReader reader)
         {
             return GetTypeDeserializer(type, reader);
@@ -404,7 +360,7 @@ namespace MyDAL.Core.Helper
         internal static Task<DbDataReader> ExecuteReaderWithFlagsFallbackAsync(DbCommand cmd, bool wasClosed, CommandBehavior behavior, CancellationToken cancellationToken)
         {
             var task = cmd.ExecuteReaderAsync(GetBehavior(wasClosed, behavior), cancellationToken);
-            if (task.Status == TaskStatus.Faulted && Settings.DisableCommandBehaviorOptimizations(behavior, task.Exception.InnerException))
+            if (task.Status == TaskStatus.Faulted && DisableCommandBehaviorOptimizations(behavior, task.Exception.InnerException))
             {
                 // we can retry; this time it will have different flags
                 return cmd.ExecuteReaderAsync(GetBehavior(wasClosed, behavior), cancellationToken);
@@ -412,27 +368,7 @@ namespace MyDAL.Core.Helper
             return task;
         }
 
-        internal static void StoreLocal(ILGenerator il, int index)
-        {
-            if (index < 0 || index >= short.MaxValue) throw new ArgumentNullException(nameof(index));
-            switch (index)
-            {
-                case 0: il.Emit(OpCodes.Stloc_0); break;
-                case 1: il.Emit(OpCodes.Stloc_1); break;
-                case 2: il.Emit(OpCodes.Stloc_2); break;
-                case 3: il.Emit(OpCodes.Stloc_3); break;
-                default:
-                    if (index <= 255)
-                    {
-                        il.Emit(OpCodes.Stloc_S, (byte)index);
-                    }
-                    else
-                    {
-                        il.Emit(OpCodes.Stloc, (short)index);
-                    }
-                    break;
-            }
-        }
+
 
 
 

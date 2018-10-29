@@ -38,7 +38,52 @@ namespace MyDAL.Core.Helper
             var type = default(DbType);
 
             //
-            if (realType == XConfig.Bool)
+            if (realType == XConfig.Int)
+            {
+                if (colType.IsNullStr())
+                {
+                    type = DbType.Int32;
+                }
+                else if (colType.Equals("int", StringComparison.OrdinalIgnoreCase))
+                {
+                    type = DbType.Int32;
+                }
+                else
+                {
+                    type = DbType.Int32;
+                }
+            }
+            else if (realType == XConfig.Long)
+            {
+                if (colType.IsNullStr())
+                {
+                    type = DbType.Int64;
+                }
+                else if (colType.Equals("bigint", StringComparison.OrdinalIgnoreCase))
+                {
+                    type = DbType.Int64;
+                }
+                else
+                {
+                    type = DbType.Int64;
+                }
+            }
+            else if (realType == XConfig.Decimal)
+            {
+                if (colType.IsNullStr())
+                {
+                    type = DbType.Decimal;
+                }
+                else if (colType.Equals("decimal", StringComparison.OrdinalIgnoreCase))
+                {
+                    type = DbType.Decimal;
+                }
+                else
+                {
+                    type = DbType.Decimal;
+                }
+            }
+            else if (realType == XConfig.Bool)
             {
                 if (colType.IsNullStr())
                 {
@@ -51,6 +96,66 @@ namespace MyDAL.Core.Helper
                 else
                 {
                     type = DbType.Boolean;
+                }
+            }
+            else if (realType == XConfig.String)
+            {
+                if (colType.IsNullStr())
+                {
+                    type = DbType.String;
+                }
+                else if (colType.Equals("longtext", StringComparison.OrdinalIgnoreCase))
+                {
+                    type = DbType.String;
+                }
+                else
+                {
+                    type = DbType.AnsiString;
+                }
+            }
+            else if (realType == XConfig.DateTime)
+            {
+                if (colType.IsNullStr())
+                {
+                    type = DbType.AnsiString;
+                }
+                else if (colType.Equals("datetime", StringComparison.OrdinalIgnoreCase))
+                {
+                    type = DbType.AnsiString;
+                }
+                else
+                {
+                    type = DbType.DateTime2;
+                }
+            }
+            else if (realType == XConfig.Guid)
+            {
+                if (colType.IsNullStr())
+                {
+                    type = DbType.AnsiStringFixedLength;
+                }
+                else if (colType.Equals("char", StringComparison.OrdinalIgnoreCase))
+                {
+                    type = DbType.AnsiStringFixedLength;
+                }
+                else
+                {
+                    type = DbType.Guid;
+                }
+            }
+            else if (realType.IsEnum)
+            {
+                if (colType.IsNullStr())
+                {
+                    type = DbType.Int32;
+                }
+                else if (colType.Equals("int", StringComparison.OrdinalIgnoreCase))
+                {
+                    type = DbType.Int32;
+                }
+                else
+                {
+                    type = DbType.Int32;
                 }
             }
             else if (realType == XConfig.Byte)
@@ -83,21 +188,6 @@ namespace MyDAL.Core.Helper
                     type = DbType.AnsiString;
                 }
             }
-            else if (realType == XConfig.Decimal)
-            {
-                if (colType.IsNullStr())
-                {
-                    type = DbType.Decimal;
-                }
-                else if (colType.Equals("decimal",StringComparison.OrdinalIgnoreCase))
-                {
-                    type = DbType.Decimal;
-                }
-                else
-                {
-                    type = DbType.Decimal;
-                }
-            }
             else if (realType == XConfig.Double)
             {
                 if (colType.IsNullStr())
@@ -126,36 +216,6 @@ namespace MyDAL.Core.Helper
                 else
                 {
                     type = DbType.Single ;
-                }
-            }
-            else if (realType == XConfig.Int)
-            {
-                if (colType.IsNullStr())
-                {
-                    type = DbType.Int32;
-                }
-                else if (colType.Equals("int",StringComparison.OrdinalIgnoreCase))
-                {
-                    type = DbType.Int32;
-                }
-                else
-                {
-                    type = DbType.Int32;
-                }
-            }
-            else if (realType == XConfig.Long)
-            {
-                if (colType.IsNullStr())
-                {
-                    type = DbType.Int64;
-                }
-                else if (colType.Equals("bigint",StringComparison.OrdinalIgnoreCase))
-                {
-                    type = DbType.Int64;
-                }
-                else
-                {
-                    type = DbType.Int64;
                 }
             }
             else if (realType == XConfig.Sbyte)
@@ -233,36 +293,6 @@ namespace MyDAL.Core.Helper
                     type = DbType.UInt16;
                 }
             }
-            else if (realType == XConfig.String)
-            {
-                if (colType.IsNullStr())
-                {
-                    type = DbType.String;
-                }
-                else if(colType.Equals("longtext",StringComparison.OrdinalIgnoreCase))
-                {
-                    type = DbType.String;
-                }
-                else
-                {
-                    type = DbType.AnsiString;
-                }
-            }
-            else if (realType == XConfig.DateTime)
-            {
-                if (colType.IsNullStr())
-                {
-                    type = DbType.AnsiString;
-                }
-                else if (colType.Equals("datetime",StringComparison.OrdinalIgnoreCase))
-                {
-                    type = DbType.AnsiString;
-                }
-                else
-                {
-                    type = DbType.DateTime2;
-                }
-            }
             else if (realType == XConfig.TimeSpan)
             {
                 if (colType.IsNullStr())
@@ -276,36 +306,6 @@ namespace MyDAL.Core.Helper
                 else
                 {
                     type = DbType.Time;
-                }
-            }
-            else if (realType == XConfig.Guid)
-            {
-                if (colType.IsNullStr())
-                {
-                    type = DbType.AnsiStringFixedLength;
-                }
-                else if (colType.Equals("char",StringComparison.OrdinalIgnoreCase))
-                {
-                    type = DbType.AnsiStringFixedLength;
-                }
-                else
-                {
-                    type = DbType.Guid;
-                }
-            }
-            else if (realType.IsEnum)
-            {
-                if (colType.IsNullStr())
-                {
-                    type = DbType.Int32;
-                }
-                else if (colType.Equals("int",StringComparison.OrdinalIgnoreCase))
-                {
-                    type = DbType.Int32;
-                }
-                else
-                {
-                    type = DbType.Int32;
                 }
             }
             else
@@ -709,31 +709,7 @@ namespace MyDAL.Core.Helper
 
                 //
                 var para = default(ParamInfo);
-                if (realType == XConfig.Bool)
-                {
-                    para = DC.PH.BoolParam(db.ColumnType, ui, realType);
-                }
-                else if (realType == XConfig.Byte)
-                {
-                    para = DC.PH.ByteParam(db.ColumnType, ui, realType);
-                }
-                else if (realType == XConfig.Char)
-                {
-                    para = DC.PH.CharParam(db.ColumnType, ui, realType);
-                }
-                else if (realType == XConfig.Decimal)
-                {
-                    para = DC.PH.DecimalParam(db.ColumnType, ui, realType);
-                }
-                else if (realType == XConfig.Double)
-                {
-                    para = DC.PH.DoubleParam(db.ColumnType, ui, realType);
-                }
-                else if (realType == XConfig.Float)
-                {
-                    para = DC.PH.FloatParam(db.ColumnType, ui, realType);
-                }
-                else if (realType == XConfig.Int)
+                if (realType == XConfig.Int)
                 {
                     para = DC.PH.IntParam(db.ColumnType, ui, realType);
                 }
@@ -741,25 +717,13 @@ namespace MyDAL.Core.Helper
                 {
                     para = DC.PH.LongParam(db.ColumnType, ui, realType);
                 }
-                else if (realType == XConfig.Sbyte)
+                else if (realType == XConfig.Decimal)
                 {
-                    para = DC.PH.SbyteParam(db.ColumnType, ui, realType);
+                    para = DC.PH.DecimalParam(db.ColumnType, ui, realType);
                 }
-                else if (realType == XConfig.Short)
+                else if (realType == XConfig.Bool)
                 {
-                    para = DC.PH.ShortParam(db.ColumnType, ui, realType);
-                }
-                else if (realType == XConfig.Uint)
-                {
-                    para = DC.PH.UintParam(db.ColumnType, ui, realType);
-                }
-                else if (realType == XConfig.Ulong)
-                {
-                    para = DC.PH.UlongParam(db.ColumnType, ui, realType);
-                }
-                else if (realType == XConfig.Ushort)
-                {
-                    para = DC.PH.UshortParam(db.ColumnType, ui, realType);
+                    para = DC.PH.BoolParam(db.ColumnType, ui, realType);
                 }
                 else if (realType == XConfig.String)
                 {
@@ -768,10 +732,6 @@ namespace MyDAL.Core.Helper
                 else if (realType == XConfig.DateTime)
                 {
                     para = DC.PH.DateTimeParam(db.ColumnType, ui, realType);
-                }
-                else if (realType == XConfig.TimeSpan)
-                {
-                    para = DC.PH.TimeSpanParam(db.ColumnType, ui, realType);
                 }
                 else if (realType == XConfig.Guid)
                 {
@@ -794,6 +754,46 @@ namespace MyDAL.Core.Helper
                         GetDbVal(ui, db, type);
                         return;
                     }
+                }
+                else if (realType == XConfig.Byte)
+                {
+                    para = DC.PH.ByteParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == XConfig.Char)
+                {
+                    para = DC.PH.CharParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == XConfig.Double)
+                {
+                    para = DC.PH.DoubleParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == XConfig.Float)
+                {
+                    para = DC.PH.FloatParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == XConfig.Sbyte)
+                {
+                    para = DC.PH.SbyteParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == XConfig.Short)
+                {
+                    para = DC.PH.ShortParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == XConfig.Uint)
+                {
+                    para = DC.PH.UintParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == XConfig.Ulong)
+                {
+                    para = DC.PH.UlongParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == XConfig.Ushort)
+                {
+                    para = DC.PH.UshortParam(db.ColumnType, ui, realType);
+                }
+                else if (realType == XConfig.TimeSpan)
+                {
+                    para = DC.PH.TimeSpanParam(db.ColumnType, ui, realType);
                 }
                 else
                 {

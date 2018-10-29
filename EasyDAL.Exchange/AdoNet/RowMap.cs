@@ -19,7 +19,7 @@ namespace MyDAL.AdoNet
             Properties = mType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(p => AdoNetHelper.GetPropertySetter(p, mType) != null).ToList();
             Type = mType;
         }
-        internal ConstructorInfo FindConstructor()
+        internal ConstructorInfo DefaultConstructor()
         {
             var cons = Type.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
             if (cons.Length != 1
@@ -29,7 +29,7 @@ namespace MyDAL.AdoNet
             }
             return cons[0];
         }
-        internal ColMemMap GetMember(string colName)
+        internal MapType GetMember(string colName)
         {
             var property = default(PropertyInfo);
             foreach (var prop in Properties)
@@ -52,7 +52,7 @@ namespace MyDAL.AdoNet
             //
             if (property != null)
             {
-                return new ColMemMap(property);
+                return new MapType(property);
             }
 
             // get-only prop
@@ -79,7 +79,7 @@ namespace MyDAL.AdoNet
             //
             if (field != null)
             {
-                return new ColMemMap(field);
+                return new MapType(field);
             }
 
             return null;
