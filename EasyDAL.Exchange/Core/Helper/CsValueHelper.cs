@@ -69,11 +69,64 @@ namespace Yunyong.DataExchange.Core.Helper
             {
                 valStr = val.ToDateTimeStr();
             }
-            else if(valType.IsNullable())
+            else if (valType.IsNullable())
             {
                 return DateTimeProcess(val, Nullable.GetUnderlyingType(valType));
             }
             return valStr;
+        }
+
+        /*******************************************************************************************************/
+
+        private (object val, string valStr) ValStringProcess(MethodCallExpression mcExpr, string funcStr, Type valType)
+        {
+            var val = default((object val, string valStr));
+
+            //
+            var exStr = mcExpr.ToString();
+            if (exStr.Contains("Format(")
+                && exStr.Contains("{0}"))
+            {
+                var format = string.Empty;
+                var args = new object[mcExpr.Arguments.Count - 1];
+                for (var i = 0; i < mcExpr.Arguments.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        format = mcExpr.Arguments[i].ToString().Replace("\"", "");
+                    }
+                    else
+                    {
+                        if (mcExpr.Arguments[i].NodeType == ExpressionType.MemberAccess)
+                        {
+                            args[i - 1] = MemberValue(mcExpr.Arguments[i] as MemberExpression, funcStr, valType).val;
+                        }
+                        else if (mcExpr.Arguments[i].NodeType == ExpressionType.Convert)
+                        {
+                            args[i - 1] = ConvertValue(mcExpr.Arguments[i] as UnaryExpression, funcStr, valType).val;
+                        }
+                        else
+                        {
+                            args[i - 1] = mcExpr.Arguments[i];
+                        }
+                    }
+                }
+
+                //
+                if (valType == XConfig.DateTime)
+                {
+                    var objx = string.Format(format, args);
+                    var valStr = DateTimeProcess(objx, valType);
+                    val = (objx, valStr);
+                }
+                else
+                {
+                    val = (string.Format(format, args), string.Empty);
+                }
+            }
+
+            //
+            return val;
         }
 
         /*******************************************************************************************************/
@@ -180,43 +233,61 @@ namespace Yunyong.DataExchange.Core.Helper
 
             //
             var type = mcExpr.Type;
-            var pExpr = mcExpr.Arguments[0];
-            if (pExpr.NodeType == ExpressionType.Constant
-                && type == typeof(DateTime))
+            var argNT = mcExpr.Arguments[0];
+            if (argNT.NodeType == ExpressionType.Call)
             {
-                if (mcExpr.Object == null)
+                if (type == XConfig.DateTime)
                 {
-                    var con = pExpr as ConstantExpression;
+                    val = MethodCallValue(mcExpr.Arguments[0] as MethodCallExpression, funcStr, valType);
+                }
+                else if(type == XConfig.Bool)
+                {
+                    val = MethodCallValue(mcExpr.Arguments[0] as MethodCallExpression, funcStr, valType);
+                }
+            }
+            else if (argNT.NodeType == ExpressionType.Constant)
+            {
+                if (type == XConfig.DateTime)
+                {
+                    if (mcExpr.Object == null)
+                    {
+                        var con = argNT as ConstantExpression;
+                        val = ConstantValue(con, valType);
+                    }
+                    else if (mcExpr.Object.NodeType == ExpressionType.MemberAccess)
+                    {
+                        var obj = Convert.ToDateTime(MemberValue(mcExpr.Object as MemberExpression, funcStr, valType).val);
+                        var method = mcExpr.Method.Name;
+                        var args = new List<object>();
+                        foreach (var arg in mcExpr.Arguments)
+                        {
+                            if (arg.NodeType == ExpressionType.Constant)
+                            {
+                                var carg = arg as ConstantExpression;
+                                args.Add(carg.Value);
+                            }
+                        }
+                        var objx = type.InvokeMember(method, BindingFlags.Default | BindingFlags.InvokeMethod, null, obj, args.ToArray());
+                        var valStr = DateTimeProcess(objx, valType);
+                        val = (objx, valStr);
+                    }
+                }
+                else if (type == XConfig.String)
+                {
+                    val = ValStringProcess(mcExpr, funcStr, valType);
+                }
+                else
+                {
+                    var con = argNT as ConstantExpression;
                     val = ConstantValue(con, valType);
                 }
-                else if (mcExpr.Object.NodeType == ExpressionType.MemberAccess)
-                {
-                    var obj = Convert.ToDateTime(MemberValue(mcExpr.Object as MemberExpression, funcStr, valType).val);
-                    var method = mcExpr.Method.Name;
-                    var args = new List<object>();
-                    foreach (var arg in mcExpr.Arguments)
-                    {
-                        if (arg.NodeType == ExpressionType.Constant)
-                        {
-                            var carg = arg as ConstantExpression;
-                            args.Add(carg.Value);
-                        }
-                    }
-                    var objx = type.InvokeMember(method, BindingFlags.Default | BindingFlags.InvokeMethod, null, obj, args.ToArray());
-                    var valStr = DateTimeProcess(objx, valType);
-                    val = (objx, valStr);
-                }
-            }
-            else if (pExpr.NodeType == ExpressionType.Constant)
+            }            
+            else if (argNT.NodeType == ExpressionType.MemberAccess)
             {
-                var con = pExpr as ConstantExpression;
-                val = ConstantValue(con, valType);
-            }
-            else if (pExpr.NodeType == ExpressionType.MemberAccess)
-            {
-                val = MemberValue(pExpr as MemberExpression, funcStr, valType);
+                val = MemberValue(argNT as MemberExpression, funcStr, valType);
             }
 
+            //
             if (val.val != null)
             {
                 return val;
@@ -259,6 +330,10 @@ namespace Yunyong.DataExchange.Core.Helper
             {
                 result = ConstantValue(expr.Operand as ConstantExpression, valType);
             }
+            else if (expr.Operand.NodeType == ExpressionType.Call)
+            {
+                result = MethodCallValue(expr.Operand as MethodCallExpression, funcStr, valType);
+            }
             return result;
         }
 
@@ -278,7 +353,7 @@ namespace Yunyong.DataExchange.Core.Helper
             return (val, valStr);
         }
 
-        internal (string val,Type valType) InValue(Type type, object vals)
+        internal (string val, Type valType) InValue(Type type, object vals)
         {
             var valType = default(Type);
             var typeT = default(Type);
@@ -315,7 +390,7 @@ namespace Yunyong.DataExchange.Core.Helper
             var val = string.Join(",", intVals.Select(it => it.ToString()));
 
             //
-            return (val,valType);
+            return (val, valType);
         }
 
     }

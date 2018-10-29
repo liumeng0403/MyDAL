@@ -18,6 +18,7 @@ namespace MyDAL.Test.Entities
         public AgentLevel? AgentLevelNull { get; set; }
 
         public string ContainStr { get; set; }
+        public string ContainStr2 { get; set; }
 
         public List<AgentLevel?> In_List_枚举 { get; set; }
 
