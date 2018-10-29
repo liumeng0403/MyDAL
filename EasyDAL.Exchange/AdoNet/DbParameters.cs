@@ -46,7 +46,7 @@ namespace Yunyong.DataExchange.AdoNet
             {
                 return dbType;
             }
-            if (type.FullName == Settings.LinqBinary)
+            if (type.FullName == XConfig.LinqBinary)
             {
                 return DbType.Binary;
             }

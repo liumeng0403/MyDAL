@@ -6,7 +6,7 @@ using Yunyong.DataExchange;
 
 namespace MyDAL.Test.WhereEdge
 {
-    public class _08_Where_String:TestBase
+    public class _08_WhereDollarString : TestBase
     {
         [Fact]
         public async Task test()
