@@ -1,10 +1,7 @@
 # MyDAL
   -- EasyDAL.Exchange 0.2.3 版本后 更名为 MyDAL 
-  
-** <b>Nuget Logo</b> ** ：
+
 ![Image text](https://github.com/liumeng0403/MyDAL/blob/master/EasyDAL.Exchange/Others/MyDAL.png)
-** <b>Dll Logo</b> ** ：
-![Image text](https://github.com/liumeng0403/MyDAL/blob/master/EasyDAL.Exchange/Others/MyDAL.ico)
 
 博客地址：<a href="https://www.cnblogs.com/Meng-NET/p/8963476.html" target="_blank">Meng.NET -- 技术改变人生,网络改变生活,信息改变世界.</a>
 
