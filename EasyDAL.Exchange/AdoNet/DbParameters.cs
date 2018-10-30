@@ -72,16 +72,6 @@ namespace Yunyong.DataExchange.AdoNet
 
         private Dictionary<string, ParamInfo> parameters { get; } = new Dictionary<string, ParamInfo>();
 
-        /// <summary>
-        /// Add a parameter to this dynamic parameter list.
-        /// </summary>
-        /// <param name="name">The name of the parameter.</param>
-        /// <param name="value">The value of the parameter.</param>
-        /// <param name="dbType">The type of the parameter.</param>
-        /// <param name="direction">The in or out direction of the parameter.</param>
-        /// <param name="size">The size of the parameter.</param>
-        /// <param name="precision">The precision of the parameter.</param>
-        /// <param name="scale">The scale of the parameter.</param>
         internal void Add(string name, object value, DbType dbType)
         {
             parameters[CleanKeyStr(name)] = new ParamInfo
@@ -95,12 +85,13 @@ namespace Yunyong.DataExchange.AdoNet
                 Scale = null //scale
             };
         }
-
-        /// <summary>
-        /// Add all the parameters needed to the command just before it executes
-        /// </summary>
-        /// <param name="command">The raw command prior to execution</param>
-        /// <param name="identity">Information about the query</param>
+        internal void Add(DbParameters para)
+        {
+            foreach(var p in para.parameters)
+            {
+                parameters.Add(p.Key, p.Value);
+            }
+        }
         internal void AddParameters(IDbCommand command, Identity identity)
         {
             foreach (var param in parameters.Values)
@@ -150,6 +141,6 @@ namespace Yunyong.DataExchange.AdoNet
                 param.AttachedParam = p;
             }
         }
-
+        
     }
 }

@@ -28,7 +28,7 @@ namespace Yunyong.DataExchange.Impls
             return await DC.DS.ExecuteScalarAsync<long>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.CountAsync)[0],
-                DC.SqlProvider.GetParameters());
+                DC.SqlProvider.GetParameters(DC.DbConditions));
         }
 
         public async Task<long> CountAsync<F>(Expression<Func<M, F>> func)
@@ -43,7 +43,7 @@ namespace Yunyong.DataExchange.Impls
             return await DC.DS.ExecuteScalarAsync<long>(
                  DC.Conn,
                  DC.SqlProvider.GetSQL<M>(UiMethodEnum.CountAsync)[0],
-                 DC.SqlProvider.GetParameters());
+                 DC.SqlProvider.GetParameters(DC.DbConditions));
         }
     }
 
@@ -66,7 +66,7 @@ namespace Yunyong.DataExchange.Impls
             return await DC.DS.ExecuteScalarAsync<long>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<None>(UiMethodEnum.JoinCountAsync)[0],
-                DC.SqlProvider.GetParameters());
+                DC.SqlProvider.GetParameters(DC.DbConditions));
         }
 
         public async Task<long> CountAsync<F>(Expression<Func<F>> func)
@@ -80,7 +80,7 @@ namespace Yunyong.DataExchange.Impls
             return await DC.DS.ExecuteScalarAsync<long>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<None>(UiMethodEnum.JoinCountAsync)[0],
-                DC.SqlProvider.GetParameters());
+                DC.SqlProvider.GetParameters(DC.DbConditions));
         }
     }
 }

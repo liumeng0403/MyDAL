@@ -21,6 +21,7 @@ namespace MyDAL.Test.WhereEdge
                 .Selecter<Agent>()
                 .Where(it => it.Id == guid1 && it.PathId == pathId1)
                 .QueryListAsync();
+            Assert.True(res1.Count == 1);
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 

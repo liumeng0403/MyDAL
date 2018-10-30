@@ -36,7 +36,7 @@ namespace Yunyong.DataExchange.Core.Bases
             var result = new PagingList<M>();
             result.PageIndex = pageIndex;
             result.PageSize = pageSize;
-            var paras = DC.SqlProvider.GetParameters();
+            var paras = DC.SqlProvider.GetParameters(DC.DbConditions);
             var sql = DC.SqlProvider.GetSQL<M>(sqlType, result.PageIndex, result.PageSize);
             result.TotalCount = await DC.DS.ExecuteScalarAsync<int>(DC.Conn, sql[0], paras);
             result.Data = (await DC.DS.ExecuteReaderMultiRowAsync<M>(DC.Conn, sql[1], paras)).ToList();
@@ -48,7 +48,7 @@ namespace Yunyong.DataExchange.Core.Bases
             var result = new PagingList<VM>();
             result.PageIndex = pageIndex;
             result.PageSize = pageSize;
-            var paras = DC.SqlProvider.GetParameters();
+            var paras = DC.SqlProvider.GetParameters(DC.DbConditions);
             var sql = DC.SqlProvider.GetSQL<M>(sqlType, result.PageIndex, result.PageSize);
             result.TotalCount = await DC.DS.ExecuteScalarAsync<int>(DC.Conn, sql[0], paras);
             result.Data = (await DC.DS.ExecuteReaderMultiRowAsync<VM>(DC.Conn, sql[1], paras)).ToList();

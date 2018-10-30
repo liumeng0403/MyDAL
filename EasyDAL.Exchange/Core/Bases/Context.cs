@@ -101,9 +101,9 @@ namespace Yunyong.DataExchange.Core.Bases
             }
             return false;
         }
-        internal bool IsSingleTableOption(DicModelBase item)
+        internal bool IsSingleTableOption(CrudTypeEnum crud)
         {
-            switch(item.Crud)
+            switch(crud)
             {
                 case CrudTypeEnum.Query:
                 case CrudTypeEnum.Update:

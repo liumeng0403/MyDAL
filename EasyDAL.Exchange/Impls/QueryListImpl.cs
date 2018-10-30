@@ -23,7 +23,7 @@ namespace Yunyong.DataExchange.Impls
             return (await DC.DS.ExecuteReaderMultiRowAsync<M>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryListAsync)[0],
-                DC.SqlProvider.GetParameters())).ToList();
+                DC.SqlProvider.GetParameters(DC.DbConditions))).ToList();
         }
 
         public async Task<List<VM>> QueryListAsync<VM>()
@@ -34,7 +34,7 @@ namespace Yunyong.DataExchange.Impls
             return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryListAsync)[0],
-                DC.SqlProvider.GetParameters())).ToList();
+                DC.SqlProvider.GetParameters(DC.DbConditions))).ToList();
         }
 
         public async Task<List<VM>> QueryListAsync<VM>(Expression<Func<M, VM>> columnMapFunc)
@@ -45,7 +45,7 @@ namespace Yunyong.DataExchange.Impls
             return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryListAsync)[0],
-                DC.SqlProvider.GetParameters())).ToList();
+                DC.SqlProvider.GetParameters(DC.DbConditions))).ToList();
         }
 
         public async Task<List<M>> QueryListAsync(int topCount)
@@ -82,7 +82,7 @@ namespace Yunyong.DataExchange.Impls
             return (await DC.DS.ExecuteReaderMultiRowAsync<M>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.JoinQueryListAsync)[0],
-                DC.SqlProvider.GetParameters())).ToList();
+                DC.SqlProvider.GetParameters(DC.DbConditions))).ToList();
         }
 
         public async Task<List<VM>> QueryListAsync<VM>(Expression<Func<VM>> columnMapFunc)
@@ -93,7 +93,7 @@ namespace Yunyong.DataExchange.Impls
             return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<VM>(UiMethodEnum.JoinQueryListAsync)[0],
-                DC.SqlProvider.GetParameters())).ToList();
+                DC.SqlProvider.GetParameters(DC.DbConditions))).ToList();
         }
 
         public async Task<List<M>> QueryListAsync<M>(int topCount) 
