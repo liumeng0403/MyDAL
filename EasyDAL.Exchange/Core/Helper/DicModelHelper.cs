@@ -3,6 +3,7 @@ using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace MyDAL.Core.Helper
@@ -28,7 +29,7 @@ namespace MyDAL.Core.Helper
                 Action = ui.Action,
                 Option = ui.Option,
                 Compare = ui.Compare,
-                Func= ui.Func,
+                Func = ui.Func,
 
                 //
                 ClassFullName = ui.ClassFullName,
@@ -54,6 +55,54 @@ namespace MyDAL.Core.Helper
             //
             return cp;
         }
+        private void Copy(DicModelUI ui,List<DicModelDB> dbList,DicModelDB refDb)
+        {
+            var db = new DicModelDB();
+
+            //
+            db.ID = ui.ID;
+            db.Crud = ui.Crud;
+            db.Action = ui.Action;
+            db.Option = ui.Option;
+            db.Compare = ui.Compare;
+            db.Func = ui.Func;
+
+            //
+            if (ui.ClassFullName.IsNullStr())
+            {
+                db.Key = string.Empty;
+            }
+            else
+            {
+                db.Key = DC.SC.GetModelKey(ui.ClassFullName);
+                db.TableOne = DC.SC.GetModelTableName(db.Key);
+            }
+            db.TableAliasOne = ui.TableAliasOne;
+            db.ColumnOne = ui.ColumnOne;
+            db.KeyTwo = ui.ColumnTwo;
+            db.AliasTwo = ui.TableAliasTwo;
+            db.ColumnAlias = ui.ColumnOneAlias;
+            db.Param = ui.Param;
+            db.ParamRaw = ui.ParamRaw;
+            db.TvpIndex = ui.TvpIndex;
+            if (ui.CsType != null)
+            {
+                DC.PH.GetDbVal(ui, db, ui.CsType);
+            }
+            if (ui.Group != null)
+            {
+                db.Group = new List<DicModelDB>();
+                db.GroupAction = ui.GroupAction;
+                foreach (var item in ui.Group)
+                {
+                    Copy(item, db.Group,db);
+                }
+                dbList.Add(db);
+                return;
+            }
+            db.GroupRef = refDb;
+            dbList.Add(db);
+        }
         internal void UiToDbCopy()
         {
             if (DC.UiConditions != null)
@@ -64,37 +113,7 @@ namespace MyDAL.Core.Helper
                     {
                         continue;
                     }
-
-                    var db = new DicModelDB();
-
-                    //
-                    db.ID = ui.ID;
-                    db.Crud = ui.Crud;
-                    db.Action = ui.Action;
-                    db.Option = ui.Option;
-                    db.Compare = ui.Compare;
-                    db.Func = ui.Func;
-
-                    //
-                    if (ui.ClassFullName.IsNullStr())
-                    {
-                        db.Key = string.Empty;
-                    }
-                    else
-                    {
-                        db.Key = DC.SC.GetModelKey(ui.ClassFullName);
-                        db.TableOne = DC.SC.GetModelTableName(db.Key); 
-                    }
-                    db.TableAliasOne = ui.TableAliasOne;
-                    db.ColumnOne = ui.ColumnOne;
-                    db.KeyTwo = ui.ColumnTwo;
-                    db.AliasTwo = ui.TableAliasTwo;
-                    db.ColumnAlias = ui.ColumnOneAlias;
-                    db.Param = ui.Param;
-                    db.ParamRaw = ui.ParamRaw;
-                    db.TvpIndex = ui.TvpIndex;
-                    DC.PH.GetDbVal(ui, db, ui.CsType);
-                    DC.DbConditions.Add(db);
+                    Copy(ui, DC.DbConditions,null);
                 }
             }
         }
@@ -151,7 +170,7 @@ namespace MyDAL.Core.Helper
             //
             DC.UiConditions.Add(dic);
         }
-        
+
         private DicModelUI SetDicBase()
         {
             return new DicModelUI
@@ -161,13 +180,13 @@ namespace MyDAL.Core.Helper
                 Action = DC.Action,
                 Option = DC.Option,
                 Compare = DC.Compare,
-                Func= DC.Func
+                Func = DC.Func
             };
         }
 
         /*******************************************************************************************************/
 
-        internal DicModelUI CharLengthDic(string fullName,string key, string alias, (object val, string valStr) value, Type valType)
+        internal DicModelUI CharLengthDic(string fullName, string key, string alias, (object val, string valStr) value, Type valType)
         {
             var dic = SetDicBase();
             dic.ClassFullName = fullName;
@@ -340,11 +359,11 @@ namespace MyDAL.Core.Helper
             dic.ColumnOne = key;
             dic.Param = key;
             dic.ParamRaw = key;
-            
+
             return dic;
         }
 
-        internal DicModelUI OrderbyDic(string fullName, string key,string alias)
+        internal DicModelUI OrderbyDic(string fullName, string key, string alias)
         {
             var dic = SetDicBase();
             dic.ClassFullName = fullName;
@@ -383,7 +402,7 @@ namespace MyDAL.Core.Helper
             dic.CsValue = val.val;
             dic.CsValueStr = val.valStr;
             dic.CsType = valType;
-            
+
             return dic;
         }
 
@@ -426,6 +445,16 @@ namespace MyDAL.Core.Helper
             dic.ClassFullName = fullName;
             dic.TableAliasOne = alias;
             dic.ColumnOne = key;
+            return dic;
+        }
+
+        /*******************************************************************************************************/
+
+        internal DicModelUI GroupDic(ActionEnum action)
+        {
+            var dic = SetDicBase();
+            dic.Group = new List<DicModelUI>();
+            dic.GroupAction = action;
             return dic;
         }
 

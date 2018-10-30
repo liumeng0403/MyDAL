@@ -286,9 +286,9 @@ namespace MyDAL.Core.Bases
         internal void WhereHandle<M>(Expression<Func<M, bool>> func)
             where M : class
         {
-            var field = DC.EH.FuncMBoolExpression(ActionEnum.Where, func);
+            DC.Action= ActionEnum.Where;
+            var field = DC.EH.FuncMBoolExpression(func);
             field.ClassFullName = typeof(M).FullName;
-            field.Action = ActionEnum.Where;
             DC.AddConditions(field);
         }
 
@@ -340,16 +340,16 @@ namespace MyDAL.Core.Bases
         internal void AndHandle<M>(Expression<Func<M, bool>> func)
             where M : class
         {
-            var field = DC.EH.FuncMBoolExpression(ActionEnum.And, func);
-            field.Action = ActionEnum.And;
+            DC.Action = ActionEnum.And;
+            var field = DC.EH.FuncMBoolExpression(func);
             DC.AddConditions(field);
         }
 
         internal void OrHandle<M>(Expression<Func<M, bool>> func)
             where M : class
         {
-            var field = DC.EH.FuncMBoolExpression(ActionEnum.Or, func);
-            field.Action = ActionEnum.Or;
+            DC.Action = ActionEnum.Or;
+            var field = DC.EH.FuncMBoolExpression(func);
             DC.AddConditions(field);
         }
 

@@ -77,7 +77,7 @@ namespace MyDAL.Core.Bases
 
         /************************************************************************************************************************/
 
-        internal bool IsParameter(DicModelUI item)
+        internal bool IsParameter(DicModelBase item)
         {
             switch (item.Action)
             {
@@ -90,12 +90,10 @@ namespace MyDAL.Core.Bases
             }
             return false;
         }
-        internal bool IsParameter(DicModelDB item)
+        internal bool IsFilterCondition(DicModelBase item)
         {
-            switch (item.Action)
+            switch(item.Action)
             {
-                case ActionEnum.Insert:
-                case ActionEnum.Update:
                 case ActionEnum.Where:
                 case ActionEnum.And:
                 case ActionEnum.Or:
@@ -103,6 +101,19 @@ namespace MyDAL.Core.Bases
             }
             return false;
         }
+        internal bool IsSingleTableOption(DicModelBase item)
+        {
+            switch(item.Crud)
+            {
+                case CrudTypeEnum.Query:
+                case CrudTypeEnum.Update:
+                case CrudTypeEnum.Delete:
+                    return true;
+            }
+            return false;
+        }
+
+        /************************************************************************************************************************/
 
         internal OptionEnum GetChangeOption(ChangeEnum change)
         {

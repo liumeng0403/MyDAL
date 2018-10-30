@@ -58,6 +58,181 @@ namespace MyDAL.AdoNet
                     break;
             }
         }
+        private static MethodInfo ResolveOperator(MethodInfo[] methods, Type from, Type to, string name)
+        {
+            for (int i = 0; i < methods.Length; i++)
+            {
+                if (methods[i].Name != name
+                    || methods[i].ReturnType != to)
+                {
+                    continue;
+                }
+                var args = methods[i].GetParameters();
+                if (args.Length != 1
+                    || args[0].ParameterType != from)
+                {
+                    continue;
+                }
+                return methods[i];
+            }
+            return null;
+        }
+        private static MethodInfo GetOperator(Type from, Type to)
+        {
+            if (to == null)
+            {
+                return null;
+            }
+            MethodInfo[] fromMethods, toMethods;
+            return ResolveOperator(fromMethods = from.GetMethods(BindingFlags.Static | BindingFlags.Public), from, to, "op_Implicit")
+                ?? ResolveOperator(toMethods = to.GetMethods(BindingFlags.Static | BindingFlags.Public), from, to, "op_Implicit")
+                ?? ResolveOperator(fromMethods, from, to, "op_Explicit")
+                ?? ResolveOperator(toMethods, from, to, "op_Explicit");
+        }
+        private static void FlexibleConvertBoxedFromHeadOfStack(ILGenerator il, Type from, Type to, Type via)
+        {
+            MethodInfo op;
+            if (from == (via ?? to))
+            {
+                il.Emit(OpCodes.Unbox_Any, to); // stack is now [target][target][typed-value]
+            }
+            else if ((op = GetOperator(from, to)) != null)
+            {
+                // this is handy for things like decimal <===> double
+                il.Emit(OpCodes.Unbox_Any, from); // stack is now [target][target][data-typed-value]
+                il.Emit(OpCodes.Call, op); // stack is now [target][target][typed-value]
+            }
+            else
+            {
+                bool handled = false;
+                OpCode opCode = default(OpCode);
+                switch (Type.GetTypeCode(from))
+                {
+                    case TypeCode.Boolean:
+                    case TypeCode.Byte:
+                    case TypeCode.SByte:
+                    case TypeCode.Int16:
+                    case TypeCode.UInt16:
+                    case TypeCode.Int32:
+                    case TypeCode.UInt32:
+                    case TypeCode.Int64:
+                    case TypeCode.UInt64:
+                    case TypeCode.Single:
+                    case TypeCode.Double:
+                        handled = true;
+                        switch (Type.GetTypeCode(via ?? to))
+                        {
+                            case TypeCode.Byte:
+                                opCode = OpCodes.Conv_Ovf_I1_Un; break;
+                            case TypeCode.SByte:
+                                opCode = OpCodes.Conv_Ovf_I1; break;
+                            case TypeCode.UInt16:
+                                opCode = OpCodes.Conv_Ovf_I2_Un; break;
+                            case TypeCode.Int16:
+                                opCode = OpCodes.Conv_Ovf_I2; break;
+                            case TypeCode.UInt32:
+                                opCode = OpCodes.Conv_Ovf_I4_Un; break;
+                            case TypeCode.Boolean: // boolean is basically an int, at least at this level
+                            case TypeCode.Int32:
+                                opCode = OpCodes.Conv_Ovf_I4; break;
+                            case TypeCode.UInt64:
+                                opCode = OpCodes.Conv_Ovf_I8_Un; break;
+                            case TypeCode.Int64:
+                                opCode = OpCodes.Conv_Ovf_I8; break;
+                            case TypeCode.Single:
+                                opCode = OpCodes.Conv_R4; break;
+                            case TypeCode.Double:
+                                opCode = OpCodes.Conv_R8; break;
+                            default:
+                                handled = false;
+                                break;
+                        }
+                        break;
+                }
+                if (handled)
+                {
+                    il.Emit(OpCodes.Unbox_Any, from); // stack is now [target][target][col-typed-value]
+                    il.Emit(opCode); // stack is now [target][target][typed-value]
+                    if (to == typeof(bool))
+                    { // compare to zero; I checked "csc" - this is the trick it uses; nice
+                        il.Emit(OpCodes.Ldc_I4_0);
+                        il.Emit(OpCodes.Ceq);
+                        il.Emit(OpCodes.Ldc_I4_0);
+                        il.Emit(OpCodes.Ceq);
+                    }
+                }
+                else
+                {
+                    il.Emit(OpCodes.Ldtoken, via ?? to); // stack is now [target][target][value][member-type-token]
+                    il.EmitCall(OpCodes.Call, typeof(Type).GetMethod(nameof(Type.GetTypeFromHandle)), null); // stack is now [target][target][value][member-type]
+                    il.EmitCall(OpCodes.Call, typeof(Convert).GetMethod(nameof(Convert.ChangeType), new Type[] { typeof(object), typeof(Type) }), null); // stack is now [target][target][boxed-member-type-value]
+                    il.Emit(OpCodes.Unbox_Any, to); // stack is now [target][target][typed-value]
+                }
+            }
+        }
+        private static void LoadLocal(ILGenerator il, int index)
+        {
+            if (index < 0
+                || index >= short.MaxValue)
+            {
+                throw new ArgumentNullException(nameof(index));
+            }
+            switch (index)
+            {
+                case 0:
+                    il.Emit(OpCodes.Ldloc_0);
+                    break;
+                case 1:
+                    il.Emit(OpCodes.Ldloc_1);
+                    break;
+                case 2:
+                    il.Emit(OpCodes.Ldloc_2);
+                    break;
+                case 3:
+                    il.Emit(OpCodes.Ldloc_3);
+                    break;
+                default:
+                    if (index <= 255)
+                    {
+                        il.Emit(OpCodes.Ldloc_S, (byte)index);
+                    }
+                    else
+                    {
+                        il.Emit(OpCodes.Ldloc, (short)index);
+                    }
+                    break;
+            }
+        }
+        private static char ReadChar(object value)
+        {
+            if (value == null
+                || value is DBNull)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+            var s = value as string;
+            if (s == null
+                || s.Length != 1)
+            {
+                throw new ArgumentException("A single-character was expected", nameof(value));
+            }
+            return s[0];
+        }
+        private static char? ReadNullableChar(object value)
+        {
+            if (value == null
+                || value is DBNull)
+            {
+                return null;
+            }
+            var s = value as string;
+            if (s == null
+                || s.Length != 1)
+            {
+                throw new ArgumentException("A single-character was expected", nameof(value));
+            }
+            return s[0];
+        }
         private static Func<IDataReader, object> SetFunc(Type mType, IDataReader reader)
         {
             // 
@@ -111,8 +286,8 @@ namespace MyDAL.AdoNet
                             OpCodes.Call, 
                             typeof(AdoNetHelper).GetMethod(
                                 memberType == typeof(char) 
-                                ? nameof(AdoNetHelper.ReadChar) 
-                                : nameof(AdoNetHelper.ReadNullableChar), BindingFlags.Static | BindingFlags.NonPublic),
+                                ? nameof(ReadChar) 
+                                : nameof(ReadNullableChar), BindingFlags.Static | BindingFlags.NonPublic),
                             null); 
                     }
                     else
@@ -137,14 +312,14 @@ namespace MyDAL.AdoNet
                                 StoreLocal(il, enumDeclareLocal); // stack is now [target][target]
                                 il.Emit(OpCodes.Ldtoken, unboxType); // stack is now [target][target][enum-type-token]
                                 il.EmitCall(OpCodes.Call, typeof(Type).GetMethod(nameof(Type.GetTypeFromHandle)), null);// stack is now [target][target][enum-type]
-                                AdoNetHelper.LoadLocal(il, enumDeclareLocal); // stack is now [target][target][enum-type][string]
+                                LoadLocal(il, enumDeclareLocal); // stack is now [target][target][enum-type][string]
                                 il.Emit(OpCodes.Ldc_I4_1); // stack is now [target][target][enum-type][string][true]
                                 il.EmitCall(OpCodes.Call, XConfig.EnumParse, null); // stack is now [target][target][enum-as-object]
                                 il.Emit(OpCodes.Unbox_Any, unboxType); // stack is now [target][target][typed-value]
                             }
                             else
                             {
-                                AdoNetHelper.FlexibleConvertBoxedFromHeadOfStack(il, colType, unboxType, numericType);
+                                FlexibleConvertBoxedFromHeadOfStack(il, colType, unboxType, numericType);
                             }
 
                             if (nullUnderlyingType != null)
@@ -167,7 +342,7 @@ namespace MyDAL.AdoNet
                             else
                             {
                                 // not a direct match; need to tweak the unbox
-                                AdoNetHelper.FlexibleConvertBoxedFromHeadOfStack(il, colType, nullUnderlyingType ?? unboxType, null);
+                                FlexibleConvertBoxedFromHeadOfStack(il, colType, nullUnderlyingType ?? unboxType, null);
                                 if (nullUnderlyingType != null)
                                 {
                                     il.Emit(OpCodes.Newobj, unboxType.GetConstructor(new[] { nullUnderlyingType })); // stack is now [target][target][typed-value]
@@ -200,7 +375,7 @@ namespace MyDAL.AdoNet
             il.BeginCatchBlock(typeof(Exception)); // stack is Exception
             il.Emit(OpCodes.Ldloc_0); // stack is Exception, index
             il.Emit(OpCodes.Ldarg_0); // stack is Exception, index, reader
-            AdoNetHelper.LoadLocal(il, valueCopyLocal); // stack is Exception, index, reader, value
+            LoadLocal(il, valueCopyLocal); // stack is Exception, index, reader, value
             il.EmitCall(OpCodes.Call, typeof(AdoNetHelper).GetMethod(nameof(AdoNetHelper.ThrowDataException)), null);
             il.EndExceptionBlock();
 
