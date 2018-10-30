@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Yunyong.DataExchange.AdoNet;
@@ -76,14 +75,14 @@ namespace Yunyong.DataExchange.Core.MySql
             {
                 var list = new List<string>();
                 var orders = DC.DbConditions.Where(it => it.Action == ActionEnum.OrderBy);
-                foreach(var o in orders)
+                foreach (var o in orders)
                 {
-                    if(o.Func== FuncEnum.None
-                        || o.Func== FuncEnum.Column)
+                    if (o.Func == FuncEnum.None
+                        || o.Func == FuncEnum.Column)
                     {
                         list.Add($" `{o.ColumnOne}` {o.Option.ToEnumDesc<OptionEnum>()} ");
                     }
-                    else if(o.Func== FuncEnum.CharLength)
+                    else if (o.Func == FuncEnum.CharLength)
                     {
                         list.Add($" {o.Func.ToEnumDesc<FuncEnum>()}(`{o.ColumnOne}`) {o.Option.ToEnumDesc<OptionEnum>()} ");
                     }
@@ -166,6 +165,32 @@ namespace Yunyong.DataExchange.Core.MySql
             {
                 return string.Empty;
             }
+        }
+
+        private string MultiConditionSeperator(DicModelDB db)
+        {
+            switch(db.GroupRef.GroupAction)
+            {
+                case ActionEnum.And:
+                    return " && ";
+            }
+            return " ";
+        }
+        private string MultiCondition(DicModelDB db)
+        {
+            var list = new List<string>();
+            foreach(var item in db.Group)
+            {
+                if (item.Group != null)
+                {
+                    list.Add(MultiCondition(item));
+                }
+                else
+                {
+                    list.Add($" `{item.ColumnOne}`{item.Compare.ToEnumDesc<CompareEnum>()}@{item.Param} ");
+                }
+            }
+            return string.Join(MultiConditionSeperator(db.Group.First(it=>it.GroupRef!=null)), list);
         }
 
         /****************************************************************************************************************/
@@ -322,102 +347,87 @@ namespace Yunyong.DataExchange.Core.MySql
 
         internal string Wheres()
         {
-            /* 可能有问题*/
-            //if (!DC.Conditions.Any(it => it.Action == ActionEnum.Where)
-            //    && !DC.Conditions.Any(it => it.Action == ActionEnum.And)
-            //    && !DC.Conditions.Any(it => it.Action == ActionEnum.Or))
-            //{
-            //    throw new Exception("没有设置任何条件!");
-            //}
-
             var str = string.Empty;
 
-            foreach (var item in DC.DbConditions)
+            //
+            foreach (var db in DC.DbConditions)
             {
-                switch (item.Action)
+                if (DC.IsFilterCondition(db))
                 {
-                    case ActionEnum.Where:
-                    case ActionEnum.And:
-                    case ActionEnum.Or:
-                        switch (item.Option)
+                    if(db.Group!=null)
+                    {
+                        if (db.Crud == CrudTypeEnum.Join)
                         {
-                            case OptionEnum.Compare:
-                                switch (item.Crud)
-                                {
-                                    case CrudTypeEnum.Join:
-                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.TableAliasOne}.`{item.ColumnOne}`{item.Compare.ToEnumDesc<CompareEnum>()}@{item.Param} ";
-                                        break;
-                                    case CrudTypeEnum.Delete:
-                                    case CrudTypeEnum.Update:
-                                    case CrudTypeEnum.Query:
-                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} `{item.ColumnOne}`{item.Compare.ToEnumDesc<CompareEnum>()}@{item.Param} ";
-                                        break;
-                                }
-                                break;
-                            case OptionEnum.Like:
-                                switch (item.Crud)
-                                {
-                                    case CrudTypeEnum.Join:
-                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.TableAliasOne}.`{item.ColumnOne}`{item.Option.ToEnumDesc<OptionEnum>()}{LikeStrHandle(item)} ";
-                                        break;
-                                    case CrudTypeEnum.Delete:
-                                    case CrudTypeEnum.Update:
-                                    case CrudTypeEnum.Query:
-                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} `{item.ColumnOne}`{item.Option.ToEnumDesc<OptionEnum>()}{LikeStrHandle(item)} ";
-                                        break;
-                                }
-                                break;
-                            case OptionEnum.CharLength:
-                                switch (item.Crud)
-                                {
-                                    case CrudTypeEnum.Join:
-                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.Option.ToEnumDesc<OptionEnum>()}({item.TableAliasOne}.`{item.ColumnOne}`){item.Compare.ToEnumDesc<CompareEnum>()}@{item.Param} ";
-                                        break;
-                                    case CrudTypeEnum.Delete:
-                                    case CrudTypeEnum.Update:
-                                    case CrudTypeEnum.Query:
-                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.Option.ToEnumDesc<OptionEnum>()}(`{item.ColumnOne}`){item.Compare.ToEnumDesc<CompareEnum>()}@{item.Param} ";
-                                        break;
-                                }
-                                break;
-                            case OptionEnum.Trim:
-                            case OptionEnum.LTrim:
-                            case OptionEnum.RTrim:
-                                switch (item.Crud)
-                                {
-                                    case CrudTypeEnum.Join:
-                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.Option.ToEnumDesc<OptionEnum>()}({item.TableAliasOne}.`{item.ColumnOne}`){item.Compare.ToEnumDesc<CompareEnum>()}@{item.Param} ";
-                                        break;
-                                    case CrudTypeEnum.Delete:
-                                    case CrudTypeEnum.Update:
-                                    case CrudTypeEnum.Query:
-                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.Option.ToEnumDesc<OptionEnum>()}(`{item.ColumnOne}`){item.Compare.ToEnumDesc<CompareEnum>()}@{item.Param} ";
-                                        break;
-                                }
-                                break;
-                            case OptionEnum.OneEqualOne:
-                                str += $" {item.Action.ToEnumDesc<ActionEnum>()} @{item.Param} ";
-                                break;
-                            case OptionEnum.In:
-                            case OptionEnum.NotIn:
-                                switch (item.Crud)
-                                {
-                                    case CrudTypeEnum.Join:
-                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} {item.TableAliasOne}.`{item.ColumnOne}` {item.Option.ToEnumDesc<OptionEnum>()}({InStrHandle(item)}) ";
-                                        break;
-                                    case CrudTypeEnum.Delete:
-                                    case CrudTypeEnum.Update:
-                                    case CrudTypeEnum.Query:
-                                        str += $" {item.Action.ToEnumDesc<ActionEnum>()} `{item.ColumnOne}` {item.Option.ToEnumDesc<OptionEnum>()}({InStrHandle(item)}) ";
-                                        break;
-                                }
-                                break;
-                            case OptionEnum.IsNull:
-                            case OptionEnum.IsNotNull:
-                                str += $" {item.Action.ToEnumDesc<ActionEnum>()} `{item.ColumnOne}` {item.Option.ToEnumDesc<OptionEnum>()} ";
-                                break;
+                            str += $" {db.Action.ToEnumDesc<ActionEnum>()} {db.TableAliasOne}.`{db.ColumnOne}`{db.Compare.ToEnumDesc<CompareEnum>()}@{db.Param} ";
                         }
-                        break;
+                        else if (DC.IsSingleTableOption(db))
+                        {
+                            str += $" {db.Action.ToEnumDesc<ActionEnum>()} ({MultiCondition(db)}) ";
+                        }
+                    }
+                    else if (db.Option == OptionEnum.Compare)
+                    {
+                        if (db.Crud == CrudTypeEnum.Join)
+                        {
+                            str += $" {db.Action.ToEnumDesc<ActionEnum>()} {db.TableAliasOne}.`{db.ColumnOne}`{db.Compare.ToEnumDesc<CompareEnum>()}@{db.Param} ";
+                        }
+                        else if (DC.IsSingleTableOption(db))
+                        {
+                            str += $" {db.Action.ToEnumDesc<ActionEnum>()} `{db.ColumnOne}`{db.Compare.ToEnumDesc<CompareEnum>()}@{db.Param} ";
+                        }
+                    }
+                    else if (db.Option == OptionEnum.Like)
+                    {
+                        if (db.Crud == CrudTypeEnum.Join)
+                        {
+                            str += $" {db.Action.ToEnumDesc<ActionEnum>()} {db.TableAliasOne}.`{db.ColumnOne}`{db.Option.ToEnumDesc<OptionEnum>()}{LikeStrHandle(db)} ";
+                        }
+                        else if (DC.IsSingleTableOption(db))
+                        {
+                            str += $" {db.Action.ToEnumDesc<ActionEnum>()} `{db.ColumnOne}`{db.Option.ToEnumDesc<OptionEnum>()}{LikeStrHandle(db)} ";
+                        }
+                    }
+                    else if (db.Option == OptionEnum.CharLength)
+                    {
+                        if (db.Crud == CrudTypeEnum.Join)
+                        {
+                            str += $" {db.Action.ToEnumDesc<ActionEnum>()} {db.Option.ToEnumDesc<OptionEnum>()}({db.TableAliasOne}.`{db.ColumnOne}`){db.Compare.ToEnumDesc<CompareEnum>()}@{db.Param} ";
+                        }
+                        else if (DC.IsSingleTableOption(db))
+                        {
+                            str += $" {db.Action.ToEnumDesc<ActionEnum>()} {db.Option.ToEnumDesc<OptionEnum>()}(`{db.ColumnOne}`){db.Compare.ToEnumDesc<CompareEnum>()}@{db.Param} ";
+                        }
+                    }
+                    else if (db.Option == OptionEnum.Trim || db.Option == OptionEnum.LTrim || db.Option == OptionEnum.RTrim)
+                    {
+                        if (db.Crud == CrudTypeEnum.Join)
+                        {
+                            str += $" {db.Action.ToEnumDesc<ActionEnum>()} {db.Option.ToEnumDesc<OptionEnum>()}({db.TableAliasOne}.`{db.ColumnOne}`){db.Compare.ToEnumDesc<CompareEnum>()}@{db.Param} ";
+                        }
+                        else if (DC.IsSingleTableOption(db))
+                        {
+                            str += $" {db.Action.ToEnumDesc<ActionEnum>()} {db.Option.ToEnumDesc<OptionEnum>()}(`{db.ColumnOne}`){db.Compare.ToEnumDesc<CompareEnum>()}@{db.Param} ";
+                        }
+                    }
+                    else if (db.Option == OptionEnum.OneEqualOne)
+                    {
+                        str += $" {db.Action.ToEnumDesc<ActionEnum>()} @{db.Param} ";
+                    }
+                    else if (db.Option == OptionEnum.In || db.Option == OptionEnum.NotIn)
+                    {
+                        if (db.Crud == CrudTypeEnum.Join)
+                        {
+                            str += $" {db.Action.ToEnumDesc<ActionEnum>()} {db.TableAliasOne}.`{db.ColumnOne}` {db.Option.ToEnumDesc<OptionEnum>()}({InStrHandle(db)}) ";
+                        }
+                        else if (DC.IsSingleTableOption(db))
+                        {
+                            str += $" {db.Action.ToEnumDesc<ActionEnum>()} `{db.ColumnOne}` {db.Option.ToEnumDesc<OptionEnum>()}({InStrHandle(db)}) ";
+                        }
+                    }
+                    else if (db.Option == OptionEnum.IsNull || db.Option == OptionEnum.IsNotNull)
+                    {
+                        str += $" {db.Action.ToEnumDesc<ActionEnum>()} `{db.ColumnOne}` {db.Option.ToEnumDesc<OptionEnum>()} ";
+                    }
                 }
             }
 
@@ -542,10 +552,10 @@ namespace Yunyong.DataExchange.Core.MySql
         internal string GetTableName<M>()
         {
             var tableName = string.Empty;
-            tableName = DC.AH.GetAttributePropVal<M,XTableAttribute>(a => a.Name);
+            tableName = DC.AH.GetAttributePropVal<M, XTableAttribute>(a => a.Name);
             if (tableName.IsNullStr())
             {
-                tableName = DC.AH.GetAttributePropVal<M,TableAttribute>(a => a.Name);
+                tableName = DC.AH.GetAttributePropVal<M, TableAttribute>(a => a.Name);
             }
             if (string.IsNullOrWhiteSpace(tableName))
             {
@@ -603,7 +613,7 @@ namespace Yunyong.DataExchange.Core.MySql
                     break;
                 case UiMethodEnum.JoinQueryListAsync:
                 case UiMethodEnum.JoinTopAsync:
-                    list.Add($" select {Columns()} {From()} {Joins()} {Wheres()} {GetOrderByPart()} {Limit(pageIndex,pageSize)} ; ");
+                    list.Add($" select {Columns()} {From()} {Joins()} {Wheres()} {GetOrderByPart()} {Limit(pageIndex, pageSize)} ; ");
                     break;
                 case UiMethodEnum.QueryPagingListAsync:
                     var wherePart8 = Wheres();
@@ -637,7 +647,7 @@ namespace Yunyong.DataExchange.Core.MySql
             }
 
             //
-            XDebug.SetValue(DC,list);
+            XDebug.SetValue(DC, list);
 
             //
             return list;

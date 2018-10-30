@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using Yunyong.DataExchange.Core.Enums;
 
@@ -6,18 +7,20 @@ namespace Yunyong.DataExchange.Core.Common
 {
     internal class DicModelBase
     {
-        public int ID { get; set; }
-        public CrudTypeEnum Crud { get; set; }
-        public ActionEnum Action { get; set; }
-        public OptionEnum Option { get; set; }
-        public CompareEnum Compare { get; set; }
-        public FuncEnum Func { get; set; }
-
+        internal int ID { get; set; }
+        internal CrudTypeEnum Crud { get; set; }
+        internal ActionEnum Action { get; set; }
+        internal OptionEnum Option { get; set; }
+        internal CompareEnum Compare { get; set; }
+        internal FuncEnum Func { get; set; }
+        
+        internal ActionEnum GroupAction { get; set; }
+        internal DicModelBase GroupRef { get; set; }
     }
 
-    internal class DicModelUI:DicModelBase
+    internal class DicModelUI : DicModelBase
     {
-        public string ClassName
+        internal string ClassName
         {
             get
             {
@@ -30,47 +33,50 @@ namespace Yunyong.DataExchange.Core.Common
                 return arr[arr.Length - 1];
             }
         }
-        public string ClassFullName { get; set; }
-        public string TableAliasOne { get; set; }
-        public string ColumnOne { get; set; }
-        public string ColumnOneAlias { get; set; }
-        public string TableTwo { get; set; }
-        public string TableAliasTwo { get; set; }
-        public string ColumnTwo { get; set; }
+        internal string ClassFullName { get; set; }
+        internal string TableAliasOne { get; set; }
+        internal string ColumnOne { get; set; }
+        internal string ColumnOneAlias { get; set; }
+        internal string TableTwo { get; set; }
+        internal string TableAliasTwo { get; set; }
+        internal string ColumnTwo { get; set; }
 
-        public string Param { get; set; }
-        public string ParamRaw { get; set; }
-        public object CsValue { get; set; }
-        public string CsValueStr { get; set; }
-        public Type CsType { get; set; }
-        
-        public int TvpIndex { get; set; }
+        internal string Param { get; set; }
+        internal string ParamRaw { get; set; }
+        internal object CsValue { get; set; }
+        internal string CsValueStr { get; set; }
+        internal Type CsType { get; set; }
+
+        internal int TvpIndex { get; set; }
+
+        internal List<DicModelUI> Group { get; set; }
     }
 
     internal class DicModelDB : DicModelBase
     {
-        //public string ClassFullName { get; set; }
-        public string Key { get; set; }
-        public string TableOne { get; set; }
-        public string TableAliasOne { get; set; }
-        public string ColumnOne { get; set; }
-        public string KeyTwo { get; set; }
-        public string AliasTwo { get; set; }
-        public string ColumnAlias { get; set; }
-        public string Param { get; set; }
-        public string ParamRaw { get; set; }
-        public object DbValue { get; set; }
-        public DbType DbType { get; set; }
+        internal string Key { get; set; }
+        internal string TableOne { get; set; }
+        internal string TableAliasOne { get; set; }
+        internal string ColumnOne { get; set; }
+        internal string KeyTwo { get; set; }
+        internal string AliasTwo { get; set; }
+        internal string ColumnAlias { get; set; }
+        internal string Param { get; set; }
+        internal string ParamRaw { get; set; }
+        internal object DbValue { get; set; }
+        internal DbType DbType { get; set; }
 
-        public string ColumnType { get; set; }
+        internal string ColumnType { get; set; }
 
-        public int TvpIndex { get; set; }
+        internal int TvpIndex { get; set; }
+
+        internal List<DicModelDB> Group { get; set; }
     }
 
     internal class DicQueryModel
     {
-        public string MField { get; set; }
-        public string VmField { get; set; }
-        public CompareEnum Compare { get; set; }
+        internal string MField { get; set; }
+        internal string VmField { get; set; }
+        internal CompareEnum Compare { get; set; }
     }
 }
