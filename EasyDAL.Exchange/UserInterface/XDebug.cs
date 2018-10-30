@@ -1,5 +1,6 @@
 ﻿using MyDAL.Core;
 using MyDAL.Core.Bases;
+using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
 using System;
@@ -9,23 +10,21 @@ using System.Linq;
 
 namespace MyDAL
 {
+    /// <summary>
+    /// 只适用于 单线程 调试 代码时 查看 MyDAL 生成的 sql 与 param .
+    /// </summary>
     public sealed class XDebug
     {
-
-        private static object _lock { get; } = new object();
-        private static List<string> _sql { get; set; } = new List<string>();
-        private static List<string> _parameters { get; set; } = new List<string>();
-        
-        internal static void SetValue(Context dc,List<string> list)
+        internal static List<DicModelUI> UIs { get; set; }
+        internal static List<DicModelDB> DBs { get; set; }
+        internal static void SetValue()
         {
             if (XConfig.IsDebug)
             {
-                XDebug.SQL = list;
-                var parax = dc.DbConditions.Where(it => dc.IsParameter(it)).ToList();
-                XDebug.Parameters = parax
+                Parameters = DBs
                     .Select(dbM =>
                     {
-                        var uiM = dc.UiConditions.FirstOrDefault(ui => dbM.Param.Equals(ui.Param, StringComparison.OrdinalIgnoreCase));
+                        var uiM = UIs.FirstOrDefault(ui => dbM.Param.Equals(ui.Param, StringComparison.OrdinalIgnoreCase));
                         var field = string.Empty;
                         if (dbM.Crud == CrudTypeEnum.Query
                             || dbM.Crud == CrudTypeEnum.Update
@@ -60,11 +59,11 @@ namespace MyDAL
                         return $"字段:【{field}】-->【{csVal}】;参数:【{dbM.Param}】-->【{dbVal}】.";
                     })
                     .ToList();
-                XDebug.SqlWithParams = new List<string>();
-                foreach (var sql in XDebug.SQL)
+                SqlWithParams = new List<string>();
+                foreach (var sql in SQL)
                 {
                     var sqlStr = sql;
-                    foreach (var par in parax)
+                    foreach (var par in DBs)
                     {
                         if (par.DbType == DbType.Boolean
                             || par.DbType == DbType.Decimal
@@ -84,7 +83,7 @@ namespace MyDAL
                             sqlStr = sqlStr.Replace($"@{par.Param}", par.DbValue == null ? "null" : $"'{par.DbValue.ToString()}'");
                         }
                     }
-                    XDebug.SqlWithParams.Add(sqlStr);
+                    SqlWithParams.Add(sqlStr);
                 }
             }
         }
@@ -92,43 +91,11 @@ namespace MyDAL
         /// <summary>
         /// 准确,SQL 集合
         /// </summary>
-        public static List<string> SQL
-        {
-            get
-            {
-                lock (_lock)
-                {
-                    return _sql;
-                }
-            }
-            set
-            {
-                lock (_lock)
-                {
-                    _sql = value;
-                }
-            }
-        }
+        public static List<string> SQL { get; set; }
         /// <summary>
         /// 准确,SQL 参数集合
         /// </summary>
-        public static List<string> Parameters
-        {
-            get
-            {
-                lock (_lock)
-                {
-                    return _parameters;
-                }
-            }
-            set
-            {
-                lock (_lock)
-                {
-                    _parameters = value;
-                }
-            }
-        }
+        public static List<string> Parameters { get; set; }
         /// <summary>
         /// 不一定准确,仅供参考!
         /// </summary>

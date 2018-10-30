@@ -19,7 +19,7 @@ namespace MyDAL.Impls
             return await DC.DS.ExecuteNonQueryAsync(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.UpdateAsync)[0],
-                DC.SqlProvider.GetParameters());
+                DC.SqlProvider.GetParameters(DC.DbConditions));
         }
     }
 }

@@ -766,7 +766,7 @@ namespace MyDAL.Core
             }
             else if (IsBinaryExpr(nodeType))
             {
-                if (DC.Crud == CrudTypeEnum.Query)
+                if (DC.IsSingleTableOption(DC.Crud))
                 {
                     var binExpr = body as BinaryExpression;
                     var pres = new List<string>

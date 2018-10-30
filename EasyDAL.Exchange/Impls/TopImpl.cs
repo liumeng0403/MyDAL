@@ -23,7 +23,7 @@ namespace MyDAL.Impls
             return (await DC.DS.ExecuteReaderMultiRowAsync<M>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.TopAsync, 0, count)[0],
-                DC.SqlProvider.GetParameters())).ToList();
+                DC.SqlProvider.GetParameters(DC.DbConditions))).ToList();
         }
 
         public async Task<List<VM>> TopAsync<VM>(int count)
@@ -34,7 +34,7 @@ namespace MyDAL.Impls
             return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.TopAsync, 0, count)[0],
-                DC.SqlProvider.GetParameters())).ToList();
+                DC.SqlProvider.GetParameters(DC.DbConditions))).ToList();
         }
 
         public async Task<List<VM>> TopAsync<VM>(int count, Expression<Func<M, VM>> columnMapFunc)
@@ -45,7 +45,7 @@ namespace MyDAL.Impls
             return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.TopAsync, 0, count)[0],
-                DC.SqlProvider.GetParameters())).ToList();
+                DC.SqlProvider.GetParameters(DC.DbConditions))).ToList();
         }
     }
 
@@ -65,7 +65,7 @@ namespace MyDAL.Impls
             return (await DC.DS.ExecuteReaderMultiRowAsync<M>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.JoinTopAsync,0,count)[0],
-                DC.SqlProvider.GetParameters())).ToList();
+                DC.SqlProvider.GetParameters(DC.DbConditions))).ToList();
         }
 
         public async Task<List<VM>> TopAsync<VM>(int count,Expression<Func<VM>> columnMapFunc)
@@ -76,7 +76,7 @@ namespace MyDAL.Impls
             return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<VM>(UiMethodEnum.JoinTopAsync,0,count)[0],
-                DC.SqlProvider.GetParameters())).ToList();
+                DC.SqlProvider.GetParameters(DC.DbConditions))).ToList();
         }
     }
 }

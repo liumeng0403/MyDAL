@@ -81,11 +81,11 @@ namespace MyDAL.Core.MySql
                     if (o.Func == FuncEnum.None
                         || o.Func == FuncEnum.Column)
                     {
-                        list.Add($" `{o.ColumnOne}` {o.Option.ToEnumDesc<OptionEnum>()} ");
+                        list.Add($" `{o.ColumnOne}` {ConditionOption(o.Option)} ");
                     }
                     else if (o.Func == FuncEnum.CharLength)
                     {
-                        list.Add($" {o.Func.ToEnumDesc<FuncEnum>()}(`{o.ColumnOne}`) {o.Option.ToEnumDesc<OptionEnum>()} ");
+                        list.Add($" {ConditionFunc(o.Func)}(`{o.ColumnOne}`) {ConditionOption(o.Option)} ");
                     }
                 }
                 str = string.Join(",", list);
@@ -123,11 +123,11 @@ namespace MyDAL.Core.MySql
                     if (o.Func == FuncEnum.None
                         || o.Func == FuncEnum.Column)
                     {
-                        list.Add($" {o.TableAliasOne}.`{o.ColumnOne}` {o.Option.ToEnumDesc<OptionEnum>()} ");
+                        list.Add($" {o.TableAliasOne}.`{o.ColumnOne}` {ConditionOption(o.Option)} ");
                     }
                     else if (o.Func == FuncEnum.CharLength)
                     {
-                        list.Add($" {o.Func.ToEnumDesc<FuncEnum>()}({o.TableAliasOne}.`{o.ColumnOne}`) {o.Option.ToEnumDesc<OptionEnum>()} ");
+                        list.Add($" {ConditionFunc(o.Func)}({o.TableAliasOne}.`{o.ColumnOne}`) {ConditionOption(o.Option)} ");
                     }
                 }
                 str = string.Join(",", list);
@@ -168,19 +168,146 @@ namespace MyDAL.Core.MySql
             }
         }
 
-        private string MultiConditionSeperator(DicModelDB db)
+        private string ConditionAction(ActionEnum action)
         {
-            switch(db.GroupRef.GroupAction)
+            switch (action)
+            {
+                case ActionEnum.None:
+                    return "";
+                case ActionEnum.Insert:
+                    return "";
+                case ActionEnum.Update:
+                    return "";
+                case ActionEnum.Select:
+                    return "";
+                case ActionEnum.From:
+                    return "";
+                case ActionEnum.InnerJoin:
+                    return " inner join ";
+                case ActionEnum.LeftJoin:
+                    return " left join ";
+                case ActionEnum.On:
+                    return " on ";
+                case ActionEnum.Where:
+                    return " \r\n where ";
+                case ActionEnum.And:
+                    return " \r\n and ";
+                case ActionEnum.Or:
+                    return " \r\n or ";
+                case ActionEnum.OrderBy:
+                    return "";
+            }
+            return " ";
+        }
+        private string MultiConditionAction(DicModelDB db)
+        {
+            switch (db.GroupRef.GroupAction)
             {
                 case ActionEnum.And:
                     return " && ";
             }
             return " ";
         }
+        private string ConditionOption(OptionEnum option)
+        {
+            switch (option)
+            {
+                case OptionEnum.None:
+                    return "<<<<<";
+                case OptionEnum.Insert:
+                    return "";
+                case OptionEnum.InsertTVP:
+                    return "";
+                case OptionEnum.Set:
+                    return "=";
+                case OptionEnum.ChangeAdd:
+                    return "+";
+                case OptionEnum.ChangeMinus:
+                    return "-";
+                case OptionEnum.Column:
+                    return "";
+                case OptionEnum.ColumnAs:
+                    break;
+                case OptionEnum.Compare:
+                    return "";
+                case OptionEnum.Like:
+                    return " like ";
+                case OptionEnum.In:
+                    return " in ";
+                case OptionEnum.InHelper:
+                    break;
+                case OptionEnum.NotIn:
+                    return " not in ";
+                case OptionEnum.Count:
+                    return " count";
+                case OptionEnum.CharLength:
+                    return " char_length";
+                case OptionEnum.Trim:
+                    return " trim";
+                case OptionEnum.LTrim:
+                    return " ltrim";
+                case OptionEnum.RTrim:
+                    return " rtrim";
+                case OptionEnum.OneEqualOne:
+                    return "";
+                case OptionEnum.IsNull:
+                    return " is null ";
+                case OptionEnum.IsNotNull:
+                    return " is not null ";
+                case OptionEnum.Asc:
+                    return " asc ";
+                case OptionEnum.Desc:
+                    return " desc ";
+            }
+            return " ";
+        }
+        private string ConditionCompare(CompareEnum compare)
+        {
+            switch (compare)
+            {
+                case CompareEnum.None:
+                    return " ";
+                case CompareEnum.Equal:
+                    return "=";
+                case CompareEnum.NotEqual:
+                    return "<>";
+                case CompareEnum.LessThan:
+                    return "<";
+                case CompareEnum.LessThanOrEqual:
+                    return "<=";
+                case CompareEnum.GreaterThan:
+                    return ">";
+                case CompareEnum.GreaterThanOrEqual:
+                    return ">=";
+                case CompareEnum.Like:
+                    return " like ";
+                case CompareEnum.In:
+                    return " in ";
+                case CompareEnum.NotIn:
+                    return " not in ";
+            }
+            return " ";
+        }
+        private string ConditionFunc(FuncEnum func)
+        {
+            switch (func)
+            {
+                case FuncEnum.None:
+                    return "";
+                case FuncEnum.Column:
+                    return "";
+                case FuncEnum.CharLength:
+                    return " char_length";
+            }
+            return " ";
+        }
+
+        /****************************************************************************************************************/
+
         private string MultiCondition(DicModelDB db)
         {
             var list = new List<string>();
-            foreach(var item in db.Group)
+            foreach (var item in db.Group)
             {
                 if (item.Group != null)
                 {
@@ -188,10 +315,10 @@ namespace MyDAL.Core.MySql
                 }
                 else
                 {
-                    list.Add($" `{item.ColumnOne}`{item.Compare.ToEnumDesc<CompareEnum>()}@{item.Param} ");
+                    list.Add($" `{item.ColumnOne}`{ConditionCompare(item.Compare)}@{item.Param} ");
                 }
             }
-            return string.Join(MultiConditionSeperator(db.Group.First(it=>it.GroupRef!=null)), list);
+            return string.Join(MultiConditionAction(db.Group.First(it => it.GroupRef != null)), list);
         }
 
         /****************************************************************************************************************/
@@ -221,22 +348,22 @@ namespace MyDAL.Core.MySql
             {
                 if ("*".Equals(item.ColumnOne, StringComparison.OrdinalIgnoreCase))
                 {
-                    str = $" {item.Option.ToEnumDesc<OptionEnum>()}({item.ColumnOne}) ";
+                    str = $" {ConditionOption(item.Option)}({item.ColumnOne}) ";
                 }
                 else
                 {
-                    str = $" {item.Option.ToEnumDesc<OptionEnum>()}(`{item.ColumnOne}`) ";
+                    str = $" {ConditionOption(item.Option)}(`{item.ColumnOne}`) ";
                 }
             }
             else if (item.Crud == CrudTypeEnum.Join)
             {
                 if ("*".Equals(item.ColumnOne, StringComparison.OrdinalIgnoreCase))
                 {
-                    str = $" {item.Option.ToEnumDesc<OptionEnum>()}({item.ColumnOne}) ";
+                    str = $" {ConditionOption(item.Option)}({item.ColumnOne}) ";
                 }
                 else
                 {
-                    str = $" {item.Option.ToEnumDesc<OptionEnum>()}({item.TableAliasOne}.`{item.ColumnOne}`) ";
+                    str = $" {ConditionOption(item.Option)}({item.TableAliasOne}.`{item.ColumnOne}`) ";
                 }
             }
 
@@ -335,10 +462,10 @@ namespace MyDAL.Core.MySql
                         break;
                     case ActionEnum.InnerJoin:
                     case ActionEnum.LeftJoin:
-                        str += $" \r\n \t {item.Action.ToEnumDesc<ActionEnum>()} {item.TableOne} as {item.TableAliasOne} ";
+                        str += $" \r\n \t {ConditionAction(item.Action)} {item.TableOne} as {item.TableAliasOne} ";
                         break;
                     case ActionEnum.On:
-                        str += $" \r\n \t \t {item.Action.ToEnumDesc<ActionEnum>()} {item.TableAliasOne}.`{item.ColumnOne}`={item.AliasTwo}.`{item.KeyTwo}` ";
+                        str += $" \r\n \t \t {ConditionAction(item.Action)} {item.TableAliasOne}.`{item.ColumnOne}`={item.AliasTwo}.`{item.KeyTwo}` ";
                         break;
                 }
             }
@@ -355,79 +482,79 @@ namespace MyDAL.Core.MySql
             {
                 if (DC.IsFilterCondition(db))
                 {
-                    if(db.Group!=null)
+                    if (db.Group != null)
                     {
                         if (db.Crud == CrudTypeEnum.Join)
                         {
-                            str += $" {db.Action.ToEnumDesc<ActionEnum>()} {db.TableAliasOne}.`{db.ColumnOne}`{db.Compare.ToEnumDesc<CompareEnum>()}@{db.Param} ";
+                            str += $" {ConditionAction(db.Action)} {db.TableAliasOne}.`{db.ColumnOne}`{ConditionCompare(db.Compare)}@{db.Param} ";
                         }
-                        else if (DC.IsSingleTableOption(db))
+                        else if (DC.IsSingleTableOption(db.Crud))
                         {
-                            str += $" {db.Action.ToEnumDesc<ActionEnum>()} ({MultiCondition(db)}) ";
+                            str += $" {ConditionAction(db.Action)} ({MultiCondition(db)}) ";
                         }
                     }
                     else if (db.Option == OptionEnum.Compare)
                     {
                         if (db.Crud == CrudTypeEnum.Join)
                         {
-                            str += $" {db.Action.ToEnumDesc<ActionEnum>()} {db.TableAliasOne}.`{db.ColumnOne}`{db.Compare.ToEnumDesc<CompareEnum>()}@{db.Param} ";
+                            str += $" {ConditionAction(db.Action)} {db.TableAliasOne}.`{db.ColumnOne}`{ConditionCompare(db.Compare)}@{db.Param} ";
                         }
-                        else if (DC.IsSingleTableOption(db))
+                        else if (DC.IsSingleTableOption(db.Crud))
                         {
-                            str += $" {db.Action.ToEnumDesc<ActionEnum>()} `{db.ColumnOne}`{db.Compare.ToEnumDesc<CompareEnum>()}@{db.Param} ";
+                            str += $" {ConditionAction(db.Action)} `{db.ColumnOne}`{ConditionCompare(db.Compare)}@{db.Param} ";
                         }
                     }
                     else if (db.Option == OptionEnum.Like)
                     {
                         if (db.Crud == CrudTypeEnum.Join)
                         {
-                            str += $" {db.Action.ToEnumDesc<ActionEnum>()} {db.TableAliasOne}.`{db.ColumnOne}`{db.Option.ToEnumDesc<OptionEnum>()}{LikeStrHandle(db)} ";
+                            str += $" {ConditionAction(db.Action)} {db.TableAliasOne}.`{db.ColumnOne}`{ConditionOption(db.Option)}{LikeStrHandle(db)} ";
                         }
-                        else if (DC.IsSingleTableOption(db))
+                        else if (DC.IsSingleTableOption(db.Crud))
                         {
-                            str += $" {db.Action.ToEnumDesc<ActionEnum>()} `{db.ColumnOne}`{db.Option.ToEnumDesc<OptionEnum>()}{LikeStrHandle(db)} ";
+                            str += $" {ConditionAction(db.Action)} `{db.ColumnOne}`{ConditionOption(db.Option)}{LikeStrHandle(db)} ";
                         }
                     }
                     else if (db.Option == OptionEnum.CharLength)
                     {
                         if (db.Crud == CrudTypeEnum.Join)
                         {
-                            str += $" {db.Action.ToEnumDesc<ActionEnum>()} {db.Option.ToEnumDesc<OptionEnum>()}({db.TableAliasOne}.`{db.ColumnOne}`){db.Compare.ToEnumDesc<CompareEnum>()}@{db.Param} ";
+                            str += $" {ConditionAction(db.Action)} {ConditionOption(db.Option)}({db.TableAliasOne}.`{db.ColumnOne}`){ConditionCompare(db.Compare)}@{db.Param} ";
                         }
-                        else if (DC.IsSingleTableOption(db))
+                        else if (DC.IsSingleTableOption(db.Crud))
                         {
-                            str += $" {db.Action.ToEnumDesc<ActionEnum>()} {db.Option.ToEnumDesc<OptionEnum>()}(`{db.ColumnOne}`){db.Compare.ToEnumDesc<CompareEnum>()}@{db.Param} ";
+                            str += $" {ConditionAction(db.Action)} {ConditionOption(db.Option)}(`{db.ColumnOne}`){ConditionCompare(db.Compare)}@{db.Param} ";
                         }
                     }
                     else if (db.Option == OptionEnum.Trim || db.Option == OptionEnum.LTrim || db.Option == OptionEnum.RTrim)
                     {
                         if (db.Crud == CrudTypeEnum.Join)
                         {
-                            str += $" {db.Action.ToEnumDesc<ActionEnum>()} {db.Option.ToEnumDesc<OptionEnum>()}({db.TableAliasOne}.`{db.ColumnOne}`){db.Compare.ToEnumDesc<CompareEnum>()}@{db.Param} ";
+                            str += $" {ConditionAction(db.Action)} {ConditionOption(db.Option)}({db.TableAliasOne}.`{db.ColumnOne}`){ConditionCompare(db.Compare)}@{db.Param} ";
                         }
-                        else if (DC.IsSingleTableOption(db))
+                        else if (DC.IsSingleTableOption(db.Crud))
                         {
-                            str += $" {db.Action.ToEnumDesc<ActionEnum>()} {db.Option.ToEnumDesc<OptionEnum>()}(`{db.ColumnOne}`){db.Compare.ToEnumDesc<CompareEnum>()}@{db.Param} ";
+                            str += $" {ConditionAction(db.Action)} {ConditionOption(db.Option)}(`{db.ColumnOne}`){ConditionCompare(db.Compare)}@{db.Param} ";
                         }
                     }
                     else if (db.Option == OptionEnum.OneEqualOne)
                     {
-                        str += $" {db.Action.ToEnumDesc<ActionEnum>()} @{db.Param} ";
+                        str += $" {ConditionAction(db.Action)} @{db.Param} ";
                     }
                     else if (db.Option == OptionEnum.In || db.Option == OptionEnum.NotIn)
                     {
                         if (db.Crud == CrudTypeEnum.Join)
                         {
-                            str += $" {db.Action.ToEnumDesc<ActionEnum>()} {db.TableAliasOne}.`{db.ColumnOne}` {db.Option.ToEnumDesc<OptionEnum>()}({InStrHandle(db)}) ";
+                            str += $" {ConditionAction(db.Action)} {db.TableAliasOne}.`{db.ColumnOne}` {ConditionOption(db.Option)}({InStrHandle(db)}) ";
                         }
-                        else if (DC.IsSingleTableOption(db))
+                        else if (DC.IsSingleTableOption(db.Crud))
                         {
-                            str += $" {db.Action.ToEnumDesc<ActionEnum>()} `{db.ColumnOne}` {db.Option.ToEnumDesc<OptionEnum>()}({InStrHandle(db)}) ";
+                            str += $" {ConditionAction(db.Action)} `{db.ColumnOne}` {ConditionOption(db.Option)}({InStrHandle(db)}) ";
                         }
                     }
                     else if (db.Option == OptionEnum.IsNull || db.Option == OptionEnum.IsNotNull)
                     {
-                        str += $" {db.Action.ToEnumDesc<ActionEnum>()} `{db.ColumnOne}` {db.Option.ToEnumDesc<OptionEnum>()} ";
+                        str += $" {ConditionAction(db.Action)} `{db.ColumnOne}` {ConditionOption(db.Option)} ";
                     }
                 }
             }
@@ -439,11 +566,11 @@ namespace MyDAL.Core.MySql
                 var oIdx = str.IndexOf(" or ", StringComparison.Ordinal);
                 if (aIdx < oIdx)
                 {
-                    str = $" {ActionEnum.Where.ToEnumDesc<ActionEnum>()} true {str} ";
+                    str = $" {ConditionAction(ActionEnum.Where)} true {str} ";
                 }
                 else
                 {
-                    str = $" {ActionEnum.Where.ToEnumDesc<ActionEnum>()} false {str} ";
+                    str = $" {ConditionAction(ActionEnum.Where)} false {str} ";
                 }
             }
 
@@ -468,10 +595,10 @@ namespace MyDAL.Core.MySql
                         {
                             case OptionEnum.ChangeAdd:
                             case OptionEnum.ChangeMinus:
-                                list.Add($" `{item.ColumnOne}`=`{item.ColumnOne}`{item.Option.ToEnumDesc<OptionEnum>()}@{item.Param} ");
+                                list.Add($" `{item.ColumnOne}`=`{item.ColumnOne}`{ConditionOption(item.Option)}@{item.Param} ");
                                 break;
                             case OptionEnum.Set:
-                                list.Add($" `{item.ColumnOne}`{item.Option.ToEnumDesc<OptionEnum>()}@{item.Param} ");
+                                list.Add($" `{item.ColumnOne}`{ConditionOption(item.Option)}@{item.Param} ");
                                 break;
                         }
                         break;
@@ -532,18 +659,78 @@ namespace MyDAL.Core.MySql
             return string.Join(",", list);
         }
 
+        private List<DicModelUI> FlatDics(List<DicModelUI> dics)
+        {
+            var ds = new List<DicModelUI>();
 
-        internal DbParameters GetParameters()
+            //
+            foreach (var d in dics)
+            {
+                if (DC.IsParameter(d))
+                {
+                    if (d.Group != null)
+                    {
+                        ds.AddRange(FlatDics(d.Group));
+                    }
+                    else
+                    {
+                        ds.Add(d);
+                    }
+                }
+            }
+
+            //
+            return ds;
+        }
+        private List<DicModelDB> FlatDics(List<DicModelDB> dics)
+        {
+            var ds = new List<DicModelDB>();
+
+            //
+            foreach (var d in dics)
+            {
+                if (DC.IsParameter(d))
+                {
+                    if (d.Group != null)
+                    {
+                        ds.AddRange(FlatDics(d.Group));
+                    }
+                    else
+                    {
+                        ds.Add(d);
+                    }
+                }
+            }
+
+            //
+            return ds;
+        }
+        internal DbParameters GetParameters(List<DicModelDB> dbs)
         {
             var paras = new DbParameters();
 
             //
-            foreach (var item in DC.DbConditions)
+            foreach (var db in dbs)
             {
-                if (DC.IsParameter(item))
+                if (DC.IsParameter(db))
                 {
-                    paras.Add(item.Param, item.DbValue, item.DbType);
+                    if (db.Group != null)
+                    {
+                        paras.Add(GetParameters(db.Group));
+                    }
+                    else
+                    {
+                        paras.Add(db.Param, db.DbValue, db.DbType);
+                    }
                 }
+            }
+
+            //
+            if (XConfig.IsDebug)
+            {
+                XDebug.UIs = FlatDics(DC.UiConditions);
+                XDebug.DBs = FlatDics(DC.DbConditions);
+                XDebug.SetValue();
             }
 
             //
@@ -648,7 +835,10 @@ namespace MyDAL.Core.MySql
             }
 
             //
-            XDebug.SetValue(DC, list);
+            if (XConfig.IsDebug)
+            {
+                XDebug.SQL = list;
+            }
 
             //
             return list;
