@@ -1,4 +1,4 @@
-# MyDAL
+# Project Introduction 
   -- EasyDAL.Exchange 0.2.3 版本后 更名为 MyDAL 
 
 ![Image text](https://github.com/liumeng0403/MyDAL/blob/master/EasyDAL.Exchange/Others/MyDAL.png)
