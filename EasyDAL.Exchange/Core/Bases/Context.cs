@@ -6,7 +6,7 @@ using Yunyong.DataExchange.Cache;
 using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Enums;
 using Yunyong.DataExchange.Core.Helper;
-using Yunyong.DataExchange.Core.MySql;
+using Yunyong.DataExchange.DBRainbow.MySQL;
 
 namespace Yunyong.DataExchange.Core.Bases
 {

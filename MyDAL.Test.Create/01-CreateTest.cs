@@ -1,9 +1,6 @@
 using MyDAL.Test.Entities.EasyDal_Exchange;
 using MyDAL.Test.Enums;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using Xunit;
 using Yunyong.DataExchange;

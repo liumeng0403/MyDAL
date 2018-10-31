@@ -7,7 +7,7 @@ using Yunyong.DataExchange.AdoNet;
 using Yunyong.DataExchange.Cache;
 using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Core.Extensions;
-using Yunyong.DataExchange.Core.MySql.Models;
+using Yunyong.DataExchange.DBRainbow;
 
 namespace Yunyong.DataExchange.Core.Helper
 {

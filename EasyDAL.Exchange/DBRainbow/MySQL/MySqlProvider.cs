@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Enums;
 using Yunyong.DataExchange.Core.Extensions;
-using Yunyong.DataExchange.Core.MySql.Models;
 
-namespace Yunyong.DataExchange.Core.MySql
+namespace Yunyong.DataExchange.DBRainbow.MySQL
 {
     internal class MySqlProvider
         : ISqlProvider

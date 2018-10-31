@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Yunyong.DataExchange.Core.MySql.Models
+namespace Yunyong.DataExchange.DBRainbow
 {
     internal class NameTypeModel
     {
