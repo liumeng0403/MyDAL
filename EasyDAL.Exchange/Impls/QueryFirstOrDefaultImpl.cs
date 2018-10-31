@@ -22,7 +22,7 @@ namespace MyDAL.Impls
             return await DC.DS.ExecuteReaderSingleRowAsync<M>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryFirstOrDefaultAsync)[0],
-                DC.SqlProvider.GetParameters(DC.DbConditions));
+                DC.GetParameters(DC.DbConditions));
         }
 
         public async Task<VM> QueryFirstOrDefaultAsync<VM>()
@@ -33,7 +33,7 @@ namespace MyDAL.Impls
             return await DC.DS.ExecuteReaderSingleRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryFirstOrDefaultAsync)[0],
-                DC.SqlProvider.GetParameters(DC.DbConditions));
+                DC.GetParameters(DC.DbConditions));
         }
 
         public async Task<VM> QueryFirstOrDefaultAsync<VM>(Expression<Func<M, VM>> func)
@@ -44,7 +44,7 @@ namespace MyDAL.Impls
             return await DC.DS.ExecuteReaderSingleRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryFirstOrDefaultAsync)[0],
-                DC.SqlProvider.GetParameters(DC.DbConditions));
+                DC.GetParameters(DC.DbConditions));
         }
     }
 
@@ -64,7 +64,7 @@ namespace MyDAL.Impls
             return await DC.DS.ExecuteReaderSingleRowAsync<M>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.JoinQueryFirstOrDefaultAsync)[0],
-                DC.SqlProvider.GetParameters(DC.DbConditions));
+                DC.GetParameters(DC.DbConditions));
         }
 
         public async Task<VM> QueryFirstOrDefaultAsync<VM>(Expression<Func<VM>> func)
@@ -75,7 +75,7 @@ namespace MyDAL.Impls
             return await DC.DS.ExecuteReaderSingleRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<VM>(UiMethodEnum.JoinQueryFirstOrDefaultAsync)[0],
-                DC.SqlProvider.GetParameters(DC.DbConditions));
+                DC.GetParameters(DC.DbConditions));
         }
     }
 }

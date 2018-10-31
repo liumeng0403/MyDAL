@@ -20,14 +20,14 @@ namespace MyDAL.Test.QueryVmColumn
             var testQ4 = new WhereTestModel
             {
                 CreatedOn = DateTime.Now.AddDays(-30),
-                DateTime_大于等于 = WhereTest.CreatedOn,
-                DateTime_小于等于 = DateTime.Now,
+                StartTime = WhereTest.CreatedOn,
+                EndTime = DateTime.Now,
                 AgentLevelXX = AgentLevel.DistiAgent,
                 ContainStr = "~00-d-3-1-"
             };
             var res4 = await Conn
                 .Selecter<Agent>()
-                .Where(it => it.CreatedOn >= testQ4.DateTime_大于等于)
+                .Where(it => it.CreatedOn >= testQ4.StartTime)
                 .QueryListAsync<AgentVM>();
             Assert.True(res4.Count == 28619);
             Assert.NotNull(res4.First().Name);

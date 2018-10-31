@@ -15,7 +15,6 @@ using System.Threading.Tasks;
 namespace MyDAL.AdoNet
 {
     internal class DataSource
-        : ClassInstance<DataSource>
     {
 
         /*

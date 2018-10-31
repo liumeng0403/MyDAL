@@ -1,6 +1,4 @@
-﻿
-using MyDAL.AdoNet;
-using MyDAL.Core.Bases;
+﻿using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
@@ -14,6 +12,7 @@ using System.Threading.Tasks;
 namespace MyDAL.Core.MySql
 {
     internal class MySqlProvider
+        : ISqlProvider
     {
         private Context DC { get; set; }
 
@@ -313,7 +312,7 @@ namespace MyDAL.Core.MySql
             {
                 if (item.Group != null)
                 {
-                    list.Add(MultiCondition(item));
+                    list.Add($"({MultiCondition(item)})");
                 }
                 else
                 {
@@ -325,7 +324,7 @@ namespace MyDAL.Core.MySql
 
         /****************************************************************************************************************/
 
-        internal string GetSingleValuePart()
+        private string GetSingleValuePart()
         {
             var str = string.Empty;
 
@@ -341,7 +340,7 @@ namespace MyDAL.Core.MySql
 
             return str;
         }
-        internal string GetCountPart()
+        private string GetCountPart()
         {
             var str = string.Empty;
 
@@ -372,7 +371,7 @@ namespace MyDAL.Core.MySql
             return str;
         }
 
-        internal string Columns()
+        private string Columns()
         {
             var str = string.Empty;
             var list = new List<string>();
@@ -446,7 +445,7 @@ namespace MyDAL.Core.MySql
             return tableName;
         }
 
-        internal string Joins()
+        private string Joins()
         {
             var str = string.Empty;
 
@@ -475,7 +474,7 @@ namespace MyDAL.Core.MySql
             return str;
         }
 
-        internal string Wheres()
+        private string Wheres()
         {
             var str = string.Empty;
 
@@ -579,7 +578,7 @@ namespace MyDAL.Core.MySql
             return str;
         }
 
-        internal string GetUpdates()
+        private string GetUpdates()
         {
             if (!DC.DbConditions.Any(it => it.Action == ActionEnum.Update))
             {
@@ -610,7 +609,54 @@ namespace MyDAL.Core.MySql
             return string.Join(", \r\n\t", list);
         }
 
-        internal async Task<List<ColumnInfo>> GetColumnsInfos(string tableName)
+        private string GetColumns()
+        {
+            var list = new List<string>();
+            foreach (var item in DC.DbConditions)
+            {
+                if (item.TvpIndex == 0)
+                {
+                    list.Add($"`{item.ColumnOne}`");
+                }
+            }
+            return $" \r\n ({ string.Join(",", list)}) ";
+        }
+        private string GetValues()
+        {
+            var list = new List<string>();
+            for (var i = 0; i < DC.DbConditions.Max(it => it.TvpIndex) + 1; i++)
+            {
+                var values = new List<string>();
+                foreach (var item in DC.DbConditions)
+                {
+                    if (item.TvpIndex == i)
+                    {
+                        values.Add($"@{item.Param}");
+                    }
+                }
+                list.Add($" \r\n ({string.Join(",", values)})");
+            }
+            return string.Join(",", list);
+        }
+
+        /****************************************************************************************************************/
+
+        string ISqlProvider.GetTableName<M>()
+        {
+            var tableName = string.Empty;
+            tableName = DC.AH.GetAttributePropVal<M, XTableAttribute>(a => a.Name);
+            if (tableName.IsNullStr())
+            {
+                tableName = DC.AH.GetAttributePropVal<M, TableAttribute>(a => a.Name);
+            }
+            if (string.IsNullOrWhiteSpace(tableName))
+            {
+                throw new Exception($"类 [[{typeof(M).FullName}]] 必须是与 DB Table 对应的实体类,并且要由 XTableAttribute 或 TableAttribute 指定对应的表名!");
+            }
+            return $"`{tableName}`";
+        }
+
+        async Task<List<ColumnInfo>> ISqlProvider.GetColumnsInfos(string tableName)
         {
             //TryGetTableName<M>(out var tableName);
             var sql = $@"
@@ -631,133 +677,7 @@ namespace MyDAL.Core.MySql
             return (await DC.DS.ExecuteReaderMultiRowAsync<ColumnInfo>(DC.Conn, sql, null)).ToList();
         }
 
-        internal string GetColumns()
-        {
-            var list = new List<string>();
-            foreach (var item in DC.DbConditions)
-            {
-                if (item.TvpIndex == 0)
-                {
-                    list.Add($"`{item.ColumnOne}`");
-                }
-            }
-            return $" \r\n ({ string.Join(",", list)}) ";
-        }
-        internal string GetValues()
-        {
-            var list = new List<string>();
-            for (var i = 0; i < DC.DbConditions.Max(it => it.TvpIndex) + 1; i++)
-            {
-                var values = new List<string>();
-                foreach (var item in DC.DbConditions)
-                {
-                    if (item.TvpIndex == i)
-                    {
-                        values.Add($"@{item.Param}");
-                    }
-                }
-                list.Add($" \r\n ({string.Join(",", values)})");
-            }
-            return string.Join(",", list);
-        }
-
-        private List<DicModelUI> FlatDics(List<DicModelUI> dics)
-        {
-            var ds = new List<DicModelUI>();
-
-            //
-            foreach (var d in dics)
-            {
-                if (DC.IsParameter(d.Action))
-                {
-                    if (d.Group != null)
-                    {
-                        ds.AddRange(FlatDics(d.Group));
-                    }
-                    else
-                    {
-                        ds.Add(d);
-                    }
-                }
-            }
-
-            //
-            return ds;
-        }
-        private List<DicModelDB> FlatDics(List<DicModelDB> dics)
-        {
-            var ds = new List<DicModelDB>();
-
-            //
-            foreach (var d in dics)
-            {
-                if (DC.IsParameter(d.Action))
-                {
-                    if (d.Group != null)
-                    {
-                        ds.AddRange(FlatDics(d.Group));
-                    }
-                    else
-                    {
-                        ds.Add(d);
-                    }
-                }
-            }
-
-            //
-            return ds;
-        }
-        internal DbParameters GetParameters(List<DicModelDB> dbs)
-        {
-            var paras = new DbParameters();
-
-            //
-            foreach (var db in dbs)
-            {
-                if (DC.IsParameter(db.Action))
-                {
-                    if (db.Group != null)
-                    {
-                        paras.Add(GetParameters(db.Group));
-                    }
-                    else
-                    {
-                        paras.Add(db.Param, db.DbValue, db.DbType);
-                    }
-                }
-            }
-
-            //
-            if (XConfig.IsDebug)
-            {
-                lock (XDebug.Lock)
-                {
-                    XDebug.UIs = FlatDics(DC.UiConditions);
-                    XDebug.DBs = FlatDics(DC.DbConditions);
-                    XDebug.SetValue();
-                }
-            }
-
-            //
-            return paras;
-        }
-
-        internal string GetTableName<M>()
-        {
-            var tableName = string.Empty;
-            tableName = DC.AH.GetAttributePropVal<M, XTableAttribute>(a => a.Name);
-            if (tableName.IsNullStr())
-            {
-                tableName = DC.AH.GetAttributePropVal<M, TableAttribute>(a => a.Name);
-            }
-            if (string.IsNullOrWhiteSpace(tableName))
-            {
-                throw new Exception($"类 [[{typeof(M).FullName}]] 必须是与 DB Table 对应的实体类,并且要由 TableAttribute 指定对应的表名!");
-            }
-            return $"`{tableName}`";
-        }
-
-        internal string GetTablePK(string fullName)
+        string ISqlProvider.GetTablePK(string fullName)
         {
             var key = DC.SC.GetModelKey(fullName);
             var col = DC.SC.GetColumnInfos(key).FirstOrDefault(it => "PRI".Equals(it.KeyType, StringComparison.OrdinalIgnoreCase));
@@ -768,7 +688,7 @@ namespace MyDAL.Core.MySql
             return col.ColumnName;
         }
 
-        internal List<string> GetSQL<M>(UiMethodEnum type, int? pageIndex = null, int? pageSize = null)
+        List<string> ISqlProvider.GetSQL<M>(UiMethodEnum type, int? pageIndex = null, int? pageSize = null)
         {
             var list = new List<string>();
 
@@ -848,5 +768,6 @@ namespace MyDAL.Core.MySql
             //
             return list;
         }
+
     }
 }

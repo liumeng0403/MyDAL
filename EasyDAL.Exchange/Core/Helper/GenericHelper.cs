@@ -1,4 +1,5 @@
-﻿using MyDAL.Core.Common;
+﻿using MyDAL.Core.Bases;
+using MyDAL.Core.Common;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -7,8 +8,17 @@ using System.Reflection;
 
 namespace MyDAL.Core.Helper
 {
-    internal class GenericHelper : ClassInstance<GenericHelper>
+    internal class GenericHelper
     {
+
+        private Context DC { get; set; }
+
+        internal GenericHelper(Context dc)
+        {
+            DC = dc;
+        }
+
+        /*******************************************************************************************************************/
 
         private Assembly LoadAssemblyR(string name)
         {

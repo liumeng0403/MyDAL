@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyDAL.Core.Enums;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
@@ -18,6 +19,9 @@ namespace MyDAL.Core
         internal static string TablesNamespace { get; set; } = string.Empty;
 
         /************************************************************************************************************/
+
+        internal static string MySQL { get; } = "MySql.Data.MySqlClient.MySqlConnection";
+        internal static DbEnum DB { get; set; } = DbEnum.None;
 
         internal static int CommandTimeout { get; set; } = 10;  // 10s 
 

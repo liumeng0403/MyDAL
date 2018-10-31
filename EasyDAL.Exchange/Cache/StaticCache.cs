@@ -66,7 +66,7 @@ namespace MyDAL.Cache
         {
             if (!AssemblyCache.TryGetValue(key, out var ass))
             {
-                ass = GenericHelper.Instance.LoadAssembly(key.Split(':')[1]);
+                ass =  new GenericHelper(DC).LoadAssembly(key.Split(':')[1]);
                 AssemblyCache[key] = ass;
             }
             return ass;

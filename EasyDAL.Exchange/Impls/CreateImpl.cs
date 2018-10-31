@@ -22,7 +22,7 @@ namespace MyDAL.Impls
             return await DC.DS.ExecuteNonQueryAsync(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.CreateAsync)[0],
-                DC.SqlProvider.GetParameters(DC.DbConditions));
+                DC.GetParameters(DC.DbConditions));
         }
     }
 }
