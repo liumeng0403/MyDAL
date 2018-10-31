@@ -40,8 +40,6 @@ namespace Yunyong.DataExchange.Core.Bases
 
         /************************************************************************************************************************/
 
-        internal XDebug Hint { get; set; }
-
         internal XExpression EH { get; private set; }
         internal CsValueHelper VH { get; private set; }
         internal DicModelHelper DH { get; private set; }
@@ -56,6 +54,7 @@ namespace Yunyong.DataExchange.Core.Bases
 
         /************************************************************************************************************************/
 
+        internal int DicID { get; set; } = 1;
         internal List<DicModelUI> UiConditions { get; private set; }
         internal List<DicModelDB> DbConditions { get; private set; }
 
@@ -77,9 +76,19 @@ namespace Yunyong.DataExchange.Core.Bases
 
         /************************************************************************************************************************/
 
-        internal bool IsParameter(DicModelBase item)
+        internal bool IsInParameter(DicModelUI ui)
         {
-            switch (item.Action)
+            if (ui.CsValue != null
+                && (ui.Option == OptionEnum.In || ui.Option == OptionEnum.NotIn)
+                && ui.CsValue.ToString().Contains(","))
+            {
+                return true;
+            }
+            return false;
+        }
+        internal bool IsParameter(ActionEnum action)
+        {
+            switch (action)
             {
                 case ActionEnum.Insert:
                 case ActionEnum.Update:
@@ -90,9 +99,9 @@ namespace Yunyong.DataExchange.Core.Bases
             }
             return false;
         }
-        internal bool IsFilterCondition(DicModelBase item)
+        internal bool IsFilterCondition(ActionEnum action)
         {
-            switch(item.Action)
+            switch (action)
             {
                 case ActionEnum.Where:
                 case ActionEnum.And:
@@ -103,7 +112,7 @@ namespace Yunyong.DataExchange.Core.Bases
         }
         internal bool IsSingleTableOption(CrudTypeEnum crud)
         {
-            switch(crud)
+            switch (crud)
             {
                 case CrudTypeEnum.Query:
                 case CrudTypeEnum.Update:
@@ -130,15 +139,10 @@ namespace Yunyong.DataExchange.Core.Bases
 
         internal void AddConditions(DicModelUI dic)
         {
-            if (dic.CsValue != null
-                && (dic.Option == OptionEnum.In || dic.Option == OptionEnum.NotIn)
-                && dic.CsValue.ToString().Contains(","))
+            DH.UniqueDicContext(dic, UiConditions);
+            if (!IsInParameter(dic))
             {
-                DH.InNotInDicProcess(dic);
-            }
-            else
-            {
-                DH.DicAddContext(dic);
+                UiConditions.Add(dic);
             }
 
             //

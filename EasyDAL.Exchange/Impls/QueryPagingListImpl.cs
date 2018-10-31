@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Yunyong.Core;
@@ -24,13 +23,13 @@ namespace Yunyong.DataExchange.Impls
         }
 
         public async Task<PagingList<VM>> QueryPagingListAsync<VM>(int pageIndex, int pageSize)
-            where VM:class
+            where VM : class
         {
             return await QueryPagingListAsyncHandle<M, VM>(pageIndex, pageSize, UiMethodEnum.QueryPagingListAsync);
         }
 
         public async Task<PagingList<VM>> QueryPagingListAsync<VM>(int pageIndex, int pageSize, Expression<Func<M, VM>> func)
-            where VM:class
+            where VM : class
         {
             SelectMHandle(func);
             DC.DH.UiToDbCopy();
@@ -55,7 +54,7 @@ namespace Yunyong.DataExchange.Impls
         }
 
         public async Task<PagingList<VM>> QueryPagingListAsync<VM>(PagingQueryOption option)
-            where VM:class
+            where VM : class
         {
             SelectMHandle<M, VM>();
             OrderByOptionHandle(option, typeof(M).FullName);
@@ -64,7 +63,7 @@ namespace Yunyong.DataExchange.Impls
         }
 
         public async Task<PagingList<VM>> QueryPagingListAsync<VM>(PagingQueryOption option, Expression<Func<M, VM>> func)
-            where VM:class
+            where VM : class
         {
             SelectMHandle(func);
             OrderByOptionHandle(option, typeof(M).FullName);
@@ -82,33 +81,19 @@ namespace Yunyong.DataExchange.Impls
         }
 
         public async Task<PagingList<M>> QueryPagingListAsync<M>(int pageIndex, int pageSize)
-            where M:class
+            where M : class
         {
             SelectMHandle<M>();
             DC.DH.UiToDbCopy();
-            var result = new PagingList<M>();
-            result.PageIndex = pageIndex;
-            result.PageSize = pageSize;
-            var paras = DC.SqlProvider.GetParameters(DC.DbConditions);
-            var sql = DC.SqlProvider.GetSQL<M>(UiMethodEnum.JoinQueryPagingListAsync, result.PageIndex, result.PageSize);
-            result.TotalCount = await DC.DS.ExecuteScalarAsync<int>(DC.Conn, sql[0], paras);
-            result.Data = (await DC.DS.ExecuteReaderMultiRowAsync<M>(DC.Conn, sql[1], paras)).ToList();
-            return result;
+            return await QueryPagingListAsyncHandle<M>(pageIndex, pageSize, UiMethodEnum.JoinQueryPagingListAsync);
         }
 
         public async Task<PagingList<VM>> QueryPagingListAsync<VM>(int pageIndex, int pageSize, Expression<Func<VM>> func)
-            where VM:class
+            where VM : class
         {
             SelectMHandle(func);
             DC.DH.UiToDbCopy();
-            var result = new PagingList<VM>();
-            result.PageIndex = pageIndex;
-            result.PageSize = pageSize;
-            var paras = DC.SqlProvider.GetParameters(DC.DbConditions);
-            var sql = DC.SqlProvider.GetSQL<VM>(UiMethodEnum.JoinQueryPagingListAsync, result.PageIndex, result.PageSize);
-            result.TotalCount = await DC.DS.ExecuteScalarAsync<int>(DC.Conn, sql[0], paras);
-            result.Data = (await DC.DS.ExecuteReaderMultiRowAsync<VM>(DC.Conn, sql[1], paras)).ToList();
-            return result;
+            return await QueryPagingListAsyncHandle<VM>(pageIndex, pageSize, UiMethodEnum.JoinQueryPagingListAsync);
         }
     }
 
@@ -121,35 +106,21 @@ namespace Yunyong.DataExchange.Impls
         }
 
         public async Task<PagingList<M>> QueryPagingListAsync<M>(PagingQueryOption option)
-            where M:class
+            where M : class
         {
             SelectMHandle<M>();
             OrderByOptionHandle(option, typeof(M).FullName);
             DC.DH.UiToDbCopy();
-            var result = new PagingList<M>();
-            result.PageIndex = option.PageIndex;
-            result.PageSize = option.PageSize;
-            var paras = DC.SqlProvider.GetParameters(DC.DbConditions);
-            var sql = DC.SqlProvider.GetSQL<M>(UiMethodEnum.JoinQueryPagingListAsync, result.PageIndex, result.PageSize);
-            result.TotalCount = await DC.DS.ExecuteScalarAsync<int>(DC.Conn, sql[0], paras);
-            result.Data = (await DC.DS.ExecuteReaderMultiRowAsync<M>(DC.Conn, sql[1], paras)).ToList();
-            return result;
+            return await QueryPagingListAsyncHandle<M>(option.PageIndex, option.PageSize, UiMethodEnum.JoinQueryPagingListAsync);
         }
 
         public async Task<PagingList<VM>> QueryPagingListAsync<VM>(PagingQueryOption option, Expression<Func<VM>> func)
-            where VM:class
+            where VM : class
         {
             SelectMHandle(func);
             OrderByOptionHandle(option, string.Empty);
             DC.DH.UiToDbCopy();
-            var result = new PagingList<VM>();
-            result.PageIndex = option.PageIndex;
-            result.PageSize = option.PageSize;
-            var paras = DC.SqlProvider.GetParameters(DC.DbConditions);
-            var sql = DC.SqlProvider.GetSQL<VM>(UiMethodEnum.JoinQueryPagingListAsync, result.PageIndex, result.PageSize);
-            result.TotalCount = await DC.DS.ExecuteScalarAsync<int>(DC.Conn, sql[0], paras);
-            result.Data = (await DC.DS.ExecuteReaderMultiRowAsync<VM>(DC.Conn, sql[1], paras)).ToList();
-            return result;
+            return await QueryPagingListAsyncHandle<VM>(option.PageIndex, option.PageSize, UiMethodEnum.JoinQueryPagingListAsync);
         }
     }
 }

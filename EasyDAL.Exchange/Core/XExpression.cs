@@ -50,6 +50,10 @@ namespace Yunyong.DataExchange.Core
             {
                 return ActionEnum.And;
             }
+            else if(nodeType == ExpressionType.OrElse)
+            {
+                return ActionEnum.Or;
+            }
             return ActionEnum.None;
         }
 
@@ -181,7 +185,8 @@ namespace Yunyong.DataExchange.Core
         }
         private bool IsMultiExpr(ExpressionType type)
         {
-            if (type == ExpressionType.AndAlso)
+            if (type == ExpressionType.AndAlso
+                || type == ExpressionType.OrElse)
             {
                 return true;
             }

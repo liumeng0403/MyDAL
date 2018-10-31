@@ -14,6 +14,8 @@ namespace Yunyong.DataExchange
     /// </summary>
     public sealed class XDebug
     {
+        internal static object Lock { get; } = new object();
+
         internal static List<DicModelUI> UIs { get; set; }
         internal static List<DicModelDB> DBs { get; set; }
         internal static void SetValue()
