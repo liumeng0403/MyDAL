@@ -2,7 +2,7 @@
 using MyDAL.Core;
 using MyDAL.Core.Bases;
 using MyDAL.Core.Helper;
-using MyDAL.Core.MySql.Models;
+using MyDAL.DBRainbow;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;

@@ -3,7 +3,7 @@ using MyDAL.Cache;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Helper;
-using MyDAL.Core.MySql;
+using MyDAL.DBRainbow.MySQL;
 using System;
 using System.Collections.Generic;
 using System.Data;

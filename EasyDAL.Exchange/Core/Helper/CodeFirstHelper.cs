@@ -1,12 +1,10 @@
 ﻿using MyDAL.AdoNet;
 using MyDAL.Cache;
 using MyDAL.Core.Bases;
-using MyDAL.Core.Common;
 using MyDAL.Core.Extensions;
-using MyDAL.Core.MySql.Models;
+using MyDAL.DBRainbow;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;

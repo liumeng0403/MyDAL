@@ -1,5 +1,5 @@
 ﻿using MyDAL.Core.Enums;
-using MyDAL.Core.MySql.Models;
+using MyDAL.DBRainbow;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

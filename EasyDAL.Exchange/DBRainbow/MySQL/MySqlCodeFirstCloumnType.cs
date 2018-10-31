@@ -2,7 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MyDAL.Core.MySql
+namespace MyDAL.DBRainbow.MySQL
 {
     /*
      * CREATE TABLE `mysqlcloumntype` (

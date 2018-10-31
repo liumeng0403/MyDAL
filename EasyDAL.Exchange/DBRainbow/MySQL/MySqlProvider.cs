@@ -1,15 +1,15 @@
-﻿using MyDAL.Core.Bases;
+﻿using MyDAL.Core;
+using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
-using MyDAL.Core.MySql.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MyDAL.Core.MySql
+namespace MyDAL.DBRainbow.MySQL
 {
     internal class MySqlProvider
         : ISqlProvider

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyDAL.Core.MySql.Models
+namespace MyDAL.DBRainbow
 {
     internal class NameTypeModel
     {
