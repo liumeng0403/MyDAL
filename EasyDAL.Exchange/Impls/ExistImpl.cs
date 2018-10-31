@@ -25,7 +25,7 @@ namespace Yunyong.DataExchange.Impls
             var count = await DC.DS.ExecuteScalarAsync<long>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.ExistAsync)[0],
-                DC.SqlProvider.GetParameters(DC.DbConditions));
+                DC.GetParameters(DC.DbConditions));
             if (count > 0)
             {
                 return true;

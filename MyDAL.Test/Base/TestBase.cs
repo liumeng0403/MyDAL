@@ -18,8 +18,8 @@ namespace MyDAL.Test
                 return new WhereTestModel
                 {
                     CreatedOn = Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30),
-                    DateTime_大于等于 = DateTime.Now.AddDays(-30),
-                    DateTime_小于等于 = DateTime.Now,
+                    StartTime = Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30),
+                    EndTime = DateTime.Now,
                     AgentLevelXX = AgentLevel.DistiAgent,
                     AgentLevelNull = null,
                     ContainStr = "~00-d-3-1-",

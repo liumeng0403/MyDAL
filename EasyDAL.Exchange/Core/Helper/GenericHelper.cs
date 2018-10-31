@@ -1,14 +1,23 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using Yunyong.DataExchange.Core.Common;
+using Yunyong.DataExchange.Core.Bases;
 
 namespace Yunyong.DataExchange.Core.Helper
 {
-    internal class GenericHelper : ClassInstance<GenericHelper>
+    internal class GenericHelper
     {
+
+        private Context DC { get; set; }
+
+        internal GenericHelper(Context dc)
+        {
+            DC = dc;
+        }
+
+        /*******************************************************************************************************************/
 
         private Assembly LoadAssemblyR(string name)
         {

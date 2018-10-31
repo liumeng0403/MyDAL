@@ -15,7 +15,6 @@ using Yunyong.DataExchange.Core.Helper;
 namespace Yunyong.DataExchange.AdoNet
 {
     internal class DataSource
-        : ClassInstance<DataSource>
     {
 
         /*

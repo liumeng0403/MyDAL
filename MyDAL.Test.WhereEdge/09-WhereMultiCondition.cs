@@ -1,6 +1,8 @@
 ﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+using MyDAL.Test.Enums;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -38,6 +40,82 @@ namespace MyDAL.Test.WhereEdge
             Assert.True(res2.Count == 2);
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /***************************************************************************************************************************/
+
+            var xx3 = "";
+
+            var guid3 = Guid.Parse("000a9465-8665-40bf-90e3-0165442d9120");
+            var pathId3 = "~00-d-3-1-1-5-1-3-4-2-2-1-1-11-6-1-8-4";
+            var res3 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.CreatedOn >= WhereTest.StartTime && it.CreatedOn <= WhereTest.EndTime)
+                .QueryListAsync();
+            Assert.True(res3.Count == 28619);
+
+            var tuple3 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /***************************************************************************************************************************/
+
+            var xx4 = "";
+
+            var guid4 = Guid.Parse("000cecd5-56dc-4085-804b-0165443bdf5d");
+            var pathId4 = "~00-d-3-2-1-c-2-f-4-3-1-2-4";
+            var level4 = AgentLevel.Customer;
+            var res4 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.Id == guid4 && it.AgentLevel==level4  && it.PathId == pathId4)
+                .QueryListAsync();
+            Assert.True(res4.Count == 1);
+
+            var tuple4 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /***************************************************************************************************************************/
+
+            var xx5 = "";
+
+            var guid5 = Guid.Parse("000cecd5-56dc-4085-804b-0165443bdf5d");
+            var guid51 = Guid.Parse("000f5f16-5502-4324-b5d6-016544300263");
+            var guid52 = Guid.Parse("00141f0d-7040-4b54-a6c3-016544451224");
+            var res5 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.Id == guid5 || it.Id == guid51 || it.Id == guid52)
+                .QueryListAsync();
+            Assert.True(res5.Count == 3);
+
+            var tuple5 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /***************************************************************************************************************************/
+
+            var xx6 = "";
+
+            var guid6 = Guid.Parse("000cecd5-56dc-4085-804b-0165443bdf5d");
+            var guid61 = Guid.Parse("000f5f16-5502-4324-b5d6-016544300263");
+            var guid62 = Guid.Parse("00141f0d-7040-4b54-a6c3-016544451224");
+            var res6 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.Id == guid6 && it.Id == guid61 || it.Id == guid62)
+                .QueryListAsync();
+            Assert.True(res6.Count == 1);
+            Assert.True(res6.First().Id == guid62);
+
+            var tuple6 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /***************************************************************************************************************************/
+
+            var xx7 = "";
+
+            var guid7 = Guid.Parse("000cecd5-56dc-4085-804b-0165443bdf5d");
+            var guid71 = Guid.Parse("000f5f16-5502-4324-b5d6-016544300263");
+            var guid72 = Guid.Parse("00141f0d-7040-4b54-a6c3-016544451224");
+            var res7 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.Id == guid7 || it.Id == guid71 && it.Id == guid72)
+                .QueryListAsync();
+            Assert.True(res7.Count == 1);
+            Assert.True(res7.First().Id == guid7);
+
+            var tuple7 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /***************************************************************************************************************************/
 

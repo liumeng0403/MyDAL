@@ -6,7 +6,7 @@ using Yunyong.DataExchange.Core.Common;
 
 namespace Yunyong.DataExchange.Core.Helper
 {
-    internal class BatchDataHelper : ClassInstance<BatchDataHelper>
+    internal class BatchDataHelper 
     {
         
         internal async Task<int> StepProcess<M>(IEnumerable<M> modelList, int stepNum, Func<IEnumerable<M>,Task<int>> func)

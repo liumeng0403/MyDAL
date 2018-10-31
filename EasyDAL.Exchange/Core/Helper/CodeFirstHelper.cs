@@ -52,7 +52,7 @@ namespace Yunyong.DataExchange.Core.Helper
 
         private async Task CompareDb(IDbConnection conn, string targetDb)
         {
-            var dbs = await DataSource.Instance.ExecuteReaderMultiRowAsync<DbModel>(conn, " show databases; ", null);
+            var dbs = await new DataSource().ExecuteReaderMultiRowAsync<DbModel>(conn, " show databases; ", null);
             if (dbs.Any(it => it.Database.Equals(targetDb, StringComparison.OrdinalIgnoreCase)))
             {
                 return;
@@ -61,7 +61,7 @@ namespace Yunyong.DataExchange.Core.Helper
             {
                 try
                 {
-                    var res = await DataSource.Instance.ExecuteNonQueryAsync(conn, $" create database if not exists {targetDb} default charset utf8; ", null);
+                    var res = await new DataSource().ExecuteNonQueryAsync(conn, $" create database if not exists {targetDb} default charset utf8; ", null);
                 }
                 catch (Exception ex)
                 {
@@ -84,7 +84,7 @@ namespace Yunyong.DataExchange.Core.Helper
                                     where table_schema='{conn.Database}'
                                             and table_type='base table';
                                 ";
-            dtNames =(await DataSource.Instance.ExecuteReaderMultiRowAsync<TableModel>(conn, sql, null)).ToList();
+            dtNames =(await new DataSource().ExecuteReaderMultiRowAsync<TableModel>(conn, sql, null)).ToList();
 
             //
             var createList = new List<string>();
@@ -114,7 +114,7 @@ namespace Yunyong.DataExchange.Core.Helper
             foreach(var c in createList)
             {
                 var table = tupleCs.First(it => it.Name.Equals(c, StringComparison.OrdinalIgnoreCase));
-                var tProps = GenericHelper.Instance.GetPropertyInfos(table.Type);
+                var tProps = new GenericHelper(DC).GetPropertyInfos(table.Type);
 
             }
         }

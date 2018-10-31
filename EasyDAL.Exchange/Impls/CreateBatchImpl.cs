@@ -26,7 +26,7 @@ namespace Yunyong.DataExchange.Impls
                 return await DC.DS.ExecuteNonQueryAsync(
                     DC.Conn,
                     DC.SqlProvider.GetSQL<M>(UiMethodEnum.CreateBatchAsync)[0],
-                    DC.SqlProvider.GetParameters(DC.DbConditions));
+                    DC.GetParameters(DC.DbConditions));
             });
         }
     }

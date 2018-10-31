@@ -84,7 +84,7 @@ namespace MyDAL.Test.Delete
                 .Deleter<Agent>()
                 .Where(it => it.PathId == path)
                 .And(it => it.AgentLevel == (AgentLevel)level)
-                .Or(it => it.CreatedOn >= WhereTest.DateTime_大于等于)
+                .Or(it => it.CreatedOn >= WhereTest.StartTime)
                 .DeleteAsync();
 
             var tuple4 = (XDebug.SQL, XDebug.Parameters);

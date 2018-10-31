@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
 using Yunyong.DataExchange.AdoNet;
@@ -16,19 +17,38 @@ namespace Yunyong.DataExchange.Core.Bases
 
         internal void Init(IDbConnection conn)
         {
+            //
+            if (XConfig.DB == DbEnum.None)
+            {
+                if (XConfig.MySQL.Equals(conn.GetType().FullName, StringComparison.OrdinalIgnoreCase))
+                {
+                    XConfig.DB = DbEnum.MySQL;
+                }
+                else
+                {
+                    throw new Exception("MyDAL 目前只支持 【MySQL】,后续将会支持【Oracle/SQLServer/PostgreSQL/DB2/Access/SQLite/Teradata/MariaDB】.");
+                }
+            }
+
+            //
             Conn = conn;
             UiConditions = new List<DicModelUI>();
             DbConditions = new List<DicModelDB>();
             AH = new AttributeHelper(this);
             VH = new CsValueHelper(this);
-            GH = GenericHelper.Instance;
+            GH = new GenericHelper(this);
             EH = new XExpression(this);
             SC = new StaticCache(this);
             PH = new ParameterHelper(this);
-            BDH = BatchDataHelper.Instance;
-            SqlProvider = new MySqlProvider(this);
-            DS = DataSource.Instance;
             DH = new DicModelHelper(this);
+            BDH = new BatchDataHelper();
+            DS = new DataSource();
+
+            //
+            if (XConfig.DB == DbEnum.MySQL)
+            {
+                SqlProvider = new MySqlProvider(this);
+            }
         }
 
         /************************************************************************************************************************/
@@ -65,7 +85,7 @@ namespace Yunyong.DataExchange.Core.Bases
 
         /************************************************************************************************************************/
 
-        internal MySqlProvider SqlProvider { get; set; }
+        internal ISqlProvider SqlProvider { get; set; }
         internal Operator OP { get; set; }
         internal Impler IP { get; set; }
 
@@ -123,6 +143,87 @@ namespace Yunyong.DataExchange.Core.Bases
         }
 
         /************************************************************************************************************************/
+
+        private List<DicModelUI> FlatDics(List<DicModelUI> dics)
+        {
+            var ds = new List<DicModelUI>();
+
+            //
+            foreach (var d in dics)
+            {
+                if (IsParameter(d.Action))
+                {
+                    if (d.Group != null)
+                    {
+                        ds.AddRange(FlatDics(d.Group));
+                    }
+                    else
+                    {
+                        ds.Add(d);
+                    }
+                }
+            }
+
+            //
+            return ds;
+        }
+        private List<DicModelDB> FlatDics(List<DicModelDB> dics)
+        {
+            var ds = new List<DicModelDB>();
+
+            //
+            foreach (var d in dics)
+            {
+                if (IsParameter(d.Action))
+                {
+                    if (d.Group != null)
+                    {
+                        ds.AddRange(FlatDics(d.Group));
+                    }
+                    else
+                    {
+                        ds.Add(d);
+                    }
+                }
+            }
+
+            //
+            return ds;
+        }
+        internal DbParameters GetParameters(List<DicModelDB> dbs)
+        {
+            var paras = new DbParameters();
+
+            //
+            foreach (var db in dbs)
+            {
+                if (IsParameter(db.Action))
+                {
+                    if (db.Group != null)
+                    {
+                        paras.Add(GetParameters(db.Group));
+                    }
+                    else
+                    {
+                        paras.Add(db.Param, db.DbValue, db.DbType);
+                    }
+                }
+            }
+
+            //
+            if (XConfig.IsDebug)
+            {
+                lock (XDebug.Lock)
+                {
+                    XDebug.UIs = FlatDics(UiConditions);
+                    XDebug.DBs = FlatDics(DbConditions);
+                    XDebug.SetValue();
+                }
+            }
+
+            //
+            return paras;
+        }
 
         internal OptionEnum GetChangeOption(ChangeEnum change)
         {

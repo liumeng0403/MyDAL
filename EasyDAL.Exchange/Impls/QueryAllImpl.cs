@@ -23,7 +23,7 @@ namespace Yunyong.DataExchange.Impls
             return (await DC.DS.ExecuteReaderMultiRowAsync<M>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryAllAsync)[0],
-                DC.SqlProvider.GetParameters(DC.DbConditions))).ToList();
+                DC.GetParameters(DC.DbConditions))).ToList();
         }
 
         public async Task<List<VM>> QueryAllAsync<VM>()
@@ -32,7 +32,7 @@ namespace Yunyong.DataExchange.Impls
             return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryAllAsync)[0],
-                DC.SqlProvider.GetParameters(DC.DbConditions))).ToList();
+                DC.GetParameters(DC.DbConditions))).ToList();
         }
 
         public async Task<List<F>> QueryAllAsync<F>(Expression<Func<M, F>> propertyFunc)
@@ -45,7 +45,7 @@ namespace Yunyong.DataExchange.Impls
             return (await DC.DS.ExecuteReaderSingleColumnAsync<M,F>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryAllAsync)[0],
-                DC.SqlProvider.GetParameters(DC.DbConditions),
+                DC.GetParameters(DC.DbConditions),
                 propertyFunc.Compile())).ToList();
         }
     }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
+using Yunyong.DataExchange.Core.Enums;
 
 namespace Yunyong.DataExchange.Core
 {
@@ -18,6 +19,9 @@ namespace Yunyong.DataExchange.Core
         internal static string TablesNamespace { get; set; } = string.Empty;
 
         /************************************************************************************************************/
+
+        internal static string MySQL { get; } = "MySql.Data.MySqlClient.MySqlConnection";
+        internal static DbEnum DB { get; set; } = DbEnum.None;
 
         internal static int CommandTimeout { get; set; } = 10;  // 10s 
 
