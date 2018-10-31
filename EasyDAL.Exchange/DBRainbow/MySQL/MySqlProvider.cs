@@ -167,6 +167,165 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
             }
         }
 
+        /****************************************************************************************************************/
+
+        private string CompareProcess(DicModelDB db, bool isMulti)
+        {
+            if (isMulti)
+            {
+                if (db.Crud == CrudTypeEnum.Join)
+                {
+                    return $" {db.TableAliasOne}.`{db.ColumnOne}`{ConditionCompare(db.Compare)}@{db.Param} ";
+                }
+                else if (DC.IsSingleTableOption(db.Crud))
+                {
+                    return $" `{db.ColumnOne}`{ConditionCompare(db.Compare)}@{db.Param} ";
+                }
+            }
+            else
+            {
+                if (db.Crud == CrudTypeEnum.Join)
+                {
+                    return $" {ConditionAction(db.Action)} {db.TableAliasOne}.`{db.ColumnOne}`{ConditionCompare(db.Compare)}@{db.Param} ";
+                }
+                else if (DC.IsSingleTableOption(db.Crud))
+                {
+                    return $" {ConditionAction(db.Action)} `{db.ColumnOne}`{ConditionCompare(db.Compare)}@{db.Param} ";
+                }
+            }
+            throw new Exception("CompareProcess 未能处理!!!");
+        }
+        private string LikeProcess(DicModelDB db, bool isMulti )
+        {
+            if (isMulti)
+            {
+                if (db.Crud == CrudTypeEnum.Join)
+                {
+                    return $" {db.TableAliasOne}.`{db.ColumnOne}`{ConditionOption(db.Option)}{LikeStrHandle(db)} ";
+                }
+                else if (DC.IsSingleTableOption(db.Crud))
+                {
+                    return $" `{db.ColumnOne}`{ConditionOption(db.Option)}{LikeStrHandle(db)} ";
+                }
+            }
+            else
+            {
+                if (db.Crud == CrudTypeEnum.Join)
+                {
+                    return $" {ConditionAction(db.Action)} {db.TableAliasOne}.`{db.ColumnOne}`{ConditionOption(db.Option)}{LikeStrHandle(db)} ";
+                }
+                else if (DC.IsSingleTableOption(db.Crud))
+                {
+                    return $" {ConditionAction(db.Action)} `{db.ColumnOne}`{ConditionOption(db.Option)}{LikeStrHandle(db)} ";
+                }
+            }
+            throw new Exception("LikeProcess 未能处理!!!");
+        }
+        private string CharLengthProcess(DicModelDB db, bool isMulti)
+        {
+            if (isMulti)
+            {
+                if (db.Crud == CrudTypeEnum.Join)
+                {
+                    return $" {ConditionOption(db.Option)}({db.TableAliasOne}.`{db.ColumnOne}`){ConditionCompare(db.Compare)}@{db.Param} ";
+                }
+                else if (DC.IsSingleTableOption(db.Crud))
+                {
+                    return $" {ConditionOption(db.Option)}(`{db.ColumnOne}`){ConditionCompare(db.Compare)}@{db.Param} ";
+                }
+            }
+            else
+            {
+                if (db.Crud == CrudTypeEnum.Join)
+                {
+                    return $" {ConditionAction(db.Action)} {ConditionOption(db.Option)}({db.TableAliasOne}.`{db.ColumnOne}`){ConditionCompare(db.Compare)}@{db.Param} ";
+                }
+                else if (DC.IsSingleTableOption(db.Crud))
+                {
+                    return $" {ConditionAction(db.Action)} {ConditionOption(db.Option)}(`{db.ColumnOne}`){ConditionCompare(db.Compare)}@{db.Param} ";
+                }
+            }
+            throw new Exception("CharLengthProcess 未能处理!!!");
+        }
+        private string TrimProcess(DicModelDB db, bool isMulti )
+        {
+            if (isMulti)
+            {
+                if (db.Crud == CrudTypeEnum.Join)
+                {
+                    return $" {ConditionOption(db.Option)}({db.TableAliasOne}.`{db.ColumnOne}`){ConditionCompare(db.Compare)}@{db.Param} ";
+                }
+                else if (DC.IsSingleTableOption(db.Crud))
+                {
+                    return $" {ConditionOption(db.Option)}(`{db.ColumnOne}`){ConditionCompare(db.Compare)}@{db.Param} ";
+                }
+            }
+            else
+            {
+                if (db.Crud == CrudTypeEnum.Join)
+                {
+                    return $" {ConditionAction(db.Action)} {ConditionOption(db.Option)}({db.TableAliasOne}.`{db.ColumnOne}`){ConditionCompare(db.Compare)}@{db.Param} ";
+                }
+                else if (DC.IsSingleTableOption(db.Crud))
+                {
+                    return $" {ConditionAction(db.Action)} {ConditionOption(db.Option)}(`{db.ColumnOne}`){ConditionCompare(db.Compare)}@{db.Param} ";
+                }
+            }
+            throw new Exception("TrimProcess 未能处理!!!");
+        }
+        private string OneEqualOneProcess(DicModelDB db, bool isMulti)
+        {
+            if (isMulti)
+            {
+                return $" @{db.Param} ";
+            }
+            else
+            {
+                return $" {ConditionAction(db.Action)} @{db.Param} ";
+            }
+            throw new Exception("OneEqualOneProcess 未能处理!!!");
+        }
+        private string InProcess(DicModelDB db, bool isMulti )
+        {
+            if (isMulti)
+            {
+                if (db.Crud == CrudTypeEnum.Join)
+                {
+                    return $" {db.TableAliasOne}.`{db.ColumnOne}` {ConditionOption(db.Option)}({InStrHandle(db)}) ";
+                }
+                else if (DC.IsSingleTableOption(db.Crud))
+                {
+                    return $" `{db.ColumnOne}` {ConditionOption(db.Option)}({InStrHandle(db)}) ";
+                }
+            }
+            else
+            {
+                if (db.Crud == CrudTypeEnum.Join)
+                {
+                    return $" {ConditionAction(db.Action)} {db.TableAliasOne}.`{db.ColumnOne}` {ConditionOption(db.Option)}({InStrHandle(db)}) ";
+                }
+                else if (DC.IsSingleTableOption(db.Crud))
+                {
+                    return $" {ConditionAction(db.Action)} `{db.ColumnOne}` {ConditionOption(db.Option)}({InStrHandle(db)}) ";
+                }
+            }
+            throw new Exception("InProcess 未能处理!!!");
+        }
+        private string IsNullProcess(DicModelDB db, bool isMulti )
+        {
+            if (isMulti)
+            {
+                return $" `{db.ColumnOne}` {ConditionOption(db.Option)} ";
+            }
+            else
+            {
+                return $" {ConditionAction(db.Action)} `{db.ColumnOne}` {ConditionOption(db.Option)} ";
+            }
+            throw new Exception("IsNullProcess 未能处理!!!");
+        }
+
+        /****************************************************************************************************************/
+
         private static string ConditionAction(ActionEnum action)
         {
             switch (action)
@@ -190,9 +349,9 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
                 case ActionEnum.Where:
                     return " \r\n where ";
                 case ActionEnum.And:
-                    return " \r\n and ";
+                    return " \r\n \t and ";
                 case ActionEnum.Or:
-                    return " \r\n or ";
+                    return " \r\n \t or ";
                 case ActionEnum.OrderBy:
                     return "";
             }
@@ -305,21 +464,56 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
 
         /****************************************************************************************************************/
 
-        private string MultiCondition(DicModelDB db)
+        private string MultiCondition(DicModelDB db,bool isMulti)
         {
-            var list = new List<string>();
-            foreach (var item in db.Group)
+            if (db.Group != null)
             {
-                if (item.Group != null)
+                var list = new List<string>();
+                foreach (var item in db.Group)
                 {
-                    list.Add($"({MultiCondition(item)})");
+                    if (item.Group != null)
+                    {
+                        list.Add($"({MultiCondition(item,true)})");
+                    }
+                    else
+                    {
+                        list.Add(MultiCondition(item, true));
+                    }
                 }
-                else
-                {
-                    list.Add($" `{item.ColumnOne}`{ConditionCompare(item.Compare)}@{item.Param} ");
-                }
+                return string.Join(MultiConditionAction(db.GroupAction), list);
             }
-            return string.Join(MultiConditionAction(db.GroupAction), list);
+            else
+            {
+                if (db.Option == OptionEnum.Compare)
+                {
+                    return CompareProcess(db,isMulti);
+                }
+                else if (db.Option == OptionEnum.Like)
+                {
+                    return LikeProcess(db,isMulti);
+                }
+                else if (db.Option == OptionEnum.CharLength)
+                {
+                    return CharLengthProcess(db,isMulti);
+                }
+                else if (db.Option == OptionEnum.Trim || db.Option == OptionEnum.LTrim || db.Option == OptionEnum.RTrim)
+                {
+                    return TrimProcess(db,isMulti);
+                }
+                else if (db.Option == OptionEnum.OneEqualOne)
+                {
+                    return OneEqualOneProcess(db,isMulti);
+                }
+                else if (db.Option == OptionEnum.In || db.Option == OptionEnum.NotIn)
+                {
+                    return InProcess(db,isMulti);
+                }
+                else if (db.Option == OptionEnum.IsNull || db.Option == OptionEnum.IsNotNull)
+                {
+                    return IsNullProcess(db,isMulti);
+                }
+                return string.Empty;
+            }
         }
 
         /****************************************************************************************************************/
@@ -483,84 +677,11 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
             {
                 if (DC.IsFilterCondition(db.Action))
                 {
-                    if (db.Group != null)
-                    {
-                        if (db.Crud == CrudTypeEnum.Join)
-                        {
-                            str += $" {ConditionAction(db.Action)} {db.TableAliasOne}.`{db.ColumnOne}`{ConditionCompare(db.Compare)}@{db.Param} ";
-                        }
-                        else if (DC.IsSingleTableOption(db.Crud))
-                        {
-                            str += $" {ConditionAction(db.Action)} ({MultiCondition(db)}) ";
-                        }
-                    }
-                    else if (db.Option == OptionEnum.Compare)
-                    {
-                        if (db.Crud == CrudTypeEnum.Join)
-                        {
-                            str += $" {ConditionAction(db.Action)} {db.TableAliasOne}.`{db.ColumnOne}`{ConditionCompare(db.Compare)}@{db.Param} ";
-                        }
-                        else if (DC.IsSingleTableOption(db.Crud))
-                        {
-                            str += $" {ConditionAction(db.Action)} `{db.ColumnOne}`{ConditionCompare(db.Compare)}@{db.Param} ";
-                        }
-                    }
-                    else if (db.Option == OptionEnum.Like)
-                    {
-                        if (db.Crud == CrudTypeEnum.Join)
-                        {
-                            str += $" {ConditionAction(db.Action)} {db.TableAliasOne}.`{db.ColumnOne}`{ConditionOption(db.Option)}{LikeStrHandle(db)} ";
-                        }
-                        else if (DC.IsSingleTableOption(db.Crud))
-                        {
-                            str += $" {ConditionAction(db.Action)} `{db.ColumnOne}`{ConditionOption(db.Option)}{LikeStrHandle(db)} ";
-                        }
-                    }
-                    else if (db.Option == OptionEnum.CharLength)
-                    {
-                        if (db.Crud == CrudTypeEnum.Join)
-                        {
-                            str += $" {ConditionAction(db.Action)} {ConditionOption(db.Option)}({db.TableAliasOne}.`{db.ColumnOne}`){ConditionCompare(db.Compare)}@{db.Param} ";
-                        }
-                        else if (DC.IsSingleTableOption(db.Crud))
-                        {
-                            str += $" {ConditionAction(db.Action)} {ConditionOption(db.Option)}(`{db.ColumnOne}`){ConditionCompare(db.Compare)}@{db.Param} ";
-                        }
-                    }
-                    else if (db.Option == OptionEnum.Trim || db.Option == OptionEnum.LTrim || db.Option == OptionEnum.RTrim)
-                    {
-                        if (db.Crud == CrudTypeEnum.Join)
-                        {
-                            str += $" {ConditionAction(db.Action)} {ConditionOption(db.Option)}({db.TableAliasOne}.`{db.ColumnOne}`){ConditionCompare(db.Compare)}@{db.Param} ";
-                        }
-                        else if (DC.IsSingleTableOption(db.Crud))
-                        {
-                            str += $" {ConditionAction(db.Action)} {ConditionOption(db.Option)}(`{db.ColumnOne}`){ConditionCompare(db.Compare)}@{db.Param} ";
-                        }
-                    }
-                    else if (db.Option == OptionEnum.OneEqualOne)
-                    {
-                        str += $" {ConditionAction(db.Action)} @{db.Param} ";
-                    }
-                    else if (db.Option == OptionEnum.In || db.Option == OptionEnum.NotIn)
-                    {
-                        if (db.Crud == CrudTypeEnum.Join)
-                        {
-                            str += $" {ConditionAction(db.Action)} {db.TableAliasOne}.`{db.ColumnOne}` {ConditionOption(db.Option)}({InStrHandle(db)}) ";
-                        }
-                        else if (DC.IsSingleTableOption(db.Crud))
-                        {
-                            str += $" {ConditionAction(db.Action)} `{db.ColumnOne}` {ConditionOption(db.Option)}({InStrHandle(db)}) ";
-                        }
-                    }
-                    else if (db.Option == OptionEnum.IsNull || db.Option == OptionEnum.IsNotNull)
-                    {
-                        str += $" {ConditionAction(db.Action)} `{db.ColumnOne}` {ConditionOption(db.Option)} ";
-                    }
+                    str += db.Group == null ? MultiCondition(db, false) : $" {ConditionAction(db.Action)} ({MultiCondition(db, false)}) ";
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(str)
+            if (!str.IsNullStr()
                 && DC.DbConditions.All(it => it.Action != ActionEnum.Where))
             {
                 var aIdx = str.IndexOf(" and ", StringComparison.Ordinal);

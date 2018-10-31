@@ -76,6 +76,30 @@ namespace MyDAL.Test.WhereEdge
 
             /*******************************************************************************************************************/
 
+            var xx6 = "";
+
+            var like61 = "李";
+            var like62 = "张";
+            var res6 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.Name.Contains($"{like61}%") || it.Name.Contains($"{like62}%"))
+                .QueryListAsync();
+            var res61 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.Name.Contains($"{like61}%"))
+                .QueryListAsync();
+            var res62 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.Name.Contains($"{like62}%"))
+                .QueryListAsync();
+            Assert.True(res61.Count != 0);
+            Assert.True(res62.Count != 0);
+            Assert.True(res6.Count == res61.Count + res62.Count);
+                
+            var tuple6 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*******************************************************************************************************************/
+
             var xx = "";
         }
     }

@@ -1,9 +1,7 @@
 ﻿using MyDAL.Test.Entities.EasyDal_Exchange;
 using MyDAL.Test.Enums;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using Yunyong.DataExchange;
@@ -116,6 +114,23 @@ namespace MyDAL.Test.WhereEdge
             Assert.True(res7.First().Id == guid7);
 
             var tuple7 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /***************************************************************************************************************************/
+
+            var xx8 = "";
+
+            var guid8 = Guid.Parse("000cecd5-56dc-4085-804b-0165443bdf5d");
+            var guid81 = Guid.Parse("000f5f16-5502-4324-b5d6-016544300263");
+            var guid82 = Guid.Parse("00141f0d-7040-4b54-a6c3-016544451224");
+            var pathId83 = "~00-d-3-2-1-c-1-1-1-3";
+            var res8 = await Conn
+                .Selecter<Agent>()
+                .Where(it => (it.Id == guid8 || it.Id == guid81) && it.Id == guid82||it.PathId== pathId83)
+                .QueryListAsync();
+            Assert.True(res8.Count == 1);
+            Assert.True(res8.First().PathId == pathId83);
+
+            var tuple8 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /***************************************************************************************************************************/
 
