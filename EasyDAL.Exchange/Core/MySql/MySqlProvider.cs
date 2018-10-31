@@ -168,7 +168,7 @@ namespace MyDAL.Core.MySql
             }
         }
 
-        private string ConditionAction(ActionEnum action)
+        private static string ConditionAction(ActionEnum action)
         {
             switch (action)
             {
@@ -199,16 +199,18 @@ namespace MyDAL.Core.MySql
             }
             return " ";
         }
-        private string MultiConditionAction(DicModelDB db)
+        private static string MultiConditionAction(ActionEnum action)
         {
-            switch (db.GroupRef.GroupAction)
+            switch (action)
             {
                 case ActionEnum.And:
                     return " && ";
+                case ActionEnum.Or:
+                    return " || ";
             }
             return " ";
         }
-        private string ConditionOption(OptionEnum option)
+        private static string ConditionOption(OptionEnum option)
         {
             switch (option)
             {
@@ -261,7 +263,7 @@ namespace MyDAL.Core.MySql
             }
             return " ";
         }
-        private string ConditionCompare(CompareEnum compare)
+        private static string ConditionCompare(CompareEnum compare)
         {
             switch (compare)
             {
@@ -288,7 +290,7 @@ namespace MyDAL.Core.MySql
             }
             return " ";
         }
-        private string ConditionFunc(FuncEnum func)
+        private static string ConditionFunc(FuncEnum func)
         {
             switch (func)
             {
@@ -318,7 +320,7 @@ namespace MyDAL.Core.MySql
                     list.Add($" `{item.ColumnOne}`{ConditionCompare(item.Compare)}@{item.Param} ");
                 }
             }
-            return string.Join(MultiConditionAction(db.Group.First(it => it.GroupRef != null)), list);
+            return string.Join(MultiConditionAction(db.GroupAction), list);
         }
 
         /****************************************************************************************************************/
@@ -480,7 +482,7 @@ namespace MyDAL.Core.MySql
             //
             foreach (var db in DC.DbConditions)
             {
-                if (DC.IsFilterCondition(db))
+                if (DC.IsFilterCondition(db.Action))
                 {
                     if (db.Group != null)
                     {
@@ -666,7 +668,7 @@ namespace MyDAL.Core.MySql
             //
             foreach (var d in dics)
             {
-                if (DC.IsParameter(d))
+                if (DC.IsParameter(d.Action))
                 {
                     if (d.Group != null)
                     {
@@ -689,7 +691,7 @@ namespace MyDAL.Core.MySql
             //
             foreach (var d in dics)
             {
-                if (DC.IsParameter(d))
+                if (DC.IsParameter(d.Action))
                 {
                     if (d.Group != null)
                     {
@@ -712,7 +714,7 @@ namespace MyDAL.Core.MySql
             //
             foreach (var db in dbs)
             {
-                if (DC.IsParameter(db))
+                if (DC.IsParameter(db.Action))
                 {
                     if (db.Group != null)
                     {
@@ -728,9 +730,12 @@ namespace MyDAL.Core.MySql
             //
             if (XConfig.IsDebug)
             {
-                XDebug.UIs = FlatDics(DC.UiConditions);
-                XDebug.DBs = FlatDics(DC.DbConditions);
-                XDebug.SetValue();
+                lock (XDebug.Lock)
+                {
+                    XDebug.UIs = FlatDics(DC.UiConditions);
+                    XDebug.DBs = FlatDics(DC.DbConditions);
+                    XDebug.SetValue();
+                }
             }
 
             //

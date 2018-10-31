@@ -694,7 +694,7 @@ namespace MyDAL.Core.Helper
         {
 
             //
-            if (DC.IsParameter(ui))
+            if (DC.IsParameter(ui.Action))
             {
                 //
                 if (ui.Option != OptionEnum.OneEqualOne)

@@ -1,7 +1,6 @@
 ﻿using MyDAL.Core;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
-using MyDAL.Core.Helper;
 using MyDAL.UserFacade.Create;
 using MyDAL.UserFacade.Delete;
 using MyDAL.UserFacade.Join;

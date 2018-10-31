@@ -44,7 +44,8 @@ namespace MyDAL.Core.Helper
                 CsValue = ui.CsValue,
                 CsValueStr = ui.CsValueStr,
                 CsType = ui.CsType,
-                TvpIndex = ui.TvpIndex
+                TvpIndex = ui.TvpIndex,
+                GroupRef = ui.GroupRef
             };
 
             //
@@ -55,7 +56,7 @@ namespace MyDAL.Core.Helper
             //
             return cp;
         }
-        private void Copy(DicModelUI ui,List<DicModelDB> dbList,DicModelDB refDb)
+        private void Copy(DicModelUI ui, List<DicModelDB> dbList, DicModelDB refDb)
         {
             var db = new DicModelDB();
 
@@ -95,7 +96,7 @@ namespace MyDAL.Core.Helper
                 db.GroupAction = ui.GroupAction;
                 foreach (var item in ui.Group)
                 {
-                    Copy(item, db.Group,db);
+                    Copy(item, db.Group, db);
                 }
                 dbList.Add(db);
                 return;
@@ -113,12 +114,12 @@ namespace MyDAL.Core.Helper
                     {
                         continue;
                     }
-                    Copy(ui, DC.DbConditions,null);
+                    Copy(ui, DC.DbConditions, null);
                 }
             }
         }
 
-        internal void InNotInDicProcess(DicModelUI dic)
+        private void InNotInDicProcess(DicModelUI dic,List<DicModelUI> list)
         {
             var vals = dic.CsValue.ToString().Split(',').Select(it => it);
             var i = 0;
@@ -145,30 +146,37 @@ namespace MyDAL.Core.Helper
 
                 //
                 var dicx = DicModelHelper.UiDicCopy(dic, val, dic.CsValueStr, op);
-                DC.AddConditions(dicx);
+                UniqueDicContext(dicx,list);
+                list.Add(dicx);
             }
-            DC.UiConditions.Remove(dic);
+            list.Remove(dic);
         }
-        internal void DicAddContext(DicModelUI dic)
+        internal void UniqueDicContext(DicModelUI dic,List<DicModelUI> list)
         {
-            //
-            if (DC.UiConditions.Count == 0)
+            if (DC.IsInParameter(dic))
             {
-                dic.ID = 0;
+                InNotInDicProcess(dic,list);
             }
             else
             {
-                dic.ID = DC.UiConditions.Max(it => it.ID) + 1;
-            }
+                //
+                dic.ID = DC.DicID;
+                DC.DicID++;
+                if (!string.IsNullOrWhiteSpace(dic.ParamRaw))
+                {
+                    dic.Param = $"{dic.ParamRaw}__{dic.ID}";
+                }
 
-            //
-            if (!string.IsNullOrWhiteSpace(dic.ParamRaw))
-            {
-                dic.Param = $"{dic.ParamRaw}__{dic.ID}";
+                //
+                if (dic.Group != null)
+                {
+                    foreach (var ui in dic.Group)
+                    {
+                        UniqueDicContext(ui,dic.Group);
+                        ui.GroupRef = dic;
+                    }
+                }
             }
-
-            //
-            DC.UiConditions.Add(dic);
         }
 
         private DicModelUI SetDicBase()
