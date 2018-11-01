@@ -32,8 +32,8 @@ namespace MyDAL.Core.Bases
 
             //
             Conn = conn;
-            UiConditions = new List<DicModelUI>();
-            DbConditions = new List<DicModelDB>();
+            UiConditions = new List<DicUI>();
+            DbConditions = new List<DicDB>();
             AH = new AttributeHelper(this);
             VH = new CsValueHelper(this);
             GH = new GenericHelper(this);
@@ -75,8 +75,8 @@ namespace MyDAL.Core.Bases
         /************************************************************************************************************************/
 
         internal int DicID { get; set; } = 1;
-        internal List<DicModelUI> UiConditions { get; private set; }
-        internal List<DicModelDB> DbConditions { get; private set; }
+        internal List<DicUI> UiConditions { get; private set; }
+        internal List<DicDB> DbConditions { get; private set; }
 
         /************************************************************************************************************************/
 
@@ -96,11 +96,10 @@ namespace MyDAL.Core.Bases
 
         /************************************************************************************************************************/
 
-        internal bool IsInParameter(DicModelUI ui)
+        internal bool IsInParameter(object value, OptionEnum option)
         {
-            if (ui.CsValue != null
-                && (ui.Option == OptionEnum.In || ui.Option == OptionEnum.NotIn)
-                && ui.CsValue.ToString().Contains(","))
+            if (value != null
+                && (option == OptionEnum.In || option == OptionEnum.NotIn))
             {
                 return true;
             }
@@ -144,9 +143,9 @@ namespace MyDAL.Core.Bases
 
         /************************************************************************************************************************/
 
-        private List<DicModelUI> FlatDics(List<DicModelUI> dics)
+        private List<DicUI> FlatDics(List<DicUI> dics)
         {
-            var ds = new List<DicModelUI>();
+            var ds = new List<DicUI>();
 
             //
             foreach (var d in dics)
@@ -156,6 +155,10 @@ namespace MyDAL.Core.Bases
                     if (d.Group != null)
                     {
                         ds.AddRange(FlatDics(d.Group));
+                    }
+                    else if (d.InItems != null)
+                    {
+                        ds.AddRange(FlatDics(d.InItems));
                     }
                     else
                     {
@@ -167,9 +170,9 @@ namespace MyDAL.Core.Bases
             //
             return ds;
         }
-        private List<DicModelDB> FlatDics(List<DicModelDB> dics)
+        private List<DicDB> FlatDics(List<DicDB> dics)
         {
-            var ds = new List<DicModelDB>();
+            var ds = new List<DicDB>();
 
             //
             foreach (var d in dics)
@@ -179,6 +182,10 @@ namespace MyDAL.Core.Bases
                     if (d.Group != null)
                     {
                         ds.AddRange(FlatDics(d.Group));
+                    }
+                    else if (d.InItems != null)
+                    {
+                        ds.AddRange(FlatDics(d.InItems));
                     }
                     else
                     {
@@ -190,7 +197,7 @@ namespace MyDAL.Core.Bases
             //
             return ds;
         }
-        internal DbParameters GetParameters(List<DicModelDB> dbs)
+        internal DbParameters GetParameters(List<DicDB> dbs)
         {
             var paras = new DbParameters();
 
@@ -202,6 +209,10 @@ namespace MyDAL.Core.Bases
                     if (db.Group != null)
                     {
                         paras.Add(GetParameters(db.Group));
+                    }
+                    else if (IsInParameter(db.DbValue, db.Option))
+                    {
+                        paras.Add(GetParameters(db.InItems));
                     }
                     else
                     {
@@ -238,13 +249,18 @@ namespace MyDAL.Core.Bases
             }
         }
 
-        internal void AddConditions(DicModelUI dic)
+        internal void AddConditions(DicUI dic)
         {
-            DH.UniqueDicContext(dic, UiConditions);
-            if (!IsInParameter(dic))
+            if (IsInParameter(dic.CsValue, dic.Option))
             {
-                UiConditions.Add(dic);
+                dic.InItems = new List<DicUI>();
+                DH.UniqueDicContext(dic, dic.InItems);
             }
+            else
+            {
+                DH.UniqueDicContext(dic, UiConditions);
+            }
+            UiConditions.Add(dic);
 
             //
             Compare = CompareEnum.None;
@@ -253,8 +269,8 @@ namespace MyDAL.Core.Bases
 
         internal void ResetConditions()
         {
-            UiConditions = new List<DicModelUI>();
-            DbConditions = new List<DicModelDB>();
+            UiConditions = new List<DicUI>();
+            DbConditions = new List<DicDB>();
         }
 
         internal void SetMTCache<M>()

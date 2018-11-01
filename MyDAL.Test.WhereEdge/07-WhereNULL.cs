@@ -1,13 +1,11 @@
 ﻿using MyDAL.Test.Entities.EasyDal_Exchange;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace MyDAL.Test.WhereEdge
 {
-    public class _07_WhereNULL:TestBase
+    public class _07_WhereNULL : TestBase
     {
 
         public async Task<Agent> PreData3()
@@ -84,6 +82,19 @@ namespace MyDAL.Test.WhereEdge
             }
 
             await ClearData3(m);
+
+            /************************************************************************************************************************/
+
+            var xx4 = "";
+
+            // is not null 
+            var res4 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.ActivedOn != null && it.ActiveOrderId != null && it.CrmUserId == null)
+                .QueryListAsync();
+            Assert.True(res4.Count == 554);
+
+            var tuple4 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /************************************************************************************************************************/
 

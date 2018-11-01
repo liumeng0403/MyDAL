@@ -35,7 +35,7 @@ namespace MyDAL.Core.Bases
 
         private List<(string key, string param, (object val, string valStr) val, Type valType, string colType, CompareEnum compare)> GetSetKPV<M>(object objx)
         {
-            var list = new List<DicQueryModel>();
+            var list = new List<DicDynamic>();
             var dic = default(IDictionary<string, object>);
 
             //
@@ -49,7 +49,7 @@ namespace MyDAL.Core.Bases
                     {
                         if (mp.Name.Equals(sp, StringComparison.OrdinalIgnoreCase))
                         {
-                            list.Add(new DicQueryModel
+                            list.Add(new DicDynamic
                             {
                                 MField = mp.Name,
                                 VmField = mp.Name,
@@ -68,7 +68,7 @@ namespace MyDAL.Core.Bases
                     {
                         if (mp.Name.Equals(sp.Name, StringComparison.OrdinalIgnoreCase))
                         {
-                            list.Add(new DicQueryModel
+                            list.Add(new DicDynamic
                             {
                                 MField = mp.Name,
                                 VmField = mp.Name,
@@ -106,7 +106,7 @@ namespace MyDAL.Core.Bases
         }
         private List<(string key, string param, (object val, string valStr) val, Type valType, string colType, CompareEnum compare)> GetWhereKPV<M>(object objx)
         {
-            var list = new List<DicQueryModel>();
+            var list = new List<DicDynamic>();
             var dic = default(IDictionary<string, object>);
             //
             var mProps = typeof(M).GetProperties();
@@ -134,7 +134,7 @@ namespace MyDAL.Core.Bases
 
                         if (mp.Name.Equals(spName, StringComparison.OrdinalIgnoreCase))
                         {
-                            list.Add(new DicQueryModel
+                            list.Add(new DicDynamic
                             {
                                 MField = mp.Name,
                                 VmField = sp.Name,
@@ -153,7 +153,7 @@ namespace MyDAL.Core.Bases
                     {
                         if (mp.Name.Equals(sp, StringComparison.OrdinalIgnoreCase))
                         {
-                            list.Add(new DicQueryModel
+                            list.Add(new DicDynamic
                             {
                                 MField = mp.Name,
                                 VmField = mp.Name,
@@ -172,7 +172,7 @@ namespace MyDAL.Core.Bases
                     {
                         if (mp.Name.Equals(sp.Name, StringComparison.OrdinalIgnoreCase))
                         {
-                            list.Add(new DicQueryModel
+                            list.Add(new DicDynamic
                             {
                                 MField = mp.Name,
                                 VmField = mp.Name,

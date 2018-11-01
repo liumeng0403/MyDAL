@@ -4,6 +4,7 @@ using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace MyDAL.Core.Helper
@@ -19,9 +20,9 @@ namespace MyDAL.Core.Helper
 
         /*******************************************************************************************************/
 
-        internal static DicModelUI UiDicCopy(DicModelUI ui, object csVal, string csValStr, OptionEnum option)
+        internal static DicUI UiDicCopy(DicUI ui, object csVal, string csValStr, OptionEnum option)
         {
-            var cp = new DicModelUI
+            var cp = new DicUI
             {
                 //
                 ID = ui.ID,
@@ -56,9 +57,9 @@ namespace MyDAL.Core.Helper
             //
             return cp;
         }
-        private void Copy(DicModelUI ui, List<DicModelDB> dbList, DicModelDB refDb)
+        private void Copy(DicUI ui, List<DicDB> dbList, DicDB refDb)
         {
-            var db = new DicModelDB();
+            var db = new DicDB();
 
             //
             db.ID = ui.ID;
@@ -88,11 +89,19 @@ namespace MyDAL.Core.Helper
             db.TvpIndex = ui.TvpIndex;
             if (ui.CsType != null)
             {
-                DC.PH.GetDbVal(ui, db, ui.CsType);
+                if (DC.IsInParameter(ui.CsValue, ui.Option))
+                {
+                    db.DbType = DbType.String;
+                    db.DbValue = ui.CsValue;
+                }
+                else
+                {
+                    DC.PH.GetDbVal(ui, db, ui.CsType);
+                }
             }
             if (ui.Group != null)
             {
-                db.Group = new List<DicModelDB>();
+                db.Group = new List<DicDB>();
                 db.GroupAction = ui.GroupAction;
                 foreach (var item in ui.Group)
                 {
@@ -102,6 +111,14 @@ namespace MyDAL.Core.Helper
                 return;
             }
             db.GroupRef = refDb;
+            if (ui.InItems != null)
+            {
+                db.InItems = new List<DicDB>();
+                foreach (var u in ui.InItems)
+                {
+                    Copy(u, db.InItems, refDb);
+                }
+            }
             dbList.Add(db);
         }
         internal void UiToDbCopy()
@@ -119,69 +136,52 @@ namespace MyDAL.Core.Helper
             }
         }
 
-        private void InNotInDicProcess(DicModelUI dic,List<DicModelUI> list)
+        private void InNotInDicProcess(DicUI dic, List<DicUI> list)
         {
             var vals = dic.CsValue.ToString().Split(',').Select(it => it);
-            var i = 0;
             foreach (var val in vals)
             {
-                //
-                i++;
-                var op = OptionEnum.None;
-                if (i == 1)
-                {
-                    if (dic.Option == OptionEnum.In)
-                    {
-                        op = OptionEnum.In;
-                    }
-                    else if (dic.Option == OptionEnum.NotIn)
-                    {
-                        op = OptionEnum.NotIn;
-                    }
-                }
-                else
-                {
-                    op = OptionEnum.InHelper;
-                }
-
-                //
-                var dicx = DicModelHelper.UiDicCopy(dic, val, dic.CsValueStr, op);
-                UniqueDicContext(dicx,list);
+                var dicx = UiDicCopy(dic, val, dic.CsValueStr, OptionEnum.InHelper);
+                UniqueDicContext(dicx, list);
                 list.Add(dicx);
             }
-            list.Remove(dic);
         }
-        internal void UniqueDicContext(DicModelUI dic,List<DicModelUI> list)
+        internal void UniqueDicContext(DicUI dic, List<DicUI> list)
         {
-            if (DC.IsInParameter(dic))
+            //
+            dic.ID = DC.DicID;
+            DC.DicID++;
+            if (!dic.ParamRaw.IsNullStr())
             {
-                InNotInDicProcess(dic,list);
+                dic.Param = $"{dic.ParamRaw}__{dic.ID}";
             }
-            else
-            {
-                //
-                dic.ID = DC.DicID;
-                DC.DicID++;
-                if (!string.IsNullOrWhiteSpace(dic.ParamRaw))
-                {
-                    dic.Param = $"{dic.ParamRaw}__{dic.ID}";
-                }
 
-                //
-                if (dic.Group != null)
+            //
+            if (DC.IsInParameter(dic.CsValue, dic.Option))
+            {
+                InNotInDicProcess(dic, list);
+            }
+            else if (dic.Group != null)
+            {
+                foreach (var ui in dic.Group)
                 {
-                    foreach (var ui in dic.Group)
+                    if (DC.IsInParameter(ui.CsValue, ui.Option))
                     {
-                        UniqueDicContext(ui,dic.Group);
-                        ui.GroupRef = dic;
+                        ui.InItems = new List<DicUI>();
+                        UniqueDicContext(ui, ui.InItems);
                     }
+                    else
+                    {
+                        UniqueDicContext(ui, dic.Group);
+                    }
+                    ui.GroupRef = dic;
                 }
             }
         }
 
-        private DicModelUI SetDicBase()
+        private DicUI SetDicBase()
         {
-            return new DicModelUI
+            return new DicUI
             {
                 ID = 0,
                 Crud = DC.Crud,
@@ -194,7 +194,7 @@ namespace MyDAL.Core.Helper
 
         /*******************************************************************************************************/
 
-        internal DicModelUI CharLengthDic(string fullName, string key, string alias, (object val, string valStr) value, Type valType)
+        internal DicUI CharLengthDic(string fullName, string key, string alias, (object val, string valStr) value, Type valType)
         {
             var dic = SetDicBase();
             dic.ClassFullName = fullName;
@@ -209,7 +209,7 @@ namespace MyDAL.Core.Helper
             return dic;
         }
 
-        internal DicModelUI TrimDic(string key, string alias, (object val, string valStr) value, Type valType)
+        internal DicUI TrimDic(string key, string alias, (object val, string valStr) value, Type valType)
         {
             var dic = SetDicBase();
             dic.ColumnOne = key;
@@ -222,7 +222,7 @@ namespace MyDAL.Core.Helper
 
             return dic;
         }
-        internal DicModelUI LTrimDic(string key, string alias, (object val, string valStr) value, Type valType)
+        internal DicUI LTrimDic(string key, string alias, (object val, string valStr) value, Type valType)
         {
             var dic = SetDicBase();
             dic.ColumnOne = key;
@@ -235,7 +235,7 @@ namespace MyDAL.Core.Helper
 
             return dic;
         }
-        internal DicModelUI RTrimDic(string key, string alias, (object val, string valStr) value, Type valType)
+        internal DicUI RTrimDic(string key, string alias, (object val, string valStr) value, Type valType)
         {
             var dic = SetDicBase();
             dic.ColumnOne = key;
@@ -249,36 +249,7 @@ namespace MyDAL.Core.Helper
             return dic;
         }
 
-        internal DicModelUI CompareDic(string classFullName, string key, string alias, (object val, string valStr) value, Type valType)
-        {
-            var dic = SetDicBase();
-            dic.ClassFullName = classFullName;
-            dic.ColumnOne = key;
-            dic.TableAliasOne = alias;
-            dic.CsValue = value.val;
-            dic.CsValueStr = value.valStr;
-            dic.CsType = valType;
-            dic.Param = key;
-            dic.ParamRaw = key;
-
-            return dic;
-        }
-
-        internal DicModelUI InDic(string classFullName, string key, string alias, (object val, string valStr) value, Type valType)
-        {
-            var dic = SetDicBase();
-            dic.ClassFullName = classFullName;
-            dic.ColumnOne = key;
-            dic.TableAliasOne = alias;
-            dic.CsValue = value.val;
-            dic.CsValueStr = value.valStr;
-            dic.CsType = valType;
-            dic.Param = key;
-            dic.ParamRaw = key;
-
-            return dic;
-        }
-        internal DicModelUI NotInDic(string classFullName, string key, string alias, (object val, string valStr) value, Type valType)
+        internal DicUI CompareDic(string classFullName, string key, string alias, (object val, string valStr) value, Type valType)
         {
             var dic = SetDicBase();
             dic.ClassFullName = classFullName;
@@ -293,7 +264,21 @@ namespace MyDAL.Core.Helper
             return dic;
         }
 
-        internal DicModelUI LikeDic(string classFullName, string key, string alias, (object val, string valStr) value, Type valType)
+        internal DicUI InDic(string classFullName, string key, string alias, (object val, string valStr) value, Type valType)
+        {
+            var dic = SetDicBase();
+            dic.ClassFullName = classFullName;
+            dic.ColumnOne = key;
+            dic.TableAliasOne = alias;
+            dic.CsValue = value.val;
+            dic.CsValueStr = value.valStr;
+            dic.CsType = valType;
+            dic.Param = key;
+            dic.ParamRaw = key;
+
+            return dic;
+        }
+        internal DicUI NotInDic(string classFullName, string key, string alias, (object val, string valStr) value, Type valType)
         {
             var dic = SetDicBase();
             dic.ClassFullName = classFullName;
@@ -308,7 +293,22 @@ namespace MyDAL.Core.Helper
             return dic;
         }
 
-        internal DicModelUI OneEqualOneDic((object val, string valStr) value, Type valType)
+        internal DicUI LikeDic(string classFullName, string key, string alias, (object val, string valStr) value, Type valType)
+        {
+            var dic = SetDicBase();
+            dic.ClassFullName = classFullName;
+            dic.ColumnOne = key;
+            dic.TableAliasOne = alias;
+            dic.CsValue = value.val;
+            dic.CsValueStr = value.valStr;
+            dic.CsType = valType;
+            dic.Param = key;
+            dic.ParamRaw = key;
+
+            return dic;
+        }
+
+        internal DicUI OneEqualOneDic((object val, string valStr) value, Type valType)
         {
             var dic = SetDicBase();
             dic.ColumnOne = "OneEqualOne";
@@ -321,7 +321,7 @@ namespace MyDAL.Core.Helper
             return dic;
         }
 
-        internal DicModelUI IsNullDic(string classFullName, string key, string alias, Type valType)
+        internal DicUI IsNullDic(string classFullName, string key, string alias, Type valType)
         {
             var dic = SetDicBase();
             dic.ClassFullName = classFullName;
@@ -338,7 +338,7 @@ namespace MyDAL.Core.Helper
 
         /*******************************************************************************************************/
 
-        internal DicModelUI SelectMemberInitDic(string fullName, string key, string alias, string colAlias)
+        internal DicUI SelectMemberInitDic(string fullName, string key, string alias, string colAlias)
         {
             var dic = SetDicBase();
             dic.ClassFullName = fullName;
@@ -349,7 +349,7 @@ namespace MyDAL.Core.Helper
             return dic;
         }
 
-        internal DicModelUI ColumnDic(string columnOne, string tableAliasOne, string fullName)
+        internal DicUI ColumnDic(string columnOne, string tableAliasOne, string fullName)
         {
             var dic = SetDicBase();
             dic.ClassFullName = fullName;
@@ -359,7 +359,7 @@ namespace MyDAL.Core.Helper
             return dic;
         }
 
-        internal DicModelUI CountDic(string fullName, string key, string alias = "")
+        internal DicUI CountDic(string fullName, string key, string alias = "")
         {
             var dic = SetDicBase();
             dic.ClassFullName = fullName;
@@ -371,7 +371,7 @@ namespace MyDAL.Core.Helper
             return dic;
         }
 
-        internal DicModelUI OrderbyDic(string fullName, string key, string alias)
+        internal DicUI OrderbyDic(string fullName, string key, string alias)
         {
             var dic = SetDicBase();
             dic.ClassFullName = fullName;
@@ -383,7 +383,7 @@ namespace MyDAL.Core.Helper
 
         /*******************************************************************************************************/
 
-        internal DicModelUI InsertDic(string fullName, string key, (object val, string valStr) val, Type valType, int tvpIdx)
+        internal DicUI InsertDic(string fullName, string key, (object val, string valStr) val, Type valType, int tvpIdx)
         {
             var dic = SetDicBase();
             dic.ClassFullName = fullName;
@@ -400,7 +400,7 @@ namespace MyDAL.Core.Helper
 
         /*******************************************************************************************************/
 
-        internal DicModelUI SetDic(string fullName, string key, string param, (object val, string valStr) val, Type valType)
+        internal DicUI SetDic(string fullName, string key, string param, (object val, string valStr) val, Type valType)
         {
             var dic = SetDicBase();
             dic.ClassFullName = fullName;
@@ -416,7 +416,7 @@ namespace MyDAL.Core.Helper
 
         /*******************************************************************************************************/
 
-        internal DicModelUI OnDic(string fullName, string key1, string alias1, string key2, string alias2)
+        internal DicUI OnDic(string fullName, string key1, string alias1, string key2, string alias2)
         {
             var dic = SetDicBase();
             dic.ClassFullName = fullName;
@@ -430,7 +430,7 @@ namespace MyDAL.Core.Helper
 
         /*******************************************************************************************************/
 
-        internal DicModelUI TableDic(string fullName, string alias)
+        internal DicUI TableDic(string fullName, string alias)
         {
             var dic = SetDicBase();
             dic.ClassFullName = fullName;
@@ -438,7 +438,7 @@ namespace MyDAL.Core.Helper
             return dic;
         }
 
-        internal DicModelUI ColumnDic(string fullName, string key)
+        internal DicUI ColumnDic(string fullName, string key)
         {
             var dic = SetDicBase();
             dic.ClassFullName = fullName;
@@ -447,7 +447,7 @@ namespace MyDAL.Core.Helper
             return dic;
         }
 
-        internal DicModelUI JoinColumnDic(string fullName, string key, string alias)
+        internal DicUI JoinColumnDic(string fullName, string key, string alias)
         {
             var dic = SetDicBase();
             dic.ClassFullName = fullName;
@@ -458,10 +458,10 @@ namespace MyDAL.Core.Helper
 
         /*******************************************************************************************************/
 
-        internal DicModelUI GroupDic(ActionEnum action)
+        internal DicUI GroupDic(ActionEnum action)
         {
             var dic = SetDicBase();
-            dic.Group = new List<DicModelUI>();
+            dic.Group = new List<DicUI>();
             dic.GroupAction = action;
             return dic;
         }

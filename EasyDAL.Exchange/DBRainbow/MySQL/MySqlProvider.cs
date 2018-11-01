@@ -25,7 +25,7 @@ namespace MyDAL.DBRainbow.MySQL
 
         /****************************************************************************************************************/
 
-        private string LikeStrHandle(DicModelDB dic)
+        private string LikeStrHandle(DicDB dic)
         {
             var name = dic.Param;
             var value = dic.DbValue.ToString(); // dic.CsValue;
@@ -48,20 +48,9 @@ namespace MyDAL.DBRainbow.MySQL
 
             throw new Exception(value);
         }
-        private string InStrHandle(DicModelDB dic)
+        private string InStrHandle(List<DicDB> dbs)
         {
-            var paras = DC.DbConditions.Where(it =>
-            {
-                if (!string.IsNullOrWhiteSpace(it.ParamRaw))
-                {
-                    return it.ParamRaw.Equals(dic.ParamRaw, StringComparison.OrdinalIgnoreCase);
-                }
-                else
-                {
-                    return false;
-                }
-            }).ToList();
-            return $" {string.Join(",", paras.Select(it => $" @{it.Param} "))} ";
+            return $" {string.Join(",", dbs.Select(it => $" @{it.Param} "))} ";
         }
 
         private string GetOrderByPart<M>()
@@ -169,7 +158,7 @@ namespace MyDAL.DBRainbow.MySQL
 
         /****************************************************************************************************************/
 
-        private string CompareProcess(DicModelDB db, bool isMulti)
+        private string CompareProcess(DicDB db, bool isMulti)
         {
             if (isMulti)
             {
@@ -195,7 +184,7 @@ namespace MyDAL.DBRainbow.MySQL
             }
             throw new Exception("CompareProcess 未能处理!!!");
         }
-        private string LikeProcess(DicModelDB db, bool isMulti )
+        private string LikeProcess(DicDB db, bool isMulti )
         {
             if (isMulti)
             {
@@ -221,7 +210,7 @@ namespace MyDAL.DBRainbow.MySQL
             }
             throw new Exception("LikeProcess 未能处理!!!");
         }
-        private string CharLengthProcess(DicModelDB db, bool isMulti)
+        private string CharLengthProcess(DicDB db, bool isMulti)
         {
             if (isMulti)
             {
@@ -247,7 +236,7 @@ namespace MyDAL.DBRainbow.MySQL
             }
             throw new Exception("CharLengthProcess 未能处理!!!");
         }
-        private string TrimProcess(DicModelDB db, bool isMulti )
+        private string TrimProcess(DicDB db, bool isMulti )
         {
             if (isMulti)
             {
@@ -273,7 +262,7 @@ namespace MyDAL.DBRainbow.MySQL
             }
             throw new Exception("TrimProcess 未能处理!!!");
         }
-        private string OneEqualOneProcess(DicModelDB db, bool isMulti)
+        private string OneEqualOneProcess(DicDB db, bool isMulti)
         {
             if (isMulti)
             {
@@ -285,33 +274,33 @@ namespace MyDAL.DBRainbow.MySQL
             }
             throw new Exception("OneEqualOneProcess 未能处理!!!");
         }
-        private string InProcess(DicModelDB db, bool isMulti )
+        private string InProcess(DicDB db, bool isMulti )
         {
             if (isMulti)
             {
                 if (db.Crud == CrudTypeEnum.Join)
                 {
-                    return $" {db.TableAliasOne}.`{db.ColumnOne}` {ConditionOption(db.Option)}({InStrHandle(db)}) ";
+                    return $" {db.TableAliasOne}.`{db.ColumnOne}` {ConditionOption(db.Option)}({InStrHandle(db.InItems)}) ";
                 }
                 else if (DC.IsSingleTableOption(db.Crud))
                 {
-                    return $" `{db.ColumnOne}` {ConditionOption(db.Option)}({InStrHandle(db)}) ";
+                    return $" `{db.ColumnOne}` {ConditionOption(db.Option)}({InStrHandle(db.InItems)}) ";
                 }
             }
             else
             {
                 if (db.Crud == CrudTypeEnum.Join)
                 {
-                    return $" {ConditionAction(db.Action)} {db.TableAliasOne}.`{db.ColumnOne}` {ConditionOption(db.Option)}({InStrHandle(db)}) ";
+                    return $" {ConditionAction(db.Action)} {db.TableAliasOne}.`{db.ColumnOne}` {ConditionOption(db.Option)}({InStrHandle(db.InItems)}) ";
                 }
                 else if (DC.IsSingleTableOption(db.Crud))
                 {
-                    return $" {ConditionAction(db.Action)} `{db.ColumnOne}` {ConditionOption(db.Option)}({InStrHandle(db)}) ";
+                    return $" {ConditionAction(db.Action)} `{db.ColumnOne}` {ConditionOption(db.Option)}({InStrHandle(db.InItems)}) ";
                 }
             }
             throw new Exception("InProcess 未能处理!!!");
         }
-        private string IsNullProcess(DicModelDB db, bool isMulti )
+        private string IsNullProcess(DicDB db, bool isMulti )
         {
             if (isMulti)
             {
@@ -464,7 +453,7 @@ namespace MyDAL.DBRainbow.MySQL
 
         /****************************************************************************************************************/
 
-        private string MultiCondition(DicModelDB db,bool isMulti)
+        private string MultiCondition(DicDB db,bool isMulti)
         {
             if (db.Group != null)
             {
@@ -477,7 +466,7 @@ namespace MyDAL.DBRainbow.MySQL
                     }
                     else
                     {
-                        list.Add(MultiCondition(item, true));
+                        list.Add(MultiCondition(item, isMulti));
                     }
                 }
                 return string.Join(MultiConditionAction(db.GroupAction), list);
@@ -677,7 +666,7 @@ namespace MyDAL.DBRainbow.MySQL
             {
                 if (DC.IsFilterCondition(db.Action))
                 {
-                    str += db.Group == null ? MultiCondition(db, false) : $" {ConditionAction(db.Action)} ({MultiCondition(db, false)}) ";
+                    str += db.Group == null ? MultiCondition(db, false) : $" {ConditionAction(db.Action)} ({MultiCondition(db, true)}) ";
                 }
             }
 

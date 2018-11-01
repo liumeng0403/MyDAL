@@ -1,14 +1,12 @@
 ﻿using MyDAL.Test.Entities.EasyDal_Exchange;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace MyDAL.Test.WhereEdge
 {
-    public class _03_WhereBoolDefault:TestBase
+    public class _03_WhereBoolDefault : TestBase
     {
         [Fact]
         public async Task test()
@@ -118,6 +116,45 @@ namespace MyDAL.Test.WhereEdge
             Assert.True(res42.First().IsDefault == false);
 
             var tuple4 = (XDebug.SQL, XDebug.Parameters);
+
+            /********************************************************************************************************************************************/
+
+            var xx5 = "";
+
+            var guid5 = Guid.Parse("08d6036c-66c8-7c2c-83b0-725f93ff8137");
+            var res5 = await Conn
+                .Joiner<AddressInfo, AddressInfo>(out var address5, out var address55)
+                .From(() => address5)
+                    .InnerJoin(() => address55)
+                        .On(() => address5.Id == address55.Id)
+                .Where(() => address5.IsDefault && address5.UserId == guid5)  //  false  none(true)  
+                .QueryListAsync<AddressInfo>();
+            Assert.True(res5.Count == 1);
+            Assert.True(res5.First().IsDefault);
+
+            var res51 = await Conn
+                .Joiner<AddressInfo, AddressInfo>(out var address51, out var address511)
+                .From(() => address51)
+                    .InnerJoin(() => address511)
+                        .On(() => address51.Id == address511.Id)
+                .Where(() => address51.IsDefault == true && address51.UserId == guid5)  //  false  none(true)  
+                .QueryListAsync<AddressInfo>();
+            Assert.True(res51.Count == 1);
+            Assert.True(res51.First().IsDefault);
+
+            var guid52 = Guid.Parse("6f390324-2c07-40cf-90ca-0165569461b1");
+            var res52 = await Conn
+                .Joiner<AddressInfo, AddressInfo>(out var address52, out var address521)
+                .From(() => address52)
+                    .InnerJoin(() => address521)
+                        .On(() => address52.Id == address521.Id)
+                .Where(() => address52.IsDefault == false || address52.Id == guid52)  //  false  none(true)  
+                .QueryListAsync<AddressInfo>();
+            Assert.True(res52.Count == 3);
+            Assert.True(res52.First(it => it.Id != guid52).IsDefault == false);
+            Assert.True(res52.First(it => it.Id == guid52).IsDefault);
+
+            var tuple5 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /********************************************************************************************************************************************/
 
