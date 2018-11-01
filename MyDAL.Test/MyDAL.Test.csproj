@@ -21,6 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EasyDAL.Exchange\MyDAL.csproj" />
+    <ProjectReference Include="..\MyDAL\MyDAL.csproj" />
   </ItemGroup>
 </Project>
