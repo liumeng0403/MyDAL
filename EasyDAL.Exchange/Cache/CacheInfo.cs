@@ -8,7 +8,7 @@ namespace Yunyong.DataExchange.Cache
     {
         public DeserializerState Deserializer { get; set; }
 
-        public Action<IDbCommand, DbParameters> ParamReader { get; set; }
+        public Action<IDbCommand, DbParamInfo> ParamReader { get; set; }
 
     }
 }

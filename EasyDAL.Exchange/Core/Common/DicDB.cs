@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Data;
+using System.Collections.Generic;
+using Yunyong.DataExchange.AdoNet;
 using Yunyong.DataExchange.Core.Bases;
 
 namespace Yunyong.DataExchange.Core.Common
@@ -16,8 +16,9 @@ namespace Yunyong.DataExchange.Core.Common
         internal string ColumnAlias { get; set; }
         internal string Param { get; set; }
         internal string ParamRaw { get; set; }
-        internal object DbValue { get; set; }
-        internal DbType DbType { get; set; }
+        //internal object DbValue { get; set; }
+        //internal DbType DbType { get; set; }
+        internal ParamInfo ParamInfo { get; set; }
 
         internal string ColumnType { get; set; }
 

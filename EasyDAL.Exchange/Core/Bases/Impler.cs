@@ -32,6 +32,7 @@ namespace Yunyong.DataExchange.Core.Bases
         /**********************************************************************************************************/
 
         protected async Task<PagingList<M>> QueryPagingListAsyncHandle<M>(int pageIndex, int pageSize, UiMethodEnum sqlType)
+            where M : class
         {
             var result = new PagingList<M>();
             result.PageIndex = pageIndex;
@@ -44,6 +45,7 @@ namespace Yunyong.DataExchange.Core.Bases
         }
 
         protected async Task<PagingList<VM>> QueryPagingListAsyncHandle<M, VM>(int pageIndex, int pageSize, UiMethodEnum sqlType)
+            where VM : class
         {
             var result = new PagingList<VM>();
             result.PageIndex = pageIndex;

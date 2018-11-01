@@ -91,8 +91,7 @@ namespace Yunyong.DataExchange.Core.Helper
             {
                 if (DC.IsInParameter(ui.CsValue, ui.Option))
                 {
-                    db.DbType = DbType.String;
-                    db.DbValue = ui.CsValue;
+                    db.ParamInfo = ParameterHelper.GetDefault(ui.Param, ui.CsValue, DbType.String);
                 }
                 else
                 {

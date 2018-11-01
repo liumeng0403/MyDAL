@@ -21,14 +21,14 @@ namespace Yunyong.DataExchange.Core.Helper
 
         /**********************************************************************************************************/
 
-        private static ParamInfo GetDefault(string name, object value, DbType dbType)
+        internal static ParamInfo GetDefault(string paraName, object dbVal, DbType dbType)
         {
             return new ParamInfo
             {
-                Name = name,
-                Value = value,
+                Name = paraName,
+                Value = dbVal,
+                Type = dbType,
                 ParameterDirection = ParameterDirection.Input,
-                DbType = dbType,
                 Size = null,
                 Precision = null,
                 Scale = null
@@ -36,286 +36,289 @@ namespace Yunyong.DataExchange.Core.Helper
         }
         private static DbType GetType(string colType, Type realType)
         {
-            var type = default(DbType);
-
-            //
             if (realType == XConfig.Int)
             {
                 if (colType.IsNullStr())
                 {
-                    type = DbType.Int32;
+                    return DbType.Int32;
                 }
                 else if (colType.Equals("int", StringComparison.OrdinalIgnoreCase))
                 {
-                    type = DbType.Int32;
+                    return DbType.Int32;
                 }
                 else
                 {
-                    type = DbType.Int32;
+                    return DbType.Int32;
                 }
             }
             else if (realType == XConfig.Long)
             {
                 if (colType.IsNullStr())
                 {
-                    type = DbType.Int64;
+                    return DbType.Int64;
                 }
                 else if (colType.Equals("bigint", StringComparison.OrdinalIgnoreCase))
                 {
-                    type = DbType.Int64;
+                    return DbType.Int64;
                 }
                 else
                 {
-                    type = DbType.Int64;
+                    return DbType.Int64;
                 }
             }
             else if (realType == XConfig.Decimal)
             {
                 if (colType.IsNullStr())
                 {
-                    type = DbType.Decimal;
+                    return DbType.Decimal;
                 }
                 else if (colType.Equals("decimal", StringComparison.OrdinalIgnoreCase))
                 {
-                    type = DbType.Decimal;
+                    return DbType.Decimal;
                 }
                 else
                 {
-                    type = DbType.Decimal;
+                    return DbType.Decimal;
                 }
             }
             else if (realType == XConfig.Bool)
             {
                 if (colType.IsNullStr())
                 {
-                    type = DbType.UInt16;
+                    return DbType.UInt16;
                 }
                 else if (colType.Equals("bit", StringComparison.OrdinalIgnoreCase))
                 {
-                    type = DbType.UInt16;
+                    return DbType.UInt16;
                 }
                 else
                 {
-                    type = DbType.Boolean;
+                    return DbType.Boolean;
                 }
             }
             else if (realType == XConfig.String)
             {
                 if (colType.IsNullStr())
                 {
-                    type = DbType.String;
+                    return DbType.String;
                 }
                 else if (colType.Equals("longtext", StringComparison.OrdinalIgnoreCase))
                 {
-                    type = DbType.String;
+                    return DbType.String;
                 }
                 else
                 {
-                    type = DbType.AnsiString;
+                    return DbType.AnsiString;
                 }
             }
             else if (realType == XConfig.DateTime)
             {
                 if (colType.IsNullStr())
                 {
-                    type = DbType.AnsiString;
+                    return DbType.AnsiString;
                 }
                 else if (colType.Equals("datetime", StringComparison.OrdinalIgnoreCase))
                 {
-                    type = DbType.AnsiString;
+                    return DbType.AnsiString;
                 }
                 else
                 {
-                    type = DbType.DateTime2;
+                    return DbType.DateTime2;
                 }
             }
             else if (realType == XConfig.Guid)
             {
                 if (colType.IsNullStr())
                 {
-                    type = DbType.AnsiStringFixedLength;
+                    return DbType.AnsiStringFixedLength;
                 }
                 else if (colType.Equals("char", StringComparison.OrdinalIgnoreCase))
                 {
-                    type = DbType.AnsiStringFixedLength;
+                    return DbType.AnsiStringFixedLength;
                 }
                 else
                 {
-                    type = DbType.Guid;
+                    return DbType.Guid;
                 }
             }
             else if (realType.IsEnum)
             {
-                if (colType.IsNullStr())
-                {
-                    type = DbType.Int32;
-                }
-                else if (colType.Equals("int", StringComparison.OrdinalIgnoreCase))
-                {
-                    type = DbType.Int32;
-                }
-                else
-                {
-                    type = DbType.Int32;
-                }
+                return GetType(colType, Enum.GetUnderlyingType(realType));
             }
             else if (realType == XConfig.Byte)
             {
                 if (colType.IsNullStr())
                 {
-                    type = DbType.Byte;
+                    return DbType.Byte;
                 }
                 else if (colType.Equals("tinyint", StringComparison.OrdinalIgnoreCase))
                 {
-                    type = DbType.Byte;
+                    return DbType.Byte;
                 }
                 else
                 {
-                    type = DbType.Byte;
+                    return DbType.Byte;
                 }
+            }
+            else if (realType == XConfig.ByteArray)
+            {
+                return DbType.Binary;
             }
             else if (realType == XConfig.Char)
             {
                 if (colType.IsNullStr())
                 {
-                    type = DbType.AnsiString;
+                    return DbType.AnsiString;
                 }
-                else if(colType.Equals("varchar",StringComparison.OrdinalIgnoreCase))
+                else if (colType.Equals("varchar", StringComparison.OrdinalIgnoreCase))
                 {
-                    type = DbType.AnsiString;
+                    return DbType.AnsiString;
                 }
                 else
                 {
-                    type = DbType.AnsiString;
+                    return DbType.AnsiString;
                 }
             }
             else if (realType == XConfig.Double)
             {
                 if (colType.IsNullStr())
                 {
-                    type = DbType.Double;
+                    return DbType.Double;
                 }
-                else if (colType.Equals("double",StringComparison.OrdinalIgnoreCase))
+                else if (colType.Equals("double", StringComparison.OrdinalIgnoreCase))
                 {
-                    type = DbType.Double;
+                    return DbType.Double;
                 }
                 else
                 {
-                    type = DbType.Double;
+                    return DbType.Double;
                 }
             }
             else if (realType == XConfig.Float)
             {
                 if (colType.IsNullStr())
                 {
-                    type = DbType.Single;
+                    return DbType.Single;
                 }
-                else if (colType.Equals("float",StringComparison.OrdinalIgnoreCase))
+                else if (colType.Equals("float", StringComparison.OrdinalIgnoreCase))
                 {
-                    type = DbType.Single;
+                    return DbType.Single;
                 }
                 else
                 {
-                    type = DbType.Single ;
+                    return DbType.Single;
                 }
             }
             else if (realType == XConfig.Sbyte)
             {
                 if (colType.IsNullStr())
                 {
-                    type = DbType.Int16;
+                    return DbType.Int16;
                 }
-                else if (colType.Equals("tinyint",StringComparison.OrdinalIgnoreCase))
+                else if (colType.Equals("tinyint", StringComparison.OrdinalIgnoreCase))
                 {
-                    type = DbType.Int16;
+                    return DbType.Int16;
                 }
                 else
                 {
-                    type = DbType.SByte;
+                    return DbType.SByte;
                 }
             }
             else if (realType == XConfig.Short)
             {
                 if (colType.IsNullStr())
                 {
-                    type = DbType.Int16;
+                    return DbType.Int16;
                 }
-                else if (colType.Equals("smallint",StringComparison.OrdinalIgnoreCase))
+                else if (colType.Equals("smallint", StringComparison.OrdinalIgnoreCase))
                 {
-                    type = DbType.Int16;
+                    return DbType.Int16;
                 }
                 else
                 {
-                    type = DbType.Int16;
+                    return DbType.Int16;
                 }
             }
             else if (realType == XConfig.Uint)
             {
                 if (colType.IsNullStr())
                 {
-                    type = DbType.UInt32;
+                    return DbType.UInt32;
                 }
-                else if (colType.Equals("int",StringComparison.OrdinalIgnoreCase))
+                else if (colType.Equals("int", StringComparison.OrdinalIgnoreCase))
                 {
-                    type = DbType.UInt32;
+                    return DbType.UInt32;
                 }
                 else
                 {
-                    type = DbType.UInt32;
+                    return DbType.UInt32;
                 }
             }
             else if (realType == XConfig.Ulong)
             {
                 if (colType.IsNullStr())
                 {
-                    type = DbType.UInt64;
+                    return DbType.UInt64;
                 }
-                else if (colType.Equals("bigint",StringComparison.OrdinalIgnoreCase))
+                else if (colType.Equals("bigint", StringComparison.OrdinalIgnoreCase))
                 {
-                    type = DbType.UInt64;
+                    return DbType.UInt64;
                 }
                 else
                 {
-                    type = DbType.UInt64;
+                    return DbType.UInt64;
                 }
             }
             else if (realType == XConfig.Ushort)
             {
                 if (colType.IsNullStr())
                 {
-                    type = DbType.UInt16;
+                    return DbType.UInt16;
                 }
-                else if (colType.Equals("smallint",StringComparison.OrdinalIgnoreCase))
+                else if (colType.Equals("smallint", StringComparison.OrdinalIgnoreCase))
                 {
-                    type = DbType.UInt16;
+                    return DbType.UInt16;
                 }
                 else
                 {
-                    type = DbType.UInt16;
+                    return DbType.UInt16;
                 }
             }
             else if (realType == XConfig.TimeSpan)
             {
                 if (colType.IsNullStr())
                 {
-                    type = DbType.Time;
+                    return DbType.Time;
                 }
-                else if (colType.Equals("time",StringComparison.OrdinalIgnoreCase))
+                else if (colType.Equals("time", StringComparison.OrdinalIgnoreCase))
                 {
-                    type = DbType.Time;
+                    return DbType.Time;
                 }
                 else
                 {
-                    type = DbType.Time;
+                    return DbType.Time;
                 }
+            }
+            else if (realType == XConfig.DateTimeOffset)
+            {
+                return DbType.DateTimeOffset;
+            }
+            else if (realType == XConfig.Object)
+            {
+                return DbType.Object;
+            }
+            else if(realType.FullName==XConfig.LinqBinary)
+            {
+                return DbType.Binary;
+            }
+            else if(XConfig.IEnumerableT.IsAssignableFrom(realType))
+            {
+                return (DbType)(-1);
             }
             else
             {
                 throw new Exception($"[[DbType GetType(string colType, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
-            }
-
-            //
-            return type;
+            }            
         }
         private ParamInfo BoolParam(string colType, DicUI ui, Type realType)
         {
@@ -327,16 +330,16 @@ namespace Yunyong.DataExchange.Core.Helper
             {
                 if (ui.CsValue.ToBool())
                 {
-                    val = 1;// return GetDefault(item.Param, 1, DbType.UInt16);
+                    val = 1;
                 }
                 else
                 {
-                    val = 0; // return GetDefault(item.Param, 0, DbType.UInt16);
+                    val = 0; 
                 }
             }
             else if (type == DbType.Boolean)
             {
-                val = ui.CsValue.ToBool();  // GetDefault(item.Param, item.CsValue.ToBool(), DbType.Boolean);
+                val = ui.CsValue.ToBool();  
             }
             else
             {
@@ -352,7 +355,7 @@ namespace Yunyong.DataExchange.Core.Helper
             var val = default(object);
 
             //
-            if(type== DbType.Byte)
+            if (type == DbType.Byte)
             {
                 val = ui.CsValue.ToByte();
             }
@@ -370,7 +373,7 @@ namespace Yunyong.DataExchange.Core.Helper
             var val = default(object);
 
             //
-            if(type== DbType.AnsiString)
+            if (type == DbType.AnsiString)
             {
                 val = ui.CsValue?.ToString();
             }
@@ -386,9 +389,9 @@ namespace Yunyong.DataExchange.Core.Helper
         {
             var type = GetType(colType, realType);
             var val = default(object);
-            
+
             //
-            if(type == DbType.Decimal)
+            if (type == DbType.Decimal)
             {
                 val = ui.CsValue.ToDecimal();
             }
@@ -482,7 +485,7 @@ namespace Yunyong.DataExchange.Core.Helper
             {
                 val = ui.CsValue.ToShort();
             }
-            else if(type == DbType.SByte)
+            else if (type == DbType.SByte)
             {
                 val = ui.CsValue.ToSbtye();
             }
@@ -554,7 +557,7 @@ namespace Yunyong.DataExchange.Core.Helper
             var val = default(object);
 
             //
-            if (type ==  DbType.UInt16)
+            if (type == DbType.UInt16)
             {
                 val = ui.CsValue.ToUshort();
             }
@@ -576,7 +579,7 @@ namespace Yunyong.DataExchange.Core.Helper
             {
                 val = ui.CsValue?.ToString();
             }
-            else if(type== DbType.AnsiString)
+            else if (type == DbType.AnsiString)
             {
                 val = ui.CsValue?.ToString();
             }
@@ -594,9 +597,9 @@ namespace Yunyong.DataExchange.Core.Helper
             var val = default(object);
 
             //
-            if (type == DbType.AnsiString )
+            if (type == DbType.AnsiString)
             {
-                val = ui.CsValueStr;  
+                val = ui.CsValueStr;
             }
             else if (type == DbType.DateTime2)
             {
@@ -616,9 +619,9 @@ namespace Yunyong.DataExchange.Core.Helper
             var val = default(object);
 
             //
-            if (type ==DbType.Time)
+            if (type == DbType.Time)
             {
-                val = ui.CsValueStr.ToDateTime();                    
+                val = ui.CsValueStr.ToDateTime();
             }
             else
             {
@@ -638,7 +641,7 @@ namespace Yunyong.DataExchange.Core.Helper
             {
                 val = ui.CsValue?.ToString();
             }
-            else if(type == DbType.Guid)
+            else if (type == DbType.Guid)
             {
                 val = ui.CsValue.ToGuid();
             }
@@ -656,7 +659,7 @@ namespace Yunyong.DataExchange.Core.Helper
             var val = default(object);
 
             //
-            if (type== DbType.Int32)
+            if (type == DbType.Int32)
             {
                 if (ui.CsValue is string)
                 {
@@ -802,8 +805,7 @@ namespace Yunyong.DataExchange.Core.Helper
                 }
 
                 //
-                db.DbValue = para.Value;
-                db.DbType = para.DbType;
+                db.ParamInfo = para;
             }
 
         }
