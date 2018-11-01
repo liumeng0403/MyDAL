@@ -182,7 +182,7 @@ namespace MyDAL.Core.Helper
         internal static CacheInfo GetCacheInfo(Identity identity)
         {
             var info = new CacheInfo();
-            Action<IDbCommand, DbParameters> reader = (cmd, paras) => paras.AddParameters(cmd, identity);
+            Action<IDbCommand, DbParamInfo> reader = (cmd, paras) => paras.AddParameters(cmd, identity);
             info.ParamReader = reader;
 
             return info;
@@ -190,20 +190,6 @@ namespace MyDAL.Core.Helper
 
         /******************************************************************************************/
 
-        internal static IEnumerable<T> ExecuteReaderSync<T>(IDataReader reader, Func<IDataReader, object> func, object parameters)
-        {
-            using (reader)
-            {
-                while (reader.Read())
-                {
-                    yield return (T)func(reader);
-                }
-                while (reader.NextResult())
-                {
-                    /* ignore subsequent result sets */
-                }
-            }
-        }
         internal static Task<DbDataReader> ExecuteReaderWithFlagsFallbackAsync(DbCommand cmd, bool wasClosed, CommandBehavior behavior, CancellationToken cancellationToken)
         {
             var task = cmd.ExecuteReaderAsync(GetBehavior(wasClosed, behavior), cancellationToken);

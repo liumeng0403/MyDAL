@@ -1,5 +1,4 @@
 ﻿using MyDAL.Cache;
-using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
 using MyDAL.Core.Helper;
@@ -21,13 +20,14 @@ namespace MyDAL.AdoNet
          * ado.net -- DbCommand.[Task<DbDataReader> ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)]
          * select -- 所有行
          */
-        internal async Task<IEnumerable<T>> ExecuteReaderMultiRowAsync<T>(IDbConnection conn, string sql, DbParameters paramx)
+        internal async Task<IEnumerable<M>> ExecuteReaderMultiRowAsync<M>(IDbConnection conn, string sql, DbParamInfo paramx)
+            where M : class
         {
-            paramx = paramx ?? new DbParameters();
-            var command = new CommandDefinition(sql, paramx, CommandType.Text, CommandFlags.Buffered);
-            var effectiveType = typeof(T);
-            DbParameters param = command.Parameters;
-            var identity = new Identity(command.CommandText, command.CommandType, conn, effectiveType, param?.GetType());
+            paramx = paramx ?? new DbParamInfo();
+            var command = new CommandInfo(sql, paramx);
+            var mType = typeof(M);
+            var param = command.Parameters;
+            var identity = new Identity(command.CommandText, command.CommandType, conn, mType, param?.GetType());
             var info = AdoNetHelper.GetCacheInfo(identity);
             bool needClose = conn.State == ConnectionState.Closed;
             using (var cmd = command.TrySetupAsyncCommand(conn, info.ParamReader))
@@ -47,46 +47,35 @@ namespace MyDAL.AdoNet
                     {
                         if (reader.FieldCount == 0)
                         {
-                            return Enumerable.Empty<T>();
+                            return Enumerable.Empty<M>();
                         }
-                        info.Deserializer = new DeserializerState(hash, AdoNetHelper.GetDeserializer(effectiveType, reader));
+                        info.Deserializer = new DeserializerState(hash, AdoNetHelper.GetDeserializer(mType, reader));
                         tuple = info.Deserializer;
                     }
 
                     var func = tuple.Func;
-
-                    if (command.Buffered)
+                    var result = new List<M>();
+                    var convertToType = Nullable.GetUnderlyingType(mType) ?? mType;
+                    while (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
                     {
-                        var buffer = new List<T>();
-                        var convertToType = Nullable.GetUnderlyingType(effectiveType) ?? effectiveType;
-                        while (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
+                        object val = func(reader);
+                        if (val == null || val is M)
                         {
-                            object val = func(reader);
-                            if (val == null || val is T)
-                            {
-                                buffer.Add((T)val);
-                            }
-                            else
-                            {
-                                buffer.Add((T)Convert.ChangeType(val, convertToType, CultureInfo.InvariantCulture));
-                            }
+                            result.Add((M)val);
                         }
-                        while (await reader.NextResultAsync(default(CancellationToken)).ConfigureAwait(false))
-                        { /* ignore subsequent result sets */ }
-                        return buffer;
+                        else
+                        {
+                            result.Add((M)Convert.ChangeType(val, convertToType, CultureInfo.InvariantCulture));
+                        }
                     }
-                    else
-                    {
-                        // can't use ReadAsync / cancellation; but this will have to do
-                        needClose = false; // don't close if handing back an open reader; rely on the command-behavior
-                        var deferred = AdoNetHelper.ExecuteReaderSync<T>(reader, func, command.Parameters);
-                        reader = null; // to prevent it being disposed before the caller gets to see it
-                        return deferred;
-                    }
+                    while (await reader.NextResultAsync(default(CancellationToken)).ConfigureAwait(false))
+                    { }
+                    return result;
                 }
                 finally
                 {
-                    using (reader) { /* dispose if non-null */ }
+                    using (reader)
+                    { }
                     if (needClose)
                     {
                         conn.Close();
@@ -99,14 +88,14 @@ namespace MyDAL.AdoNet
          * ado.net -- DbCommand.[Task<DbDataReader> ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)]
          * select -- 第一行
          */
-        internal async Task<T> ExecuteReaderSingleRowAsync<T>(IDbConnection conn, string sql, DbParameters paramx)
+        internal async Task<T> ExecuteReaderSingleRowAsync<T>(IDbConnection conn, string sql, DbParamInfo paramx)
         {
-            paramx = paramx ?? new DbParameters();
-            var command = new CommandDefinition(sql, paramx, CommandType.Text, CommandFlags.None);
-            var effectiveType = typeof(T);
+            paramx = paramx ?? new DbParamInfo();
+            var command = new CommandInfo(sql, paramx);
+            var mType = typeof(T);
             var row = RowEnum.FirstOrDefault;
-            DbParameters param = command.Parameters;
-            var identity = new Identity(command.CommandText, command.CommandType, conn, effectiveType, param?.GetType());
+            var param = command.Parameters;
+            var identity = new Identity(command.CommandText, command.CommandType, conn, mType, param?.GetType());
             var info = AdoNetHelper.GetCacheInfo(identity);
             bool needClose = conn.State == ConnectionState.Closed;
             using (var cmd = command.TrySetupAsyncCommand(conn, info.ParamReader))
@@ -129,11 +118,10 @@ namespace MyDAL.AdoNet
                         int hash = AdoNetHelper.GetColumnHash(reader);
                         if (tuple.Func == null || tuple.Hash != hash)
                         {
-                            tuple = info.Deserializer = new DeserializerState(hash, AdoNetHelper.GetDeserializer(effectiveType, reader));
+                            tuple = info.Deserializer = new DeserializerState(hash, AdoNetHelper.GetDeserializer(mType, reader));
                         }
 
                         var func = tuple.Func;
-
                         object val = func(reader);
                         if (val == null || val is T)
                         {
@@ -141,7 +129,7 @@ namespace MyDAL.AdoNet
                         }
                         else
                         {
-                            var convertToType = Nullable.GetUnderlyingType(effectiveType) ?? effectiveType;
+                            var convertToType = Nullable.GetUnderlyingType(mType) ?? mType;
                             result = (T)Convert.ChangeType(val, convertToType, CultureInfo.InvariantCulture);
                         }
                         if ((row & RowEnum.Single) != 0 && await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
@@ -175,13 +163,13 @@ namespace MyDAL.AdoNet
          * ado.net -- DbCommand.[Task<DbDataReader> ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)]
          * select -- 单列
          */
-        internal async Task<IEnumerable<F>> ExecuteReaderSingleColumnAsync<M,F>(IDbConnection conn, string sql, DbParameters paramx, Func<M, F> propertyFunc)
-            where M:class
+        internal async Task<IEnumerable<F>> ExecuteReaderSingleColumnAsync<M, F>(IDbConnection conn, string sql, DbParamInfo paramx, Func<M, F> propertyFunc)
+            where M : class
         {
-            paramx = paramx ?? new DbParameters();
-            var command = new CommandDefinition(sql, paramx, CommandType.Text, CommandFlags.Buffered);
+            paramx = paramx ?? new DbParamInfo();
+            var command = new CommandInfo(sql, paramx);
             var effectiveType = typeof(M);
-            DbParameters param = command.Parameters;
+            var param = command.Parameters;
             var identity = new Identity(command.CommandText, command.CommandType, conn, effectiveType, param?.GetType());
             var info = AdoNetHelper.GetCacheInfo(identity);
             bool needClose = conn.State == ConnectionState.Closed;
@@ -196,15 +184,15 @@ namespace MyDAL.AdoNet
                     }
 
                     reader = await AdoNetHelper.ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, CommandBehavior.SequentialAccess | CommandBehavior.SingleResult, default(CancellationToken)).ConfigureAwait(false);
-                    
+
                     var result = new List<F>();
                     var convertToType = Nullable.GetUnderlyingType(effectiveType) ?? effectiveType;
-                    var col =IL.Row(effectiveType,reader);
+                    var col = IL.Row(effectiveType, reader);
                     var m = default(M);
                     while (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
                     {
-                        var val =col.Handle(reader);
-                        if (val == null 
+                        var val = col.Handle(reader);
+                        if (val == null
                             || val is M)
                         {
                             m = val as M;
@@ -236,10 +224,10 @@ namespace MyDAL.AdoNet
          * Update,Insert,Delete -- 执行成功是返回值为该命令所影响的行数，如果影响的行数为0时返回的值为0，如果数据操作回滚得话返回值为-1
          * 对数据库结构的操作 -- 操作成功时返回的却是-1 , 操作失败的话（如数据表已经存在）往往会发生异常
          */
-        internal async Task<int> ExecuteNonQueryAsync(IDbConnection conn, string sql, DbParameters paramx)
+        internal async Task<int> ExecuteNonQueryAsync(IDbConnection conn, string sql, DbParamInfo paramx)
         {
-            paramx = paramx ?? new DbParameters();
-            var command = new CommandDefinition(sql, paramx, CommandType.Text, CommandFlags.Buffered);
+            paramx = paramx ?? new DbParamInfo();
+            var command = new CommandInfo(sql, paramx);
             var param = command.Parameters;
 
             var identity = new Identity(command.CommandText, command.CommandType, conn, null, param?.GetType());
@@ -271,11 +259,11 @@ namespace MyDAL.AdoNet
          * select -- 返回结果是查询后的第一行的第一列
          * 非select -- 返回一个未实例化的对象
          */
-        internal async Task<T> ExecuteScalarAsync<T>(IDbConnection conn, string sql, DbParameters paramx)
+        internal async Task<T> ExecuteScalarAsync<T>(IDbConnection conn, string sql, DbParamInfo paramx)
         {
-            paramx = paramx ?? new DbParameters();
-            var command = new CommandDefinition(sql, paramx, CommandType.Text, CommandFlags.Buffered);
-            Action<IDbCommand, DbParameters> paramReader = null;
+            paramx = paramx ?? new DbParamInfo();
+            var command = new CommandInfo(sql, paramx);
+            Action<IDbCommand, DbParamInfo> paramReader = null;
             object param = command.Parameters;
             if (param != null)
             {

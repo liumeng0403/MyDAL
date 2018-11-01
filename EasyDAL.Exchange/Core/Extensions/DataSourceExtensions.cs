@@ -9,10 +9,7 @@ namespace MyDAL.Core.Extensions
 {
     internal static class DataSourceExtensions
     {
-        /// <summary>
-        /// Attempts setup a <see cref="DbCommand"/> on a <see cref="DbConnection"/>, with a better error message for unsupported usages.
-        /// </summary>
-        internal static DbCommand TrySetupAsyncCommand(this CommandDefinition command, IDbConnection cnn, Action<IDbCommand, DbParameters> paramReader)
+        internal static DbCommand TrySetupAsyncCommand(this CommandInfo command, IDbConnection cnn, Action<IDbCommand, DbParamInfo> paramReader)
         {
             var cmd = cnn.CreateCommand();
             cmd.CommandText = command.CommandText;  // CommandText;
@@ -20,20 +17,8 @@ namespace MyDAL.Core.Extensions
             cmd.CommandType = CommandType.Text;
             paramReader?.Invoke(cmd,command.Parameters);  // (cmd, Parameters);
             return cmd as DbCommand;
-
-            //if (command.SetupCommand(cnn, paramReader) is DbCommand dbCommand)
-            //{
-            //    return dbCommand;
-            //}
-            //else
-            //{
-            //    throw new InvalidOperationException("Async operations require use of a DbConnection or an IDbConnection where .CreateCommand() returns a DbCommand");
-            //}
         }
 
-        /// <summary>
-        /// Attempts to open a connection asynchronously, with a better error message for unsupported usages.
-        /// </summary>
         internal static Task TryOpenAsync(this IDbConnection cnn, CancellationToken cancel)
         {
             if (cnn is DbConnection dbConn)

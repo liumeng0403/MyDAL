@@ -1,6 +1,6 @@
-﻿using MyDAL.Core.Bases;
+﻿using MyDAL.AdoNet;
+using MyDAL.Core.Bases;
 using System.Collections.Generic;
-using System.Data;
 
 namespace MyDAL.Core.Common
 {
@@ -16,8 +16,9 @@ namespace MyDAL.Core.Common
         internal string ColumnAlias { get; set; }
         internal string Param { get; set; }
         internal string ParamRaw { get; set; }
-        internal object DbValue { get; set; }
-        internal DbType DbType { get; set; }
+        //internal object DbValue { get; set; }
+        //internal DbType DbType { get; set; }
+        internal ParamInfo ParamInfo { get; set; }
 
         internal string ColumnType { get; set; }
 

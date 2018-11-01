@@ -54,7 +54,7 @@ namespace MyDAL
 
                         //
                         var dbVal = string.Empty;
-                    dbVal = dbM.DbValue == null ? "DbNull" : dbM.DbValue.ToString();
+                    dbVal = dbM.ParamInfo.Value == null ? "DbNull" : dbM.ParamInfo.Value.ToString();
                     return $"字段:【{field}】-->【{csVal}】;参数:【{dbM.Param}】-->【{dbVal}】.";
                 })
                 .ToList();
@@ -64,22 +64,22 @@ namespace MyDAL
                 var sqlStr = sql;
                 foreach (var par in DBs)
                 {
-                    if (par.DbType == DbType.Boolean
-                        || par.DbType == DbType.Decimal
-                        || par.DbType == DbType.Double
-                        || par.DbType == DbType.Int16
-                        || par.DbType == DbType.Int32
-                        || par.DbType == DbType.Int64
-                        || par.DbType == DbType.Single
-                        || par.DbType == DbType.UInt16
-                        || par.DbType == DbType.UInt32
-                        || par.DbType == DbType.UInt64)
+                    if (par.ParamInfo.Type == DbType.Boolean
+                        || par.ParamInfo.Type == DbType.Decimal
+                        || par.ParamInfo.Type == DbType.Double
+                        || par.ParamInfo.Type == DbType.Int16
+                        || par.ParamInfo.Type == DbType.Int32
+                        || par.ParamInfo.Type == DbType.Int64
+                        || par.ParamInfo.Type == DbType.Single
+                        || par.ParamInfo.Type == DbType.UInt16
+                        || par.ParamInfo.Type == DbType.UInt32
+                        || par.ParamInfo.Type == DbType.UInt64)
                     {
-                        sqlStr = sqlStr.Replace($"@{par.Param}", par.DbValue == null ? "null" : par.DbValue.ToString());
+                        sqlStr = sqlStr.Replace($"@{par.Param}", par.ParamInfo.Value == null ? "null" : par.ParamInfo.Value.ToString());
                     }
                     else
                     {
-                        sqlStr = sqlStr.Replace($"@{par.Param}", par.DbValue == null ? "null" : $"'{par.DbValue.ToString()}'");
+                        sqlStr = sqlStr.Replace($"@{par.Param}", par.ParamInfo.Value == null ? "null" : $"'{par.ParamInfo.Value.ToString()}'");
                     }
                 }
                 SqlWithParams.Add(sqlStr);

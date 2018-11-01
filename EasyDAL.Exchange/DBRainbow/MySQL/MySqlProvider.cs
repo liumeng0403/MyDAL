@@ -28,7 +28,7 @@ namespace MyDAL.DBRainbow.MySQL
         private string LikeStrHandle(DicDB dic)
         {
             var name = dic.Param;
-            var value = dic.DbValue.ToString(); // dic.CsValue;
+            var value = dic.ParamInfo.Value.ToString(); // dic.CsValue;
             if (!value.Contains("%")
                 && !value.Contains("_"))
             {

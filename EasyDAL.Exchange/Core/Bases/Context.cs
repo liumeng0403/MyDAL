@@ -197,9 +197,9 @@ namespace MyDAL.Core.Bases
             //
             return ds;
         }
-        internal DbParameters GetParameters(List<DicDB> dbs)
+        internal DbParamInfo GetParameters(List<DicDB> dbs)
         {
-            var paras = new DbParameters();
+            var paras = new DbParamInfo();
 
             //
             foreach (var db in dbs)
@@ -210,13 +210,13 @@ namespace MyDAL.Core.Bases
                     {
                         paras.Add(GetParameters(db.Group));
                     }
-                    else if (IsInParameter(db.DbValue, db.Option))
+                    else if (IsInParameter(db.ParamInfo.Value, db.Option))
                     {
                         paras.Add(GetParameters(db.InItems));
                     }
                     else
                     {
-                        paras.Add(db.Param, db.DbValue, db.DbType);
+                        paras.Add(db.ParamInfo);
                     }
                 }
             }

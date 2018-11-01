@@ -24,15 +24,8 @@ namespace MyDAL.Core
         internal static DbEnum DB { get; set; } = DbEnum.None;
 
         internal static int CommandTimeout { get; set; } = 10;  // 10s 
-
-        /// <summary>
-        /// Default is 4000, any value larger than this field will not have the default value applied.
-        /// </summary>
-        internal static int StringDefaultLength { get; private set; } = 4000;
-
+        
         internal static BindingFlags ClassSelfMember { get; private set; } = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public;
-
-        internal static string LinqBinary { get; } = "System.Data.Linq.Binary";
 
         internal static MethodInfo EnumParse { get; } = typeof(Enum).GetMethod(nameof(Enum.Parse), new Type[] { typeof(Type), typeof(string), typeof(bool) });
 
@@ -40,6 +33,8 @@ namespace MyDAL.Core
 
         internal static Type Bool { get; private set; } = typeof(bool);
         internal static Type Byte { get; private set; } = typeof(byte);
+        internal static Type ByteArray { get; private set; } = typeof(byte[]);
+        internal static string LinqBinary { get; private set; } = "System.Data.Linq.Binary";
         internal static Type Char { get; private set; } = typeof(char);
         internal static Type Decimal { get; private set; } = typeof(decimal);
         internal static Type Double { get; private set; } = typeof(double);
@@ -53,10 +48,12 @@ namespace MyDAL.Core
         internal static Type Ushort { get; private set; } = typeof(ushort);
         internal static Type String { get; private set; } = typeof(string);
         internal static Type DateTime { get; private set; } = typeof(DateTime);
+        internal static Type DateTimeOffset { get; private set; } = typeof(DateTimeOffset);
         internal static Type TimeSpan { get; private set; } = typeof(TimeSpan);
         internal static Type Guid { get; private set; } = typeof(Guid);
         internal static Type NullableT { get; private set; } = typeof(Nullable<>);
         internal static Type ListT { get; private set; } = typeof(List<>);
+        internal static Type IEnumerableT { get; private set; } = typeof(IEnumerable<>);
         internal static Type Object { get; private set; } = typeof(object);
 
         /************************************************************************************************************/
@@ -68,68 +65,7 @@ namespace MyDAL.Core
         internal static string XColumnFullName { get; private set; } = typeof(XColumnAttribute).FullName;
 
         /************************************************************************************************************/
-
-        internal static ConcurrentDictionary<Type, DbType> TypeDBTypeDic { get; private set; } = new ConcurrentDictionary<Type, DbType>
-        {
-            [typeof(byte)] = DbType.Byte,
-            [typeof(byte[])] = DbType.Binary,
-            [typeof(byte?)] = DbType.Byte,
-
-            [typeof(sbyte)] = DbType.SByte,
-            [typeof(sbyte?)] = DbType.SByte,
-
-            [typeof(short)] = DbType.Int16,
-            [typeof(short?)] = DbType.Int16,
-
-            [typeof(ushort)] = DbType.UInt16,
-            [typeof(ushort?)] = DbType.UInt16,
-
-            [typeof(int)] = DbType.Int32,
-            [typeof(int?)] = DbType.Int32,
-
-            [typeof(uint)] = DbType.UInt32,
-            [typeof(uint?)] = DbType.UInt32,
-
-            [typeof(long)] = DbType.Int64,
-            [typeof(long?)] = DbType.Int64,
-
-            [typeof(ulong)] = DbType.UInt64,
-            [typeof(ulong?)] = DbType.UInt64,
-
-            [typeof(float)] = DbType.Single,
-            [typeof(float?)] = DbType.Single,
-
-            [typeof(double)] = DbType.Double,
-            [typeof(double?)] = DbType.Double,
-
-            [typeof(decimal)] = DbType.Decimal,
-            [typeof(decimal?)] = DbType.Decimal,
-
-            [typeof(bool)] = DbType.Boolean,
-            [typeof(bool?)] = DbType.Boolean,
-
-            [typeof(string)] = DbType.String,
-
-            [typeof(char)] = DbType.StringFixedLength,
-            [typeof(char?)] = DbType.StringFixedLength,
-
-            [typeof(Guid)] = DbType.Guid,
-            [typeof(Guid?)] = DbType.Guid,
-
-            [typeof(DateTime)] = DbType.DateTime,
-            [typeof(DateTime?)] = DbType.DateTime,
-
-            [typeof(DateTimeOffset)] = DbType.DateTimeOffset,
-            [typeof(DateTimeOffset?)] = DbType.DateTimeOffset,
-
-            [typeof(TimeSpan)] = DbType.Time,
-            [typeof(TimeSpan?)] = DbType.Time,
-
-            [typeof(object)] = DbType.Object
-        };
-
-        /************************************************************************************************************/
-
+        
         internal static MethodInfo GetItem { get; } = typeof(IDataRecord)
             .GetProperties(BindingFlags.Instance | BindingFlags.Public)
             .Where(p => p.GetIndexParameters().Length > 0 && p.GetIndexParameters()[0].ParameterType == typeof(int))
