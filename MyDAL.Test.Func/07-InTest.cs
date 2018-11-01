@@ -57,7 +57,7 @@ namespace MyDAL.Test.Func
                 .QueryListAsync();
             Assert.True(res1.Count == 555);
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters);
+            var tuple1 = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*******************************************************************************************************************/
 
@@ -383,6 +383,64 @@ namespace MyDAL.Test.Func
 
             var tuple23 = (XDebug.SQL, XDebug.Parameters);
 
+            /*******************************************************************************************************************/
+
+            var xx24 = "";
+
+            var guid241 = Guid.Parse("0048793b-ca61-457e-a2b4-0165442f3684");
+            var guid242 = Guid.Parse("004f4290-9576-43b9-903f-01654434da0f");
+            // where in -- string[] init
+            var res24 = await Conn
+                .Selecter<Agent>()
+                .Where(it => new string[] { "黄银凤", "刘建芬" }.Contains(it.Name) || new List<Guid> { guid241, guid242 }.Contains(it.Id))
+                .QueryListAsync();
+            Assert.True(res24.Count == 4);
+
+            var tuple24 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*******************************************************************************************************************/
+
+            var xx25 = "";
+            
+            // where in -- string[] init
+            var res25 = await Conn
+                .Selecter<Agent>()
+                .Where(it => new string[] {"刘建芬" }.Contains(it.Name))
+                .QueryListAsync();
+            Assert.True(res25.Count == 1);
+
+            var tuple25 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*******************************************************************************************************************/
+
+            var xx26 = "";
+
+            // where in -- string[] init
+            var res26 = await Conn
+                .Selecter<Agent>()
+                .Where(it => new string[] { "刘建芬" }.Contains(it.Name) || new List<Guid> { guid241 }.Contains(it.Id))
+                .QueryListAsync();
+            Assert.True(res26.Count == 2);
+
+            var tuple26 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*******************************************************************************************************************/
+
+            var xx27 = "";
+
+            try
+            {
+                // where in -- string[] init
+                var res27 = await Conn
+                    .Selecter<Agent>()
+                    .Where(it => new List<Guid> { }.Contains(it.Id))
+                    .QueryListAsync();
+            }
+            catch(Exception ex)
+            {
+                Assert.True(ex.Message.Equals("【new List`1() {}.Contains(it.Id)】 中 集合为空!!!", StringComparison.OrdinalIgnoreCase));
+            }
+            
             /*******************************************************************************************************************/
 
             var xx = "";

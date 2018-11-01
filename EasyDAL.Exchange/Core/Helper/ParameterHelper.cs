@@ -317,7 +317,7 @@ namespace Yunyong.DataExchange.Core.Helper
             //
             return type;
         }
-        private ParamInfo BoolParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo BoolParam(string colType, DicUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -346,7 +346,7 @@ namespace Yunyong.DataExchange.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo ByteParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo ByteParam(string colType, DicUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -364,7 +364,7 @@ namespace Yunyong.DataExchange.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        internal ParamInfo CharParam(string colType, DicModelUI ui, Type realType)
+        internal ParamInfo CharParam(string colType, DicUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -382,7 +382,7 @@ namespace Yunyong.DataExchange.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo DecimalParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo DecimalParam(string colType, DicUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -400,7 +400,7 @@ namespace Yunyong.DataExchange.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo DoubleParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo DoubleParam(string colType, DicUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -418,7 +418,7 @@ namespace Yunyong.DataExchange.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo FloatParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo FloatParam(string colType, DicUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -436,7 +436,7 @@ namespace Yunyong.DataExchange.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo IntParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo IntParam(string colType, DicUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -454,7 +454,7 @@ namespace Yunyong.DataExchange.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo LongParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo LongParam(string colType, DicUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -472,7 +472,7 @@ namespace Yunyong.DataExchange.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo SbyteParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo SbyteParam(string colType, DicUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -494,7 +494,7 @@ namespace Yunyong.DataExchange.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo ShortParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo ShortParam(string colType, DicUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -512,7 +512,7 @@ namespace Yunyong.DataExchange.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo UintParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo UintParam(string colType, DicUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -530,7 +530,7 @@ namespace Yunyong.DataExchange.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo UlongParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo UlongParam(string colType, DicUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -548,7 +548,7 @@ namespace Yunyong.DataExchange.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo UshortParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo UshortParam(string colType, DicUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -566,7 +566,7 @@ namespace Yunyong.DataExchange.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo StringParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo StringParam(string colType, DicUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -588,7 +588,7 @@ namespace Yunyong.DataExchange.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo DateTimeParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo DateTimeParam(string colType, DicUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -610,7 +610,7 @@ namespace Yunyong.DataExchange.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo TimeSpanParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo TimeSpanParam(string colType, DicUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -628,7 +628,7 @@ namespace Yunyong.DataExchange.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo GuidParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo GuidParam(string colType, DicUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -650,7 +650,7 @@ namespace Yunyong.DataExchange.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo EnumParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo EnumParam(string colType, DicUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             var val = default(object);
@@ -683,7 +683,7 @@ namespace Yunyong.DataExchange.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo NullParam(string colType, DicModelUI ui, Type realType)
+        private ParamInfo NullParam(string colType, DicUI ui, Type realType)
         {
             var type = GetType(colType, realType);
             return GetDefault(ui.Param, null, type);
@@ -691,7 +691,7 @@ namespace Yunyong.DataExchange.Core.Helper
 
         /*************************************************************************************************************************************/
 
-        internal void GetDbVal(DicModelUI ui, DicModelDB db, Type realType)
+        internal void GetDbVal(DicUI ui, DicDB db, Type realType)
         {
 
             //
