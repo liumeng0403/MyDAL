@@ -3,6 +3,7 @@ using MyDAL.Test.Enums;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
+using Yunyong.DataExchange;
 
 namespace MyDAL.Test.QuickAPI
 {
