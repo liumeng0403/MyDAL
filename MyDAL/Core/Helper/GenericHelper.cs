@@ -76,6 +76,10 @@ namespace MyDAL.Core.Helper
         {
             return outerProp.GetValue(outerObj);
         }
+        public object GetTypeValue(FieldInfo outerField, object outerObj)
+        {
+            return outerField.GetValue(outerObj);
+        }
         public object GetTypeValue(object objVal)
         {
             return objVal;
