@@ -25,7 +25,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
 
         /****************************************************************************************************************/
 
-        private string LikeStrHandle(DicDB dic)
+        private string LikeStrHandle(DicParam dic)
         {
             var name = dic.Param;
             var value = dic.ParamInfo.Value.ToString(); // dic.CsValue;
@@ -48,7 +48,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
 
             throw new Exception(value);
         }
-        private string InStrHandle(List<DicDB> dbs)
+        private string InStrHandle(List<DicParam> dbs)
         {
             return $" {string.Join(",", dbs.Select(it => $" @{it.Param} "))} ";
         }
@@ -60,10 +60,10 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
             var cols = DC.SC.GetColumnInfos(key);
             var props = DC.SC.GetModelProperys(key);
 
-            if (DC.DbConditions.Any(it => it.Action == ActionEnum.OrderBy))
+            if (DC.Parameters.Any(it => it.Action == ActionEnum.OrderBy))
             {
                 var list = new List<string>();
-                var orders = DC.DbConditions.Where(it => it.Action == ActionEnum.OrderBy);
+                var orders = DC.Parameters.Where(it => it.Action == ActionEnum.OrderBy);
                 foreach (var o in orders)
                 {
                     if (o.Func == FuncEnum.None
@@ -98,14 +98,14 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
         private string GetOrderByPart()
         {
             var str = string.Empty;
-            var dic = DC.DbConditions.First(it => !string.IsNullOrWhiteSpace(it.Key));
+            var dic = DC.Parameters.First(it => !string.IsNullOrWhiteSpace(it.Key));
             var cols = DC.SC.GetColumnInfos(dic.Key);
             var props = DC.SC.GetModelProperys(dic.Key);
 
-            if (DC.DbConditions.Any(it => it.Action == ActionEnum.OrderBy))
+            if (DC.Parameters.Any(it => it.Action == ActionEnum.OrderBy))
             {
                 var list = new List<string>();
-                var orders = DC.DbConditions.Where(it => it.Action == ActionEnum.OrderBy);
+                var orders = DC.Parameters.Where(it => it.Action == ActionEnum.OrderBy);
                 foreach (var o in orders)
                 {
                     if (o.Func == FuncEnum.None
@@ -158,7 +158,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
 
         /****************************************************************************************************************/
 
-        private string CompareProcess(DicDB db, bool isMulti)
+        private string CompareProcess(DicParam db, bool isMulti)
         {
             if (isMulti)
             {
@@ -184,7 +184,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
             }
             throw new Exception("CompareProcess 未能处理!!!");
         }
-        private string LikeProcess(DicDB db, bool isMulti )
+        private string LikeProcess(DicParam db, bool isMulti )
         {
             if (isMulti)
             {
@@ -210,7 +210,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
             }
             throw new Exception("LikeProcess 未能处理!!!");
         }
-        private string CharLengthProcess(DicDB db, bool isMulti)
+        private string CharLengthProcess(DicParam db, bool isMulti)
         {
             if (isMulti)
             {
@@ -236,7 +236,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
             }
             throw new Exception("CharLengthProcess 未能处理!!!");
         }
-        private string TrimProcess(DicDB db, bool isMulti )
+        private string TrimProcess(DicParam db, bool isMulti )
         {
             if (isMulti)
             {
@@ -262,7 +262,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
             }
             throw new Exception("TrimProcess 未能处理!!!");
         }
-        private string OneEqualOneProcess(DicDB db, bool isMulti)
+        private string OneEqualOneProcess(DicParam db, bool isMulti)
         {
             if (isMulti)
             {
@@ -274,7 +274,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
             }
             throw new Exception("OneEqualOneProcess 未能处理!!!");
         }
-        private string InProcess(DicDB db, bool isMulti )
+        private string InProcess(DicParam db, bool isMulti )
         {
             if (isMulti)
             {
@@ -300,7 +300,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
             }
             throw new Exception("InProcess 未能处理!!!");
         }
-        private string IsNullProcess(DicDB db, bool isMulti )
+        private string IsNullProcess(DicParam db, bool isMulti )
         {
             if (isMulti)
             {
@@ -453,7 +453,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
 
         /****************************************************************************************************************/
 
-        private string MultiCondition(DicDB db,bool isMulti)
+        private string MultiCondition(DicParam db,bool isMulti)
         {
             if (db.Group != null)
             {
@@ -511,7 +511,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
         {
             var str = string.Empty;
 
-            foreach (var item in DC.DbConditions)
+            foreach (var item in DC.Parameters)
             {
                 switch (item.Option)
                 {
@@ -527,7 +527,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
         {
             var str = string.Empty;
 
-            var item = DC.DbConditions.FirstOrDefault(it => it.Option == OptionEnum.Count);
+            var item = DC.Parameters.FirstOrDefault(it => it.Option == OptionEnum.Count);
             if (item.Crud == CrudTypeEnum.Query)
             {
                 if ("*".Equals(item.ColumnOne, StringComparison.OrdinalIgnoreCase))
@@ -559,7 +559,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
             var str = string.Empty;
             var list = new List<string>();
 
-            foreach (var dic in DC.DbConditions)
+            foreach (var dic in DC.Parameters)
             {
                 if (dic.Option != OptionEnum.Column
                     && dic.Option != OptionEnum.ColumnAs)
@@ -579,7 +579,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
                                         list.Add($" \t {dic.TableAliasOne}.`{dic.ColumnOne}` ");
                                         break;
                                     case OptionEnum.ColumnAs:
-                                        list.Add($" \t {dic.TableAliasOne}.`{dic.ColumnOne}` as {dic.ColumnAlias} ");
+                                        list.Add($" \t {dic.TableAliasOne}.`{dic.ColumnOne}` as {dic.ColumnOneAlias} ");
                                         break;
                                 }
 
@@ -591,7 +591,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
                                         list.Add($" \t `{dic.ColumnOne}` ");
                                         break;
                                     case OptionEnum.ColumnAs:
-                                        list.Add($" \t `{dic.ColumnOne}` as {dic.ColumnAlias} ");
+                                        list.Add($" \t `{dic.ColumnOne}` as {dic.ColumnOneAlias} ");
                                         break;
                                 }
                                 break;
@@ -632,7 +632,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
         {
             var str = string.Empty;
 
-            foreach (var item in DC.DbConditions)
+            foreach (var item in DC.Parameters)
             {
                 if (item.Crud != CrudTypeEnum.Join)
                 {
@@ -649,7 +649,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
                         str += $" \r\n \t {ConditionAction(item.Action)} {item.TableOne} as {item.TableAliasOne} ";
                         break;
                     case ActionEnum.On:
-                        str += $" \r\n \t \t {ConditionAction(item.Action)} {item.TableAliasOne}.`{item.ColumnOne}`={item.AliasTwo}.`{item.KeyTwo}` ";
+                        str += $" \r\n \t \t {ConditionAction(item.Action)} {item.TableAliasOne}.`{item.ColumnOne}`={item.TableAliasTwo}.`{item.ColumnTwo}` ";
                         break;
                 }
             }
@@ -662,7 +662,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
             var str = string.Empty;
 
             //
-            foreach (var db in DC.DbConditions)
+            foreach (var db in DC.Parameters)
             {
                 if (DC.IsFilterCondition(db.Action))
                 {
@@ -671,7 +671,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
             }
 
             if (!str.IsNullStr()
-                && DC.DbConditions.All(it => it.Action != ActionEnum.Where))
+                && DC.Parameters.All(it => it.Action != ActionEnum.Where))
             {
                 var aIdx = str.IndexOf(" and ", StringComparison.Ordinal);
                 var oIdx = str.IndexOf(" or ", StringComparison.Ordinal);
@@ -690,14 +690,14 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
 
         private string GetUpdates()
         {
-            if (!DC.DbConditions.Any(it => it.Action == ActionEnum.Update))
+            if (!DC.Parameters.Any(it => it.Action == ActionEnum.Update))
             {
                 throw new Exception("没有设置任何要更新的字段!");
             }
 
             var list = new List<string>();
 
-            foreach (var item in DC.DbConditions)
+            foreach (var item in DC.Parameters)
             {
                 switch (item.Action)
                 {
@@ -722,7 +722,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
         private string GetColumns()
         {
             var list = new List<string>();
-            foreach (var item in DC.DbConditions)
+            foreach (var item in DC.Parameters)
             {
                 if (item.TvpIndex == 0)
                 {
@@ -734,10 +734,10 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
         private string GetValues()
         {
             var list = new List<string>();
-            for (var i = 0; i < DC.DbConditions.Max(it => it.TvpIndex) + 1; i++)
+            for (var i = 0; i < DC.Parameters.Max(it => it.TvpIndex) + 1; i++)
             {
                 var values = new List<string>();
-                foreach (var item in DC.DbConditions)
+                foreach (var item in DC.Parameters)
                 {
                     if (item.TvpIndex == i)
                     {
@@ -784,7 +784,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
                                             and  ( TABLE_NAME = '{tableName.TrimStart('`').TrimEnd('`').ToLower()}' or TABLE_NAME = '{tableName.TrimStart('`').TrimEnd('`')}' )
                                         ;
                                   ";
-            return (await DC.DS.ExecuteReaderMultiRowAsync<ColumnInfo>(DC.Conn, sql, null)).ToList();
+            return await DC.DS.ExecuteReaderMultiRowAsync<ColumnInfo>(DC.Conn, sql, null);
         }
 
         string ISqlProvider.GetTablePK(string fullName)

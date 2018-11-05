@@ -84,7 +84,7 @@ namespace Yunyong.DataExchange.Core.Helper
                                     where table_schema='{conn.Database}'
                                             and table_type='base table';
                                 ";
-            dtNames =(await new DataSource().ExecuteReaderMultiRowAsync<TableModel>(conn, sql, null)).ToList();
+            dtNames =await new DataSource().ExecuteReaderMultiRowAsync<TableModel>(conn, sql, null);
 
             //
             var createList = new List<string>();

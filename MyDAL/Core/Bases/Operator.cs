@@ -264,7 +264,7 @@ namespace Yunyong.DataExchange.Core.Bases
             }
             DC.Option = option;
             DC.Compare = CompareEnum.None;
-            DC.AddConditions(DC.DH.SetDic(typeof(M).FullName, key, key, val, typeof(F)));
+            DC.DPH.AddParameter(DC.DPH.SetDic(typeof(M).FullName, key, key, val, typeof(F)));
         }
 
         internal void SetDynamicHandle<M>(object mSet)
@@ -275,14 +275,14 @@ namespace Yunyong.DataExchange.Core.Bases
             {
                 DC.Option = OptionEnum.Set;
                 DC.Compare = CompareEnum.None;
-                DC.AddConditions(DC.DH.SetDic(fullName, tp.key, tp.param, tp.val, tp.valType));
+                DC.DPH.AddParameter(DC.DPH.SetDic(fullName, tp.key, tp.param, tp.val, tp.valType));
             }
         }
 
         internal void WhereJoinHandle(Operator op, Expression<Func<bool>> func)
         {
             var dic = op.DC.EH.FuncBoolExpression(func);
-            op.DC.AddConditions(dic);
+            op.DC.DPH.AddParameter(dic);
         }
 
         internal void WhereHandle<M>(Expression<Func<M, bool>> func)
@@ -291,7 +291,7 @@ namespace Yunyong.DataExchange.Core.Bases
             DC.Action= ActionEnum.Where;
             var field = DC.EH.FuncMBoolExpression(func);
             field.ClassFullName = typeof(M).FullName;
-            DC.AddConditions(field);
+            DC.DPH.AddParameter(field);
         }
 
         internal void WhereDynamicHandle<M>(object mWhere)
@@ -316,25 +316,25 @@ namespace Yunyong.DataExchange.Core.Bases
                 {
                     DC.Option = OptionEnum.Like;
                     DC.Compare = CompareEnum.None;
-                    DC.AddConditions(DC.DH.LikeDic(fullName, tp.key, string.Empty, tp.val, tp.valType));
+                    DC.DPH.AddParameter(DC.DPH.LikeDic(fullName, tp.key, string.Empty, tp.val, tp.valType));
                 }
                 else if (tp.compare == CompareEnum.In)
                 {
                     DC.Option = OptionEnum.In;
                     DC.Compare = CompareEnum.None;
-                    DC.AddConditions(DC.DH.InDic(fullName, tp.key, string.Empty, tp.val, tp.valType));
+                    DC.DPH.AddParameter(DC.DPH.InDic(fullName, tp.key, string.Empty, tp.val, tp.valType));
                 }
                 else if(tp.compare== CompareEnum.NotIn)
                 {
                     DC.Option = OptionEnum.NotIn;
                     DC.Compare = CompareEnum.None;
-                    DC.AddConditions(DC.DH.NotInDic(fullName, tp.key, string.Empty, tp.val, tp.valType));
+                    DC.DPH.AddParameter(DC.DPH.NotInDic(fullName, tp.key, string.Empty, tp.val, tp.valType));
                 }
                 else
                 {
                     DC.Option = OptionEnum.Compare;
                     DC.Compare = tp.compare;
-                    DC.AddConditions(DC.DH.CompareDic(fullName, tp.key, string.Empty, tp.val, tp.valType));
+                    DC.DPH.AddParameter(DC.DPH.CompareDic(fullName, tp.key, string.Empty, tp.val, tp.valType));
                 }
             }
         }
@@ -344,7 +344,7 @@ namespace Yunyong.DataExchange.Core.Bases
         {
             DC.Action = ActionEnum.And;
             var field = DC.EH.FuncMBoolExpression(func);
-            DC.AddConditions(field);
+            DC.DPH.AddParameter(field);
         }
 
         internal void OrHandle<M>(Expression<Func<M, bool>> func)
@@ -352,7 +352,7 @@ namespace Yunyong.DataExchange.Core.Bases
         {
             DC.Action = ActionEnum.Or;
             var field = DC.EH.FuncMBoolExpression(func);
-            DC.AddConditions(field);
+            DC.DPH.AddParameter(field);
         }
 
         internal void OrderByHandle<M, F>(Expression<Func<M, F>> func, OrderByEnum orderBy)
@@ -369,7 +369,7 @@ namespace Yunyong.DataExchange.Core.Bases
                     break;
             }
 
-            DC.AddConditions(DC.DH.OrderbyDic(keyDic.ClassFullName, keyDic.ColumnOne,keyDic.TableAliasOne));
+            DC.DPH.AddParameter(DC.DPH.OrderbyDic(keyDic.ClassFullName, keyDic.ColumnOne,keyDic.TableAliasOne));
         }
 
         internal void OrderByHandle<F>(Expression<Func<F>> func, OrderByEnum orderBy)
@@ -385,7 +385,7 @@ namespace Yunyong.DataExchange.Core.Bases
                     break;
             }
 
-            DC.AddConditions(DC.DH.OrderbyDic(keyDic.ClassFullName, keyDic.ColumnOne,keyDic.TableAliasOne));
+            DC.DPH.AddParameter(DC.DPH.OrderbyDic(keyDic.ClassFullName, keyDic.ColumnOne,keyDic.TableAliasOne));
         }
 
         protected void OrderByOptionHandle(PagingQueryOption option, string fullName)
@@ -407,7 +407,7 @@ namespace Yunyong.DataExchange.Core.Bases
                             DC.Option = OptionEnum.Asc;
                         }
                         DC.Compare = CompareEnum.None;
-                        DC.AddConditions(DC.DH.OrderbyDic(fullName, item.Field, string.Empty));
+                        DC.DPH.AddParameter(DC.DPH.OrderbyDic(fullName, item.Field, string.Empty));
                     }
                 }
             }

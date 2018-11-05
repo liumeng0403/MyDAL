@@ -1,11 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using Yunyong.DataExchange.AdoNet;
 using Yunyong.DataExchange.Core.Bases;
 
 namespace Yunyong.DataExchange.Core.Common
 {
-    internal class DicUI : DicBase
+    internal class DicParam : DicBase
     {
+        //
         internal string ClassName
         {
             get
@@ -20,6 +22,7 @@ namespace Yunyong.DataExchange.Core.Common
             }
         }
         internal string ClassFullName { get; set; }
+        internal string TableOne { get; set; }
         internal string TableAliasOne { get; set; }
         internal string ColumnOne { get; set; }
         internal string ColumnOneAlias { get; set; }
@@ -27,15 +30,23 @@ namespace Yunyong.DataExchange.Core.Common
         internal string TableAliasTwo { get; set; }
         internal string ColumnTwo { get; set; }
 
+        //
         internal string Param { get; set; }
         internal string ParamRaw { get; set; }
         internal object CsValue { get; set; }
         internal string CsValueStr { get; set; }
         internal Type CsType { get; set; }
 
+        //
         internal int TvpIndex { get; set; }
 
-        internal List<DicUI> Group { get; set; }
-        internal List<DicUI> InItems { get; set; }
+        //
+        internal string Key { get; set; }
+        internal string ColumnType { get; set; }
+        internal ParamInfo ParamInfo { get; set; }
+
+        //
+        internal List<DicParam> Group { get; set; }
+        internal List<DicParam> InItems { get; set; }
     }
 }

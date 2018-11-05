@@ -12,7 +12,7 @@ namespace Yunyong.DataExchange
         {
             join.DC.Action = ActionEnum.On;
             var field = join.DC.EH.FuncBoolExpression(compareFunc);
-            join.DC.AddConditions(field);
+            join.DC.DPH.AddParameter(field);
             return new OnX(join.DC);
         }
 

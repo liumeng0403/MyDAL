@@ -21,19 +21,6 @@ namespace Yunyong.DataExchange.Core.Helper
 
         /**********************************************************************************************************/
 
-        internal static ParamInfo GetDefault(string paraName, object dbVal, DbType dbType)
-        {
-            return new ParamInfo
-            {
-                Name = paraName,
-                Value = dbVal,
-                Type = dbType,
-                ParameterDirection = ParameterDirection.Input,
-                Size = null,
-                Precision = null,
-                Scale = null
-            };
-        }
         private static DbType GetType(string colType, Type realType)
         {
             if (realType == XConfig.Int)
@@ -307,22 +294,22 @@ namespace Yunyong.DataExchange.Core.Helper
             {
                 return DbType.Object;
             }
-            else if(realType.FullName==XConfig.LinqBinary)
+            else if (realType.FullName == XConfig.LinqBinary)
             {
                 return DbType.Binary;
             }
-            else if(XConfig.IEnumerableT.IsAssignableFrom(realType))
+            else if (XConfig.IEnumerableT.IsAssignableFrom(realType))
             {
                 return (DbType)(-1);
             }
             else
             {
-                throw new Exception($"[[DbType GetType(string colType, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
-            }            
+                throw new Exception($"[[DbType GetType(ui.ColumnTypeType realType)]]不支持的字段参数类型:[[{realType}]]!");
+            }
         }
-        private ParamInfo BoolParam(string colType, DicUI ui, Type realType)
+        private static ParamInfo BoolParam(DicParam ui, Type realType)
         {
-            var type = GetType(colType, realType);
+            var type = GetType(ui.ColumnType, realType);
             var val = default(object);
 
             //
@@ -343,15 +330,15 @@ namespace Yunyong.DataExchange.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo BoolParamHandle(string colType, DicModelUI item, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw new Exception($"[[ParamInfo BoolParamHandle(ui.ColumnTypeDicModelUI item, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo ByteParam(string colType, DicUI ui, Type realType)
+        private static ParamInfo ByteParam(DicParam ui, Type realType)
         {
-            var type = GetType(colType, realType);
+            var type = GetType(ui.ColumnType, realType);
             var val = default(object);
 
             //
@@ -361,15 +348,15 @@ namespace Yunyong.DataExchange.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo ByteParam(string colType, DicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw new Exception($"[[ParamInfo ByteParam(DicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
             return GetDefault(ui.Param, val, type);
         }
-        internal ParamInfo CharParam(string colType, DicUI ui, Type realType)
+        private static ParamInfo CharParam(DicParam ui, Type realType)
         {
-            var type = GetType(colType, realType);
+            var type = GetType(ui.ColumnType, realType);
             var val = default(object);
 
             //
@@ -379,15 +366,15 @@ namespace Yunyong.DataExchange.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo CharParam(string colType, DicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw new Exception($"[[ParamInfo CharParam(DicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo DecimalParam(string colType, DicUI ui, Type realType)
+        private static ParamInfo DecimalParam(DicParam ui, Type realType)
         {
-            var type = GetType(colType, realType);
+            var type = GetType(ui.ColumnType, realType);
             var val = default(object);
 
             //
@@ -397,15 +384,15 @@ namespace Yunyong.DataExchange.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo DecimalParam(string colType, DicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw new Exception($"[[ParamInfo DecimalParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo DoubleParam(string colType, DicUI ui, Type realType)
+        private static ParamInfo DoubleParam(DicParam ui, Type realType)
         {
-            var type = GetType(colType, realType);
+            var type = GetType(ui.ColumnType, realType);
             var val = default(object);
 
             //
@@ -415,15 +402,15 @@ namespace Yunyong.DataExchange.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo DoubleParam(string colType, DicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw new Exception($"[[ParamInfo DoubleParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo FloatParam(string colType, DicUI ui, Type realType)
+        private static ParamInfo FloatParam(DicParam ui, Type realType)
         {
-            var type = GetType(colType, realType);
+            var type = GetType(ui.ColumnType, realType);
             var val = default(object);
 
             //
@@ -433,15 +420,15 @@ namespace Yunyong.DataExchange.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo FloatParam(string colType, DicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw new Exception($"[[ParamInfo FloatParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo IntParam(string colType, DicUI ui, Type realType)
+        private static ParamInfo IntParam(DicParam ui, Type realType)
         {
-            var type = GetType(colType, realType);
+            var type = GetType(ui.ColumnType, realType);
             var val = default(object);
 
             //
@@ -451,15 +438,15 @@ namespace Yunyong.DataExchange.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo IntParam(string colType, DicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw new Exception($"[[ParamInfo IntParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo LongParam(string colType, DicUI ui, Type realType)
+        private static ParamInfo LongParam(DicParam ui, Type realType)
         {
-            var type = GetType(colType, realType);
+            var type = GetType(ui.ColumnType, realType);
             var val = default(object);
 
             //
@@ -469,15 +456,15 @@ namespace Yunyong.DataExchange.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo LongParam(string colType, DicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw new Exception($"[[ParamInfo LongParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo SbyteParam(string colType, DicUI ui, Type realType)
+        private static ParamInfo SbyteParam(DicParam ui, Type realType)
         {
-            var type = GetType(colType, realType);
+            var type = GetType(ui.ColumnType, realType);
             var val = default(object);
 
             //
@@ -491,15 +478,15 @@ namespace Yunyong.DataExchange.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo SbyteParam(string colType, DicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw new Exception($"[[ParamInfo SbyteParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo ShortParam(string colType, DicUI ui, Type realType)
+        private static ParamInfo ShortParam(DicParam ui, Type realType)
         {
-            var type = GetType(colType, realType);
+            var type = GetType(ui.ColumnType, realType);
             var val = default(object);
 
             //
@@ -509,15 +496,15 @@ namespace Yunyong.DataExchange.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo ShortParam(string colType, DicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw new Exception($"[[ParamInfo ShortParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo UintParam(string colType, DicUI ui, Type realType)
+        private static ParamInfo UintParam(DicParam ui, Type realType)
         {
-            var type = GetType(colType, realType);
+            var type = GetType(ui.ColumnType, realType);
             var val = default(object);
 
             //
@@ -527,15 +514,15 @@ namespace Yunyong.DataExchange.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo UintParam(string colType, DicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw new Exception($"[[ParamInfo UintParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo UlongParam(string colType, DicUI ui, Type realType)
+        private static ParamInfo UlongParam(DicParam ui, Type realType)
         {
-            var type = GetType(colType, realType);
+            var type = GetType(ui.ColumnType, realType);
             var val = default(object);
 
             //
@@ -545,15 +532,15 @@ namespace Yunyong.DataExchange.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo UlongParam(string colType, DicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw new Exception($"[[ParamInfo UlongParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo UshortParam(string colType, DicUI ui, Type realType)
+        private static ParamInfo UshortParam(DicParam ui, Type realType)
         {
-            var type = GetType(colType, realType);
+            var type = GetType(ui.ColumnType, realType);
             var val = default(object);
 
             //
@@ -563,15 +550,15 @@ namespace Yunyong.DataExchange.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo UshortParam(string colType, DicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw new Exception($"[[ParamInfo UshortParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo StringParam(string colType, DicUI ui, Type realType)
+        private static ParamInfo StringParam(DicParam ui, Type realType)
         {
-            var type = GetType(colType, realType);
+            var type = GetType(ui.ColumnType, realType);
             var val = default(object);
 
             //
@@ -585,15 +572,15 @@ namespace Yunyong.DataExchange.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo StringParam(string colType, DicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw new Exception($"[[ParamInfo StringParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo DateTimeParam(string colType, DicUI ui, Type realType)
+        private static ParamInfo DateTimeParam(DicParam ui, Type realType)
         {
-            var type = GetType(colType, realType);
+            var type = GetType(ui.ColumnType, realType);
             var val = default(object);
 
             //
@@ -607,15 +594,15 @@ namespace Yunyong.DataExchange.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo DateTimeParam(string colType, DicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw new Exception($"[[ParamInfo DateTimeParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo TimeSpanParam(string colType, DicUI ui, Type realType)
+        private static ParamInfo TimeSpanParam(DicParam ui, Type realType)
         {
-            var type = GetType(colType, realType);
+            var type = GetType(ui.ColumnType, realType);
             var val = default(object);
 
             //
@@ -625,15 +612,15 @@ namespace Yunyong.DataExchange.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo TimeSpanParam(string colType, DicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw new Exception($"[[ParamInfo TimeSpanParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo GuidParam(string colType, DicUI ui, Type realType)
+        private static ParamInfo GuidParam(DicParam ui, Type realType)
         {
-            var type = GetType(colType, realType);
+            var type = GetType(ui.ColumnType, realType);
             var val = default(object);
 
             //
@@ -647,15 +634,15 @@ namespace Yunyong.DataExchange.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo GuidParam(string colType, DicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw new Exception($"[[ParamInfo GuidParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo EnumParam(string colType, DicUI ui, Type realType)
+        private static ParamInfo EnumParam(DicParam ui, Type realType)
         {
-            var type = GetType(colType, realType);
+            var type = GetType(ui.ColumnType, realType);
             var val = default(object);
 
             //
@@ -680,21 +667,34 @@ namespace Yunyong.DataExchange.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo EnumParam(string colType, DicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw new Exception($"[[ParamInfo EnumParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
             return GetDefault(ui.Param, val, type);
         }
-        private ParamInfo NullParam(string colType, DicUI ui, Type realType)
+        private static ParamInfo NullParam(DicParam ui, Type realType)
         {
-            var type = GetType(colType, realType);
+            var type = GetType(ui.ColumnType, realType);
             return GetDefault(ui.Param, null, type);
         }
 
         /*************************************************************************************************************************************/
 
-        internal void GetDbVal(DicUI ui, DicDB db, Type realType)
+        internal static ParamInfo GetDefault(string paraName, object dbVal, DbType dbType)
+        {
+            return new ParamInfo
+            {
+                Name = paraName,
+                Value = dbVal,
+                Type = dbType,
+                ParameterDirection = ParameterDirection.Input,
+                Size = null,
+                Precision = null,
+                Scale = null
+            };
+        }
+        internal void GetDbVal(DicParam ui,Type realType)
         {
 
             //
@@ -707,7 +707,7 @@ namespace Yunyong.DataExchange.Core.Helper
                     var col = columns.FirstOrDefault(it => it.ColumnName.Equals(ui.ColumnOne, StringComparison.OrdinalIgnoreCase));
                     if (col != null)
                     {
-                        db.ColumnType = col.DataType;
+                        ui.ColumnType = col.DataType;
                     }
                 }
 
@@ -715,89 +715,88 @@ namespace Yunyong.DataExchange.Core.Helper
                 var para = default(ParamInfo);
                 if (realType == XConfig.Int)
                 {
-                    para = DC.PH.IntParam(db.ColumnType, ui, realType);
+                    para = IntParam(ui, realType);
                 }
                 else if (realType == XConfig.Long)
                 {
-                    para = DC.PH.LongParam(db.ColumnType, ui, realType);
+                    para = LongParam(ui, realType);
                 }
                 else if (realType == XConfig.Decimal)
                 {
-                    para = DC.PH.DecimalParam(db.ColumnType, ui, realType);
+                    para = DecimalParam(ui, realType);
                 }
                 else if (realType == XConfig.Bool)
                 {
-                    para = DC.PH.BoolParam(db.ColumnType, ui, realType);
+                    para = BoolParam(ui, realType);
                 }
                 else if (realType == XConfig.String)
                 {
-                    para = DC.PH.StringParam(db.ColumnType, ui, realType);
+                    para = StringParam(ui, realType);
                 }
                 else if (realType == XConfig.DateTime)
                 {
-                    para = DC.PH.DateTimeParam(db.ColumnType, ui, realType);
+                    para = DateTimeParam(ui, realType);
                 }
                 else if (realType == XConfig.Guid)
                 {
-                    para = DC.PH.GuidParam(db.ColumnType, ui, realType);
+                    para = GuidParam(ui, realType);
                 }
                 else if (realType.IsEnum)
                 {
-                    para = DC.PH.EnumParam(db.ColumnType, ui, realType);
+                    para = EnumParam(ui, realType);
                 }
                 else if (realType.IsNullable())
                 {
-                    //var type = realType.GetGenericArguments()[0];
                     var type = Nullable.GetUnderlyingType(realType);
                     if (ui.CsValue == null)
                     {
-                        para = DC.PH.NullParam(db.ColumnType, ui, type);
+                        para = NullParam(ui, type);
                     }
                     else
                     {
-                        GetDbVal(ui, db, type);
+                        GetDbVal(ui, type);
                         return;
                     }
                 }
                 else if (realType == XConfig.Byte)
                 {
-                    para = DC.PH.ByteParam(db.ColumnType, ui, realType);
+                    para = ByteParam(ui, realType);
                 }
                 else if (realType == XConfig.Char)
                 {
-                    para = DC.PH.CharParam(db.ColumnType, ui, realType);
+                    para = CharParam(ui, realType);
                 }
                 else if (realType == XConfig.Double)
                 {
-                    para = DC.PH.DoubleParam(db.ColumnType, ui, realType);
+                    para = DoubleParam(ui, realType);
                 }
                 else if (realType == XConfig.Float)
                 {
-                    para = DC.PH.FloatParam(db.ColumnType, ui, realType);
+                    para = FloatParam(ui, realType);
                 }
                 else if (realType == XConfig.Sbyte)
                 {
-                    para = DC.PH.SbyteParam(db.ColumnType, ui, realType);
+                    para = SbyteParam(ui, realType);
                 }
                 else if (realType == XConfig.Short)
                 {
-                    para = DC.PH.ShortParam(db.ColumnType, ui, realType);
+                    para = ShortParam(ui, realType);
                 }
                 else if (realType == XConfig.Uint)
                 {
-                    para = DC.PH.UintParam(db.ColumnType, ui, realType);
+                    para = UintParam(ui, realType);
                 }
                 else if (realType == XConfig.Ulong)
                 {
-                    para = DC.PH.UlongParam(db.ColumnType, ui, realType);
+                    para = UlongParam(ui, realType);
                 }
                 else if (realType == XConfig.Ushort)
                 {
-                    para = DC.PH.UshortParam(db.ColumnType, ui, realType);
+                    para = UshortParam(ui, realType);
                 }
                 else if (realType == XConfig.TimeSpan)
                 {
-                    para = DC.PH.TimeSpanParam(db.ColumnType, ui, realType);
+                    para = TimeSpanParam(ui, realType);
                 }
                 else
                 {
@@ -805,7 +804,7 @@ namespace Yunyong.DataExchange.Core.Helper
                 }
 
                 //
-                db.ParamInfo = para;
+                ui.ParamInfo = para;
             }
 
         }

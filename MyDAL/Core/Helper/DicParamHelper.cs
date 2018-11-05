@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Yunyong.DataExchange.AdoNet;
 using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Enums;
@@ -9,23 +10,33 @@ using Yunyong.DataExchange.Core.Extensions;
 
 namespace Yunyong.DataExchange.Core.Helper
 {
-    internal class DicModelHelper
+    internal class DicParamHelper
     {
-        internal Context DC { get; set; }
-
-        internal DicModelHelper(Context dc)
+        private static DicParam SetDicBase( Context dc)
         {
-            DC = dc;
+            return new DicParam
+            {
+                //
+                ID = 0,
+                IsDbSet=false,
+                Crud = dc.Crud,
+                Action = dc.Action,
+                Option = dc.Option,
+                Compare = dc.Compare,
+                Func = dc.Func,
+
+                //
+                GroupAction= ActionEnum.None,
+                GroupRef=null
+            };
         }
-
-        /*******************************************************************************************************/
-
-        internal static DicUI UiDicCopy(DicUI ui, object csVal, string csValStr, OptionEnum option)
+        private static DicParam InHelper(DicParam ui, object csVal, string csValStr)
         {
-            var cp = new DicUI
+            var cp = new DicParam
             {
                 //
                 ID = ui.ID,
+                IsDbSet=false,
                 Crud = ui.Crud,
                 Action = ui.Action,
                 Option = ui.Option,
@@ -52,100 +63,23 @@ namespace Yunyong.DataExchange.Core.Helper
             //
             cp.CsValue = csVal;
             cp.CsValueStr = csValStr;
-            cp.Option = option;
+            cp.Option = OptionEnum.InHelper;
 
             //
             return cp;
         }
-        private void Copy(DicUI ui, List<DicDB> dbList, DicDB refDb)
-        {
-            var db = new DicDB();
 
-            //
-            db.ID = ui.ID;
-            db.Crud = ui.Crud;
-            db.Action = ui.Action;
-            db.Option = ui.Option;
-            db.Compare = ui.Compare;
-            db.Func = ui.Func;
-
-            //
-            if (ui.ClassFullName.IsNullStr())
-            {
-                db.Key = string.Empty;
-            }
-            else
-            {
-                db.Key = DC.SC.GetModelKey(ui.ClassFullName);
-                db.TableOne = DC.SC.GetModelTableName(db.Key);
-            }
-            db.TableAliasOne = ui.TableAliasOne;
-            db.ColumnOne = ui.ColumnOne;
-            db.KeyTwo = ui.ColumnTwo;
-            db.AliasTwo = ui.TableAliasTwo;
-            db.ColumnAlias = ui.ColumnOneAlias;
-            db.Param = ui.Param;
-            db.ParamRaw = ui.ParamRaw;
-            db.TvpIndex = ui.TvpIndex;
-            if (ui.CsType != null)
-            {
-                if (DC.IsInParameter(ui.CsValue, ui.Option))
-                {
-                    db.ParamInfo = ParameterHelper.GetDefault(ui.Param, ui.CsValue, DbType.String);
-                }
-                else
-                {
-                    DC.PH.GetDbVal(ui, db, ui.CsType);
-                }
-            }
-            if (ui.Group != null)
-            {
-                db.Group = new List<DicDB>();
-                db.GroupAction = ui.GroupAction;
-                foreach (var item in ui.Group)
-                {
-                    Copy(item, db.Group, db);
-                }
-                dbList.Add(db);
-                return;
-            }
-            db.GroupRef = refDb;
-            if (ui.InItems != null)
-            {
-                db.InItems = new List<DicDB>();
-                foreach (var u in ui.InItems)
-                {
-                    Copy(u, db.InItems, refDb);
-                }
-            }
-            dbList.Add(db);
-        }
-        internal void UiToDbCopy()
-        {
-            if (DC.UiConditions != null)
-            {
-                foreach (var ui in DC.UiConditions)
-                {
-                    if (DC.DbConditions.Any(dm => dm.ID == ui.ID))
-                    {
-                        continue;
-                    }
-                    Copy(ui, DC.DbConditions, null);
-                }
-            }
-        }
-
-        private void InNotInDicProcess(DicUI dic, List<DicUI> list)
+        private void InNotIn(DicParam dic)
         {
             var vals = dic.CsValue.ToString().Split(',').Select(it => it);
             foreach (var val in vals)
             {
-                var dicx = UiDicCopy(dic, val, dic.CsValueStr, OptionEnum.InHelper);
-                UniqueDicContext(dicx, list);
-                list.Add(dicx);
+                var dicx = InHelper(dic, val, dic.CsValueStr);
+                Unique(dicx);
+                dic.InItems.Add(dicx);
             }
         }
-        internal void UniqueDicContext(DicUI dic, List<DicUI> list)
+        private void Unique(DicParam dic)
         {
             //
             dic.ID = DC.DicID;
@@ -158,7 +92,7 @@ namespace Yunyong.DataExchange.Core.Helper
             //
             if (DC.IsInParameter(dic.CsValue, dic.Option))
             {
-                InNotInDicProcess(dic, list);
+                InNotIn(dic);
             }
             else if (dic.Group != null)
             {
@@ -166,36 +100,167 @@ namespace Yunyong.DataExchange.Core.Helper
                 {
                     if (DC.IsInParameter(ui.CsValue, ui.Option))
                     {
-                        ui.InItems = new List<DicUI>();
-                        UniqueDicContext(ui, ui.InItems);
+                        ui.InItems = new List<DicParam>();
                     }
-                    else
-                    {
-                        UniqueDicContext(ui, dic.Group);
-                    }
+                    Unique(ui);
                     ui.GroupRef = dic;
                 }
             }
         }
-
-        private DicUI SetDicBase()
+        private void DbParam(DicParam ui, DicParam refDb)
         {
-            return new DicUI
+            if(ui.IsDbSet)
             {
-                ID = 0,
-                Crud = DC.Crud,
-                Action = DC.Action,
-                Option = DC.Option,
-                Compare = DC.Compare,
-                Func = DC.Func
-            };
+                return;
+            }
+            ui.IsDbSet = true;
+
+            //
+            if (ui.ClassFullName.IsNullStr())
+            {
+                ui.Key = string.Empty;
+            }
+            else
+            {
+                ui.Key = DC.SC.GetModelKey(ui.ClassFullName);
+                ui.TableOne = DC.SC.GetModelTableName(ui.Key);
+            }
+            if (ui.CsType != null)
+            {
+                if (DC.IsInParameter(ui.CsValue, ui.Option))
+                {
+                    ui.ParamInfo = ParameterHelper.GetDefault(ui.Param, ui.CsValue, DbType.String);
+                }
+                else
+                {
+                    DC.PH.GetDbVal(ui, ui.CsType);
+                }
+            }
+            if (ui.Group != null)
+            {
+                foreach (var item in ui.Group)
+                {
+                    DbParam(item, ui);
+                }
+                return;
+            }
+            ui.GroupRef = refDb;
+            if (ui.InItems != null)
+            {
+                foreach (var u in ui.InItems)
+                {
+                    DbParam(u, refDb);
+                }
+            }
+        }
+        private List<DicParam> FlatDics(List<DicParam> dics)
+        {
+            var ds = new List<DicParam>();
+
+            //
+            foreach (var d in dics)
+            {
+                if (DC.IsParameter(d.Action))
+                {
+                    if (d.Group != null)
+                    {
+                        ds.AddRange(FlatDics(d.Group));
+                    }
+                    else if (d.InItems != null)
+                    {
+                        ds.AddRange(FlatDics(d.InItems));
+                    }
+                    else
+                    {
+                        ds.Add(d);
+                    }
+                }
+            }
+
+            //
+            return ds;
         }
 
         /*******************************************************************************************************/
 
-        internal DicUI CharLengthDic(string fullName, string key, string alias, (object val, string valStr) value, Type valType)
+        internal Context DC { get; set; }
+        internal DicParamHelper(Context dc)
         {
-            var dic = SetDicBase();
+            DC = dc;
+        }
+
+        /*******************************************************************************************************/
+
+        internal void ResetParameter()
+        {
+            DC.Parameters = new List<DicParam>();
+        }
+        internal void SetParameter()
+        {
+            if (DC.Parameters != null)
+            {
+                foreach (var ui in DC.Parameters)
+                {
+                    DbParam(ui, null);
+                }
+            }
+        }
+        internal void AddParameter(DicParam dic)
+        {
+            if (DC.IsInParameter(dic.CsValue, dic.Option))
+            {
+                dic.InItems = new List<DicParam>();
+            }
+            Unique(dic);
+            DC.Parameters.Add(dic);
+
+            //
+            DC.Compare = CompareEnum.None;
+            DC.Func = FuncEnum.None;
+        }
+        internal DbParamInfo GetParameters(List<DicParam> dbs)
+        {
+            var paras = new DbParamInfo();
+
+            //
+            foreach (var db in dbs)
+            {
+                if (DC.IsParameter(db.Action))
+                {
+                    if (db.Group != null)
+                    {
+                        paras.Add(GetParameters(db.Group));
+                    }
+                    else if (DC.IsInParameter(db.ParamInfo.Value, db.Option))
+                    {
+                        paras.Add(GetParameters(db.InItems));
+                    }
+                    else
+                    {
+                        paras.Add(db.ParamInfo);
+                    }
+                }
+            }
+
+            //
+            if (XConfig.IsDebug)
+            {
+                lock (XDebug.Lock)
+                {
+                    XDebug.Dics = FlatDics(DC.Parameters);
+                    XDebug.SetValue();
+                }
+            }
+
+            //
+            return paras;
+        }
+        
+        /*******************************************************************************************************/
+
+        internal DicParam CharLengthDic(string fullName, string key, string alias, (object val, string valStr) value, Type valType)
+        {
+            var dic = SetDicBase(DC);
             dic.ClassFullName = fullName;
             dic.ColumnOne = key;
             dic.TableAliasOne = alias;
@@ -208,9 +273,9 @@ namespace Yunyong.DataExchange.Core.Helper
             return dic;
         }
 
-        internal DicUI TrimDic(string key, string alias, (object val, string valStr) value, Type valType)
+        internal DicParam TrimDic(string key, string alias, (object val, string valStr) value, Type valType)
         {
-            var dic = SetDicBase();
+            var dic = SetDicBase(DC);
             dic.ColumnOne = key;
             dic.TableAliasOne = alias;
             dic.Param = key;
@@ -221,9 +286,9 @@ namespace Yunyong.DataExchange.Core.Helper
 
             return dic;
         }
-        internal DicUI LTrimDic(string key, string alias, (object val, string valStr) value, Type valType)
+        internal DicParam LTrimDic(string key, string alias, (object val, string valStr) value, Type valType)
         {
-            var dic = SetDicBase();
+            var dic = SetDicBase(DC);
             dic.ColumnOne = key;
             dic.TableAliasOne = alias;
             dic.Param = key;
@@ -234,9 +299,9 @@ namespace Yunyong.DataExchange.Core.Helper
 
             return dic;
         }
-        internal DicUI RTrimDic(string key, string alias, (object val, string valStr) value, Type valType)
+        internal DicParam RTrimDic(string key, string alias, (object val, string valStr) value, Type valType)
         {
-            var dic = SetDicBase();
+            var dic = SetDicBase(DC);
             dic.ColumnOne = key;
             dic.TableAliasOne = alias;
             dic.Param = key;
@@ -248,9 +313,9 @@ namespace Yunyong.DataExchange.Core.Helper
             return dic;
         }
 
-        internal DicUI CompareDic(string classFullName, string key, string alias, (object val, string valStr) value, Type valType)
+        internal DicParam CompareDic(string classFullName, string key, string alias, (object val, string valStr) value, Type valType)
         {
-            var dic = SetDicBase();
+            var dic = SetDicBase(DC);
             dic.ClassFullName = classFullName;
             dic.ColumnOne = key;
             dic.TableAliasOne = alias;
@@ -263,9 +328,9 @@ namespace Yunyong.DataExchange.Core.Helper
             return dic;
         }
 
-        internal DicUI InDic(string classFullName, string key, string alias, (object val, string valStr) value, Type valType)
+        internal DicParam InDic(string classFullName, string key, string alias, (object val, string valStr) value, Type valType)
         {
-            var dic = SetDicBase();
+            var dic = SetDicBase(DC);
             dic.ClassFullName = classFullName;
             dic.ColumnOne = key;
             dic.TableAliasOne = alias;
@@ -277,24 +342,9 @@ namespace Yunyong.DataExchange.Core.Helper
 
             return dic;
         }
-        internal DicUI NotInDic(string classFullName, string key, string alias, (object val, string valStr) value, Type valType)
+        internal DicParam NotInDic(string classFullName, string key, string alias, (object val, string valStr) value, Type valType)
         {
-            var dic = SetDicBase();
-            dic.ClassFullName = classFullName;
-            dic.ColumnOne = key;
-            dic.TableAliasOne = alias;
-            dic.CsValue = value.val;
-            dic.CsValueStr = value.valStr;
-            dic.CsType = valType;
-            dic.Param = key;
-            dic.ParamRaw = key;
-
-            return dic;
-        }
-
-        internal DicUI LikeDic(string classFullName, string key, string alias, (object val, string valStr) value, Type valType)
-        {
-            var dic = SetDicBase();
+            var dic = SetDicBase(DC);
             dic.ClassFullName = classFullName;
             dic.ColumnOne = key;
             dic.TableAliasOne = alias;
@@ -307,9 +357,24 @@ namespace Yunyong.DataExchange.Core.Helper
             return dic;
         }
 
-        internal DicUI OneEqualOneDic((object val, string valStr) value, Type valType)
+        internal DicParam LikeDic(string classFullName, string key, string alias, (object val, string valStr) value, Type valType)
         {
-            var dic = SetDicBase();
+            var dic = SetDicBase(DC);
+            dic.ClassFullName = classFullName;
+            dic.ColumnOne = key;
+            dic.TableAliasOne = alias;
+            dic.CsValue = value.val;
+            dic.CsValueStr = value.valStr;
+            dic.CsType = valType;
+            dic.Param = key;
+            dic.ParamRaw = key;
+
+            return dic;
+        }
+
+        internal DicParam OneEqualOneDic((object val, string valStr) value, Type valType)
+        {
+            var dic = SetDicBase(DC);
             dic.ColumnOne = "OneEqualOne";
             dic.Param = "OneEqualOne";
             dic.ParamRaw = "OneEqualOne";
@@ -320,9 +385,9 @@ namespace Yunyong.DataExchange.Core.Helper
             return dic;
         }
 
-        internal DicUI IsNullDic(string classFullName, string key, string alias, Type valType)
+        internal DicParam IsNullDic(string classFullName, string key, string alias, Type valType)
         {
-            var dic = SetDicBase();
+            var dic = SetDicBase(DC);
             dic.ClassFullName = classFullName;
             dic.ColumnOne = key;
             dic.TableAliasOne = alias;
@@ -337,9 +402,9 @@ namespace Yunyong.DataExchange.Core.Helper
 
         /*******************************************************************************************************/
 
-        internal DicUI SelectMemberInitDic(string fullName, string key, string alias, string colAlias)
+        internal DicParam SelectMemberInitDic(string fullName, string key, string alias, string colAlias)
         {
-            var dic = SetDicBase();
+            var dic = SetDicBase(DC);
             dic.ClassFullName = fullName;
             dic.TableAliasOne = alias;
             dic.ColumnOne = key;
@@ -348,9 +413,9 @@ namespace Yunyong.DataExchange.Core.Helper
             return dic;
         }
 
-        internal DicUI ColumnDic(string columnOne, string tableAliasOne, string fullName)
+        internal DicParam ColumnDic(string columnOne, string tableAliasOne, string fullName)
         {
-            var dic = SetDicBase();
+            var dic = SetDicBase(DC);
             dic.ClassFullName = fullName;
             dic.ColumnOne = columnOne;
             dic.TableAliasOne = tableAliasOne;
@@ -358,9 +423,9 @@ namespace Yunyong.DataExchange.Core.Helper
             return dic;
         }
 
-        internal DicUI CountDic(string fullName, string key, string alias = "")
+        internal DicParam CountDic(string fullName, string key, string alias = "")
         {
-            var dic = SetDicBase();
+            var dic = SetDicBase(DC);
             dic.ClassFullName = fullName;
             dic.TableAliasOne = alias;
             dic.ColumnOne = key;
@@ -370,9 +435,9 @@ namespace Yunyong.DataExchange.Core.Helper
             return dic;
         }
 
-        internal DicUI OrderbyDic(string fullName, string key, string alias)
+        internal DicParam OrderbyDic(string fullName, string key, string alias)
         {
-            var dic = SetDicBase();
+            var dic = SetDicBase(DC);
             dic.ClassFullName = fullName;
             dic.ColumnOne = key;
             dic.TableAliasOne = alias;
@@ -382,9 +447,9 @@ namespace Yunyong.DataExchange.Core.Helper
 
         /*******************************************************************************************************/
 
-        internal DicUI InsertDic(string fullName, string key, (object val, string valStr) val, Type valType, int tvpIdx)
+        internal DicParam InsertDic(string fullName, string key, (object val, string valStr) val, Type valType, int tvpIdx)
         {
-            var dic = SetDicBase();
+            var dic = SetDicBase(DC);
             dic.ClassFullName = fullName;
             dic.ColumnOne = key;
             dic.Param = key;
@@ -399,9 +464,9 @@ namespace Yunyong.DataExchange.Core.Helper
 
         /*******************************************************************************************************/
 
-        internal DicUI SetDic(string fullName, string key, string param, (object val, string valStr) val, Type valType)
+        internal DicParam SetDic(string fullName, string key, string param, (object val, string valStr) val, Type valType)
         {
-            var dic = SetDicBase();
+            var dic = SetDicBase(DC);
             dic.ClassFullName = fullName;
             dic.ColumnOne = key;
             dic.Param = param;
@@ -415,9 +480,9 @@ namespace Yunyong.DataExchange.Core.Helper
 
         /*******************************************************************************************************/
 
-        internal DicUI OnDic(string fullName, string key1, string alias1, string key2, string alias2)
+        internal DicParam OnDic(string fullName, string key1, string alias1, string key2, string alias2)
         {
-            var dic = SetDicBase();
+            var dic = SetDicBase(DC);
             dic.ClassFullName = fullName;
             dic.ColumnOne = key1;
             dic.TableAliasOne = alias1;
@@ -429,26 +494,26 @@ namespace Yunyong.DataExchange.Core.Helper
 
         /*******************************************************************************************************/
 
-        internal DicUI TableDic(string fullName, string alias)
+        internal DicParam TableDic(string fullName, string alias)
         {
-            var dic = SetDicBase();
+            var dic = SetDicBase(DC);
             dic.ClassFullName = fullName;
             dic.TableAliasOne = alias;
             return dic;
         }
 
-        internal DicUI ColumnDic(string fullName, string key)
+        internal DicParam ColumnDic(string fullName, string key)
         {
-            var dic = SetDicBase();
+            var dic = SetDicBase(DC);
             dic.ClassFullName = fullName;
             dic.ColumnOne = key;
 
             return dic;
         }
 
-        internal DicUI JoinColumnDic(string fullName, string key, string alias)
+        internal DicParam JoinColumnDic(string fullName, string key, string alias)
         {
-            var dic = SetDicBase();
+            var dic = SetDicBase(DC);
             dic.ClassFullName = fullName;
             dic.TableAliasOne = alias;
             dic.ColumnOne = key;
@@ -457,10 +522,10 @@ namespace Yunyong.DataExchange.Core.Helper
 
         /*******************************************************************************************************/
 
-        internal DicUI GroupDic(ActionEnum action)
+        internal DicParam GroupDic(ActionEnum action)
         {
-            var dic = SetDicBase();
-            dic.Group = new List<DicUI>();
+            var dic = SetDicBase(DC);
+            dic.Group = new List<DicParam>();
             dic.GroupAction = action;
             return dic;
         }

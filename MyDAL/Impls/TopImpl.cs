@@ -20,32 +20,32 @@ namespace Yunyong.DataExchange.Impls
 
         public async Task<List<M>> TopAsync(int count)
         {
-            return (await DC.DS.ExecuteReaderMultiRowAsync<M>(
+            return await DC.DS.ExecuteReaderMultiRowAsync<M>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.TopAsync, 0, count)[0],
-                DC.GetParameters(DC.DbConditions))).ToList();
+                DC.DPH.GetParameters(DC.Parameters));
         }
 
         public async Task<List<VM>> TopAsync<VM>(int count)
             where VM : class
         {
             SelectMHandle<M, VM>();
-            DC.DH.UiToDbCopy();
-            return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
+            DC.DPH.SetParameter();
+            return await DC.DS.ExecuteReaderMultiRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.TopAsync, 0, count)[0],
-                DC.GetParameters(DC.DbConditions))).ToList();
+                DC.DPH.GetParameters(DC.Parameters));
         }
 
         public async Task<List<VM>> TopAsync<VM>(int count, Expression<Func<M, VM>> columnMapFunc)
             where VM : class
         {
             SelectMHandle(columnMapFunc);
-            DC.DH.UiToDbCopy();
-            return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
+            DC.DPH.SetParameter();
+            return await DC.DS.ExecuteReaderMultiRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.TopAsync, 0, count)[0],
-                DC.GetParameters(DC.DbConditions))).ToList();
+                DC.DPH.GetParameters(DC.Parameters));
         }
     }
 
@@ -61,22 +61,22 @@ namespace Yunyong.DataExchange.Impls
             where M : class
         {
             SelectMHandle<M>();
-            DC.DH.UiToDbCopy();
-            return (await DC.DS.ExecuteReaderMultiRowAsync<M>(
+            DC.DPH.SetParameter();
+            return await DC.DS.ExecuteReaderMultiRowAsync<M>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.JoinTopAsync,0,count)[0],
-                DC.GetParameters(DC.DbConditions))).ToList();
+                DC.DPH.GetParameters(DC.Parameters));
         }
 
         public async Task<List<VM>> TopAsync<VM>(int count,Expression<Func<VM>> columnMapFunc)
             where VM : class
         {
             SelectMHandle(columnMapFunc);
-            DC.DH.UiToDbCopy();
-            return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
+            DC.DPH.SetParameter();
+            return await DC.DS.ExecuteReaderMultiRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<VM>(UiMethodEnum.JoinTopAsync,0,count)[0],
-                DC.GetParameters(DC.DbConditions))).ToList();
+                DC.DPH.GetParameters(DC.Parameters));
         }
     }
 }

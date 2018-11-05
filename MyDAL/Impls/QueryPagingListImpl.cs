@@ -32,7 +32,7 @@ namespace Yunyong.DataExchange.Impls
             where VM : class
         {
             SelectMHandle(func);
-            DC.DH.UiToDbCopy();
+            DC.DPH.SetParameter();
             return await QueryPagingListAsyncHandle<M, VM>(pageIndex, pageSize, UiMethodEnum.QueryPagingListAsync);
         }
     }
@@ -49,7 +49,7 @@ namespace Yunyong.DataExchange.Impls
         public async Task<PagingList<M>> QueryPagingListAsync(PagingQueryOption option)
         {
             OrderByOptionHandle(option, typeof(M).FullName);
-            DC.DH.UiToDbCopy();
+            DC.DPH.SetParameter();
             return await QueryPagingListAsyncHandle<M>(option.PageIndex, option.PageSize, UiMethodEnum.QueryPagingListAsync);
         }
 
@@ -58,7 +58,7 @@ namespace Yunyong.DataExchange.Impls
         {
             SelectMHandle<M, VM>();
             OrderByOptionHandle(option, typeof(M).FullName);
-            DC.DH.UiToDbCopy();
+            DC.DPH.SetParameter();
             return await QueryPagingListAsyncHandle<M, VM>(option.PageIndex, option.PageSize, UiMethodEnum.QueryPagingListAsync);
         }
 
@@ -67,7 +67,7 @@ namespace Yunyong.DataExchange.Impls
         {
             SelectMHandle(func);
             OrderByOptionHandle(option, typeof(M).FullName);
-            DC.DH.UiToDbCopy();
+            DC.DPH.SetParameter();
             return await QueryPagingListAsyncHandle<M, VM>(option.PageIndex, option.PageSize, UiMethodEnum.QueryPagingListAsync);
         }
     }
@@ -84,7 +84,7 @@ namespace Yunyong.DataExchange.Impls
             where M : class
         {
             SelectMHandle<M>();
-            DC.DH.UiToDbCopy();
+            DC.DPH.SetParameter();
             return await QueryPagingListAsyncHandle<M>(pageIndex, pageSize, UiMethodEnum.JoinQueryPagingListAsync);
         }
 
@@ -92,7 +92,7 @@ namespace Yunyong.DataExchange.Impls
             where VM : class
         {
             SelectMHandle(func);
-            DC.DH.UiToDbCopy();
+            DC.DPH.SetParameter();
             return await QueryPagingListAsyncHandle<VM>(pageIndex, pageSize, UiMethodEnum.JoinQueryPagingListAsync);
         }
     }
@@ -110,7 +110,7 @@ namespace Yunyong.DataExchange.Impls
         {
             SelectMHandle<M>();
             OrderByOptionHandle(option, typeof(M).FullName);
-            DC.DH.UiToDbCopy();
+            DC.DPH.SetParameter();
             return await QueryPagingListAsyncHandle<M>(option.PageIndex, option.PageSize, UiMethodEnum.JoinQueryPagingListAsync);
         }
 
@@ -119,7 +119,7 @@ namespace Yunyong.DataExchange.Impls
         {
             SelectMHandle(func);
             OrderByOptionHandle(option, string.Empty);
-            DC.DH.UiToDbCopy();
+            DC.DPH.SetParameter();
             return await QueryPagingListAsyncHandle<VM>(option.PageIndex, option.PageSize, UiMethodEnum.JoinQueryPagingListAsync);
         }
     }

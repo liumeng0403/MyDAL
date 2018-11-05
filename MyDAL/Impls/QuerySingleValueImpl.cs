@@ -19,7 +19,7 @@ namespace Yunyong.DataExchange.Impls
             return await DC.DS.ExecuteScalarAsync<V>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.QuerySingleValueAsync)[0],
-                DC.GetParameters(DC.DbConditions));
+                DC.DPH.GetParameters(DC.Parameters));
         }
     }
 }
