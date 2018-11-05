@@ -249,7 +249,7 @@ namespace Yunyong.DataExchange
         /// <summary>
         /// Selecter 快速 QueryFirstOrDefaultAsync by pk 方法
         /// </summary>
-        public static async Task<M> QueryFirstOrDefaultAsync<M>(this IDbConnection conn, int pkValue)
+        public static async Task<M> GetAsync<M>(this IDbConnection conn, int pkValue)
             where M : class
         {
             var selecter = conn.Selecter<M>();
@@ -260,7 +260,7 @@ namespace Yunyong.DataExchange
         /// <summary>
         /// Selecter 快速 QueryFirstOrDefaultAsync by pk 方法
         /// </summary>
-        public static async Task<M> QueryFirstOrDefaultAsync<M>(this IDbConnection conn, long pkValue)
+        public static async Task<M> GetAsync<M>(this IDbConnection conn, long pkValue)
             where M : class
         {
             var selecter = conn.Selecter<M>();
@@ -271,7 +271,7 @@ namespace Yunyong.DataExchange
         /// <summary>
         /// Selecter 快速 QueryFirstOrDefaultAsync by pk 方法
         /// </summary>
-        public static async Task<M> QueryFirstOrDefaultAsync<M>(this IDbConnection conn, string pkValue)
+        public static async Task<M> GetAsync<M>(this IDbConnection conn, string pkValue)
             where M : class
         {
             var selecter = conn.Selecter<M>();
@@ -282,7 +282,7 @@ namespace Yunyong.DataExchange
         /// <summary>
         /// Selecter 快速 QueryFirstOrDefaultAsync by pk 方法
         /// </summary>
-        public static async Task<M> QueryFirstOrDefaultAsync<M>(this IDbConnection conn, Guid pkValue)
+        public static async Task<M> GetAsync<M>(this IDbConnection conn, Guid pkValue)
             where M : class
         {
             var selecter = conn.Selecter<M>();
@@ -294,7 +294,7 @@ namespace Yunyong.DataExchange
         /// <summary>
         /// Selecter 快速 QueryFirstOrDefaultAsync by pk 方法
         /// </summary>
-        public static async Task<VM> QueryFirstOrDefaultAsync<M, VM>(this IDbConnection conn, int pkValue)
+        public static async Task<VM> GetAsync<M, VM>(this IDbConnection conn, int pkValue)
             where M : class
             where VM:class
         {
@@ -306,7 +306,7 @@ namespace Yunyong.DataExchange
         /// <summary>
         /// Selecter 快速 QueryFirstOrDefaultAsync by pk 方法
         /// </summary>
-        public static async Task<VM> QueryFirstOrDefaultAsync<M, VM>(this IDbConnection conn, long pkValue)
+        public static async Task<VM> GetAsync<M, VM>(this IDbConnection conn, long pkValue)
             where M : class
             where VM:class
         {
@@ -318,7 +318,7 @@ namespace Yunyong.DataExchange
         /// <summary>
         /// Selecter 快速 QueryFirstOrDefaultAsync by pk 方法
         /// </summary>
-        public static async Task<VM> QueryFirstOrDefaultAsync<M, VM>(this IDbConnection conn, string pkValue)
+        public static async Task<VM> GetAsync<M, VM>(this IDbConnection conn, string pkValue)
             where M : class
             where VM:class
         {
@@ -330,7 +330,7 @@ namespace Yunyong.DataExchange
         /// <summary>
         /// Selecter 快速 QueryFirstOrDefaultAsync by pk 方法
         /// </summary>
-        public static async Task<VM> QueryFirstOrDefaultAsync<M, VM>(this IDbConnection conn, Guid pkValue)
+        public static async Task<VM> GetAsync<M, VM>(this IDbConnection conn, Guid pkValue)
             where M : class
             where VM:class
         {
@@ -343,7 +343,7 @@ namespace Yunyong.DataExchange
         /// <summary>
         /// Selecter 快速 QueryFirstOrDefaultAsync by pk 方法
         /// </summary>
-        public static async Task<VM> QueryFirstOrDefaultAsync<M, VM>(this IDbConnection conn, int pkValue, Expression<Func<M, VM>> columnMapFunc)
+        public static async Task<VM> GetAsync<M, VM>(this IDbConnection conn, int pkValue, Expression<Func<M, VM>> columnMapFunc)
             where M : class
             where VM:class
         {
@@ -355,7 +355,7 @@ namespace Yunyong.DataExchange
         /// <summary>
         /// Selecter 快速 QueryFirstOrDefaultAsync by pk 方法
         /// </summary>
-        public static async Task<VM> QueryFirstOrDefaultAsync<M, VM>(this IDbConnection conn, long pkValue, Expression<Func<M, VM>> columnMapFunc)
+        public static async Task<VM> GetAsync<M, VM>(this IDbConnection conn, long pkValue, Expression<Func<M, VM>> columnMapFunc)
             where M : class
             where VM:class
         {
@@ -367,7 +367,7 @@ namespace Yunyong.DataExchange
         /// <summary>
         /// Selecter 快速 QueryFirstOrDefaultAsync by pk 方法
         /// </summary>
-        public static async Task<VM> QueryFirstOrDefaultAsync<M, VM>(this IDbConnection conn, string pkValue, Expression<Func<M, VM>> columnMapFunc)
+        public static async Task<VM> GetAsync<M, VM>(this IDbConnection conn, string pkValue, Expression<Func<M, VM>> columnMapFunc)
             where M : class
             where VM:class
         {
@@ -379,7 +379,7 @@ namespace Yunyong.DataExchange
         /// <summary>
         /// Selecter 快速 QueryFirstOrDefaultAsync by pk 方法
         /// </summary>
-        public static async Task<VM> QueryFirstOrDefaultAsync<M, VM>(this IDbConnection conn, Guid pkValue, Expression<Func<M, VM>> columnMapFunc)
+        public static async Task<VM> GetAsync<M, VM>(this IDbConnection conn, Guid pkValue, Expression<Func<M, VM>> columnMapFunc)
             where M : class
             where VM:class
         {
@@ -392,7 +392,7 @@ namespace Yunyong.DataExchange
         /// <summary>
         /// Selecter 快速 QueryFirstOrDefaultAsync 方法
         /// </summary>
-        public static async Task<M> QueryFirstOrDefaultAsync<M>(this IDbConnection conn, QueryOption option)
+        public static async Task<M> FirstOrDefaultAsync<M>(this IDbConnection conn, QueryOption option)
             where M : class
         {
             return await conn.Selecter<M>().Where(option).QueryFirstOrDefaultAsync();
@@ -400,7 +400,7 @@ namespace Yunyong.DataExchange
         /// <summary>
         /// Selecter 快速 QueryFirstOrDefaultAsync 方法
         /// </summary>
-        public static async Task<VM> QueryFirstOrDefaultAsync<M, VM>(this IDbConnection conn, QueryOption option)
+        public static async Task<VM> FirstOrDefaultAsync<M, VM>(this IDbConnection conn, QueryOption option)
             where M : class
             where VM:class
         {
@@ -409,7 +409,7 @@ namespace Yunyong.DataExchange
         /// <summary>
         /// Selecter 快速 QueryFirstOrDefaultAsync 方法
         /// </summary>
-        public static async Task<VM> QueryFirstOrDefaultAsync<M, VM>(this IDbConnection conn, QueryOption option, Expression<Func<M, VM>> columnMapFunc)
+        public static async Task<VM> FirstOrDefaultAsync<M, VM>(this IDbConnection conn, QueryOption option, Expression<Func<M, VM>> columnMapFunc)
             where M : class
             where VM:class
         {
@@ -419,7 +419,7 @@ namespace Yunyong.DataExchange
         /// <summary>
         /// Selecter 快速 QueryListAsync 方法
         /// </summary>
-        public static async Task<List<M>> QueryListAsync<M>(this IDbConnection conn, QueryOption option)
+        public static async Task<List<M>> ListAsync<M>(this IDbConnection conn, QueryOption option)
             where M : class
         {
             return await conn.Selecter<M>().Where(option).QueryListAsync();
@@ -427,7 +427,7 @@ namespace Yunyong.DataExchange
         /// <summary>
         /// Selecter 快速 QueryListAsync 方法
         /// </summary>
-        public static async Task<List<VM>> QueryListAsync<M, VM>(this IDbConnection conn, QueryOption option)
+        public static async Task<List<VM>> ListAsync<M, VM>(this IDbConnection conn, QueryOption option)
             where M : class
             where VM:class
         {
@@ -436,7 +436,7 @@ namespace Yunyong.DataExchange
         /// <summary>
         /// Selecter 快速 QueryListAsync 方法
         /// </summary>
-        public static async Task<List<VM>> QueryListAsync<M, VM>(this IDbConnection conn, QueryOption option, Expression<Func<M, VM>> columnMapFunc)
+        public static async Task<List<VM>> ListAsync<M, VM>(this IDbConnection conn, QueryOption option, Expression<Func<M, VM>> columnMapFunc)
             where M : class
             where VM:class
         {
@@ -446,7 +446,7 @@ namespace Yunyong.DataExchange
         /// <summary>
         /// Selecter 快速 QueryPagingListAsync 方法
         /// </summary>
-        public static async Task<PagingList<M>> QueryPagingListAsync<M>(this IDbConnection conn, PagingQueryOption option)
+        public static async Task<PagingList<M>> PagingListAsync<M>(this IDbConnection conn, PagingQueryOption option)
             where M : class
         {
             return await conn.Selecter<M>().Where(option).QueryPagingListAsync(option);
@@ -454,7 +454,7 @@ namespace Yunyong.DataExchange
         /// <summary>
         /// Selecter 快速 QueryPagingListAsync 方法
         /// </summary>
-        public static async Task<PagingList<VM>> QueryPagingListAsync<M, VM>(this IDbConnection conn, PagingQueryOption option)
+        public static async Task<PagingList<VM>> PagingListAsync<M, VM>(this IDbConnection conn, PagingQueryOption option)
             where M : class
             where VM:class
         {
@@ -463,7 +463,7 @@ namespace Yunyong.DataExchange
         /// <summary>
         /// Selecter 快速 QueryPagingListAsync 方法
         /// </summary>
-        public static async Task<PagingList<VM>> QueryPagingListAsync<M, VM>(this IDbConnection conn, PagingQueryOption option, Expression<Func<M, VM>> columnMapFunc)
+        public static async Task<PagingList<VM>> PagingListAsync<M, VM>(this IDbConnection conn, PagingQueryOption option, Expression<Func<M, VM>> columnMapFunc)
             where M : class
             where VM:class
         {
