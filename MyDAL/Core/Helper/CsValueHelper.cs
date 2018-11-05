@@ -218,6 +218,36 @@ namespace Yunyong.DataExchange.Core.Helper
                     objx = (val, valStr);
                 }
             }
+            else if (memExpr.Expression.NodeType == ExpressionType.MemberAccess          //  MemberAccess   Field
+                && memExpr.Member.MemberType == MemberTypes.Field)
+            {
+                var targetProp = memExpr.Member as FieldInfo;
+                var innerMember = memExpr.Expression as MemberExpression;
+
+                var valObj = GetMemObj(innerMember.Expression, innerMember.Member);
+                fName = targetProp.Name;
+
+                //
+                var fType = targetProp.FieldType;
+                if (fType.IsList()
+                    || fType.IsArray)
+                {
+                    var vals = targetProp.GetValue(valObj);
+                    var val = InValue(fType, vals).val;
+                    var valStr = DateTimeProcess(val, valTypex);
+                    objx = (val, valStr);
+                }
+                else
+                {
+                    var val = DC.GH.GetTypeValue(targetProp, valObj);
+                    var valStr = DateTimeProcess(val, valTypex);
+                    objx = (val, valStr);
+                }
+            }
+            else
+            {
+                throw new Exception($"【{memExpr}】无法解析!!!");
+            }
 
             if (objx.val == null)
             {
