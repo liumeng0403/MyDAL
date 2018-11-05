@@ -20,12 +20,12 @@ namespace MyDAL.Impls
 
             DC.Option = OptionEnum.Count;
             DC.Compare = CompareEnum.None;
-            DC.AddConditions(DC.DH.CountDic(typeof(M).FullName, "*"));
-            DC.DH.UiToDbCopy();
+            DC.DPH.AddParameter(DC.DPH.CountDic(typeof(M).FullName, "*"));
+            DC.DPH.SetParameter();
             var count = await DC.DS.ExecuteScalarAsync<long>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.ExistAsync)[0],
-                DC.GetParameters(DC.DbConditions));
+                DC.DPH.GetParameters(DC.Parameters));
             if (count > 0)
             {
                 return true;

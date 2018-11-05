@@ -20,19 +20,19 @@ namespace MyDAL.Impls
 
         public async Task<List<M>> QueryAllAsync()
         {
-            return (await DC.DS.ExecuteReaderMultiRowAsync<M>(
+            return await DC.DS.ExecuteReaderMultiRowAsync<M>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryAllAsync)[0],
-                DC.GetParameters(DC.DbConditions))).ToList();
+                DC.DPH.GetParameters(DC.Parameters));
         }
 
         public async Task<List<VM>> QueryAllAsync<VM>()
             where VM : class
         {
-            return (await DC.DS.ExecuteReaderMultiRowAsync<VM>(
+            return await DC.DS.ExecuteReaderMultiRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryAllAsync)[0],
-                DC.GetParameters(DC.DbConditions))).ToList();
+                DC.DPH.GetParameters(DC.Parameters));
         }
 
         public async Task<List<F>> QueryAllAsync<F>(Expression<Func<M, F>> propertyFunc)
@@ -40,12 +40,12 @@ namespace MyDAL.Impls
         {
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
-            DC.AddConditions(DC.EH.FuncMFExpression(propertyFunc)[0]);
-            DC.DH.UiToDbCopy();
+            DC.DPH.AddParameter(DC.EH.FuncMFExpression(propertyFunc)[0]);
+            DC.DPH.SetParameter();
             return (await DC.DS.ExecuteReaderSingleColumnAsync<M,F>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryAllAsync)[0],
-                DC.GetParameters(DC.DbConditions),
+                DC.DPH.GetParameters(DC.Parameters),
                 propertyFunc.Compile())).ToList();
         }
     }

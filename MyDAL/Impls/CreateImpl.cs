@@ -18,11 +18,11 @@ namespace MyDAL.Impls
         {
             DC.Action = ActionEnum.Insert;
             CreateMHandle(m);
-            DC.DH.UiToDbCopy();
+            DC.DPH.SetParameter();
             return await DC.DS.ExecuteNonQueryAsync(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.CreateAsync)[0],
-                DC.GetParameters(DC.DbConditions));
+                DC.DPH.GetParameters(DC.Parameters));
         }
     }
 }

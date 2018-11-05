@@ -23,12 +23,12 @@ namespace MyDAL.Impls
 
             DC.Option = OptionEnum.Count;
             DC.Compare = CompareEnum.None;
-            DC.AddConditions(DC.DH.CountDic(typeof(M).FullName, "*"));
-            DC.DH.UiToDbCopy();
+            DC.DPH.AddParameter(DC.DPH.CountDic(typeof(M).FullName, "*"));
+            DC.DPH.SetParameter();
             return await DC.DS.ExecuteScalarAsync<long>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.CountAsync)[0],
-                DC.GetParameters(DC.DbConditions));
+                DC.DPH.GetParameters(DC.Parameters));
         }
 
         public async Task<long> CountAsync<F>(Expression<Func<M, F>> func)
@@ -38,12 +38,12 @@ namespace MyDAL.Impls
             var key = keyDic.ColumnOne;
             DC.Option = OptionEnum.Count;
             DC.Compare = CompareEnum.None;
-            DC.AddConditions(DC.DH.CountDic(typeof(M).FullName, key));
-            DC.DH.UiToDbCopy();
+            DC.DPH.AddParameter(DC.DPH.CountDic(typeof(M).FullName, key));
+            DC.DPH.SetParameter();
             return await DC.DS.ExecuteScalarAsync<long>(
                  DC.Conn,
                  DC.SqlProvider.GetSQL<M>(UiMethodEnum.CountAsync)[0],
-                 DC.GetParameters(DC.DbConditions));
+                 DC.DPH.GetParameters(DC.Parameters));
         }
     }
 
@@ -61,12 +61,12 @@ namespace MyDAL.Impls
 
             DC.Option = OptionEnum.Count;
             DC.Compare = CompareEnum.None;
-            DC.AddConditions(DC.DH.CountDic(string.Empty, "*", string.Empty));
-            DC.DH.UiToDbCopy();
+            DC.DPH.AddParameter(DC.DPH.CountDic(string.Empty, "*", string.Empty));
+            DC.DPH.SetParameter();
             return await DC.DS.ExecuteScalarAsync<long>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<None>(UiMethodEnum.JoinCountAsync)[0],
-                DC.GetParameters(DC.DbConditions));
+                DC.DPH.GetParameters(DC.Parameters));
         }
 
         public async Task<long> CountAsync<F>(Expression<Func<F>> func)
@@ -75,12 +75,12 @@ namespace MyDAL.Impls
             var dic = DC.EH.FuncTExpression(func)[0];
             DC.Option = OptionEnum.Count;
             DC.Compare = CompareEnum.None;
-            DC.AddConditions(DC.DH.CountDic(dic.ClassFullName, dic.ColumnOne, dic.TableAliasOne));
-            DC.DH.UiToDbCopy();
+            DC.DPH.AddParameter(DC.DPH.CountDic(dic.ClassFullName, dic.ColumnOne, dic.TableAliasOne));
+            DC.DPH.SetParameter();
             return await DC.DS.ExecuteScalarAsync<long>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<None>(UiMethodEnum.JoinCountAsync)[0],
-                DC.GetParameters(DC.DbConditions));
+                DC.DPH.GetParameters(DC.Parameters));
         }
     }
 }

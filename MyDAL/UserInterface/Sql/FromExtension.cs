@@ -12,7 +12,7 @@ namespace MyDAL
         {
             join.DC.Action = ActionEnum.From;
             var dic = join.DC.EH.FuncTExpression(tableModelFunc)[0];
-            join.DC.AddConditions(dic);
+            join.DC.DPH.AddParameter(dic);
             return new FromX(join.DC);
         }
 

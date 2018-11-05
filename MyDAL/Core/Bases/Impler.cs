@@ -22,9 +22,8 @@ namespace MyDAL.Core.Bases
             foreach (var prop in props)
             {
                 var val = DC.VH.PropertyValue(prop, m);
-                //DC.Option = option;
                 DC.Compare = CompareEnum.None;
-                DC.AddConditions(DC.DH.InsertDic(fullName, prop.Name, val, prop.PropertyType, index));
+                DC.DPH.AddParameter(DC.DPH.InsertDic(fullName, prop.Name, val, prop.PropertyType, index));
             }
         }
 
@@ -37,9 +36,9 @@ namespace MyDAL.Core.Bases
             result.PageIndex = pageIndex;
             result.PageSize = pageSize;
             var sql = DC.SqlProvider.GetSQL<M>(sqlType, result.PageIndex, result.PageSize);
-            var paras = DC.GetParameters(DC.DbConditions);
+            var paras = DC.DPH.GetParameters(DC.Parameters);
             result.TotalCount = await DC.DS.ExecuteScalarAsync<long>(DC.Conn, sql[0], paras);
-            result.Data = (await DC.DS.ExecuteReaderMultiRowAsync<M>(DC.Conn, sql[1], paras)).ToList();
+            result.Data = await DC.DS.ExecuteReaderMultiRowAsync<M>(DC.Conn, sql[1], paras);
             return result;
         }
 
@@ -50,9 +49,9 @@ namespace MyDAL.Core.Bases
             result.PageIndex = pageIndex;
             result.PageSize = pageSize;
             var sql = DC.SqlProvider.GetSQL<M>(sqlType, result.PageIndex, result.PageSize);
-            var paras = DC.GetParameters(DC.DbConditions);
+            var paras = DC.DPH.GetParameters(DC.Parameters);
             result.TotalCount = await DC.DS.ExecuteScalarAsync<long>(DC.Conn, sql[0], paras);
-            result.Data = (await DC.DS.ExecuteReaderMultiRowAsync<VM>(DC.Conn, sql[1], paras)).ToList();
+            result.Data = await DC.DS.ExecuteReaderMultiRowAsync<VM>(DC.Conn, sql[1], paras);
             return result;
         }
 
@@ -63,20 +62,20 @@ namespace MyDAL.Core.Bases
             DC.Action = ActionEnum.Select;
             var mType = typeof(M);
             var fullName = mType.FullName;
-            var tab = DC.UiConditions.FirstOrDefault(it => fullName.Equals(it.ClassFullName, StringComparison.OrdinalIgnoreCase));
+            var tab = DC.Parameters.FirstOrDefault(it => fullName.Equals(it.ClassFullName, StringComparison.OrdinalIgnoreCase));
             if (tab != null)
             {
                 DC.Option = OptionEnum.Column;
                 DC.Compare = CompareEnum.None;
-                DC.AddConditions(DC.DH.ColumnDic("*", tab.TableAliasOne, fullName));
+                DC.DPH.AddParameter(DC.DPH.ColumnDic("*", tab.TableAliasOne, fullName));
             }
-            else if (DC.UiConditions.Count == 0)
+            else if (DC.Parameters.Count == 0)
             {
                 // important
             }
             else
             {
-                var fullNames = DC.UiConditions.Where(it => !string.IsNullOrWhiteSpace(it.ClassFullName)).Distinct();
+                var fullNames = DC.Parameters.Where(it => !string.IsNullOrWhiteSpace(it.ClassFullName)).Distinct();
                 throw new Exception($"请使用 [[Task<List<VM>> QueryListAsync<VM>(Expression<Func<VM>> func)]] 方法! 或者 {mType.Name} 必须为 [[{string.Join(",", fullNames.Select(it => it.ClassName))}]] 其中之一 !");
             }
         }
@@ -94,7 +93,7 @@ namespace MyDAL.Core.Bases
             DC.Action = ActionEnum.Select;
             var fullName = mType.FullName;
             var mProps = DC.GH.GetPropertyInfos(mType);
-            var tab = DC.UiConditions.FirstOrDefault(it => fullName.Equals(it.ClassFullName, StringComparison.OrdinalIgnoreCase));
+            var tab = DC.Parameters.FirstOrDefault(it => fullName.Equals(it.ClassFullName, StringComparison.OrdinalIgnoreCase));
             var vmProps = DC.GH.GetPropertyInfos(vmType);
             if (tab != null)
             {
@@ -106,18 +105,18 @@ namespace MyDAL.Core.Bases
                     {
                         if (prop.Name.Equals(vProp.Name, StringComparison.OrdinalIgnoreCase))
                         {
-                            DC.AddConditions(DC.DH.ColumnDic(prop.Name, tab.TableAliasOne, fullName));
+                            DC.DPH.AddParameter(DC.DPH.ColumnDic(prop.Name, tab.TableAliasOne, fullName));
                         }
                     }
                 }
             }
-            else if (DC.UiConditions.Count == 0)
+            else if (DC.Parameters.Count == 0)
             {
                 // important
             }
             else
             {
-                var fullNames = DC.UiConditions.Where(it => !string.IsNullOrWhiteSpace(it.ClassFullName)).Distinct();
+                var fullNames = DC.Parameters.Where(it => !string.IsNullOrWhiteSpace(it.ClassFullName)).Distinct();
                 throw new Exception($"请使用 [[Task<List<VM>> QueryListAsync<VM>(Expression<Func<VM>> func)]] 方法! 或者 {mType.Name} 必须为 [[{string.Join(",", fullNames.Select(it => it.ClassName))}]] 其中之一 !");
             }
         }
@@ -129,7 +128,7 @@ namespace MyDAL.Core.Bases
             foreach (var dic in list)
             {
                 dic.Option = OptionEnum.ColumnAs;
-                DC.AddConditions(dic);
+                DC.DPH.AddParameter(dic);
             }
         }
 
@@ -141,7 +140,7 @@ namespace MyDAL.Core.Bases
             foreach (var dic in list)
             {
                 dic.Option = OptionEnum.ColumnAs;
-                DC.AddConditions(dic);
+                DC.DPH.AddParameter(dic);
             }
         }
 
@@ -169,7 +168,7 @@ namespace MyDAL.Core.Bases
             : base(dc)
         {
             DC.IP = this;
-            DC.DH.UiToDbCopy();
+            DC.DPH.SetParameter();
         }
     }
 }

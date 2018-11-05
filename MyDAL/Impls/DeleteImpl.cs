@@ -19,7 +19,7 @@ namespace MyDAL.Impls
             return await DC.DS.ExecuteNonQueryAsync(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.DeleteAsync)[0],
-                DC.GetParameters(DC.DbConditions));
+                DC.DPH.GetParameters(DC.Parameters));
         }
     }
 }

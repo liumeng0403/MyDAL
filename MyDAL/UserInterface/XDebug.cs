@@ -2,7 +2,6 @@
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -16,14 +15,12 @@ namespace MyDAL
     {
         internal static object Lock { get; } = new object();
 
-        internal static List<DicUI> UIs { get; set; }
-        internal static List<DicDB> DBs { get; set; }
+        internal static List<DicParam> Dics { get; set; }
         internal static void SetValue()
         {
-            Parameters = DBs
+            Parameters = Dics
                 .Select(dbM =>
                 {
-                    var uiM = UIs.FirstOrDefault(ui => dbM.Param.Equals(ui.Param, StringComparison.OrdinalIgnoreCase));
                     var field = string.Empty;
                     if (dbM.Crud == CrudTypeEnum.Query
                         || dbM.Crud == CrudTypeEnum.Update
@@ -37,23 +34,23 @@ namespace MyDAL
                         field = $"{dbM.TableAliasOne}.{dbM.ColumnOne}";
                     }
 
-                        //
-                        var csVal = string.Empty;
-                    if (uiM.CsValue == null)
+                    //
+                    var csVal = string.Empty;
+                    if (dbM.CsValue == null)
                     {
                         csVal = "Null";
                     }
-                    else if (uiM.CsType == XConfig.DateTime)
+                    else if (dbM.CsType == XConfig.DateTime)
                     {
-                        csVal = uiM.CsValue.ToDateTimeStr();
+                        csVal = dbM.CsValue.ToDateTimeStr();
                     }
                     else
                     {
-                        csVal = uiM.CsValue.ToString();
+                        csVal = dbM.CsValue.ToString();
                     }
 
-                        //
-                        var dbVal = string.Empty;
+                    //
+                    var dbVal = string.Empty;
                     dbVal = dbM.ParamInfo.Value == null ? "DbNull" : dbM.ParamInfo.Value.ToString();
                     return $"字段:【{field}】-->【{csVal}】;参数:【{dbM.Param}】-->【{dbVal}】.";
                 })
@@ -62,7 +59,7 @@ namespace MyDAL
             foreach (var sql in SQL)
             {
                 var sqlStr = sql;
-                foreach (var par in DBs)
+                foreach (var par in Dics)
                 {
                     if (par.ParamInfo.Type == DbType.Boolean
                         || par.ParamInfo.Type == DbType.Decimal

@@ -31,7 +31,7 @@ namespace MyDAL.Impls
             where VM : class
         {
             SelectMHandle(func);
-            DC.DH.UiToDbCopy();
+            DC.DPH.SetParameter();
             return await QueryPagingListAsyncHandle<M, VM>(pageIndex, pageSize, UiMethodEnum.QueryPagingListAsync);
         }
     }
@@ -48,7 +48,7 @@ namespace MyDAL.Impls
         public async Task<PagingList<M>> QueryPagingListAsync(PagingQueryOption option)
         {
             OrderByOptionHandle(option, typeof(M).FullName);
-            DC.DH.UiToDbCopy();
+            DC.DPH.SetParameter();
             return await QueryPagingListAsyncHandle<M>(option.PageIndex, option.PageSize, UiMethodEnum.QueryPagingListAsync);
         }
 
@@ -57,7 +57,7 @@ namespace MyDAL.Impls
         {
             SelectMHandle<M, VM>();
             OrderByOptionHandle(option, typeof(M).FullName);
-            DC.DH.UiToDbCopy();
+            DC.DPH.SetParameter();
             return await QueryPagingListAsyncHandle<M, VM>(option.PageIndex, option.PageSize, UiMethodEnum.QueryPagingListAsync);
         }
 
@@ -66,7 +66,7 @@ namespace MyDAL.Impls
         {
             SelectMHandle(func);
             OrderByOptionHandle(option, typeof(M).FullName);
-            DC.DH.UiToDbCopy();
+            DC.DPH.SetParameter();
             return await QueryPagingListAsyncHandle<M, VM>(option.PageIndex, option.PageSize, UiMethodEnum.QueryPagingListAsync);
         }
     }
@@ -83,7 +83,7 @@ namespace MyDAL.Impls
             where M : class
         {
             SelectMHandle<M>();
-            DC.DH.UiToDbCopy();
+            DC.DPH.SetParameter();
             return await QueryPagingListAsyncHandle<M>(pageIndex, pageSize, UiMethodEnum.JoinQueryPagingListAsync);
         }
 
@@ -91,7 +91,7 @@ namespace MyDAL.Impls
             where VM : class
         {
             SelectMHandle(func);
-            DC.DH.UiToDbCopy();
+            DC.DPH.SetParameter();
             return await QueryPagingListAsyncHandle<VM>(pageIndex, pageSize, UiMethodEnum.JoinQueryPagingListAsync);
         }
     }
@@ -109,7 +109,7 @@ namespace MyDAL.Impls
         {
             SelectMHandle<M>();
             OrderByOptionHandle(option, typeof(M).FullName);
-            DC.DH.UiToDbCopy();
+            DC.DPH.SetParameter();
             return await QueryPagingListAsyncHandle<M>(option.PageIndex, option.PageSize, UiMethodEnum.JoinQueryPagingListAsync);
         }
 
@@ -118,7 +118,7 @@ namespace MyDAL.Impls
         {
             SelectMHandle(func);
             OrderByOptionHandle(option, string.Empty);
-            DC.DH.UiToDbCopy();
+            DC.DPH.SetParameter();
             return await QueryPagingListAsyncHandle<VM>(option.PageIndex, option.PageSize, UiMethodEnum.JoinQueryPagingListAsync);
         }
     }

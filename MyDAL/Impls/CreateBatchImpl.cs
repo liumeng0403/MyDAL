@@ -20,13 +20,13 @@ namespace MyDAL.Impls
             DC.Action = ActionEnum.Insert;
             return await DC.BDH.StepProcess(mList, 35, async list =>
             {
-                DC.ResetConditions();
+                DC.DPH.ResetParameter();
                 CreateMHandle(list);
-                DC.DH.UiToDbCopy();
+                DC.DPH.SetParameter();
                 return await DC.DS.ExecuteNonQueryAsync(
                     DC.Conn,
                     DC.SqlProvider.GetSQL<M>(UiMethodEnum.CreateBatchAsync)[0],
-                    DC.GetParameters(DC.DbConditions));
+                    DC.DPH.GetParameters(DC.Parameters));
             });
         }
     }

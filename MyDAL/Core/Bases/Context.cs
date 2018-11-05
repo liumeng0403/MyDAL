@@ -32,15 +32,14 @@ namespace MyDAL.Core.Bases
 
             //
             Conn = conn;
-            UiConditions = new List<DicUI>();
-            DbConditions = new List<DicDB>();
+            Parameters = new List<DicParam>();
             AH = new AttributeHelper(this);
             VH = new CsValueHelper(this);
             GH = new GenericHelper(this);
             EH = new XExpression(this);
             SC = new StaticCache(this);
             PH = new ParameterHelper(this);
-            DH = new DicModelHelper(this);
+            DPH = new DicParamHelper(this);
             BDH = new BatchDataHelper();
             DS = new DataSource();
 
@@ -62,7 +61,7 @@ namespace MyDAL.Core.Bases
 
         internal XExpression EH { get; private set; }
         internal CsValueHelper VH { get; private set; }
-        internal DicModelHelper DH { get; private set; }
+        internal DicParamHelper DPH { get; private set; }
 
         /************************************************************************************************************************/
 
@@ -75,8 +74,7 @@ namespace MyDAL.Core.Bases
         /************************************************************************************************************************/
 
         internal int DicID { get; set; } = 1;
-        internal List<DicUI> UiConditions { get; private set; }
-        internal List<DicDB> DbConditions { get; private set; }
+        internal List<DicParam> Parameters { get; set; }
 
         /************************************************************************************************************************/
 
@@ -143,99 +141,6 @@ namespace MyDAL.Core.Bases
 
         /************************************************************************************************************************/
 
-        private List<DicUI> FlatDics(List<DicUI> dics)
-        {
-            var ds = new List<DicUI>();
-
-            //
-            foreach (var d in dics)
-            {
-                if (IsParameter(d.Action))
-                {
-                    if (d.Group != null)
-                    {
-                        ds.AddRange(FlatDics(d.Group));
-                    }
-                    else if (d.InItems != null)
-                    {
-                        ds.AddRange(FlatDics(d.InItems));
-                    }
-                    else
-                    {
-                        ds.Add(d);
-                    }
-                }
-            }
-
-            //
-            return ds;
-        }
-        private List<DicDB> FlatDics(List<DicDB> dics)
-        {
-            var ds = new List<DicDB>();
-
-            //
-            foreach (var d in dics)
-            {
-                if (IsParameter(d.Action))
-                {
-                    if (d.Group != null)
-                    {
-                        ds.AddRange(FlatDics(d.Group));
-                    }
-                    else if (d.InItems != null)
-                    {
-                        ds.AddRange(FlatDics(d.InItems));
-                    }
-                    else
-                    {
-                        ds.Add(d);
-                    }
-                }
-            }
-
-            //
-            return ds;
-        }
-        internal DbParamInfo GetParameters(List<DicDB> dbs)
-        {
-            var paras = new DbParamInfo();
-
-            //
-            foreach (var db in dbs)
-            {
-                if (IsParameter(db.Action))
-                {
-                    if (db.Group != null)
-                    {
-                        paras.Add(GetParameters(db.Group));
-                    }
-                    else if (IsInParameter(db.ParamInfo.Value, db.Option))
-                    {
-                        paras.Add(GetParameters(db.InItems));
-                    }
-                    else
-                    {
-                        paras.Add(db.ParamInfo);
-                    }
-                }
-            }
-
-            //
-            if (XConfig.IsDebug)
-            {
-                lock (XDebug.Lock)
-                {
-                    XDebug.UIs = FlatDics(UiConditions);
-                    XDebug.DBs = FlatDics(DbConditions);
-                    XDebug.SetValue();
-                }
-            }
-
-            //
-            return paras;
-        }
-
         internal OptionEnum GetChangeOption(ChangeEnum change)
         {
             switch (change)
@@ -247,30 +152,6 @@ namespace MyDAL.Core.Bases
                 default:
                     return OptionEnum.ChangeAdd;
             }
-        }
-
-        internal void AddConditions(DicUI dic)
-        {
-            if (IsInParameter(dic.CsValue, dic.Option))
-            {
-                dic.InItems = new List<DicUI>();
-                DH.UniqueDicContext(dic, dic.InItems);
-            }
-            else
-            {
-                DH.UniqueDicContext(dic, UiConditions);
-            }
-            UiConditions.Add(dic);
-
-            //
-            Compare = CompareEnum.None;
-            Func = FuncEnum.None;
-        }
-
-        internal void ResetConditions()
-        {
-            UiConditions = new List<DicUI>();
-            DbConditions = new List<DicDB>();
         }
 
         internal void SetMTCache<M>()

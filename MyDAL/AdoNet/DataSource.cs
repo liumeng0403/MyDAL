@@ -20,7 +20,7 @@ namespace MyDAL.AdoNet
          * ado.net -- DbCommand.[Task<DbDataReader> ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)]
          * select -- 所有行
          */
-        internal async Task<IEnumerable<M>> ExecuteReaderMultiRowAsync<M>(IDbConnection conn, string sql, DbParamInfo paramx)
+        internal async Task<List<M>> ExecuteReaderMultiRowAsync<M>(IDbConnection conn, string sql, DbParamInfo paramx)
             where M : class
         {
             paramx = paramx ?? new DbParamInfo();
@@ -47,7 +47,7 @@ namespace MyDAL.AdoNet
                     {
                         if (reader.FieldCount == 0)
                         {
-                            return Enumerable.Empty<M>();
+                            return new List<M>();
                         }
                         info.Deserializer = new DeserializerState(hash, AdoNetHelper.GetDeserializer(mType, reader));
                         tuple = info.Deserializer;
@@ -59,14 +59,7 @@ namespace MyDAL.AdoNet
                     while (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
                     {
                         object val = func(reader);
-                        if (val == null || val is M)
-                        {
-                            result.Add((M)val);
-                        }
-                        else
-                        {
-                            result.Add((M)Convert.ChangeType(val, convertToType, CultureInfo.InvariantCulture));
-                        }
+                        result.Add((M)val);
                     }
                     while (await reader.NextResultAsync(default(CancellationToken)).ConfigureAwait(false))
                     { }

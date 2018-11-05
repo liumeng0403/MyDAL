@@ -22,29 +22,29 @@ namespace MyDAL.Impls
             return await DC.DS.ExecuteReaderSingleRowAsync<M>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryFirstOrDefaultAsync)[0],
-                DC.GetParameters(DC.DbConditions));
+                DC.DPH.GetParameters(DC.Parameters));
         }
 
         public async Task<VM> QueryFirstOrDefaultAsync<VM>()
             where VM:class
         {
             SelectMHandle<M, VM>();
-            DC.DH.UiToDbCopy();
+            DC.DPH.SetParameter();
             return await DC.DS.ExecuteReaderSingleRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryFirstOrDefaultAsync)[0],
-                DC.GetParameters(DC.DbConditions));
+                DC.DPH.GetParameters(DC.Parameters));
         }
 
         public async Task<VM> QueryFirstOrDefaultAsync<VM>(Expression<Func<M, VM>> func)
             where VM:class
         {
             SelectMHandle(func);
-            DC.DH.UiToDbCopy();
+            DC.DPH.SetParameter();
             return await DC.DS.ExecuteReaderSingleRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryFirstOrDefaultAsync)[0],
-                DC.GetParameters(DC.DbConditions));
+                DC.DPH.GetParameters(DC.Parameters));
         }
     }
 
@@ -60,22 +60,22 @@ namespace MyDAL.Impls
             where M:class
         {
             SelectMHandle<M>();
-            DC.DH.UiToDbCopy();
+            DC.DPH.SetParameter();
             return await DC.DS.ExecuteReaderSingleRowAsync<M>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.JoinQueryFirstOrDefaultAsync)[0],
-                DC.GetParameters(DC.DbConditions));
+                DC.DPH.GetParameters(DC.Parameters));
         }
 
         public async Task<VM> QueryFirstOrDefaultAsync<VM>(Expression<Func<VM>> func)
             where VM:class
         {
             SelectMHandle(func);
-            DC.DH.UiToDbCopy();
+            DC.DPH.SetParameter();
             return await DC.DS.ExecuteReaderSingleRowAsync<VM>(
                 DC.Conn,
                 DC.SqlProvider.GetSQL<VM>(UiMethodEnum.JoinQueryFirstOrDefaultAsync)[0],
-                DC.GetParameters(DC.DbConditions));
+                DC.DPH.GetParameters(DC.Parameters));
         }
     }
 }

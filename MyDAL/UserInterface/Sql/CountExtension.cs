@@ -21,7 +21,7 @@ namespace MyDAL
             var key = keyDic.ColumnOne;
             where.DC.Option = OptionEnum.Count;
             where.DC.Compare = CompareEnum.None;
-            where.DC.AddConditions(where.DC.DH.CountDic(keyDic.ClassFullName, key));
+            where.DC.DPH.AddParameter(where.DC.DPH.CountDic(keyDic.ClassFullName, key));
             return new CountQ<M>(where.DC);
         }
 
