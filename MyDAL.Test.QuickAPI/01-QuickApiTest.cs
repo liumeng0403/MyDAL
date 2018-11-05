@@ -33,7 +33,7 @@ namespace MyDAL.Test.QuickAPI
 
             var option1 = new AlipayPaymentPaggingQueryOption();
             option1.StartTime = DateTime.Parse("2018-08-20");
-            var res1 = await Conn.QueryPagingListAsync<AlipayPaymentRecord>(option1);
+            var res1 = await Conn.PagingListAsync<AlipayPaymentRecord>(option1);
             Assert.True(res1.TotalCount == 29);
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -42,7 +42,7 @@ namespace MyDAL.Test.QuickAPI
 
             var xx2 = "";
 
-            var res2 = await Conn.QueryPagingListAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(option1);
+            var res2 = await Conn.PagingListAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(option1);
             Assert.True(res2.TotalCount == 29);
             Assert.True(res2.Data.Count == 10);
 
@@ -52,7 +52,7 @@ namespace MyDAL.Test.QuickAPI
 
             var xx3 = "";
 
-            var res3 = await Conn.QueryPagingListAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(option1, record => new AlipayPaymentRecordVM
+            var res3 = await Conn.PagingListAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(option1, record => new AlipayPaymentRecordVM
             {
                 TotalAmount = record.TotalAmount,
                 Description = record.Description
@@ -67,7 +67,7 @@ namespace MyDAL.Test.QuickAPI
 
             var option4 = new AlipayPaymentQueryOption();
             option4.StartTime = DateTime.Parse("2018-08-20");
-            var res4 = await Conn.QueryListAsync<AlipayPaymentRecord>(option4);
+            var res4 = await Conn.ListAsync<AlipayPaymentRecord>(option4);
             Assert.True(res4.Count == 29);
 
             var tuple4 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -76,7 +76,7 @@ namespace MyDAL.Test.QuickAPI
 
             var xx5 = "";
 
-            var res5 = await Conn.QueryListAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(option4);
+            var res5 = await Conn.ListAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(option4);
             Assert.True(res4.Count == 29);
 
             var tuple5 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -85,7 +85,7 @@ namespace MyDAL.Test.QuickAPI
 
             var xx6 = "";
 
-            var res6 = await Conn.QueryListAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(option4, record => new AlipayPaymentRecordVM
+            var res6 = await Conn.ListAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(option4, record => new AlipayPaymentRecordVM
             {
                 TotalAmount = record.TotalAmount,
                 Description = record.Description
@@ -101,7 +101,7 @@ namespace MyDAL.Test.QuickAPI
             var pk = Guid.Parse("8f2cbb64-8356-4482-88ee-016558c05b2d");
             var option7 = new AlipayPaymentQueryOption();
             option7.CreatedOn = DateTime.Parse("2018-08-20 19:12:05.933786");
-            var res7 = await Conn.QueryFirstOrDefaultAsync<AlipayPaymentRecord>(option7);
+            var res7 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord>(option7);
             Assert.True(res7.Id == pk);
 
             var tuple7 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -110,7 +110,7 @@ namespace MyDAL.Test.QuickAPI
 
             var xx8 = "";
 
-            var res8 = await Conn.QueryFirstOrDefaultAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(option7);
+            var res8 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(option7);
             Assert.True(res8.Id == pk);
 
             var tuple8 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -119,7 +119,7 @@ namespace MyDAL.Test.QuickAPI
 
             var xx9 = "";
 
-            var res9 = await Conn.QueryFirstOrDefaultAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(option7, record => new AlipayPaymentRecordVM
+            var res9 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(option7, record => new AlipayPaymentRecordVM
             {
                 Id = record.Id,
                 TotalAmount = record.TotalAmount,
@@ -133,7 +133,7 @@ namespace MyDAL.Test.QuickAPI
 
             var xx10 = "";
 
-            var res10 = await Conn.QueryFirstOrDefaultAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(pk, record => new AlipayPaymentRecordVM
+            var res10 = await Conn.GetAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(pk, record => new AlipayPaymentRecordVM
             {
                 Id = record.Id,
                 TotalAmount = record.TotalAmount,
@@ -147,7 +147,7 @@ namespace MyDAL.Test.QuickAPI
 
             var xx11 = "";
 
-            var res11 = await Conn.QueryFirstOrDefaultAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(pk);
+            var res11 = await Conn.GetAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(pk);
             Assert.NotNull(res11);
 
             var tuple11 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -156,7 +156,7 @@ namespace MyDAL.Test.QuickAPI
 
             var xx12 = "";
 
-            var res12 = await Conn.QueryFirstOrDefaultAsync<AlipayPaymentRecord>(pk);
+            var res12 = await Conn.GetAsync<AlipayPaymentRecord>(pk);
             Assert.NotNull(res12);
 
             var tuple12 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -173,7 +173,7 @@ namespace MyDAL.Test.QuickAPI
 
             var tuple13 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
-            var res131 = await Conn.QueryFirstOrDefaultAsync<AlipayPaymentRecord>(pk);
+            var res131 = await Conn.GetAsync<AlipayPaymentRecord>(pk);
             Assert.True(res131.Description == "xxxxxx");
             
             /****************************************************************************************/
@@ -185,7 +185,7 @@ namespace MyDAL.Test.QuickAPI
 
             var tuple14 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
-            var res141 = await Conn.QueryFirstOrDefaultAsync<AlipayPaymentRecord>(pk);
+            var res141 = await Conn.GetAsync<AlipayPaymentRecord>(pk);
             Assert.Null(res141);
 
             /****************************************************************************************/
@@ -210,7 +210,7 @@ namespace MyDAL.Test.QuickAPI
 
             var tuple15 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
-            var res151 = await Conn.QueryFirstOrDefaultAsync<AlipayPaymentRecord>(pk);
+            var res151 = await Conn.GetAsync<AlipayPaymentRecord>(pk);
             Assert.NotNull(res151);
 
             /****************************************************************************************/
