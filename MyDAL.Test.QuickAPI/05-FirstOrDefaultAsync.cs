@@ -2,8 +2,6 @@
 using MyDAL.Test.Options;
 using MyDAL.Test.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -15,13 +13,48 @@ namespace MyDAL.Test.QuickAPI
         public async Task test()
         {
 
+            var pk = Guid.Parse("8f2cbb64-8356-4482-88ee-016558c05b2d");
+            var date= DateTime.Parse("2018-08-20 19:12:05.933786");
+
+            /****************************************************************************************/
+
+            var xx4 = "";
+
+            var res4 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.Id == pk && it.CreatedOn == date,
+                it => new AlipayPaymentRecordVM
+                {
+                    Id = it.Id,
+                    TotalAmount = it.TotalAmount,
+                    Description = it.Description
+                });
+            Assert.NotNull(res4);
+
+            var tuple4 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /****************************************************************************************/
+
+            var xx5 = "";
+
+            var res5 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.Id == pk && it.CreatedOn == date);
+            Assert.NotNull(res5);
+
+            var tuple5 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /****************************************************************************************/
+
+            var xx6 = "";
+
+            var res6 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord>(it => it.Id == pk && it.CreatedOn == date);
+            Assert.NotNull(res6);
+
+            var tuple6 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
             /****************************************************************************************/
 
             var xx7 = "";
 
-            var pk = Guid.Parse("8f2cbb64-8356-4482-88ee-016558c05b2d");
             var option7 = new AlipayPaymentQueryOption();
-            option7.CreatedOn = DateTime.Parse("2018-08-20 19:12:05.933786");
+            option7.CreatedOn = date;
             var res7 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord>(option7);
             Assert.True(res7.Id == pk);
 
