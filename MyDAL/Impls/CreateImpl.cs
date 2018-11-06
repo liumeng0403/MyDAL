@@ -19,9 +19,9 @@ namespace Yunyong.DataExchange.Impls
             DC.Action = ActionEnum.Insert;
             CreateMHandle(m);
             DC.DPH.SetParameter();
+            DC.Method = UiMethodEnum.CreateAsync;
+            DC.SqlProvider.GetSQL<M>();
             return await DC.DS.ExecuteNonQueryAsync(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.CreateAsync)[0],
                 DC.DPH.GetParameters(DC.Parameters));
         }
     }

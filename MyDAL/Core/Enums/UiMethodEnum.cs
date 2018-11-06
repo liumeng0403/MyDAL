@@ -2,6 +2,7 @@ namespace Yunyong.DataExchange.Core.Enums
 {
     internal enum UiMethodEnum
     {
+        None,
         CreateAsync,
         CreateBatchAsync,
         DeleteAsync,

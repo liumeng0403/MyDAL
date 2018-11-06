@@ -20,9 +20,9 @@ namespace Yunyong.DataExchange.Impls
 
         public async Task<List<M>> QueryListAsync()
         {
+            DC.Method = UiMethodEnum.QueryListAsync;
+            DC.SqlProvider.GetSQL<M>();
             return await DC.DS.ExecuteReaderMultiRowAsync<M>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryListAsync)[0],
                 DC.DPH.GetParameters(DC.Parameters));
         }
 
@@ -31,9 +31,9 @@ namespace Yunyong.DataExchange.Impls
         {
             SelectMHandle<M, VM>();
             DC.DPH.SetParameter();
+            DC.Method = UiMethodEnum.QueryListAsync;
+            DC.SqlProvider.GetSQL<M>();
             return await DC.DS.ExecuteReaderMultiRowAsync<VM>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryListAsync)[0],
                 DC.DPH.GetParameters(DC.Parameters));
         }
 
@@ -42,9 +42,9 @@ namespace Yunyong.DataExchange.Impls
         {
             SelectMHandle(columnMapFunc);
             DC.DPH.SetParameter();
+            DC.Method = UiMethodEnum.QueryListAsync;
+            DC.SqlProvider.GetSQL<M>();
             return await DC.DS.ExecuteReaderMultiRowAsync<VM>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryListAsync)[0],
                 DC.DPH.GetParameters(DC.Parameters));
         }
 
@@ -79,9 +79,9 @@ namespace Yunyong.DataExchange.Impls
         {
             SelectMHandle<M>();
             DC.DPH.SetParameter();
+            DC.Method = UiMethodEnum.JoinQueryListAsync;
+            DC.SqlProvider.GetSQL<M>();
             return await DC.DS.ExecuteReaderMultiRowAsync<M>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.JoinQueryListAsync)[0],
                 DC.DPH.GetParameters(DC.Parameters));
         }
 
@@ -90,9 +90,9 @@ namespace Yunyong.DataExchange.Impls
         {
             SelectMHandle(columnMapFunc);
             DC.DPH.SetParameter();
+            DC.Method = UiMethodEnum.JoinQueryListAsync;
+            DC.SqlProvider.GetSQL<VM>();
             return await DC.DS.ExecuteReaderMultiRowAsync<VM>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<VM>(UiMethodEnum.JoinQueryListAsync)[0],
                 DC.DPH.GetParameters(DC.Parameters));
         }
 

@@ -34,12 +34,13 @@ namespace Yunyong.DataExchange.Core.Bases
             where M : class
         {
             var result = new PagingList<M>();
-            result.PageIndex = pageIndex;
-            result.PageSize = pageSize;
-            var sql = DC.SqlProvider.GetSQL<M>(sqlType, result.PageIndex, result.PageSize);
+            DC.PageIndex = result.PageIndex = pageIndex;
+            DC.PageSize= result.PageSize = pageSize;
+            DC.Method = sqlType;            
+            DC.SqlProvider.GetSQL<M>();
             var paras = DC.DPH.GetParameters(DC.Parameters);
-            result.TotalCount = await DC.DS.ExecuteScalarAsync<int>(DC.Conn, sql[0], paras);
-            result.Data = await DC.DS.ExecuteReaderMultiRowAsync<M>(DC.Conn, sql[1], paras);
+            result.TotalCount = await DC.DS.ExecuteScalarAsync<int>(paras);
+            result.Data = await DC.DS.ExecuteReaderMultiRowAsync<M>(paras);
             return result;
         }
 
@@ -47,12 +48,13 @@ namespace Yunyong.DataExchange.Core.Bases
             where VM : class
         {
             var result = new PagingList<VM>();
-            result.PageIndex = pageIndex;
-            result.PageSize = pageSize;
-            var sql = DC.SqlProvider.GetSQL<M>(sqlType, result.PageIndex, result.PageSize);
+            DC.PageIndex = result.PageIndex = pageIndex;
+            DC.PageSize = result.PageSize = pageSize;
+            DC.Method = sqlType;
+            DC.SqlProvider.GetSQL<M>();
             var paras = DC.DPH.GetParameters(DC.Parameters);
-            result.TotalCount = await DC.DS.ExecuteScalarAsync<int>(DC.Conn, sql[0], paras);
-            result.Data = await DC.DS.ExecuteReaderMultiRowAsync<VM>(DC.Conn, sql[1], paras);
+            result.TotalCount = await DC.DS.ExecuteScalarAsync<int>(paras);
+            result.Data = await DC.DS.ExecuteReaderMultiRowAsync<VM>(paras);
             return result;
         }
 

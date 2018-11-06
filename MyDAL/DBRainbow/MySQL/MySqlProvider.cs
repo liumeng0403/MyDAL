@@ -138,17 +138,17 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
             return str;
         }
 
-        private string Limit(int? pageIndex, int? pageSize)
+        private string Limit()
         {
-            if (pageIndex.HasValue
-                && pageSize.HasValue)
+            if (DC.PageIndex.HasValue
+                && DC.PageSize.HasValue)
             {
                 var start = default(int);
-                if (pageIndex > 0)
+                if (DC.PageIndex > 0)
                 {
-                    start = ((pageIndex - 1) * pageSize).ToInt();
+                    start = ((DC.PageIndex - 1) * DC.PageSize).ToInt();
                 }
-                return $" \r\n limit {start},{pageSize}";
+                return $" \r\n limit {start},{DC.PageSize}";
             }
             else
             {
@@ -184,7 +184,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
             }
             throw new Exception("CompareProcess 未能处理!!!");
         }
-        private string LikeProcess(DicParam db, bool isMulti )
+        private string LikeProcess(DicParam db, bool isMulti)
         {
             if (isMulti)
             {
@@ -236,7 +236,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
             }
             throw new Exception("CharLengthProcess 未能处理!!!");
         }
-        private string TrimProcess(DicParam db, bool isMulti )
+        private string TrimProcess(DicParam db, bool isMulti)
         {
             if (isMulti)
             {
@@ -274,7 +274,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
             }
             throw new Exception("OneEqualOneProcess 未能处理!!!");
         }
-        private string InProcess(DicParam db, bool isMulti )
+        private string InProcess(DicParam db, bool isMulti)
         {
             if (isMulti)
             {
@@ -300,7 +300,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
             }
             throw new Exception("InProcess 未能处理!!!");
         }
-        private string IsNullProcess(DicParam db, bool isMulti )
+        private string IsNullProcess(DicParam db, bool isMulti)
         {
             if (isMulti)
             {
@@ -453,7 +453,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
 
         /****************************************************************************************************************/
 
-        private string MultiCondition(DicParam db,bool isMulti)
+        private string MultiCondition(DicParam db, bool isMulti)
         {
             if (db.Group != null)
             {
@@ -462,7 +462,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
                 {
                     if (item.Group != null)
                     {
-                        list.Add($"({MultiCondition(item,true)})");
+                        list.Add($"({MultiCondition(item, true)})");
                     }
                     else
                     {
@@ -475,31 +475,31 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
             {
                 if (db.Option == OptionEnum.Compare)
                 {
-                    return CompareProcess(db,isMulti);
+                    return CompareProcess(db, isMulti);
                 }
                 else if (db.Option == OptionEnum.Like)
                 {
-                    return LikeProcess(db,isMulti);
+                    return LikeProcess(db, isMulti);
                 }
                 else if (db.Option == OptionEnum.CharLength)
                 {
-                    return CharLengthProcess(db,isMulti);
+                    return CharLengthProcess(db, isMulti);
                 }
                 else if (db.Option == OptionEnum.Trim || db.Option == OptionEnum.LTrim || db.Option == OptionEnum.RTrim)
                 {
-                    return TrimProcess(db,isMulti);
+                    return TrimProcess(db, isMulti);
                 }
                 else if (db.Option == OptionEnum.OneEqualOne)
                 {
-                    return OneEqualOneProcess(db,isMulti);
+                    return OneEqualOneProcess(db, isMulti);
                 }
                 else if (db.Option == OptionEnum.In || db.Option == OptionEnum.NotIn)
                 {
-                    return InProcess(db,isMulti);
+                    return InProcess(db, isMulti);
                 }
                 else if (db.Option == OptionEnum.IsNull || db.Option == OptionEnum.IsNotNull)
                 {
-                    return IsNullProcess(db,isMulti);
+                    return IsNullProcess(db, isMulti);
                 }
                 return string.Empty;
             }
@@ -616,10 +616,14 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
             return "\r\n from";
         }
 
-        private string Table<M>(UiMethodEnum type)
+        private string Table<M>()
         {
             var tableName = string.Empty;
-            if (type != UiMethodEnum.JoinQueryListAsync)
+            if (DC.Method != UiMethodEnum.JoinCountAsync
+                && DC.Method != UiMethodEnum.JoinQueryFirstOrDefaultAsync
+                && DC.Method != UiMethodEnum.JoinQueryListAsync
+                && DC.Method != UiMethodEnum.JoinQueryPagingListAsync
+                && DC.Method != UiMethodEnum.JoinTopAsync)
             {
                 var key = DC.SC.GetModelKey(typeof(M).FullName);
                 tableName = DC.SC.GetModelTableName(key);
@@ -769,8 +773,8 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
 
         async Task<List<ColumnInfo>> ISqlProvider.GetColumnsInfos(string tableName)
         {
-            //TryGetTableName<M>(out var tableName);
-            var sql = $@"
+            DC.SQL = new List<string>{
+                                $@"
                                         SELECT distinct
                                             TABLE_NAME as TableName,
                                             column_name as ColumnName,
@@ -784,8 +788,9 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
                                         WHERE  table_schema='{DC.Conn.Database}'
                                             and  ( TABLE_NAME = '{tableName.TrimStart('`').TrimEnd('`').ToLower()}' or TABLE_NAME = '{tableName.TrimStart('`').TrimEnd('`')}' )
                                         ;
-                                  ";
-            return await DC.DS.ExecuteReaderMultiRowAsync<ColumnInfo>(DC.Conn, sql, null);
+                                  "
+            };
+            return await DC.DS.ExecuteReaderMultiRowAsync<ColumnInfo>(null);
         }
 
         string ISqlProvider.GetTablePK(string fullName)
@@ -799,18 +804,18 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
             return col.ColumnName;
         }
 
-        List<string> ISqlProvider.GetSQL<M>(UiMethodEnum type, int? pageIndex = null, int? pageSize = null)
+        void ISqlProvider.GetSQL<M>()
         {
             var list = new List<string>();
 
             //
-            switch (type)
+            switch (DC.Method)
             {
                 case UiMethodEnum.CreateAsync:
-                    list.Add($" insert into {Table<M>(type)} {GetColumns()} \r\n values {GetValues()} ;");
+                    list.Add($" insert into {Table<M>()} {GetColumns()} \r\n values {GetValues()} ;");
                     break;
                 case UiMethodEnum.CreateBatchAsync:
-                    var tablex = Table<M>(type);
+                    var tablex = Table<M>();
                     list.Add(
                                   $" LOCK TABLES {tablex} WRITE; " +
                                   $" \r\n /*!40000 ALTER TABLE {tablex} DISABLE KEYS */; " +
@@ -820,50 +825,50 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
                                  );
                     break;
                 case UiMethodEnum.DeleteAsync:
-                    list.Add($" delete {From()} {Table<M>(type)} {Wheres()} ; ");
+                    list.Add($" delete {From()} {Table<M>()} {Wheres()} ; ");
                     break;
                 case UiMethodEnum.UpdateAsync:
-                    list.Add($" update {Table<M>(type)} \r\n set {GetUpdates()} {Wheres()} ;");
+                    list.Add($" update {Table<M>()} \r\n set {GetUpdates()} {Wheres()} ;");
                     break;
                 case UiMethodEnum.QueryFirstOrDefaultAsync:
-                    list.Add($"select {Columns()} {From()} {Table<M>(type)} {Wheres()} {GetOrderByPart<M>()} ; ");
+                    list.Add($"select {Columns()} {From()} {Table<M>()} {Wheres()} {GetOrderByPart<M>()} ; ");
                     break;
                 case UiMethodEnum.JoinQueryFirstOrDefaultAsync:
                     list.Add($" select {Columns()} {From()} {Joins()} {Wheres()} {GetOrderByPart()} ; ");
                     break;
                 case UiMethodEnum.QueryListAsync:
                 case UiMethodEnum.TopAsync:
-                    list.Add($"select {Columns()} {From()} {Table<M>(type)} {Wheres()} {GetOrderByPart<M>()} {Limit(pageIndex, pageSize)} ; ");
+                    list.Add($"select {Columns()} {From()} {Table<M>()} {Wheres()} {GetOrderByPart<M>()} {Limit()} ; ");
                     break;
                 case UiMethodEnum.JoinQueryListAsync:
                 case UiMethodEnum.JoinTopAsync:
-                    list.Add($" select {Columns()} {From()} {Joins()} {Wheres()} {GetOrderByPart()} {Limit(pageIndex, pageSize)} ; ");
+                    list.Add($" select {Columns()} {From()} {Joins()} {Wheres()} {GetOrderByPart()} {Limit()} ; ");
                     break;
                 case UiMethodEnum.QueryPagingListAsync:
                     var wherePart8 = Wheres();
-                    var table8 = Table<M>(type);
+                    var table8 = Table<M>();
                     list.Add($"select count(*) {From()} {table8} {wherePart8} ; ");
-                    list.Add($"select {Columns()} {From()} {table8} {wherePart8} {GetOrderByPart<M>()} {Limit(pageIndex, pageSize)}  ; ");
+                    list.Add($"select {Columns()} {From()} {table8} {wherePart8} {GetOrderByPart<M>()} {Limit()}  ; ");
                     break;
                 case UiMethodEnum.JoinQueryPagingListAsync:
                     var wherePart9 = Wheres();
                     list.Add($"select count(*) {From()} {Joins()} {wherePart9} ; ");
-                    list.Add($"select {Columns()} {From()} {Joins()} {wherePart9} {GetOrderByPart()} {Limit(pageIndex, pageSize)}  ; ");
+                    list.Add($"select {Columns()} {From()} {Joins()} {wherePart9} {GetOrderByPart()} {Limit()}  ; ");
                     break;
                 case UiMethodEnum.QueryAllAsync:
-                    list.Add($" select {Columns()} {From()} {Table<M>(type)} {GetOrderByPart<M>()} ; ");
+                    list.Add($" select {Columns()} {From()} {Table<M>()} {GetOrderByPart<M>()} ; ");
                     break;
                 case UiMethodEnum.QueryAllPagingListAsync:
-                    var table11 = Table<M>(type);
+                    var table11 = Table<M>();
                     list.Add($"select count(*) {From()} {table11} ; ");
-                    list.Add($"select * {From()} {table11} {GetOrderByPart<M>()} {Limit(pageIndex, pageSize)}  ; ");
+                    list.Add($"select * {From()} {table11} {GetOrderByPart<M>()} {Limit()}  ; ");
                     break;
                 case UiMethodEnum.QuerySingleValueAsync:
-                    list.Add($" select {GetSingleValuePart()} {From()} {Table<M>(type)} {Wheres()} ; ");
+                    list.Add($" select {GetSingleValuePart()} {From()} {Table<M>()} {Wheres()} ; ");
                     break;
                 case UiMethodEnum.ExistAsync:
                 case UiMethodEnum.CountAsync:
-                    list.Add($" select {GetCountPart()} {From()} {Table<M>(type)} {Wheres()} ; ");
+                    list.Add($" select {GetCountPart()} {From()} {Table<M>()} {Wheres()} ; ");
                     break;
                 case UiMethodEnum.JoinCountAsync:
                     list.Add($" select {GetCountPart()} {From()} {Joins()} {Wheres()} ");
@@ -875,9 +880,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
             {
                 XDebug.SQL = list;
             }
-
-            //
-            return list;
+            DC.SQL = list;
         }
 
     }
