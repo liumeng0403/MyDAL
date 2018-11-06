@@ -158,40 +158,7 @@ namespace MyDAL
         /// <summary>
         /// Deleter 快速 DeleteAsync by pk 方法
         /// </summary>
-        public static async Task<int> DeleteAsync<M>(this IDbConnection conn, int pkValue)
-            where M:class
-        {
-            var deleter = conn.Deleter<M>();
-            var option = new QuickOption().GetCondition() as IDictionary<string, object>;
-            option[deleter.DC.SqlProvider.GetTablePK(typeof(M).FullName)] = pkValue;
-            return await deleter.Where(option).DeleteAsync();
-        }
-        /// <summary>
-        /// Deleter 快速 DeleteAsync by pk 方法
-        /// </summary>
-        public static async Task<int> DeleteAsync<M>(this IDbConnection conn, long pkValue)
-            where M:class
-        {
-            var deleter = conn.Deleter<M>();
-            var option = new QuickOption().GetCondition() as IDictionary<string, object>;
-            option[deleter.DC.SqlProvider.GetTablePK(typeof(M).FullName)] = pkValue;
-            return await deleter.Where(option).DeleteAsync();
-        }
-        /// <summary>
-        /// Deleter 快速 DeleteAsync by pk 方法
-        /// </summary>
-        public static async Task<int> DeleteAsync<M>(this IDbConnection conn, string pkValue)
-            where M:class
-        {
-            var deleter = conn.Deleter<M>();
-            var option = new QuickOption().GetCondition() as IDictionary<string, object>;
-            option[deleter.DC.SqlProvider.GetTablePK(typeof(M).FullName)] = pkValue;
-            return await deleter.Where(option).DeleteAsync();
-        }
-        /// <summary>
-        /// Deleter 快速 DeleteAsync by pk 方法
-        /// </summary>
-        public static async Task<int> DeleteAsync<M>(this IDbConnection conn, Guid pkValue)
+        public static async Task<int> DeleteAsync<M>(this IDbConnection conn, object pkValue)
             where M:class
         {
             var deleter = conn.Deleter<M>();
@@ -203,40 +170,7 @@ namespace MyDAL
         /// <summary>
         /// Updater 快速 UpdateAsync update fields by pk 方法
         /// </summary>
-        public static async Task<int> UpdateAsync<M>(this IDbConnection conn, int pkValue, dynamic filedsObject)
-            where M:class
-        {
-            var updater = conn.Updater<M>();
-            var option = new QuickOption().GetCondition() as IDictionary<string, object>;
-            option[updater.DC.SqlProvider.GetTablePK(typeof(M).FullName)] = pkValue;
-            return await updater.Set(filedsObject as object).Where(option).UpdateAsync();
-        }
-        /// <summary>
-        /// Updater 快速 UpdateAsync update fields by pk 方法
-        /// </summary>
-        public static async Task<int> UpdateAsync<M>(this IDbConnection conn, long pkValue, dynamic filedsObject)
-            where M:class
-        {
-            var updater = conn.Updater<M>();
-            var option = new QuickOption().GetCondition() as IDictionary<string, object>;
-            option[updater.DC.SqlProvider.GetTablePK(typeof(M).FullName)] = pkValue;
-            return await updater.Set(filedsObject as object).Where(option).UpdateAsync();
-        }
-        /// <summary>
-        /// Updater 快速 UpdateAsync update fields by pk 方法
-        /// </summary>
-        public static async Task<int> UpdateAsync<M>(this IDbConnection conn, string pkValue, dynamic filedsObject)
-            where M:class
-        {
-            var updater = conn.Updater<M>();
-            var option = new QuickOption().GetCondition() as IDictionary<string, object>;
-            option[updater.DC.SqlProvider.GetTablePK(typeof(M).FullName)] = pkValue;
-            return await updater.Set(filedsObject as object).Where(option).UpdateAsync();
-        }
-        /// <summary>
-        /// Updater 快速 UpdateAsync update fields by pk 方法
-        /// </summary>
-        public static async Task<int> UpdateAsync<M>(this IDbConnection conn, Guid pkValue, dynamic filedsObject)
+        public static async Task<int> UpdateAsync<M>(this IDbConnection conn, object pkValue, dynamic filedsObject)
             where M:class
         {
             var updater = conn.Updater<M>();
@@ -248,40 +182,7 @@ namespace MyDAL
         /// <summary>
         /// Selecter 快速 QueryFirstOrDefaultAsync by pk 方法
         /// </summary>
-        public static async Task<M> GetAsync<M>(this IDbConnection conn, int pkValue)
-            where M : class
-        {
-            var selecter = conn.Selecter<M>();
-            var option = new QuickOption().GetCondition() as IDictionary<string, object>;
-            option[selecter.DC.SqlProvider.GetTablePK(typeof(M).FullName)] = pkValue;
-            return await selecter.Where(option).QueryFirstOrDefaultAsync();
-        }
-        /// <summary>
-        /// Selecter 快速 QueryFirstOrDefaultAsync by pk 方法
-        /// </summary>
-        public static async Task<M> GetAsync<M>(this IDbConnection conn, long pkValue)
-            where M : class
-        {
-            var selecter = conn.Selecter<M>();
-            var option = new QuickOption().GetCondition() as IDictionary<string, object>;
-            option[selecter.DC.SqlProvider.GetTablePK(typeof(M).FullName)] = pkValue;
-            return await selecter.Where(option).QueryFirstOrDefaultAsync();
-        }
-        /// <summary>
-        /// Selecter 快速 QueryFirstOrDefaultAsync by pk 方法
-        /// </summary>
-        public static async Task<M> GetAsync<M>(this IDbConnection conn, string pkValue)
-            where M : class
-        {
-            var selecter = conn.Selecter<M>();
-            var option = new QuickOption().GetCondition() as IDictionary<string, object>;
-            option[selecter.DC.SqlProvider.GetTablePK(typeof(M).FullName)] = pkValue;
-            return await selecter.Where(option).QueryFirstOrDefaultAsync();
-        }
-        /// <summary>
-        /// Selecter 快速 QueryFirstOrDefaultAsync by pk 方法
-        /// </summary>
-        public static async Task<M> GetAsync<M>(this IDbConnection conn, Guid pkValue)
+        public static async Task<M> GetAsync<M>(this IDbConnection conn, object pkValue)
             where M : class
         {
             var selecter = conn.Selecter<M>();
@@ -293,43 +194,7 @@ namespace MyDAL
         /// <summary>
         /// Selecter 快速 QueryFirstOrDefaultAsync by pk 方法
         /// </summary>
-        public static async Task<VM> GetAsync<M, VM>(this IDbConnection conn, int pkValue)
-            where M : class
-            where VM:class
-        {
-            var selecter = conn.Selecter<M>();
-            var option = new QuickOption().GetCondition() as IDictionary<string, object>;
-            option[selecter.DC.SqlProvider.GetTablePK(typeof(M).FullName)] = pkValue;
-            return await selecter.Where(option).QueryFirstOrDefaultAsync<VM>();
-        }
-        /// <summary>
-        /// Selecter 快速 QueryFirstOrDefaultAsync by pk 方法
-        /// </summary>
-        public static async Task<VM> GetAsync<M, VM>(this IDbConnection conn, long pkValue)
-            where M : class
-            where VM:class
-        {
-            var selecter = conn.Selecter<M>();
-            var option = new QuickOption().GetCondition() as IDictionary<string, object>;
-            option[selecter.DC.SqlProvider.GetTablePK(typeof(M).FullName)] = pkValue;
-            return await selecter.Where(option).QueryFirstOrDefaultAsync<VM>();
-        }
-        /// <summary>
-        /// Selecter 快速 QueryFirstOrDefaultAsync by pk 方法
-        /// </summary>
-        public static async Task<VM> GetAsync<M, VM>(this IDbConnection conn, string pkValue)
-            where M : class
-            where VM:class
-        {
-            var selecter = conn.Selecter<M>();
-            var option = new QuickOption().GetCondition() as IDictionary<string, object>;
-            option[selecter.DC.SqlProvider.GetTablePK(typeof(M).FullName)] = pkValue;
-            return await selecter.Where(option).QueryFirstOrDefaultAsync<VM>();
-        }
-        /// <summary>
-        /// Selecter 快速 QueryFirstOrDefaultAsync by pk 方法
-        /// </summary>
-        public static async Task<VM> GetAsync<M, VM>(this IDbConnection conn, Guid pkValue)
+        public static async Task<VM> GetAsync<M, VM>(this IDbConnection conn, object pkValue)
             where M : class
             where VM:class
         {
@@ -342,43 +207,7 @@ namespace MyDAL
         /// <summary>
         /// Selecter 快速 QueryFirstOrDefaultAsync by pk 方法
         /// </summary>
-        public static async Task<VM> GetAsync<M, VM>(this IDbConnection conn, int pkValue, Expression<Func<M, VM>> columnMapFunc)
-            where M : class
-            where VM:class
-        {
-            var selecter = conn.Selecter<M>();
-            var option = new QuickOption().GetCondition() as IDictionary<string, object>;
-            option[selecter.DC.SqlProvider.GetTablePK(typeof(M).FullName)] = pkValue;
-            return await selecter.Where(option).QueryFirstOrDefaultAsync<VM>(columnMapFunc);
-        }
-        /// <summary>
-        /// Selecter 快速 QueryFirstOrDefaultAsync by pk 方法
-        /// </summary>
-        public static async Task<VM> GetAsync<M, VM>(this IDbConnection conn, long pkValue, Expression<Func<M, VM>> columnMapFunc)
-            where M : class
-            where VM:class
-        {
-            var selecter = conn.Selecter<M>();
-            var option = new QuickOption().GetCondition() as IDictionary<string, object>;
-            option[selecter.DC.SqlProvider.GetTablePK(typeof(M).FullName)] = pkValue;
-            return await selecter.Where(option).QueryFirstOrDefaultAsync<VM>(columnMapFunc);
-        }
-        /// <summary>
-        /// Selecter 快速 QueryFirstOrDefaultAsync by pk 方法
-        /// </summary>
-        public static async Task<VM> GetAsync<M, VM>(this IDbConnection conn, string pkValue, Expression<Func<M, VM>> columnMapFunc)
-            where M : class
-            where VM:class
-        {
-            var selecter = conn.Selecter<M>();
-            var option = new QuickOption().GetCondition() as IDictionary<string, object>;
-            option[selecter.DC.SqlProvider.GetTablePK(typeof(M).FullName)] = pkValue;
-            return await selecter.Where(option).QueryFirstOrDefaultAsync<VM>(columnMapFunc);
-        }
-        /// <summary>
-        /// Selecter 快速 QueryFirstOrDefaultAsync by pk 方法
-        /// </summary>
-        public static async Task<VM> GetAsync<M, VM>(this IDbConnection conn, Guid pkValue, Expression<Func<M, VM>> columnMapFunc)
+        public static async Task<VM> GetAsync<M, VM>(this IDbConnection conn, object pkValue, Expression<Func<M, VM>> columnMapFunc)
             where M : class
             where VM:class
         {
@@ -416,6 +245,33 @@ namespace MyDAL
         }
 
         /// <summary>
+        /// Selecter 快速 QueryFirstOrDefaultAsync 方法
+        /// </summary>
+        public static async Task<M> FirstOrDefaultAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
+            where M : class
+        {
+            return await conn.Selecter<M>().Where(compareFunc).QueryFirstOrDefaultAsync();
+        }
+        /// <summary>
+        /// Selecter 快速 QueryFirstOrDefaultAsync 方法
+        /// </summary>
+        public static async Task<VM> FirstOrDefaultAsync<M, VM>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
+            where M : class
+            where VM : class
+        {
+            return await conn.Selecter<M>().Where(compareFunc).QueryFirstOrDefaultAsync<VM>();
+        }
+        /// <summary>
+        /// Selecter 快速 QueryFirstOrDefaultAsync 方法
+        /// </summary>
+        public static async Task<VM> FirstOrDefaultAsync<M, VM>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, VM>> columnMapFunc)
+            where M : class
+            where VM : class
+        {
+            return await conn.Selecter<M>().Where(compareFunc).QueryFirstOrDefaultAsync<VM>(columnMapFunc);
+        }
+
+        /// <summary>
         /// Selecter 快速 QueryListAsync 方法
         /// </summary>
         public static async Task<List<M>> ListAsync<M>(this IDbConnection conn, QueryOption option)
@@ -443,6 +299,33 @@ namespace MyDAL
         }
 
         /// <summary>
+        /// Selecter 快速 QueryListAsync 方法
+        /// </summary>
+        public static async Task<List<M>> ListAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
+            where M : class
+        {
+            return await conn.Selecter<M>().Where(compareFunc).QueryListAsync();
+        }
+        /// <summary>
+        /// Selecter 快速 QueryListAsync 方法
+        /// </summary>
+        public static async Task<List<VM>> ListAsync<M, VM>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
+            where M : class
+            where VM : class
+        {
+            return await conn.Selecter<M>().Where(compareFunc).QueryListAsync<VM>();
+        }
+        /// <summary>
+        /// Selecter 快速 QueryListAsync 方法
+        /// </summary>
+        public static async Task<List<VM>> ListAsync<M, VM>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, VM>> columnMapFunc)
+            where M : class
+            where VM : class
+        {
+            return await conn.Selecter<M>().Where(compareFunc).QueryListAsync<VM>(columnMapFunc);
+        }
+
+        /// <summary>
         /// Selecter 快速 QueryPagingListAsync 方法
         /// </summary>
         public static async Task<PagingList<M>> PagingListAsync<M>(this IDbConnection conn, PagingQueryOption option)
@@ -467,6 +350,15 @@ namespace MyDAL
             where VM:class
         {
             return await conn.Selecter<M>().Where(option).QueryPagingListAsync<VM>(option, columnMapFunc);
+        }
+
+        /// <summary>
+        /// Selecter 快速 ExistAsync 方法
+        /// </summary>
+        public static async Task<bool> ExistAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
+            where M:class
+        {
+            return await conn.Selecter<M>().Where(compareFunc).ExistAsync();
         }
 
         /******************************************************************************************************************************/
