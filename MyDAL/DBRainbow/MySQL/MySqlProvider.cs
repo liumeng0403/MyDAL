@@ -673,8 +673,8 @@ namespace MyDAL.DBRainbow.MySQL
             if (!str.IsNullStr()
                 && DC.Parameters.All(it => it.Action != ActionEnum.Where))
             {
-                var aIdx = str.IndexOf("and", StringComparison.OrdinalIgnoreCase);
-                var oIdx = str.IndexOf("or", StringComparison.OrdinalIgnoreCase);
+                var aIdx = str.IndexOf(" and ", StringComparison.OrdinalIgnoreCase);
+                var oIdx = str.IndexOf(" or ", StringComparison.OrdinalIgnoreCase);
                 if (aIdx < oIdx
                     || oIdx == -1)
                 {
