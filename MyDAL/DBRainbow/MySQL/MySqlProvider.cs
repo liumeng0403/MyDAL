@@ -675,7 +675,8 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
             {
                 var aIdx = str.IndexOf("and", StringComparison.OrdinalIgnoreCase);
                 var oIdx = str.IndexOf("or", StringComparison.OrdinalIgnoreCase);
-                if (aIdx < oIdx)
+                if (aIdx < oIdx
+                    || oIdx == -1)
                 {
                     str = $" {ConditionAction(ActionEnum.Where)} true {str} ";
                 }
