@@ -2,6 +2,7 @@
 {
     internal enum UiMethodEnum
     {
+        None,
         CreateAsync,
         CreateBatchAsync,
         DeleteAsync,

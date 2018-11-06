@@ -25,9 +25,9 @@ namespace MyDAL.Impls
             DC.Compare = CompareEnum.None;
             DC.DPH.AddParameter(DC.DPH.CountDic(typeof(M).FullName, "*"));
             DC.DPH.SetParameter();
+            DC.Method = UiMethodEnum.CountAsync;
+            DC.SqlProvider.GetSQL<M>();
             return await DC.DS.ExecuteScalarAsync<long>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.CountAsync)[0],
                 DC.DPH.GetParameters(DC.Parameters));
         }
 
@@ -40,9 +40,9 @@ namespace MyDAL.Impls
             DC.Compare = CompareEnum.None;
             DC.DPH.AddParameter(DC.DPH.CountDic(typeof(M).FullName, key));
             DC.DPH.SetParameter();
+            DC.Method = UiMethodEnum.CountAsync;
+            DC.SqlProvider.GetSQL<M>();
             return await DC.DS.ExecuteScalarAsync<long>(
-                 DC.Conn,
-                 DC.SqlProvider.GetSQL<M>(UiMethodEnum.CountAsync)[0],
                  DC.DPH.GetParameters(DC.Parameters));
         }
     }
@@ -63,9 +63,9 @@ namespace MyDAL.Impls
             DC.Compare = CompareEnum.None;
             DC.DPH.AddParameter(DC.DPH.CountDic(string.Empty, "*", string.Empty));
             DC.DPH.SetParameter();
+            DC.Method = UiMethodEnum.JoinCountAsync;
+            DC.SqlProvider.GetSQL<None>();
             return await DC.DS.ExecuteScalarAsync<long>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<None>(UiMethodEnum.JoinCountAsync)[0],
                 DC.DPH.GetParameters(DC.Parameters));
         }
 
@@ -77,9 +77,9 @@ namespace MyDAL.Impls
             DC.Compare = CompareEnum.None;
             DC.DPH.AddParameter(DC.DPH.CountDic(dic.ClassFullName, dic.ColumnOne, dic.TableAliasOne));
             DC.DPH.SetParameter();
+            DC.Method = UiMethodEnum.JoinCountAsync;
+            DC.SqlProvider.GetSQL<None>();
             return await DC.DS.ExecuteScalarAsync<long>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<None>(UiMethodEnum.JoinCountAsync)[0],
                 DC.DPH.GetParameters(DC.Parameters));
         }
     }

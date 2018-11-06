@@ -141,7 +141,7 @@ namespace MyDAL.Core.Helper
             }
         }
 
-        internal static T ConvertT<T>(object value)
+        internal T ConvertT<T>(object value)
         {
             //
             if (value == null || value is DBNull)

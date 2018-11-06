@@ -12,7 +12,7 @@ namespace MyDAL.Core.Bases
 {
     internal abstract class Context
     {
-
+        
         /************************************************************************************************************************/
 
         internal void Init(IDbConnection conn)
@@ -41,7 +41,7 @@ namespace MyDAL.Core.Bases
             PH = new ParameterHelper(this);
             DPH = new DicParamHelper(this);
             BDH = new BatchDataHelper();
-            DS = new DataSource();
+            DS = new DataSource(this);
 
             //
             if (XConfig.DB == DbEnum.MySQL)
@@ -70,11 +70,15 @@ namespace MyDAL.Core.Bases
         internal OptionEnum Option { get; set; } = OptionEnum.None;
         internal CompareEnum Compare { get; set; } = CompareEnum.None;
         internal FuncEnum Func { get; set; } = FuncEnum.None;
+        internal UiMethodEnum Method { get; set; } = UiMethodEnum.None;
 
         /************************************************************************************************************************/
 
         internal int DicID { get; set; } = 1;
         internal List<DicParam> Parameters { get; set; }
+        internal List<string> SQL { get; set; }
+        internal int? PageIndex { get; set; } = null;
+        internal int? PageSize { get; set; } = null;
 
         /************************************************************************************************************************/
 

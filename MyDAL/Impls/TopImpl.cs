@@ -20,9 +20,11 @@ namespace MyDAL.Impls
 
         public async Task<List<M>> TopAsync(int count)
         {
+            DC.Method = UiMethodEnum.TopAsync;
+            DC.SqlProvider.GetSQL<M>();
+            DC.PageIndex = 0;
+            DC.PageSize = count;
             return await DC.DS.ExecuteReaderMultiRowAsync<M>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.TopAsync, 0, count)[0],
                 DC.DPH.GetParameters(DC.Parameters));
         }
 
@@ -31,9 +33,11 @@ namespace MyDAL.Impls
         {
             SelectMHandle<M, VM>();
             DC.DPH.SetParameter();
+            DC.Method = UiMethodEnum.TopAsync;
+            DC.SqlProvider.GetSQL<M>();
+            DC.PageIndex = 0;
+            DC.PageSize = count;
             return await DC.DS.ExecuteReaderMultiRowAsync<VM>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.TopAsync, 0, count)[0],
                 DC.DPH.GetParameters(DC.Parameters));
         }
 
@@ -42,9 +46,11 @@ namespace MyDAL.Impls
         {
             SelectMHandle(columnMapFunc);
             DC.DPH.SetParameter();
+            DC.Method = UiMethodEnum.TopAsync;
+            DC.SqlProvider.GetSQL<M>();
+            DC.PageIndex = 0;
+            DC.PageSize = count;
             return await DC.DS.ExecuteReaderMultiRowAsync<VM>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.TopAsync, 0, count)[0],
                 DC.DPH.GetParameters(DC.Parameters));
         }
     }
@@ -62,9 +68,11 @@ namespace MyDAL.Impls
         {
             SelectMHandle<M>();
             DC.DPH.SetParameter();
+            DC.Method = UiMethodEnum.JoinTopAsync;
+            DC.SqlProvider.GetSQL<M>();
+            DC.PageIndex = 0;
+            DC.PageSize = count;
             return await DC.DS.ExecuteReaderMultiRowAsync<M>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.JoinTopAsync,0,count)[0],
                 DC.DPH.GetParameters(DC.Parameters));
         }
 
@@ -73,9 +81,11 @@ namespace MyDAL.Impls
         {
             SelectMHandle(columnMapFunc);
             DC.DPH.SetParameter();
+            DC.Method = UiMethodEnum.JoinTopAsync;
+            DC.SqlProvider.GetSQL<VM>();
+            DC.PageIndex = 0;
+            DC.PageSize = count;
             return await DC.DS.ExecuteReaderMultiRowAsync<VM>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<VM>(UiMethodEnum.JoinTopAsync,0,count)[0],
                 DC.DPH.GetParameters(DC.Parameters));
         }
     }

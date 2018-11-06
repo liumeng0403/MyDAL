@@ -52,7 +52,8 @@ namespace MyDAL.Core.Helper
 
         private async Task CompareDb(IDbConnection conn, string targetDb)
         {
-            var dbs = await new DataSource().ExecuteReaderMultiRowAsync<DbModel>(conn, " show databases; ", null);
+            DC.SQL = new List<string> { " show databases; " };
+            var dbs = await new DataSource(DC).ExecuteReaderMultiRowAsync<DbModel>(null);
             if (dbs.Any(it => it.Database.Equals(targetDb, StringComparison.OrdinalIgnoreCase)))
             {
                 return;
@@ -61,7 +62,8 @@ namespace MyDAL.Core.Helper
             {
                 try
                 {
-                    var res = await new DataSource().ExecuteNonQueryAsync(conn, $" create database if not exists {targetDb} default charset utf8; ", null);
+                    DC.SQL = new List<string> { $" create database if not exists {targetDb} default charset utf8; " };
+                    var res = await new DataSource(DC).ExecuteNonQueryAsync(null);
                 }
                 catch (Exception ex)
                 {
@@ -78,13 +80,15 @@ namespace MyDAL.Core.Helper
             var cmTypes = tupleCs.Select(it=>it.Type);
 
             //
-            var sql = $@"
+            DC.SQL = new List<string>{
+                            $@"
                                     select table_name as TableName
                                     from information_schema.tables
                                     where table_schema='{conn.Database}'
                                             and table_type='base table';
-                                ";
-            dtNames =await new DataSource().ExecuteReaderMultiRowAsync<TableModel>(conn, sql, null);
+                                "
+            };
+            dtNames =await new DataSource(DC).ExecuteReaderMultiRowAsync<TableModel>(null);
 
             //
             var createList = new List<string>();

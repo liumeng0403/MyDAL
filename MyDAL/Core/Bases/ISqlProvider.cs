@@ -10,6 +10,6 @@ namespace MyDAL.Core.Bases
         string GetTableName<M>();
         Task<List<ColumnInfo>> GetColumnsInfos(string tableName);
         string GetTablePK(string fullName);
-        List<string> GetSQL<M>(UiMethodEnum type, int? pageIndex = null, int? pageSize = null);
+        void GetSQL<M>();
     }
 }

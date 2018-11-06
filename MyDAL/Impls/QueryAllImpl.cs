@@ -20,18 +20,18 @@ namespace MyDAL.Impls
 
         public async Task<List<M>> QueryAllAsync()
         {
+            DC.Method = UiMethodEnum.QueryAllAsync;
+            DC.SqlProvider.GetSQL<M>();
             return await DC.DS.ExecuteReaderMultiRowAsync<M>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryAllAsync)[0],
                 DC.DPH.GetParameters(DC.Parameters));
         }
 
         public async Task<List<VM>> QueryAllAsync<VM>()
             where VM : class
         {
+            DC.Method = UiMethodEnum.QueryAllAsync;
+            DC.SqlProvider.GetSQL<M>();
             return await DC.DS.ExecuteReaderMultiRowAsync<VM>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryAllAsync)[0],
                 DC.DPH.GetParameters(DC.Parameters));
         }
 
@@ -42,9 +42,9 @@ namespace MyDAL.Impls
             DC.Option = OptionEnum.Column;
             DC.DPH.AddParameter(DC.EH.FuncMFExpression(propertyFunc)[0]);
             DC.DPH.SetParameter();
+            DC.Method = UiMethodEnum.QueryAllAsync;
+            DC.SqlProvider.GetSQL<M>();
             return (await DC.DS.ExecuteReaderSingleColumnAsync<M,F>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryAllAsync)[0],
                 DC.DPH.GetParameters(DC.Parameters),
                 propertyFunc.Compile())).ToList();
         }

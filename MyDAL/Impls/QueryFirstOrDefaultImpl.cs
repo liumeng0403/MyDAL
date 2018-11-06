@@ -18,10 +18,9 @@ namespace MyDAL.Impls
 
         public async Task<M> QueryFirstOrDefaultAsync()
         {
-            //return await QueryFirstOrDefaultAsyncHandle<M, M>();
+            DC.Method = UiMethodEnum.QueryFirstOrDefaultAsync;
+            DC.SqlProvider.GetSQL<M>();
             return await DC.DS.ExecuteReaderSingleRowAsync<M>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryFirstOrDefaultAsync)[0],
                 DC.DPH.GetParameters(DC.Parameters));
         }
 
@@ -30,9 +29,9 @@ namespace MyDAL.Impls
         {
             SelectMHandle<M, VM>();
             DC.DPH.SetParameter();
+            DC.Method = UiMethodEnum.QueryFirstOrDefaultAsync;
+            DC.SqlProvider.GetSQL<M>();
             return await DC.DS.ExecuteReaderSingleRowAsync<VM>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryFirstOrDefaultAsync)[0],
                 DC.DPH.GetParameters(DC.Parameters));
         }
 
@@ -41,9 +40,9 @@ namespace MyDAL.Impls
         {
             SelectMHandle(func);
             DC.DPH.SetParameter();
+            DC.Method = UiMethodEnum.QueryFirstOrDefaultAsync;
+            DC.SqlProvider.GetSQL<M>();
             return await DC.DS.ExecuteReaderSingleRowAsync<VM>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.QueryFirstOrDefaultAsync)[0],
                 DC.DPH.GetParameters(DC.Parameters));
         }
     }
@@ -61,9 +60,9 @@ namespace MyDAL.Impls
         {
             SelectMHandle<M>();
             DC.DPH.SetParameter();
+            DC.Method = UiMethodEnum.JoinQueryFirstOrDefaultAsync;
+            DC.SqlProvider.GetSQL<M>();
             return await DC.DS.ExecuteReaderSingleRowAsync<M>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<M>(UiMethodEnum.JoinQueryFirstOrDefaultAsync)[0],
                 DC.DPH.GetParameters(DC.Parameters));
         }
 
@@ -72,9 +71,9 @@ namespace MyDAL.Impls
         {
             SelectMHandle(func);
             DC.DPH.SetParameter();
+            DC.Method = UiMethodEnum.JoinQueryFirstOrDefaultAsync;
+            DC.SqlProvider.GetSQL<VM>();
             return await DC.DS.ExecuteReaderSingleRowAsync<VM>(
-                DC.Conn,
-                DC.SqlProvider.GetSQL<VM>(UiMethodEnum.JoinQueryFirstOrDefaultAsync)[0],
                 DC.DPH.GetParameters(DC.Parameters));
         }
     }
