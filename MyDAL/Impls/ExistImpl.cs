@@ -24,8 +24,7 @@ namespace Yunyong.DataExchange.Impls
             DC.DPH.SetParameter();
             DC.Method = UiMethodEnum.ExistAsync;
             DC.SqlProvider.GetSQL<M>();
-            var count = await DC.DS.ExecuteScalarAsync<long>(
-                DC.DPH.GetParameters(DC.Parameters));
+            var count = await DC.DS.ExecuteScalarAsync<long>();
             if (count > 0)
             {
                 return true;

@@ -18,8 +18,7 @@ namespace Yunyong.DataExchange.Impls
         {
             DC.Method = UiMethodEnum.UpdateAsync;
             DC.SqlProvider.GetSQL<M>();
-            return await DC.DS.ExecuteNonQueryAsync(
-                DC.DPH.GetParameters(DC.Parameters));
+            return await DC.DS.ExecuteNonQueryAsync();
         }
     }
 }

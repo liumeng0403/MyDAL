@@ -25,8 +25,7 @@ namespace Yunyong.DataExchange.Impls
                 DC.DPH.SetParameter();
                 DC.Method = UiMethodEnum.CreateBatchAsync;
                 DC.SqlProvider.GetSQL<M>();
-                return await DC.DS.ExecuteNonQueryAsync(
-                    DC.DPH.GetParameters(DC.Parameters));
+                return await DC.DS.ExecuteNonQueryAsync();
             });
         }
     }

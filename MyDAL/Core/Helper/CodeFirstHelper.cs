@@ -53,7 +53,7 @@ namespace Yunyong.DataExchange.Core.Helper
         private async Task CompareDb(IDbConnection conn, string targetDb)
         {
             DC.SQL = new List<string> { " show databases; " };
-            var dbs = await new DataSource(DC).ExecuteReaderMultiRowAsync<DbModel>(null);
+            var dbs = await new DataSource(DC).ExecuteReaderMultiRowAsync<DbModel>();
             if (dbs.Any(it => it.Database.Equals(targetDb, StringComparison.OrdinalIgnoreCase)))
             {
                 return;
@@ -63,7 +63,7 @@ namespace Yunyong.DataExchange.Core.Helper
                 try
                 {
                     DC.SQL = new List<string> { $" create database if not exists {targetDb} default charset utf8; " };
-                    var res = await new DataSource(DC).ExecuteNonQueryAsync(null);
+                    var res = await new DataSource(DC).ExecuteNonQueryAsync();
                 }
                 catch (Exception ex)
                 {
@@ -88,7 +88,7 @@ namespace Yunyong.DataExchange.Core.Helper
                                             and table_type='base table';
                                 "
             };
-            dtNames =await new DataSource(DC).ExecuteReaderMultiRowAsync<TableModel>(null);
+            dtNames =await new DataSource(DC).ExecuteReaderMultiRowAsync<TableModel>();
 
             //
             var createList = new List<string>();

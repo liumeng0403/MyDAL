@@ -22,8 +22,7 @@ namespace Yunyong.DataExchange.Impls
         {
             DC.Method = UiMethodEnum.QueryListAsync;
             DC.SqlProvider.GetSQL<M>();
-            return await DC.DS.ExecuteReaderMultiRowAsync<M>(
-                DC.DPH.GetParameters(DC.Parameters));
+            return await DC.DS.ExecuteReaderMultiRowAsync<M>();
         }
 
         public async Task<List<VM>> QueryListAsync<VM>()
@@ -33,8 +32,7 @@ namespace Yunyong.DataExchange.Impls
             DC.DPH.SetParameter();
             DC.Method = UiMethodEnum.QueryListAsync;
             DC.SqlProvider.GetSQL<M>();
-            return await DC.DS.ExecuteReaderMultiRowAsync<VM>(
-                DC.DPH.GetParameters(DC.Parameters));
+            return await DC.DS.ExecuteReaderMultiRowAsync<VM>();
         }
 
         public async Task<List<VM>> QueryListAsync<VM>(Expression<Func<M, VM>> columnMapFunc)
@@ -44,8 +42,7 @@ namespace Yunyong.DataExchange.Impls
             DC.DPH.SetParameter();
             DC.Method = UiMethodEnum.QueryListAsync;
             DC.SqlProvider.GetSQL<M>();
-            return await DC.DS.ExecuteReaderMultiRowAsync<VM>(
-                DC.DPH.GetParameters(DC.Parameters));
+            return await DC.DS.ExecuteReaderMultiRowAsync<VM>();
         }
 
         public async Task<List<M>> QueryListAsync(int topCount)
@@ -81,8 +78,7 @@ namespace Yunyong.DataExchange.Impls
             DC.DPH.SetParameter();
             DC.Method = UiMethodEnum.JoinQueryListAsync;
             DC.SqlProvider.GetSQL<M>();
-            return await DC.DS.ExecuteReaderMultiRowAsync<M>(
-                DC.DPH.GetParameters(DC.Parameters));
+            return await DC.DS.ExecuteReaderMultiRowAsync<M>();
         }
 
         public async Task<List<VM>> QueryListAsync<VM>(Expression<Func<VM>> columnMapFunc)
@@ -92,8 +88,7 @@ namespace Yunyong.DataExchange.Impls
             DC.DPH.SetParameter();
             DC.Method = UiMethodEnum.JoinQueryListAsync;
             DC.SqlProvider.GetSQL<VM>();
-            return await DC.DS.ExecuteReaderMultiRowAsync<VM>(
-                DC.DPH.GetParameters(DC.Parameters));
+            return await DC.DS.ExecuteReaderMultiRowAsync<VM>();
         }
 
         public async Task<List<M>> QueryListAsync<M>(int topCount) 

@@ -20,8 +20,7 @@ namespace Yunyong.DataExchange.Impls
         {
             DC.Method = UiMethodEnum.QueryFirstOrDefaultAsync;
             DC.SqlProvider.GetSQL<M>();
-            return await DC.DS.ExecuteReaderSingleRowAsync<M>(
-                DC.DPH.GetParameters(DC.Parameters));
+            return await DC.DS.ExecuteReaderSingleRowAsync<M>();
         }
 
         public async Task<VM> QueryFirstOrDefaultAsync<VM>()
@@ -31,8 +30,7 @@ namespace Yunyong.DataExchange.Impls
             DC.DPH.SetParameter();
             DC.Method = UiMethodEnum.QueryFirstOrDefaultAsync;
             DC.SqlProvider.GetSQL<M>();
-            return await DC.DS.ExecuteReaderSingleRowAsync<VM>(
-                DC.DPH.GetParameters(DC.Parameters));
+            return await DC.DS.ExecuteReaderSingleRowAsync<VM>();
         }
 
         public async Task<VM> QueryFirstOrDefaultAsync<VM>(Expression<Func<M, VM>> func)
@@ -42,8 +40,7 @@ namespace Yunyong.DataExchange.Impls
             DC.DPH.SetParameter();
             DC.Method = UiMethodEnum.QueryFirstOrDefaultAsync;
             DC.SqlProvider.GetSQL<M>();
-            return await DC.DS.ExecuteReaderSingleRowAsync<VM>(
-                DC.DPH.GetParameters(DC.Parameters));
+            return await DC.DS.ExecuteReaderSingleRowAsync<VM>();
         }
     }
 
@@ -62,8 +59,7 @@ namespace Yunyong.DataExchange.Impls
             DC.DPH.SetParameter();
             DC.Method = UiMethodEnum.JoinQueryFirstOrDefaultAsync;
             DC.SqlProvider.GetSQL<M>();
-            return await DC.DS.ExecuteReaderSingleRowAsync<M>(
-                DC.DPH.GetParameters(DC.Parameters));
+            return await DC.DS.ExecuteReaderSingleRowAsync<M>();
         }
 
         public async Task<VM> QueryFirstOrDefaultAsync<VM>(Expression<Func<VM>> func)
@@ -73,8 +69,7 @@ namespace Yunyong.DataExchange.Impls
             DC.DPH.SetParameter();
             DC.Method = UiMethodEnum.JoinQueryFirstOrDefaultAsync;
             DC.SqlProvider.GetSQL<VM>();
-            return await DC.DS.ExecuteReaderSingleRowAsync<VM>(
-                DC.DPH.GetParameters(DC.Parameters));
+            return await DC.DS.ExecuteReaderSingleRowAsync<VM>();
         }
     }
 }

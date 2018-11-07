@@ -20,12 +20,11 @@ namespace Yunyong.DataExchange.Impls
 
         public async Task<List<M>> TopAsync(int count)
         {
-            DC.Method = UiMethodEnum.TopAsync;
-            DC.SqlProvider.GetSQL<M>();
             DC.PageIndex = 0;
             DC.PageSize = count;
-            return await DC.DS.ExecuteReaderMultiRowAsync<M>(
-                DC.DPH.GetParameters(DC.Parameters));
+            DC.Method = UiMethodEnum.TopAsync;
+            DC.SqlProvider.GetSQL<M>();
+            return await DC.DS.ExecuteReaderMultiRowAsync<M>();
         }
 
         public async Task<List<VM>> TopAsync<VM>(int count)
@@ -33,12 +32,11 @@ namespace Yunyong.DataExchange.Impls
         {
             SelectMHandle<M, VM>();
             DC.DPH.SetParameter();
-            DC.Method = UiMethodEnum.TopAsync;
-            DC.SqlProvider.GetSQL<M>();
             DC.PageIndex = 0;
             DC.PageSize = count;
-            return await DC.DS.ExecuteReaderMultiRowAsync<VM>(
-                DC.DPH.GetParameters(DC.Parameters));
+            DC.Method = UiMethodEnum.TopAsync;
+            DC.SqlProvider.GetSQL<M>();
+            return await DC.DS.ExecuteReaderMultiRowAsync<VM>();
         }
 
         public async Task<List<VM>> TopAsync<VM>(int count, Expression<Func<M, VM>> columnMapFunc)
@@ -46,12 +44,11 @@ namespace Yunyong.DataExchange.Impls
         {
             SelectMHandle(columnMapFunc);
             DC.DPH.SetParameter();
-            DC.Method = UiMethodEnum.TopAsync;
-            DC.SqlProvider.GetSQL<M>();
             DC.PageIndex = 0;
             DC.PageSize = count;
-            return await DC.DS.ExecuteReaderMultiRowAsync<VM>(
-                DC.DPH.GetParameters(DC.Parameters));
+            DC.Method = UiMethodEnum.TopAsync;
+            DC.SqlProvider.GetSQL<M>();
+            return await DC.DS.ExecuteReaderMultiRowAsync<VM>();
         }
     }
 
@@ -68,12 +65,11 @@ namespace Yunyong.DataExchange.Impls
         {
             SelectMHandle<M>();
             DC.DPH.SetParameter();
-            DC.Method = UiMethodEnum.JoinTopAsync;
-            DC.SqlProvider.GetSQL<M>();
             DC.PageIndex = 0;
             DC.PageSize = count;
-            return await DC.DS.ExecuteReaderMultiRowAsync<M>(
-                DC.DPH.GetParameters(DC.Parameters));
+            DC.Method = UiMethodEnum.JoinTopAsync;
+            DC.SqlProvider.GetSQL<M>();
+            return await DC.DS.ExecuteReaderMultiRowAsync<M>();
         }
 
         public async Task<List<VM>> TopAsync<VM>(int count,Expression<Func<VM>> columnMapFunc)
@@ -81,12 +77,12 @@ namespace Yunyong.DataExchange.Impls
         {
             SelectMHandle(columnMapFunc);
             DC.DPH.SetParameter();
-            DC.Method = UiMethodEnum.JoinTopAsync;
-            DC.SqlProvider.GetSQL<VM>();
             DC.PageIndex = 0;
             DC.PageSize = count;
+            DC.Method = UiMethodEnum.JoinTopAsync;
+            DC.SqlProvider.GetSQL<VM>();
             return await DC.DS.ExecuteReaderMultiRowAsync<VM>(
-                DC.DPH.GetParameters(DC.Parameters));
+                );
         }
     }
 }

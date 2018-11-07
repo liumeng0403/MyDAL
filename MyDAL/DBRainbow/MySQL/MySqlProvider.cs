@@ -785,12 +785,12 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
                                             column_key as KeyType
                                         FROM
                                             information_schema.COLUMNS
-                                        WHERE  table_schema='{DC.Conn.Database}'
+                                        WHERE  ( table_schema='{DC.Conn.Database.ToLower()}' or table_schema='{DC.Conn.Database}' )
                                             and  ( TABLE_NAME = '{tableName.TrimStart('`').TrimEnd('`').ToLower()}' or TABLE_NAME = '{tableName.TrimStart('`').TrimEnd('`')}' )
                                         ;
                                   "
             };
-            return await DC.DS.ExecuteReaderMultiRowAsync<ColumnInfo>(null);
+            return await DC.DS.ExecuteReaderMultiRowAsync<ColumnInfo>();
         }
 
         string ISqlProvider.GetTablePK(string fullName)
