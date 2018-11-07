@@ -18,7 +18,13 @@ namespace MyDAL.AdoNet
     {
 
         private Context DC { get; set; }
-        private IDbConnection Conn { get; set; }
+        private IDbConnection Conn
+        {
+            get
+            {
+                return DC.Conn;
+            }
+        }
         private int SqlCount
         {
             get
@@ -40,12 +46,18 @@ namespace MyDAL.AdoNet
                 return DC.SQL[1];
             }
         }
+        private DbParamInfo Parameter
+        {
+            get
+            {
+                return DC.DPH.GetParameters(DC.Parameters);
+            }
+        }
         private DataSource() { }
         internal DataSource(Context dc)
         {
             DC = dc;
             DC.Method = UiMethodEnum.None;
-            Conn = dc.Conn;
         }
 
         /*********************************************************************************************************************************************/
@@ -54,11 +66,10 @@ namespace MyDAL.AdoNet
          * ado.net -- DbCommand.[Task<DbDataReader> ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)]
          * select -- 所有行
          */
-        internal async Task<List<M>> ExecuteReaderMultiRowAsync<M>(DbParamInfo paramx)
+        internal async Task<List<M>> ExecuteReaderMultiRowAsync<M>()
             where M : class
         {
-            paramx = paramx ?? new DbParamInfo();
-            var command = new CommandInfo(SqlCount == 1 ? SqlOne : SqlTwo, paramx);
+            var command = new CommandInfo(SqlCount == 1 ? SqlOne : SqlTwo, Parameter);
             var mType = typeof(M);
             var param = command.Parameters;
             var identity = new Identity(command.CommandText, command.CommandType, Conn, mType, param?.GetType());
@@ -115,10 +126,9 @@ namespace MyDAL.AdoNet
          * ado.net -- DbCommand.[Task<DbDataReader> ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)]
          * select -- 第一行
          */
-        internal async Task<T> ExecuteReaderSingleRowAsync<T>(DbParamInfo paramx)
+        internal async Task<T> ExecuteReaderSingleRowAsync<T>()
         {
-            paramx = paramx ?? new DbParamInfo();
-            var command = new CommandInfo(SqlOne, paramx);
+            var command = new CommandInfo(SqlOne, Parameter);
             var mType = typeof(T);
             var row = RowEnum.FirstOrDefault;
             var param = command.Parameters;
@@ -190,11 +200,10 @@ namespace MyDAL.AdoNet
          * ado.net -- DbCommand.[Task<DbDataReader> ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)]
          * select -- 单列
          */
-        internal async Task<IEnumerable<F>> ExecuteReaderSingleColumnAsync<M, F>(DbParamInfo paramx, Func<M, F> propertyFunc)
+        internal async Task<IEnumerable<F>> ExecuteReaderSingleColumnAsync<M, F>(Func<M, F> propertyFunc)
             where M : class
         {
-            paramx = paramx ?? new DbParamInfo();
-            var command = new CommandInfo(SqlOne, paramx);
+            var command = new CommandInfo(SqlOne, Parameter);
             var effectiveType = typeof(M);
             var param = command.Parameters;
             var identity = new Identity(command.CommandText, command.CommandType, Conn, effectiveType, param?.GetType());
@@ -251,10 +260,9 @@ namespace MyDAL.AdoNet
          * Update,Insert,Delete -- 执行成功是返回值为该命令所影响的行数，如果影响的行数为0时返回的值为0，如果数据操作回滚得话返回值为-1
          * 对数据库结构的操作 -- 操作成功时返回的却是-1 , 操作失败的话（如数据表已经存在）往往会发生异常
          */
-        internal async Task<int> ExecuteNonQueryAsync(DbParamInfo paramx)
+        internal async Task<int> ExecuteNonQueryAsync()
         {
-            paramx = paramx ?? new DbParamInfo();
-            var command = new CommandInfo(SqlOne, paramx);
+            var command = new CommandInfo(SqlOne, Parameter);
             var param = command.Parameters;
 
             var identity = new Identity(command.CommandText, command.CommandType, Conn, null, param?.GetType());
@@ -286,10 +294,9 @@ namespace MyDAL.AdoNet
          * select -- 返回结果是查询后的第一行的第一列
          * 非select -- 返回一个未实例化的对象
          */
-        internal async Task<T> ExecuteScalarAsync<T>(DbParamInfo paramx)
+        internal async Task<T> ExecuteScalarAsync<T>()
         {
-            paramx = paramx ?? new DbParamInfo();
-            var command = new CommandInfo(SqlOne,paramx);
+            var command = new CommandInfo(SqlOne,Parameter);
             Action<IDbCommand, DbParamInfo> paramReader = null;
             object param = command.Parameters;
             if (param != null)

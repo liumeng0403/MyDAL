@@ -218,12 +218,12 @@ namespace MyDAL.Core.Helper
             DC.Compare = CompareEnum.None;
             DC.Func = FuncEnum.None;
         }
-        internal DbParamInfo GetParameters(List<DicParam> dbs)
+        internal DbParamInfo GetParameters(List<DicParam> list)
         {
             var paras = new DbParamInfo();
 
             //
-            foreach (var db in dbs)
+            foreach (var db in list)
             {
                 if (DC.IsParameter(db.Action))
                 {
@@ -243,7 +243,9 @@ namespace MyDAL.Core.Helper
             }
 
             //
-            if (XConfig.IsDebug)
+            if (XConfig.IsDebug
+                && DC.Parameters.Count > 0
+                && list[0].ID == 1)
             {
                 lock (XDebug.Lock)
                 {

@@ -27,8 +27,7 @@ namespace MyDAL.Impls
             DC.DPH.SetParameter();
             DC.Method = UiMethodEnum.CountAsync;
             DC.SqlProvider.GetSQL<M>();
-            return await DC.DS.ExecuteScalarAsync<long>(
-                DC.DPH.GetParameters(DC.Parameters));
+            return await DC.DS.ExecuteScalarAsync<long>();
         }
 
         public async Task<long> CountAsync<F>(Expression<Func<M, F>> func)
@@ -42,8 +41,7 @@ namespace MyDAL.Impls
             DC.DPH.SetParameter();
             DC.Method = UiMethodEnum.CountAsync;
             DC.SqlProvider.GetSQL<M>();
-            return await DC.DS.ExecuteScalarAsync<long>(
-                 DC.DPH.GetParameters(DC.Parameters));
+            return await DC.DS.ExecuteScalarAsync<long>();
         }
     }
 
@@ -65,8 +63,7 @@ namespace MyDAL.Impls
             DC.DPH.SetParameter();
             DC.Method = UiMethodEnum.JoinCountAsync;
             DC.SqlProvider.GetSQL<None>();
-            return await DC.DS.ExecuteScalarAsync<long>(
-                DC.DPH.GetParameters(DC.Parameters));
+            return await DC.DS.ExecuteScalarAsync<long>();
         }
 
         public async Task<long> CountAsync<F>(Expression<Func<F>> func)
@@ -79,8 +76,7 @@ namespace MyDAL.Impls
             DC.DPH.SetParameter();
             DC.Method = UiMethodEnum.JoinCountAsync;
             DC.SqlProvider.GetSQL<None>();
-            return await DC.DS.ExecuteScalarAsync<long>(
-                DC.DPH.GetParameters(DC.Parameters));
+            return await DC.DS.ExecuteScalarAsync<long>();
         }
     }
 }
