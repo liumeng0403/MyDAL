@@ -4,7 +4,6 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Yunyong.DataExchange.AdoNet;
-using Yunyong.DataExchange.Cache;
 using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Core.Extensions;
 using Yunyong.DataExchange.DBRainbow;
@@ -27,7 +26,7 @@ namespace Yunyong.DataExchange.Core.Helper
             var cmTypes = new List<NameTypeModel>();
 
             //
-            var ass = new StaticCache(DC).GetAssembly(key);
+            var ass = new XCache(DC).GetAssembly(key);
             var types = ass.GetTypes();
             foreach (var type in types)
             {
@@ -73,7 +72,7 @@ namespace Yunyong.DataExchange.Core.Helper
         }
         private async Task CompareTable(IDbConnection conn)
         {
-            var key = new StaticCache(DC).GetAssemblyKey(XConfig.TablesNamespace);
+            var key = new XCache(DC).GetAssemblyKey(XConfig.TablesNamespace);
             var dtNames = new List<TableModel>();
             var tupleCs = GetTableAndTypes(key);
             var ctNames = tupleCs.Select(it=>it.Name);

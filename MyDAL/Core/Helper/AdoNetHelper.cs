@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Yunyong.DataExchange.AdoNet;
-using Yunyong.DataExchange.Cache;
 using Yunyong.DataExchange.Core.Enums;
 
 namespace Yunyong.DataExchange.Core.Helper
@@ -22,8 +21,8 @@ namespace Yunyong.DataExchange.Core.Helper
                 int hash = max;
                 for (int i = 0; i < max; i++)
                 {
-                    object tmp = reader.GetName(i);
-                    hash = (-79 * ((hash * 31) + (tmp?.GetHashCode() ?? 0))) + (reader.GetFieldType(i)?.GetHashCode() ?? 0);
+                    var col = reader.GetName(i);
+                    hash = (-79 * ((hash * 31) + (col?.GetHashCode() ?? 0))) + (reader.GetFieldType(i)?.GetHashCode() ?? 0);
                 }
                 return hash;
             }
@@ -66,20 +65,7 @@ namespace Yunyong.DataExchange.Core.Helper
         {
             return (close ? (@default | CommandBehavior.CloseConnection) : @default) & AllowedCommandBehaviors;
         }
-        
-        /// <summary>
-        /// Internal use only
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="reader"></param>
-        /// <param name="startBound"></param>
-        /// <param name="length"></param>
-        /// <param name="returnNullIfFirstMissing"></param>
-        /// <returns></returns>
-        private static Func<IDataReader, object> GetTypeDeserializer(Type type, IDataReader reader)
-        {
-            return TypeDeserializerCache.GetReader(type, reader);
-        }
+       
         
         /******************************************************************************************/
 
@@ -132,10 +118,10 @@ namespace Yunyong.DataExchange.Core.Helper
         }
         public static RowMap GetTypeMap(Type mType)
         {
-            if (!StaticCache.TypeMaps.TryGetValue(mType, out var map))
+            if (!XCache.TypeMaps.TryGetValue(mType, out var map))
             {
                 map = new RowMap(mType);
-                StaticCache.TypeMaps[mType] = map;
+                XCache.TypeMaps[mType] = map;
             }
             return map;
         }
@@ -172,18 +158,6 @@ namespace Yunyong.DataExchange.Core.Helper
                     throw new InvalidOperationException();
             }
         }
-        internal static Func<IDataReader, object> GetDeserializer(Type type, IDataReader reader)
-        {
-            return GetTypeDeserializer(type, reader);
-        }
-        internal static CacheInfo GetCacheInfo(Identity identity)
-        {
-            var info = new CacheInfo();
-            Action<IDbCommand, DbParamInfo> reader = (cmd, paras) => paras.AddParameters(cmd, identity);
-            info.ParamReader = reader;
-
-            return info;
-        }
 
         /******************************************************************************************/
 
@@ -197,6 +171,144 @@ namespace Yunyong.DataExchange.Core.Helper
             }
             return task;
         }
-        
+
+        /****************************************************************************************************************/
+
+        internal static string ConditionAction(ActionEnum action)
+        {
+            switch (action)
+            {
+                case ActionEnum.None:
+                    return "";
+                case ActionEnum.Insert:
+                    return "";
+                case ActionEnum.Update:
+                    return "";
+                case ActionEnum.Select:
+                    return "";
+                case ActionEnum.From:
+                    return "";
+                case ActionEnum.InnerJoin:
+                    return " inner join ";
+                case ActionEnum.LeftJoin:
+                    return " left join ";
+                case ActionEnum.On:
+                    return " on ";
+                case ActionEnum.Where:
+                    return " \r\n where ";
+                case ActionEnum.And:
+                    return " \r\n \t and ";
+                case ActionEnum.Or:
+                    return " \r\n \t or ";
+                case ActionEnum.OrderBy:
+                    return "";
+            }
+            return " ";
+        }
+        internal static string MultiConditionAction(ActionEnum action)
+        {
+            switch (action)
+            {
+                case ActionEnum.And:
+                    return " && ";
+                case ActionEnum.Or:
+                    return " || ";
+            }
+            return " ";
+        }
+        internal static string ConditionOption(OptionEnum option)
+        {
+            switch (option)
+            {
+                case OptionEnum.None:
+                    return "<<<<<";
+                case OptionEnum.Insert:
+                    return "";
+                case OptionEnum.InsertTVP:
+                    return "";
+                case OptionEnum.Set:
+                    return "=";
+                case OptionEnum.ChangeAdd:
+                    return "+";
+                case OptionEnum.ChangeMinus:
+                    return "-";
+                case OptionEnum.Column:
+                    return "";
+                case OptionEnum.ColumnAs:
+                    break;
+                case OptionEnum.Compare:
+                    return "";
+                case OptionEnum.Like:
+                    return " like ";
+                case OptionEnum.In:
+                    return " in ";
+                case OptionEnum.InHelper:
+                    break;
+                case OptionEnum.NotIn:
+                    return " not in ";
+                case OptionEnum.Count:
+                    return " count";
+                case OptionEnum.CharLength:
+                    return " char_length";
+                case OptionEnum.Trim:
+                    return " trim";
+                case OptionEnum.LTrim:
+                    return " ltrim";
+                case OptionEnum.RTrim:
+                    return " rtrim";
+                case OptionEnum.OneEqualOne:
+                    return "";
+                case OptionEnum.IsNull:
+                    return " is null ";
+                case OptionEnum.IsNotNull:
+                    return " is not null ";
+                case OptionEnum.Asc:
+                    return " asc ";
+                case OptionEnum.Desc:
+                    return " desc ";
+            }
+            return " ";
+        }
+        internal static string ConditionCompare(CompareEnum compare)
+        {
+            switch (compare)
+            {
+                case CompareEnum.None:
+                    return " ";
+                case CompareEnum.Equal:
+                    return "=";
+                case CompareEnum.NotEqual:
+                    return "<>";
+                case CompareEnum.LessThan:
+                    return "<";
+                case CompareEnum.LessThanOrEqual:
+                    return "<=";
+                case CompareEnum.GreaterThan:
+                    return ">";
+                case CompareEnum.GreaterThanOrEqual:
+                    return ">=";
+                case CompareEnum.Like:
+                    return " like ";
+                case CompareEnum.In:
+                    return " in ";
+                case CompareEnum.NotIn:
+                    return " not in ";
+            }
+            return " ";
+        }
+        internal static string ConditionFunc(FuncEnum func)
+        {
+            switch (func)
+            {
+                case FuncEnum.None:
+                    return "";
+                case FuncEnum.Column:
+                    return "";
+                case FuncEnum.CharLength:
+                    return " char_length";
+            }
+            return " ";
+        }
+
     }
 }

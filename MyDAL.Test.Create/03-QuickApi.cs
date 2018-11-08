@@ -33,6 +33,7 @@ namespace MyDAL.Test.Create
                 CanceledOn = null,
                 PaymentUrl = "https://openapi.xxx?charset=UTF-8&app_id=xxx&biz_content=xxx&charset=UTF-8&format=JSON&method=zzz&return_url=xxx&sign_type=yyy&timestamp=zzz&version=1.0"
             };
+            await Conn.DeleteAsync<AlipayPaymentRecord>(pk);
             var res15 = await Conn.CreateAsync<AlipayPaymentRecord>(m15);
             Assert.True(res15 == 1);
 
@@ -45,7 +46,7 @@ namespace MyDAL.Test.Create
 
             var xx16 = "";
 
-            var json = File.ReadAllText(@"C:\Users\liume\Desktop\工作\DalTestDB\ProfileData.json");
+            var json = File.ReadAllText(@"C:\Users\liume\Desktop\Work\DalTestDB\ProfileData.json");
             var list16 = JsonConvert.DeserializeObject<List<UserInfo>>(json);
             foreach (var item in list16)
             {

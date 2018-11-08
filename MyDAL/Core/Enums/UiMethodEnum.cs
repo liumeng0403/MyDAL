@@ -17,7 +17,6 @@ namespace Yunyong.DataExchange.Core.Enums
         JoinQueryPagingListAsync,
         QueryAllAsync,
         QueryAllPagingListAsync,
-        QuerySingleValueAsync,
         ExistAsync,
         CountAsync,
         JoinCountAsync

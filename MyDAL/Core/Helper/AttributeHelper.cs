@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Yunyong.DataExchange.Cache;
 using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Core.Extensions;
 
@@ -29,18 +28,18 @@ namespace Yunyong.DataExchange.Core.Helper
             var dic = DC.EH.FuncMFExpression(attrPropFunc)[0];
             var mType = typeof(M);
             var key = DC.SC.GetAttrPropKey(dic.ColumnOne, typeof(A).FullName, mType.FullName);
-            if (!StaticCache.ModelAttributePropValCache.ContainsKey(key))
+            if (!XCache.ModelAttributePropValCache.ContainsKey(key))
             {
                 var attr = mType.GetCustomAttributes(typeof(A), false).FirstOrDefault();
                 var  value = attr == null ? string.Empty : attrPropFunc.Compile()((A)attr);
-                if (!StaticCache.ModelAttributePropValCache.ContainsKey(key)
+                if (!XCache.ModelAttributePropValCache.ContainsKey(key)
                     && !value.IsNullStr())
                 {
-                    StaticCache.ModelAttributePropValCache[key] = value;
+                    XCache.ModelAttributePropValCache[key] = value;
                 }
                 return value;
             }
-            return StaticCache.ModelAttributePropValCache[key];
+            return XCache.ModelAttributePropValCache[key];
         }
         internal Attribute GetAttribute<A>(Type mType)
         {

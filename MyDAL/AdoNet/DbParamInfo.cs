@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using Yunyong.DataExchange.AdoNet;
-using Yunyong.DataExchange.Cache;
 
 namespace Yunyong.DataExchange.AdoNet
 {
@@ -19,6 +17,8 @@ namespace Yunyong.DataExchange.AdoNet
         }
         private Dictionary<string, ParamInfo> Params { get; } = new Dictionary<string, ParamInfo>();
 
+        internal Action<IDbCommand, DbParamInfo> ParamReader { get; } = (cmd, paras) => paras.AddParameters(cmd);
+
         internal void Add(ParamInfo para)
         {
             Params[para.Name] = para;
@@ -30,7 +30,7 @@ namespace Yunyong.DataExchange.AdoNet
                 Params.Add(p.Key, p.Value);
             }
         }
-        internal void AddParameters(IDbCommand cmd, Identity identity)
+        internal void AddParameters(IDbCommand cmd)
         {
             foreach (var param in Params.Values)
             {
