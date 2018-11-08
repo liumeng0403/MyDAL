@@ -16,17 +16,7 @@ namespace MyDAL.Test.Func
              */
             /************************************************************************************************************************/
 
-            //var xx1 = "";
 
-            //// count(id)  like "陈%"
-            //var res1 = await Conn
-            //    .Selecter<Agent>()
-            //    .Where(it => it.Name.Contains(LikeTest.百分号))
-            //    .Count(it => it.Id)
-            //    .QuerySingleValueAsync<long>();
-            //Assert.True(res1 == 1421);
-
-            //var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
             /************************************************************************************************************************/
 

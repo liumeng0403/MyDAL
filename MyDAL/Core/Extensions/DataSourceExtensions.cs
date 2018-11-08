@@ -15,7 +15,7 @@ namespace MyDAL.Core.Extensions
             cmd.CommandText = command.CommandText;  // CommandText;
             cmd.CommandTimeout = XConfig.CommandTimeout;
             cmd.CommandType = CommandType.Text;
-            paramReader?.Invoke(cmd,command.Parameters);  // (cmd, Parameters);
+            paramReader?.Invoke(cmd,command.Parameter);  // (cmd, Parameters);
             return cmd as DbCommand;
         }
 

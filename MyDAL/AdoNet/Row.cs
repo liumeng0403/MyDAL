@@ -3,8 +3,8 @@ using System.Data;
 
 namespace MyDAL.AdoNet
 {
-    internal struct Row
+    internal struct Row<M>
     {
-        internal Func<IDataReader, object> Handle { get; set; }
+        internal Func<IDataReader, M> Handle { get; set; }
     }
 }

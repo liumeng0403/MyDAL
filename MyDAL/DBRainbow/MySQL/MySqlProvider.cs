@@ -3,10 +3,12 @@ using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
+using MyDAL.Core.Helper;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace MyDAL.DBRainbow.MySQL
@@ -53,8 +55,9 @@ namespace MyDAL.DBRainbow.MySQL
             return $" {string.Join(",", dbs.Select(it => $" @{it.Param} "))} ";
         }
 
-        private string GetOrderByPart<M>()
+        private void GetOrderByPart<M>(StringBuilder sb)
         {
+            Spacing(sb);
             var str = string.Empty;
             var key = DC.SC.GetModelKey(typeof(M).FullName);
             var cols = DC.SC.GetColumnInfos(key);
@@ -69,11 +72,11 @@ namespace MyDAL.DBRainbow.MySQL
                     if (o.Func == FuncEnum.None
                         || o.Func == FuncEnum.Column)
                     {
-                        list.Add($" `{o.ColumnOne}` {ConditionOption(o.Option)} ");
+                        list.Add($" `{o.ColumnOne}` {AdoNetHelper.ConditionOption(o.Option)} ");
                     }
                     else if (o.Func == FuncEnum.CharLength)
                     {
-                        list.Add($" {ConditionFunc(o.Func)}(`{o.ColumnOne}`) {ConditionOption(o.Option)} ");
+                        list.Add($" {AdoNetHelper.ConditionFunc(o.Func)}(`{o.ColumnOne}`) {AdoNetHelper.ConditionOption(o.Option)} ");
                     }
                 }
                 str = string.Join(",", list);
@@ -93,10 +96,11 @@ namespace MyDAL.DBRainbow.MySQL
 
             str = $" \r\n order by {str}";
 
-            return str;
+            sb.Append(str);
         }
-        private string GetOrderByPart()
+        private void GetOrderByPart(StringBuilder sb)
         {
+            Spacing(sb);
             var str = string.Empty;
             var dic = DC.Parameters.First(it => !string.IsNullOrWhiteSpace(it.Key));
             var cols = DC.SC.GetColumnInfos(dic.Key);
@@ -111,11 +115,11 @@ namespace MyDAL.DBRainbow.MySQL
                     if (o.Func == FuncEnum.None
                         || o.Func == FuncEnum.Column)
                     {
-                        list.Add($" {o.TableAliasOne}.`{o.ColumnOne}` {ConditionOption(o.Option)} ");
+                        list.Add($" {o.TableAliasOne}.`{o.ColumnOne}` {AdoNetHelper.ConditionOption(o.Option)} ");
                     }
                     else if (o.Func == FuncEnum.CharLength)
                     {
-                        list.Add($" {ConditionFunc(o.Func)}({o.TableAliasOne}.`{o.ColumnOne}`) {ConditionOption(o.Option)} ");
+                        list.Add($" {AdoNetHelper.ConditionFunc(o.Func)}({o.TableAliasOne}.`{o.ColumnOne}`) {AdoNetHelper.ConditionOption(o.Option)} ");
                     }
                 }
                 str = string.Join(",", list);
@@ -135,10 +139,10 @@ namespace MyDAL.DBRainbow.MySQL
 
             str = $" \r\n order by {str}";
 
-            return str;
+            sb.Append(str);
         }
 
-        private string Limit()
+        private void Limit(StringBuilder sb)
         {
             if (DC.PageIndex.HasValue
                 && DC.PageSize.HasValue)
@@ -148,11 +152,11 @@ namespace MyDAL.DBRainbow.MySQL
                 {
                     start = ((DC.PageIndex - 1) * DC.PageSize).ToInt();
                 }
-                return $" \r\n limit {start},{DC.PageSize}";
+                sb.Append($" \r\n limit {start},{DC.PageSize}");
             }
             else
             {
-                return string.Empty;
+                sb.Append(string.Empty);
             }
         }
 
@@ -164,22 +168,22 @@ namespace MyDAL.DBRainbow.MySQL
             {
                 if (db.Crud == CrudTypeEnum.Join)
                 {
-                    return $" {db.TableAliasOne}.`{db.ColumnOne}`{ConditionCompare(db.Compare)}@{db.Param} ";
+                    return $" {db.TableAliasOne}.`{db.ColumnOne}`{AdoNetHelper.ConditionCompare(db.Compare)}@{db.Param} ";
                 }
                 else if (DC.IsSingleTableOption(db.Crud))
                 {
-                    return $" `{db.ColumnOne}`{ConditionCompare(db.Compare)}@{db.Param} ";
+                    return $" `{db.ColumnOne}`{AdoNetHelper.ConditionCompare(db.Compare)}@{db.Param} ";
                 }
             }
             else
             {
                 if (db.Crud == CrudTypeEnum.Join)
                 {
-                    return $" {ConditionAction(db.Action)} {db.TableAliasOne}.`{db.ColumnOne}`{ConditionCompare(db.Compare)}@{db.Param} ";
+                    return $" {AdoNetHelper.ConditionAction(db.Action)} {db.TableAliasOne}.`{db.ColumnOne}`{AdoNetHelper.ConditionCompare(db.Compare)}@{db.Param} ";
                 }
                 else if (DC.IsSingleTableOption(db.Crud))
                 {
-                    return $" {ConditionAction(db.Action)} `{db.ColumnOne}`{ConditionCompare(db.Compare)}@{db.Param} ";
+                    return $" {AdoNetHelper.ConditionAction(db.Action)} `{db.ColumnOne}`{AdoNetHelper.ConditionCompare(db.Compare)}@{db.Param} ";
                 }
             }
             throw new Exception("CompareProcess 未能处理!!!");
@@ -190,22 +194,22 @@ namespace MyDAL.DBRainbow.MySQL
             {
                 if (db.Crud == CrudTypeEnum.Join)
                 {
-                    return $" {db.TableAliasOne}.`{db.ColumnOne}`{ConditionOption(db.Option)}{LikeStrHandle(db)} ";
+                    return $" {db.TableAliasOne}.`{db.ColumnOne}`{AdoNetHelper.ConditionOption(db.Option)}{LikeStrHandle(db)} ";
                 }
                 else if (DC.IsSingleTableOption(db.Crud))
                 {
-                    return $" `{db.ColumnOne}`{ConditionOption(db.Option)}{LikeStrHandle(db)} ";
+                    return $" `{db.ColumnOne}`{AdoNetHelper.ConditionOption(db.Option)}{LikeStrHandle(db)} ";
                 }
             }
             else
             {
                 if (db.Crud == CrudTypeEnum.Join)
                 {
-                    return $" {ConditionAction(db.Action)} {db.TableAliasOne}.`{db.ColumnOne}`{ConditionOption(db.Option)}{LikeStrHandle(db)} ";
+                    return $" {AdoNetHelper.ConditionAction(db.Action)} {db.TableAliasOne}.`{db.ColumnOne}`{AdoNetHelper.ConditionOption(db.Option)}{LikeStrHandle(db)} ";
                 }
                 else if (DC.IsSingleTableOption(db.Crud))
                 {
-                    return $" {ConditionAction(db.Action)} `{db.ColumnOne}`{ConditionOption(db.Option)}{LikeStrHandle(db)} ";
+                    return $" {AdoNetHelper.ConditionAction(db.Action)} `{db.ColumnOne}`{AdoNetHelper.ConditionOption(db.Option)}{LikeStrHandle(db)} ";
                 }
             }
             throw new Exception("LikeProcess 未能处理!!!");
@@ -216,22 +220,22 @@ namespace MyDAL.DBRainbow.MySQL
             {
                 if (db.Crud == CrudTypeEnum.Join)
                 {
-                    return $" {ConditionOption(db.Option)}({db.TableAliasOne}.`{db.ColumnOne}`){ConditionCompare(db.Compare)}@{db.Param} ";
+                    return $" {AdoNetHelper.ConditionOption(db.Option)}({db.TableAliasOne}.`{db.ColumnOne}`){AdoNetHelper.ConditionCompare(db.Compare)}@{db.Param} ";
                 }
                 else if (DC.IsSingleTableOption(db.Crud))
                 {
-                    return $" {ConditionOption(db.Option)}(`{db.ColumnOne}`){ConditionCompare(db.Compare)}@{db.Param} ";
+                    return $" {AdoNetHelper.ConditionOption(db.Option)}(`{db.ColumnOne}`){AdoNetHelper.ConditionCompare(db.Compare)}@{db.Param} ";
                 }
             }
             else
             {
                 if (db.Crud == CrudTypeEnum.Join)
                 {
-                    return $" {ConditionAction(db.Action)} {ConditionOption(db.Option)}({db.TableAliasOne}.`{db.ColumnOne}`){ConditionCompare(db.Compare)}@{db.Param} ";
+                    return $" {AdoNetHelper.ConditionAction(db.Action)} {AdoNetHelper.ConditionOption(db.Option)}({db.TableAliasOne}.`{db.ColumnOne}`){AdoNetHelper.ConditionCompare(db.Compare)}@{db.Param} ";
                 }
                 else if (DC.IsSingleTableOption(db.Crud))
                 {
-                    return $" {ConditionAction(db.Action)} {ConditionOption(db.Option)}(`{db.ColumnOne}`){ConditionCompare(db.Compare)}@{db.Param} ";
+                    return $" {AdoNetHelper.ConditionAction(db.Action)} {AdoNetHelper.ConditionOption(db.Option)}(`{db.ColumnOne}`){AdoNetHelper.ConditionCompare(db.Compare)}@{db.Param} ";
                 }
             }
             throw new Exception("CharLengthProcess 未能处理!!!");
@@ -242,22 +246,22 @@ namespace MyDAL.DBRainbow.MySQL
             {
                 if (db.Crud == CrudTypeEnum.Join)
                 {
-                    return $" {ConditionOption(db.Option)}({db.TableAliasOne}.`{db.ColumnOne}`){ConditionCompare(db.Compare)}@{db.Param} ";
+                    return $" {AdoNetHelper.ConditionOption(db.Option)}({db.TableAliasOne}.`{db.ColumnOne}`){AdoNetHelper.ConditionCompare(db.Compare)}@{db.Param} ";
                 }
                 else if (DC.IsSingleTableOption(db.Crud))
                 {
-                    return $" {ConditionOption(db.Option)}(`{db.ColumnOne}`){ConditionCompare(db.Compare)}@{db.Param} ";
+                    return $" {AdoNetHelper.ConditionOption(db.Option)}(`{db.ColumnOne}`){AdoNetHelper.ConditionCompare(db.Compare)}@{db.Param} ";
                 }
             }
             else
             {
                 if (db.Crud == CrudTypeEnum.Join)
                 {
-                    return $" {ConditionAction(db.Action)} {ConditionOption(db.Option)}({db.TableAliasOne}.`{db.ColumnOne}`){ConditionCompare(db.Compare)}@{db.Param} ";
+                    return $" {AdoNetHelper.ConditionAction(db.Action)} {AdoNetHelper.ConditionOption(db.Option)}({db.TableAliasOne}.`{db.ColumnOne}`){AdoNetHelper.ConditionCompare(db.Compare)}@{db.Param} ";
                 }
                 else if (DC.IsSingleTableOption(db.Crud))
                 {
-                    return $" {ConditionAction(db.Action)} {ConditionOption(db.Option)}(`{db.ColumnOne}`){ConditionCompare(db.Compare)}@{db.Param} ";
+                    return $" {AdoNetHelper.ConditionAction(db.Action)} {AdoNetHelper.ConditionOption(db.Option)}(`{db.ColumnOne}`){AdoNetHelper.ConditionCompare(db.Compare)}@{db.Param} ";
                 }
             }
             throw new Exception("TrimProcess 未能处理!!!");
@@ -270,7 +274,7 @@ namespace MyDAL.DBRainbow.MySQL
             }
             else
             {
-                return $" {ConditionAction(db.Action)} @{db.Param} ";
+                return $" {AdoNetHelper.ConditionAction(db.Action)} @{db.Param} ";
             }
             throw new Exception("OneEqualOneProcess 未能处理!!!");
         }
@@ -280,22 +284,22 @@ namespace MyDAL.DBRainbow.MySQL
             {
                 if (db.Crud == CrudTypeEnum.Join)
                 {
-                    return $" {db.TableAliasOne}.`{db.ColumnOne}` {ConditionOption(db.Option)}({InStrHandle(db.InItems)}) ";
+                    return $" {db.TableAliasOne}.`{db.ColumnOne}` {AdoNetHelper.ConditionOption(db.Option)}({InStrHandle(db.InItems)}) ";
                 }
                 else if (DC.IsSingleTableOption(db.Crud))
                 {
-                    return $" `{db.ColumnOne}` {ConditionOption(db.Option)}({InStrHandle(db.InItems)}) ";
+                    return $" `{db.ColumnOne}` {AdoNetHelper.ConditionOption(db.Option)}({InStrHandle(db.InItems)}) ";
                 }
             }
             else
             {
                 if (db.Crud == CrudTypeEnum.Join)
                 {
-                    return $" {ConditionAction(db.Action)} {db.TableAliasOne}.`{db.ColumnOne}` {ConditionOption(db.Option)}({InStrHandle(db.InItems)}) ";
+                    return $" {AdoNetHelper.ConditionAction(db.Action)} {db.TableAliasOne}.`{db.ColumnOne}` {AdoNetHelper.ConditionOption(db.Option)}({InStrHandle(db.InItems)}) ";
                 }
                 else if (DC.IsSingleTableOption(db.Crud))
                 {
-                    return $" {ConditionAction(db.Action)} `{db.ColumnOne}` {ConditionOption(db.Option)}({InStrHandle(db.InItems)}) ";
+                    return $" {AdoNetHelper.ConditionAction(db.Action)} `{db.ColumnOne}` {AdoNetHelper.ConditionOption(db.Option)}({InStrHandle(db.InItems)}) ";
                 }
             }
             throw new Exception("InProcess 未能处理!!!");
@@ -304,151 +308,13 @@ namespace MyDAL.DBRainbow.MySQL
         {
             if (isMulti)
             {
-                return $" `{db.ColumnOne}` {ConditionOption(db.Option)} ";
+                return $" `{db.ColumnOne}` {AdoNetHelper.ConditionOption(db.Option)} ";
             }
             else
             {
-                return $" {ConditionAction(db.Action)} `{db.ColumnOne}` {ConditionOption(db.Option)} ";
+                return $" {AdoNetHelper.ConditionAction(db.Action)} `{db.ColumnOne}` {AdoNetHelper.ConditionOption(db.Option)} ";
             }
             throw new Exception("IsNullProcess 未能处理!!!");
-        }
-
-        /****************************************************************************************************************/
-
-        private static string ConditionAction(ActionEnum action)
-        {
-            switch (action)
-            {
-                case ActionEnum.None:
-                    return "";
-                case ActionEnum.Insert:
-                    return "";
-                case ActionEnum.Update:
-                    return "";
-                case ActionEnum.Select:
-                    return "";
-                case ActionEnum.From:
-                    return "";
-                case ActionEnum.InnerJoin:
-                    return " inner join ";
-                case ActionEnum.LeftJoin:
-                    return " left join ";
-                case ActionEnum.On:
-                    return " on ";
-                case ActionEnum.Where:
-                    return " \r\n where ";
-                case ActionEnum.And:
-                    return " \r\n \t and ";
-                case ActionEnum.Or:
-                    return " \r\n \t or ";
-                case ActionEnum.OrderBy:
-                    return "";
-            }
-            return " ";
-        }
-        private static string MultiConditionAction(ActionEnum action)
-        {
-            switch (action)
-            {
-                case ActionEnum.And:
-                    return " && ";
-                case ActionEnum.Or:
-                    return " || ";
-            }
-            return " ";
-        }
-        private static string ConditionOption(OptionEnum option)
-        {
-            switch (option)
-            {
-                case OptionEnum.None:
-                    return "<<<<<";
-                case OptionEnum.Insert:
-                    return "";
-                case OptionEnum.InsertTVP:
-                    return "";
-                case OptionEnum.Set:
-                    return "=";
-                case OptionEnum.ChangeAdd:
-                    return "+";
-                case OptionEnum.ChangeMinus:
-                    return "-";
-                case OptionEnum.Column:
-                    return "";
-                case OptionEnum.ColumnAs:
-                    break;
-                case OptionEnum.Compare:
-                    return "";
-                case OptionEnum.Like:
-                    return " like ";
-                case OptionEnum.In:
-                    return " in ";
-                case OptionEnum.InHelper:
-                    break;
-                case OptionEnum.NotIn:
-                    return " not in ";
-                case OptionEnum.Count:
-                    return " count";
-                case OptionEnum.CharLength:
-                    return " char_length";
-                case OptionEnum.Trim:
-                    return " trim";
-                case OptionEnum.LTrim:
-                    return " ltrim";
-                case OptionEnum.RTrim:
-                    return " rtrim";
-                case OptionEnum.OneEqualOne:
-                    return "";
-                case OptionEnum.IsNull:
-                    return " is null ";
-                case OptionEnum.IsNotNull:
-                    return " is not null ";
-                case OptionEnum.Asc:
-                    return " asc ";
-                case OptionEnum.Desc:
-                    return " desc ";
-            }
-            return " ";
-        }
-        private static string ConditionCompare(CompareEnum compare)
-        {
-            switch (compare)
-            {
-                case CompareEnum.None:
-                    return " ";
-                case CompareEnum.Equal:
-                    return "=";
-                case CompareEnum.NotEqual:
-                    return "<>";
-                case CompareEnum.LessThan:
-                    return "<";
-                case CompareEnum.LessThanOrEqual:
-                    return "<=";
-                case CompareEnum.GreaterThan:
-                    return ">";
-                case CompareEnum.GreaterThanOrEqual:
-                    return ">=";
-                case CompareEnum.Like:
-                    return " like ";
-                case CompareEnum.In:
-                    return " in ";
-                case CompareEnum.NotIn:
-                    return " not in ";
-            }
-            return " ";
-        }
-        private static string ConditionFunc(FuncEnum func)
-        {
-            switch (func)
-            {
-                case FuncEnum.None:
-                    return "";
-                case FuncEnum.Column:
-                    return "";
-                case FuncEnum.CharLength:
-                    return " char_length";
-            }
-            return " ";
         }
 
         /****************************************************************************************************************/
@@ -469,7 +335,7 @@ namespace MyDAL.DBRainbow.MySQL
                         list.Add(MultiCondition(item, isMulti));
                     }
                 }
-                return string.Join(MultiConditionAction(db.GroupAction), list);
+                return string.Join(AdoNetHelper.MultiConditionAction(db.GroupAction), list);
             }
             else
             {
@@ -507,24 +373,139 @@ namespace MyDAL.DBRainbow.MySQL
 
         /****************************************************************************************************************/
 
-        private string GetSingleValuePart()
+        private void Spacing(StringBuilder sb)
         {
-            var str = string.Empty;
-
-            foreach (var item in DC.Parameters)
+            sb.Append(" ");
+        }
+        private void Backquote(StringBuilder sb)
+        {
+            sb.Append("`");
+        }
+        private void Comma(StringBuilder sb)
+        {
+            sb.Append(",");
+        }
+        private void ConcatWithComma(StringBuilder sb, IEnumerable<string> ss, Action<StringBuilder> a1, Action<StringBuilder> a2)
+        {
+            var n = ss.Count();
+            var i = 0;
+            foreach (var s in ss)
             {
-                switch (item.Option)
+                i++;
+                a1?.Invoke(sb);
+                sb.Append(s);
+                a2?.Invoke(sb);
+                if (i != n)
                 {
-                    case OptionEnum.Count:
-                        str = GetCountPart();
-                        break;
+                    Comma(sb);
                 }
             }
-
-            return str;
         }
-        private string GetCountPart()
+        private void CRLF(StringBuilder sb)
         {
+            sb.Append("\r\n");
+        }
+        private void AT(StringBuilder sb)
+        {
+            sb.Append("@");
+        }
+
+        /****************************************************************************************************************/
+
+        private void LockTables(StringBuilder sb)
+        {
+            sb.Append("LOCK TABLES");
+        }
+        private void Write(StringBuilder sb)
+        {
+            Spacing(sb);
+            sb.Append("WRITE");
+        }
+        private void UnlockTables(StringBuilder sb)
+        {
+            CRLF(sb);
+            sb.Append("UNLOCK TABLES");
+        }
+        private void DisableKeysS(StringBuilder sb)
+        {
+            CRLF(sb);
+            sb.Append("/*!40000 ALTER TABLE");
+        }
+        private void DisableKeysE(StringBuilder sb)
+        {
+            Spacing(sb);
+            sb.Append("DISABLE KEYS */");
+        }
+        private void EnableKeysS(StringBuilder sb)
+        {
+            DisableKeysS(sb);
+        }
+        private void EnableKeysE(StringBuilder sb)
+        {
+            Spacing(sb);
+            sb.Append("ENABLE KEYS */");
+        }
+
+        private void InsertInto(StringBuilder sb)
+        {
+            CRLF(sb);
+            sb.Append("insert into");
+        }
+        private void Table<M>(StringBuilder sb)
+        {
+            Spacing(sb);
+            var tableName = string.Empty;
+            if (DC.Method != UiMethodEnum.JoinCountAsync
+                && DC.Method != UiMethodEnum.JoinQueryFirstOrDefaultAsync
+                && DC.Method != UiMethodEnum.JoinQueryListAsync
+                && DC.Method != UiMethodEnum.JoinQueryPagingListAsync
+                && DC.Method != UiMethodEnum.JoinTopAsync)
+            {
+                var key = DC.SC.GetModelKey(typeof(M).FullName);
+                tableName = DC.SC.GetModelTableName(key);
+            }
+
+            sb.Append(tableName);
+        }
+        private void InsertColumns(StringBuilder sb)
+        {
+            Spacing(sb);
+            var ps = DC.Parameters.Where(it => it.TvpIndex == 0);
+            if (ps != null)
+            {
+                sb.Append("\r\n (");
+                ConcatWithComma(sb, ps.Select(it => it.ColumnOne), Backquote, Backquote);
+                sb.Append(") ");
+            }
+        }
+        private void Values(StringBuilder sb)
+        {
+            CRLF(sb);
+            sb.Append("values");
+        }
+        private void ValueParams(StringBuilder sb)
+        {
+            Spacing(sb);
+            var n = DC.Parameters.Max(it => it.TvpIndex) + 1;
+            for (var i = 0; i < n; i++)
+            {
+                var ps = DC.Parameters.Where(it => it.TvpIndex == i);
+                if (ps != null)
+                {
+                    sb.Append(" \r\n (");
+                    ConcatWithComma(sb, ps.Select(it => it.Param), AT, null);
+                    sb.Append(")");
+                }
+                if (i != n - 1)
+                {
+                    Comma(sb);
+                }
+            }
+        }
+
+        private void GetCountPart(StringBuilder sb)
+        {
+            Spacing(sb);
             var str = string.Empty;
 
             var item = DC.Parameters.FirstOrDefault(it => it.Option == OptionEnum.Count);
@@ -532,30 +513,31 @@ namespace MyDAL.DBRainbow.MySQL
             {
                 if ("*".Equals(item.ColumnOne, StringComparison.OrdinalIgnoreCase))
                 {
-                    str = $" {ConditionOption(item.Option)}({item.ColumnOne}) ";
+                    str = $" {AdoNetHelper.ConditionOption(item.Option)}({item.ColumnOne}) ";
                 }
                 else
                 {
-                    str = $" {ConditionOption(item.Option)}(`{item.ColumnOne}`) ";
+                    str = $" {AdoNetHelper.ConditionOption(item.Option)}(`{item.ColumnOne}`) ";
                 }
             }
             else if (item.Crud == CrudTypeEnum.Join)
             {
                 if ("*".Equals(item.ColumnOne, StringComparison.OrdinalIgnoreCase))
                 {
-                    str = $" {ConditionOption(item.Option)}({item.ColumnOne}) ";
+                    str = $" {AdoNetHelper.ConditionOption(item.Option)}({item.ColumnOne}) ";
                 }
                 else
                 {
-                    str = $" {ConditionOption(item.Option)}({item.TableAliasOne}.`{item.ColumnOne}`) ";
+                    str = $" {AdoNetHelper.ConditionOption(item.Option)}({item.TableAliasOne}.`{item.ColumnOne}`) ";
                 }
             }
 
-            return str;
+            sb.Append(str);
         }
 
-        private string Columns()
+        private void Columns(StringBuilder sb)
         {
+            Spacing(sb);
             var str = string.Empty;
             var list = new List<string>();
 
@@ -608,32 +590,18 @@ namespace MyDAL.DBRainbow.MySQL
             {
                 str = "*";
             }
-            return str;
+            sb.Append(str);
         }
 
-        private string From()
+        private void From(StringBuilder sb)
         {
-            return "\r\n from";
+            Spacing(sb);
+            sb.Append("\r\n from");
         }
 
-        private string Table<M>()
+        private void Joins(StringBuilder sb)
         {
-            var tableName = string.Empty;
-            if (DC.Method != UiMethodEnum.JoinCountAsync
-                && DC.Method != UiMethodEnum.JoinQueryFirstOrDefaultAsync
-                && DC.Method != UiMethodEnum.JoinQueryListAsync
-                && DC.Method != UiMethodEnum.JoinQueryPagingListAsync
-                && DC.Method != UiMethodEnum.JoinTopAsync)
-            {
-                var key = DC.SC.GetModelKey(typeof(M).FullName);
-                tableName = DC.SC.GetModelTableName(key);
-            }
-
-            return tableName;
-        }
-
-        private string Joins()
-        {
+            Spacing(sb);
             var str = string.Empty;
 
             foreach (var item in DC.Parameters)
@@ -650,19 +618,20 @@ namespace MyDAL.DBRainbow.MySQL
                         break;
                     case ActionEnum.InnerJoin:
                     case ActionEnum.LeftJoin:
-                        str += $" \r\n \t {ConditionAction(item.Action)} {item.TableOne} as {item.TableAliasOne} ";
+                        str += $" \r\n \t {AdoNetHelper.ConditionAction(item.Action)} {item.TableOne} as {item.TableAliasOne} ";
                         break;
                     case ActionEnum.On:
-                        str += $" \r\n \t \t {ConditionAction(item.Action)} {item.TableAliasOne}.`{item.ColumnOne}`={item.TableAliasTwo}.`{item.ColumnTwo}` ";
+                        str += $" \r\n \t \t {AdoNetHelper.ConditionAction(item.Action)} {item.TableAliasOne}.`{item.ColumnOne}`={item.TableAliasTwo}.`{item.ColumnTwo}` ";
                         break;
                 }
             }
 
-            return str;
+            sb.Append(str);
         }
 
-        private string Wheres()
+        private void Wheres(StringBuilder sb)
         {
+            Spacing(sb);
             var str = string.Empty;
 
             //
@@ -670,10 +639,11 @@ namespace MyDAL.DBRainbow.MySQL
             {
                 if (DC.IsFilterCondition(db.Action))
                 {
-                    str += db.Group == null ? MultiCondition(db, false) : $" {ConditionAction(db.Action)} ({MultiCondition(db, true)}) ";
+                    str += db.Group == null ? MultiCondition(db, false) : $" {AdoNetHelper.ConditionAction(db.Action)} ({MultiCondition(db, true)}) ";
                 }
             }
 
+            //
             if (!str.IsNullStr()
                 && DC.Parameters.All(it => it.Action != ActionEnum.Where))
             {
@@ -682,18 +652,19 @@ namespace MyDAL.DBRainbow.MySQL
                 if (aIdx < oIdx
                     || oIdx == -1)
                 {
-                    str = $" {ConditionAction(ActionEnum.Where)} true {str} ";
+                    str = $" {AdoNetHelper.ConditionAction(ActionEnum.Where)} true {str} ";
                 }
                 else
                 {
-                    str = $" {ConditionAction(ActionEnum.Where)} false {str} ";
+                    str = $" {AdoNetHelper.ConditionAction(ActionEnum.Where)} false {str} ";
                 }
             }
 
-            return str;
+            //
+            sb.Append(str);
         }
 
-        private string GetUpdates()
+        private void GetUpdates(StringBuilder sb)
         {
             if (!DC.Parameters.Any(it => it.Action == ActionEnum.Update))
             {
@@ -711,47 +682,21 @@ namespace MyDAL.DBRainbow.MySQL
                         {
                             case OptionEnum.ChangeAdd:
                             case OptionEnum.ChangeMinus:
-                                list.Add($" `{item.ColumnOne}`=`{item.ColumnOne}`{ConditionOption(item.Option)}@{item.Param} ");
+                                list.Add($" `{item.ColumnOne}`=`{item.ColumnOne}`{AdoNetHelper.ConditionOption(item.Option)}@{item.Param} ");
                                 break;
                             case OptionEnum.Set:
-                                list.Add($" `{item.ColumnOne}`{ConditionOption(item.Option)}@{item.Param} ");
+                                list.Add($" `{item.ColumnOne}`{AdoNetHelper.ConditionOption(item.Option)}@{item.Param} ");
                                 break;
                         }
                         break;
                 }
             }
 
-            return string.Join(", \r\n\t", list);
+            sb.Append(string.Join(", \r\n\t", list));
         }
-
-        private string GetColumns()
+        private void End(StringBuilder sb)
         {
-            var list = new List<string>();
-            foreach (var item in DC.Parameters)
-            {
-                if (item.TvpIndex == 0)
-                {
-                    list.Add($"`{item.ColumnOne}`");
-                }
-            }
-            return $" \r\n ({ string.Join(",", list)}) ";
-        }
-        private string GetValues()
-        {
-            var list = new List<string>();
-            for (var i = 0; i < DC.Parameters.Max(it => it.TvpIndex) + 1; i++)
-            {
-                var values = new List<string>();
-                foreach (var item in DC.Parameters)
-                {
-                    if (item.TvpIndex == i)
-                    {
-                        values.Add($"@{item.Param}");
-                    }
-                }
-                list.Add($" \r\n ({string.Join(",", values)})");
-            }
-            return string.Join(",", list);
+            sb.Append(";");
         }
 
         /****************************************************************************************************************/
@@ -809,69 +754,80 @@ namespace MyDAL.DBRainbow.MySQL
             var list = new List<string>();
 
             //
+            var sb = new StringBuilder();
             switch (DC.Method)
             {
                 case UiMethodEnum.CreateAsync:
-                    list.Add($" insert into {Table<M>()} {GetColumns()} \r\n values {GetValues()} ;");
+                    InsertInto(sb); Table<M>(sb); InsertColumns(sb); Values(sb); ValueParams(sb); End(sb);
+                    list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.CreateBatchAsync:
-                    var tablex = Table<M>();
-                    list.Add(
-                                  $" LOCK TABLES {tablex} WRITE; " +
-                                  $" \r\n /*!40000 ALTER TABLE {tablex} DISABLE KEYS */; " +
-                                  $" \r\n insert into  {tablex} {GetColumns()} \r\n VALUES {GetValues()} ; " +
-                                  $" \r\n /*!40000 ALTER TABLE {tablex} ENABLE KEYS */; " +
-                                  $" \r\n UNLOCK TABLES; "
-                                 );
+                    LockTables(sb); Table<M>(sb); Write(sb); End(sb);
+                    DisableKeysS(sb); Table<M>(sb); DisableKeysE(sb); End(sb);
+                    InsertInto(sb); Table<M>(sb); InsertColumns(sb); Values(sb); ValueParams(sb); End(sb);
+                    EnableKeysS(sb); Table<M>(sb); EnableKeysE(sb); End(sb);
+                    UnlockTables(sb); End(sb);
+                    list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.DeleteAsync:
-                    list.Add($" delete {From()} {Table<M>()} {Wheres()} ; ");
+                    sb.Append(" delete "); From(sb); Table<M>(sb); Wheres(sb); End(sb);
+                    list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.UpdateAsync:
-                    list.Add($" update {Table<M>()} \r\n set {GetUpdates()} {Wheres()} ;");
+                    sb.Append(" update "); Table<M>(sb); sb.Append(" \r\n set "); GetUpdates(sb); Wheres(sb); End(sb);
+                    list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.QueryFirstOrDefaultAsync:
-                    list.Add($"select {Columns()} {From()} {Table<M>()} {Wheres()} {GetOrderByPart<M>()} ; ");
+                    sb.Append("select "); Columns(sb); From(sb); Table<M>(sb); Wheres(sb); GetOrderByPart<M>(sb); End(sb);
+                    list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.JoinQueryFirstOrDefaultAsync:
-                    list.Add($" select {Columns()} {From()} {Joins()} {Wheres()} {GetOrderByPart()} ; ");
+                    sb.Append(" select "); Columns(sb); From(sb); Joins(sb); Wheres(sb); GetOrderByPart(sb); End(sb);
+                    list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.QueryListAsync:
                 case UiMethodEnum.TopAsync:
-                    list.Add($"select {Columns()} {From()} {Table<M>()} {Wheres()} {GetOrderByPart<M>()} {Limit()} ; ");
+                    sb.Append("select "); Columns(sb); From(sb); Table<M>(sb); Wheres(sb); GetOrderByPart<M>(sb); Limit(sb); End(sb);
+                    list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.JoinQueryListAsync:
                 case UiMethodEnum.JoinTopAsync:
-                    list.Add($" select {Columns()} {From()} {Joins()} {Wheres()} {GetOrderByPart()} {Limit()} ; ");
+                    sb.Append(" select "); Columns(sb); From(sb); Joins(sb); Wheres(sb); GetOrderByPart(sb); Limit(sb); End(sb);
+                    list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.QueryPagingListAsync:
-                    var wherePart8 = Wheres();
-                    var table8 = Table<M>();
-                    list.Add($"select count(*) {From()} {table8} {wherePart8} ; ");
-                    list.Add($"select {Columns()} {From()} {table8} {wherePart8} {GetOrderByPart<M>()} {Limit()}  ; ");
+                    sb.Append("select count(*) "); From(sb); Table<M>(sb); Wheres(sb); End(sb);
+                    list.Add(sb.ToString());
+                    sb.Clear();
+                    sb.Append("select "); Columns(sb); From(sb); Table<M>(sb); Wheres(sb); GetOrderByPart<M>(sb); Limit(sb); End(sb);
+                    list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.JoinQueryPagingListAsync:
-                    var wherePart9 = Wheres();
-                    list.Add($"select count(*) {From()} {Joins()} {wherePart9} ; ");
-                    list.Add($"select {Columns()} {From()} {Joins()} {wherePart9} {GetOrderByPart()} {Limit()}  ; ");
+                    sb.Append("select count(*) "); From(sb); Joins(sb); Wheres(sb); End(sb);
+                    list.Add(sb.ToString());
+                    sb.Clear();
+                    sb.Append("select "); Columns(sb); From(sb); Joins(sb); Wheres(sb); GetOrderByPart(sb); Limit(sb); End(sb);
+                    list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.QueryAllAsync:
-                    list.Add($" select {Columns()} {From()} {Table<M>()} {GetOrderByPart<M>()} ; ");
+                    sb.Append(" select "); Columns(sb); From(sb); Table<M>(sb); GetOrderByPart<M>(sb); End(sb);
+                    list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.QueryAllPagingListAsync:
-                    var table11 = Table<M>();
-                    list.Add($"select count(*) {From()} {table11} ; ");
-                    list.Add($"select * {From()} {table11} {GetOrderByPart<M>()} {Limit()}  ; ");
-                    break;
-                case UiMethodEnum.QuerySingleValueAsync:
-                    list.Add($" select {GetSingleValuePart()} {From()} {Table<M>()} {Wheres()} ; ");
+                    sb.Append("select count(*) "); From(sb); Table<M>(sb); End(sb);
+                    list.Add(sb.ToString());
+                    sb.Clear();
+                    sb.Append("select * "); From(sb); Table<M>(sb); GetOrderByPart<M>(sb); Limit(sb); End(sb);
+                    list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.ExistAsync:
                 case UiMethodEnum.CountAsync:
-                    list.Add($" select {GetCountPart()} {From()} {Table<M>()} {Wheres()} ; ");
+                    sb.Append(" select "); GetCountPart(sb); From(sb); Table<M>(sb); Wheres(sb); End(sb);
+                    list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.JoinCountAsync:
-                    list.Add($" select {GetCountPart()} {From()} {Joins()} {Wheres()} ");
+                    sb.Append(" select "); GetCountPart(sb); From(sb); Joins(sb); Wheres(sb); End(sb);
+                    list.Add(sb.ToString());
                     break;
             }
 

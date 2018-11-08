@@ -1,5 +1,4 @@
-﻿using MyDAL.Cache;
-using MyDAL.Core.Bases;
+﻿using MyDAL.Core.Bases;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
 using MyDAL.Core.Helper;
@@ -7,8 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Globalization;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -71,11 +68,8 @@ namespace MyDAL.AdoNet
         {
             var command = new CommandInfo(SqlCount == 1 ? SqlOne : SqlTwo, Parameter);
             var mType = typeof(M);
-            var param = command.Parameters;
-            var identity = new Identity(command.CommandText, command.CommandType, Conn, mType, param?.GetType());
-            var info = AdoNetHelper.GetCacheInfo(identity);
             bool needClose = Conn.State == ConnectionState.Closed;
-            using (var cmd = command.TrySetupAsyncCommand(Conn, info.ParamReader))
+            using (var cmd = command.TrySetupAsyncCommand(Conn, command.Parameter.ParamReader))
             {
                 DbDataReader reader = null;
                 try
@@ -84,21 +78,17 @@ namespace MyDAL.AdoNet
                     {
                         await Conn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
                     }
-                    reader = await AdoNetHelper.ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, CommandBehavior.SequentialAccess | CommandBehavior.SingleResult, default(CancellationToken)).ConfigureAwait(false);
-
-                    var tuple = info.Deserializer;
-                    int hash = AdoNetHelper.GetColumnHash(reader);
-                    if (tuple.Func == null || tuple.Hash != hash)
+                    reader = await AdoNetHelper.ExecuteReaderWithFlagsFallbackAsync(
+                        cmd,
+                        needClose,
+                        CommandBehavior.SequentialAccess | CommandBehavior.SingleResult,
+                        default(CancellationToken)).ConfigureAwait(false);
+                    if (reader.FieldCount == 0)
                     {
-                        if (reader.FieldCount == 0)
-                        {
-                            return new List<M>();
-                        }
-                        info.Deserializer = new DeserializerState(hash, AdoNetHelper.GetDeserializer(mType, reader));
-                        tuple = info.Deserializer;
+                        return new List<M>();
                     }
 
-                    var func = tuple.Func;
+                    var func = DC.SC.GetHandle<M>(SqlCount == 1 ? SqlOne : SqlTwo, reader); // tuple.Func;
                     var result = new List<M>();
                     var convertToType = Nullable.GetUnderlyingType(mType) ?? mType;
                     while (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
@@ -126,16 +116,14 @@ namespace MyDAL.AdoNet
          * ado.net -- DbCommand.[Task<DbDataReader> ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)]
          * select -- 第一行
          */
-        internal async Task<T> ExecuteReaderSingleRowAsync<T>()
+        internal async Task<M> ExecuteReaderSingleRowAsync<M>()
+            where M : class
         {
             var command = new CommandInfo(SqlOne, Parameter);
-            var mType = typeof(T);
+            var mType = typeof(M);
             var row = RowEnum.FirstOrDefault;
-            var param = command.Parameters;
-            var identity = new Identity(command.CommandText, command.CommandType, Conn, mType, param?.GetType());
-            var info = AdoNetHelper.GetCacheInfo(identity);
             bool needClose = Conn.State == ConnectionState.Closed;
-            using (var cmd = command.TrySetupAsyncCommand(Conn, info.ParamReader))
+            using (var cmd = command.TrySetupAsyncCommand(Conn, command.Parameter.ParamReader))
             {
                 DbDataReader reader = null;
                 try
@@ -148,27 +136,12 @@ namespace MyDAL.AdoNet
                     ? CommandBehavior.SequentialAccess | CommandBehavior.SingleResult // need to allow multiple rows, to check fail condition
                     : CommandBehavior.SequentialAccess | CommandBehavior.SingleResult | CommandBehavior.SingleRow, default(CancellationToken)).ConfigureAwait(false);
 
-                    T result = default(T);
+                    var result = default(M);
                     if (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false) && reader.FieldCount != 0)
                     {
-                        var tuple = info.Deserializer;
-                        int hash = AdoNetHelper.GetColumnHash(reader);
-                        if (tuple.Func == null || tuple.Hash != hash)
-                        {
-                            tuple = info.Deserializer = new DeserializerState(hash, AdoNetHelper.GetDeserializer(mType, reader));
-                        }
-
-                        var func = tuple.Func;
-                        object val = func(reader);
-                        if (val == null || val is T)
-                        {
-                            result = (T)val;
-                        }
-                        else
-                        {
-                            var convertToType = Nullable.GetUnderlyingType(mType) ?? mType;
-                            result = (T)Convert.ChangeType(val, convertToType, CultureInfo.InvariantCulture);
-                        }
+                        var func = DC.SC.GetHandle<M>(SqlOne, reader);  // tuple.Func;
+                        var val = func(reader);
+                        result = val;
                         if ((row & RowEnum.Single) != 0 && await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
                         {
                             AdoNetHelper.ThrowMultipleRows(row);
@@ -204,12 +177,9 @@ namespace MyDAL.AdoNet
             where M : class
         {
             var command = new CommandInfo(SqlOne, Parameter);
-            var effectiveType = typeof(M);
-            var param = command.Parameters;
-            var identity = new Identity(command.CommandText, command.CommandType, Conn, effectiveType, param?.GetType());
-            var info = AdoNetHelper.GetCacheInfo(identity);
+            var mType = typeof(M);
             bool needClose = Conn.State == ConnectionState.Closed;
-            using (var cmd = command.TrySetupAsyncCommand(Conn, info.ParamReader))
+            using (var cmd = command.TrySetupAsyncCommand(Conn, command.Parameter.ParamReader))
             {
                 var reader = default(DbDataReader);
                 try
@@ -219,25 +189,17 @@ namespace MyDAL.AdoNet
                         await Conn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
                     }
 
-                    reader = await AdoNetHelper.ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, CommandBehavior.SequentialAccess | CommandBehavior.SingleResult, default(CancellationToken)).ConfigureAwait(false);
-
+                    reader = await AdoNetHelper.ExecuteReaderWithFlagsFallbackAsync(
+                        cmd, 
+                        needClose, 
+                        CommandBehavior.SequentialAccess | CommandBehavior.SingleResult, 
+                        default(CancellationToken)).ConfigureAwait(false);
                     var result = new List<F>();
-                    var convertToType = Nullable.GetUnderlyingType(effectiveType) ?? effectiveType;
-                    var col = IL.Row(effectiveType, reader);
-                    var m = default(M);
+                    var convertToType = Nullable.GetUnderlyingType(mType) ?? mType;
+                    var func = DC.SC.GetHandle<M>(SqlOne, reader);
                     while (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
                     {
-                        var val = col.Handle(reader);
-                        if (val == null
-                            || val is M)
-                        {
-                            m = val as M;
-                        }
-                        else
-                        {
-                            m = (M)Convert.ChangeType(val, convertToType, CultureInfo.InvariantCulture);
-                        }
-                        result.Add(propertyFunc(m));
+                        result.Add(propertyFunc(func(reader)));
                     }
                     while (await reader.NextResultAsync(default(CancellationToken)).ConfigureAwait(false))
                     { /* ignore subsequent result sets */ }
@@ -263,12 +225,8 @@ namespace MyDAL.AdoNet
         internal async Task<int> ExecuteNonQueryAsync()
         {
             var command = new CommandInfo(SqlOne, Parameter);
-            var param = command.Parameters;
-
-            var identity = new Identity(command.CommandText, command.CommandType, Conn, null, param?.GetType());
-            var info = AdoNetHelper.GetCacheInfo(identity);
             bool needClose = Conn.State == ConnectionState.Closed;
-            using (var cmd = command.TrySetupAsyncCommand(Conn, info.ParamReader))
+            using (var cmd = command.TrySetupAsyncCommand(Conn, command.Parameter.ParamReader))
             {
                 try
                 {
@@ -296,21 +254,13 @@ namespace MyDAL.AdoNet
          */
         internal async Task<T> ExecuteScalarAsync<T>()
         {
-            var command = new CommandInfo(SqlOne,Parameter);
-            Action<IDbCommand, DbParamInfo> paramReader = null;
-            object param = command.Parameters;
-            if (param != null)
-            {
-                var identity = new Identity(command.CommandText, command.CommandType, Conn, null, param.GetType());
-                paramReader = AdoNetHelper.GetCacheInfo(identity).ParamReader;
-            }
-
-            DbCommand cmd = null;
+            var command = new CommandInfo(SqlOne, Parameter);
+            var cmd = default(DbCommand);
             bool needClose = Conn.State == ConnectionState.Closed;
             object result;
             try
             {
-                cmd = command.TrySetupAsyncCommand(Conn, paramReader);
+                cmd = command.TrySetupAsyncCommand(Conn, command.Parameter.ParamReader);
                 if (needClose)
                 {
                     await Conn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);

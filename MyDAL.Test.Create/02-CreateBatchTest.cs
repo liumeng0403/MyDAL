@@ -72,7 +72,7 @@ namespace MyDAL.Test.Create
 
             /********************************************************************************************************************************/
 
-            var json = File.ReadAllText(@"C:\Users\liume\Desktop\工作\DalTestDB\ProfileData.json");
+            var json = File.ReadAllText(@"C:\Users\liume\Desktop\Work\DalTestDB\ProfileData.json");
             var list = JsonConvert.DeserializeObject<List<UserInfo>>(json);
             foreach (var item in list)
             {

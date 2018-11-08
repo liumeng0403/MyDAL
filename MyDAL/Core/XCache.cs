@@ -6,17 +6,18 @@ using MyDAL.DBRainbow;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Data;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace MyDAL.Cache
+namespace MyDAL.Core
 {
-    internal class StaticCache 
+    internal class XCache 
     {
 
         private Context DC { get; set; }
 
-        internal StaticCache ( Context dc)
+        internal XCache( Context dc)
         {
             DC = dc;
         }
@@ -38,6 +39,10 @@ namespace MyDAL.Cache
         internal string GetAttrKey(string attrFullName,string propName,string mFullName)
         {
             return $"{attrFullName}:{propName}:{GetModelKey(mFullName)}";
+        }
+        internal string GetHandleKey(int sqlHash,int colHash,string mFullName)
+        {
+            return $"{sqlHash}:{colHash}:{GetModelKey(mFullName)}";
         }
 
         /*****************************************************************************************************************************************************/
@@ -147,6 +152,17 @@ namespace MyDAL.Cache
 
         internal static ConcurrentDictionary<Type, RowMap> TypeMaps { get; } = new ConcurrentDictionary<Type, RowMap>();
 
-
+        /*****************************************************************************************************************************************************/
+        private static ConcurrentDictionary<string, object> ModelHandleCache { get; } = new ConcurrentDictionary<string, object>();
+        internal Func<IDataReader, M> GetHandle<M>(string sql, IDataReader reader)
+            where M : class
+        {
+            var key = GetHandleKey(sql.GetHashCode(), AdoNetHelper.GetColumnHash(reader), typeof(M).FullName);
+            if (!ModelHandleCache.TryGetValue(key, out var row))
+            {
+                ModelHandleCache[key] = row = IL<M>.Row(reader).Handle;
+            }
+            return (Func<IDataReader, M>)row;
+        }
     }
 }

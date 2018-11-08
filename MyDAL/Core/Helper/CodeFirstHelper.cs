@@ -1,5 +1,4 @@
 ﻿using MyDAL.AdoNet;
-using MyDAL.Cache;
 using MyDAL.Core.Bases;
 using MyDAL.Core.Extensions;
 using MyDAL.DBRainbow;
@@ -27,7 +26,7 @@ namespace MyDAL.Core.Helper
             var cmTypes = new List<NameTypeModel>();
 
             //
-            var ass = new StaticCache(DC).GetAssembly(key);
+            var ass = new XCache(DC).GetAssembly(key);
             var types = ass.GetTypes();
             foreach (var type in types)
             {
@@ -73,7 +72,7 @@ namespace MyDAL.Core.Helper
         }
         private async Task CompareTable(IDbConnection conn)
         {
-            var key = new StaticCache(DC).GetAssemblyKey(XConfig.TablesNamespace);
+            var key = new XCache(DC).GetAssemblyKey(XConfig.TablesNamespace);
             var dtNames = new List<TableModel>();
             var tupleCs = GetTableAndTypes(key);
             var ctNames = tupleCs.Select(it=>it.Name);

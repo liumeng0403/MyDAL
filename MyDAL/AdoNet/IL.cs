@@ -9,7 +9,8 @@ using System.Reflection.Emit;
 
 namespace MyDAL.AdoNet
 {
-    internal struct IL
+    internal struct IL<M>
+        where M:class
     {
         private static void EmitInt32(ILGenerator il, int value)
         {
@@ -233,9 +234,10 @@ namespace MyDAL.AdoNet
             }
             return s[0];
         }
-        private static Func<IDataReader, object> SetFunc(Type mType, IDataReader reader)
+        private static Func<IDataReader, M> SetFunc(IDataReader reader)
         {
             // 
+            var mType = typeof(M);
             var dm = new DynamicMethod("MyDAL" + Guid.NewGuid().ToString(), mType, new[] { typeof(IDataReader) }, mType, true);
             var il = dm.GetILGenerator();
             il.DeclareLocal(typeof(int));    // 定义 loc0  int
@@ -383,14 +385,14 @@ namespace MyDAL.AdoNet
             il.Emit(OpCodes.Ret);
 
             var funcType = Expression.GetFuncType(typeof(IDataReader), mType);
-            return (Func<IDataReader, object>)dm.CreateDelegate(funcType);
+            return (Func<IDataReader, M>)dm.CreateDelegate(funcType);
         }
 
-        internal static Row Row(Type mType, IDataReader reader)
+        internal static Row<M> Row(IDataReader reader)
         {
-            return new Row
+            return new Row<M>
             {
-                Handle = SetFunc(mType, reader)
+                Handle = SetFunc(reader)
             };
         }
     }

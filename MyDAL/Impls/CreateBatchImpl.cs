@@ -18,7 +18,7 @@ namespace MyDAL.Impls
         public async Task<int> CreateBatchAsync(IEnumerable<M> mList)
         {
             DC.Action = ActionEnum.Insert;
-            return await DC.BDH.StepProcess(mList, 35, async list =>
+            return await DC.BDH.StepProcess(mList, 100, async list =>
             {
                 DC.DPH.ResetParameter();
                 CreateMHandle(list);

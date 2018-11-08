@@ -17,7 +17,6 @@
         JoinQueryPagingListAsync,
         QueryAllAsync,
         QueryAllPagingListAsync,
-        QuerySingleValueAsync,
         ExistAsync,
         CountAsync,
         JoinCountAsync

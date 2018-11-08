@@ -1,5 +1,4 @@
 ﻿using MyDAL.AdoNet;
-using MyDAL.Cache;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Helper;
@@ -37,7 +36,7 @@ namespace MyDAL.Core.Bases
             VH = new CsValueHelper(this);
             GH = new GenericHelper(this);
             EH = new XExpression(this);
-            SC = new StaticCache(this);
+            SC = new XCache(this);
             PH = new ParameterHelper(this);
             DPH = new DicParamHelper(this);
             BDH = new BatchDataHelper();
@@ -93,7 +92,7 @@ namespace MyDAL.Core.Bases
 
         /************************************************************************************************************************/
 
-        internal StaticCache SC { get; private set; }
+        internal XCache SC { get; private set; }
         internal DataSource DS { get; private set; }
 
         /************************************************************************************************************************/
