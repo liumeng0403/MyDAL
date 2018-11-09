@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
+using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Core.Enums;
 using Yunyong.DataExchange.Core.Extensions;
@@ -78,7 +79,7 @@ namespace Yunyong.DataExchange.AdoNet
                     {
                         await Conn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
                     }
-                    reader = await AdoNetHelper.ExecuteReaderWithFlagsFallbackAsync(
+                    reader = await XSQL.ExecuteReaderWithFlagsFallbackAsync(
                         cmd,
                         needClose,
                         CommandBehavior.SequentialAccess | CommandBehavior.SingleResult,
@@ -120,51 +121,31 @@ namespace Yunyong.DataExchange.AdoNet
             where M : class
         {
             var command = new CommandInfo(SqlOne, Parameter);
-            var mType = typeof(M);
-            var row = RowEnum.FirstOrDefault;
             bool needClose = Conn.State == ConnectionState.Closed;
             using (var cmd = command.TrySetupAsyncCommand(Conn, command.Parameter.ParamReader))
             {
                 DbDataReader reader = null;
                 try
                 {
-                    if (needClose)
-                    {
-                        await Conn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
-                    }
-                    reader = await AdoNetHelper.ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, (row & RowEnum.Single) != 0
-                    ? CommandBehavior.SequentialAccess | CommandBehavior.SingleResult // need to allow multiple rows, to check fail condition
-                    : CommandBehavior.SequentialAccess | CommandBehavior.SingleResult | CommandBehavior.SingleRow, default(CancellationToken)).ConfigureAwait(false);
-
+                    if (needClose) { await Conn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false); }
+                    reader = await XSQL.ExecuteReaderWithFlagsFallbackAsync(
+                        cmd,
+                        needClose,
+                        CommandBehavior.SequentialAccess | CommandBehavior.SingleResult | CommandBehavior.SingleRow,
+                        default(CancellationToken)).ConfigureAwait(false);
                     var result = default(M);
                     if (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false) && reader.FieldCount != 0)
                     {
-                        var func = DC.SC.GetHandle<M>(SqlOne, reader);  // tuple.Func;
-                        var val = func(reader);
-                        result = val;
-                        if ((row & RowEnum.Single) != 0 && await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
-                        {
-                            AdoNetHelper.ThrowMultipleRows(row);
-                        }
-                        while (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
-                        { /* ignore rows after the first */ }
+                        result = DC.SC.GetHandle<M>(SqlOne, reader)(reader);
+                        while (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false)) { }
                     }
-                    else if ((row & RowEnum.FirstOrDefault) == 0) // demanding a row, and don't have one
-                    {
-                        AdoNetHelper.ThrowZeroRows(row);
-                    }
-                    while (await reader.NextResultAsync(default(CancellationToken)).ConfigureAwait(false))
-                    { /* ignore result sets after the first */ }
+                    while (await reader.NextResultAsync(default(CancellationToken)).ConfigureAwait(false)) { }
                     return result;
                 }
                 finally
                 {
-                    using (reader)
-                    { /* dispose if non-null */ }
-                    if (needClose)
-                    {
-                        Conn.Close();
-                    }
+                    using (reader) { }
+                    if (needClose) { Conn.Close(); }
                 }
             }
         }
@@ -189,10 +170,10 @@ namespace Yunyong.DataExchange.AdoNet
                         await Conn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
                     }
 
-                    reader = await AdoNetHelper.ExecuteReaderWithFlagsFallbackAsync(
-                        cmd, 
-                        needClose, 
-                        CommandBehavior.SequentialAccess | CommandBehavior.SingleResult, 
+                    reader = await XSQL.ExecuteReaderWithFlagsFallbackAsync(
+                        cmd,
+                        needClose,
+                        CommandBehavior.SequentialAccess | CommandBehavior.SingleResult,
                         default(CancellationToken)).ConfigureAwait(false);
                     var result = new List<F>();
                     var convertToType = Nullable.GetUnderlyingType(mType) ?? mType;

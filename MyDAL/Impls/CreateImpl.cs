@@ -20,7 +20,7 @@ namespace Yunyong.DataExchange.Impls
             CreateMHandle(m);
             DC.DPH.SetParameter();
             DC.Method = UiMethodEnum.CreateAsync;
-            DC.SqlProvider.GetSQL<M>();
+            DC.SqlProvider.GetSQL();
             return await DC.DS.ExecuteNonQueryAsync();
         }
     }

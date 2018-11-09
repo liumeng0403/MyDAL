@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Core.Extensions;
 using Yunyong.DataExchange.Core.Helper;
 
@@ -16,7 +17,7 @@ namespace Yunyong.DataExchange.AdoNet
         internal RowMap(Type mType)
         {
             Fields = mType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).ToList();
-            Properties = mType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(p => AdoNetHelper.GetPropertySetter(p, mType) != null).ToList();
+            Properties = mType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(p => XSQL.GetPropertySetter(p, mType) != null).ToList();
             Type = mType;
         }
         internal ConstructorInfo DefaultConstructor()

@@ -157,7 +157,7 @@ namespace Yunyong.DataExchange.Core
         internal Func<IDataReader, M> GetHandle<M>(string sql, IDataReader reader)
             where M : class
         {
-            var key = GetHandleKey(sql.GetHashCode(), AdoNetHelper.GetColumnHash(reader), typeof(M).FullName);
+            var key = GetHandleKey(sql.GetHashCode(), XSQL.GetColumnHash(reader), typeof(M).FullName);
             if (!ModelHandleCache.TryGetValue(key, out var row))
             {
                 ModelHandleCache[key] = row = IL<M>.Row(reader).Handle;

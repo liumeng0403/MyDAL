@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 using Yunyong.DataExchange.AdoNet;
 using Yunyong.DataExchange.Core.Enums;
 
-namespace Yunyong.DataExchange.Core.Helper
+namespace Yunyong.DataExchange.Core
 {
-    internal static class AdoNetHelper
+    internal static class XSQL
     {
 
         internal static int GetColumnHash(IDataReader reader)
@@ -56,11 +56,7 @@ namespace Yunyong.DataExchange.Core.Helper
             }
             return false;
         }
-
-        private static int[] ErrTwoRows { get; } = new int[2];
-        private static int[] ErrZeroRows { get; } = new int[0];
-
-
+        
         private static CommandBehavior GetBehavior(bool close, CommandBehavior @default)
         {
             return (close ? (@default | CommandBehavior.CloseConnection) : @default) & AllowedCommandBehaviors;
@@ -127,40 +123,7 @@ namespace Yunyong.DataExchange.Core.Helper
         }
 
         /******************************************************************************************/
-
-        internal static void ThrowMultipleRows(RowEnum row)
-        {
-            switch (row)
-            {
-                // get the standard exception from the runtime
-                case RowEnum.Single:
-                    ErrTwoRows.Single();
-                    break;
-                case RowEnum.SingleOrDefault:
-                    ErrTwoRows.SingleOrDefault();
-                    break;
-                default:
-                    throw new InvalidOperationException();
-            }
-        }
-        internal static void ThrowZeroRows(RowEnum row)
-        {
-            switch (row)
-            {
-                // get the standard exception from the runtime
-                case RowEnum.First:
-                    ErrZeroRows.First();
-                    break;
-                case RowEnum.Single:
-                    ErrZeroRows.Single();
-                    break;
-                default:
-                    throw new InvalidOperationException();
-            }
-        }
-
-        /******************************************************************************************/
-
+        
         internal static Task<DbDataReader> ExecuteReaderWithFlagsFallbackAsync(DbCommand cmd, bool wasClosed, CommandBehavior behavior, CancellationToken cancellationToken)
         {
             var task = cmd.ExecuteReaderAsync(GetBehavior(wasClosed, behavior), cancellationToken);

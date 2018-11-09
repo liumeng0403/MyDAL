@@ -23,7 +23,7 @@ namespace Yunyong.DataExchange.Impls
             DC.PageIndex = 0;
             DC.PageSize = count;
             DC.Method = UiMethodEnum.TopAsync;
-            DC.SqlProvider.GetSQL<M>();
+            DC.SqlProvider.GetSQL();
             return await DC.DS.ExecuteReaderMultiRowAsync<M>();
         }
 
@@ -35,7 +35,7 @@ namespace Yunyong.DataExchange.Impls
             DC.PageIndex = 0;
             DC.PageSize = count;
             DC.Method = UiMethodEnum.TopAsync;
-            DC.SqlProvider.GetSQL<M>();
+            DC.SqlProvider.GetSQL();
             return await DC.DS.ExecuteReaderMultiRowAsync<VM>();
         }
 
@@ -47,7 +47,7 @@ namespace Yunyong.DataExchange.Impls
             DC.PageIndex = 0;
             DC.PageSize = count;
             DC.Method = UiMethodEnum.TopAsync;
-            DC.SqlProvider.GetSQL<M>();
+            DC.SqlProvider.GetSQL();
             return await DC.DS.ExecuteReaderMultiRowAsync<VM>();
         }
     }
@@ -68,7 +68,7 @@ namespace Yunyong.DataExchange.Impls
             DC.PageIndex = 0;
             DC.PageSize = count;
             DC.Method = UiMethodEnum.JoinTopAsync;
-            DC.SqlProvider.GetSQL<M>();
+            DC.SqlProvider.GetSQL();
             return await DC.DS.ExecuteReaderMultiRowAsync<M>();
         }
 
@@ -80,7 +80,7 @@ namespace Yunyong.DataExchange.Impls
             DC.PageIndex = 0;
             DC.PageSize = count;
             DC.Method = UiMethodEnum.JoinTopAsync;
-            DC.SqlProvider.GetSQL<VM>();
+            DC.SqlProvider.GetSQL();
             return await DC.DS.ExecuteReaderMultiRowAsync<VM>(
                 );
         }

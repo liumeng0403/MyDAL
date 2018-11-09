@@ -21,7 +21,7 @@ namespace Yunyong.DataExchange.Impls
         public async Task<List<M>> QueryAllAsync()
         {
             DC.Method = UiMethodEnum.QueryAllAsync;
-            DC.SqlProvider.GetSQL<M>();
+            DC.SqlProvider.GetSQL();
             return await DC.DS.ExecuteReaderMultiRowAsync<M>();
         }
 
@@ -29,7 +29,7 @@ namespace Yunyong.DataExchange.Impls
             where VM : class
         {
             DC.Method = UiMethodEnum.QueryAllAsync;
-            DC.SqlProvider.GetSQL<M>();
+            DC.SqlProvider.GetSQL();
             return await DC.DS.ExecuteReaderMultiRowAsync<VM>();
         }
 
@@ -41,7 +41,7 @@ namespace Yunyong.DataExchange.Impls
             DC.DPH.AddParameter(DC.EH.FuncMFExpression(propertyFunc)[0]);
             DC.DPH.SetParameter();
             DC.Method = UiMethodEnum.QueryAllAsync;
-            DC.SqlProvider.GetSQL<M>();
+            DC.SqlProvider.GetSQL();
             return (await DC.DS.ExecuteReaderSingleColumnAsync<M,F>(propertyFunc.Compile())).ToList();
         }
     }

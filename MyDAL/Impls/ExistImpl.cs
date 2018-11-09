@@ -23,7 +23,7 @@ namespace Yunyong.DataExchange.Impls
             DC.DPH.AddParameter(DC.DPH.CountDic(typeof(M).FullName, "*"));
             DC.DPH.SetParameter();
             DC.Method = UiMethodEnum.ExistAsync;
-            DC.SqlProvider.GetSQL<M>();
+            DC.SqlProvider.GetSQL();
             var count = await DC.DS.ExecuteScalarAsync<long>();
             if (count > 0)
             {

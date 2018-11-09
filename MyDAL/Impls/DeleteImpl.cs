@@ -17,7 +17,7 @@ namespace Yunyong.DataExchange.Impls
         public async Task<int> DeleteAsync()
         {
             DC.Method = UiMethodEnum.DeleteAsync;
-            DC.SqlProvider.GetSQL<M>();
+            DC.SqlProvider.GetSQL();
             return await DC.DS.ExecuteNonQueryAsync();
         }
     }

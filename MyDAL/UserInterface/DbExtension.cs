@@ -32,7 +32,7 @@ namespace Yunyong.DataExchange
         public static Creater<M> Creater<M>(this IDbConnection conn)
             where M:class
         {
-            var dc = new DbContext<M>(conn);
+            var dc = new XContext<M>(conn);
             dc.Crud = CrudTypeEnum.Create;
             return new Creater<M>(dc);
         }
@@ -42,7 +42,7 @@ namespace Yunyong.DataExchange
         /// <typeparam name="M">M:与DB Table 一 一对应</typeparam>
         public static Deleter<M> Deleter<M>(this IDbConnection conn)
         {
-            var dc = new DbContext<M>(conn);
+            var dc = new XContext<M>(conn);
             dc.Crud = CrudTypeEnum.Delete;
             return new Deleter<M>(dc);
         }
@@ -52,7 +52,7 @@ namespace Yunyong.DataExchange
         /// <typeparam name="M">M:与DB Table 一 一对应</typeparam>
         public static Updater<M> Updater<M>(this IDbConnection conn)
         {
-            var dc = new DbContext<M>(conn);
+            var dc = new XContext<M>(conn);
             dc.Crud = CrudTypeEnum.Update;
             return new Updater<M>(dc);
         }
@@ -63,7 +63,7 @@ namespace Yunyong.DataExchange
         public static Selecter<M> Selecter<M>(this IDbConnection conn)
             where M:class
         {
-            var dc = new DbContext<M>(conn);
+            var dc = new XContext<M>(conn);
             dc.Crud = CrudTypeEnum.Query;
             return new Selecter<M>(dc);
         }
@@ -77,7 +77,7 @@ namespace Yunyong.DataExchange
         {
             table1 = Activator.CreateInstance<M1>();
             table2 = Activator.CreateInstance<M2>();
-            var dc = new DbContext<M1, M2>(conn);
+            var dc = new XContext<M1, M2>(conn);
             dc.Crud = CrudTypeEnum.Join;
             return new Joiner(dc);
         }
@@ -89,7 +89,7 @@ namespace Yunyong.DataExchange
             table1 = Activator.CreateInstance<M1>();
             table2 = Activator.CreateInstance<M2>();
             table3 = Activator.CreateInstance<M3>();
-            var dc = new DbContext<M1, M2, M3>(conn);
+            var dc = new XContext<M1, M2, M3>(conn);
             dc.Crud = CrudTypeEnum.Join;
             return new Joiner(dc);
         }
@@ -102,7 +102,7 @@ namespace Yunyong.DataExchange
             table2 = Activator.CreateInstance<M2>();
             table3 = Activator.CreateInstance<M3>();
             table4 = Activator.CreateInstance<M4>();
-            var dc = new DbContext<M1, M2, M3, M4>(conn);
+            var dc = new XContext<M1, M2, M3, M4>(conn);
             dc.Crud = CrudTypeEnum.Join;
             return new Joiner(dc);
         }
@@ -116,7 +116,7 @@ namespace Yunyong.DataExchange
             table3 = Activator.CreateInstance<M3>();
             table4 = Activator.CreateInstance<M4>();
             table5 = Activator.CreateInstance<M5>();
-            var dc = new DbContext<M1, M2, M3, M4, M5>(conn);
+            var dc = new XContext<M1, M2, M3, M4, M5>(conn);
             dc.Crud = CrudTypeEnum.Join;
             return new Joiner(dc);
         }
@@ -131,7 +131,7 @@ namespace Yunyong.DataExchange
             table4 = Activator.CreateInstance<M4>();
             table5 = Activator.CreateInstance<M5>();
             table6 = Activator.CreateInstance<M6>();
-            var dc = new DbContext<M1, M2, M3, M4, M5, M6>(conn);
+            var dc = new XContext<M1, M2, M3, M4, M5, M6>(conn);
             dc.Crud = CrudTypeEnum.Join;
             return new Joiner(dc);
         }
@@ -369,7 +369,7 @@ namespace Yunyong.DataExchange
         /// </summary>
         public static Transactioner Transactioner(this IDbConnection conn)
         {
-            return new Transactioner(new DbContext(conn));
+            return new Transactioner(new XContext(conn));
         }
 
         /******************************************************************************************************************************/
