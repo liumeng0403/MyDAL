@@ -8,9 +8,9 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MyDAL.Core.Helper
+namespace MyDAL.Core
 {
-    internal static class AdoNetHelper
+    internal static class XSQL
     {
 
         internal static int GetColumnHash(IDataReader reader)
@@ -56,11 +56,7 @@ namespace MyDAL.Core.Helper
             }
             return false;
         }
-
-        private static int[] ErrTwoRows { get; } = new int[2];
-        private static int[] ErrZeroRows { get; } = new int[0];
-
-
+        
         private static CommandBehavior GetBehavior(bool close, CommandBehavior @default)
         {
             return (close ? (@default | CommandBehavior.CloseConnection) : @default) & AllowedCommandBehaviors;
@@ -127,40 +123,7 @@ namespace MyDAL.Core.Helper
         }
 
         /******************************************************************************************/
-
-        internal static void ThrowMultipleRows(RowEnum row)
-        {
-            switch (row)
-            {
-                // get the standard exception from the runtime
-                case RowEnum.Single:
-                    ErrTwoRows.Single();
-                    break;
-                case RowEnum.SingleOrDefault:
-                    ErrTwoRows.SingleOrDefault();
-                    break;
-                default:
-                    throw new InvalidOperationException();
-            }
-        }
-        internal static void ThrowZeroRows(RowEnum row)
-        {
-            switch (row)
-            {
-                // get the standard exception from the runtime
-                case RowEnum.First:
-                    ErrZeroRows.First();
-                    break;
-                case RowEnum.Single:
-                    ErrZeroRows.Single();
-                    break;
-                default:
-                    throw new InvalidOperationException();
-            }
-        }
-
-        /******************************************************************************************/
-
+        
         internal static Task<DbDataReader> ExecuteReaderWithFlagsFallbackAsync(DbCommand cmd, bool wasClosed, CommandBehavior behavior, CancellationToken cancellationToken)
         {
             var task = cmd.ExecuteReaderAsync(GetBehavior(wasClosed, behavior), cancellationToken);

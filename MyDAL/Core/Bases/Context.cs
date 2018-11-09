@@ -11,7 +11,7 @@ namespace MyDAL.Core.Bases
 {
     internal abstract class Context
     {
-        
+
         /************************************************************************************************************************/
 
         internal void Init(IDbConnection conn)
@@ -73,6 +73,8 @@ namespace MyDAL.Core.Bases
 
         /************************************************************************************************************************/
 
+        internal bool NeedSetSingle { get; set; } = true;
+        internal string SingleOpName { get; set; }
         internal int DicID { get; set; } = 1;
         internal List<DicParam> Parameters { get; set; }
         internal List<string> SQL { get; set; }
@@ -130,13 +132,14 @@ namespace MyDAL.Core.Bases
             }
             return false;
         }
-        internal bool IsSingleTableOption(CrudTypeEnum crud)
+        internal bool IsSingleTableOption()
         {
-            switch (crud)
+            switch (Crud)
             {
                 case CrudTypeEnum.Query:
                 case CrudTypeEnum.Update:
                 case CrudTypeEnum.Delete:
+                case CrudTypeEnum.Create:
                     return true;
             }
             return false;
@@ -162,6 +165,11 @@ namespace MyDAL.Core.Bases
             //
             var type = typeof(M);
             var key = SC.GetModelKey(type.FullName);
+            if (NeedSetSingle)
+            {
+                SingleOpName = type.FullName;
+                NeedSetSingle = false;
+            }
 
             //
             var table = SqlProvider.GetTableName<M>();

@@ -36,7 +36,7 @@ namespace MyDAL.Core.Bases
             DC.PageIndex = result.PageIndex = pageIndex;
             DC.PageSize= result.PageSize = pageSize;
             DC.Method = sqlType;            
-            DC.SqlProvider.GetSQL<M>();
+            DC.SqlProvider.GetSQL();
             result.TotalCount = await DC.DS.ExecuteScalarAsync<long>();
             result.Data = await DC.DS.ExecuteReaderMultiRowAsync<M>();
             return result;
@@ -49,7 +49,7 @@ namespace MyDAL.Core.Bases
             DC.PageIndex = result.PageIndex = pageIndex;
             DC.PageSize = result.PageSize = pageSize;
             DC.Method = sqlType;
-            DC.SqlProvider.GetSQL<M>();
+            DC.SqlProvider.GetSQL();
             result.TotalCount = await DC.DS.ExecuteScalarAsync<long>();
             result.Data = await DC.DS.ExecuteReaderMultiRowAsync<VM>();
             return result;

@@ -3,26 +3,26 @@ using System.Data;
 
 namespace MyDAL.Core
 {
-    internal class DbContext : Context
+    internal class XContext : Context
     {
-        internal DbContext(IDbConnection conn)
+        internal XContext(IDbConnection conn)
         {
             Init(conn);
         }
     }
 
-    internal class DbContext<M1>:Context
+    internal class XContext<M1>:Context
     {
-        internal DbContext(IDbConnection conn)
+        internal XContext(IDbConnection conn)
         {
             Init(conn);
             SetMTCache<M1>();
         }
     }
 
-    internal class DbContext<M1,M2> : Context
+    internal class XContext<M1,M2> : Context
     {
-        internal DbContext(IDbConnection conn)
+        internal XContext(IDbConnection conn)
         {
             Init(conn);
             SetMTCache<M1>();
@@ -30,9 +30,9 @@ namespace MyDAL.Core
         }
     }
 
-    internal class DbContext<M1, M2,M3> : Context
+    internal class XContext<M1, M2,M3> : Context
     {
-        internal DbContext(IDbConnection conn)
+        internal XContext(IDbConnection conn)
         {
             Init(conn);
             SetMTCache<M1>();
@@ -41,9 +41,9 @@ namespace MyDAL.Core
         }
     }
 
-    internal class DbContext<M1, M2, M3,M4> : Context
+    internal class XContext<M1, M2, M3,M4> : Context
     {
-        internal DbContext(IDbConnection conn)
+        internal XContext(IDbConnection conn)
         {
             Init(conn);
             SetMTCache<M1>();
@@ -53,9 +53,9 @@ namespace MyDAL.Core
         }
     }
 
-    internal class DbContext<M1, M2, M3, M4,M5> : Context
+    internal class XContext<M1, M2, M3, M4,M5> : Context
     {
-        internal DbContext(IDbConnection conn)
+        internal XContext(IDbConnection conn)
         {
             Init(conn);
             SetMTCache<M1>();
@@ -66,9 +66,9 @@ namespace MyDAL.Core
         }
     }
 
-    internal class DbContext<M1, M2, M3, M4, M5,M6> : Context
+    internal class XContext<M1, M2, M3, M4, M5,M6> : Context
     {
-        internal DbContext(IDbConnection conn)
+        internal XContext(IDbConnection conn)
         {
             Init(conn);
             SetMTCache<M1>();

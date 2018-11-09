@@ -248,7 +248,7 @@ namespace MyDAL.AdoNet
             //
             var length = reader.FieldCount;
             var names = Enumerable.Range(0, length).Select(i => reader.GetName(i)).ToArray();
-            var typeMap = AdoNetHelper.GetTypeMap(mType);
+            var typeMap = XSQL.GetTypeMap(mType);
             int index = 0;
             var ctor = typeMap.DefaultConstructor();
 
@@ -286,7 +286,7 @@ namespace MyDAL.AdoNet
                     {
                         il.EmitCall(
                             OpCodes.Call, 
-                            typeof(AdoNetHelper).GetMethod(
+                            typeof(XSQL).GetMethod(
                                 memberType == typeof(char) 
                                 ? nameof(ReadChar) 
                                 : nameof(ReadNullableChar), BindingFlags.Static | BindingFlags.NonPublic),
@@ -355,7 +355,7 @@ namespace MyDAL.AdoNet
                     // Store the value in the property/field
                     if (item.Property != null)
                     {
-                        il.Emit(OpCodes.Callvirt, AdoNetHelper.GetPropertySetter(item.Property, mType));
+                        il.Emit(OpCodes.Callvirt, XSQL.GetPropertySetter(item.Property, mType));
                     }
                     else
                     {
@@ -378,7 +378,7 @@ namespace MyDAL.AdoNet
             il.Emit(OpCodes.Ldloc_0); // stack is Exception, index
             il.Emit(OpCodes.Ldarg_0); // stack is Exception, index, reader
             LoadLocal(il, valueCopyLocal); // stack is Exception, index, reader, value
-            il.EmitCall(OpCodes.Call, typeof(AdoNetHelper).GetMethod(nameof(AdoNetHelper.ThrowDataException)), null);
+            il.EmitCall(OpCodes.Call, typeof(XSQL).GetMethod(nameof(XSQL.ThrowDataException)), null);
             il.EndExceptionBlock();
 
             il.Emit(OpCodes.Ldloc_1); // stack is [rval]

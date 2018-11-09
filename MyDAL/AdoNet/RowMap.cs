@@ -1,4 +1,5 @@
-﻿using MyDAL.Core.Extensions;
+﻿using MyDAL.Core;
+using MyDAL.Core.Extensions;
 using MyDAL.Core.Helper;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace MyDAL.AdoNet
         internal RowMap(Type mType)
         {
             Fields = mType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).ToList();
-            Properties = mType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(p => AdoNetHelper.GetPropertySetter(p, mType) != null).ToList();
+            Properties = mType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(p => XSQL.GetPropertySetter(p, mType) != null).ToList();
             Type = mType;
         }
         internal ConstructorInfo DefaultConstructor()

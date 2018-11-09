@@ -26,7 +26,7 @@ namespace MyDAL.Impls
             DC.DPH.AddParameter(DC.DPH.CountDic(typeof(M).FullName, "*"));
             DC.DPH.SetParameter();
             DC.Method = UiMethodEnum.CountAsync;
-            DC.SqlProvider.GetSQL<M>();
+            DC.SqlProvider.GetSQL();
             return await DC.DS.ExecuteScalarAsync<long>();
         }
 
@@ -40,7 +40,7 @@ namespace MyDAL.Impls
             DC.DPH.AddParameter(DC.DPH.CountDic(typeof(M).FullName, key));
             DC.DPH.SetParameter();
             DC.Method = UiMethodEnum.CountAsync;
-            DC.SqlProvider.GetSQL<M>();
+            DC.SqlProvider.GetSQL();
             return await DC.DS.ExecuteScalarAsync<long>();
         }
     }
@@ -62,7 +62,7 @@ namespace MyDAL.Impls
             DC.DPH.AddParameter(DC.DPH.CountDic(string.Empty, "*", string.Empty));
             DC.DPH.SetParameter();
             DC.Method = UiMethodEnum.JoinCountAsync;
-            DC.SqlProvider.GetSQL<None>();
+            DC.SqlProvider.GetSQL();
             return await DC.DS.ExecuteScalarAsync<long>();
         }
 
@@ -75,7 +75,7 @@ namespace MyDAL.Impls
             DC.DPH.AddParameter(DC.DPH.CountDic(dic.ClassFullName, dic.ColumnOne, dic.TableAliasOne));
             DC.DPH.SetParameter();
             DC.Method = UiMethodEnum.JoinCountAsync;
-            DC.SqlProvider.GetSQL<None>();
+            DC.SqlProvider.GetSQL();
             return await DC.DS.ExecuteScalarAsync<long>();
         }
     }

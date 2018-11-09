@@ -792,7 +792,7 @@ namespace MyDAL.Core
             }
             else if (IsBinaryExpr(nodeType))
             {
-                if (DC.IsSingleTableOption(DC.Crud))
+                if (DC.IsSingleTableOption())
                 {
                     var binExpr = body as BinaryExpression;
                     var pres = new List<string>

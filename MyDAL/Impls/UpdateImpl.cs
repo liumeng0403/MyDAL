@@ -17,7 +17,7 @@ namespace MyDAL.Impls
         public async Task<int> UpdateAsync()
         {
             DC.Method = UiMethodEnum.UpdateAsync;
-            DC.SqlProvider.GetSQL<M>();
+            DC.SqlProvider.GetSQL();
             return await DC.DS.ExecuteNonQueryAsync();
         }
     }

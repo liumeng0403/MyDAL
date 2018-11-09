@@ -24,7 +24,7 @@ namespace MyDAL.Impls
                 CreateMHandle(list);
                 DC.DPH.SetParameter();
                 DC.Method = UiMethodEnum.CreateBatchAsync;
-                DC.SqlProvider.GetSQL<M>();
+                DC.SqlProvider.GetSQL();
                 return await DC.DS.ExecuteNonQueryAsync();
             });
         }
