@@ -1,5 +1,4 @@
 ﻿using MyDAL.Core.Bases;
-using MyDAL.Core.Common;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -10,15 +9,6 @@ namespace MyDAL.Core.Helper
 {
     internal class GenericHelper
     {
-
-        private Context DC { get; set; }
-
-        internal GenericHelper(Context dc)
-        {
-            DC = dc;
-        }
-
-        /*******************************************************************************************************************/
 
         private Assembly LoadAssemblyR(string name)
         {
@@ -69,29 +59,34 @@ namespace MyDAL.Core.Helper
                 return null;
             }
         }
-
+        private Context DC { get; set; }
+        internal GenericHelper(Context dc)
+        {
+            DC = dc;
+        }
+        
         /*******************************************************************************************************************/
 
-        public object GetTypeValue(PropertyInfo outerProp, object outerObj)
+        internal object GetTypeValue(PropertyInfo outerProp, object outerObj)
         {
             return outerProp.GetValue(outerObj);
         }
-        public object GetTypeValue(FieldInfo outerField, object outerObj)
+        internal object GetTypeValue(FieldInfo outerField, object outerObj)
         {
             return outerField.GetValue(outerObj);
         }
-        public object GetTypeValue(object objVal)
+        internal object GetTypeValue(object objVal)
         {
             return objVal;
         }
 
-        public List<PropertyInfo> GetPropertyInfos(Type mType)
+        internal List<PropertyInfo> GetPropertyInfos(Type mType)
         {
             var props = mType.GetProperties(BindingFlags.GetProperty | BindingFlags.Instance | BindingFlags.Public).ToList();
             return props;
         }
 
-        public Assembly LoadAssembly(string fullName)
+        internal Assembly LoadAssembly(string fullName)
         {
 
             if (string.IsNullOrWhiteSpace(fullName))
@@ -172,6 +167,5 @@ namespace MyDAL.Core.Helper
             //
             return (T)Convert.ChangeType(value, type, CultureInfo.InvariantCulture);
         }
-
     }
 }

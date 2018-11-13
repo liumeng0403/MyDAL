@@ -1,5 +1,4 @@
-﻿using MyDAL.Core.Enums;
-using MyDAL.DBRainbow;
+﻿using MyDAL.DBRainbow;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

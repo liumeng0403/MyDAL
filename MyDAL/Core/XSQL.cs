@@ -2,69 +2,14 @@
 using MyDAL.Core.Enums;
 using System;
 using System.Data;
-using System.Data.Common;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace MyDAL.Core
 {
     internal static class XSQL
     {
-
-        internal static int GetColumnHash(IDataReader reader)
-        {
-            unchecked
-            {
-                int max = reader.FieldCount;
-                int hash = max;
-                for (int i = 0; i < max; i++)
-                {
-                    var col = reader.GetName(i);
-                    hash = (-79 * ((hash * 31) + (col?.GetHashCode() ?? 0))) + (reader.GetFieldType(i)?.GetHashCode() ?? 0);
-                }
-                return hash;
-            }
-        }
-
-        private static CommandBehavior DefaultAllowedCommandBehaviors { get; } = ~CommandBehavior.SingleResult;
-        private static CommandBehavior AllowedCommandBehaviors { get; set; } = DefaultAllowedCommandBehaviors;
-
-        private static void SetAllowedCommandBehaviors(CommandBehavior behavior, bool enabled)
-        {
-            if (enabled)
-            {
-                AllowedCommandBehaviors |= behavior;
-            }
-            else
-            {
-                AllowedCommandBehaviors &= ~behavior;
-            }
-        }
-        internal static bool DisableCommandBehaviorOptimizations(CommandBehavior behavior, Exception ex)
-        {
-            if (AllowedCommandBehaviors == DefaultAllowedCommandBehaviors
-                && (behavior & (CommandBehavior.SingleResult | CommandBehavior.SingleRow)) != 0)
-            {
-                if (ex.Message.Contains(nameof(CommandBehavior.SingleResult))
-                    || ex.Message.Contains(nameof(CommandBehavior.SingleRow)))
-                { // some providers just just allow these, so: try again without them and stop issuing them
-                    SetAllowedCommandBehaviors(CommandBehavior.SingleResult | CommandBehavior.SingleRow, false);
-                    return true;
-                }
-            }
-            return false;
-        }
         
-        private static CommandBehavior GetBehavior(bool close, CommandBehavior @default)
-        {
-            return (close ? (@default | CommandBehavior.CloseConnection) : @default) & AllowedCommandBehaviors;
-        }
-       
-        
-        /******************************************************************************************/
-
         internal static MethodInfo GetPropertySetter(PropertyInfo propertyInfo, Type mType)
         {
             if (propertyInfo.DeclaringType == mType)
@@ -121,20 +66,7 @@ namespace MyDAL.Core
             }
             return map;
         }
-
-        /******************************************************************************************/
         
-        internal static Task<DbDataReader> ExecuteReaderWithFlagsFallbackAsync(DbCommand cmd, bool wasClosed, CommandBehavior behavior, CancellationToken cancellationToken)
-        {
-            var task = cmd.ExecuteReaderAsync(GetBehavior(wasClosed, behavior), cancellationToken);
-            if (task.Status == TaskStatus.Faulted && DisableCommandBehaviorOptimizations(behavior, task.Exception.InnerException))
-            {
-                // we can retry; this time it will have different flags
-                return cmd.ExecuteReaderAsync(GetBehavior(wasClosed, behavior), cancellationToken);
-            }
-            return task;
-        }
-
         /****************************************************************************************************************/
 
         internal static string ConditionAction(ActionEnum action)

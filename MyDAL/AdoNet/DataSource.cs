@@ -1,8 +1,6 @@
 ﻿using MyDAL.Core;
 using MyDAL.Core.Bases;
 using MyDAL.Core.Enums;
-using MyDAL.Core.Extensions;
-using MyDAL.Core.Helper;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -51,6 +49,58 @@ namespace MyDAL.AdoNet
                 return DC.DPH.GetParameters(DC.Parameters);
             }
         }
+        private DbCommand TrySetupAsyncCommand(CommandInfo command, IDbConnection cnn, Action<IDbCommand, DbParamInfo> paramReader)
+        {
+            var cmd = cnn.CreateCommand();
+            cmd.CommandText = command.CommandText;
+            cmd.CommandTimeout = XConfig.CommandTimeout;
+            cmd.CommandType = CommandType.Text;
+            paramReader?.Invoke(cmd, command.Parameter);
+            return cmd as DbCommand;
+        }
+        private Task TryOpenAsync(IDbConnection cnn)
+        {
+            if (cnn is DbConnection dbConn)
+            {
+                return dbConn.OpenAsync(default(CancellationToken));
+            }
+            else
+            {
+                throw new InvalidOperationException("Async operations require use of a DbConnection or an already-open IDbConnection");
+            }
+        }
+        private static CommandBehavior DefaultAllowedCommandBehaviors { get; } = ~CommandBehavior.SingleResult;
+        private CommandBehavior AllowedCommandBehaviors { get; set; } = DefaultAllowedCommandBehaviors;
+        private CommandBehavior GetBehavior(bool close, CommandBehavior @default)
+        {
+            return (close ? (@default | CommandBehavior.CloseConnection) : @default) & AllowedCommandBehaviors;
+        }
+        internal bool DisableCommandBehaviorOptimizations(CommandBehavior behavior, Exception ex)
+        {
+            if (AllowedCommandBehaviors == DefaultAllowedCommandBehaviors
+                && (behavior & (CommandBehavior.SingleResult | CommandBehavior.SingleRow)) != 0)
+            {
+                if (ex.Message.Contains(nameof(CommandBehavior.SingleResult))
+                    || ex.Message.Contains(nameof(CommandBehavior.SingleRow)))
+                {
+                    AllowedCommandBehaviors &= ~(CommandBehavior.SingleResult | CommandBehavior.SingleRow);
+                    return true;
+                }
+            }
+            return false;
+        }
+        private Task<DbDataReader> ExecuteReaderWithFlagsFallbackAsync(DbCommand cmd, bool wasClosed, CommandBehavior behavior)
+        {
+            var task = cmd.ExecuteReaderAsync(GetBehavior(wasClosed, behavior), default(CancellationToken));
+            if (task.Status == TaskStatus.Faulted && DisableCommandBehaviorOptimizations(behavior, task.Exception.InnerException))
+            {
+                return cmd.ExecuteReaderAsync(GetBehavior(wasClosed, behavior), default(CancellationToken));
+            }
+            return task;
+        }
+
+        /*********************************************************************************************************************************************/
+
         private DataSource() { }
         internal DataSource(Context dc)
         {
@@ -68,47 +118,31 @@ namespace MyDAL.AdoNet
             where M : class
         {
             var command = new CommandInfo(SqlCount == 1 ? SqlOne : SqlTwo, Parameter);
-            var mType = typeof(M);
             bool needClose = Conn.State == ConnectionState.Closed;
-            using (var cmd = command.TrySetupAsyncCommand(Conn, command.Parameter.ParamReader))
+            using (var cmd = TrySetupAsyncCommand(command, Conn, command.Parameter.ParamReader))
             {
                 DbDataReader reader = null;
                 try
                 {
-                    if (needClose)
-                    {
-                        await Conn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
-                    }
-                    reader = await XSQL.ExecuteReaderWithFlagsFallbackAsync(
-                        cmd,
-                        needClose,
-                        CommandBehavior.SequentialAccess | CommandBehavior.SingleResult,
-                        default(CancellationToken)).ConfigureAwait(false);
+                    if (needClose) { await TryOpenAsync(Conn).ConfigureAwait(false); }
+                    reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, XConfig.MultiRow).ConfigureAwait(false);
                     if (reader.FieldCount == 0)
                     {
                         return new List<M>();
                     }
-
-                    var func = DC.SC.GetHandle<M>(SqlCount == 1 ? SqlOne : SqlTwo, reader); // tuple.Func;
+                    var func = DC.SC.GetHandle<M>(SqlCount == 1 ? SqlOne : SqlTwo, reader);
                     var result = new List<M>();
-                    var convertToType = Nullable.GetUnderlyingType(mType) ?? mType;
                     while (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
                     {
-                        object val = func(reader);
-                        result.Add((M)val);
+                        result.Add(func(reader));
                     }
-                    while (await reader.NextResultAsync(default(CancellationToken)).ConfigureAwait(false))
-                    { }
+                    while (await reader.NextResultAsync(default(CancellationToken)).ConfigureAwait(false)) { }
                     return result;
                 }
                 finally
                 {
-                    using (reader)
-                    { }
-                    if (needClose)
-                    {
-                        Conn.Close();
-                    }
+                    using (reader) { }
+                    if (needClose) { Conn.Close(); }
                 }
             }
         }
@@ -121,18 +155,14 @@ namespace MyDAL.AdoNet
             where M : class
         {
             var command = new CommandInfo(SqlOne, Parameter);
-            bool needClose = Conn.State == ConnectionState.Closed;
-            using (var cmd = command.TrySetupAsyncCommand(Conn, command.Parameter.ParamReader))
+            var needClose = Conn.State == ConnectionState.Closed;
+            using (var cmd = TrySetupAsyncCommand(command, Conn, command.Parameter.ParamReader))
             {
                 DbDataReader reader = null;
                 try
                 {
-                    if (needClose) { await Conn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false); }
-                    reader = await XSQL.ExecuteReaderWithFlagsFallbackAsync(
-                        cmd,
-                        needClose,
-                        CommandBehavior.SequentialAccess | CommandBehavior.SingleResult | CommandBehavior.SingleRow,
-                        default(CancellationToken)).ConfigureAwait(false);
+                    if (needClose) { await TryOpenAsync(Conn).ConfigureAwait(false); }
+                    reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, XConfig.SingleRow).ConfigureAwait(false);
                     var result = default(M);
                     if (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false) && reader.FieldCount != 0)
                     {
@@ -158,42 +188,27 @@ namespace MyDAL.AdoNet
             where M : class
         {
             var command = new CommandInfo(SqlOne, Parameter);
-            var mType = typeof(M);
-            bool needClose = Conn.State == ConnectionState.Closed;
-            using (var cmd = command.TrySetupAsyncCommand(Conn, command.Parameter.ParamReader))
+            var needClose = Conn.State == ConnectionState.Closed;
+            using (var cmd = TrySetupAsyncCommand(command, Conn, command.Parameter.ParamReader))
             {
                 var reader = default(DbDataReader);
                 try
                 {
-                    if (needClose)
-                    {
-                        await Conn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
-                    }
-
-                    reader = await XSQL.ExecuteReaderWithFlagsFallbackAsync(
-                        cmd,
-                        needClose,
-                        CommandBehavior.SequentialAccess | CommandBehavior.SingleResult,
-                        default(CancellationToken)).ConfigureAwait(false);
+                    if (needClose) { await TryOpenAsync(Conn).ConfigureAwait(false); }
+                    reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, XConfig.MultiRow).ConfigureAwait(false);
                     var result = new List<F>();
-                    var convertToType = Nullable.GetUnderlyingType(mType) ?? mType;
                     var func = DC.SC.GetHandle<M>(SqlOne, reader);
                     while (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
                     {
                         result.Add(propertyFunc(func(reader)));
                     }
-                    while (await reader.NextResultAsync(default(CancellationToken)).ConfigureAwait(false))
-                    { /* ignore subsequent result sets */ }
+                    while (await reader.NextResultAsync(default(CancellationToken)).ConfigureAwait(false)) { }
                     return result;
-
                 }
                 finally
                 {
-                    using (reader) { /* dispose if non-null */ }
-                    if (needClose)
-                    {
-                        Conn.Close();
-                    }
+                    using (reader) { }
+                    if (needClose) { Conn.Close(); }
                 }
             }
         }
@@ -206,24 +221,18 @@ namespace MyDAL.AdoNet
         internal async Task<int> ExecuteNonQueryAsync()
         {
             var command = new CommandInfo(SqlOne, Parameter);
-            bool needClose = Conn.State == ConnectionState.Closed;
-            using (var cmd = command.TrySetupAsyncCommand(Conn, command.Parameter.ParamReader))
+            var needClose = Conn.State == ConnectionState.Closed;
+            using (var cmd = TrySetupAsyncCommand(command, Conn, command.Parameter.ParamReader))
             {
                 try
                 {
-                    if (needClose)
-                    {
-                        await Conn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
-                    }
+                    if (needClose) { await TryOpenAsync(Conn).ConfigureAwait(false); }
                     var result = await cmd.ExecuteNonQueryAsync(default(CancellationToken)).ConfigureAwait(false);
                     return result;
                 }
                 finally
                 {
-                    if (needClose)
-                    {
-                        Conn.Close();
-                    }
+                    if (needClose) { Conn.Close(); }
                 }
             }
         }
@@ -237,23 +246,17 @@ namespace MyDAL.AdoNet
         {
             var command = new CommandInfo(SqlOne, Parameter);
             var cmd = default(DbCommand);
-            bool needClose = Conn.State == ConnectionState.Closed;
-            object result;
+            var needClose = Conn.State == ConnectionState.Closed;
+            var result = default(object);
             try
             {
-                cmd = command.TrySetupAsyncCommand(Conn, command.Parameter.ParamReader);
-                if (needClose)
-                {
-                    await Conn.TryOpenAsync(default(CancellationToken)).ConfigureAwait(false);
-                }
+                cmd = TrySetupAsyncCommand(command, Conn, command.Parameter.ParamReader);
+                if (needClose) { await TryOpenAsync(Conn).ConfigureAwait(false); }
                 result = await cmd.ExecuteScalarAsync(default(CancellationToken)).ConfigureAwait(false);
             }
             finally
             {
-                if (needClose)
-                {
-                    Conn.Close();
-                }
+                if (needClose) { Conn.Close(); }
                 cmd?.Dispose();
             }
             return DC.GH.ConvertT<T>(result);
