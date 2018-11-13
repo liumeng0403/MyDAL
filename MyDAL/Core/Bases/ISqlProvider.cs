@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Yunyong.DataExchange.Core.Enums;
 using Yunyong.DataExchange.DBRainbow;
 
 namespace Yunyong.DataExchange.Core.Bases
