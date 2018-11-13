@@ -1,5 +1,4 @@
-﻿using MyDAL.Core;
-using MyDAL.Core.Bases;
+﻿using MyDAL.Core.Bases;
 using MyDAL.Core.Enums;
 using MyDAL.Interfaces;
 using System;

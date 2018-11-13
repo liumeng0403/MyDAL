@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Query
 {
     public sealed class WhereQ<M>
-        : Operator, IExist, IQueryFirstOrDefault<M>, IQueryList<M>, IQueryPagingList<M>, IQueryPagingListO<M>, ICount<M>,ITop<M>
+        : Operator, IExist, IQueryFirstOrDefault<M>, IQueryList<M>, IQueryPagingList<M>, IQueryPagingListO<M>, ICount<M>,ITop<M>,ISum<M>
         where M : class
     {
         internal WhereQ(Context dc)
@@ -37,6 +37,15 @@ namespace MyDAL.UserFacade.Query
         public async Task<long> CountAsync<F>(Expression<Func<M, F>> propertyFunc)
         {
             return await new CountImpl<M>(DC).CountAsync(propertyFunc);
+        }
+
+        /// <summary>
+        /// 列求和 -- select sum(col) from ...
+        /// </summary>
+        public async Task<F> SumAsync<F>(Expression<Func<M, F>> func)
+            where F : struct
+        {
+            return await new SumImpl<M>(DC).SumAsync(func);
         }
 
         /// <summary>

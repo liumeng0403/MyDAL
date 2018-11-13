@@ -143,8 +143,12 @@ namespace MyDAL.Core
                     return " not in ";
                 case OptionEnum.Count:
                     return " count";
+                case OptionEnum.Sum:
+                    return " sum";
                 case OptionEnum.CharLength:
                     return " char_length";
+                case OptionEnum.DateFormat:
+                    return " DATE_FORMAT";
                 case OptionEnum.Trim:
                     return " trim";
                 case OptionEnum.LTrim:

@@ -19,6 +19,7 @@
         QueryAllPagingListAsync,
         ExistAsync,
         CountAsync,
+        SumAsync,
         JoinCountAsync
     }
 }

@@ -66,6 +66,11 @@ namespace MyDAL.Core.Enums
         Count,
 
         /// <summary>
+        /// " sum"
+        /// </summary>
+        Sum,
+
+        /// <summary>
         /// " char_length"
         /// </summary>
         CharLength,
@@ -84,6 +89,11 @@ namespace MyDAL.Core.Enums
         /// " rtrim"
         /// </summary>
         RTrim,
+
+        /// <summary>
+        /// " DATE_FORMAT"
+        /// </summary>
+        DateFormat,
 
         /// <summary>
         /// ""
