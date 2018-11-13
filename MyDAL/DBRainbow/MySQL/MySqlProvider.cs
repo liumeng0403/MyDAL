@@ -9,7 +9,6 @@ using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Enums;
 using Yunyong.DataExchange.Core.Extensions;
-using Yunyong.DataExchange.Core.Helper;
 
 namespace Yunyong.DataExchange.DBRainbow.MySQL
 {
@@ -230,6 +229,32 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
             }
             throw new Exception("CharLengthProcess 未能处理!!!");
         }
+        private string DateFormatProcess(DicParam db, bool isMulti)
+        {
+            if (isMulti)
+            {
+                if (db.Crud == CrudTypeEnum.Join)
+                {
+                    return $" {XSQL.ConditionOption(db.Option)}({db.TableAliasOne}.`{db.ColumnOne}`,'{db.Format}'){XSQL.ConditionCompare(db.Compare)}@{db.Param} ";
+                }
+                else if (DC.IsSingleTableOption())
+                {
+                    return $" {XSQL.ConditionOption(db.Option)}(`{db.ColumnOne}`,'{db.Format}'){XSQL.ConditionCompare(db.Compare)}@{db.Param} ";
+                }
+            }
+            else
+            {
+                if (db.Crud == CrudTypeEnum.Join)
+                {
+                    return $" {XSQL.ConditionAction(db.Action)} {XSQL.ConditionOption(db.Option)}({db.TableAliasOne}.`{db.ColumnOne}`,'{db.Format}'){XSQL.ConditionCompare(db.Compare)}@{db.Param} ";
+                }
+                else if (DC.IsSingleTableOption())
+                {
+                    return $" {XSQL.ConditionAction(db.Action)} {XSQL.ConditionOption(db.Option)}(`{db.ColumnOne}`,'{db.Format}'){XSQL.ConditionCompare(db.Compare)}@{db.Param} ";
+                }
+            }
+            throw new Exception("DateFormatProcess 未能处理!!!");
+        }
         private string TrimProcess(DicParam db, bool isMulti)
         {
             if (isMulti)
@@ -344,6 +369,10 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
                 else if (db.Option == OptionEnum.CharLength)
                 {
                     return CharLengthProcess(db, isMulti);
+                }
+                else if (db.Option == OptionEnum.DateFormat)
+                {
+                    return DateFormatProcess(db, isMulti);
                 }
                 else if (db.Option == OptionEnum.Trim || db.Option == OptionEnum.LTrim || db.Option == OptionEnum.RTrim)
                 {
@@ -580,6 +609,23 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
 
             sb.Append(str);
         }
+        private void GetSumPart(StringBuilder sb)
+        {
+            Spacing(sb);
+            var str = string.Empty;
+
+            var item = DC.Parameters.FirstOrDefault(it => it.Option == OptionEnum.Sum);
+            if (item.Crud == CrudTypeEnum.Query)
+            {
+                str = $" {XSQL.ConditionOption(item.Option)}(`{item.ColumnOne}`) ";
+            }
+            else if (item.Crud == CrudTypeEnum.Join)
+            {
+                str = $" {XSQL.ConditionOption(item.Option)}({item.TableAliasOne}.`{item.ColumnOne}`) ";
+            }
+
+            sb.Append(str);
+        }
 
         private void Columns(StringBuilder sb)
         {
@@ -799,7 +845,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
                     list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.JoinQueryFirstOrDefaultAsync:
-                    sb.Append(" select "); Columns(sb); From(sb);Table(sb); Joins(sb); Wheres(sb); OrderBy(sb); End(sb);
+                    sb.Append(" select "); Columns(sb); From(sb); Table(sb); Joins(sb); Wheres(sb); OrderBy(sb); End(sb);
                     list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.QueryListAsync:
@@ -809,7 +855,7 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
                     break;
                 case UiMethodEnum.JoinQueryListAsync:
                 case UiMethodEnum.JoinTopAsync:
-                    sb.Append(" select "); Columns(sb); From(sb);Table(sb); Joins(sb); Wheres(sb); OrderBy(sb); Limit(sb); End(sb);
+                    sb.Append(" select "); Columns(sb); From(sb); Table(sb); Joins(sb); Wheres(sb); OrderBy(sb); Limit(sb); End(sb);
                     list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.QueryPagingListAsync:
@@ -820,10 +866,10 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
                     list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.JoinQueryPagingListAsync:
-                    sb.Append("select count(*) "); From(sb);Table(sb); Joins(sb); Wheres(sb); End(sb);
+                    sb.Append("select count(*) "); From(sb); Table(sb); Joins(sb); Wheres(sb); End(sb);
                     list.Add(sb.ToString());
                     sb.Clear();
-                    sb.Append("select "); Columns(sb); From(sb);Table(sb); Joins(sb); Wheres(sb); OrderBy(sb); Limit(sb); End(sb);
+                    sb.Append("select "); Columns(sb); From(sb); Table(sb); Joins(sb); Wheres(sb); OrderBy(sb); Limit(sb); End(sb);
                     list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.QueryAllAsync:
@@ -842,8 +888,12 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
                     sb.Append(" select "); GetCountPart(sb); From(sb); Table(sb); Wheres(sb); End(sb);
                     list.Add(sb.ToString());
                     break;
+                case UiMethodEnum.SumAsync:
+                    sb.Append(" select "); GetSumPart(sb); From(sb); Table(sb); Wheres(sb); End(sb);
+                    list.Add(sb.ToString());
+                    break;
                 case UiMethodEnum.JoinCountAsync:
-                    sb.Append(" select "); GetCountPart(sb); From(sb);Table(sb); Joins(sb); Wheres(sb); End(sb);
+                    sb.Append(" select "); GetCountPart(sb); From(sb); Table(sb); Joins(sb); Wheres(sb); End(sb);
                     list.Add(sb.ToString());
                     break;
             }

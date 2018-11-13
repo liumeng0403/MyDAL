@@ -361,7 +361,7 @@ namespace Yunyong.DataExchange
         {
             return await conn.Selecter<M>().Where(compareFunc).ExistAsync();
         }
-
+        
         /******************************************************************************************************************************/
 
         /// <summary>

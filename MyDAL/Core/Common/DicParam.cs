@@ -36,6 +36,7 @@ namespace Yunyong.DataExchange.Core.Common
         internal object CsValue { get; set; }
         internal string CsValueStr { get; set; }
         internal Type CsType { get; set; }
+        internal string Format { get; set; }
 
         //
         internal int TvpIndex { get; set; }

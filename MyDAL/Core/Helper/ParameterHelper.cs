@@ -586,11 +586,25 @@ namespace Yunyong.DataExchange.Core.Helper
             //
             if (type == DbType.AnsiString)
             {
-                val = ui.CsValueStr;
+                if (!ui.CsValueStr.IsNullStr())
+                {
+                    val = ui.CsValueStr;
+                }
+                else
+                {
+                    val = ui.CsValue;
+                }
             }
             else if (type == DbType.DateTime2)
             {
-                val = ui.CsValueStr.ToDateTime();
+                if (!ui.CsValueStr.IsNullStr())
+                {
+                    val = ui.CsValueStr.ToDateTime();
+                }
+                else
+                {
+                    val = ui.CsValue.ToDateTime();
+                }
             }
             else
             {

@@ -124,6 +124,10 @@ namespace Yunyong.DataExchange.Core.Helper
                     val = (string.Format(format, args), string.Empty);
                 }
             }
+            else
+            {
+                val = (Expression.Lambda(mcExpr).Compile().DynamicInvoke(),string.Empty);
+            }
 
             //
             return val;

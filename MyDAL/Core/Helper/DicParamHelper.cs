@@ -314,6 +314,20 @@ namespace Yunyong.DataExchange.Core.Helper
 
             return dic;
         }
+        internal DicParam DateFormatDic(string key, string alias, (object val, string valStr) value, Type valType,string format)
+        {
+            var dic = SetDicBase(DC);
+            dic.ColumnOne = key;
+            dic.TableAliasOne = alias;
+            dic.Param = key;
+            dic.ParamRaw = key;
+            dic.CsValue = value.val;
+            dic.CsValueStr = value.valStr;
+            dic.CsType = valType;
+            dic.Format = format;
+
+            return dic;
+        }
 
         internal DicParam CompareDic(string classFullName, string key, string alias, (object val, string valStr) value, Type valType)
         {
@@ -426,6 +440,17 @@ namespace Yunyong.DataExchange.Core.Helper
         }
 
         internal DicParam CountDic(string fullName, string key, string alias = "")
+        {
+            var dic = SetDicBase(DC);
+            dic.ClassFullName = fullName;
+            dic.TableAliasOne = alias;
+            dic.ColumnOne = key;
+            dic.Param = key;
+            dic.ParamRaw = key;
+
+            return dic;
+        }
+        internal DicParam SumDic(string fullName, string key, string alias = "")
         {
             var dic = SetDicBase(DC);
             dic.ClassFullName = fullName;

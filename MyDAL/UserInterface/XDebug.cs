@@ -42,7 +42,14 @@ namespace Yunyong.DataExchange
                     }
                     else if (dbM.CsType == XConfig.DateTime)
                     {
-                        csVal = dbM.CsValue.ToDateTimeStr();
+                        try
+                        {
+                            csVal = dbM.CsValue.ToDateTimeStr();
+                        }
+                        catch
+                        {
+                            csVal = dbM.CsValue.ToString();
+                        }
                     }
                     else
                     {

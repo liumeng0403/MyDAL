@@ -46,11 +46,11 @@ namespace Yunyong.DataExchange.Core
         }
         private static ActionEnum GetGroupAction(ExpressionType nodeType)
         {
-            if(nodeType== ExpressionType.AndAlso)
+            if (nodeType == ExpressionType.AndAlso)
             {
                 return ActionEnum.And;
             }
-            else if(nodeType == ExpressionType.OrElse)
+            else if (nodeType == ExpressionType.OrElse)
             {
                 return ActionEnum.Or;
             }
@@ -104,8 +104,8 @@ namespace Yunyong.DataExchange.Core
             }
 
             return alias;
-        }        
-        private (string key, string alias, Type valType, string classFullName) GetKey(Expression bodyL, OptionEnum option)
+        }
+        private (string key, string alias, Type valType, string classFullName, string format) GetKey(Expression bodyL, OptionEnum option, string format = "")
         {
             if (bodyL.NodeType == ExpressionType.Convert)
             {
@@ -147,7 +147,7 @@ namespace Yunyong.DataExchange.Core
                 }
 
                 //
-                return (field, alias, type, paramType.FullName);
+                return (field, alias, type, paramType.FullName, format);
             }
             else if (bodyL.NodeType == ExpressionType.Call)
             {
@@ -164,11 +164,17 @@ namespace Yunyong.DataExchange.Core
                     var mem = mcExpr.Arguments[0];
                     return GetKey(mem, option);
                 }
+                else if (option == OptionEnum.DateFormat)
+                {
+                    var mem = mcExpr.Object;
+                    var con = mcExpr.Arguments[0] as ConstantExpression;
+                    return GetKey(mem, option, con.Value.ToString());
+                }
             }
 
-            return (default(string), default(string), default(Type), default(string));
+            return (default(string), default(string), default(Type), default(string), default(string));
         }
-        
+
         private bool IsBinaryExpr(ExpressionType type)
         {
             if (type == ExpressionType.Equal
@@ -353,7 +359,7 @@ namespace Yunyong.DataExchange.Core
                     {
                         vals.Add(DC.VH.ConvertValue(arg as UnaryExpression, funcStr, keyTuple.valType));
                     }
-                    else if(arg.NodeType== ExpressionType.MemberAccess)
+                    else if (arg.NodeType == ExpressionType.MemberAccess)
                     {
                         vals.Add(DC.VH.MemberValue(arg as MemberExpression, funcStr, keyTuple.valType));
                     }
@@ -368,10 +374,10 @@ namespace Yunyong.DataExchange.Core
                 DC.Compare = CompareEnum.None;
                 return DC.DPH.InDic(keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType);
             }
-            else if(nodeType == ExpressionType.MemberInit)
+            else if (nodeType == ExpressionType.MemberInit)
             {
                 var expr = valExpr as MemberInitExpression;
-                if(expr.NewExpression.Arguments.Count==0)
+                if (expr.NewExpression.Arguments.Count == 0)
                 {
                     throw new Exception($"【{keyExpr}】 中 集合为空!!!");
                 }
@@ -449,6 +455,34 @@ namespace Yunyong.DataExchange.Core
                     dic.ClassFullName = tuple.classFullName;
                     return dic;
                 }
+                else if (leftStr.Contains(".ToString(")
+                    && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
+                {
+                    var tuple = GetKey(binTuple.left, OptionEnum.DateFormat);
+                    var val = HandleBinary(binTuple.right, funcStr, tuple.valType);
+                    DC.Option = OptionEnum.DateFormat;
+                    DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
+                    var format = string.Empty;
+                    if ("yyyy-MM-dd".Equals(tuple.format.Trim(), StringComparison.OrdinalIgnoreCase))
+                    {
+                        format = "%Y-%m-%d";
+                    }
+                    else if("yyyy-MM".Equals(tuple.format.Trim(),StringComparison.OrdinalIgnoreCase))
+                    {
+                        format = "%Y-%m";
+                    }
+                    else if("yyyy".Equals(tuple.format.Trim(),StringComparison.OrdinalIgnoreCase))
+                    {
+                        format = "%Y";
+                    }
+                    else
+                    {
+                        throw new Exception($"{XConfig._001} -- [[{funcStr}]] 未能解析!!!");
+                    }
+                    var dic = DC.DPH.DateFormatDic(tuple.key, tuple.alias, val, tuple.valType, format);
+                    dic.ClassFullName = tuple.classFullName;
+                    return dic;
+                }
                 else
                 {
                     var keyTuple = GetKey(binTuple.left, OptionEnum.Compare);
@@ -500,7 +534,7 @@ namespace Yunyong.DataExchange.Core
                     {
                         return NewCollectionIn(objNodeType, mcExpr, objExpr, funcStr);
                     }
-                    else if(objNodeType== ExpressionType.MemberInit)
+                    else if (objNodeType == ExpressionType.MemberInit)
                     {
                         return NewCollectionIn(objNodeType, mcExpr, objExpr, funcStr);
                     }
@@ -833,7 +867,7 @@ namespace Yunyong.DataExchange.Core
                 var memExpr = body as MemberExpression;
                 result = HandConditionMemberAccess(memExpr);
             }
-            
+
             //
             return result;
         }

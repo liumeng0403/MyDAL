@@ -222,9 +222,16 @@ namespace Yunyong.DataExchange.Core.Extensions
             {
                 result = Convert.ToDateTime(obj).ToString("yyyy-MM-dd HH:mm:ss.ffffff");
             }
-            catch (Exception ex)
+            catch
             {
-                throw new Exception($"string ToDateTimeStr(this object obj) -- {obj?.ToString()}", ex);
+                try
+                {
+                    result = DateTime.Parse(obj.ToString()).ToString("yyyy-MM-dd HH:mm:ss.ffffff");
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception($"string ToDateTimeStr(this object obj) -- {obj?.ToString()}", ex);
+                }
             }
             return result;
         }

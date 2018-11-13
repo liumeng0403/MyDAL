@@ -19,6 +19,7 @@ namespace Yunyong.DataExchange.Core.Enums
         QueryAllPagingListAsync,
         ExistAsync,
         CountAsync,
+        SumAsync,
         JoinCountAsync
     }
 }
