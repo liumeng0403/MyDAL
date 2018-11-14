@@ -167,8 +167,8 @@ namespace Yunyong.DataExchange.Core
                 else if (option == OptionEnum.DateFormat)
                 {
                     var mem = mcExpr.Object;
-                    var con = mcExpr.Arguments[0] as ConstantExpression;
-                    return GetKey(mem, option, con.Value.ToString());
+                    var strFormat = Expression.Lambda(mcExpr.Arguments[0]).Compile().DynamicInvoke().ToString();
+                    return GetKey(mem, option, strFormat);
                 }
             }
 
@@ -467,11 +467,11 @@ namespace Yunyong.DataExchange.Core
                     {
                         format = "%Y-%m-%d";
                     }
-                    else if("yyyy-MM".Equals(tuple.format.Trim(),StringComparison.OrdinalIgnoreCase))
+                    else if ("yyyy-MM".Equals(tuple.format.Trim(), StringComparison.OrdinalIgnoreCase))
                     {
                         format = "%Y-%m";
                     }
-                    else if("yyyy".Equals(tuple.format.Trim(),StringComparison.OrdinalIgnoreCase))
+                    else if ("yyyy".Equals(tuple.format.Trim(), StringComparison.OrdinalIgnoreCase))
                     {
                         format = "%Y";
                     }
