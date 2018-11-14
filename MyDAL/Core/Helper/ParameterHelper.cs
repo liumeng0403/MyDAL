@@ -321,12 +321,12 @@ namespace Yunyong.DataExchange.Core.Helper
                 }
                 else
                 {
-                    val = 0; 
+                    val = 0;
                 }
             }
             else if (type == DbType.Boolean)
             {
-                val = ui.CsValue.ToBool();  
+                val = ui.CsValue.ToBool();
             }
             else
             {
@@ -584,9 +584,10 @@ namespace Yunyong.DataExchange.Core.Helper
             var val = default(object);
 
             //
+            var flag = ((!ui.CsValueStr.IsNullStr()) && ui.Format.IsNullStr());
             if (type == DbType.AnsiString)
             {
-                if (!ui.CsValueStr.IsNullStr())
+                if (flag)
                 {
                     val = ui.CsValueStr;
                 }
@@ -597,7 +598,7 @@ namespace Yunyong.DataExchange.Core.Helper
             }
             else if (type == DbType.DateTime2)
             {
-                if (!ui.CsValueStr.IsNullStr())
+                if (flag)
                 {
                     val = ui.CsValueStr.ToDateTime();
                 }
@@ -708,7 +709,7 @@ namespace Yunyong.DataExchange.Core.Helper
                 Scale = null
             };
         }
-        internal void GetDbVal(DicParam ui,Type realType)
+        internal void GetDbVal(DicParam ui, Type realType)
         {
 
             //

@@ -17,7 +17,7 @@ namespace MyDAL.Test.WhereEdge
                 .Selecter<Agent>()
                 .Where(it => it.Name == $"{"樊士芹"}")
                 .QueryFirstOrDefaultAsync();
-            Assert.Null(res1);
+            Assert.NotNull(res1);
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 

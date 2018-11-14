@@ -215,25 +215,27 @@ namespace Yunyong.DataExchange.Core.Extensions
             }
             return result;
         }
-        internal static string ToDateTimeStr(this object obj)
+        internal static string ToDateTimeStr(this object obj, string format = "")
         {
-            var result = string.Empty;
             try
             {
-                result = Convert.ToDateTime(obj).ToString("yyyy-MM-dd HH:mm:ss.ffffff");
+                if (format.IsNullStr())
+                {
+                    format = "yyyy-MM-dd HH:mm:ss.ffffff";
+                }
+                else
+                {
+                    if(format.Equals("yyyy",StringComparison.OrdinalIgnoreCase))
+                    {
+                        return new DateTime(obj.ToInt(), 1, 1).ToString(format);
+                    }
+                }
+                return Convert.ToDateTime(obj).ToString(format);
             }
-            catch
+            catch (Exception ex)
             {
-                try
-                {
-                    result = DateTime.Parse(obj.ToString()).ToString("yyyy-MM-dd HH:mm:ss.ffffff");
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception($"string ToDateTimeStr(this object obj) -- {obj?.ToString()}", ex);
-                }
+                throw new Exception($"string ToDateTimeStr(this object obj) -- {obj?.ToString()}", ex);
             }
-            return result;
         }
 
         internal static Guid ToGuid(this object obj)
