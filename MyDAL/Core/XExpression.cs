@@ -167,8 +167,8 @@ namespace MyDAL.Core
                 else if (option == OptionEnum.DateFormat)
                 {
                     var mem = mcExpr.Object;
-                    var strFormat = Expression.Lambda(mcExpr.Arguments[0]).Compile().DynamicInvoke().ToString();
-                    return GetKey(mem, option, strFormat);
+                    var val = DC.VH.ValueProcess(mcExpr.Arguments[0], XConfig.String);
+                    return GetKey(mem, option, val.val.ToString());
                 }
             }
 
@@ -228,48 +228,7 @@ namespace MyDAL.Core
                 return (binRight, binLeft, binNode, true);
             }
         }
-        private (object val, string valStr) HandleMember(MemberExpression binRight, string funcStr, Type valType)
-        {
-            var result = default((object val, string valStr));
-            if (binRight.NodeType == ExpressionType.MemberAccess)
-            {
-                result = DC.VH.MemberValue(binRight, funcStr, valType);
-            }
-            else
-            {
-                throw new Exception();
-            }
-            return result;
-        }
-        private (object val, string valStr) HandleBinary(Expression binRight, string funcStr, Type valType)
-        {
-            var val = default((object val, string valStr));
-
-            //
-            switch (binRight.NodeType)
-            {
-                case ExpressionType.Constant:
-                    var con = binRight as ConstantExpression;
-                    val = DC.VH.ConstantValue(con, valType);
-                    break;
-                case ExpressionType.Call:
-                    var rightExpr = binRight as MethodCallExpression;
-                    val = DC.VH.MethodCallValue(rightExpr, funcStr, valType);
-                    break;
-                case ExpressionType.MemberAccess:
-                    val = HandleMember(binRight as MemberExpression, funcStr, valType);
-                    break;
-                case ExpressionType.Convert:
-                    val = DC.VH.ConvertValue(binRight as UnaryExpression, funcStr, valType);
-                    break;
-                default:
-                    throw new Exception();
-            }
-
-            //
-            return val;
-        }
-
+        
         /********************************************************************************************************************/
 
         private DicParam StringLike(MethodCallExpression mcExpr, StringLikeEnum type, string funcStr)
@@ -290,16 +249,17 @@ namespace MyDAL.Core
                     {
                         var keyTuple = GetKey(memO, OptionEnum.Like);
                         var val = default((object val, string valStr));
+                        var valExpr = mcExpr.Arguments[0];
                         switch (type)
                         {
                             case StringLikeEnum.Contains:
-                                val = DC.VH.MethodCallValue(mcExpr, funcStr, keyTuple.valType);
+                                val = DC.VH.ValueProcess(valExpr, keyTuple.valType);
                                 break;
                             case StringLikeEnum.StartsWith:
-                                val = ($"{DC.VH.MethodCallValue(mcExpr, funcStr, keyTuple.valType).val}%", string.Empty);
+                                val = ($"{DC.VH.ValueProcess(valExpr, keyTuple.valType).val}%", string.Empty);
                                 break;
                             case StringLikeEnum.EndsWith:
-                                val = ($"%{DC.VH.MethodCallValue(mcExpr, funcStr, keyTuple.valType).val}", string.Empty);
+                                val = ($"%{DC.VH.ValueProcess(valExpr, keyTuple.valType).val}", string.Empty);
                                 break;
                         }
                         DC.Option = OptionEnum.Like;
@@ -314,7 +274,7 @@ namespace MyDAL.Core
         private DicParam CollectionIn(Expression expr, MemberExpression memExpr, string funcStr)
         {
             var keyTuple = GetKey(expr, OptionEnum.In);
-            var val = HandleMember(memExpr, funcStr, keyTuple.valType);
+            var val = DC.VH.ValueProcess(memExpr, keyTuple.valType);
             DC.Option = OptionEnum.In;
             DC.Compare = CompareEnum.None;
             return DC.DPH.InDic(keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType);
@@ -330,11 +290,11 @@ namespace MyDAL.Core
                 {
                     if (exp.NodeType == ExpressionType.Constant)
                     {
-                        vals.Add(DC.VH.ConstantValue(exp as ConstantExpression, keyTuple.valType));
+                        vals.Add(DC.VH.ValueProcess(exp as ConstantExpression, keyTuple.valType));
                     }
                     else if (exp.NodeType == ExpressionType.Convert)
                     {
-                        vals.Add(DC.VH.ConvertValue(exp as UnaryExpression, funcStr, keyTuple.valType));
+                        vals.Add(DC.VH.ValueProcess(exp as UnaryExpression, keyTuple.valType));
                     }
                 }
 
@@ -353,15 +313,15 @@ namespace MyDAL.Core
                     var arg = ini.Arguments[0];
                     if (arg.NodeType == ExpressionType.Constant)
                     {
-                        vals.Add(DC.VH.ConstantValue(arg as ConstantExpression, keyTuple.valType));
+                        vals.Add(DC.VH.ValueProcess(arg as ConstantExpression, keyTuple.valType));
                     }
                     else if (arg.NodeType == ExpressionType.Convert)
                     {
-                        vals.Add(DC.VH.ConvertValue(arg as UnaryExpression, funcStr, keyTuple.valType));
+                        vals.Add(DC.VH.ValueProcess(arg as UnaryExpression, keyTuple.valType));
                     }
                     else if (arg.NodeType == ExpressionType.MemberAccess)
                     {
-                        vals.Add(DC.VH.MemberValue(arg as MemberExpression, funcStr, keyTuple.valType));
+                        vals.Add(DC.VH.ValueProcess(arg as MemberExpression, keyTuple.valType));
                     }
                     else
                     {
@@ -415,18 +375,16 @@ namespace MyDAL.Core
                     && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
                 {
                     var keyTuple = GetKey(binTuple.left, OptionEnum.CharLength);
-                    var val = HandleBinary(binTuple.right, funcStr, keyTuple.valType);
+                    var val = DC.VH.ValueProcess(binTuple.right, keyTuple.valType);
                     DC.Option = OptionEnum.CharLength;
                     DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
                     return DC.DPH.CharLengthDic(keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType);
-                    //dic.ClassFullName = ;
-                    //return dic;
                 }
                 else if (leftStr.Contains(".Trim(")
                     && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
                 {
                     var tuple = GetKey(binTuple.left, OptionEnum.Trim);
-                    var val = HandleBinary(binTuple.right, funcStr, tuple.valType);
+                    var val = DC.VH.ValueProcess(binTuple.right, tuple.valType);
                     DC.Option = OptionEnum.Trim;
                     DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
                     var dic = DC.DPH.TrimDic(tuple.key, tuple.alias, val, tuple.valType);
@@ -437,7 +395,7 @@ namespace MyDAL.Core
                     && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
                 {
                     var tuple = GetKey(binTuple.left, OptionEnum.LTrim);
-                    var val = HandleBinary(binTuple.right, funcStr, tuple.valType);
+                    var val = DC.VH.ValueProcess(binTuple.right, tuple.valType);
                     DC.Option = OptionEnum.LTrim;
                     DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
                     var dic = DC.DPH.LTrimDic(tuple.key, tuple.alias, val, tuple.valType);
@@ -448,7 +406,7 @@ namespace MyDAL.Core
                     && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
                 {
                     var tuple = GetKey(binTuple.left, OptionEnum.RTrim);
-                    var val = HandleBinary(binTuple.right, funcStr, tuple.valType);
+                    var val = DC.VH.ValueProcess(binTuple.right, tuple.valType);
                     DC.Option = OptionEnum.RTrim;
                     DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
                     var dic = DC.DPH.RTrimDic(tuple.key, tuple.alias, val, tuple.valType);
@@ -459,7 +417,7 @@ namespace MyDAL.Core
                     && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
                 {
                     var tuple = GetKey(binTuple.left, OptionEnum.DateFormat);
-                    var val = HandleBinary(binTuple.right, funcStr, tuple.valType);
+                    var val = DC.VH.ValueProcess(binTuple.right, tuple.valType,tuple.format);
                     DC.Option = OptionEnum.DateFormat;
                     DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
                     var format = string.Empty;
@@ -486,7 +444,7 @@ namespace MyDAL.Core
                 else
                 {
                     var keyTuple = GetKey(binTuple.left, OptionEnum.Compare);
-                    var val = HandleBinary(binTuple.right, funcStr, keyTuple.valType);
+                    var val = DC.VH.ValueProcess(binTuple.right, keyTuple.valType);
                     DC.Option = OptionEnum.Compare;
                     DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
                     return DC.DPH.CompareDic(keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType);
@@ -553,7 +511,7 @@ namespace MyDAL.Core
         }
         private DicParam HandConditionConstant(ConstantExpression cExpr, Type valType)
         {
-            var val = DC.VH.ConstantValue(cExpr, valType);
+            var val = DC.VH.ValueProcess(cExpr, valType);
             if (cExpr.Type == typeof(bool))
             {
                 DC.Option = OptionEnum.OneEqualOne;
