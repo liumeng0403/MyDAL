@@ -5,7 +5,6 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
 using Yunyong.DataExchange.Core;
-using Yunyong.DataExchange.Core.Helper;
 
 namespace Yunyong.DataExchange.AdoNet
 {

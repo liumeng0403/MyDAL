@@ -7,7 +7,6 @@ using System.Linq.Expressions;
 using Yunyong.Core;
 using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Enums;
-using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.Core.Bases
 {
