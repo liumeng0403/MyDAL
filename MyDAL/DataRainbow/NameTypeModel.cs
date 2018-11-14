@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Yunyong.DataExchange.DBRainbow
+namespace Yunyong.DataExchange.DataRainbow
 {
     internal class NameTypeModel
     {

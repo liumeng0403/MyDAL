@@ -5,7 +5,7 @@ using Yunyong.DataExchange.AdoNet;
 using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Enums;
 using Yunyong.DataExchange.Core.Helper;
-using Yunyong.DataExchange.DBRainbow.MySQL;
+using Yunyong.DataExchange.DataRainbow.MySQL;
 
 namespace Yunyong.DataExchange.Core.Bases
 {

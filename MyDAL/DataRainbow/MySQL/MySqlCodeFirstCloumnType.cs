@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Yunyong.DataExchange.Core.Enums;
 
-namespace Yunyong.DataExchange.DBRainbow.MySQL
+namespace Yunyong.DataExchange.DataRainbow.MySQL
 {
     /*
      * CREATE TABLE `mysqlcloumntype` (

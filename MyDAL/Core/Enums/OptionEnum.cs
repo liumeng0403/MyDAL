@@ -69,7 +69,12 @@ namespace Yunyong.DataExchange.Core.Enums
         /// " sum"
         /// </summary>
         Sum,
-
+        
+        /// <summary>
+        /// " distinct "
+        /// </summary>
+        Distinct,
+        
         /// <summary>
         /// " char_length"
         /// </summary>

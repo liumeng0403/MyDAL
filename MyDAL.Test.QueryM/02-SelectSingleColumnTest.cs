@@ -20,6 +20,19 @@ namespace MyDAL.Test.Query
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
+            /*************************************************************************************************************************/
+
+            var xx2 = "";
+
+            var res2 = await Conn
+                .Selecter<Agent>()
+                .Distinct()
+                .QueryAllAsync(it => it.Name);
+
+            var tuple2 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /***************************************************************************************************************************/
+
             var xx = "";
 
         }

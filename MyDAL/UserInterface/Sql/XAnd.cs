@@ -8,7 +8,7 @@ using Yunyong.DataExchange.UserFacade.Update;
 
 namespace Yunyong.DataExchange
 {
-    public static class AndExtension
+    public static class XAnd
     {
 
         /*************************************************************************************************************************************/

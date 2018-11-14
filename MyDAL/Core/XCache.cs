@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Yunyong.DataExchange.AdoNet;
 using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Core.Helper;
-using Yunyong.DataExchange.DBRainbow;
+using Yunyong.DataExchange.DataRainbow;
 
 namespace Yunyong.DataExchange.Core
 {

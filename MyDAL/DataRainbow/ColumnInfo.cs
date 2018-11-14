@@ -1,4 +1,4 @@
-namespace Yunyong.DataExchange.DBRainbow
+namespace Yunyong.DataExchange.DataRainbow
 {
     internal class ColumnInfo
     {

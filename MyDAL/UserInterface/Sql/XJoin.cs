@@ -5,7 +5,7 @@ using Yunyong.DataExchange.UserFacade.Join;
 
 namespace Yunyong.DataExchange
 {
-    public static class JoinExtension
+    public static class XJoin
     {
 
         /***************************************************************************************************************************/

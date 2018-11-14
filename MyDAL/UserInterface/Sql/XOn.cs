@@ -5,7 +5,7 @@ using Yunyong.DataExchange.UserFacade.Join;
 
 namespace Yunyong.DataExchange
 {
-    public static class OnExtension
+    public static class XOn
     {
 
         public static OnX On(this JoinX join, Expression<Func<bool>> compareFunc)

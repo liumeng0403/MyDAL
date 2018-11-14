@@ -42,7 +42,18 @@ namespace Yunyong.DataExchange.Impls
             DC.DPH.SetParameter();
             DC.Method = UiMethodEnum.QueryAllAsync;
             DC.SqlProvider.GetSQL();
-            return (await DC.DS.ExecuteReaderSingleColumnAsync<M,F>(propertyFunc.Compile())).ToList();
+            return (await DC.DS.ExecuteReaderSingleColumnAsync(propertyFunc.Compile())).ToList();
+        }
+
+        public async Task<List<string>> QueryAllAsync(Expression<Func<M, string>> propertyFunc)
+        {
+            DC.Action = ActionEnum.Select;
+            DC.Option = OptionEnum.Column;
+            DC.DPH.AddParameter(DC.EH.FuncMFExpression(propertyFunc)[0]);
+            DC.DPH.SetParameter();
+            DC.Method = UiMethodEnum.QueryAllAsync;
+            DC.SqlProvider.GetSQL();
+            return (await DC.DS.ExecuteReaderSingleColumnAsync(propertyFunc.Compile())).ToList();
         }
     }
 }

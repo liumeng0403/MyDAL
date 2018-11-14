@@ -10,7 +10,7 @@ using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Enums;
 using Yunyong.DataExchange.Core.Extensions;
 
-namespace Yunyong.DataExchange.DBRainbow.MySQL
+namespace Yunyong.DataExchange.DataRainbow.MySQL
 {
     internal class MySqlProvider
         : ISqlProvider
@@ -432,12 +432,6 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
         {
             sb.Append("@");
         }
-        private void AS(StringBuilder sb)
-        {
-            Spacing(sb);
-            sb.Append("as");
-            Spacing(sb);
-        }
 
         /****************************************************************************************************************/
 
@@ -474,6 +468,8 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
             Spacing(sb);
             sb.Append("ENABLE KEYS */");
         }
+
+        /****************************************************************************************************************/
 
         private void InsertInto(StringBuilder sb)
         {
@@ -538,11 +534,16 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
         {
             sb.Append("delete");
         }
+        private void Select(StringBuilder sb)
+        {
+            sb.Append("select");
+        }
         private void From(StringBuilder sb)
         {
             CRLF(sb);
             sb.Append("from");
         }
+
         private void Wheres(StringBuilder sb)
         {
             Spacing(sb);
@@ -576,6 +577,12 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
 
             //
             sb.Append(str);
+        }
+        private void AS(StringBuilder sb)
+        {
+            Spacing(sb);
+            sb.Append("as");
+            Spacing(sb);
         }
 
         private void GetCountPart(StringBuilder sb)
@@ -841,39 +848,39 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
                     list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.QueryFirstOrDefaultAsync:
-                    sb.Append("select "); Columns(sb); From(sb); Table(sb); Wheres(sb); OrderBy(sb); End(sb);
+                    Select(sb); Columns(sb); From(sb); Table(sb); Wheres(sb); OrderBy(sb); End(sb);
                     list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.JoinQueryFirstOrDefaultAsync:
-                    sb.Append(" select "); Columns(sb); From(sb); Table(sb); Joins(sb); Wheres(sb); OrderBy(sb); End(sb);
+                    Select(sb); Columns(sb); From(sb); Table(sb); Joins(sb); Wheres(sb); OrderBy(sb); End(sb);
                     list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.QueryListAsync:
                 case UiMethodEnum.TopAsync:
-                    sb.Append("select "); Columns(sb); From(sb); Table(sb); Wheres(sb); OrderBy(sb); Limit(sb); End(sb);
+                    Select(sb); Columns(sb); From(sb); Table(sb); Wheres(sb); OrderBy(sb); Limit(sb); End(sb);
                     list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.JoinQueryListAsync:
                 case UiMethodEnum.JoinTopAsync:
-                    sb.Append(" select "); Columns(sb); From(sb); Table(sb); Joins(sb); Wheres(sb); OrderBy(sb); Limit(sb); End(sb);
+                    Select(sb); Columns(sb); From(sb); Table(sb); Joins(sb); Wheres(sb); OrderBy(sb); Limit(sb); End(sb);
                     list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.QueryPagingListAsync:
                     sb.Append("select count(*) "); From(sb); Table(sb); Wheres(sb); End(sb);
                     list.Add(sb.ToString());
                     sb.Clear();
-                    sb.Append("select "); Columns(sb); From(sb); Table(sb); Wheres(sb); OrderBy(sb); Limit(sb); End(sb);
+                    Select(sb); Columns(sb); From(sb); Table(sb); Wheres(sb); OrderBy(sb); Limit(sb); End(sb);
                     list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.JoinQueryPagingListAsync:
                     sb.Append("select count(*) "); From(sb); Table(sb); Joins(sb); Wheres(sb); End(sb);
                     list.Add(sb.ToString());
                     sb.Clear();
-                    sb.Append("select "); Columns(sb); From(sb); Table(sb); Joins(sb); Wheres(sb); OrderBy(sb); Limit(sb); End(sb);
+                    Select(sb); Columns(sb); From(sb); Table(sb); Joins(sb); Wheres(sb); OrderBy(sb); Limit(sb); End(sb);
                     list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.QueryAllAsync:
-                    sb.Append(" select "); Columns(sb); From(sb); Table(sb); OrderBy(sb); End(sb);
+                    Select(sb); Columns(sb); From(sb); Table(sb); OrderBy(sb); End(sb);
                     list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.QueryAllPagingListAsync:
@@ -885,15 +892,15 @@ namespace Yunyong.DataExchange.DBRainbow.MySQL
                     break;
                 case UiMethodEnum.ExistAsync:
                 case UiMethodEnum.CountAsync:
-                    sb.Append(" select "); GetCountPart(sb); From(sb); Table(sb); Wheres(sb); End(sb);
+                    Select(sb); GetCountPart(sb); From(sb); Table(sb); Wheres(sb); End(sb);
                     list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.SumAsync:
-                    sb.Append(" select "); GetSumPart(sb); From(sb); Table(sb); Wheres(sb); End(sb);
+                    Select(sb); GetSumPart(sb); From(sb); Table(sb); Wheres(sb); End(sb);
                     list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.JoinCountAsync:
-                    sb.Append(" select "); GetCountPart(sb); From(sb); Table(sb); Joins(sb); Wheres(sb); End(sb);
+                    Select(sb); GetCountPart(sb); From(sb); Table(sb); Joins(sb); Wheres(sb); End(sb);
                     list.Add(sb.ToString());
                     break;
             }
