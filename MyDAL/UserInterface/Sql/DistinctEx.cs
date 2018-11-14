@@ -3,7 +3,7 @@ using Yunyong.DataExchange.UserFacade.Query;
 
 namespace Yunyong.DataExchange
 {
-    public static class XDistinct
+    public static class DistinctEx
     {
         public static Selecter<M> Distinct<M>(this Selecter<M> selecter)
             where M : class

@@ -6,7 +6,7 @@ using Yunyong.DataExchange.UserFacade.Query;
 
 namespace Yunyong.DataExchange
 {
-    public static class XOrderBy
+    public static class OrderByEx
     {
 
         /**************************************************************************************************************/

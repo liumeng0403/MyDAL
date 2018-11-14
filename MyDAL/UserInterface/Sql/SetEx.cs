@@ -5,7 +5,7 @@ using Yunyong.DataExchange.UserFacade.Update;
 
 namespace Yunyong.DataExchange
 {
-    public static class XSet
+    public static class SetEx
     {
 
         /// <summary>
