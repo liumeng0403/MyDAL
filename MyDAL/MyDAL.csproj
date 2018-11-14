@@ -29,14 +29,14 @@
     <PackageReference Update="SourceLink.Create.GitHub" Version="2.8.3" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DBRainbow\SQLServer\" />
-    <Folder Include="DBRainbow\Oracle\" />
-    <Folder Include="DBRainbow\PostgreSQL\" />
-    <Folder Include="DBRainbow\DB2\" />
-    <Folder Include="DBRainbow\Access\" />
-    <Folder Include="DBRainbow\SQLite\" />
-    <Folder Include="DBRainbow\Teradata\" />
-    <Folder Include="DBRainbow\MariaDB\" />
+    <Folder Include="DataRainbow\SQLServer\" />
+    <Folder Include="DataRainbow\Oracle\" />
+    <Folder Include="DataRainbow\PostgreSQL\" />
+    <Folder Include="DataRainbow\DB2\" />
+    <Folder Include="DataRainbow\Access\" />
+    <Folder Include="DataRainbow\SQLite\" />
+    <Folder Include="DataRainbow\Teradata\" />
+    <Folder Include="DataRainbow\MariaDB\" />
   </ItemGroup>
 
 </Project>

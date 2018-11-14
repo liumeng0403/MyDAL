@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace MyDAL
 {
-    public static class FromExtension
+    public static class XFrom
     {
 
         public static FromX From<M>(this Joiner join, Expression<Func<M>> tableModelFunc)

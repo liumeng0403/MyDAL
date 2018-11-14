@@ -1,7 +1,7 @@
 ﻿using MyDAL.AdoNet;
 using MyDAL.Core.Bases;
 using MyDAL.Core.Extensions;
-using MyDAL.DBRainbow;
+using MyDAL.DataRainbow;
 using System;
 using System.Collections.Generic;
 using System.Data;

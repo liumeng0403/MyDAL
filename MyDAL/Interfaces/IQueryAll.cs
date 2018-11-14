@@ -13,6 +13,6 @@ namespace MyDAL.Interfaces
             where VM : class;
         Task<List<F>> QueryAllAsync<F>(Expression<Func<M, F>> propertyFunc)
             where F : struct;
-
+        Task<List<string>> QueryAllAsync(Expression<Func<M, string>> propertyFunc);
     }
 }

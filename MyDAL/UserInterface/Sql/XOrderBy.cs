@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace MyDAL
 {
-    public static class OrderByExtension
+    public static class XOrderBy
     {
 
         /**************************************************************************************************************/

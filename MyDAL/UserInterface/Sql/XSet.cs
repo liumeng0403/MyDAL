@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace MyDAL
 {
-    public static class SetExtension
+    public static class XSet
     {
 
         /// <summary>

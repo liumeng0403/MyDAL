@@ -21,7 +21,7 @@ namespace MyDAL
     /// GitHub:  https://github.com/liumeng0403/MyDAL  
     /// NuGet:  https://www.nuget.org/packages/MyDAL/  
     /// </summary>
-    public static class DbExtension
+    public static class XExtension
     {
 
         /// <summary>

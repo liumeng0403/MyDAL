@@ -1,4 +1,4 @@
-﻿namespace MyDAL.DBRainbow
+﻿namespace MyDAL.DataRainbow
 {
     internal class TableModel
     {

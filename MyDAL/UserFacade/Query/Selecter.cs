@@ -39,6 +39,10 @@ namespace MyDAL.UserFacade.Query
         {
             return await new QueryAllImpl<M>(DC).QueryAllAsync<F>(propertyFunc);
         }
+        public async Task<List<string>> QueryAllAsync(Expression<Func<M, string>> propertyFunc)
+        {
+            return await new QueryAllImpl<M>(DC).QueryAllAsync(propertyFunc);
+        }
 
         /// <summary>
         /// 单表分页查询

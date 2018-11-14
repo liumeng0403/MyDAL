@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyDAL.DBRainbow
+namespace MyDAL.DataRainbow
 {
     internal class NameTypeModel
     {

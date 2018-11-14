@@ -429,6 +429,13 @@ namespace MyDAL.Core.Helper
             return dic;
         }
 
+        internal DicParam DistinctDic()
+        {
+            var dic = SetDicBase(DC);
+
+            return dic;
+        }
+
         internal DicParam ColumnDic(string columnOne, string tableAliasOne, string fullName)
         {
             var dic = SetDicBase(DC);
