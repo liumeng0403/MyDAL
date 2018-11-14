@@ -6,7 +6,7 @@ using System.Text;
 
 namespace MyDAL
 {
-    public static class XDistinct
+    public static class DistinctEx
     {
         public static Selecter<M> Distinct<M>(this Selecter<M> selecter)
             where M : class

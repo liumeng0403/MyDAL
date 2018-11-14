@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace MyDAL
 {
-    public static class XJoin
+    public static class JoinEx
     {
 
         /***************************************************************************************************************************/

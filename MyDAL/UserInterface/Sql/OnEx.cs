@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace MyDAL
 {
-    public static class XOn
+    public static class OnEx
     {
 
         public static OnX On(this JoinX join, Expression<Func<bool>> compareFunc)

@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace MyDAL
 {
-    public static class XOr
+    public static class OrEx
     {
 
         /****************************************************************************************************************************************/
