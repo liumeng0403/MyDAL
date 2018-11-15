@@ -49,6 +49,18 @@ namespace MyDAL.Test.WhereEdge
 
             /**************************************************************************************************************************************/
 
+            var xx4 = "";
+
+            var res4 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.ActivedOn!=null&&it.ActivedOn.Value.ToString("yyyy-MM-dd")==DateTime.Parse("2018-08-19 12:05:45.560984").ToString("yyyy-MM-dd"))
+                .QueryListAsync();
+            Assert.True(res4.Count == 554);
+
+            var tuple4 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /**************************************************************************************************************************************/
+
             var xx = "";
         }
     }
