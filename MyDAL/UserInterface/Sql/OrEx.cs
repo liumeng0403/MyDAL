@@ -21,7 +21,7 @@ namespace MyDAL
             where M : class
         {
             where.DC.Action = ActionEnum.Or;
-            where.DC.OP.OrHandle(compareFunc);
+            where.OrHandle(compareFunc);
             return where;
         }
 
@@ -35,7 +35,7 @@ namespace MyDAL
             where M : class
         {
             where.DC.Action = ActionEnum.Or;
-            where.DC.OP.OrHandle(compareFunc);
+            where.OrHandle(compareFunc);
             return where;
         }
 
@@ -49,7 +49,7 @@ namespace MyDAL
             where M : class
         {
             where.DC.Action = ActionEnum.Or;
-            where.DC.OP.OrHandle(compareFunc);
+            where.OrHandle(compareFunc);
             return where;
         }
 
@@ -58,7 +58,7 @@ namespace MyDAL
         public static WhereX Or(this WhereX where, Expression<Func<bool>> compareFunc)
         {
             where.DC.Action = ActionEnum.Or;
-            where.DC.OP.WhereJoinHandle(where, compareFunc);
+            where.WhereJoinHandle(where, compareFunc);
             return where;
         }
 

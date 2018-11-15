@@ -17,7 +17,7 @@ namespace MyDAL
             where M : class
         {
             updater.DC.Action = ActionEnum.Update;
-            updater.DC.OP.SetChangeHandle<M, F>(propertyFunc, newVal, OptionEnum.Set);
+            updater.SetChangeHandle<M, F>(propertyFunc, newVal, OptionEnum.Set);
             return new SetU<M>(updater.DC);
         }
         /// <summary>
@@ -29,7 +29,7 @@ namespace MyDAL
             where M : class
         {
             set.DC.Action = ActionEnum.Update;
-            set.DC.OP.SetChangeHandle<M, F>(propertyFunc, newVal, OptionEnum.Set);
+            set.SetChangeHandle<M, F>(propertyFunc, newVal, OptionEnum.Set);
             return set;
         }
 
@@ -39,7 +39,7 @@ namespace MyDAL
         public static SetU<M> Set<M>(this Updater<M> updater, dynamic filedsObject)
         {
             updater.DC.Action = ActionEnum.Update;
-            updater.DC.OP.SetDynamicHandle<M>(filedsObject);
+            updater.SetDynamicHandle<M>(filedsObject);
             return new SetU<M>(updater.DC);
         }
 
@@ -53,7 +53,7 @@ namespace MyDAL
             where M : class
         {
             updater.DC.Action = ActionEnum.Update;
-            updater.DC.OP.SetChangeHandle<M, F>(propertyFunc, modifyVal, updater.DC.GetChangeOption(change));
+            updater.SetChangeHandle<M, F>(propertyFunc, modifyVal, updater.DC.GetChangeOption(change));
             return new SetU<M>(updater.DC);
         }
         /// <summary>
@@ -66,7 +66,7 @@ namespace MyDAL
             where M : class
         {
             set.DC.Action = ActionEnum.Update;
-            set.DC.OP.SetChangeHandle<M, F>(propertyFunc, modifyVal, set.DC.GetChangeOption(change));
+            set.SetChangeHandle<M, F>(propertyFunc, modifyVal, set.DC.GetChangeOption(change));
             return set;
         }
 

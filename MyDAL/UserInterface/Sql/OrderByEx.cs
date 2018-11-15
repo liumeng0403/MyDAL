@@ -15,7 +15,7 @@ namespace MyDAL
             where M : class
         {
             where.DC.Action = ActionEnum.OrderBy;
-            where.DC.OP.OrderByHandle(propertyFunc, orderBy);
+            where.OrderByMF(propertyFunc, orderBy);
             return new OrderByQ<M>(where.DC);
         }
 
@@ -23,7 +23,7 @@ namespace MyDAL
             where M : class
         {
             orderByQ.DC.Action = ActionEnum.OrderBy;
-            orderByQ.DC.OP.OrderByHandle(propertyFunc, orderBy);
+            orderByQ.OrderByMF(propertyFunc, orderBy);
             return new ThenOrderByQ<M>(orderByQ.DC);
         }
 
@@ -32,21 +32,21 @@ namespace MyDAL
         public static OrderByX OrderBy<F>(this OnX onX,Expression<Func<F>> propertyFunc,OrderByEnum orderBy= OrderByEnum.Desc)
         {
             onX.DC.Action = ActionEnum.OrderBy;
-            onX.DC.OP.OrderByHandle(propertyFunc, orderBy);
+            onX.OrderByF(propertyFunc, orderBy);
             return new OrderByX(onX.DC);
         }
 
         public static OrderByX OrderBy<F>(this WhereX whereX, Expression<Func<F>> propertyFunc, OrderByEnum orderBy = OrderByEnum.Desc)
         {
             whereX.DC.Action = ActionEnum.OrderBy;
-            whereX.DC.OP.OrderByHandle(propertyFunc, orderBy);
+            whereX.OrderByF(propertyFunc, orderBy);
             return new OrderByX(whereX.DC);
         }
 
         public static ThenOrderByX ThenOrderBy<F>(this OrderByX orderByX,Expression<Func<F>> propertyFunc,OrderByEnum orderBy = OrderByEnum.Desc)
         {
             orderByX.DC.Action = ActionEnum.OrderBy;
-            orderByX.DC.OP.OrderByHandle(propertyFunc, orderBy);
+            orderByX.OrderByF(propertyFunc, orderBy);
             return new ThenOrderByX(orderByX.DC);
         }
 

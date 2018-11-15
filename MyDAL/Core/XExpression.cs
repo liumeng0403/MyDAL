@@ -1,7 +1,6 @@
 ﻿using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
-using MyDAL.Core.Extensions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -228,7 +227,7 @@ namespace MyDAL.Core
                 return (binRight, binLeft, binNode, true);
             }
         }
-        
+
         /********************************************************************************************************************/
 
         private DicParam StringLike(MethodCallExpression mcExpr, StringLikeEnum type, string funcStr)
@@ -417,7 +416,7 @@ namespace MyDAL.Core
                     && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
                 {
                     var tuple = GetKey(binTuple.left, OptionEnum.DateFormat);
-                    var val = DC.VH.ValueProcess(binTuple.right, tuple.valType,tuple.format);
+                    var val = DC.VH.ValueProcess(binTuple.right, tuple.valType, tuple.format);
                     DC.Option = OptionEnum.DateFormat;
                     DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
                     var format = string.Empty;
@@ -573,263 +572,7 @@ namespace MyDAL.Core
 
         /********************************************************************************************************************/
 
-        internal List<DicParam> FuncMFExpression<M, F>(Expression<Func<M, F>> func)
-            where M : class
-        {
-            try
-            {
-                var result = new List<DicParam>();
-                var body = func.Body;
-                var nodeType = body.NodeType;
-                if (nodeType == ExpressionType.MemberAccess)
-                {
-                    var memExpr = func.Body as MemberExpression;
-                    var keyTuple = GetKey(memExpr, OptionEnum.None);
-                    var key = keyTuple.key;
-
-                    if (!string.IsNullOrWhiteSpace(key))
-                    {
-                        result.Add(DC.DPH.ColumnDic(keyTuple.classFullName, key));
-                    }
-                }
-                else if (nodeType == ExpressionType.MemberInit)
-                {
-                    var miExpr = func.Body as MemberInitExpression;
-                    result = HandSelectMemberInit(miExpr);
-                }
-                else if (nodeType == ExpressionType.Convert)
-                {
-                    var tuple = GetKey(body, OptionEnum.None);
-                    var key = tuple.key;
-                    if (!string.IsNullOrWhiteSpace(key))
-                    {
-                        result.Add(DC.DPH.ColumnDic(tuple.classFullName, key));
-                    }
-                }
-
-                if (result != null
-                    && result.Count > 0)
-                {
-                    return result;
-                }
-                else
-                {
-                    throw new Exception();
-                }
-            }
-            catch (Exception ex)
-            {
-                if (!string.IsNullOrWhiteSpace(ex.Message))
-                {
-                    throw ex;
-                }
-                else
-                {
-                    throw new Exception($"不支持的表达式:[{func.ToString()}]");
-                }
-            }
-        }
-        internal List<DicParam> FuncTExpression<T>(Expression<Func<T>> func)
-        {
-            try
-            {
-                var result = new List<DicParam>();
-                var nodeType = func.Body.NodeType;
-                if (nodeType == ExpressionType.New)
-                {
-                    var nExpr = func.Body as NewExpression;
-                    var args = nExpr.Arguments;
-                    var mems = nExpr.Members;
-                    for (var i = 0; i < args.Count; i++)
-                    {
-                        var tuple = GetMemTuple(args[i] as MemberExpression);
-                        var colAlias = mems[i].Name;
-                        DC.Option = OptionEnum.None;
-                        DC.Compare = CompareEnum.None;
-                        result.Add(DC.DPH.SelectMemberInitDic(tuple.classFullName, tuple.key, tuple.alias, colAlias));
-                    }
-
-                }
-                else if (nodeType == ExpressionType.MemberAccess)
-                {
-                    var body = func.Body as MemberExpression;
-                    if (body.Expression.NodeType == ExpressionType.Constant)
-                    {
-                        var alias = body.Member.Name;
-                        result.Add(DC.DPH.TableDic(body.Type.FullName, alias));
-                    }
-                    else if (body.Expression.NodeType == ExpressionType.MemberAccess)
-                    {
-                        var leftStr = body.ToString();
-                        if (leftStr.Contains(".Length")
-                            && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
-                        {
-                            var keyTuple = GetKey(body, OptionEnum.CharLength);
-                            DC.Func = FuncEnum.CharLength;
-                            DC.Compare = CompareEnum.None;
-                            result.Add(DC.DPH.CharLengthDic(keyTuple.classFullName, keyTuple.key, keyTuple.alias, (null, string.Empty), keyTuple.valType));
-                        }
-                        else
-                        {
-                            var exp2 = body.Expression as MemberExpression;
-                            var alias = exp2.Member.Name;
-                            var field = body.Member.Name;
-                            result.Add(DC.DPH.JoinColumnDic(exp2.Type.FullName, field, alias));
-                        }
-                    }
-                }
-                else if (nodeType == ExpressionType.MemberInit)
-                {
-                    var miExpr = func.Body as MemberInitExpression;
-                    result = HandSelectMemberInit(miExpr);
-                }
-
-                //
-                if (result != null
-                    && result.Count > 0)
-                {
-                    return result;
-                }
-                else
-                {
-                    throw new Exception();
-                }
-            }
-            catch (Exception ex)
-            {
-                if (!string.IsNullOrWhiteSpace(ex.Message))
-                {
-                    throw ex;
-                }
-                else
-                {
-                    throw new Exception($"不支持的表达式:[{func.ToString()}]");
-                }
-            }
-        }
-        internal DicParam FuncMBoolExpression<M>(Expression<Func<M, bool>> func)
-            where M : class
-        {
-            try
-            {
-                var body = func.Body;
-                var nodeType = body.NodeType;
-                var result = BodyProcess(nodeType, body, func.Parameters[0], func.ToString());
-                if (result != null)
-                {
-                    return result;
-                }
-                else
-                {
-                    throw new Exception("");
-                }
-            }
-            catch (Exception ex)
-            {
-                if (!ex.Message.IsNullStr())
-                {
-                    throw ex;
-                }
-                else
-                {
-                    throw new Exception($"不支持的表达式:[{func.ToString()}]");
-                }
-            }
-        }
-        internal DicParam FuncBoolExpression(Expression<Func<bool>> func)
-        {
-            try
-            {
-                var body = func.Body;
-                var nodeType = body.NodeType;
-                var result = BodyProcess(nodeType, body, null, func.ToString());
-                if (result != null)
-                {
-                    return result;
-                }
-                else
-                {
-                    throw new Exception();
-                }
-            }
-            catch (Exception ex)
-            {
-                if (!string.IsNullOrWhiteSpace(ex.Message))
-                {
-                    throw ex;
-                }
-                else
-                {
-                    throw new Exception($"不支持的表达式:[{func.ToString()}]");
-                }
-            }
-        }
-
-        /********************************************************************************************************************/
-
-        private DicParam BodyProcess(ExpressionType nodeType, Expression body, ParameterExpression firstParam, string funcStr)
-        {
-            //
-            var result = default(DicParam);
-
-            //
-            if (IsMultiExpr(nodeType))
-            {
-                result = DC.DPH.GroupDic(GetGroupAction(nodeType));
-                var binExpr = body as BinaryExpression;
-                var left = binExpr.Left;
-                result.Group.Add(BodyProcess(left.NodeType, left, firstParam, funcStr));
-                var right = binExpr.Right;
-                result.Group.Add(BodyProcess(right.NodeType, right, firstParam, funcStr));
-            }
-            else if (IsBinaryExpr(nodeType))
-            {
-                if (DC.IsSingleTableOption())
-                {
-                    var binExpr = body as BinaryExpression;
-                    var pres = new List<string>
-                    {
-                        firstParam.Name
-                    };
-                    result = HandConditionBinary(binExpr, pres, funcStr);
-                }
-                else if (DC.Crud == CrudTypeEnum.Join)
-                {
-                    var binExpr = body as BinaryExpression;
-                    if (DC.Action == ActionEnum.On)
-                    {
-                        result = HandOnBinary(binExpr);
-                    }
-                    else if (DC.Action == ActionEnum.Where
-                        || DC.Action == ActionEnum.And
-                        || DC.Action == ActionEnum.Or)
-                    {
-                        var pres = DC.Parameters.Select(it => it.TableAliasOne).ToList();
-                        result = HandConditionBinary(binExpr, pres, funcStr);
-                    }
-                }
-            }
-            else if (nodeType == ExpressionType.Call)
-            {
-
-                var mcExpr = body as MethodCallExpression;
-                result = HandConditionCall(mcExpr, funcStr);
-            }
-            else if (nodeType == ExpressionType.Constant)
-            {
-                var cExpr = body as ConstantExpression;
-                result = HandConditionConstant(cExpr, cExpr.Type);
-            }
-            else if (nodeType == ExpressionType.MemberAccess)
-            {
-                var memExpr = body as MemberExpression;
-                result = HandConditionMemberAccess(memExpr);
-            }
-
-            //
-            return result;
-        }
-        [Obsolete("仅作参考使用!!!")]
+        [Obsolete("作废方法,仅作参考!!!")]
         private static Expression Parser(ParameterExpression parameter, Expression expression)
         {
             if (expression == null) return null;
@@ -934,5 +677,207 @@ namespace MyDAL.Core
                     throw new Exception(string.Format("Unhandled expression type: '{0}'", expression.NodeType));
             }
         }
+        private DicParam BodyProcess(Expression body, ParameterExpression firstParam, string funcStr)
+        {
+            //
+            var result = default(DicParam);
+
+            //
+            var nodeType = body.NodeType;
+            if (nodeType == ExpressionType.Call)
+            {
+
+                var mcExpr = body as MethodCallExpression;
+                result = HandConditionCall(mcExpr, funcStr);
+            }
+            else if (nodeType == ExpressionType.Constant)
+            {
+                var cExpr = body as ConstantExpression;
+                result = HandConditionConstant(cExpr, cExpr.Type);
+            }
+            else if (nodeType == ExpressionType.MemberAccess)
+            {
+                var memExpr = body as MemberExpression;
+                result = HandConditionMemberAccess(memExpr);
+            }
+            else if (IsBinaryExpr(nodeType))
+            {
+                if (DC.IsSingleTableOption())
+                {
+                    var binExpr = body as BinaryExpression;
+                    var pres = new List<string>
+                    {
+                        firstParam.Name
+                    };
+                    result = HandConditionBinary(binExpr, pres, funcStr);
+                }
+                else if (DC.Crud == CrudTypeEnum.Join)
+                {
+                    var binExpr = body as BinaryExpression;
+                    if (DC.Action == ActionEnum.On)
+                    {
+                        result = HandOnBinary(binExpr);
+                    }
+                    else if (DC.Action == ActionEnum.Where
+                        || DC.Action == ActionEnum.And
+                        || DC.Action == ActionEnum.Or)
+                    {
+                        var pres = DC.Parameters.Select(it => it.TableAliasOne).ToList();
+                        result = HandConditionBinary(binExpr, pres, funcStr);
+                    }
+                }
+            }
+            else if (IsMultiExpr(nodeType))
+            {
+                result = DC.DPH.GroupDic(GetGroupAction(nodeType));
+                var binExpr = body as BinaryExpression;
+                var left = binExpr.Left;
+                result.Group.Add(BodyProcess(left, firstParam, funcStr));
+                var right = binExpr.Right;
+                result.Group.Add(BodyProcess(right, firstParam, funcStr));
+            }
+            else
+            {
+                throw new Exception($"{XConfig._003} -- [[{body.ToString()}]] 不能解析!!!");
+            }
+
+            //
+            return result;
+        }
+        private List<DicParam> BodyProcess2(Expression body)
+        {
+            var result = new List<DicParam>();
+            var nodeType = body.NodeType;
+            if (nodeType == ExpressionType.MemberAccess)
+            {
+                var memExpr = body as MemberExpression;
+                if (DC.IsSingleTableOption()
+                    || DC.Crud== CrudTypeEnum.None)
+                {
+                    var keyTuple = GetKey(memExpr, OptionEnum.None);
+                    var key = keyTuple.key;
+
+                    if (!string.IsNullOrWhiteSpace(key))
+                    {
+                        result.Add(DC.DPH.ColumnDic(keyTuple.classFullName, key));
+                    }
+                }
+                else if (DC.Crud == CrudTypeEnum.Join)
+                {
+                    if (memExpr.Expression.NodeType == ExpressionType.Constant)
+                    {
+                        var alias = memExpr.Member.Name;
+                        result.Add(DC.DPH.TableDic(memExpr.Type.FullName, alias));
+                    }
+                    else if (memExpr.Expression.NodeType == ExpressionType.MemberAccess)
+                    {
+                        var leftStr = memExpr.ToString();
+                        if (leftStr.Contains(".Length")
+                            && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
+                        {
+                            var keyTuple = GetKey(memExpr, OptionEnum.CharLength);
+                            DC.Func = FuncEnum.CharLength;
+                            DC.Compare = CompareEnum.None;
+                            result.Add(DC.DPH.CharLengthDic(keyTuple.classFullName, keyTuple.key, keyTuple.alias, (null, string.Empty), keyTuple.valType));
+                        }
+                        else
+                        {
+                            var exp2 = memExpr.Expression as MemberExpression;
+                            var alias = exp2.Member.Name;
+                            var field = memExpr.Member.Name;
+                            result.Add(DC.DPH.JoinColumnDic(exp2.Type.FullName, field, alias));
+                        }
+                    }
+                }
+            }
+            else if (nodeType == ExpressionType.Call)
+            {
+                var leftStr = body.ToString();
+                if (leftStr.Contains(".ToString(")
+                    && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
+                {
+                    var tuple = GetKey(body, OptionEnum.DateFormat);
+                    DC.Option = OptionEnum.Column;
+                    DC.Func = FuncEnum.DateFormat;
+                    DC.Compare = CompareEnum.None;
+                    var format = string.Empty;
+                    if ("yyyy-MM-dd".Equals(tuple.format.Trim(), StringComparison.OrdinalIgnoreCase))
+                    {
+                        format = "%Y-%m-%d";
+                    }
+                    else if ("yyyy-MM".Equals(tuple.format.Trim(), StringComparison.OrdinalIgnoreCase))
+                    {
+                        format = "%Y-%m";
+                    }
+                    else if ("yyyy".Equals(tuple.format.Trim(), StringComparison.OrdinalIgnoreCase))
+                    {
+                        format = "%Y";
+                    }
+                    else
+                    {
+                        throw new Exception($"{XConfig._001} -- [[{body}]] 未能解析!!!");
+                    }
+                    var dic = DC.DPH.DateFormatDic(tuple.key, tuple.alias, (null,string.Empty), tuple.valType, format);
+                    dic.ClassFullName = tuple.classFullName;
+                    result.Add(dic);
+                }
+            }
+            else if (nodeType == ExpressionType.Convert)
+            {
+                var tuple = GetKey(body, OptionEnum.None);
+                var key = tuple.key;
+                if (!string.IsNullOrWhiteSpace(key))
+                {
+                    result.Add(DC.DPH.ColumnDic(tuple.classFullName, key));
+                }
+            }
+            else if (nodeType == ExpressionType.MemberInit)
+            {
+                var miExpr = body as MemberInitExpression;
+                result = HandSelectMemberInit(miExpr);
+            }
+            else if (nodeType == ExpressionType.New)
+            {
+                var nExpr = body as NewExpression;
+                var args = nExpr.Arguments;
+                var mems = nExpr.Members;
+                for (var i = 0; i < args.Count; i++)
+                {
+                    var tuple = GetMemTuple(args[i] as MemberExpression);
+                    var colAlias = mems[i].Name;
+                    DC.Option = OptionEnum.None;
+                    DC.Compare = CompareEnum.None;
+                    result.Add(DC.DPH.SelectMemberInitDic(tuple.classFullName, tuple.key, tuple.alias, colAlias));
+                }
+
+            }
+            else
+            {
+                throw new Exception($"{XConfig._002} -- [[{body.ToString()}]] 不能解析!!!");
+            }
+            return result;
+        }
+
+        /********************************************************************************************************************/
+
+        internal List<DicParam> FuncMFExpression<M, F>(Expression<Func<M, F>> propertyFunc)
+            where M : class
+        {
+            return BodyProcess2(propertyFunc.Body);
+        }
+        internal List<DicParam> FuncTExpression<T>(Expression<Func<T>> mOrPropFunc)
+        {
+            return BodyProcess2(mOrPropFunc.Body);
+        }
+        internal DicParam FuncMBoolExpression<M>(Expression<Func<M, bool>> func)
+            where M : class
+        {
+            return BodyProcess(func.Body, func.Parameters[0], func.ToString());
+        }
+        internal DicParam FuncBoolExpression(Expression<Func<bool>> func)
+        {
+            return BodyProcess(func.Body, null, func.ToString());
+        }
+
     }
 }

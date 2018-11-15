@@ -19,5 +19,10 @@ namespace MyDAL.Core.Enums
         /// </summary>
         CharLength,
 
+        /// <summary>
+        /// " DATE_FORMAT"
+        /// </summary>
+        DateFormat
+
     }
 }
