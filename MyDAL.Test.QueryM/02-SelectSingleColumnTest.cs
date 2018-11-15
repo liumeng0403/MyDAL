@@ -17,6 +17,7 @@ namespace MyDAL.Test.Query
             var res1 = await Conn
                 .Selecter<Agent>()
                 .QueryAllAsync(it => it.Id);
+            Assert.True(res1.Count == 28620);
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
@@ -28,8 +29,21 @@ namespace MyDAL.Test.Query
                 .Selecter<Agent>()
                 .Distinct()
                 .QueryAllAsync(it => it.Name);
+            Assert.True(res2.Count == 24444);
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /***************************************************************************************************************************/
+
+            var xx3 = "";
+
+            var res3 = await Conn
+                .Selecter<Agent>()
+                .Distinct()
+                .QueryAllAsync(it => it.CreatedOn.ToString("yyyy-MM-dd"));
+            Assert.True(res3.Count == 2);
+
+            var tuple3 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /***************************************************************************************************************************/
 

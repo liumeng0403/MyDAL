@@ -133,11 +133,11 @@ namespace Yunyong.DataExchange.Core.Bases
             }
         }
 
-        internal void SelectMHandle<M, VM>(Expression<Func<M, VM>> func)
+        internal void SelectMHandle<M, VM>(Expression<Func<M, VM>> propertyFunc)
             where M : class
         {
             DC.Action = ActionEnum.Select;
-            var list = DC.EH.FuncMFExpression(func);
+            var list = DC.EH.FuncMFExpression(propertyFunc);
             foreach (var dic in list)
             {
                 dic.Option = OptionEnum.ColumnAs;
@@ -168,7 +168,6 @@ namespace Yunyong.DataExchange.Core.Bases
         internal Impler(Context dc)
             : base(dc)
         {
-            DC.IP = this;
             DC.DPH.SetParameter();
         }
     }

@@ -85,15 +85,7 @@ namespace Yunyong.DataExchange.Core.Bases
 
         internal IDbConnection Conn { get; private set; }
         internal IDbTransaction Tran { get; set; }
-
-        /************************************************************************************************************************/
-
         internal ISqlProvider SqlProvider { get; set; }
-        internal Operator OP { get; set; }
-        internal Impler IP { get; set; }
-
-        /************************************************************************************************************************/
-
         internal XCache SC { get; private set; }
         internal DataSource DS { get; private set; }
 

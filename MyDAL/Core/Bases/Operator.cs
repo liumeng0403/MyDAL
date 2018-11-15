@@ -17,7 +17,6 @@ namespace Yunyong.DataExchange.Core.Bases
         internal Operator(Context dc)
         {
             DC = dc;
-            DC.OP = this;
         }
 
         private bool CheckWhereVal(object val, Type valType)
@@ -247,10 +246,10 @@ namespace Yunyong.DataExchange.Core.Bases
 
         /****************************************************************************************************************************************/
 
-        internal void SetChangeHandle<M, F>(Expression<Func<M, F>> func, F modVal, OptionEnum option)
+        internal void SetChangeHandle<M, F>(Expression<Func<M, F>> propertyFunc, F modVal, OptionEnum option)
             where M : class
         {
-            var keyDic = DC.EH.FuncMFExpression(func)[0];
+            var keyDic = DC.EH.FuncMFExpression(propertyFunc)[0];
             var key = keyDic.ColumnOne;
             var val = default((object val, string valStr));
             if (modVal == null)
@@ -354,10 +353,10 @@ namespace Yunyong.DataExchange.Core.Bases
             DC.DPH.AddParameter(field);
         }
 
-        internal void OrderByHandle<M, F>(Expression<Func<M, F>> func, OrderByEnum orderBy)
+        internal void OrderByMF<M, F>(Expression<Func<M, F>> propertyFunc, OrderByEnum orderBy)
             where M : class
         {
-            var keyDic = DC.EH.FuncMFExpression(func)[0];
+            var keyDic = DC.EH.FuncMFExpression(propertyFunc)[0];
             switch (orderBy)
             {
                 case OrderByEnum.Asc:
@@ -371,7 +370,7 @@ namespace Yunyong.DataExchange.Core.Bases
             DC.DPH.AddParameter(DC.DPH.OrderbyDic(keyDic.ClassFullName, keyDic.ColumnOne,keyDic.TableAliasOne));
         }
 
-        internal void OrderByHandle<F>(Expression<Func<F>> func, OrderByEnum orderBy)
+        internal void OrderByF<F>(Expression<Func<F>> func, OrderByEnum orderBy)
         {
             var keyDic = DC.EH.FuncTExpression(func)[0];
             switch (orderBy)
@@ -387,7 +386,7 @@ namespace Yunyong.DataExchange.Core.Bases
             DC.DPH.AddParameter(DC.DPH.OrderbyDic(keyDic.ClassFullName, keyDic.ColumnOne,keyDic.TableAliasOne));
         }
 
-        protected void OrderByOptionHandle(PagingQueryOption option, string fullName)
+        internal void OrderByOptionHandle(PagingQueryOption option, string fullName)
         {
             if (option.OrderBys != null
               && option.OrderBys.Any())
@@ -410,6 +409,15 @@ namespace Yunyong.DataExchange.Core.Bases
                     }
                 }
             }
+        }
+
+        internal void DistinctHandle()
+        {
+            DC.Action = ActionEnum.Select;
+            DC.Option = OptionEnum.Distinct;
+            DC.Compare = CompareEnum.None;
+            DC.Func = FuncEnum.None;
+            DC.DPH.AddParameter(DC.DPH.DistinctDic());
         }
 
         /****************************************************************************************************************************************/

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -24,7 +23,7 @@ namespace Yunyong.DataExchange.Core
         internal static DbEnum DB { get; set; } = DbEnum.None;
 
         internal static int CommandTimeout { get; set; } = 10;  // 10s 
-        
+
         internal static BindingFlags ClassSelfMember { get; private set; } = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public;
 
         internal static MethodInfo EnumParse { get; } = typeof(Enum).GetMethod(nameof(Enum.Parse), new Type[] { typeof(Type), typeof(string), typeof(bool) });
@@ -68,7 +67,7 @@ namespace Yunyong.DataExchange.Core
         internal static string XColumnFullName { get; private set; } = typeof(XColumnAttribute).FullName;
 
         /************************************************************************************************************/
-        
+
         internal static MethodInfo GetItem { get; } = typeof(IDataRecord)
             .GetProperties(BindingFlags.Instance | BindingFlags.Public)
             .Where(p => p.GetIndexParameters().Length > 0 && p.GetIndexParameters()[0].ParameterType == typeof(int))
@@ -78,6 +77,8 @@ namespace Yunyong.DataExchange.Core
         /************************************************************************************************************/
 
         internal static string _001 { get; } = "001";
+        internal static string _002 { get; } = "002";
+        internal static string _003 { get; } = "003";
 
         /************************************************************************************************************/
 

@@ -21,7 +21,7 @@ namespace Yunyong.DataExchange
             where M : class
         {
             deleter.DC.Action = ActionEnum.Where;
-            deleter.DC.OP.WhereHandle(compareFunc);
+            deleter.WhereHandle(compareFunc);
             return new WhereD<M>(deleter.DC);
         }
 
@@ -32,7 +32,7 @@ namespace Yunyong.DataExchange
             where M:class
         {
             deleter.DC.Action = ActionEnum.Where;
-            deleter.DC.OP.WhereDynamicHandle<M>(mWhere);
+            deleter.WhereDynamicHandle<M>(mWhere);
             return new WhereD<M>(deleter.DC);
         }
 
@@ -46,7 +46,7 @@ namespace Yunyong.DataExchange
             where M : class
         {
             set.DC.Action = ActionEnum.Where;
-            set.DC.OP.WhereHandle(compareFunc);
+            set.WhereHandle(compareFunc);
             return new WhereU<M>(set.DC);
         }
 
@@ -57,7 +57,7 @@ namespace Yunyong.DataExchange
             where M:class
         {
             set.DC.Action = ActionEnum.Where;
-            set.DC.OP.WhereDynamicHandle<M>(mWhere);
+            set.WhereDynamicHandle<M>(mWhere);
             return new WhereU<M>(set.DC);
         }
 
@@ -71,7 +71,7 @@ namespace Yunyong.DataExchange
             where M : class
         {
             selecter.DC.Action = ActionEnum.Where;
-            selecter.DC.OP.WhereHandle(compareFunc);
+            selecter.WhereHandle(compareFunc);
             return new WhereQ<M>(selecter.DC);
         }
 
@@ -82,7 +82,7 @@ namespace Yunyong.DataExchange
             where M : class
         {
             selecter.DC.Action = ActionEnum.Where;
-            selecter.DC.OP.WhereDynamicHandle<M>(mWhere);
+            selecter.WhereDynamicHandle<M>(mWhere);
             return new WhereQ<M>(selecter.DC);
         }
 
@@ -91,7 +91,7 @@ namespace Yunyong.DataExchange
         public static WhereX Where(this OnX on, Expression<Func<bool>> compareFunc)
         {
             on.DC.Action = ActionEnum.Where;
-            on.DC.OP.WhereJoinHandle(on, compareFunc);
+            on.WhereJoinHandle(on, compareFunc);
             return new WhereX(on.DC);
         }
 

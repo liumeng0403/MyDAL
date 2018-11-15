@@ -96,6 +96,23 @@ namespace MyDAL.Test.QueryM
 
             /****************************************************************************************************************************************/
 
+            var xx5 = "";
+            
+            var res5 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.Name == "刘中华")
+                .Distinct()
+                .QueryFirstOrDefaultAsync();
+            Assert.NotNull(res5);
+            var res51 = await Conn.ListAsync<Agent>(it => it.Name == "刘中华");
+            Assert.True(res51.Count == 2);
+
+            var tuple5 = (XDebug.SQL, XDebug.Parameters);
+
+            /****************************************************************************************************************************************/
+
+            var xx = "";
+
         }
 
         private async Task<BodyFitRecord> PreQuery()

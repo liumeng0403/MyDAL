@@ -16,11 +16,11 @@ namespace Yunyong.DataExchange.Impls
         {
         }
 
-        public async Task<F> SumAsync<F>(Expression<Func<M, F>> func)
+        public async Task<F> SumAsync<F>(Expression<Func<M, F>> propertyFunc)
             where F : struct
         {
             DC.Action = ActionEnum.Select;
-            var keyDic = DC.EH.FuncMFExpression(func)[0];
+            var keyDic = DC.EH.FuncMFExpression(propertyFunc)[0];
             var key = keyDic.ColumnOne;
             DC.Option = OptionEnum.Sum;
             DC.Compare = CompareEnum.None;
