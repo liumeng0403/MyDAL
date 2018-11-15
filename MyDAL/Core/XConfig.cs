@@ -79,7 +79,9 @@ namespace Yunyong.DataExchange.Core
         internal static string _001 { get; } = "001";
         internal static string _002 { get; } = "002";
         internal static string _003 { get; } = "003";
-
+        internal static string _004 { get; } = "004";
+        internal static string _005 { get; } = "005";
+        
         /************************************************************************************************************/
 
     }

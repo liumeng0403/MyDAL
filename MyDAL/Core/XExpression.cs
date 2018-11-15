@@ -118,23 +118,37 @@ namespace Yunyong.DataExchange.Core
                 var info = default(PropertyInfo);
 
                 //
-                var paramType = default(Type);
+                var mType = default(Type);
                 var alias = GetAlias(leftBody);
-                if (option == OptionEnum.CharLength)
+                if (option == OptionEnum.CharLength
+                    || option == OptionEnum.DateFormat)
                 {
-                    var clMemExpr = leftBody.Expression as MemberExpression;
-                    paramType = clMemExpr.Expression.Type;
-                    info = paramType.GetProperty(clMemExpr.Member.Name);
+                    var exp = leftBody.Expression;
+                    if (exp is MemberExpression)
+                    {
+                        var clMemExpr = exp as MemberExpression;
+                        mType = clMemExpr.Expression.Type;
+                        info = mType.GetProperty(clMemExpr.Member.Name);
+                    }
+                    else if (exp is ParameterExpression)
+                    {
+                        mType = leftBody.Expression.Type;
+                        info = mType.GetProperty(leftBody.Member.Name);
+                    }
+                    else
+                    {
+                        throw new Exception($"{XConfig._005} -- [[{bodyL.ToString()}]] 不能解析!!!");
+                    }
                 }
                 else
                 {
-                    paramType = leftBody.Expression.Type;
-                    info = paramType.GetProperty(leftBody.Member.Name);
+                    mType = leftBody.Expression.Type;
+                    info = mType.GetProperty(leftBody.Member.Name);
                 }
 
                 //
                 var type = info.PropertyType;
-                var attr = DC.SC.GetXColumnAttribute(info, DC.SC.GetAttrKey(XConfig.XColumnFullName, info.Name, paramType.FullName));
+                var attr = DC.SC.GetXColumnAttribute(info, DC.SC.GetAttrKey(XConfig.XColumnFullName, info.Name, mType.FullName));
                 var field = string.Empty;
                 if (attr != null)
                 {
@@ -146,7 +160,7 @@ namespace Yunyong.DataExchange.Core
                 }
 
                 //
-                return (field, alias, type, paramType.FullName, format);
+                return (field, alias, type, mType.FullName, format);
             }
             else if (bodyL.NodeType == ExpressionType.Call)
             {
@@ -434,7 +448,7 @@ namespace Yunyong.DataExchange.Core
                     }
                     else
                     {
-                        throw new Exception($"{XConfig._001} -- [[{funcStr}]] 未能解析!!!");
+                        throw new Exception($"{XConfig._004} -- [[{funcStr}]] 未能解析!!!");
                     }
                     var dic = DC.DPH.DateFormatDic(tuple.key, tuple.alias, val, tuple.valType, format);
                     dic.ClassFullName = tuple.classFullName;
@@ -752,7 +766,7 @@ namespace Yunyong.DataExchange.Core
             {
                 var memExpr = body as MemberExpression;
                 if (DC.IsSingleTableOption()
-                    || DC.Crud== CrudTypeEnum.None)
+                    || DC.Crud == CrudTypeEnum.None)
                 {
                     var keyTuple = GetKey(memExpr, OptionEnum.None);
                     var key = keyTuple.key;
@@ -817,7 +831,7 @@ namespace Yunyong.DataExchange.Core
                     {
                         throw new Exception($"{XConfig._001} -- [[{body}]] 未能解析!!!");
                     }
-                    var dic = DC.DPH.DateFormatDic(tuple.key, tuple.alias, (null,string.Empty), tuple.valType, format);
+                    var dic = DC.DPH.DateFormatDic(tuple.key, tuple.alias, (null, string.Empty), tuple.valType, format);
                     dic.ClassFullName = tuple.classFullName;
                     result.Add(dic);
                 }
