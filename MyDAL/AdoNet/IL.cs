@@ -11,6 +11,15 @@ namespace Yunyong.DataExchange.AdoNet
     internal struct IL<M>
         where M:class
     {
+        private static RowMap GetTypeMap(Type mType)
+        {
+            if (!XCache.TypeMaps.TryGetValue(mType, out var map))
+            {
+                map = new RowMap(mType);
+                XCache.TypeMaps[mType] = map;
+            }
+            return map;
+        }
         private static void EmitInt32(ILGenerator il, int value)
         {
             switch (value)
@@ -247,7 +256,7 @@ namespace Yunyong.DataExchange.AdoNet
             //
             var length = reader.FieldCount;
             var names = Enumerable.Range(0, length).Select(i => reader.GetName(i)).ToArray();
-            var typeMap = XSQL.GetTypeMap(mType);
+            var typeMap = GetTypeMap(mType);
             int index = 0;
             var ctor = typeMap.DefaultConstructor();
 
@@ -285,7 +294,7 @@ namespace Yunyong.DataExchange.AdoNet
                     {
                         il.EmitCall(
                             OpCodes.Call, 
-                            typeof(XSQL).GetMethod(
+                            typeof(IL<M>).GetMethod(
                                 memberType == typeof(char) 
                                 ? nameof(ReadChar) 
                                 : nameof(ReadNullableChar), BindingFlags.Static | BindingFlags.NonPublic),
@@ -354,7 +363,7 @@ namespace Yunyong.DataExchange.AdoNet
                     // Store the value in the property/field
                     if (item.Property != null)
                     {
-                        il.Emit(OpCodes.Callvirt, XSQL.GetPropertySetter(item.Property, mType));
+                        il.Emit(OpCodes.Callvirt, RowMap.GetPropertySetter(item.Property, mType));
                     }
                     else
                     {
@@ -377,7 +386,7 @@ namespace Yunyong.DataExchange.AdoNet
             il.Emit(OpCodes.Ldloc_0); // stack is Exception, index
             il.Emit(OpCodes.Ldarg_0); // stack is Exception, index, reader
             LoadLocal(il, valueCopyLocal); // stack is Exception, index, reader, value
-            il.EmitCall(OpCodes.Call, typeof(XSQL).GetMethod(nameof(XSQL.ThrowDataException)), null);
+            il.EmitCall(OpCodes.Call, typeof(IL<M>).GetMethod(nameof(ThrowDataException)), null);
             il.EndExceptionBlock();
 
             il.Emit(OpCodes.Ldloc_1); // stack is [rval]
@@ -393,6 +402,40 @@ namespace Yunyong.DataExchange.AdoNet
             {
                 Handle = SetFunc(reader)
             };
+        }
+
+        public static void ThrowDataException(Exception ex, int index, IDataReader reader, object value)
+        {
+            Exception toThrow;
+            try
+            {
+                string name = "(n/a)", formattedValue = "(n/a)";
+                if (reader != null && index >= 0 && index < reader.FieldCount)
+                {
+                    name = reader.GetName(index);
+                    try
+                    {
+                        if (value == null || value is DBNull)
+                        {
+                            formattedValue = "<null>";
+                        }
+                        else
+                        {
+                            formattedValue = Convert.ToString(value) + " - " + Type.GetTypeCode(value.GetType());
+                        }
+                    }
+                    catch (Exception valEx)
+                    {
+                        formattedValue = valEx.Message;
+                    }
+                }
+                toThrow = new DataException($"Error parsing column {index} ({name}={formattedValue})", ex);
+            }
+            catch
+            { // throw the **original** exception, wrapped as DataException
+                toThrow = new DataException(ex.Message, ex);
+            }
+            throw toThrow;
         }
     }
 }

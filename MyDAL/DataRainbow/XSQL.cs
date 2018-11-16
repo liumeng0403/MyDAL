@@ -1,75 +1,51 @@
-using System;
-using System.Data;
-using System.Linq;
-using System.Reflection;
-using Yunyong.DataExchange.AdoNet;
+using System.Text;
 using Yunyong.DataExchange.Core.Enums;
 
-namespace Yunyong.DataExchange.Core
+namespace Yunyong.DataExchange.DataRainbow
 {
-    internal static class XSQL
+    internal abstract class XSQL
     {
-
-        internal static MethodInfo GetPropertySetter(PropertyInfo propertyInfo, Type mType)
+        
+        protected static void Spacing(StringBuilder sb)
         {
-            if (propertyInfo.DeclaringType == mType)
-            {
-                return propertyInfo.GetSetMethod(true);
-            }
-            return propertyInfo
-                .DeclaringType
-                .GetProperty(propertyInfo.Name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, Type.DefaultBinder, propertyInfo.PropertyType, propertyInfo.GetIndexParameters().Select(p => p.ParameterType).ToArray(), null)
-                .GetSetMethod(true);
+            sb.Append(' ');
         }
-
-        /******************************************************************************************/
-
-        public static void ThrowDataException(Exception ex, int index, IDataReader reader, object value)
+        protected static void Backquote(StringBuilder sb)
         {
-            Exception toThrow;
-            try
-            {
-                string name = "(n/a)", formattedValue = "(n/a)";
-                if (reader != null && index >= 0 && index < reader.FieldCount)
-                {
-                    name = reader.GetName(index);
-                    try
-                    {
-                        if (value == null || value is DBNull)
-                        {
-                            formattedValue = "<null>";
-                        }
-                        else
-                        {
-                            formattedValue = Convert.ToString(value) + " - " + Type.GetTypeCode(value.GetType());
-                        }
-                    }
-                    catch (Exception valEx)
-                    {
-                        formattedValue = valEx.Message;
-                    }
-                }
-                toThrow = new DataException($"Error parsing column {index} ({name}={formattedValue})", ex);
-            }
-            catch
-            { // throw the **original** exception, wrapped as DataException
-                toThrow = new DataException(ex.Message, ex);
-            }
-            throw toThrow;
+            sb.Append('`');
         }
-        public static RowMap GetTypeMap(Type mType)
+        protected static void AT(StringBuilder sb)
         {
-            if (!XCache.TypeMaps.TryGetValue(mType, out var map))
-            {
-                map = new RowMap(mType);
-                XCache.TypeMaps[mType] = map;
-            }
-            return map;
+            sb.Append('@');
+        }
+        protected static void Dot(StringBuilder sb)
+        {
+            sb.Append('.');
+        }
+        protected static void Comma(StringBuilder sb)
+        {
+            sb.Append(',');
+        }
+        protected static void CRLF(StringBuilder sb)
+        {
+            sb.Append("\r\n");
+        }
+        protected static void Tab(StringBuilder sb)
+        {
+            sb.Append("\t");
+        }
+        protected static void LeftBracket(StringBuilder sb)
+        {
+            sb.Append('(');
+        }
+        protected static void RightBracket(StringBuilder sb)
+        {
+            sb.Append(')');
         }
 
         /****************************************************************************************************************/
 
-        internal static string ConditionAction(ActionEnum action)
+        protected static string Action(ActionEnum action)
         {
             switch (action)
             {
@@ -100,7 +76,7 @@ namespace Yunyong.DataExchange.Core
             }
             return " ";
         }
-        internal static string MultiConditionAction(ActionEnum action)
+        protected static string MultiAction(ActionEnum action)
         {
             switch (action)
             {
@@ -111,7 +87,7 @@ namespace Yunyong.DataExchange.Core
             }
             return " ";
         }
-        internal static string ConditionOption(OptionEnum option)
+        protected static string Option(OptionEnum option)
         {
             switch (option)
             {
@@ -152,7 +128,7 @@ namespace Yunyong.DataExchange.Core
             }
             return " ";
         }
-        internal static string ConditionCompare(CompareEnum compare)
+        protected static string Compare(CompareEnum compare)
         {
             switch (compare)
             {
@@ -179,7 +155,7 @@ namespace Yunyong.DataExchange.Core
             }
             return " ";
         }
-        internal static string ConditionFunc(FuncEnum func)
+        protected static string Function(FuncEnum func)
         {
             switch (func)
             {
@@ -203,6 +179,26 @@ namespace Yunyong.DataExchange.Core
                     return " not in ";
             }
             return " ";
+        }
+
+        /****************************************************************************************************************/
+
+        protected static void InsertInto(StringBuilder sb)
+        {
+            CRLF(sb);
+            sb.Append("insert into");
+        }
+        protected static void Delete(StringBuilder sb)
+        {
+            sb.Append("delete");
+        }
+        protected static void Update(StringBuilder sb)
+        {
+            sb.Append("update");
+        }
+        protected static void Select(StringBuilder sb)
+        {
+            sb.Append("select");
         }
 
     }

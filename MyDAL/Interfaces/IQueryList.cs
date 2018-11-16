@@ -21,7 +21,7 @@ namespace Yunyong.DataExchange.Interfaces
             where VM : class;
     }
 
-    public interface IQueryListX
+    internal interface IQueryListX
     {
         Task<List<M>> ListAsync<M>()
             where M : class;

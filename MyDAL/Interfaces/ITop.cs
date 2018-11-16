@@ -15,7 +15,7 @@ namespace Yunyong.DataExchange.Interfaces
             where VM : class;
     }
 
-    public interface ITopX
+    internal interface ITopX
     {
         Task<List<M>> TopAsync<M>(int count)
             where M : class;

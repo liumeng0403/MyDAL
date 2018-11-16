@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Core.Extensions;
 using Yunyong.DataExchange.Core.Helper;
 
@@ -14,10 +13,22 @@ namespace Yunyong.DataExchange.AdoNet
         private List<PropertyInfo> Properties { get; }
         private Type Type { get; }
 
+        internal static MethodInfo GetPropertySetter(PropertyInfo propertyInfo, Type mType)
+        {
+            if (propertyInfo.DeclaringType == mType)
+            {
+                return propertyInfo.GetSetMethod(true);
+            }
+            return propertyInfo
+                .DeclaringType
+                .GetProperty(propertyInfo.Name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, Type.DefaultBinder, propertyInfo.PropertyType, propertyInfo.GetIndexParameters().Select(p => p.ParameterType).ToArray(), null)
+                .GetSetMethod(true);
+        }
+
         internal RowMap(Type mType)
         {
             Fields = mType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).ToList();
-            Properties = mType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(p => XSQL.GetPropertySetter(p, mType) != null).ToList();
+            Properties = mType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(p => GetPropertySetter(p, mType) != null).ToList();
             Type = mType;
         }
         internal ConstructorInfo DefaultConstructor()
