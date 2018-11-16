@@ -1,5 +1,4 @@
 ﻿using MyDAL.Core;
-using MyDAL.DataRainbow;
 using System;
 using System.Data;
 using System.Linq;
@@ -295,7 +294,7 @@ namespace MyDAL.AdoNet
                     {
                         il.EmitCall(
                             OpCodes.Call, 
-                            typeof(XSQL).GetMethod(
+                            typeof(IL<M>).GetMethod(
                                 memberType == typeof(char) 
                                 ? nameof(ReadChar) 
                                 : nameof(ReadNullableChar), BindingFlags.Static | BindingFlags.NonPublic),
