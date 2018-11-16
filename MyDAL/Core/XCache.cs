@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Core
 {
-    internal class XCache 
+    internal class XCache
     {
         private int GetColumnHash(IDataReader reader)
         {
@@ -38,7 +38,7 @@ namespace MyDAL.Core
         /*****************************************************************************************************************************************************/
 
         private Context DC { get; set; }
-        internal XCache( Context dc)
+        internal XCache(Context dc)
         {
             DC = dc;
         }
@@ -53,22 +53,35 @@ namespace MyDAL.Core
         {
             return $"{mFullName}:{DC.Conn.Database}";
         }
-        internal string GetAttrPropKey(string propName,string attrFullName,string mFullName)
+        internal string GetAttrPropKey(string propName, string attrFullName, string mFullName)
         {
             return $"{propName}:{attrFullName}:{GetModelKey(mFullName)}";
         }
-        internal string GetAttrKey(string attrFullName,string propName,string mFullName)
+        internal string GetAttrKey(string attrFullName, string propName, string mFullName)
         {
             return $"{attrFullName}:{propName}:{GetModelKey(mFullName)}";
         }
-        internal string GetHandleKey(int sqlHash,int colHash,string mFullName)
+        internal string GetHandleKey(int sqlHash, int colHash, string mFullName)
         {
             return $"{sqlHash}:{colHash}:{GetModelKey(mFullName)}";
         }
 
         /*****************************************************************************************************************************************************/
-        
-        internal XColumnAttribute GetXColumnAttribute(PropertyInfo info,string key)
+
+        internal bool ExistTableName(string key)
+        {
+            return ModelTableNameCache.ContainsKey(key);
+        }
+        internal string GetTableName(string key)
+        {
+            return ModelTableNameCache[key];
+        }
+        internal void SetTableName(string key, string tableName)
+        {
+            ModelTableNameCache.GetOrAdd(key, tableName);
+        }
+
+        internal XColumnAttribute GetXColumnAttribute(PropertyInfo info, string key)
         {
             var attr = default(XColumnAttribute);
             if (!XColumnAttributeCache.TryGetValue(key, out attr))
@@ -87,20 +100,12 @@ namespace MyDAL.Core
         {
             if (!AssemblyCache.TryGetValue(key, out var ass))
             {
-                ass =  new GenericHelper(DC).LoadAssembly(key.Split(':')[1]);
+                ass = new GenericHelper(DC).LoadAssembly(key.Split(':')[1]);
                 AssemblyCache[key] = ass;
             }
             return ass;
         }
         internal static ConcurrentDictionary<string, string> ModelAttributePropValCache { get; } = new ConcurrentDictionary<string, string>();
-        internal string GetModelTableName(string key)
-        {
-            return ModelTableNameCache[key];
-        }
-        internal void SetModelTableName(string key, string tableName)
-        {
-            ModelTableNameCache.GetOrAdd(key, tableName);
-        }
         internal Type GetModelType<M>(string key)
         {
             return ModelTypeCache[key];
@@ -133,7 +138,7 @@ namespace MyDAL.Core
         {
             if (!ModelColumnInfosCache.ContainsKey(key))
             {
-                var columns = await dc.SqlProvider.GetColumnsInfos(dc.SC.GetModelTableName(key));
+                var columns = await dc.SqlProvider.GetColumnsInfos(dc.SC.GetTableName(key));
                 ModelColumnInfosCache[key] = columns;
             }
         }

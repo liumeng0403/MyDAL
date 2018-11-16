@@ -123,7 +123,7 @@ namespace MyDAL.Core.Helper
             else
             {
                 ui.Key = DC.SC.GetModelKey(ui.ClassFullName);
-                ui.TableOne = DC.SC.GetModelTableName(ui.Key);
+                ui.TableOne = DC.SC.GetTableName(ui.Key);
             }
             if (ui.CsType != null)
             {

@@ -6,7 +6,6 @@ using MyDAL.DataRainbow.MySQL;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 
 namespace MyDAL.Core.Bases
 {
@@ -105,9 +104,9 @@ namespace MyDAL.Core.Bases
             //    return true;
             //}
             //else 
-            if(dic.Group==null
-                && dic.CsValue != null 
-                && dic.Option == OptionEnum.Function 
+            if (dic.Group == null
+                && dic.CsValue != null
+                && dic.Option == OptionEnum.Function
                 && (dic.Func == FuncEnum.In || dic.Func == FuncEnum.NotIn))
             {
                 return true;
@@ -178,8 +177,9 @@ namespace MyDAL.Core.Bases
             }
 
             //
+            if (SC.ExistTableName(key)) return;
             var table = SqlProvider.GetTableName<M>();
-            SC.SetModelTableName(key, table);
+            SC.SetTableName(key, table);
             SC.SetModelType(key, type);
             SC.SetModelProperys(type, this);
             (SC.SetModelColumnInfos(key, this)).GetAwaiter().GetResult();
