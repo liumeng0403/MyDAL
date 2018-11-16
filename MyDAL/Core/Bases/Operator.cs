@@ -318,13 +318,15 @@ namespace Yunyong.DataExchange.Core.Bases
                 }
                 else if (tp.compare == CompareEnum.In)
                 {
-                    DC.Option = OptionEnum.In;
+                    DC.Option = OptionEnum.Function;
+                    DC.Func = FuncEnum.In;
                     DC.Compare = CompareEnum.None;
                     DC.DPH.AddParameter(DC.DPH.InDic(fullName, tp.key, string.Empty, tp.val, tp.valType));
                 }
                 else if(tp.compare== CompareEnum.NotIn)
                 {
-                    DC.Option = OptionEnum.NotIn;
+                    DC.Option = OptionEnum.Function;
+                    DC.Func = FuncEnum.NotIn;
                     DC.Compare = CompareEnum.None;
                     DC.DPH.AddParameter(DC.DPH.NotInDic(fullName, tp.key, string.Empty, tp.val, tp.valType));
                 }

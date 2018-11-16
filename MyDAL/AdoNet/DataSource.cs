@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Core.Bases;
+using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Enums;
 
 namespace Yunyong.DataExchange.AdoNet
@@ -49,6 +51,23 @@ namespace Yunyong.DataExchange.AdoNet
                 return DC.DPH.GetParameters(DC.Parameters);
             }
         }
+        private DbDataReader Reader { get; set; }
+        private bool IsDateTimeYearColumn(out DicParam dic)
+        {
+            dic = DC
+                .Parameters
+                .FirstOrDefault(it =>
+                    it.Func == FuncEnum.DateFormat
+                    && (it.CsType == XConfig.DateTime || it.CsType == XConfig.DateTimeNull)
+                    && "%Y".Equals(it.Format, StringComparison.OrdinalIgnoreCase)
+                    && (it.Option == OptionEnum.Column || it.Option == OptionEnum.ColumnAs));
+            if (dic != null)
+            {
+                dic.Format = "yyyy";
+                return true;
+            }
+            return false;
+        }
         private DbCommand TrySetupAsyncCommand(CommandInfo command, IDbConnection cnn, Action<IDbCommand, DbParamInfo> paramReader)
         {
             var cmd = cnn.CreateCommand();
@@ -75,7 +94,7 @@ namespace Yunyong.DataExchange.AdoNet
         {
             return (close ? (@default | CommandBehavior.CloseConnection) : @default) & AllowedCommandBehaviors;
         }
-        internal bool DisableCommandBehaviorOptimizations(CommandBehavior behavior, Exception ex)
+        private bool DisableCommandBehaviorOptimizations(CommandBehavior behavior, Exception ex)
         {
             if (AllowedCommandBehaviors == DefaultAllowedCommandBehaviors
                 && (behavior & (CommandBehavior.SingleResult | CommandBehavior.SingleRow)) != 0)
@@ -97,6 +116,37 @@ namespace Yunyong.DataExchange.AdoNet
                 return cmd.ExecuteReaderAsync(GetBehavior(wasClosed, behavior), default(CancellationToken));
             }
             return task;
+        }
+        private async Task<List<F>> ReadColumn<M, F>(Func<M, F> propertyFunc)
+            where M : class
+        {
+            var result = new List<F>();
+            if (IsDateTimeYearColumn(out var dic))
+            {
+                while (await Reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
+                {
+                    result.Add(
+                        DC.GH.ConvertT<F>(
+                            new DateTime(
+                                Reader.GetInt32(
+                                    Reader.GetOrdinal(
+                                        dic.Option == OptionEnum.Column
+                                            ? dic.ColumnOne
+                                            : dic.Option == OptionEnum.ColumnAs
+                                                ? dic.ColumnOneAlias
+                                                : throw new Exception($"{XConfig._008} -- [[{dic.Option}]] 不能解析!!!"))), 1, 1).ToString(dic.Format)));
+                }
+            }
+            else
+            {
+                var func = DC.SC.GetHandle<M>(SqlOne, Reader);
+                while (await Reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
+                {
+                    result.Add(propertyFunc(func(Reader)));
+                }
+            }
+            while (await Reader.NextResultAsync(default(CancellationToken)).ConfigureAwait(false)) { }
+            return result;
         }
 
         /*********************************************************************************************************************************************/
@@ -184,30 +234,22 @@ namespace Yunyong.DataExchange.AdoNet
          * ado.net -- DbCommand.[Task<DbDataReader> ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)]
          * select -- 单列
          */
-        internal async Task<IEnumerable<F>> ExecuteReaderSingleColumnAsync<M, F>(Func<M, F> propertyFunc)
+        internal async Task<List<F>> ExecuteReaderSingleColumnAsync<M, F>(Func<M, F> propertyFunc)
             where M : class
         {
             var command = new CommandInfo(SqlOne, Parameter);
             var needClose = Conn.State == ConnectionState.Closed;
             using (var cmd = TrySetupAsyncCommand(command, Conn, command.Parameter.ParamReader))
             {
-                var reader = default(DbDataReader);
                 try
                 {
                     if (needClose) { await TryOpenAsync(Conn).ConfigureAwait(false); }
-                    reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, XConfig.MultiRow).ConfigureAwait(false);
-                    var result = new List<F>();
-                    var func = DC.SC.GetHandle<M>(SqlOne, reader);
-                    while (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
-                    {
-                        result.Add(propertyFunc(func(reader)));
-                    }
-                    while (await reader.NextResultAsync(default(CancellationToken)).ConfigureAwait(false)) { }
-                    return result;
+                    Reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, XConfig.MultiRow).ConfigureAwait(false);
+                    return await ReadColumn(propertyFunc);
                 }
                 finally
                 {
-                    using (reader) { }
+                    using (Reader) { }
                     if (needClose) { Conn.Close(); }
                 }
             }

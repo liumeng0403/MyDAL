@@ -30,7 +30,7 @@ namespace Yunyong.DataExchange.Core.Bases
 
         /**********************************************************************************************************/
 
-        protected async Task<PagingList<M>> QueryPagingListAsyncHandle<M>(int pageIndex, int pageSize, UiMethodEnum sqlType)
+        protected async Task<PagingList<M>> PagingListAsyncHandle<M>(int pageIndex, int pageSize, UiMethodEnum sqlType)
             where M : class
         {
             var result = new PagingList<M>();
@@ -43,7 +43,7 @@ namespace Yunyong.DataExchange.Core.Bases
             return result;
         }
 
-        protected async Task<PagingList<VM>> QueryPagingListAsyncHandle<M, VM>(int pageIndex, int pageSize, UiMethodEnum sqlType)
+        protected async Task<PagingList<VM>> PagingListAsyncHandle<M, VM>(int pageIndex, int pageSize, UiMethodEnum sqlType)
             where VM : class
         {
             var result = new PagingList<VM>();
@@ -77,7 +77,7 @@ namespace Yunyong.DataExchange.Core.Bases
             else
             {
                 var fullNames = DC.Parameters.Where(it => !string.IsNullOrWhiteSpace(it.ClassFullName)).Distinct();
-                throw new Exception($"请使用 [[Task<List<VM>> QueryListAsync<VM>(Expression<Func<VM>> func)]] 方法! 或者 {mType.Name} 必须为 [[{string.Join(",", fullNames.Select(it => it.ClassName))}]] 其中之一 !");
+                throw new Exception($"请使用 [[Task<List<VM>> ListAsync<VM>(Expression<Func<VM>> func)]] 方法! 或者 {mType.Name} 必须为 [[{string.Join(",", fullNames.Select(it => it.ClassName))}]] 其中之一 !");
             }
         }
 
@@ -118,7 +118,7 @@ namespace Yunyong.DataExchange.Core.Bases
             else
             {
                 var fullNames = DC.Parameters.Where(it => !string.IsNullOrWhiteSpace(it.ClassFullName)).Distinct();
-                throw new Exception($"请使用 [[Task<List<VM>> QueryListAsync<VM>(Expression<Func<VM>> func)]] 方法! 或者 {mType.Name} 必须为 [[{string.Join(",", fullNames.Select(it => it.ClassName))}]] 其中之一 !");
+                throw new Exception($"请使用 [[Task<List<VM>> ListAsync<VM>(Expression<Func<VM>> func)]] 方法! 或者 {mType.Name} 必须为 [[{string.Join(",", fullNames.Select(it => it.ClassName))}]] 其中之一 !");
             }
         }
 

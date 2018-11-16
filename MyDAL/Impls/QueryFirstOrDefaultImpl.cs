@@ -16,29 +16,29 @@ namespace Yunyong.DataExchange.Impls
         {
         }
 
-        public async Task<M> QueryFirstOrDefaultAsync()
+        public async Task<M> FirstOrDefaultAsync()
         {
-            DC.Method = UiMethodEnum.QueryFirstOrDefaultAsync;
+            DC.Method = UiMethodEnum.FirstOrDefaultAsync;
             DC.SqlProvider.GetSQL();
             return await DC.DS.ExecuteReaderSingleRowAsync<M>();
         }
 
-        public async Task<VM> QueryFirstOrDefaultAsync<VM>()
+        public async Task<VM> FirstOrDefaultAsync<VM>()
             where VM:class
         {
             SelectMHandle<M, VM>();
             DC.DPH.SetParameter();
-            DC.Method = UiMethodEnum.QueryFirstOrDefaultAsync;
+            DC.Method = UiMethodEnum.FirstOrDefaultAsync;
             DC.SqlProvider.GetSQL();
             return await DC.DS.ExecuteReaderSingleRowAsync<VM>();
         }
 
-        public async Task<VM> QueryFirstOrDefaultAsync<VM>(Expression<Func<M, VM>> func)
+        public async Task<VM> FirstOrDefaultAsync<VM>(Expression<Func<M, VM>> func)
             where VM:class
         {
             SelectMHandle(func);
             DC.DPH.SetParameter();
-            DC.Method = UiMethodEnum.QueryFirstOrDefaultAsync;
+            DC.Method = UiMethodEnum.FirstOrDefaultAsync;
             DC.SqlProvider.GetSQL();
             return await DC.DS.ExecuteReaderSingleRowAsync<VM>();
         }
@@ -52,22 +52,22 @@ namespace Yunyong.DataExchange.Impls
         {
         }
 
-        public async Task<M> QueryFirstOrDefaultAsync<M>()
+        public async Task<M> FirstOrDefaultAsync<M>()
             where M:class
         {
             SelectMHandle<M>();
             DC.DPH.SetParameter();
-            DC.Method = UiMethodEnum.JoinQueryFirstOrDefaultAsync;
+            DC.Method = UiMethodEnum.JoinFirstOrDefaultAsync;
             DC.SqlProvider.GetSQL();
             return await DC.DS.ExecuteReaderSingleRowAsync<M>();
         }
 
-        public async Task<VM> QueryFirstOrDefaultAsync<VM>(Expression<Func<VM>> func)
+        public async Task<VM> FirstOrDefaultAsync<VM>(Expression<Func<VM>> func)
             where VM:class
         {
             SelectMHandle(func);
             DC.DPH.SetParameter();
-            DC.Method = UiMethodEnum.JoinQueryFirstOrDefaultAsync;
+            DC.Method = UiMethodEnum.JoinFirstOrDefaultAsync;
             DC.SqlProvider.GetSQL();
             return await DC.DS.ExecuteReaderSingleRowAsync<VM>();
         }

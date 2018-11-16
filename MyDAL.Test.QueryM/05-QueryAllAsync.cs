@@ -8,7 +8,7 @@ using Yunyong.DataExchange;
 
 namespace MyDAL.Test.QueryM
 {
-    public class _05_QueryAllAsync:TestBase
+    public class _05_AllAsync:TestBase
     {
         [Fact]
         public async Task test()
@@ -20,7 +20,7 @@ namespace MyDAL.Test.QueryM
 
             var res1 = await Conn
                 .Selecter<Agent>()
-                .QueryAllAsync();
+                .AllAsync();
             Assert.True(res1.Count == 28620);
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);

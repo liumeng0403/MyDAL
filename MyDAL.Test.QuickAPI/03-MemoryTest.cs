@@ -20,7 +20,7 @@ namespace MyDAL.Test.QuickAPI
                 var res = await Conn
                     .Selecter<Agent>()
                     .Where(it => it.Name.Contains($"{name}%") && it.CreatedOn > WhereTest.CreatedOn || it.AgentLevel == AgentLevel.DistiAgent)
-                    .QueryListAsync();
+                    .ListAsync();
                 Assert.True(res.Count == 2506);
                 Thread.Sleep(5);
             }

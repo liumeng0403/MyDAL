@@ -19,13 +19,13 @@ namespace MyDAL.Test.WhereEdge
             var res1 = await Conn
                 .Selecter<Agent>()
                 .Where(it => false) // true  false
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res1.Count == 0);
 
             var res11 = await Conn
                 .Selecter<Agent>()
                 .Where(it => true) // true  false
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res11.Count == 28620);
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
@@ -37,21 +37,21 @@ namespace MyDAL.Test.WhereEdge
             var res2 = await Conn
                 .Selecter<AddressInfo>()
                 .Where(it => it.IsDefault)  //  false  none(true)  
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res2.Count == 5);
             Assert.True(res2.First().IsDefault);
 
             var res21 = await Conn
                 .Selecter<AddressInfo>()
                 .Where(it => it.IsDefault == true)  //  false  none(true)  
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res21.Count == 5);
             Assert.True(res21.First().IsDefault);
 
             var res22 = await Conn
                 .Selecter<AddressInfo>()
                 .Where(it => it.IsDefault == false)  //  false  none(true)  
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res22.Count == 2);
             Assert.True(res22.First().IsDefault == false);
 
@@ -68,7 +68,7 @@ namespace MyDAL.Test.WhereEdge
                     .InnerJoin(() => record3)
                         .On(() => agent3.Id == record3.AgentId)
                 .Where(() => true) // true  false
-                .QueryListAsync<Agent>();
+                .ListAsync<Agent>();
             Assert.True(res3.Count == 574);
 
             var res31 = await Conn
@@ -77,7 +77,7 @@ namespace MyDAL.Test.WhereEdge
                     .InnerJoin(() => record31)
                         .On(() => agent31.Id == record31.AgentId)
                 .Where(() => false) // true  false
-                .QueryListAsync<Agent>();
+                .ListAsync<Agent>();
             Assert.True(res31.Count == 0);
 
             var tuple3 = (XDebug.SQL, XDebug.Parameters);
@@ -92,7 +92,7 @@ namespace MyDAL.Test.WhereEdge
                     .InnerJoin(() => address44)
                         .On(() => address4.Id == address44.Id)
                 .Where(() => address4.IsDefault)  //  false  none(true)  
-                .QueryListAsync<AddressInfo>();
+                .ListAsync<AddressInfo>();
             Assert.True(res4.Count == 5);
             Assert.True(res4.First().IsDefault);
 
@@ -102,7 +102,7 @@ namespace MyDAL.Test.WhereEdge
                     .InnerJoin(() => address411)
                         .On(() => address41.Id == address411.Id)
                 .Where(() => address41.IsDefault == true)  //  false  none(true)  
-                .QueryListAsync<AddressInfo>();
+                .ListAsync<AddressInfo>();
             Assert.True(res41.Count == 5);
             Assert.True(res41.First().IsDefault);
 
@@ -112,7 +112,7 @@ namespace MyDAL.Test.WhereEdge
                     .InnerJoin(() => address421)
                         .On(() => address42.Id == address421.Id)
                 .Where(() => address42.IsDefault == false)  //  false  none(true)  
-                .QueryListAsync<AddressInfo>();
+                .ListAsync<AddressInfo>();
             Assert.True(res42.Count == 2);
             Assert.True(res42.First().IsDefault == false);
 
@@ -129,7 +129,7 @@ namespace MyDAL.Test.WhereEdge
                     .InnerJoin(() => address55)
                         .On(() => address5.Id == address55.Id)
                 .Where(() => address5.IsDefault && address5.UserId == guid5)  //  false  none(true)  
-                .QueryListAsync<AddressInfo>();
+                .ListAsync<AddressInfo>();
             Assert.True(res5.Count == 1);
             Assert.True(res5.First().IsDefault);
 
@@ -139,7 +139,7 @@ namespace MyDAL.Test.WhereEdge
                     .InnerJoin(() => address511)
                         .On(() => address51.Id == address511.Id)
                 .Where(() => address51.IsDefault == true && address51.UserId == guid5)  //  false  none(true)  
-                .QueryListAsync<AddressInfo>();
+                .ListAsync<AddressInfo>();
             Assert.True(res51.Count == 1);
             Assert.True(res51.First().IsDefault);
 
@@ -150,7 +150,7 @@ namespace MyDAL.Test.WhereEdge
                     .InnerJoin(() => address521)
                         .On(() => address52.Id == address521.Id)
                 .Where(() => address52.IsDefault == false || address52.Id == guid52)  //  false  none(true)  
-                .QueryListAsync<AddressInfo>();
+                .ListAsync<AddressInfo>();
             Assert.True(res52.Count == 3);
             Assert.True(res52.First(it => it.Id != guid52).IsDefault == false);
             Assert.True(res52.First(it => it.Id == guid52).IsDefault);

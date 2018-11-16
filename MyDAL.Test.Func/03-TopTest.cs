@@ -61,7 +61,7 @@ namespace MyDAL.Test.Func
                 .Selecter<Agent>()
                 .Where(it=>it.AgentLevel== AgentLevel.Customer)
                 .OrderBy(it=>it.PathId)
-                .QueryListAsync(25);
+                .ListAsync(25);
             Assert.True(res4.Count == 25);
 
             var tuple4 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -73,7 +73,7 @@ namespace MyDAL.Test.Func
             var res5 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
-                .QueryListAsync<AgentVM>(25);
+                .ListAsync<AgentVM>(25);
             Assert.True(res5.Count == 25);
 
             var tuple5 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -85,7 +85,7 @@ namespace MyDAL.Test.Func
             var res6 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
-                .QueryListAsync<AgentVM>(25, agent => new AgentVM
+                .ListAsync<AgentVM>(25, agent => new AgentVM
                 {
                     XXXX = agent.Name,
                     YYYY = agent.PathId
@@ -141,7 +141,7 @@ namespace MyDAL.Test.Func
                     .InnerJoin(() => record9)
                         .On(() => agent9.Id == record9.AgentId)
                 .Where(() => record9.CreatedOn >= WhereTest.CreatedOn)
-                .QueryListAsync(25, () => new AgentVM
+                .ListAsync(25, () => new AgentVM
                 {
                     nn = agent9.PathId,
                     yy = record9.Id,
@@ -163,7 +163,7 @@ namespace MyDAL.Test.Func
                     .InnerJoin(() => record10)
                         .On(() => agent10.Id == record10.AgentId)
                 .Where(() => record10.CreatedOn >= WhereTest.CreatedOn)
-                .QueryListAsync<Agent>(25);
+                .ListAsync<Agent>(25);
             Assert.True(res10.Count == 25);
 
             var tuple10 = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);

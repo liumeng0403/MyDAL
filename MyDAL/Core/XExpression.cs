@@ -104,13 +104,13 @@ namespace Yunyong.DataExchange.Core
 
             return alias;
         }
-        private (string key, string alias, Type valType, string classFullName, string format) GetKey(Expression bodyL, OptionEnum option, string format = "")
+        private (string key, string alias, Type valType, string classFullName, string format) GetKey(Expression bodyL, FuncEnum func, string format = "")
         {
             if (bodyL.NodeType == ExpressionType.Convert)
             {
                 var exp = bodyL as UnaryExpression;
                 var opMem = exp.Operand;
-                return GetKey(opMem, option);
+                return GetKey(opMem, func);
             }
             else if (bodyL.NodeType == ExpressionType.MemberAccess)
             {
@@ -120,8 +120,8 @@ namespace Yunyong.DataExchange.Core
                 //
                 var mType = default(Type);
                 var alias = GetAlias(leftBody);
-                if (option == OptionEnum.CharLength
-                    || option == OptionEnum.DateFormat)
+                if (func == FuncEnum.CharLength
+                    || func == FuncEnum.DateFormat)
                 {
                     var exp = leftBody.Expression;
                     if (exp is MemberExpression)
@@ -165,23 +165,23 @@ namespace Yunyong.DataExchange.Core
             else if (bodyL.NodeType == ExpressionType.Call)
             {
                 var mcExpr = bodyL as MethodCallExpression;
-                if (option == OptionEnum.Trim
-                    || option == OptionEnum.LTrim
-                    || option == OptionEnum.RTrim)
+                if (func == FuncEnum.Trim
+                    || func == FuncEnum.LTrim
+                    || func == FuncEnum.RTrim)
                 {
                     var mem = mcExpr.Object;
-                    return GetKey(mem, option);
+                    return GetKey(mem, func);
                 }
-                else if (option == OptionEnum.In)
+                else if (func == FuncEnum.In)
                 {
                     var mem = mcExpr.Arguments[0];
-                    return GetKey(mem, option);
+                    return GetKey(mem, func);
                 }
-                else if (option == OptionEnum.DateFormat)
+                else if (func == FuncEnum.DateFormat)
                 {
                     var mem = mcExpr.Object;
                     var val = DC.VH.ValueProcess(mcExpr.Arguments[0], XConfig.String);
-                    return GetKey(mem, option, val.val.ToString());
+                    return GetKey(mem, func, val.val.ToString());
                 }
             }
 
@@ -260,7 +260,7 @@ namespace Yunyong.DataExchange.Core
                     var memType = objExpr.Type;
                     if (memType == typeof(string))
                     {
-                        var keyTuple = GetKey(memO, OptionEnum.Like);
+                        var keyTuple = GetKey(memO, FuncEnum.None);
                         var val = default((object val, string valStr));
                         var valExpr = mcExpr.Arguments[0];
                         switch (type)
@@ -277,6 +277,7 @@ namespace Yunyong.DataExchange.Core
                         }
                         DC.Option = OptionEnum.Like;
                         DC.Compare = CompareEnum.None;
+                        DC.Func = FuncEnum.None;
                         return DC.DPH.LikeDic(keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType);
                     }
                 }
@@ -286,9 +287,10 @@ namespace Yunyong.DataExchange.Core
         }
         private DicParam CollectionIn(Expression expr, MemberExpression memExpr, string funcStr)
         {
-            var keyTuple = GetKey(expr, OptionEnum.In);
+            var keyTuple = GetKey(expr, FuncEnum.In);
             var val = DC.VH.ValueProcess(memExpr, keyTuple.valType);
-            DC.Option = OptionEnum.In;
+            DC.Option = OptionEnum.Function;
+            DC.Func = FuncEnum.In;
             DC.Compare = CompareEnum.None;
             return DC.DPH.InDic(keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType);
         }
@@ -297,7 +299,7 @@ namespace Yunyong.DataExchange.Core
             if (nodeType == ExpressionType.NewArrayInit)
             {
                 var naExpr = valExpr as NewArrayExpression;
-                var keyTuple = GetKey(keyExpr, OptionEnum.In);
+                var keyTuple = GetKey(keyExpr, FuncEnum.In);
                 var vals = new List<(object val, string valStr)>();
                 foreach (var exp in naExpr.Expressions)
                 {
@@ -312,38 +314,23 @@ namespace Yunyong.DataExchange.Core
                 }
 
                 var val = (string.Join(",", vals.Select(it => it.val)), string.Empty);
-                DC.Option = OptionEnum.In;
+                DC.Option = OptionEnum.Function;
+                DC.Func = FuncEnum.In;
                 DC.Compare = CompareEnum.None;
                 return DC.DPH.InDic(keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType);
             }
             else if (nodeType == ExpressionType.ListInit)
             {
                 var liExpr = valExpr as ListInitExpression;
-                var keyTuple = GetKey(keyExpr, OptionEnum.In);
+                var keyTuple = GetKey(keyExpr, FuncEnum.In);
                 var vals = new List<(object val, string valStr)>();
                 foreach (var ini in liExpr.Initializers)
                 {
-                    var arg = ini.Arguments[0];
-                    if (arg.NodeType == ExpressionType.Constant)
-                    {
-                        vals.Add(DC.VH.ValueProcess(arg as ConstantExpression, keyTuple.valType));
-                    }
-                    else if (arg.NodeType == ExpressionType.Convert)
-                    {
-                        vals.Add(DC.VH.ValueProcess(arg as UnaryExpression, keyTuple.valType));
-                    }
-                    else if (arg.NodeType == ExpressionType.MemberAccess)
-                    {
-                        vals.Add(DC.VH.ValueProcess(arg as MemberExpression, keyTuple.valType));
-                    }
-                    else
-                    {
-                        throw new Exception($"NewCollectionIn ListInit {arg.NodeType} 未能解析!!!");
-                    }
+                    vals.Add(DC.VH.ValueProcess(ini.Arguments[0], keyTuple.valType));
                 }
-
                 var val = (string.Join(",", vals.Select(it => it.val)), string.Empty);
-                DC.Option = OptionEnum.In;
+                DC.Option = OptionEnum.Function;
+                DC.Func = FuncEnum.In;
                 DC.Compare = CompareEnum.None;
                 return DC.DPH.InDic(keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType);
             }
@@ -368,17 +355,15 @@ namespace Yunyong.DataExchange.Core
                 && binTuple.right.NodeType == ExpressionType.Constant
                 && (binTuple.right as ConstantExpression).Value == null)
             {
-                var optionx = OptionEnum.None;
-                var tuple = GetKey(binTuple.left, optionx);
+                var tuple = GetKey(binTuple.left, FuncEnum.None);
                 if (binTuple.node == ExpressionType.Equal)
                 {
-                    optionx = OptionEnum.IsNull;
+                    DC.Option = OptionEnum.IsNull;
                 }
                 else
                 {
-                    optionx = OptionEnum.IsNotNull;
+                    DC.Option = OptionEnum.IsNotNull;
                 }
-                DC.Option = optionx;
                 return DC.DPH.IsNullDic(tuple.classFullName, tuple.key, tuple.alias, tuple.valType);
             }
             else
@@ -387,18 +372,20 @@ namespace Yunyong.DataExchange.Core
                 if (leftStr.Contains(".Length")
                     && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
                 {
-                    var keyTuple = GetKey(binTuple.left, OptionEnum.CharLength);
+                    var keyTuple = GetKey(binTuple.left, FuncEnum.CharLength);
                     var val = DC.VH.ValueProcess(binTuple.right, keyTuple.valType);
-                    DC.Option = OptionEnum.CharLength;
+                    DC.Option = OptionEnum.Function;
+                    DC.Func = FuncEnum.CharLength;
                     DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
                     return DC.DPH.CharLengthDic(keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType);
                 }
                 else if (leftStr.Contains(".Trim(")
                     && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
                 {
-                    var tuple = GetKey(binTuple.left, OptionEnum.Trim);
+                    var tuple = GetKey(binTuple.left, FuncEnum.Trim);
                     var val = DC.VH.ValueProcess(binTuple.right, tuple.valType);
-                    DC.Option = OptionEnum.Trim;
+                    DC.Option = OptionEnum.Function;
+                    DC.Func = FuncEnum.Trim;
                     DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
                     var dic = DC.DPH.TrimDic(tuple.key, tuple.alias, val, tuple.valType);
                     dic.ClassFullName = tuple.classFullName;
@@ -407,9 +394,10 @@ namespace Yunyong.DataExchange.Core
                 else if (leftStr.Contains(".TrimStart(")
                     && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
                 {
-                    var tuple = GetKey(binTuple.left, OptionEnum.LTrim);
+                    var tuple = GetKey(binTuple.left, FuncEnum.LTrim);
                     var val = DC.VH.ValueProcess(binTuple.right, tuple.valType);
-                    DC.Option = OptionEnum.LTrim;
+                    DC.Option = OptionEnum.Function;
+                    DC.Func = FuncEnum.LTrim;
                     DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
                     var dic = DC.DPH.LTrimDic(tuple.key, tuple.alias, val, tuple.valType);
                     dic.ClassFullName = tuple.classFullName;
@@ -418,9 +406,10 @@ namespace Yunyong.DataExchange.Core
                 else if (leftStr.Contains(".TrimEnd(")
                     && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
                 {
-                    var tuple = GetKey(binTuple.left, OptionEnum.RTrim);
+                    var tuple = GetKey(binTuple.left, FuncEnum.RTrim);
                     var val = DC.VH.ValueProcess(binTuple.right, tuple.valType);
-                    DC.Option = OptionEnum.RTrim;
+                    DC.Option = OptionEnum.Function;
+                    DC.Func = FuncEnum.RTrim;
                     DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
                     var dic = DC.DPH.RTrimDic(tuple.key, tuple.alias, val, tuple.valType);
                     dic.ClassFullName = tuple.classFullName;
@@ -429,9 +418,10 @@ namespace Yunyong.DataExchange.Core
                 else if (leftStr.Contains(".ToString(")
                     && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
                 {
-                    var tuple = GetKey(binTuple.left, OptionEnum.DateFormat);
+                    var tuple = GetKey(binTuple.left, FuncEnum.DateFormat);
                     var val = DC.VH.ValueProcess(binTuple.right, tuple.valType, tuple.format);
-                    DC.Option = OptionEnum.DateFormat;
+                    DC.Option = OptionEnum.Function;
+                    DC.Func = FuncEnum.DateFormat;
                     DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
                     var format = string.Empty;
                     if ("yyyy-MM-dd".Equals(tuple.format.Trim(), StringComparison.OrdinalIgnoreCase))
@@ -456,9 +446,10 @@ namespace Yunyong.DataExchange.Core
                 }
                 else
                 {
-                    var keyTuple = GetKey(binTuple.left, OptionEnum.Compare);
+                    var keyTuple = GetKey(binTuple.left, FuncEnum.None);
                     var val = DC.VH.ValueProcess(binTuple.right, keyTuple.valType);
                     DC.Option = OptionEnum.Compare;
+                    DC.Func = FuncEnum.None;
                     DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
                     return DC.DPH.CompareDic(keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType);
                 }
@@ -548,7 +539,7 @@ namespace Yunyong.DataExchange.Core
         }
         private (string key, string alias, Type valType, string classFullName) GetMemTuple(MemberExpression memExpr)
         {
-            var tuple = GetKey(memExpr, OptionEnum.None);
+            var tuple = GetKey(memExpr, FuncEnum.None);
             return (tuple.key, tuple.alias, tuple.valType, tuple.classFullName);
         }
 
@@ -576,10 +567,9 @@ namespace Yunyong.DataExchange.Core
 
         private DicParam HandOnBinary(BinaryExpression binExpr)
         {
-            var option = OptionEnum.Compare;
-            var tuple1 = GetKey(binExpr.Left, option);
-            var tuple2 = GetKey(binExpr.Right, option);
-            DC.Option = option;
+            var tuple1 = GetKey(binExpr.Left, FuncEnum.None);
+            var tuple2 = GetKey(binExpr.Right, FuncEnum.None);
+            DC.Option = OptionEnum.Compare;
             DC.Compare = GetCompareType(binExpr.NodeType, false);
             return DC.DPH.OnDic(tuple1.classFullName, tuple1.key, tuple1.alias, tuple2.key, tuple2.alias);
         }
@@ -768,7 +758,7 @@ namespace Yunyong.DataExchange.Core
                 if (DC.IsSingleTableOption()
                     || DC.Crud == CrudTypeEnum.None)
                 {
-                    var keyTuple = GetKey(memExpr, OptionEnum.None);
+                    var keyTuple = GetKey(memExpr, FuncEnum.None);
                     var key = keyTuple.key;
 
                     if (!string.IsNullOrWhiteSpace(key))
@@ -789,7 +779,7 @@ namespace Yunyong.DataExchange.Core
                         if (leftStr.Contains(".Length")
                             && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
                         {
-                            var keyTuple = GetKey(memExpr, OptionEnum.CharLength);
+                            var keyTuple = GetKey(memExpr, FuncEnum.CharLength);
                             DC.Func = FuncEnum.CharLength;
                             DC.Compare = CompareEnum.None;
                             result.Add(DC.DPH.CharLengthDic(keyTuple.classFullName, keyTuple.key, keyTuple.alias, (null, string.Empty), keyTuple.valType));
@@ -810,8 +800,8 @@ namespace Yunyong.DataExchange.Core
                 if (leftStr.Contains(".ToString(")
                     && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
                 {
-                    var tuple = GetKey(body, OptionEnum.DateFormat);
-                    DC.Option = OptionEnum.Column;
+                    var tuple = GetKey(body, FuncEnum.DateFormat);
+                    DC.Option = OptionEnum.ColumnAs;
                     DC.Func = FuncEnum.DateFormat;
                     DC.Compare = CompareEnum.None;
                     var format = string.Empty;
@@ -838,7 +828,7 @@ namespace Yunyong.DataExchange.Core
             }
             else if (nodeType == ExpressionType.Convert)
             {
-                var tuple = GetKey(body, OptionEnum.None);
+                var tuple = GetKey(body, FuncEnum.None);
                 var key = tuple.key;
                 if (!string.IsNullOrWhiteSpace(key))
                 {

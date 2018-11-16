@@ -7,7 +7,7 @@ using Yunyong.DataExchange;
 
 namespace MyDAL.Test.QueryVM
 {
-    public class _02_QueryListAsync:TestBase
+    public class _02_ListAsync:TestBase
     {
         [Fact]
         public async Task test()
@@ -18,7 +18,7 @@ namespace MyDAL.Test.QueryVM
                 .Selecter<Agent>()
                 .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
                 .OrderBy(it => it.CreatedOn)
-                .QueryListAsync<AgentVM>();
+                .ListAsync<AgentVM>();
 
             var tuple4 = (XDebug.SQL, XDebug.Parameters);
 

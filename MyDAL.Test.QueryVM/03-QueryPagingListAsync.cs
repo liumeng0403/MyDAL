@@ -11,7 +11,7 @@ using Yunyong.DataExchange;
 
 namespace MyDAL.Test.QueryVM
 {
-    public class _03_QueryPagingListAsync:TestBase
+    public class _03_PagingListAsync:TestBase
     {
         [Fact]
         public async Task test()
@@ -22,14 +22,14 @@ namespace MyDAL.Test.QueryVM
             var res6 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= WhereTest.CreatedOn)
-                .QueryPagingListAsync<AgentVM>(1, 10);
+                .PagingListAsync<AgentVM>(1, 10);
 
             var tuple6 = (XDebug.SQL, XDebug.Parameters);
 
             var resR6 = await Conn
                 .Selecter<Agent>()
                 .Where(it => WhereTest.CreatedOn <= it.CreatedOn)
-                .QueryPagingListAsync<AgentVM>(1, 10);
+                .PagingListAsync<AgentVM>(1, 10);
             Assert.True(res6.TotalCount == resR6.TotalCount);
             Assert.True(res6.TotalCount == 28619);
 
@@ -44,7 +44,7 @@ namespace MyDAL.Test.QueryVM
             var res13 = await Conn
                 .Selecter<Agent>()
                 .Where(option13.GetCondition())
-                .QueryPagingListAsync<AgentVM>(option13);
+                .PagingListAsync<AgentVM>(option13);
             Assert.True(res13.TotalCount == 28620);
             Assert.True(res13.Data.Count == 10);
 

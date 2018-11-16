@@ -21,7 +21,7 @@ namespace MyDAL.Test.WhereEdge
             var res1 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Id == AgentId)
-                .QueryFirstOrDefaultAsync<AgentVM>();
+                .FirstOrDefaultAsync<AgentVM>();
             Assert.NotNull(res1);
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);

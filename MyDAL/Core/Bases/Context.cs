@@ -91,10 +91,23 @@ namespace Yunyong.DataExchange.Core.Bases
 
         /************************************************************************************************************************/
 
-        internal bool IsInParameter(object value, OptionEnum option)
+        internal bool IsInParameter(DicParam dic)
         {
-            if (value != null
-                && (option == OptionEnum.In || option == OptionEnum.NotIn))
+            //if (dic.Group != null
+            //    && dic
+            //        .Group
+            //        .Any(it => 
+            //            it.CsValue != null 
+            //            && it.Option == OptionEnum.Function 
+            //            && (it.Func == FuncEnum.In || it.Func == FuncEnum.NotIn)))
+            //{
+            //    return true;
+            //}
+            //else 
+            if(dic.Group==null
+                && dic.CsValue != null 
+                && dic.Option == OptionEnum.Function 
+                && (dic.Func == FuncEnum.In || dic.Func == FuncEnum.NotIn))
             {
                 return true;
             }

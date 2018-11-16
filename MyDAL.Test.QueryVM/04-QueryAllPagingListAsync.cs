@@ -10,7 +10,7 @@ using Yunyong.DataExchange;
 
 namespace MyDAL.Test.QueryVM
 {
-    public class _04_QueryAllPagingListAsync:TestBase
+    public class _04_PagingAllListAsync:TestBase
     {
         [Fact]
         public async Task test()
@@ -22,7 +22,7 @@ namespace MyDAL.Test.QueryVM
 
             var res7 = await Conn
                 .Selecter<Agent>()
-                .QueryAllPagingListAsync<AgentVM>(1, 10);
+                .PagingAllListAsync<AgentVM>(1, 10);
             Assert.True(res7.TotalCount == 28620);
 
             var tuple7 = (XDebug.SQL, XDebug.Parameters);

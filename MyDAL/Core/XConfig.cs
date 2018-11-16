@@ -50,6 +50,7 @@ namespace Yunyong.DataExchange.Core
         internal static Type Ushort { get; private set; } = typeof(ushort);
         internal static Type String { get; private set; } = typeof(string);
         internal static Type DateTime { get; private set; } = typeof(DateTime);
+        internal static Type DateTimeNull { get; private set; } = typeof(DateTime?);
         internal static Type DateTimeOffset { get; private set; } = typeof(DateTimeOffset);
         internal static Type TimeSpan { get; private set; } = typeof(TimeSpan);
         internal static Type Guid { get; private set; } = typeof(Guid);
@@ -81,7 +82,10 @@ namespace Yunyong.DataExchange.Core
         internal static string _003 { get; } = "003";
         internal static string _004 { get; } = "004";
         internal static string _005 { get; } = "005";
-        
+        internal static string _006 { get; } = "006";
+        internal static string _007 { get; } = "007";
+        internal static string _008 { get; } = "008";
+
         /************************************************************************************************************/
 
     }

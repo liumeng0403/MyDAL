@@ -145,7 +145,7 @@ namespace MyDAL.Test.Update
             var resx6 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
-                .QueryFirstOrDefaultAsync();
+                .FirstOrDefaultAsync();
             resx6.ActivedOn = null;
 
             // update set null
@@ -171,7 +171,7 @@ namespace MyDAL.Test.Update
             var resx7 = await Conn
                 .Selecter<Product>()
                 .Where(it => it.Id == guid7)
-                .QueryFirstOrDefaultAsync();
+                .FirstOrDefaultAsync();
             Assert.NotNull(resx7);
             Assert.False(resx7.VipProduct);
             resx7.VipProduct = true;
@@ -189,7 +189,7 @@ namespace MyDAL.Test.Update
             var resxx7 = await Conn
                 .Selecter<Product>()
                 .Where(it => it.Id == guid7)
-                .QueryFirstOrDefaultAsync();
+                .FirstOrDefaultAsync();
             Assert.True(resxx7.VipProduct);
 
             /***************************************************************************************************************************/
@@ -204,7 +204,7 @@ namespace MyDAL.Test.Update
             var res81 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("0014f62d-2a96-4b5b-b4bd-01654438e3d4"))
-                .QueryFirstOrDefaultAsync();
+                .FirstOrDefaultAsync();
             Assert.True(res81.AgentLevel == AgentLevel.NewCustomer);
 
             var tuple8 = (XDebug.SQL, XDebug.Parameters);

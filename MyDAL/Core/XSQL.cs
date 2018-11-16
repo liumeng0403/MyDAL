@@ -9,7 +9,7 @@ namespace Yunyong.DataExchange.Core
 {
     internal static class XSQL
     {
-        
+
         internal static MethodInfo GetPropertySetter(PropertyInfo propertyInfo, Type mType)
         {
             if (propertyInfo.DeclaringType == mType)
@@ -66,7 +66,7 @@ namespace Yunyong.DataExchange.Core
             }
             return map;
         }
-        
+
         /****************************************************************************************************************/
 
         internal static string ConditionAction(ActionEnum action)
@@ -135,26 +135,10 @@ namespace Yunyong.DataExchange.Core
                     return "";
                 case OptionEnum.Like:
                     return " like ";
-                case OptionEnum.In:
-                    return " in ";
-                case OptionEnum.InHelper:
-                    break;
-                case OptionEnum.NotIn:
-                    return " not in ";
                 case OptionEnum.Count:
                     return " count";
                 case OptionEnum.Sum:
                     return " sum";
-                case OptionEnum.CharLength:
-                    return " char_length";
-                case OptionEnum.DateFormat:
-                    return " DATE_FORMAT";
-                case OptionEnum.Trim:
-                    return " trim";
-                case OptionEnum.LTrim:
-                    return " ltrim";
-                case OptionEnum.RTrim:
-                    return " rtrim";
                 case OptionEnum.OneEqualOne:
                     return "";
                 case OptionEnum.IsNull:
@@ -205,6 +189,18 @@ namespace Yunyong.DataExchange.Core
                     return "";
                 case FuncEnum.CharLength:
                     return " char_length";
+                case FuncEnum.DateFormat:
+                    return " date_format";
+                case FuncEnum.Trim:
+                    return " trim";
+                case FuncEnum.LTrim:
+                    return " ltrim";
+                case FuncEnum.RTrim:
+                    return " rtrim";
+                case FuncEnum.In:
+                    return " in ";
+                case FuncEnum.NotIn:
+                    return " not in ";
             }
             return " ";
         }

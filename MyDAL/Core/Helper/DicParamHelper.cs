@@ -63,7 +63,7 @@ namespace Yunyong.DataExchange.Core.Helper
             //
             cp.CsValue = csVal;
             cp.CsValueStr = csValStr;
-            cp.Option = OptionEnum.InHelper;
+            cp.Func = FuncEnum.InHelper;
 
             //
             return cp;
@@ -90,7 +90,7 @@ namespace Yunyong.DataExchange.Core.Helper
             }
 
             //
-            if (DC.IsInParameter(dic.CsValue, dic.Option))
+            if (DC.IsInParameter(dic))
             {
                 InNotIn(dic);
             }
@@ -98,7 +98,7 @@ namespace Yunyong.DataExchange.Core.Helper
             {
                 foreach (var ui in dic.Group)
                 {
-                    if (DC.IsInParameter(ui.CsValue, ui.Option))
+                    if (DC.IsInParameter(ui))
                     {
                         ui.InItems = new List<DicParam>();
                     }
@@ -127,7 +127,7 @@ namespace Yunyong.DataExchange.Core.Helper
             }
             if (ui.CsType != null)
             {
-                if (DC.IsInParameter(ui.CsValue, ui.Option))
+                if (DC.IsInParameter(ui))
                 {
                     ui.ParamInfo = ParameterHelper.GetDefault(ui.Param, ui.CsValue, DbType.String);
                 }
@@ -207,7 +207,7 @@ namespace Yunyong.DataExchange.Core.Helper
         }
         internal void AddParameter(DicParam dic)
         {
-            if (DC.IsInParameter(dic.CsValue, dic.Option))
+            if (DC.IsInParameter(dic))
             {
                 dic.InItems = new List<DicParam>();
             }
@@ -231,7 +231,7 @@ namespace Yunyong.DataExchange.Core.Helper
                     {
                         paras.Add(GetParameters(db.Group));
                     }
-                    else if (DC.IsInParameter(db.ParamInfo.Value, db.Option))
+                    else if (DC.IsInParameter(db))
                     {
                         paras.Add(GetParameters(db.InItems));
                     }
@@ -318,6 +318,7 @@ namespace Yunyong.DataExchange.Core.Helper
         {
             var dic = SetDicBase(DC);
             dic.ColumnOne = key;
+            dic.ColumnOneAlias = key;
             dic.TableAliasOne = alias;
             dic.Param = key;
             dic.ParamRaw = key;

@@ -31,7 +31,7 @@ namespace MyDAL.Test.WhereEdge
                     Name = "樊士芹",
                     xxx = "xxx"
                 })
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res1.Count == 1);
             Assert.True(res1.First().Name == "樊士芹");
 
@@ -48,7 +48,7 @@ namespace MyDAL.Test.WhereEdge
             var res2 = await Conn
                 .Selecter<Agent>()
                 .Where(option.GetCondition())
-                .QueryPagingListAsync(option);
+                .PagingListAsync(option);
             Assert.True(res2.TotalCount == 1);
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters);
@@ -69,7 +69,7 @@ namespace MyDAL.Test.WhereEdge
             var res3 = await Conn
                 .Selecter<Agent>()
                 .Where(option.GetCondition())
-                .QueryPagingListAsync<AgentVM>(option);
+                .PagingListAsync<AgentVM>(option);
             Assert.True(res3.TotalCount == 1);
 
             var tuple3 = (XDebug.SQL, XDebug.Parameters);
@@ -87,7 +87,7 @@ namespace MyDAL.Test.WhereEdge
                     //Name = "樊士芹",
                     xxx = "xxx"
                 })
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res4.Count == 28620);
 
             var tuple4 = (XDebug.SQL, XDebug.Parameters);
@@ -103,7 +103,7 @@ namespace MyDAL.Test.WhereEdge
                 })
                 .And(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
                 .Or(it => it.AgentLevel == AgentLevel.DistiAgent)
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res41.Count == 556);
 
             var tuple41 = (XDebug.SQL, XDebug.Parameters);
@@ -119,7 +119,7 @@ namespace MyDAL.Test.WhereEdge
                 })
                 .Or(it => it.AgentLevel == AgentLevel.Customer)
                 .And(it => it.Name == "金月琴")
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res42.Count == 1);
 
             var tuple42 = (XDebug.SQL, XDebug.Parameters);
@@ -136,21 +136,21 @@ namespace MyDAL.Test.WhereEdge
             var res5 = await Conn
                 .Selecter<Product>()
                 .Where(option2.GetCondition())
-                .QueryPagingListAsync(option2);
+                .PagingListAsync(option2);
             Assert.True(res5.Data.Count == 4);
 
             option2.VipProduct = false;
             var res51 = await Conn
                 .Selecter<Product>()
                 .Where(option2.GetCondition())
-                .QueryPagingListAsync(option2);
+                .PagingListAsync(option2);
             Assert.True(res51.Data.Count == 4);
 
             option2.VipProduct = true;
             var res52 = await Conn
                 .Selecter<Product>()
                 .Where(option2.GetCondition())
-                .QueryPagingListAsync(option2);
+                .PagingListAsync(option2);
             Assert.True(res52.Data.Count == 0);
 
             var tuple5 = (XDebug.SQL, XDebug.Parameters);

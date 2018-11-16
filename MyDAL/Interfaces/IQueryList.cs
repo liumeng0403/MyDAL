@@ -8,29 +8,29 @@ namespace Yunyong.DataExchange.Interfaces
     internal interface IQueryList<M>
         where M : class
     {
-        Task<List<M>> QueryListAsync();
-        Task<List<VM>> QueryListAsync<VM>()
+        Task<List<M>> ListAsync();
+        Task<List<VM>> ListAsync<VM>()
             where VM : class;
-        Task<List<VM>> QueryListAsync<VM>(Expression<Func<M, VM>> columnMapFunc)
+        Task<List<VM>> ListAsync<VM>(Expression<Func<M, VM>> columnMapFunc)
             where VM : class;
 
-        Task<List<M>> QueryListAsync(int topCount);
-        Task<List<VM>> QueryListAsync<VM>(int topCount)
+        Task<List<M>> ListAsync(int topCount);
+        Task<List<VM>> ListAsync<VM>(int topCount)
             where VM : class;
-        Task<List<VM>> QueryListAsync<VM>(int topCount, Expression<Func<M, VM>> columnMapFunc)
+        Task<List<VM>> ListAsync<VM>(int topCount, Expression<Func<M, VM>> columnMapFunc)
             where VM : class;
     }
 
     public interface IQueryListX
     {
-        Task<List<M>> QueryListAsync<M>()
+        Task<List<M>> ListAsync<M>()
             where M : class;
-        Task<List<VM>> QueryListAsync<VM>(Expression<Func<VM>> columnMapFunc)
+        Task<List<VM>> ListAsync<VM>(Expression<Func<VM>> columnMapFunc)
             where VM : class;
 
-        Task<List<M>> QueryListAsync<M>(int topCount)
+        Task<List<M>> ListAsync<M>(int topCount)
             where M : class;
-        Task<List<VM>> QueryListAsync<VM>(int topCount, Expression<Func<VM>> columnMapFunc)
+        Task<List<VM>> ListAsync<VM>(int topCount, Expression<Func<VM>> columnMapFunc)
             where VM : class;
     }
 }

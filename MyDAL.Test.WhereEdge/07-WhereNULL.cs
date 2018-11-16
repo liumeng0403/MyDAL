@@ -14,7 +14,7 @@ namespace MyDAL.Test.WhereEdge
             var m = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("0001c614-dbef-4335-94b4-01654433a215"))
-                .QueryFirstOrDefaultAsync();
+                .FirstOrDefaultAsync();
 
             await Conn
                 .Updater<Agent>()
@@ -45,7 +45,7 @@ namespace MyDAL.Test.WhereEdge
             var res1 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.ActiveOrderId == null)
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res1.Count == 28066);
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
@@ -58,7 +58,7 @@ namespace MyDAL.Test.WhereEdge
             var res2 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.ActiveOrderId != null)
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res2.Count == 554);
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters);
@@ -74,7 +74,7 @@ namespace MyDAL.Test.WhereEdge
                 var res3 = await Conn
                     .Selecter<Agent>()
                     .Where(it => it.AgentLevel == WhereTest.AgentLevelNull)
-                    .QueryListAsync();
+                    .ListAsync();
             }
             catch (Exception ex)
             {
@@ -92,7 +92,7 @@ namespace MyDAL.Test.WhereEdge
             var res4 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.ActivedOn != null && it.ActiveOrderId != null && it.CrmUserId == null)
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res4.Count == 554);
 
             var tuple4 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);

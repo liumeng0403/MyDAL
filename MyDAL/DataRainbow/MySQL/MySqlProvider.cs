@@ -61,6 +61,136 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
 
         /****************************************************************************************************************/
 
+        private string LikeStrHandle(DicParam dic)
+        {
+            var name = dic.Param;
+            var value = dic.ParamInfo.Value.ToString(); // dic.CsValue;
+            if (!value.Contains("%")
+                && !value.Contains("_"))
+            {
+                return $"CONCAT('%',@{name},'%')";
+            }
+            else if ((value.Contains("%") || value.Contains("_"))
+                && !value.Contains("/%")
+                && !value.Contains("/_"))
+            {
+                return $"@{name}";
+            }
+            else if (value.Contains("/%")
+                || value.Contains("/_"))
+            {
+                return $"@{name} escape '/' ";
+            }
+
+            throw new Exception(value);
+        }
+        private string CharLengthProcess(DicParam db, bool isMulti)
+        {
+            if (isMulti)
+            {
+                if (db.Crud == CrudTypeEnum.Join)
+                {
+                    return $" {XSQL.ConditionFunc(db.Func)}({db.TableAliasOne}.`{db.ColumnOne}`){XSQL.ConditionCompare(db.Compare)}@{db.Param} ";
+                }
+                else if (DC.IsSingleTableOption())
+                {
+                    return $" {XSQL.ConditionFunc(db.Func)}(`{db.ColumnOne}`){XSQL.ConditionCompare(db.Compare)}@{db.Param} ";
+                }
+            }
+            else
+            {
+                if (db.Crud == CrudTypeEnum.Join)
+                {
+                    return $" {XSQL.ConditionAction(db.Action)} {XSQL.ConditionFunc(db.Func)}({db.TableAliasOne}.`{db.ColumnOne}`){XSQL.ConditionCompare(db.Compare)}@{db.Param} ";
+                }
+                else if (DC.IsSingleTableOption())
+                {
+                    return $" {XSQL.ConditionAction(db.Action)} {XSQL.ConditionFunc(db.Func)}(`{db.ColumnOne}`){XSQL.ConditionCompare(db.Compare)}@{db.Param} ";
+                }
+            }
+            throw new Exception("CharLengthProcess 未能处理!!!");
+        }
+        private string DateFormatProcess(DicParam db, bool isMulti)
+        {
+            if (isMulti)
+            {
+                if (db.Crud == CrudTypeEnum.Join)
+                {
+                    return $" {XSQL.ConditionFunc(db.Func)}({db.TableAliasOne}.`{db.ColumnOne}`,'{db.Format}'){XSQL.ConditionCompare(db.Compare)}@{db.Param} ";
+                }
+                else if (DC.IsSingleTableOption())
+                {
+                    return $" {XSQL.ConditionFunc(db.Func)}(`{db.ColumnOne}`,'{db.Format}'){XSQL.ConditionCompare(db.Compare)}@{db.Param} ";
+                }
+            }
+            else
+            {
+                if (db.Crud == CrudTypeEnum.Join)
+                {
+                    return $" {XSQL.ConditionAction(db.Action)} {XSQL.ConditionFunc(db.Func)}({db.TableAliasOne}.`{db.ColumnOne}`,'{db.Format}'){XSQL.ConditionCompare(db.Compare)}@{db.Param} ";
+                }
+                else if (DC.IsSingleTableOption())
+                {
+                    return $" {XSQL.ConditionAction(db.Action)} {XSQL.ConditionFunc(db.Func)}(`{db.ColumnOne}`,'{db.Format}'){XSQL.ConditionCompare(db.Compare)}@{db.Param} ";
+                }
+            }
+            throw new Exception("DateFormatProcess 未能处理!!!");
+        }
+        private string TrimProcess(DicParam db, bool isMulti)
+        {
+            if (isMulti)
+            {
+                if (db.Crud == CrudTypeEnum.Join)
+                {
+                    return $" {XSQL.ConditionFunc(db.Func)}({db.TableAliasOne}.`{db.ColumnOne}`){XSQL.ConditionCompare(db.Compare)}@{db.Param} ";
+                }
+                else if (DC.IsSingleTableOption())
+                {
+                    return $" {XSQL.ConditionFunc(db.Func)}(`{db.ColumnOne}`){XSQL.ConditionCompare(db.Compare)}@{db.Param} ";
+                }
+            }
+            else
+            {
+                if (db.Crud == CrudTypeEnum.Join)
+                {
+                    return $" {XSQL.ConditionAction(db.Action)} {XSQL.ConditionFunc(db.Func)}({db.TableAliasOne}.`{db.ColumnOne}`){XSQL.ConditionCompare(db.Compare)}@{db.Param} ";
+                }
+                else if (DC.IsSingleTableOption())
+                {
+                    return $" {XSQL.ConditionAction(db.Action)} {XSQL.ConditionFunc(db.Func)}(`{db.ColumnOne}`){XSQL.ConditionCompare(db.Compare)}@{db.Param} ";
+                }
+            }
+            throw new Exception("TrimProcess 未能处理!!!");
+        }
+        private string InProcess(DicParam db, bool isMulti)
+        {
+            if (isMulti)
+            {
+                if (db.Crud == CrudTypeEnum.Join)
+                {
+                    return $" {db.TableAliasOne}.`{db.ColumnOne}` {XSQL.ConditionFunc(db.Func)}({InStrHandle(db.InItems)}) ";
+                }
+                else if (DC.IsSingleTableOption())
+                {
+                    return $" `{db.ColumnOne}` {XSQL.ConditionFunc(db.Func)}({InStrHandle(db.InItems)}) ";
+                }
+            }
+            else
+            {
+                if (db.Crud == CrudTypeEnum.Join)
+                {
+                    return $" {XSQL.ConditionAction(db.Action)} {db.TableAliasOne}.`{db.ColumnOne}` {XSQL.ConditionFunc(db.Func)}({InStrHandle(db.InItems)}) ";
+                }
+                else if (DC.IsSingleTableOption())
+                {
+                    return $" {XSQL.ConditionAction(db.Action)} `{db.ColumnOne}` {XSQL.ConditionFunc(db.Func)}({InStrHandle(db.InItems)}) ";
+                }
+            }
+            throw new Exception("InProcess 未能处理!!!");
+        }
+
+        /****************************************************************************************************************/
+
         private string CompareProcess(DicParam db, bool isMulti)
         {
             if (isMulti)
@@ -87,28 +217,28 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
             }
             throw new Exception("CompareProcess 未能处理!!!");
         }
-        private string LikeStrHandle(DicParam dic)
+        private string FunctionProcess(DicParam db, bool isMulti)
         {
-            var name = dic.Param;
-            var value = dic.ParamInfo.Value.ToString(); // dic.CsValue;
-            if (!value.Contains("%")
-                && !value.Contains("_"))
+            if (db.Func == FuncEnum.CharLength)
             {
-                return $"CONCAT('%',@{name},'%')";
+                return CharLengthProcess(db, isMulti);
             }
-            else if ((value.Contains("%") || value.Contains("_"))
-                && !value.Contains("/%")
-                && !value.Contains("/_"))
+            else if (db.Func == FuncEnum.DateFormat)
             {
-                return $"@{name}";
+                return DateFormatProcess(db, isMulti);
             }
-            else if (value.Contains("/%")
-                || value.Contains("/_"))
+            else if (db.Func == FuncEnum.Trim || db.Func == FuncEnum.LTrim || db.Func == FuncEnum.RTrim)
             {
-                return $"@{name} escape '/' ";
+                return TrimProcess(db, isMulti);
             }
-
-            throw new Exception(value);
+            else if (db.Func == FuncEnum.In || db.Func == FuncEnum.NotIn)
+            {
+                return InProcess(db, isMulti);
+            }
+            else
+            {
+                throw new Exception($"{XConfig._006} -- [[{db.Func}]] 不能处理!!!");
+            }
         }
         private string LikeProcess(DicParam db, bool isMulti)
         {
@@ -136,84 +266,6 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
             }
             throw new Exception("LikeProcess 未能处理!!!");
         }
-        private string CharLengthProcess(DicParam db, bool isMulti)
-        {
-            if (isMulti)
-            {
-                if (db.Crud == CrudTypeEnum.Join)
-                {
-                    return $" {XSQL.ConditionOption(db.Option)}({db.TableAliasOne}.`{db.ColumnOne}`){XSQL.ConditionCompare(db.Compare)}@{db.Param} ";
-                }
-                else if (DC.IsSingleTableOption())
-                {
-                    return $" {XSQL.ConditionOption(db.Option)}(`{db.ColumnOne}`){XSQL.ConditionCompare(db.Compare)}@{db.Param} ";
-                }
-            }
-            else
-            {
-                if (db.Crud == CrudTypeEnum.Join)
-                {
-                    return $" {XSQL.ConditionAction(db.Action)} {XSQL.ConditionOption(db.Option)}({db.TableAliasOne}.`{db.ColumnOne}`){XSQL.ConditionCompare(db.Compare)}@{db.Param} ";
-                }
-                else if (DC.IsSingleTableOption())
-                {
-                    return $" {XSQL.ConditionAction(db.Action)} {XSQL.ConditionOption(db.Option)}(`{db.ColumnOne}`){XSQL.ConditionCompare(db.Compare)}@{db.Param} ";
-                }
-            }
-            throw new Exception("CharLengthProcess 未能处理!!!");
-        }
-        private string DateFormatProcess(DicParam db, bool isMulti)
-        {
-            if (isMulti)
-            {
-                if (db.Crud == CrudTypeEnum.Join)
-                {
-                    return $" {XSQL.ConditionOption(db.Option)}({db.TableAliasOne}.`{db.ColumnOne}`,'{db.Format}'){XSQL.ConditionCompare(db.Compare)}@{db.Param} ";
-                }
-                else if (DC.IsSingleTableOption())
-                {
-                    return $" {XSQL.ConditionOption(db.Option)}(`{db.ColumnOne}`,'{db.Format}'){XSQL.ConditionCompare(db.Compare)}@{db.Param} ";
-                }
-            }
-            else
-            {
-                if (db.Crud == CrudTypeEnum.Join)
-                {
-                    return $" {XSQL.ConditionAction(db.Action)} {XSQL.ConditionOption(db.Option)}({db.TableAliasOne}.`{db.ColumnOne}`,'{db.Format}'){XSQL.ConditionCompare(db.Compare)}@{db.Param} ";
-                }
-                else if (DC.IsSingleTableOption())
-                {
-                    return $" {XSQL.ConditionAction(db.Action)} {XSQL.ConditionOption(db.Option)}(`{db.ColumnOne}`,'{db.Format}'){XSQL.ConditionCompare(db.Compare)}@{db.Param} ";
-                }
-            }
-            throw new Exception("DateFormatProcess 未能处理!!!");
-        }
-        private string TrimProcess(DicParam db, bool isMulti)
-        {
-            if (isMulti)
-            {
-                if (db.Crud == CrudTypeEnum.Join)
-                {
-                    return $" {XSQL.ConditionOption(db.Option)}({db.TableAliasOne}.`{db.ColumnOne}`){XSQL.ConditionCompare(db.Compare)}@{db.Param} ";
-                }
-                else if (DC.IsSingleTableOption())
-                {
-                    return $" {XSQL.ConditionOption(db.Option)}(`{db.ColumnOne}`){XSQL.ConditionCompare(db.Compare)}@{db.Param} ";
-                }
-            }
-            else
-            {
-                if (db.Crud == CrudTypeEnum.Join)
-                {
-                    return $" {XSQL.ConditionAction(db.Action)} {XSQL.ConditionOption(db.Option)}({db.TableAliasOne}.`{db.ColumnOne}`){XSQL.ConditionCompare(db.Compare)}@{db.Param} ";
-                }
-                else if (DC.IsSingleTableOption())
-                {
-                    return $" {XSQL.ConditionAction(db.Action)} {XSQL.ConditionOption(db.Option)}(`{db.ColumnOne}`){XSQL.ConditionCompare(db.Compare)}@{db.Param} ";
-                }
-            }
-            throw new Exception("TrimProcess 未能处理!!!");
-        }
         private string OneEqualOneProcess(DicParam db, bool isMulti)
         {
             if (isMulti)
@@ -229,32 +281,6 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
         private string InStrHandle(List<DicParam> dbs)
         {
             return $" {string.Join(",", dbs.Select(it => $" @{it.Param} "))} ";
-        }
-        private string InProcess(DicParam db, bool isMulti)
-        {
-            if (isMulti)
-            {
-                if (db.Crud == CrudTypeEnum.Join)
-                {
-                    return $" {db.TableAliasOne}.`{db.ColumnOne}` {XSQL.ConditionOption(db.Option)}({InStrHandle(db.InItems)}) ";
-                }
-                else if (DC.IsSingleTableOption())
-                {
-                    return $" `{db.ColumnOne}` {XSQL.ConditionOption(db.Option)}({InStrHandle(db.InItems)}) ";
-                }
-            }
-            else
-            {
-                if (db.Crud == CrudTypeEnum.Join)
-                {
-                    return $" {XSQL.ConditionAction(db.Action)} {db.TableAliasOne}.`{db.ColumnOne}` {XSQL.ConditionOption(db.Option)}({InStrHandle(db.InItems)}) ";
-                }
-                else if (DC.IsSingleTableOption())
-                {
-                    return $" {XSQL.ConditionAction(db.Action)} `{db.ColumnOne}` {XSQL.ConditionOption(db.Option)}({InStrHandle(db.InItems)}) ";
-                }
-            }
-            throw new Exception("InProcess 未能处理!!!");
         }
         private string IsNullProcess(DicParam db, bool isMulti)
         {
@@ -295,29 +321,17 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
                 {
                     return CompareProcess(db, isMulti);
                 }
+                else if (db.Option == OptionEnum.Function)
+                {
+                    return FunctionProcess(db, isMulti);
+                }
                 else if (db.Option == OptionEnum.Like)
                 {
                     return LikeProcess(db, isMulti);
                 }
-                else if (db.Option == OptionEnum.CharLength)
-                {
-                    return CharLengthProcess(db, isMulti);
-                }
-                else if (db.Option == OptionEnum.DateFormat)
-                {
-                    return DateFormatProcess(db, isMulti);
-                }
-                else if (db.Option == OptionEnum.Trim || db.Option == OptionEnum.LTrim || db.Option == OptionEnum.RTrim)
-                {
-                    return TrimProcess(db, isMulti);
-                }
                 else if (db.Option == OptionEnum.OneEqualOne)
                 {
                     return OneEqualOneProcess(db, isMulti);
-                }
-                else if (db.Option == OptionEnum.In || db.Option == OptionEnum.NotIn)
-                {
-                    return InProcess(db, isMulti);
                 }
                 else if (db.Option == OptionEnum.IsNull || db.Option == OptionEnum.IsNotNull)
                 {
@@ -491,41 +505,59 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
 
                 if (dic.Action == ActionEnum.Select)
                 {
-                    if (dic.Option == OptionEnum.Column)
-                    {
-                        if (dic.Func == FuncEnum.None)
-                        {
-                            if (dic.Crud == CrudTypeEnum.Join)
-                            {
-                                list.Add($" \t {dic.TableAliasOne}.`{dic.ColumnOne}` ");
-                            }
-                            else if (dic.Crud == CrudTypeEnum.Query)
-                            {
-                                list.Add($" \t `{dic.ColumnOne}` ");
-                            }
-                        }
-                        else if(dic.Func == FuncEnum.DateFormat)
-                        {
-                            if (dic.Crud == CrudTypeEnum.Join)
-                            {
-                                list.Add($" \t DATE_FORMAT({dic.TableAliasOne}.`{dic.ColumnOne}`,'{dic.Format}') ");
-                            }
-                            else if (dic.Crud == CrudTypeEnum.Query)
-                            {
-                                list.Add($" \t DATE_FORMAT(`{dic.ColumnOne}`,'{dic.Format}') ");
-                            }
-                        }
-                    }
-                    else if (dic.Option == OptionEnum.ColumnAs)
+                    if (dic.Func == FuncEnum.None)
                     {
                         if (dic.Crud == CrudTypeEnum.Join)
                         {
-                            list.Add($" \t {dic.TableAliasOne}.`{dic.ColumnOne}` as {dic.ColumnOneAlias} ");
+                            if (dic.Option == OptionEnum.Column)
+                            {
+                                list.Add($" \t {dic.TableAliasOne}.`{dic.ColumnOne}` ");
+                            }
+                            else if (dic.Option == OptionEnum.ColumnAs)
+                            {
+                                list.Add($" \t {dic.TableAliasOne}.`{dic.ColumnOne}` as {dic.ColumnOneAlias} ");
+                            }
                         }
                         else if (dic.Crud == CrudTypeEnum.Query)
                         {
-                            list.Add($" \t `{dic.ColumnOne}` as {dic.ColumnOneAlias} ");
+                            if (dic.Option == OptionEnum.Column)
+                            {
+                                list.Add($" \t `{dic.ColumnOne}` ");
+                            }
+                            else if (dic.Option == OptionEnum.ColumnAs)
+                            {
+                                list.Add($" \t `{dic.ColumnOne}` as {dic.ColumnOneAlias} ");
+                            }
                         }
+                    }
+                    else if (dic.Func == FuncEnum.DateFormat)
+                    {
+                        if (dic.Crud == CrudTypeEnum.Join)
+                        {
+                            if (dic.Option == OptionEnum.Column)
+                            {
+                                list.Add($" \t DATE_FORMAT({dic.TableAliasOne}.`{dic.ColumnOne}`,'{dic.Format}') ");
+                            }
+                            else if( dic.Option == OptionEnum.ColumnAs)
+                            {
+                                list.Add($" \t DATE_FORMAT({dic.TableAliasOne}.`{dic.ColumnOne}`,'{dic.Format}') as {dic.ColumnOneAlias} ");
+                            }
+                        }
+                        else if (dic.Crud == CrudTypeEnum.Query)
+                        {
+                            if (dic.Option == OptionEnum.Column)
+                            {
+                                list.Add($" \t DATE_FORMAT(`{dic.ColumnOne}`,'{dic.Format}') ");
+                            }
+                            else if(dic.Option== OptionEnum.ColumnAs)
+                            {
+                                list.Add($" \t DATE_FORMAT(`{dic.ColumnOne}`,'{dic.Format}') as {dic.ColumnOneAlias} ");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception($"{XConfig._007} -- [[{dic.Func}]] 不能解析!!!");
                     }
                 }
             }
@@ -911,31 +943,31 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
                     Update(sb); Table(sb); Set(sb); UpdateColumn(sb); Where(sb); End(sb);
                     list.Add(sb.ToString());
                     break;
-                case UiMethodEnum.QueryFirstOrDefaultAsync:
-                case UiMethodEnum.JoinQueryFirstOrDefaultAsync:
+                case UiMethodEnum.FirstOrDefaultAsync:
+                case UiMethodEnum.JoinFirstOrDefaultAsync:
                     Select(sb); Distinct(sb); SelectColumn(sb); From(sb); Table(sb); Where(sb); OrderBy(sb); End(sb);
                     list.Add(sb.ToString());
                     break;
-                case UiMethodEnum.QueryListAsync:
-                case UiMethodEnum.JoinQueryListAsync:
+                case UiMethodEnum.ListAsync:
+                case UiMethodEnum.JoinListAsync:
                 case UiMethodEnum.TopAsync:
                 case UiMethodEnum.JoinTopAsync:
                     Select(sb); Distinct(sb); SelectColumn(sb); From(sb); Table(sb); Where(sb); OrderBy(sb); Limit(sb); End(sb);
                     list.Add(sb.ToString());
                     break;
-                case UiMethodEnum.QueryPagingListAsync:
-                case UiMethodEnum.JoinQueryPagingListAsync:
+                case UiMethodEnum.PagingListAsync:
+                case UiMethodEnum.JoinPagingListAsync:
                     Select(sb); CountCD(sb); From(sb); Table(sb); Where(sb); End(sb);
                     list.Add(sb.ToString());
                     sb.Clear();
                     Select(sb); Distinct(sb); SelectColumn(sb); From(sb); Table(sb); Where(sb); OrderBy(sb); Limit(sb); End(sb);
                     list.Add(sb.ToString());
                     break;
-                case UiMethodEnum.QueryAllAsync:
+                case UiMethodEnum.AllAsync:
                     Select(sb); Distinct(sb); SelectColumn(sb); From(sb); Table(sb); OrderBy(sb); End(sb);
                     list.Add(sb.ToString());
                     break;
-                case UiMethodEnum.QueryAllPagingListAsync:
+                case UiMethodEnum.PagingAllListAsync:
                     Select(sb); CountCD(sb); From(sb); Table(sb); End(sb);
                     list.Add(sb.ToString());
                     sb.Clear();
