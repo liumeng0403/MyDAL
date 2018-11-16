@@ -17,7 +17,7 @@ namespace MyDAL.Test.WhereEdge
             var res = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("000a9465-8665-40bf-90e3-0165442d9120"))
-                .QueryFirstOrDefaultAsync();
+                .FirstOrDefaultAsync();
             Assert.NotNull(res);
 
             await xxx(res.Id);
@@ -32,7 +32,7 @@ namespace MyDAL.Test.WhereEdge
             var res1 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Id == id)
-                .QueryFirstOrDefaultAsync();
+                .FirstOrDefaultAsync();
             Assert.NotNull(res1);
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
@@ -43,7 +43,7 @@ namespace MyDAL.Test.WhereEdge
             var resR1 = await Conn
                 .Selecter<Agent>()
                 .Where(it => id == it.Id)
-                .QueryFirstOrDefaultAsync();
+                .FirstOrDefaultAsync();
             Assert.NotNull(resR1);
 
             var tupleR1 = (XDebug.SQL, XDebug.Parameters);
@@ -72,7 +72,7 @@ namespace MyDAL.Test.WhereEdge
             var res = await Conn
                 .Selecter<Agent>()
                 .Where(it => list.Contains(it.Id))
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res.Count == 2);
 
             var xxx = "";
@@ -84,7 +84,7 @@ namespace MyDAL.Test.WhereEdge
             var res = await Conn
                 .Selecter<Agent>()
                 .Where(it => arrays.Contains(it.Id))
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res.Count == 2);
 
             var xxx = "";

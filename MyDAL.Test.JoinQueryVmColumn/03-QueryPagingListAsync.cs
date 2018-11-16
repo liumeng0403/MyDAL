@@ -10,7 +10,7 @@ using Xunit;
 
 namespace MyDAL.Test.JoinQueryVmColumn
 {
-    public class _03_QueryPagingListAsync:TestBase
+    public class _03_PagingListAsync:TestBase
     {
         [Fact]
         public async Task test()
@@ -24,7 +24,7 @@ namespace MyDAL.Test.JoinQueryVmColumn
                     .InnerJoin(() => record9)
                         .On(() => agent9.Id == record9.AgentId)
                 .Where(() => agent9.AgentLevel == AgentLevel.DistiAgent)
-                .QueryPagingListAsync(1, 10, () => new AgentVM
+                .PagingListAsync(1, 10, () => new AgentVM
                 {
                     XXXX = agent9.Name,
                     YYYY = agent9.PathId
@@ -45,7 +45,7 @@ namespace MyDAL.Test.JoinQueryVmColumn
                     .InnerJoin(() => record10)
                         .On(() => agent10.Id == record10.AgentId)
                 .Where(() => agent10.AgentLevel == AgentLevel.DistiAgent)
-                .QueryPagingListAsync(option10, () => new AgentVM
+                .PagingListAsync(option10, () => new AgentVM
                 {
                     XXXX = agent10.Name,
                     YYYY = agent10.PathId
@@ -68,7 +68,7 @@ namespace MyDAL.Test.JoinQueryVmColumn
                     .InnerJoin(() => record11)
                         .On(() => agent11.Id == record11.AgentId)
                 .Where(() => agent11.AgentLevel == AgentLevel.DistiAgent)
-                .QueryPagingListAsync(option11, () => new AgentVM
+                .PagingListAsync(option11, () => new AgentVM
                 {
                     XXXX = agent11.Name,
                     YYYY = agent11.PathId

@@ -16,7 +16,7 @@ namespace MyDAL.Impls
         {
         }
 
-        public async Task<long> CountAsync()
+        public async Task<int> CountAsync()
         {
             DC.Action = ActionEnum.Select;
 
@@ -26,10 +26,10 @@ namespace MyDAL.Impls
             DC.DPH.SetParameter();
             DC.Method = UiMethodEnum.CountAsync;
             DC.SqlProvider.GetSQL();
-            return await DC.DS.ExecuteScalarAsync<long>();
+            return await DC.DS.ExecuteScalarAsync<int>();
         }
 
-        public async Task<long> CountAsync<F>(Expression<Func<M, F>> propertyFunc)
+        public async Task<int> CountAsync<F>(Expression<Func<M, F>> propertyFunc)
         {
             DC.Action = ActionEnum.Select;
             var keyDic = DC.EH.FuncMFExpression(propertyFunc)[0];
@@ -40,7 +40,7 @@ namespace MyDAL.Impls
             DC.DPH.SetParameter();
             DC.Method = UiMethodEnum.CountAsync;
             DC.SqlProvider.GetSQL();
-            return await DC.DS.ExecuteScalarAsync<long>();
+            return await DC.DS.ExecuteScalarAsync<int>();
         }
     }
 
@@ -52,7 +52,7 @@ namespace MyDAL.Impls
         {
         }
 
-        public async Task<long> CountAsync()
+        public async Task<int> CountAsync()
         {
             DC.Action = ActionEnum.Select;
 
@@ -62,10 +62,10 @@ namespace MyDAL.Impls
             DC.DPH.SetParameter();
             DC.Method = UiMethodEnum.JoinCountAsync;
             DC.SqlProvider.GetSQL();
-            return await DC.DS.ExecuteScalarAsync<long>();
+            return await DC.DS.ExecuteScalarAsync<int>();
         }
 
-        public async Task<long> CountAsync<F>(Expression<Func<F>> propertyFunc)
+        public async Task<int> CountAsync<F>(Expression<Func<F>> propertyFunc)
         {
             DC.Action = ActionEnum.Select;
             var dic = DC.EH.FuncTExpression(propertyFunc)[0];
@@ -75,7 +75,7 @@ namespace MyDAL.Impls
             DC.DPH.SetParameter();
             DC.Method = UiMethodEnum.JoinCountAsync;
             DC.SqlProvider.GetSQL();
-            return await DC.DS.ExecuteScalarAsync<long>();
+            return await DC.DS.ExecuteScalarAsync<int>();
         }
     }
 }

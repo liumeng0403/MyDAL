@@ -7,7 +7,7 @@ using Xunit;
 
 namespace MyDAL.Test.JoinQueryM
 {
-    public class _01_QueryFirstOrDefaultAsync:TestBase
+    public class _01_FirstOrDefaultAsync:TestBase
     {
         [Fact]
         public async Task test()
@@ -22,7 +22,7 @@ namespace MyDAL.Test.JoinQueryM
                     .InnerJoin(() => record6)
                         .On(() => agent6.Id == record6.AgentId)
                 .Where(() => agent6.Id == guid6)
-                .QueryFirstOrDefaultAsync<Agent>();
+                .FirstOrDefaultAsync<Agent>();
             Assert.NotNull(res6);
             Assert.Equal("夏明君", res6.Name);
 

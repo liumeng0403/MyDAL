@@ -180,7 +180,7 @@ namespace MyDAL
         }
 
         /// <summary>
-        /// Selecter 快速 QueryFirstOrDefaultAsync by pk 方法
+        /// Selecter 快速 FirstOrDefaultAsync by pk 方法
         /// </summary>
         public static async Task<M> GetAsync<M>(this IDbConnection conn, object pkValue)
             where M : class
@@ -188,11 +188,11 @@ namespace MyDAL
             var selecter = conn.Selecter<M>();
             var option = new QuickOption().GetCondition() as IDictionary<string, object>;
             option[selecter.DC.SqlProvider.GetTablePK(typeof(M).FullName)] = pkValue;
-            return await selecter.Where(option).QueryFirstOrDefaultAsync();
+            return await selecter.Where(option).FirstOrDefaultAsync();
         }
 
         /// <summary>
-        /// Selecter 快速 QueryFirstOrDefaultAsync by pk 方法
+        /// Selecter 快速 FirstOrDefaultAsync by pk 方法
         /// </summary>
         public static async Task<VM> GetAsync<M, VM>(this IDbConnection conn, object pkValue)
             where M : class
@@ -201,11 +201,11 @@ namespace MyDAL
             var selecter = conn.Selecter<M>();
             var option = new QuickOption().GetCondition() as IDictionary<string, object>;
             option[selecter.DC.SqlProvider.GetTablePK(typeof(M).FullName)] = pkValue;
-            return await selecter.Where(option).QueryFirstOrDefaultAsync<VM>();
+            return await selecter.Where(option).FirstOrDefaultAsync<VM>();
         }
 
         /// <summary>
-        /// Selecter 快速 QueryFirstOrDefaultAsync by pk 方法
+        /// Selecter 快速 FirstOrDefaultAsync by pk 方法
         /// </summary>
         public static async Task<VM> GetAsync<M, VM>(this IDbConnection conn, object pkValue, Expression<Func<M, VM>> columnMapFunc)
             where M : class
@@ -214,142 +214,142 @@ namespace MyDAL
             var selecter = conn.Selecter<M>();
             var option = new QuickOption().GetCondition() as IDictionary<string, object>;
             option[selecter.DC.SqlProvider.GetTablePK(typeof(M).FullName)] = pkValue;
-            return await selecter.Where(option).QueryFirstOrDefaultAsync<VM>(columnMapFunc);
+            return await selecter.Where(option).FirstOrDefaultAsync<VM>(columnMapFunc);
         }
 
         /// <summary>
-        /// Selecter 快速 QueryFirstOrDefaultAsync 方法
+        /// Selecter 快速 FirstOrDefaultAsync 方法
         /// </summary>
         public static async Task<M> FirstOrDefaultAsync<M>(this IDbConnection conn, QueryOption option)
             where M : class
         {
-            return await conn.Selecter<M>().Where(option).QueryFirstOrDefaultAsync();
+            return await conn.Selecter<M>().Where(option).FirstOrDefaultAsync();
         }
         /// <summary>
-        /// Selecter 快速 QueryFirstOrDefaultAsync 方法
+        /// Selecter 快速 FirstOrDefaultAsync 方法
         /// </summary>
         public static async Task<VM> FirstOrDefaultAsync<M, VM>(this IDbConnection conn, QueryOption option)
             where M : class
             where VM:class
         {
-            return await conn.Selecter<M>().Where(option).QueryFirstOrDefaultAsync<VM>();
+            return await conn.Selecter<M>().Where(option).FirstOrDefaultAsync<VM>();
         }
         /// <summary>
-        /// Selecter 快速 QueryFirstOrDefaultAsync 方法
+        /// Selecter 快速 FirstOrDefaultAsync 方法
         /// </summary>
         public static async Task<VM> FirstOrDefaultAsync<M, VM>(this IDbConnection conn, QueryOption option, Expression<Func<M, VM>> columnMapFunc)
             where M : class
             where VM:class
         {
-            return await conn.Selecter<M>().Where(option).QueryFirstOrDefaultAsync<VM>(columnMapFunc);
+            return await conn.Selecter<M>().Where(option).FirstOrDefaultAsync<VM>(columnMapFunc);
         }
 
         /// <summary>
-        /// Selecter 快速 QueryFirstOrDefaultAsync 方法
+        /// Selecter 快速 FirstOrDefaultAsync 方法
         /// </summary>
         public static async Task<M> FirstOrDefaultAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
             where M : class
         {
-            return await conn.Selecter<M>().Where(compareFunc).QueryFirstOrDefaultAsync();
+            return await conn.Selecter<M>().Where(compareFunc).FirstOrDefaultAsync();
         }
         /// <summary>
-        /// Selecter 快速 QueryFirstOrDefaultAsync 方法
+        /// Selecter 快速 FirstOrDefaultAsync 方法
         /// </summary>
         public static async Task<VM> FirstOrDefaultAsync<M, VM>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
             where M : class
             where VM : class
         {
-            return await conn.Selecter<M>().Where(compareFunc).QueryFirstOrDefaultAsync<VM>();
+            return await conn.Selecter<M>().Where(compareFunc).FirstOrDefaultAsync<VM>();
         }
         /// <summary>
-        /// Selecter 快速 QueryFirstOrDefaultAsync 方法
+        /// Selecter 快速 FirstOrDefaultAsync 方法
         /// </summary>
         public static async Task<VM> FirstOrDefaultAsync<M, VM>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, VM>> columnMapFunc)
             where M : class
             where VM : class
         {
-            return await conn.Selecter<M>().Where(compareFunc).QueryFirstOrDefaultAsync<VM>(columnMapFunc);
+            return await conn.Selecter<M>().Where(compareFunc).FirstOrDefaultAsync<VM>(columnMapFunc);
         }
 
         /// <summary>
-        /// Selecter 快速 QueryListAsync 方法
+        /// Selecter 快速 ListAsync 方法
         /// </summary>
         public static async Task<List<M>> ListAsync<M>(this IDbConnection conn, QueryOption option)
             where M : class
         {
-            return await conn.Selecter<M>().Where(option).QueryListAsync();
+            return await conn.Selecter<M>().Where(option).ListAsync();
         }
         /// <summary>
-        /// Selecter 快速 QueryListAsync 方法
+        /// Selecter 快速 ListAsync 方法
         /// </summary>
         public static async Task<List<VM>> ListAsync<M, VM>(this IDbConnection conn, QueryOption option)
             where M : class
             where VM:class
         {
-            return await conn.Selecter<M>().Where(option).QueryListAsync<VM>();
+            return await conn.Selecter<M>().Where(option).ListAsync<VM>();
         }
         /// <summary>
-        /// Selecter 快速 QueryListAsync 方法
+        /// Selecter 快速 ListAsync 方法
         /// </summary>
         public static async Task<List<VM>> ListAsync<M, VM>(this IDbConnection conn, QueryOption option, Expression<Func<M, VM>> columnMapFunc)
             where M : class
             where VM:class
         {
-            return await conn.Selecter<M>().Where(option).QueryListAsync<VM>(columnMapFunc);
+            return await conn.Selecter<M>().Where(option).ListAsync<VM>(columnMapFunc);
         }
 
         /// <summary>
-        /// Selecter 快速 QueryListAsync 方法
+        /// Selecter 快速 ListAsync 方法
         /// </summary>
         public static async Task<List<M>> ListAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
             where M : class
         {
-            return await conn.Selecter<M>().Where(compareFunc).QueryListAsync();
+            return await conn.Selecter<M>().Where(compareFunc).ListAsync();
         }
         /// <summary>
-        /// Selecter 快速 QueryListAsync 方法
+        /// Selecter 快速 ListAsync 方法
         /// </summary>
         public static async Task<List<VM>> ListAsync<M, VM>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
             where M : class
             where VM : class
         {
-            return await conn.Selecter<M>().Where(compareFunc).QueryListAsync<VM>();
+            return await conn.Selecter<M>().Where(compareFunc).ListAsync<VM>();
         }
         /// <summary>
-        /// Selecter 快速 QueryListAsync 方法
+        /// Selecter 快速 ListAsync 方法
         /// </summary>
         public static async Task<List<VM>> ListAsync<M, VM>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, VM>> columnMapFunc)
             where M : class
             where VM : class
         {
-            return await conn.Selecter<M>().Where(compareFunc).QueryListAsync<VM>(columnMapFunc);
+            return await conn.Selecter<M>().Where(compareFunc).ListAsync<VM>(columnMapFunc);
         }
 
         /// <summary>
-        /// Selecter 快速 QueryPagingListAsync 方法
+        /// Selecter 快速 PagingListAsync 方法
         /// </summary>
         public static async Task<PagingList<M>> PagingListAsync<M>(this IDbConnection conn, PagingQueryOption option)
             where M : class
         {
-            return await conn.Selecter<M>().Where(option).QueryPagingListAsync(option);
+            return await conn.Selecter<M>().Where(option).PagingListAsync(option);
         }
         /// <summary>
-        /// Selecter 快速 QueryPagingListAsync 方法
+        /// Selecter 快速 PagingListAsync 方法
         /// </summary>
         public static async Task<PagingList<VM>> PagingListAsync<M, VM>(this IDbConnection conn, PagingQueryOption option)
             where M : class
             where VM:class
         {
-            return await conn.Selecter<M>().Where(option).QueryPagingListAsync<VM>(option);
+            return await conn.Selecter<M>().Where(option).PagingListAsync<VM>(option);
         }
         /// <summary>
-        /// Selecter 快速 QueryPagingListAsync 方法
+        /// Selecter 快速 PagingListAsync 方法
         /// </summary>
         public static async Task<PagingList<VM>> PagingListAsync<M, VM>(this IDbConnection conn, PagingQueryOption option, Expression<Func<M, VM>> columnMapFunc)
             where M : class
             where VM:class
         {
-            return await conn.Selecter<M>().Where(option).QueryPagingListAsync<VM>(option, columnMapFunc);
+            return await conn.Selecter<M>().Where(option).PagingListAsync<VM>(option, columnMapFunc);
         }
 
         /// <summary>

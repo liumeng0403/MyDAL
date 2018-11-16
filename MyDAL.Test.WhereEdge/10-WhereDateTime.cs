@@ -18,7 +18,7 @@ namespace MyDAL.Test.WhereEdge
             var res1 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn.ToString("yyyy-MM-dd") == date.ToString("yyyy-MM-dd"))
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res1.Count == 28619);
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -30,7 +30,7 @@ namespace MyDAL.Test.WhereEdge
             var res2 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn.ToString("yyyy-MM") == date.ToString("yyyy-MM"))
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res2.Count == 28619);
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -42,7 +42,7 @@ namespace MyDAL.Test.WhereEdge
             var res3 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn.ToString("yyyy") == date.ToString("yyyy"))
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res3.Count == 28619);
 
             var tuple3 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -54,7 +54,7 @@ namespace MyDAL.Test.WhereEdge
             var res4 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.ActivedOn!=null&&it.ActivedOn.Value.ToString("yyyy-MM-dd")==DateTime.Parse("2018-08-19 12:05:45.560984").ToString("yyyy-MM-dd"))
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res4.Count == 554);
 
             var tuple4 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);

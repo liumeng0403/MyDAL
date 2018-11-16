@@ -7,7 +7,7 @@ using Xunit;
 
 namespace MyDAL.Test.QueryM
 {
-    public class _02_QueryListAsync:TestBase
+    public class _02_ListAsync:TestBase
     {
         [Fact]
         public async Task test()
@@ -21,14 +21,14 @@ namespace MyDAL.Test.QueryM
             var res1 = await Conn
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.CreatedOn >= WhereTest.CreatedOn)
-                .QueryListAsync();
+                .ListAsync();
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
             var resR1 = await Conn
                 .Selecter<BodyFitRecord>()
                 .Where(it => WhereTest.CreatedOn <= it.CreatedOn)
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res1.Count == resR1.Count);
             //Assert.True(res1.Count >0);
 
@@ -43,14 +43,14 @@ namespace MyDAL.Test.QueryM
             var res2 = await Conn
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.CreatedOn >= start)
-                .QueryListAsync();
+                .ListAsync();
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters);
 
             var resR2 = await Conn
                 .Selecter<BodyFitRecord>()
                 .Where(it => start <= it.CreatedOn)
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res2.Count == resR2.Count);
             //Assert.True(res2.Count > 0);
 
@@ -64,14 +64,14 @@ namespace MyDAL.Test.QueryM
             var res3 = await Conn
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.CreatedOn <= DateTime.Now)
-                .QueryListAsync();
+                .ListAsync();
 
             var tuple3 = (XDebug.SQL, XDebug.Parameters);
 
             var resR3 = await Conn
                 .Selecter<BodyFitRecord>()
                 .Where(it => DateTime.Now >= it.CreatedOn)
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res3.Count == resR3.Count);
             //Assert.True(res3.Count >0 );
 
@@ -93,7 +93,7 @@ namespace MyDAL.Test.QueryM
             var res4 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= testQ.StartTime)
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res4.Count == 28619);
 
             var tuple4 = (XDebug.SQL, XDebug.Parameters);
@@ -105,7 +105,7 @@ namespace MyDAL.Test.QueryM
             var res5 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.AgentLevel == testQ.AgentLevelXX)
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res5.Count == 555);
 
             var tuple5 = (XDebug.SQL, XDebug.Parameters);

@@ -6,7 +6,7 @@ using Xunit;
 
 namespace MyDAL.Test.JoinQueryVmColumn
 {
-    public class _02_QueryListAsync:TestBase
+    public class _02_ListAsync:TestBase
     {
         [Fact]
         public async Task test()
@@ -26,7 +26,7 @@ namespace MyDAL.Test.JoinQueryVmColumn
                     .InnerJoin(() => record12)
                         .On(() => agent12.Id == record12.AgentId)
                 .Where(() => record12.CreatedOn >= WhereTest.CreatedOn)
-                .QueryListAsync(() => new AgentVM
+                .ListAsync(() => new AgentVM
                 {
                     nn = agent12.PathId,
                     yy = record12.Id,

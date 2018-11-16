@@ -45,7 +45,7 @@ namespace MyDAL.Test.Func
             var res1 = await Conn
                 .Selecter<Product>()
                 .Where(it => it.Title.Trim() == "演示商品01")
-                .QueryFirstOrDefaultAsync();
+                .FirstOrDefaultAsync();
             Assert.True(res1.Title == "  演示商品01  ");
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
@@ -58,7 +58,7 @@ namespace MyDAL.Test.Func
             var res2 = await Conn
                 .Selecter<Product>()
                 .Where(it => it.Title.TrimStart() == "演示商品01")
-                .QueryFirstOrDefaultAsync();
+                .FirstOrDefaultAsync();
             Assert.True(res2.Title == "  演示商品01");
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters);
@@ -71,7 +71,7 @@ namespace MyDAL.Test.Func
             var res3 = await Conn
                 .Selecter<Product>()
                 .Where(it => it.Title.TrimEnd() == "演示商品01")
-                .QueryFirstOrDefaultAsync();
+                .FirstOrDefaultAsync();
             Assert.True(res3.Title == "演示商品01  ");
 
             var tuple3 = (XDebug.SQL, XDebug.Parameters);

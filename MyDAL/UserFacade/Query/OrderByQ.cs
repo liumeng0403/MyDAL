@@ -20,49 +20,49 @@ namespace MyDAL.UserFacade.Query
         /// <summary>
         /// 单表多条数据查询
         /// </summary>
-        public async Task<List<M>> QueryListAsync()
+        public async Task<List<M>> ListAsync()
         {
-            return await new QueryListImpl<M>(DC).QueryListAsync();
+            return await new QueryListImpl<M>(DC).ListAsync();
         }
         /// <summary>
         /// 单表多条数据查询
         /// </summary>
         /// <typeparam name="VM">ViewModel</typeparam>
-        public async Task<List<VM>> QueryListAsync<VM>()
+        public async Task<List<VM>> ListAsync<VM>()
             where VM:class
         {
-            return await new QueryListImpl<M>(DC).QueryListAsync<VM>();
+            return await new QueryListImpl<M>(DC).ListAsync<VM>();
         }
         /// <summary>
         /// 单表多条数据查询
         /// </summary>
-        public async Task<List<VM>> QueryListAsync<VM>(Expression<Func<M, VM>> columnMapFunc)
+        public async Task<List<VM>> ListAsync<VM>(Expression<Func<M, VM>> columnMapFunc)
             where VM:class
         {
-            return await new QueryListImpl<M>(DC).QueryListAsync<VM>(columnMapFunc);
+            return await new QueryListImpl<M>(DC).ListAsync<VM>(columnMapFunc);
         }
         /// <summary>
         /// 单表多条数据查询
         /// </summary>
-        public async Task<List<M>> QueryListAsync(int topCount)
+        public async Task<List<M>> ListAsync(int topCount)
         {
-            return await new QueryListImpl<M>(DC).QueryListAsync(topCount);
+            return await new QueryListImpl<M>(DC).ListAsync(topCount);
         }
         /// <summary>
         /// 单表多条数据查询
         /// </summary>
-        public async Task<List<VM>> QueryListAsync<VM>(int topCount)
+        public async Task<List<VM>> ListAsync<VM>(int topCount)
             where VM : class
         {
-            return await new QueryListImpl<M>(DC).QueryListAsync<VM>(topCount);
+            return await new QueryListImpl<M>(DC).ListAsync<VM>(topCount);
         }
         /// <summary>
         /// 单表多条数据查询
         /// </summary>
-        public async Task<List<VM>> QueryListAsync<VM>(int topCount, Expression<Func<M, VM>> columnMapFunc)
+        public async Task<List<VM>> ListAsync<VM>(int topCount, Expression<Func<M, VM>> columnMapFunc)
             where VM : class
         {
-            return await new QueryListImpl<M>(DC).QueryListAsync<VM>(topCount, columnMapFunc);
+            return await new QueryListImpl<M>(DC).ListAsync<VM>(topCount, columnMapFunc);
         }
 
         /// <summary>
@@ -70,9 +70,9 @@ namespace MyDAL.UserFacade.Query
         /// </summary>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
-        public async Task<PagingList<M>> QueryPagingListAsync(int pageIndex, int pageSize)
+        public async Task<PagingList<M>> PagingListAsync(int pageIndex, int pageSize)
         {
-            return await new QueryPagingListImpl<M>(DC).QueryPagingListAsync(pageIndex, pageSize);
+            return await new QueryPagingListImpl<M>(DC).PagingListAsync(pageIndex, pageSize);
         }
         /// <summary>
         /// 单表分页查询
@@ -80,10 +80,10 @@ namespace MyDAL.UserFacade.Query
         /// <typeparam name="VM">ViewModel</typeparam>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
-        public async Task<PagingList<VM>> QueryPagingListAsync<VM>(int pageIndex, int pageSize)
+        public async Task<PagingList<VM>> PagingListAsync<VM>(int pageIndex, int pageSize)
             where VM:class
         {
-            return await new QueryPagingListImpl<M>(DC).QueryPagingListAsync<VM>(pageIndex, pageSize);
+            return await new QueryPagingListImpl<M>(DC).PagingListAsync<VM>(pageIndex, pageSize);
         }
         /// <summary>
         /// 单表分页查询
@@ -91,10 +91,10 @@ namespace MyDAL.UserFacade.Query
         /// <typeparam name="VM">ViewModel</typeparam>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
-        public async Task<PagingList<VM>> QueryPagingListAsync<VM>(int pageIndex, int pageSize, Expression<Func<M, VM>> columnMapFunc)
+        public async Task<PagingList<VM>> PagingListAsync<VM>(int pageIndex, int pageSize, Expression<Func<M, VM>> columnMapFunc)
             where VM:class
         {
-            return await new QueryPagingListImpl<M>(DC).QueryPagingListAsync<VM>(pageIndex, pageSize, columnMapFunc);
+            return await new QueryPagingListImpl<M>(DC).PagingListAsync<VM>(pageIndex, pageSize, columnMapFunc);
         }
 
         /// <summary>
@@ -102,9 +102,9 @@ namespace MyDAL.UserFacade.Query
         /// </summary>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
-        public async Task<PagingList<M>> QueryPagingListAsync(PagingQueryOption option)
+        public async Task<PagingList<M>> PagingListAsync(PagingQueryOption option)
         {
-            return await new QueryPagingListOImpl<M>(DC).QueryPagingListAsync(option);
+            return await new QueryPagingListOImpl<M>(DC).PagingListAsync(option);
         }
         /// <summary>
         /// 单表分页查询
@@ -112,10 +112,10 @@ namespace MyDAL.UserFacade.Query
         /// <typeparam name="VM">ViewModel</typeparam>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
-        public async Task<PagingList<VM>> QueryPagingListAsync<VM>(PagingQueryOption option)
+        public async Task<PagingList<VM>> PagingListAsync<VM>(PagingQueryOption option)
             where VM:class
         {
-            return await new QueryPagingListOImpl<M>(DC).QueryPagingListAsync<VM>(option);
+            return await new QueryPagingListOImpl<M>(DC).PagingListAsync<VM>(option);
         }
         /// <summary>
         /// 单表分页查询
@@ -123,10 +123,10 @@ namespace MyDAL.UserFacade.Query
         /// <typeparam name="VM">ViewModel</typeparam>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
-        public async Task<PagingList<VM>> QueryPagingListAsync<VM>(PagingQueryOption option, Expression<Func<M, VM>> columnMapFunc)
+        public async Task<PagingList<VM>> PagingListAsync<VM>(PagingQueryOption option, Expression<Func<M, VM>> columnMapFunc)
             where VM:class
         {
-            return await new QueryPagingListOImpl<M>(DC).QueryPagingListAsync<VM>(option, columnMapFunc);
+            return await new QueryPagingListOImpl<M>(DC).PagingListAsync<VM>(option, columnMapFunc);
         }
 
         /// <summary>

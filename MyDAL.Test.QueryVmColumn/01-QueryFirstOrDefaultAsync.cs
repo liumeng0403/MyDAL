@@ -6,7 +6,7 @@ using Xunit;
 
 namespace MyDAL.Test.QueryVmColumn
 {
-    public class _01_QueryFirstOrDefaultAsync : TestBase
+    public class _01_FirstOrDefaultAsync : TestBase
     {
         [Fact]
         public async Task test()
@@ -17,7 +17,7 @@ namespace MyDAL.Test.QueryVmColumn
             var res1 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
-                .QueryFirstOrDefaultAsync<AgentVM>();
+                .FirstOrDefaultAsync<AgentVM>();
             Assert.NotNull(res1);
             Assert.Null(res1.XXXX);
 
@@ -34,7 +34,7 @@ namespace MyDAL.Test.QueryVmColumn
                 .InnerJoin(() => record2)
                 .On(() => agent2.Id == record2.AgentId)
                 .Where(() => agent2.Id == guid2)
-                .QueryFirstOrDefaultAsync(() => new AgentVM
+                .FirstOrDefaultAsync(() => new AgentVM
                 {
                     nn = agent2.PathId,
                     yy = record2.Id,
@@ -54,7 +54,7 @@ namespace MyDAL.Test.QueryVmColumn
             var res3 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
-                .QueryFirstOrDefaultAsync(agent => new AgentVM
+                .FirstOrDefaultAsync(agent => new AgentVM
                 {
                     XXXX = agent.Name,
                     YYYY = agent.PathId

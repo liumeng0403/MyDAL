@@ -27,7 +27,7 @@ namespace MyDAL.Test.WhereEdge
             var res1 = await Conn
                 .Selecter<Agent>()
                 .Where(option1)
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res1.Count == 555);
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
@@ -44,7 +44,7 @@ namespace MyDAL.Test.WhereEdge
             var res2 = await Conn
                 .Selecter<Agent>()
                 .Where(option2)
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res2.Count == 28619);
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters);
@@ -60,7 +60,7 @@ namespace MyDAL.Test.WhereEdge
             var res3 = await Conn
                 .Selecter<Agent>()
                 .Where(option3)
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res3.Count == 2002);
 
             var tuple3 = (XDebug.SQL, XDebug.Parameters);
@@ -80,7 +80,7 @@ namespace MyDAL.Test.WhereEdge
             var res4 = await Conn
                 .Selecter<Agent>()
                 .Where(option4)
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res4.Count == 555);
 
             var tuple4 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -100,7 +100,7 @@ namespace MyDAL.Test.WhereEdge
             var res5 = await Conn
                 .Selecter<Agent>()
                 .Where(option5)
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res5.Count == 28064 || res5.Count == 28065);
 
             var tuple5 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);

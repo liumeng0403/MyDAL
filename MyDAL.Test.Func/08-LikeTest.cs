@@ -22,7 +22,7 @@ namespace MyDAL.Test.Func
             var resx1 = await Conn
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.Id == m.Id)
-                .QueryFirstOrDefaultAsync();
+                .FirstOrDefaultAsync();
             if (resx1 != null)
             {
                 var resx2 = await Conn
@@ -47,7 +47,7 @@ namespace MyDAL.Test.Func
             var resx1 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("014c55c3-b371-433c-abc0-016544491da8"))
-                .QueryFirstOrDefaultAsync();
+                .FirstOrDefaultAsync();
             var resx2 = await Conn
                 .Updater<Agent>()
                 .Set(it => it.Name, "刘%华")
@@ -56,7 +56,7 @@ namespace MyDAL.Test.Func
             var resx3 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("018a1855-e238-4fb7-82d6-0165442fd654"))
-                .QueryFirstOrDefaultAsync();
+                .FirstOrDefaultAsync();
             var resx4 = await Conn
                 .Updater<Agent>()
                 .Set(it => it.Name, "何_伟")
@@ -68,7 +68,7 @@ namespace MyDAL.Test.Func
         }
 
         [Fact]
-        public async Task QueryFirstOrDefaultAsyncTest()
+        public async Task FirstOrDefaultAsyncTest()
         {
 
             /************************************************************************************************************/
@@ -81,7 +81,7 @@ namespace MyDAL.Test.Func
             var res1 = await Conn
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.BodyMeasureProperty.Contains("xx"))
-                .QueryFirstOrDefaultAsync();
+                .FirstOrDefaultAsync();
             Assert.NotNull(res1);
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
@@ -96,7 +96,7 @@ namespace MyDAL.Test.Func
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= WhereTest.CreatedOn)
                 .And(it => it.PathId.Contains(WhereTest.ContainStr))
-                .QueryPagingListAsync(1, 10);
+                .PagingListAsync(1, 10);
             Assert.True(res2.TotalCount == 5680);
 
             var sql2 = (XDebug.SQL, XDebug.Parameters);
@@ -110,7 +110,7 @@ namespace MyDAL.Test.Func
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= WhereTest.CreatedOn)
                 .And(it => it.PathId.Contains("~00-d-3-1-"))
-                .QueryPagingListAsync(1, 10);
+                .PagingListAsync(1, 10);
             Assert.True(res3.TotalCount == 5680);
 
             var sql3 = (XDebug.SQL, XDebug.Parameters);
@@ -125,7 +125,7 @@ namespace MyDAL.Test.Func
             var res0 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains(LikeTest.无通配符))
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res0.Count == 1431);
 
             var sql4 = (XDebug.SQL, XDebug.Parameters);
@@ -136,7 +136,7 @@ namespace MyDAL.Test.Func
             var res5 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains(LikeTest.百分号))
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res5.Count == 1421);
 
             var sql5 = (XDebug.SQL, XDebug.Parameters);
@@ -147,7 +147,7 @@ namespace MyDAL.Test.Func
             var res6 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains(LikeTest.下划线))
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res6.Count == 498);
 
             var sql6 = (XDebug.SQL, XDebug.Parameters);
@@ -161,7 +161,7 @@ namespace MyDAL.Test.Func
                 .And(it => it.Id == resx4.Id)
                 .And(it => it.Name.Contains("%华"))
                 .And(it => it.Name.Contains("%/%%"))
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res7.Count == 1);
 
             var sql7 = (XDebug.SQL, XDebug.Parameters);
@@ -172,7 +172,7 @@ namespace MyDAL.Test.Func
             var res4 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains(LikeTest.下划线转义))
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res4.Count == 1);
 
             var sql8 = (XDebug.SQL, XDebug.Parameters);
@@ -187,7 +187,7 @@ namespace MyDAL.Test.Func
                     .InnerJoin(() => record9)
                     .On(() => agent9.Id == record9.AgentId)
                 .Where(() => agent9.Name.Contains(LikeTest.无通配符))
-                .QueryListAsync<AgentInventoryRecord>();
+                .ListAsync<AgentInventoryRecord>();
             Assert.True(res9.Count == 24);
 
             var sql9 = (XDebug.SQL, XDebug.Parameters);
@@ -202,7 +202,7 @@ namespace MyDAL.Test.Func
                     .InnerJoin(() => record10)
                     .On(() => agent10.Id == record10.AgentId)
                 .Where(() => agent10.Name.StartsWith("张"))
-                .QueryListAsync<Agent>();
+                .ListAsync<Agent>();
             Assert.True(res10.Count == 45);
 
             var sql10 = (XDebug.SQL, XDebug.Parameters);
@@ -217,7 +217,7 @@ namespace MyDAL.Test.Func
                 .InnerJoin(() => record11)
                 .On(() => agent11.Id == record11.AgentId)
                 .Where(() => agent11.Name.EndsWith("华"))
-                .QueryListAsync<Agent>();
+                .ListAsync<Agent>();
             Assert.True(res11.Count == 22);
 
             var sql11 = (XDebug.SQL, XDebug.Parameters);

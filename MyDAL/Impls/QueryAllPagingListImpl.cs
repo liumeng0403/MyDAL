@@ -14,15 +14,15 @@ namespace MyDAL.Impls
         {
         }
 
-        public async Task<PagingList<M>> QueryAllPagingListAsync(int pageIndex, int pageSize)
+        public async Task<PagingList<M>> PagingAllListAsync(int pageIndex, int pageSize)
         {
-            return await QueryPagingListAsyncHandle<M>(pageIndex, pageSize, UiMethodEnum.QueryAllPagingListAsync);
+            return await PagingListAsyncHandle<M>(pageIndex, pageSize, UiMethodEnum.PagingAllListAsync);
         }
 
-        public async Task<PagingList<VM>> QueryAllPagingListAsync<VM>(int pageIndex, int pageSize)
+        public async Task<PagingList<VM>> PagingAllListAsync<VM>(int pageIndex, int pageSize)
             where VM:class
         {
-            return await QueryPagingListAsyncHandle<M, VM>(pageIndex, pageSize, UiMethodEnum.QueryAllPagingListAsync);
+            return await PagingListAsyncHandle<M, VM>(pageIndex, pageSize, UiMethodEnum.PagingAllListAsync);
         }
     }
 }

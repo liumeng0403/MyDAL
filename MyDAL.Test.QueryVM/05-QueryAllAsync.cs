@@ -6,7 +6,7 @@ using Xunit;
 
 namespace MyDAL.Test.QueryVM
 {
-    public class _05_QueryAllAsync:TestBase
+    public class _05_AllAsync:TestBase
     {
         [Fact]
         public async Task test()
@@ -16,7 +16,7 @@ namespace MyDAL.Test.QueryVM
 
             var res2 = await Conn
                 .Selecter<Agent>()
-                .QueryAllAsync<AgentVM>();
+                .AllAsync<AgentVM>();
             Assert.True(res2.Count == 28620);
             Assert.NotNull(res2.First().Name);
             Assert.Null(res2.First().XXXX);

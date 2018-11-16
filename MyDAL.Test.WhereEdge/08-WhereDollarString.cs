@@ -15,7 +15,7 @@ namespace MyDAL.Test.WhereEdge
             var res1 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Name == $"{"樊士芹"}")
-                .QueryFirstOrDefaultAsync();
+                .FirstOrDefaultAsync();
             Assert.NotNull(res1);
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -28,7 +28,7 @@ namespace MyDAL.Test.WhereEdge
             var res2 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Name == $"{name2}")
-                .QueryFirstOrDefaultAsync();
+                .FirstOrDefaultAsync();
             Assert.NotNull(res2);
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -40,7 +40,7 @@ namespace MyDAL.Test.WhereEdge
             var res3 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >DateTime.Parse($"{WhereTest.CreatedOn.AddDays(-10)}"))
-                .QueryListAsync();
+                .ListAsync();
             Assert.NotNull(res3);
             Assert.True(res3.Count == 28619);
 
@@ -54,7 +54,7 @@ namespace MyDAL.Test.WhereEdge
             var res4 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains($"{name4}%"))
-                .QueryListAsync();
+                .ListAsync();
             Assert.NotNull(res4);
             Assert.True(res4.Count == 1996);
 
@@ -67,7 +67,7 @@ namespace MyDAL.Test.WhereEdge
             var res5 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.PathId.Contains($"{WhereTest.ContainStr2}%"))
-                .QueryListAsync();
+                .ListAsync();
             Assert.NotNull(res5);
             Assert.True(res5.Count == 20016);
 
@@ -82,15 +82,15 @@ namespace MyDAL.Test.WhereEdge
             var res6 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains($"{like61}%") || it.Name.Contains($"{like62}%"))
-                .QueryListAsync();
+                .ListAsync();
             var res61 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains($"{like61}%"))
-                .QueryListAsync();
+                .ListAsync();
             var res62 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains($"{like62}%"))
-                .QueryListAsync();
+                .ListAsync();
             Assert.True(res61.Count != 0);
             Assert.True(res62.Count != 0);
             Assert.True(res6.Count == res61.Count + res62.Count);

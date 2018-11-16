@@ -9,7 +9,7 @@ using Xunit;
 
 namespace MyDAL.Test.JoinQueryM
 {
-    public class _03_QueryPagingListAsync:TestBase
+    public class _03_PagingListAsync:TestBase
     {
         [Fact]
         public async Task test()
@@ -25,7 +25,7 @@ namespace MyDAL.Test.JoinQueryM
                     .InnerJoin(() => record5)
                         .On(() => agent5.Id == record5.AgentId)
                 .Where(() => agent5.AgentLevel == AgentLevel.DistiAgent)
-                .QueryPagingListAsync<Agent>(1, 10);
+                .PagingListAsync<Agent>(1, 10);
             Assert.True(res5.TotalCount == 574);
 
             /*************************************************************************************************************************/
@@ -41,7 +41,7 @@ namespace MyDAL.Test.JoinQueryM
                     .InnerJoin(() => record6)
                         .On(() => agent6.Id == record6.AgentId)
                 .Where(() => agent6.AgentLevel == AgentLevel.DistiAgent)
-                .QueryPagingListAsync<Agent>(option6);
+                .PagingListAsync<Agent>(option6);
             Assert.True(res6.TotalCount == 574);
 
             var tuple6 = (XDebug.SQL, XDebug.Parameters);

@@ -8,7 +8,7 @@ using Xunit;
 
 namespace MyDAL.Test.QueryVmColumn
 {
-    public class _03_QueryPagingListAsync : TestBase
+    public class _03_PagingListAsync : TestBase
     {
         [Fact]
         public async Task test()
@@ -32,7 +32,7 @@ namespace MyDAL.Test.QueryVmColumn
             var res7 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Name == "樊士芹")
-                .QueryPagingListAsync(option, agent => new AgentVM
+                .PagingListAsync(option, agent => new AgentVM
                 {
                     XXXX = agent.Name,
                     YYYY = agent.PathId
@@ -48,7 +48,7 @@ namespace MyDAL.Test.QueryVmColumn
             var res8 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= WhereTest.CreatedOn)
-                .QueryPagingListAsync(1, 10, agent => new AgentVM
+                .PagingListAsync(1, 10, agent => new AgentVM
                 {
                     XXXX = agent.Name,
                     YYYY = agent.PathId

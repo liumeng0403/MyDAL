@@ -1,13 +1,10 @@
 ﻿using MyDAL.Test.Entities.EasyDal_Exchange;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace MyDAL.Test.Query
 {
-    public class _02_SelectSingleColumnTest:TestBase
+    public class _02_SelectSingleColumnTest : TestBase
     {
 
         [Fact]
@@ -18,7 +15,7 @@ namespace MyDAL.Test.Query
 
             var res1 = await Conn
                 .Selecter<Agent>()
-                .QueryAllAsync(it => it.Id);
+                .AllAsync(it => it.Id);
             Assert.True(res1.Count == 28620);
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -30,7 +27,7 @@ namespace MyDAL.Test.Query
             var res2 = await Conn
                 .Selecter<Agent>()
                 .Distinct()
-                .QueryAllAsync(it => it.Name);
+                .AllAsync(it => it.Name);
             Assert.True(res2.Count == 24444);
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -42,10 +39,34 @@ namespace MyDAL.Test.Query
             var res3 = await Conn
                 .Selecter<Agent>()
                 .Distinct()
-                .QueryAllAsync(it => it.CreatedOn.ToString("yyyy-MM-dd"));
+                .AllAsync(it => it.CreatedOn.ToString("yyyy-MM-dd"));
             Assert.True(res3.Count == 2);
 
             var tuple3 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /***************************************************************************************************************************/
+
+            var xx4 = "";
+
+            var res4 = await Conn
+                .Selecter<Agent>()
+                .Distinct()
+                .AllAsync(it => it.CreatedOn.ToString("yyyy-MM"));
+            Assert.True(res4.Count == 2);
+
+            var tuple4 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /***************************************************************************************************************************/
+
+            var xx5 = "";
+
+            var res5 = await Conn
+                .Selecter<Agent>()
+                .Distinct()
+                .AllAsync(it => it.CreatedOn.ToString("yyyy"));
+            Assert.True(res5.Count == 2);
+
+            var tuple5 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /***************************************************************************************************************************/
 

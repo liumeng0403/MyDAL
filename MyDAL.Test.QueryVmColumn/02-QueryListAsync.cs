@@ -9,7 +9,7 @@ using Xunit;
 
 namespace MyDAL.Test.QueryVmColumn
 {
-    public class _02_QueryListAsync:TestBase
+    public class _02_ListAsync:TestBase
     {
         [Fact]
         public async Task test()
@@ -28,7 +28,7 @@ namespace MyDAL.Test.QueryVmColumn
             var res4 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= testQ4.StartTime)
-                .QueryListAsync<AgentVM>();
+                .ListAsync<AgentVM>();
             Assert.True(res4.Count == 28619);
             Assert.NotNull(res4.First().Name);
             Assert.Null(res4.First().XXXX);
@@ -42,7 +42,7 @@ namespace MyDAL.Test.QueryVmColumn
             var res5 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
-                .QueryListAsync(agent => new AgentVM
+                .ListAsync(agent => new AgentVM
                 {
                     XXXX = agent.Name,
                     YYYY = agent.PathId

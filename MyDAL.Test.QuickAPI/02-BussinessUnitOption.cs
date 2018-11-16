@@ -34,7 +34,7 @@ namespace MyDAL.Test.QuickAPI
                     var dbRecord = await Conn
                         .Selecter<WechatUserInfo>()
                         .Where(it => it.OpenId == "xxxyyyyzzz")
-                        .QueryFirstOrDefaultAsync();
+                        .FirstOrDefaultAsync();
 
                     return dbRecord;
 
@@ -52,7 +52,7 @@ namespace MyDAL.Test.QuickAPI
                     var dbRecord = await Conn
                         .Selecter<WechatUserInfo>()
                         .Where(it => it.OpenId == "xxxyyyyzzz")
-                        .QueryFirstOrDefaultAsync();
+                        .FirstOrDefaultAsync();
                     if (dbRecord != null) // 记录存在
                     {
                         return (string.Empty, true);

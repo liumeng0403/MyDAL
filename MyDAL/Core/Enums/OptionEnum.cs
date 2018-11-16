@@ -41,24 +41,9 @@ namespace MyDAL.Core.Enums
         ColumnAs,
 
         /// <summary>
-        /// ""
-        /// </summary>
-        Compare,
-
-        /// <summary>
         /// " like "
         /// </summary>
         Like,
-
-        /// <summary>
-        /// " in "
-        /// </summary>
-        In,
-        InHelper,
-        /// <summary>
-        /// " not in "
-        /// </summary>
-        NotIn,
 
         /// <summary>
         /// " count"
@@ -74,31 +59,16 @@ namespace MyDAL.Core.Enums
         /// " distinct "
         /// </summary>
         Distinct,
-        
-        /// <summary>
-        /// " char_length"
-        /// </summary>
-        CharLength,
 
         /// <summary>
-        /// " trim"
+        /// ""
         /// </summary>
-        Trim,
+        Compare,
 
         /// <summary>
-        /// " ltrim"
+        /// ""
         /// </summary>
-        LTrim,
-
-        /// <summary>
-        /// " rtrim"
-        /// </summary>
-        RTrim,
-
-        /// <summary>
-        /// " DATE_FORMAT"
-        /// </summary>
-        DateFormat,
+        Function,
 
         /// <summary>
         /// ""
