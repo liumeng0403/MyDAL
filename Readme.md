@@ -14,3 +14,4 @@ Clone&Fork:  <b>克隆</b>的同学不要忘了<b>右上角</b>给点个<b>Star<
 
 文章&&教程：<br/>
 * <a href="https://www.cnblogs.com/Meng-NET/p/9831746.html" target="_blank">MyDAL - 简介&安装&快速使用</a>
+* <a href="https://www.cnblogs.com/Meng-NET/p/9978336.html" target="_blank">MyDAL - .Where() & .And() & .Or() 使用</a>
