@@ -211,7 +211,7 @@ namespace Yunyong.DataExchange.Core.Helper
         }
         private string ValueProcess(object val, Type valType,string format)
         {
-            if (valType == XConfig.DateTime)
+            if (valType == XConfig.TC.DateTime)
             {
                 return DateTimeProcess(val,format);
             }

@@ -6,11 +6,11 @@ using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.Impls
 {
-    internal class QueryAllPagingListImpl<M>
-        : Impler, IQueryAllPagingList<M>
+    internal class AllPagingListImpl<M>
+        : Impler, IAllPagingList<M>
         where M:class
     {
-        internal QueryAllPagingListImpl(Context dc) 
+        internal AllPagingListImpl(Context dc) 
             : base(dc)
         {
         }

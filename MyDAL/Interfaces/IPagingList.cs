@@ -5,7 +5,7 @@ using Yunyong.Core;
 
 namespace Yunyong.DataExchange.Interfaces
 {
-    internal interface IQueryPagingList<M>
+    internal interface IPagingList<M>
         where M : class
     {
         Task<PagingList<M>> PagingListAsync(int pageIndex, int pageSize);
@@ -16,7 +16,7 @@ namespace Yunyong.DataExchange.Interfaces
 
     }
 
-    internal interface IQueryPagingListO<M>
+    internal interface IPagingListO<M>
         where M : class
     {
         Task<PagingList<M>> PagingListAsync(PagingQueryOption option);
@@ -27,7 +27,7 @@ namespace Yunyong.DataExchange.Interfaces
 
     }
 
-    internal interface IQueryPagingListX
+    internal interface IPagingListX
     {
         Task<PagingList<M>> PagingListAsync<M>(int pageIndex, int pageSize)
             where M : class;
@@ -36,7 +36,7 @@ namespace Yunyong.DataExchange.Interfaces
 
     }
 
-    internal interface IQueryPagingListXO
+    internal interface IPagingListXO
     {
         Task<PagingList<M>> PagingListAsync<M>(PagingQueryOption option)
             where M : class;

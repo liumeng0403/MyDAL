@@ -7,11 +7,11 @@ using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.Impls
 {
-    internal class QueryFirstOrDefaultImpl<M>
-        : Impler, IQueryFirstOrDefault<M>
+    internal class FirstOrDefaultImpl<M>
+        : Impler, IFirstOrDefault<M>
         where M : class
     {
-        internal QueryFirstOrDefaultImpl(Context dc)
+        internal FirstOrDefaultImpl(Context dc)
             : base(dc)
         {
         }
@@ -44,10 +44,10 @@ namespace Yunyong.DataExchange.Impls
         }
     }
 
-    internal class QueryFirstOrDefaultXImpl
-        : Impler, IQueryFirstOrDefaultX
+    internal class FirstOrDefaultXImpl
+        : Impler, IFirstOrDefaultX
     {
-        internal QueryFirstOrDefaultXImpl(Context dc)
+        internal FirstOrDefaultXImpl(Context dc)
             : base(dc)
         {
         }

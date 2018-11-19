@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Yunyong.DataExchange.Core.Bases;
@@ -9,11 +8,11 @@ using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.Impls
 {
-    internal class QueryAllImpl<M>
-        : Impler, IQueryAll<M>
+    internal class AllImpl<M>
+        : Impler, IAll<M>
         where M : class
     {
-        internal QueryAllImpl(Context dc)
+        internal AllImpl(Context dc)
             : base(dc)
         {
         }

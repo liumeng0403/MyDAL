@@ -23,7 +23,7 @@ namespace Yunyong.DataExchange.Core.Helper
 
         private static DbType GetType(string colType, Type realType)
         {
-            if (realType == XConfig.Int)
+            if (realType == XConfig.TC.Int)
             {
                 if (colType.IsNullStr())
                 {
@@ -38,7 +38,7 @@ namespace Yunyong.DataExchange.Core.Helper
                     return DbType.Int32;
                 }
             }
-            else if (realType == XConfig.Long)
+            else if (realType == XConfig.TC.Long)
             {
                 if (colType.IsNullStr())
                 {
@@ -53,7 +53,7 @@ namespace Yunyong.DataExchange.Core.Helper
                     return DbType.Int64;
                 }
             }
-            else if (realType == XConfig.Decimal)
+            else if (realType == XConfig.TC.Decimal)
             {
                 if (colType.IsNullStr())
                 {
@@ -68,7 +68,7 @@ namespace Yunyong.DataExchange.Core.Helper
                     return DbType.Decimal;
                 }
             }
-            else if (realType == XConfig.Bool)
+            else if (realType == XConfig.TC.Bool)
             {
                 if (colType.IsNullStr())
                 {
@@ -83,7 +83,7 @@ namespace Yunyong.DataExchange.Core.Helper
                     return DbType.Boolean;
                 }
             }
-            else if (realType == XConfig.String)
+            else if (realType == XConfig.TC.String)
             {
                 if (colType.IsNullStr())
                 {
@@ -98,7 +98,7 @@ namespace Yunyong.DataExchange.Core.Helper
                     return DbType.AnsiString;
                 }
             }
-            else if (realType == XConfig.DateTime)
+            else if (realType == XConfig.TC.DateTime)
             {
                 if (colType.IsNullStr())
                 {
@@ -113,7 +113,7 @@ namespace Yunyong.DataExchange.Core.Helper
                     return DbType.DateTime2;
                 }
             }
-            else if (realType == XConfig.Guid)
+            else if (realType == XConfig.TC.Guid)
             {
                 if (colType.IsNullStr())
                 {
@@ -132,7 +132,7 @@ namespace Yunyong.DataExchange.Core.Helper
             {
                 return GetType(colType, Enum.GetUnderlyingType(realType));
             }
-            else if (realType == XConfig.Byte)
+            else if (realType == XConfig.TC.Byte)
             {
                 if (colType.IsNullStr())
                 {
@@ -147,11 +147,11 @@ namespace Yunyong.DataExchange.Core.Helper
                     return DbType.Byte;
                 }
             }
-            else if (realType == XConfig.ByteArray)
+            else if (realType == XConfig.TC.ByteArray)
             {
                 return DbType.Binary;
             }
-            else if (realType == XConfig.Char)
+            else if (realType == XConfig.TC.Char)
             {
                 if (colType.IsNullStr())
                 {
@@ -166,7 +166,7 @@ namespace Yunyong.DataExchange.Core.Helper
                     return DbType.AnsiString;
                 }
             }
-            else if (realType == XConfig.Double)
+            else if (realType == XConfig.TC.Double)
             {
                 if (colType.IsNullStr())
                 {
@@ -181,7 +181,7 @@ namespace Yunyong.DataExchange.Core.Helper
                     return DbType.Double;
                 }
             }
-            else if (realType == XConfig.Float)
+            else if (realType == XConfig.TC.Float)
             {
                 if (colType.IsNullStr())
                 {
@@ -196,7 +196,7 @@ namespace Yunyong.DataExchange.Core.Helper
                     return DbType.Single;
                 }
             }
-            else if (realType == XConfig.Sbyte)
+            else if (realType == XConfig.TC.Sbyte)
             {
                 if (colType.IsNullStr())
                 {
@@ -211,7 +211,7 @@ namespace Yunyong.DataExchange.Core.Helper
                     return DbType.SByte;
                 }
             }
-            else if (realType == XConfig.Short)
+            else if (realType == XConfig.TC.Short)
             {
                 if (colType.IsNullStr())
                 {
@@ -226,7 +226,7 @@ namespace Yunyong.DataExchange.Core.Helper
                     return DbType.Int16;
                 }
             }
-            else if (realType == XConfig.Uint)
+            else if (realType == XConfig.TC.Uint)
             {
                 if (colType.IsNullStr())
                 {
@@ -241,7 +241,7 @@ namespace Yunyong.DataExchange.Core.Helper
                     return DbType.UInt32;
                 }
             }
-            else if (realType == XConfig.Ulong)
+            else if (realType == XConfig.TC.Ulong)
             {
                 if (colType.IsNullStr())
                 {
@@ -256,7 +256,7 @@ namespace Yunyong.DataExchange.Core.Helper
                     return DbType.UInt64;
                 }
             }
-            else if (realType == XConfig.Ushort)
+            else if (realType == XConfig.TC.Ushort)
             {
                 if (colType.IsNullStr())
                 {
@@ -271,7 +271,7 @@ namespace Yunyong.DataExchange.Core.Helper
                     return DbType.UInt16;
                 }
             }
-            else if (realType == XConfig.TimeSpan)
+            else if (realType == XConfig.TC.TimeSpan)
             {
                 if (colType.IsNullStr())
                 {
@@ -286,19 +286,19 @@ namespace Yunyong.DataExchange.Core.Helper
                     return DbType.Time;
                 }
             }
-            else if (realType == XConfig.DateTimeOffset)
+            else if (realType == XConfig.TC.DateTimeOffset)
             {
                 return DbType.DateTimeOffset;
             }
-            else if (realType == XConfig.Object)
+            else if (realType == XConfig.TC.Object)
             {
                 return DbType.Object;
             }
-            else if (realType.FullName == XConfig.LinqBinary)
+            else if (realType.FullName == XConfig.TC.LinqBinary)
             {
                 return DbType.Binary;
             }
-            else if (XConfig.IEnumerableT.IsAssignableFrom(realType))
+            else if (XConfig.TC.IEnumerableT.IsAssignableFrom(realType))
             {
                 return (DbType)(-1);
             }
@@ -728,31 +728,31 @@ namespace Yunyong.DataExchange.Core.Helper
 
                 //
                 var para = default(ParamInfo);
-                if (realType == XConfig.Int)
+                if (realType == XConfig.TC.Int)
                 {
                     para = IntParam(ui, realType);
                 }
-                else if (realType == XConfig.Long)
+                else if (realType == XConfig.TC.Long)
                 {
                     para = LongParam(ui, realType);
                 }
-                else if (realType == XConfig.Decimal)
+                else if (realType == XConfig.TC.Decimal)
                 {
                     para = DecimalParam(ui, realType);
                 }
-                else if (realType == XConfig.Bool)
+                else if (realType == XConfig.TC.Bool)
                 {
                     para = BoolParam(ui, realType);
                 }
-                else if (realType == XConfig.String)
+                else if (realType == XConfig.TC.String)
                 {
                     para = StringParam(ui, realType);
                 }
-                else if (realType == XConfig.DateTime)
+                else if (realType == XConfig.TC.DateTime)
                 {
                     para = DateTimeParam(ui, realType);
                 }
-                else if (realType == XConfig.Guid)
+                else if (realType == XConfig.TC.Guid)
                 {
                     para = GuidParam(ui, realType);
                 }
@@ -773,43 +773,43 @@ namespace Yunyong.DataExchange.Core.Helper
                         return;
                     }
                 }
-                else if (realType == XConfig.Byte)
+                else if (realType == XConfig.TC.Byte)
                 {
                     para = ByteParam(ui, realType);
                 }
-                else if (realType == XConfig.Char)
+                else if (realType == XConfig.TC.Char)
                 {
                     para = CharParam(ui, realType);
                 }
-                else if (realType == XConfig.Double)
+                else if (realType == XConfig.TC.Double)
                 {
                     para = DoubleParam(ui, realType);
                 }
-                else if (realType == XConfig.Float)
+                else if (realType == XConfig.TC.Float)
                 {
                     para = FloatParam(ui, realType);
                 }
-                else if (realType == XConfig.Sbyte)
+                else if (realType == XConfig.TC.Sbyte)
                 {
                     para = SbyteParam(ui, realType);
                 }
-                else if (realType == XConfig.Short)
+                else if (realType == XConfig.TC.Short)
                 {
                     para = ShortParam(ui, realType);
                 }
-                else if (realType == XConfig.Uint)
+                else if (realType == XConfig.TC.Uint)
                 {
                     para = UintParam(ui, realType);
                 }
-                else if (realType == XConfig.Ulong)
+                else if (realType == XConfig.TC.Ulong)
                 {
                     para = UlongParam(ui, realType);
                 }
-                else if (realType == XConfig.Ushort)
+                else if (realType == XConfig.TC.Ushort)
                 {
                     para = UshortParam(ui, realType);
                 }
-                else if (realType == XConfig.TimeSpan)
+                else if (realType == XConfig.TC.TimeSpan)
                 {
                     para = TimeSpanParam(ui, realType);
                 }

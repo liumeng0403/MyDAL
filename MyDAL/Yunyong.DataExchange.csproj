@@ -28,7 +28,6 @@
     <PackageReference Update="SourceLink.Create.GitHub" Version="2.8.3" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Core\Configs\" />
     <Folder Include="DataRainbow\SQLServer\" />
     <Folder Include="DataRainbow\Oracle\" />
     <Folder Include="DataRainbow\PostgreSQL\" />

@@ -1,8 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
+using Yunyong.DataExchange.Core.Configs;
 using Yunyong.DataExchange.Core.Enums;
 
 namespace Yunyong.DataExchange.Core
@@ -33,34 +33,6 @@ namespace Yunyong.DataExchange.Core
 
         /************************************************************************************************************/
 
-        internal static Type Bool { get; private set; } = typeof(bool);
-        internal static Type Byte { get; private set; } = typeof(byte);
-        internal static Type ByteArray { get; private set; } = typeof(byte[]);
-        internal static string LinqBinary { get; private set; } = "System.Data.Linq.Binary";
-        internal static Type Char { get; private set; } = typeof(char);
-        internal static Type Decimal { get; private set; } = typeof(decimal);
-        internal static Type Double { get; private set; } = typeof(double);
-        internal static Type Float { get; private set; } = typeof(float);
-        internal static Type Int { get; private set; } = typeof(int);
-        internal static Type Long { get; private set; } = typeof(long);
-        internal static Type Sbyte { get; private set; } = typeof(sbyte);
-        internal static Type Short { get; private set; } = typeof(short);
-        internal static Type Uint { get; private set; } = typeof(uint);
-        internal static Type Ulong { get; private set; } = typeof(ulong);
-        internal static Type Ushort { get; private set; } = typeof(ushort);
-        internal static Type String { get; private set; } = typeof(string);
-        internal static Type DateTime { get; private set; } = typeof(DateTime);
-        internal static Type DateTimeNull { get; private set; } = typeof(DateTime?);
-        internal static Type DateTimeOffset { get; private set; } = typeof(DateTimeOffset);
-        internal static Type TimeSpan { get; private set; } = typeof(TimeSpan);
-        internal static Type Guid { get; private set; } = typeof(Guid);
-        internal static Type NullableT { get; private set; } = typeof(Nullable<>);
-        internal static Type ListT { get; private set; } = typeof(List<>);
-        internal static Type IEnumerableT { get; private set; } = typeof(IEnumerable<>);
-        internal static Type Object { get; private set; } = typeof(object);
-
-        /************************************************************************************************************/
-
         internal static Type XTableAttribute { get; private set; } = typeof(XTableAttribute);
         internal static string XTableFullName { get; private set; } = typeof(XTableAttribute).FullName;
 
@@ -77,16 +49,7 @@ namespace Yunyong.DataExchange.Core
 
         /************************************************************************************************************/
 
-        internal static string _001 { get; } = "001";
-        internal static string _002 { get; } = "002";
-        internal static string _003 { get; } = "003";
-        internal static string _004 { get; } = "004";
-        internal static string _005 { get; } = "005";
-        internal static string _006 { get; } = "006";
-        internal static string _007 { get; } = "007";
-        internal static string _008 { get; } = "008";
-
-        /************************************************************************************************************/
-
+        internal static ExceptionConfig EC { get; } = new ExceptionConfig();
+        internal static TypeConfig TC { get; } = new TypeConfig();
     }
 }

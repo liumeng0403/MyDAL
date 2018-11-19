@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Yunyong.DataExchange.Interfaces
 {
-    internal interface IQueryFirstOrDefault<M>
+    internal interface IFirstOrDefault<M>
         where M : class
     {
         Task<M> FirstOrDefaultAsync();
@@ -14,7 +14,7 @@ namespace Yunyong.DataExchange.Interfaces
             where VM : class;
     }
 
-    internal interface IQueryFirstOrDefaultX
+    internal interface IFirstOrDefaultX
     {
         Task<M> FirstOrDefaultAsync<M>()
             where M : class;

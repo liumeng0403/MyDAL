@@ -10,7 +10,7 @@ using Yunyong.DataExchange.Interfaces;
 namespace Yunyong.DataExchange.UserFacade.Join
 {
     public sealed  class OnX 
-        : Operator, IQueryFirstOrDefaultX, IQueryListX, IQueryPagingListX, IQueryPagingListXO,ITopX
+        : Operator, IFirstOrDefaultX, IListX, IPagingListX, IPagingListXO,ITopX
     {
 
         internal OnX(Context dc)
@@ -23,7 +23,7 @@ namespace Yunyong.DataExchange.UserFacade.Join
         public async Task<M> FirstOrDefaultAsync<M>()
             where M:class
         {
-            return await new QueryFirstOrDefaultXImpl(DC).FirstOrDefaultAsync<M>();
+            return await new FirstOrDefaultXImpl(DC).FirstOrDefaultAsync<M>();
         }
         /// <summary>
         /// 多表单条数据查询
@@ -32,7 +32,7 @@ namespace Yunyong.DataExchange.UserFacade.Join
         public async Task<VM> FirstOrDefaultAsync<VM>(Expression<Func<VM>> columnMapFunc)
             where VM:class
         {
-            return await new QueryFirstOrDefaultXImpl(DC).FirstOrDefaultAsync<VM>(columnMapFunc);
+            return await new FirstOrDefaultXImpl(DC).FirstOrDefaultAsync<VM>(columnMapFunc);
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace Yunyong.DataExchange.UserFacade.Join
         public async Task<List<M>> ListAsync<M>()
             where M:class
         {
-            return await new QueryListXImpl(DC).ListAsync<M>();
+            return await new ListXImpl(DC).ListAsync<M>();
         }
         /// <summary>
         /// 多表多条数据查询
@@ -49,7 +49,7 @@ namespace Yunyong.DataExchange.UserFacade.Join
         public async Task<List<VM>> ListAsync<VM>(Expression<Func<VM>> columnMapFunc)
             where VM:class
         {
-            return await new QueryListXImpl(DC).ListAsync<VM>(columnMapFunc);
+            return await new ListXImpl(DC).ListAsync<VM>(columnMapFunc);
         }
         /// <summary>
         /// 多表多条数据查询
@@ -57,7 +57,7 @@ namespace Yunyong.DataExchange.UserFacade.Join
         public async Task<List<M>> ListAsync<M>(int topCount)
             where M : class
         {
-            return await new QueryListXImpl(DC).ListAsync<M>(topCount);
+            return await new ListXImpl(DC).ListAsync<M>(topCount);
         }
         /// <summary>
         /// 多表多条数据查询
@@ -65,7 +65,7 @@ namespace Yunyong.DataExchange.UserFacade.Join
         public async Task<List<VM>> ListAsync<VM>(int topCount, Expression<Func<VM>> columnMapFunc)
             where VM : class
         {
-            return await new QueryListXImpl(DC).ListAsync<VM>(topCount, columnMapFunc);
+            return await new ListXImpl(DC).ListAsync<VM>(topCount, columnMapFunc);
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Yunyong.DataExchange.UserFacade.Join
         public async Task<PagingList<M>> PagingListAsync<M>(int pageIndex, int pageSize)
             where M:class
         {
-            return await new QueryPagingListXImpl(DC).PagingListAsync<M>(pageIndex, pageSize);
+            return await new PagingListXImpl(DC).PagingListAsync<M>(pageIndex, pageSize);
         }
         /// <summary>
         /// 多表分页查询
@@ -87,7 +87,7 @@ namespace Yunyong.DataExchange.UserFacade.Join
         public async Task<PagingList<VM>> PagingListAsync<VM>(int pageIndex, int pageSize, Expression<Func<VM>> columnMapFunc)
             where VM:class
         {
-            return await new QueryPagingListXImpl(DC).PagingListAsync<VM>(pageIndex, pageSize, columnMapFunc);
+            return await new PagingListXImpl(DC).PagingListAsync<VM>(pageIndex, pageSize, columnMapFunc);
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace Yunyong.DataExchange.UserFacade.Join
         public async Task<PagingList<M>> PagingListAsync<M>(PagingQueryOption option)
             where M:class
         {
-            return await new QueryPagingListXOImpl(DC).PagingListAsync<M>(option);
+            return await new PagingListXOImpl(DC).PagingListAsync<M>(option);
         }
         /// <summary>
         /// 多表分页查询
@@ -109,7 +109,7 @@ namespace Yunyong.DataExchange.UserFacade.Join
         public async Task<PagingList<VM>> PagingListAsync<VM>(PagingQueryOption option, Expression<Func<VM>> columnMapFunc)
             where VM:class
         {
-            return await new QueryPagingListXOImpl(DC).PagingListAsync<VM>(option, columnMapFunc);
+            return await new PagingListXOImpl(DC).PagingListAsync<VM>(option, columnMapFunc);
         }
 
         /// <summary>

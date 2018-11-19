@@ -8,11 +8,11 @@ using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.Impls
 {
-    internal class QueryPagingListImpl<M>
-        : Impler, IQueryPagingList<M>
+    internal class PagingListImpl<M>
+        : Impler, IPagingList<M>
             where M : class
     {
-        internal QueryPagingListImpl(Context dc)
+        internal PagingListImpl(Context dc)
             : base(dc)
         {
         }
@@ -37,11 +37,11 @@ namespace Yunyong.DataExchange.Impls
         }
     }
 
-    internal class QueryPagingListOImpl<M>
-        : Impler, IQueryPagingListO<M>
+    internal class PagingListOImpl<M>
+        : Impler, IPagingListO<M>
             where M : class
     {
-        internal QueryPagingListOImpl(Context dc)
+        internal PagingListOImpl(Context dc)
             : base(dc)
         {
         }
@@ -72,10 +72,10 @@ namespace Yunyong.DataExchange.Impls
         }
     }
 
-    internal class QueryPagingListXImpl
-        : Impler, IQueryPagingListX
+    internal class PagingListXImpl
+        : Impler, IPagingListX
     {
-        internal QueryPagingListXImpl(Context dc)
+        internal PagingListXImpl(Context dc)
             : base(dc)
         {
         }
@@ -97,10 +97,10 @@ namespace Yunyong.DataExchange.Impls
         }
     }
 
-    internal class QueryPagingListXOImpl
-        : Impler, IQueryPagingListXO
+    internal class PagingListXOImpl
+        : Impler, IPagingListXO
     {
-        internal QueryPagingListXOImpl(Context dc)
+        internal PagingListXOImpl(Context dc)
             : base(dc)
         {
         }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Yunyong.DataExchange.Interfaces
 {
-    internal interface IQueryAll<M>
+    internal interface IAll<M>
         where M : class
     {
         Task<List<M>> AllAsync();

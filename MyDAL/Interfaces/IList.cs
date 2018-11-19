@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Yunyong.DataExchange.Interfaces
 {
-    internal interface IQueryList<M>
+    internal interface IList<M>
         where M : class
     {
         Task<List<M>> ListAsync();
@@ -21,7 +21,7 @@ namespace Yunyong.DataExchange.Interfaces
             where VM : class;
     }
 
-    internal interface IQueryListX
+    internal interface IListX
     {
         Task<List<M>> ListAsync<M>()
             where M : class;
