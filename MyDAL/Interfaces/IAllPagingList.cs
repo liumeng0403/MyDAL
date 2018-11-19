@@ -2,7 +2,7 @@
 
 namespace MyDAL.Interfaces
 {
-    internal interface IQueryAllPagingList<M>
+    internal interface IAllPagingList<M>
     {
         Task<PagingList<M>> PagingAllListAsync(int pageIndex, int pageSize);
         Task<PagingList<VM>> PagingAllListAsync<VM>(int pageIndex, int pageSize)

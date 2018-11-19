@@ -40,7 +40,7 @@ namespace MyDAL
                     {
                         csVal = "Null";
                     }
-                    else if (dbM.CsType == XConfig.DateTime)
+                    else if (dbM.CsType == XConfig.TC.DateTime)
                     {
                         try
                         {

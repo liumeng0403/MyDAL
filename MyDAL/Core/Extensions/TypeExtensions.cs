@@ -7,7 +7,7 @@ namespace MyDAL.Core.Extensions
         internal static bool IsList(this Type type)
         {
             if (type.IsGenericType
-                && type.GetGenericTypeDefinition() == XConfig.ListT)
+                && type.GetGenericTypeDefinition() == XConfig.TC.ListT)
             {
                 return true;
             }
@@ -18,7 +18,7 @@ namespace MyDAL.Core.Extensions
         internal static bool IsNullable(this Type type)
         {
             if (type.IsGenericType
-                && type.GetGenericTypeDefinition() == XConfig.NullableT)
+                && type.GetGenericTypeDefinition() == XConfig.TC.NullableT)
             {
                 return true;
             }

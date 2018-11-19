@@ -58,7 +58,7 @@ namespace MyDAL.AdoNet
                 .Parameters
                 .FirstOrDefault(it =>
                     it.Func == FuncEnum.DateFormat
-                    && (it.CsType == XConfig.DateTime || it.CsType == XConfig.DateTimeNull)
+                    && (it.CsType == XConfig.TC.DateTime || it.CsType == XConfig.TC.DateTimeNull)
                     && "%Y".Equals(it.Format, StringComparison.OrdinalIgnoreCase)
                     && (it.Option == OptionEnum.Column || it.Option == OptionEnum.ColumnAs));
             if (dic != null)
@@ -134,7 +134,7 @@ namespace MyDAL.AdoNet
                                             ? dic.ColumnOne
                                             : dic.Option == OptionEnum.ColumnAs
                                                 ? dic.ColumnOneAlias
-                                                : throw new Exception($"{XConfig._008} -- [[{dic.Option}]] 不能解析!!!"))), 1, 1).ToString(dic.Format)));
+                                                : throw new Exception($"{XConfig.EC._008} -- [[{dic.Option}]] 不能解析!!!"))), 1, 1).ToString(dic.Format)));
                 }
             }
             else

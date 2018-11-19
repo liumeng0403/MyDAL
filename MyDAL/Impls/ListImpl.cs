@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Impls
 {
-    internal class QueryListImpl<M>
-        : Impler, IQueryList<M>
+    internal class ListImpl<M>
+        : Impler, Interfaces.IList<M>
         where M : class
     {
-        internal QueryListImpl(Context dc)
+        internal ListImpl(Context dc)
             : base(dc)
         {
         }
@@ -63,10 +63,10 @@ namespace MyDAL.Impls
         }
     }
 
-    internal class QueryListXImpl
-        : Impler, IQueryListX
+    internal class ListXImpl
+        : Impler, IListX
     {
-        internal QueryListXImpl(Context dc)
+        internal ListXImpl(Context dc)
             : base(dc)
         {
         }

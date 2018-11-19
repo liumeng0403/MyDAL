@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MyDAL.Core.Common
+﻿namespace MyDAL.Core.Common
 {
     /// <summary>
     ///     查询设置

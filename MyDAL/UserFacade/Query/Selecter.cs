@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Query
 {
     public sealed class Selecter<M>
-        : Operator, IQueryAll<M>, IQueryAllPagingList<M>, ITop<M>
+        : Operator, IAll<M>, IAllPagingList<M>, ITop<M>
         where M : class
     {
         internal Selecter(Context dc)
@@ -22,7 +22,7 @@ namespace MyDAL.UserFacade.Query
         /// <returns>返回全表数据</returns>
         public async Task<List<M>> AllAsync()
         {
-            return await new QueryAllImpl<M>(DC).AllAsync();
+            return await new AllImpl<M>(DC).AllAsync();
         }
         /// <summary>
         /// 单表数据查询
@@ -32,16 +32,16 @@ namespace MyDAL.UserFacade.Query
         public async Task<List<VM>> AllAsync<VM>()
             where VM : class
         {
-            return await new QueryAllImpl<M>(DC).AllAsync<VM>();
+            return await new AllImpl<M>(DC).AllAsync<VM>();
         }
         public async Task<List<F>> AllAsync<F>(Expression<Func<M, F>> propertyFunc)
             where F : struct
         {
-            return await new QueryAllImpl<M>(DC).AllAsync<F>(propertyFunc);
+            return await new AllImpl<M>(DC).AllAsync<F>(propertyFunc);
         }
         public async Task<List<string>> AllAsync(Expression<Func<M, string>> propertyFunc)
         {
-            return await new QueryAllImpl<M>(DC).AllAsync(propertyFunc);
+            return await new AllImpl<M>(DC).AllAsync(propertyFunc);
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace MyDAL.UserFacade.Query
         /// <returns>返回全表分页数据</returns>
         public async Task<PagingList<M>> PagingAllListAsync(int pageIndex, int pageSize)
         {
-            return await new QueryAllPagingListImpl<M>(DC).PagingAllListAsync(pageIndex, pageSize);
+            return await new AllPagingListImpl<M>(DC).PagingAllListAsync(pageIndex, pageSize);
         }
         /// <summary>
         /// 单表分页查询
@@ -64,7 +64,7 @@ namespace MyDAL.UserFacade.Query
         public async Task<PagingList<VM>> PagingAllListAsync<VM>(int pageIndex, int pageSize)
             where VM : class
         {
-            return await new QueryAllPagingListImpl<M>(DC).PagingAllListAsync<VM>(pageIndex, pageSize);
+            return await new AllPagingListImpl<M>(DC).PagingAllListAsync<VM>(pageIndex, pageSize);
         }
 
         /// <summary>

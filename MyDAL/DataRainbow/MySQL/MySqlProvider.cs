@@ -251,7 +251,7 @@ namespace MyDAL.DataRainbow.MySQL
             }
             else
             {
-                throw new Exception($"{XConfig._006} -- [[{db.Func}]] 不能处理!!!");
+                throw new Exception($"{XConfig.EC._006} -- [[{db.Func}]] 不能处理!!!");
             }
         }
         private string LikeProcess(DicParam db, bool isMulti)
@@ -502,7 +502,7 @@ namespace MyDAL.DataRainbow.MySQL
                     }
                     else
                     {
-                        throw new Exception($"{XConfig._007} -- [[{dic.Func}]] 不能解析!!!");
+                        throw new Exception($"{XConfig.EC._007} -- [[{dic.Func}]] 不能解析!!!");
                     }
                 }
             }

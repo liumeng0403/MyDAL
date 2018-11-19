@@ -337,7 +337,7 @@ namespace MyDAL.AdoNet
                                 il.Emit(OpCodes.Newobj, memberType.GetConstructor(new[] { nullUnderlyingType })); // stack is now [target][target][typed-value]
                             }
                         }
-                        else if (memberType.FullName == XConfig.LinqBinary)
+                        else if (memberType.FullName == XConfig.TC.LinqBinary)
                         {
                             il.Emit(OpCodes.Unbox_Any, typeof(byte[])); // stack is now [target][target][byte-array]
                             il.Emit(OpCodes.Newobj, memberType.GetConstructor(new Type[] { typeof(byte[]) }));// stack is now [target][target][binary]

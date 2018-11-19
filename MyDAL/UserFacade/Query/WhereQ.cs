@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Query
 {
     public sealed class WhereQ<M>
-        : Operator, IExist, IQueryFirstOrDefault<M>, IQueryList<M>, IQueryPagingList<M>, IQueryPagingListO<M>, ICount<M>,ITop<M>,ISum<M>
+        : Operator, IExist, IFirstOrDefault<M>, Interfaces.IList<M>, IPagingList<M>, IPagingListO<M>, ICount<M>,ITop<M>,ISum<M>
         where M : class
     {
         internal WhereQ(Context dc)
@@ -53,7 +53,7 @@ namespace MyDAL.UserFacade.Query
         /// </summary>
         public async Task<M> FirstOrDefaultAsync()
         {
-            return await new QueryFirstOrDefaultImpl<M>(DC).FirstOrDefaultAsync();
+            return await new FirstOrDefaultImpl<M>(DC).FirstOrDefaultAsync();
         }
         /// <summary>
         /// 单表单条数据查询
@@ -62,7 +62,7 @@ namespace MyDAL.UserFacade.Query
         public async Task<VM> FirstOrDefaultAsync<VM>()
             where VM:class
         {
-            return await new QueryFirstOrDefaultImpl<M>(DC).FirstOrDefaultAsync<VM>();
+            return await new FirstOrDefaultImpl<M>(DC).FirstOrDefaultAsync<VM>();
         }
         /// <summary>
         /// 单表单条数据查询
@@ -71,7 +71,7 @@ namespace MyDAL.UserFacade.Query
         public async Task<VM> FirstOrDefaultAsync<VM>(Expression<Func<M, VM>> columnMapFunc)
             where VM:class
         {
-            return await new QueryFirstOrDefaultImpl<M>(DC).FirstOrDefaultAsync<VM>(columnMapFunc);
+            return await new FirstOrDefaultImpl<M>(DC).FirstOrDefaultAsync<VM>(columnMapFunc);
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace MyDAL.UserFacade.Query
         /// </summary>
         public async Task<List<M>> ListAsync()
         {
-            return await new QueryListImpl<M>(DC).ListAsync();
+            return await new ListImpl<M>(DC).ListAsync();
         }
         /// <summary>
         /// 单表多条数据查询
@@ -88,7 +88,7 @@ namespace MyDAL.UserFacade.Query
         public async Task<List<VM>> ListAsync<VM>()
             where VM:class
         {
-            return await new QueryListImpl<M>(DC).ListAsync<VM>();
+            return await new ListImpl<M>(DC).ListAsync<VM>();
         }
         /// <summary>
         /// 单表多条数据查询
@@ -96,14 +96,14 @@ namespace MyDAL.UserFacade.Query
         public async Task<List<VM>> ListAsync<VM>(Expression<Func<M, VM>> columnMapFunc)
             where VM:class
         {
-            return await new QueryListImpl<M>(DC).ListAsync<VM>(columnMapFunc);
+            return await new ListImpl<M>(DC).ListAsync<VM>(columnMapFunc);
         }
         /// <summary>
         /// 单表多条数据查询
         /// </summary>
         public async Task<List<M>> ListAsync(int topCount)
         {
-            return await new QueryListImpl<M>(DC).ListAsync(topCount);
+            return await new ListImpl<M>(DC).ListAsync(topCount);
         }
         /// <summary>
         /// 单表多条数据查询
@@ -111,7 +111,7 @@ namespace MyDAL.UserFacade.Query
         public async Task<List<VM>> ListAsync<VM>(int topCount) 
             where VM : class
         {
-            return await new QueryListImpl<M>(DC).ListAsync<VM>(topCount);
+            return await new ListImpl<M>(DC).ListAsync<VM>(topCount);
         }
         /// <summary>
         /// 单表多条数据查询
@@ -119,7 +119,7 @@ namespace MyDAL.UserFacade.Query
         public async Task<List<VM>> ListAsync<VM>(int topCount, Expression<Func<M, VM>> columnMapFunc) 
             where VM : class
         {
-            return await new QueryListImpl<M>(DC).ListAsync<VM>(topCount, columnMapFunc);
+            return await new ListImpl<M>(DC).ListAsync<VM>(topCount, columnMapFunc);
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace MyDAL.UserFacade.Query
         /// <param name="pageSize">每页条数</param>
         public async Task<PagingList<M>> PagingListAsync(int pageIndex, int pageSize)
         {
-            return await new QueryPagingListImpl<M>(DC).PagingListAsync(pageIndex, pageSize);
+            return await new PagingListImpl<M>(DC).PagingListAsync(pageIndex, pageSize);
         }
         /// <summary>
         /// 单表分页查询
@@ -140,7 +140,7 @@ namespace MyDAL.UserFacade.Query
         public async Task<PagingList<VM>> PagingListAsync<VM>(int pageIndex, int pageSize)
             where VM:class
         {
-            return await new QueryPagingListImpl<M>(DC).PagingListAsync<VM>(pageIndex, pageSize);
+            return await new PagingListImpl<M>(DC).PagingListAsync<VM>(pageIndex, pageSize);
         }
         /// <summary>
         /// 单表分页查询
@@ -151,7 +151,7 @@ namespace MyDAL.UserFacade.Query
         public async Task<PagingList<VM>> PagingListAsync<VM>(int pageIndex, int pageSize, Expression<Func<M, VM>> columnMapFunc)
             where VM:class
         {
-            return await new QueryPagingListImpl<M>(DC).PagingListAsync<VM>(pageIndex, pageSize, columnMapFunc);
+            return await new PagingListImpl<M>(DC).PagingListAsync<VM>(pageIndex, pageSize, columnMapFunc);
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace MyDAL.UserFacade.Query
         /// <param name="pageSize">每页条数</param>
         public async Task<PagingList<M>> PagingListAsync(PagingQueryOption option)
         {
-            return await new QueryPagingListOImpl<M>(DC).PagingListAsync(option);
+            return await new PagingListOImpl<M>(DC).PagingListAsync(option);
         }
         /// <summary>
         /// 单表分页查询
@@ -172,7 +172,7 @@ namespace MyDAL.UserFacade.Query
         public async Task<PagingList<VM>> PagingListAsync<VM>(PagingQueryOption option)
             where VM:class
         {
-            return await new QueryPagingListOImpl<M>(DC).PagingListAsync<VM>(option);
+            return await new PagingListOImpl<M>(DC).PagingListAsync<VM>(option);
         }
         /// <summary>
         /// 单表分页查询
@@ -183,7 +183,7 @@ namespace MyDAL.UserFacade.Query
         public async Task<PagingList<VM>> PagingListAsync<VM>(PagingQueryOption option, Expression<Func<M, VM>> columnMapFunc)
             where VM:class
         {
-            return await new QueryPagingListOImpl<M>(DC).PagingListAsync<VM>(option, columnMapFunc);
+            return await new PagingListOImpl<M>(DC).PagingListAsync<VM>(option, columnMapFunc);
         }
 
         /// <summary>

@@ -137,7 +137,7 @@ namespace MyDAL.Core
                     }
                     else
                     {
-                        throw new Exception($"{XConfig._005} -- [[{bodyL.ToString()}]] 不能解析!!!");
+                        throw new Exception($"{XConfig.EC._005} -- [[{bodyL.ToString()}]] 不能解析!!!");
                     }
                 }
                 else
@@ -180,7 +180,7 @@ namespace MyDAL.Core
                 else if (func == FuncEnum.DateFormat)
                 {
                     var mem = mcExpr.Object;
-                    var val = DC.VH.ValueProcess(mcExpr.Arguments[0], XConfig.String);
+                    var val = DC.VH.ValueProcess(mcExpr.Arguments[0], XConfig.TC.String);
                     return GetKey(mem, func, val.val.ToString());
                 }
             }
@@ -438,7 +438,7 @@ namespace MyDAL.Core
                     }
                     else
                     {
-                        throw new Exception($"{XConfig._004} -- [[{funcStr}]] 未能解析!!!");
+                        throw new Exception($"{XConfig.EC._004} -- [[{funcStr}]] 未能解析!!!");
                     }
                     var dic = DC.DPH.DateFormatDic(tuple.key, tuple.alias, val, tuple.valType, format);
                     dic.ClassFullName = tuple.classFullName;
@@ -742,7 +742,7 @@ namespace MyDAL.Core
             }
             else
             {
-                throw new Exception($"{XConfig._003} -- [[{body.ToString()}]] 不能解析!!!");
+                throw new Exception($"{XConfig.EC._003} -- [[{body.ToString()}]] 不能解析!!!");
             }
 
             //
@@ -819,7 +819,7 @@ namespace MyDAL.Core
                     }
                     else
                     {
-                        throw new Exception($"{XConfig._001} -- [[{body}]] 未能解析!!!");
+                        throw new Exception($"{XConfig.EC._001} -- [[{body}]] 未能解析!!!");
                     }
                     var dic = DC.DPH.DateFormatDic(tuple.key, tuple.alias, (null, string.Empty), tuple.valType, format);
                     dic.ClassFullName = tuple.classFullName;
@@ -857,7 +857,7 @@ namespace MyDAL.Core
             }
             else
             {
-                throw new Exception($"{XConfig._002} -- [[{body.ToString()}]] 不能解析!!!");
+                throw new Exception($"{XConfig.EC._002} -- [[{body.ToString()}]] 不能解析!!!");
             }
             return result;
         }

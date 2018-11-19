@@ -360,6 +360,15 @@ namespace MyDAL
         {
             return await conn.Selecter<M>().Where(compareFunc).ExistAsync();
         }
+
+        /// <summary>
+        /// Selecter 快速 CountAsync 方法
+        /// </summary>
+        public static async Task<int> CountAsync<M>(this IDbConnection conn,Expression<Func<M,bool>> compareFunc)
+            where M:class
+        {
+            return await conn.Selecter<M>().Where(compareFunc).CountAsync();
+        }
         
         /******************************************************************************************************************************/
 
