@@ -22,9 +22,7 @@ namespace Yunyong.DataExchange.Impls
             {
                 DC.DPH.ResetParameter();
                 CreateMHandle(list);
-                DC.DPH.SetParameter();
-                DC.Method = UiMethodEnum.CreateBatchAsync;
-                DC.SqlProvider.GetSQL();
+                PreExecuteHandle(UiMethodEnum.CreateBatchAsync);
                 return await DC.DS.ExecuteNonQueryAsync();
             });
         }

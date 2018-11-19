@@ -8,18 +8,13 @@ namespace Yunyong.DataExchange.Core.Enums
         DeleteAsync,
         UpdateAsync,
         FirstOrDefaultAsync,
-        JoinFirstOrDefaultAsync,
-        ListAsync,
         TopAsync,
-        JoinListAsync,
-        JoinTopAsync,
+        ListAsync,
         PagingListAsync,
-        JoinPagingListAsync,
         AllAsync,
         PagingAllListAsync,
         ExistAsync,
         CountAsync,
-        SumAsync,
-        JoinCountAsync
+        SumAsync
     }
 }

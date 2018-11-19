@@ -144,7 +144,6 @@ namespace Yunyong.DataExchange.Core
         }
         internal static ConcurrentDictionary<Type, RowMap> TypeMaps { get; } = new ConcurrentDictionary<Type, RowMap>();
         internal Func<IDataReader, M> GetHandle<M>(string sql, IDataReader reader)
-            where M : class
         {
             var key = GetHandleKey(sql.GetHashCode(), GetColumnHash(reader), typeof(M).FullName);
             if (!ModelHandleCache.TryGetValue(key, out var row))

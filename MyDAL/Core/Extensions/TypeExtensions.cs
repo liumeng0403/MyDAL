@@ -1,7 +1,6 @@
-﻿using Yunyong.DataExchange.Core;
-using Yunyong.DataExchange.Core.Common;
+﻿using System;
 
-namespace System.Collections.Core.Extensions
+namespace Yunyong.DataExchange.Core.Extensions
 {
     internal static class TypeExtensions
     {
@@ -12,7 +11,6 @@ namespace System.Collections.Core.Extensions
             {
                 return true;
             }
-
             return false;
         }
 
@@ -23,7 +21,16 @@ namespace System.Collections.Core.Extensions
             {
                 return true;
             }
+            return false;
+        }
 
+        internal static bool IsSingleColumn(this Type type)
+        {
+            if (type.IsValueType
+                || type == XConfig.TC.String)
+            {
+                return true;
+            }
             return false;
         }
     }

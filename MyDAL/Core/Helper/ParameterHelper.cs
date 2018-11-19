@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Core.Extensions;
 using System.Data;
 using System.Linq;
 using Yunyong.DataExchange.AdoNet;

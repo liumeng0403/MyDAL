@@ -5,13 +5,11 @@ using System.Threading.Tasks;
 namespace Yunyong.DataExchange.Interfaces
 {
     internal interface IFirstOrDefault<M>
-        where M : class
     {
         Task<M> FirstOrDefaultAsync();
         Task<VM> FirstOrDefaultAsync<VM>()
             where VM : class;
-        Task<VM> FirstOrDefaultAsync<VM>(Expression<Func<M, VM>> func)
-            where VM : class;
+        Task<T> FirstOrDefaultAsync<T>(Expression<Func<M, T>> columnMapFunc);
     }
 
     internal interface IFirstOrDefaultX

@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Core.Enums;
+using Yunyong.DataExchange.Core.Extensions;
 using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.Impls
@@ -19,40 +20,29 @@ namespace Yunyong.DataExchange.Impls
 
         public async Task<List<M>> AllAsync()
         {
-            DC.Method = UiMethodEnum.AllAsync;
-            DC.SqlProvider.GetSQL();
+            PreExecuteHandle(UiMethodEnum.AllAsync);
             return await DC.DS.ExecuteReaderMultiRowAsync<M>();
         }
 
         public async Task<List<VM>> AllAsync<VM>()
             where VM : class
         {
-            DC.Method = UiMethodEnum.AllAsync;
-            DC.SqlProvider.GetSQL();
+            PreExecuteHandle(UiMethodEnum.AllAsync);
             return await DC.DS.ExecuteReaderMultiRowAsync<VM>();
         }
 
-        public async Task<List<F>> AllAsync<F>(Expression<Func<M, F>> propertyFunc)
-            where F : struct
+        public async Task<List<T>> AllAsync<T>(Expression<Func<M, T>> propertyFunc)
         {
-            DC.Action = ActionEnum.Select;
-            DC.Option = OptionEnum.Column;
-            DC.DPH.AddParameter(DC.EH.FuncMFExpression(propertyFunc)[0]);
-            DC.DPH.SetParameter();
-            DC.Method = UiMethodEnum.AllAsync;
-            DC.SqlProvider.GetSQL();
-            return await DC.DS.ExecuteReaderSingleColumnAsync(propertyFunc.Compile());
-        }
-
-        public async Task<List<string>> AllAsync(Expression<Func<M, string>> propertyFunc)
-        {
-            DC.Action = ActionEnum.Select;
-            DC.Option = OptionEnum.Column;
-            DC.DPH.AddParameter(DC.EH.FuncMFExpression(propertyFunc)[0]);
-            DC.DPH.SetParameter();
-            DC.Method = UiMethodEnum.AllAsync;
-            DC.SqlProvider.GetSQL();
-            return await DC.DS.ExecuteReaderSingleColumnAsync(propertyFunc.Compile());
+            if (typeof(T).IsSingleColumn())
+            {
+                SingleColumnHandle(propertyFunc);
+                PreExecuteHandle(UiMethodEnum.AllAsync);
+                return await DC.DS.ExecuteReaderSingleColumnAsync(propertyFunc.Compile());
+            }
+            else
+            {
+                return default(List<T>);
+            }
         }
     }
 }

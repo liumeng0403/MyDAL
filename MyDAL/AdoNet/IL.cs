@@ -9,7 +9,6 @@ using Yunyong.DataExchange.Core;
 namespace Yunyong.DataExchange.AdoNet
 {
     internal struct IL<M>
-        where M:class
     {
         private static RowMap GetTypeMap(Type mType)
         {

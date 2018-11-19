@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Core.Extensions;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
@@ -7,6 +6,7 @@ using System.Linq.Expressions;
 using Yunyong.Core;
 using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Enums;
+using Yunyong.DataExchange.Core.Extensions;
 
 namespace Yunyong.DataExchange.Core.Bases
 {

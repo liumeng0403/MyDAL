@@ -49,7 +49,6 @@ namespace Yunyong.DataExchange.Impls
         public async Task<PagingList<M>> PagingListAsync(PagingQueryOption option)
         {
             OrderByOptionHandle(option, typeof(M).FullName);
-            DC.DPH.SetParameter();
             return await PagingListAsyncHandle<M>(option.PageIndex, option.PageSize, UiMethodEnum.PagingListAsync);
         }
 
@@ -58,7 +57,6 @@ namespace Yunyong.DataExchange.Impls
         {
             SelectMHandle<M, VM>();
             OrderByOptionHandle(option, typeof(M).FullName);
-            DC.DPH.SetParameter();
             return await PagingListAsyncHandle<M, VM>(option.PageIndex, option.PageSize, UiMethodEnum.PagingListAsync);
         }
 
@@ -67,7 +65,6 @@ namespace Yunyong.DataExchange.Impls
         {
             SelectMHandle(func);
             OrderByOptionHandle(option, typeof(M).FullName);
-            DC.DPH.SetParameter();
             return await PagingListAsyncHandle<M, VM>(option.PageIndex, option.PageSize, UiMethodEnum.PagingListAsync);
         }
     }
@@ -84,16 +81,14 @@ namespace Yunyong.DataExchange.Impls
             where M : class
         {
             SelectMHandle<M>();
-            DC.DPH.SetParameter();
-            return await PagingListAsyncHandle<M>(pageIndex, pageSize, UiMethodEnum.JoinPagingListAsync);
+            return await PagingListAsyncHandle<M>(pageIndex, pageSize, UiMethodEnum.PagingListAsync);
         }
 
         public async Task<PagingList<VM>> PagingListAsync<VM>(int pageIndex, int pageSize, Expression<Func<VM>> func)
             where VM : class
         {
             SelectMHandle(func);
-            DC.DPH.SetParameter();
-            return await PagingListAsyncHandle<VM>(pageIndex, pageSize, UiMethodEnum.JoinPagingListAsync);
+            return await PagingListAsyncHandle<VM>(pageIndex, pageSize, UiMethodEnum.PagingListAsync);
         }
     }
 
@@ -110,8 +105,7 @@ namespace Yunyong.DataExchange.Impls
         {
             SelectMHandle<M>();
             OrderByOptionHandle(option, typeof(M).FullName);
-            DC.DPH.SetParameter();
-            return await PagingListAsyncHandle<M>(option.PageIndex, option.PageSize, UiMethodEnum.JoinPagingListAsync);
+            return await PagingListAsyncHandle<M>(option.PageIndex, option.PageSize, UiMethodEnum.PagingListAsync);
         }
 
         public async Task<PagingList<VM>> PagingListAsync<VM>(PagingQueryOption option, Expression<Func<VM>> func)
@@ -119,8 +113,7 @@ namespace Yunyong.DataExchange.Impls
         {
             SelectMHandle(func);
             OrderByOptionHandle(option, string.Empty);
-            DC.DPH.SetParameter();
-            return await PagingListAsyncHandle<VM>(option.PageIndex, option.PageSize, UiMethodEnum.JoinPagingListAsync);
+            return await PagingListAsyncHandle<VM>(option.PageIndex, option.PageSize, UiMethodEnum.PagingListAsync);
         }
     }
 }
