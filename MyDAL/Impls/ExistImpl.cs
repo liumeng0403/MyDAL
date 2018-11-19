@@ -21,9 +21,7 @@ namespace MyDAL.Impls
             DC.Option = OptionEnum.Count;
             DC.Compare = CompareEnum.None;
             DC.DPH.AddParameter(DC.DPH.CountDic(typeof(M).FullName, "*"));
-            DC.DPH.SetParameter();
-            DC.Method = UiMethodEnum.ExistAsync;
-            DC.SqlProvider.GetSQL();
+            PreExecuteHandle(UiMethodEnum.ExistAsync);
             var count = await DC.DS.ExecuteScalarAsync<long>();
             if (count > 0)
             {

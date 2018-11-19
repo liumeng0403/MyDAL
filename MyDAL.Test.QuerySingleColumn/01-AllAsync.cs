@@ -2,11 +2,10 @@
 using System.Threading.Tasks;
 using Xunit;
 
-namespace MyDAL.Test.Query
+namespace MyDAL.Test.QuerySingleColumn
 {
-    public class _02_SelectSingleColumnTest : TestBase
+    public class _01_AllAsync:TestBase
     {
-
         [Fact]
         public async Task test()
         {
@@ -73,6 +72,5 @@ namespace MyDAL.Test.Query
             var xx = "";
 
         }
-
     }
 }

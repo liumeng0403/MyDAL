@@ -11,7 +11,6 @@ namespace MyDAL.Core.Extensions
             {
                 return true;
             }
-
             return false;
         }
 
@@ -22,7 +21,16 @@ namespace MyDAL.Core.Extensions
             {
                 return true;
             }
+            return false;
+        }
 
+        internal static bool IsSingleColumn(this Type type)
+        {
+            if (type.IsValueType
+                || type == XConfig.TC.String)
+            {
+                return true;
+            }
             return false;
         }
     }

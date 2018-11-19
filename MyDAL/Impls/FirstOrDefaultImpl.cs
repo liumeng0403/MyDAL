@@ -1,5 +1,6 @@
 ﻿using MyDAL.Core.Bases;
 using MyDAL.Core.Enums;
+using MyDAL.Core.Extensions;
 using MyDAL.Interfaces;
 using System;
 using System.Linq.Expressions;
@@ -18,29 +19,30 @@ namespace MyDAL.Impls
 
         public async Task<M> FirstOrDefaultAsync()
         {
-            DC.Method = UiMethodEnum.FirstOrDefaultAsync;
-            DC.SqlProvider.GetSQL();
+            PreExecuteHandle(UiMethodEnum.FirstOrDefaultAsync);
             return await DC.DS.ExecuteReaderSingleRowAsync<M>();
         }
 
         public async Task<VM> FirstOrDefaultAsync<VM>()
-            where VM:class
+            where VM : class
         {
             SelectMHandle<M, VM>();
-            DC.DPH.SetParameter();
-            DC.Method = UiMethodEnum.FirstOrDefaultAsync;
-            DC.SqlProvider.GetSQL();
+            PreExecuteHandle(UiMethodEnum.FirstOrDefaultAsync);
             return await DC.DS.ExecuteReaderSingleRowAsync<VM>();
         }
 
-        public async Task<VM> FirstOrDefaultAsync<VM>(Expression<Func<M, VM>> func)
-            where VM:class
+        public async Task<T> FirstOrDefaultAsync<T>(Expression<Func<M, T>> func)
         {
-            SelectMHandle(func);
-            DC.DPH.SetParameter();
-            DC.Method = UiMethodEnum.FirstOrDefaultAsync;
-            DC.SqlProvider.GetSQL();
-            return await DC.DS.ExecuteReaderSingleRowAsync<VM>();
+            if (typeof(T).IsSingleColumn())
+            {
+                return default(T);
+            }
+            else
+            {
+                SelectMHandle(func);
+                PreExecuteHandle(UiMethodEnum.FirstOrDefaultAsync);
+                return await DC.DS.ExecuteReaderSingleRowAsync<T>();
+            }
         }
     }
 
@@ -53,22 +55,18 @@ namespace MyDAL.Impls
         }
 
         public async Task<M> FirstOrDefaultAsync<M>()
-            where M:class
+            where M : class
         {
             SelectMHandle<M>();
-            DC.DPH.SetParameter();
-            DC.Method = UiMethodEnum.JoinFirstOrDefaultAsync;
-            DC.SqlProvider.GetSQL();
+            PreExecuteHandle(UiMethodEnum.FirstOrDefaultAsync);
             return await DC.DS.ExecuteReaderSingleRowAsync<M>();
         }
 
         public async Task<VM> FirstOrDefaultAsync<VM>(Expression<Func<VM>> func)
-            where VM:class
+            where VM : class
         {
             SelectMHandle(func);
-            DC.DPH.SetParameter();
-            DC.Method = UiMethodEnum.JoinFirstOrDefaultAsync;
-            DC.SqlProvider.GetSQL();
+            PreExecuteHandle(UiMethodEnum.FirstOrDefaultAsync);
             return await DC.DS.ExecuteReaderSingleRowAsync<VM>();
         }
     }

@@ -20,8 +20,7 @@ namespace MyDAL.Impls
 
         public async Task<List<M>> ListAsync()
         {
-            DC.Method = UiMethodEnum.ListAsync;
-            DC.SqlProvider.GetSQL();
+            PreExecuteHandle(UiMethodEnum.ListAsync);
             return await DC.DS.ExecuteReaderMultiRowAsync<M>();
         }
 
@@ -29,9 +28,7 @@ namespace MyDAL.Impls
             where VM:class
         {
             SelectMHandle<M, VM>();
-            DC.DPH.SetParameter();
-            DC.Method = UiMethodEnum.ListAsync;
-            DC.SqlProvider.GetSQL();
+            PreExecuteHandle(UiMethodEnum.ListAsync);
             return await DC.DS.ExecuteReaderMultiRowAsync<VM>();
         }
 
@@ -39,9 +36,7 @@ namespace MyDAL.Impls
             where VM:class
         {
             SelectMHandle(columnMapFunc);
-            DC.DPH.SetParameter();
-            DC.Method = UiMethodEnum.ListAsync;
-            DC.SqlProvider.GetSQL();
+            PreExecuteHandle(UiMethodEnum.ListAsync);
             return await DC.DS.ExecuteReaderMultiRowAsync<VM>();
         }
 
@@ -75,9 +70,7 @@ namespace MyDAL.Impls
             where M:class
         {
             SelectMHandle<M>();
-            DC.DPH.SetParameter();
-            DC.Method = UiMethodEnum.JoinListAsync;
-            DC.SqlProvider.GetSQL();
+            PreExecuteHandle(UiMethodEnum.ListAsync);
             return await DC.DS.ExecuteReaderMultiRowAsync<M>();
         }
 
@@ -85,9 +78,7 @@ namespace MyDAL.Impls
             where VM:class
         {
             SelectMHandle(columnMapFunc);
-            DC.DPH.SetParameter();
-            DC.Method = UiMethodEnum.JoinListAsync;
-            DC.SqlProvider.GetSQL();
+            PreExecuteHandle(UiMethodEnum.ListAsync);
             return await DC.DS.ExecuteReaderMultiRowAsync<VM>();
         }
 

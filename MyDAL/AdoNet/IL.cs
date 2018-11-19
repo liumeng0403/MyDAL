@@ -9,7 +9,6 @@ using System.Reflection.Emit;
 namespace MyDAL.AdoNet
 {
     internal struct IL<M>
-        where M:class
     {
         private static RowMap GetTypeMap(Type mType)
         {

@@ -36,7 +36,6 @@ namespace MyDAL.UserFacade.Query
             return await new AllImpl<M>(DC).AllAsync<VM>();
         }
         public async Task<List<F>> AllAsync<F>(Expression<Func<M, F>> propertyFunc)
-            where F : struct
         {
             return await new AllImpl<M>(DC).AllAsync<F>(propertyFunc);
         }
@@ -118,10 +117,9 @@ namespace MyDAL.UserFacade.Query
         /// 单表单条数据查询
         /// </summary>
         /// <typeparam name="VM">ViewModel</typeparam>
-        public async Task<VM> FirstOrDefaultAsync<VM>(Expression<Func<M, VM>> columnMapFunc)
-            where VM : class
+        public async Task<T> FirstOrDefaultAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
-            return await new FirstOrDefaultImpl<M>(DC).FirstOrDefaultAsync<VM>(columnMapFunc);
+            return await new FirstOrDefaultImpl<M>(DC).FirstOrDefaultAsync<T>(columnMapFunc);
         }
 
         /// <summary>

@@ -1,18 +1,4 @@
 ﻿/.vs/
-/EasyDAL.Exchange/bin/
-/EasyDAL.Exchange/obj/
-/EasyDAL.Exchange.Tests/bin/
-/EasyDAL.Exchange.Tests/obj/
-/EasyDAL.Test.Create/bin/
-/EasyDAL.Test.Create/obj/
-/EasyDAL.Test.Delete/bin/
-/EasyDAL.Test.Delete/obj/
-/EasyDAL.Test.Update/bin/
-/EasyDAL.Test.Update/obj/
-/EasyDAL.Test.Query/bin/
-/EasyDAL.Test.Query/obj/
-/EasyDAL.Test/bin/
-/EasyDAL.Test/obj/
 /MyDAL.Test.Func/bin/
 /MyDAL.Test.Func/obj/
 /MyDAL.Test.CodeFirst/bin/
@@ -45,3 +31,5 @@
 /MyDAL.Test.Update/obj/
 /MyDAL/bin/
 /MyDAL/obj/
+/MyDAL.Test.QuerySingleColumn/bin/
+/MyDAL.Test.QuerySingleColumn/obj/

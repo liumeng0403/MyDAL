@@ -11,8 +11,6 @@ namespace MyDAL.Interfaces
         Task<List<M>> AllAsync();
         Task<List<VM>> AllAsync<VM>()
             where VM : class;
-        Task<List<F>> AllAsync<F>(Expression<Func<M, F>> propertyFunc)
-            where F : struct;
-        Task<List<string>> AllAsync(Expression<Func<M, string>> propertyFunc);
+        Task<List<F>> AllAsync<F>(Expression<Func<M, F>> propertyFunc);
     }
 }

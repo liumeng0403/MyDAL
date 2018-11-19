@@ -16,8 +16,7 @@ namespace MyDAL.Impls
 
         public async Task<int> DeleteAsync()
         {
-            DC.Method = UiMethodEnum.DeleteAsync;
-            DC.SqlProvider.GetSQL();
+            PreExecuteHandle(UiMethodEnum.DeleteAsync);
             return await DC.DS.ExecuteNonQueryAsync();
         }
     }

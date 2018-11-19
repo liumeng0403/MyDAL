@@ -35,13 +35,8 @@ namespace MyDAL.UserFacade.Query
             return await new AllImpl<M>(DC).AllAsync<VM>();
         }
         public async Task<List<F>> AllAsync<F>(Expression<Func<M, F>> propertyFunc)
-            where F : struct
         {
             return await new AllImpl<M>(DC).AllAsync<F>(propertyFunc);
-        }
-        public async Task<List<string>> AllAsync(Expression<Func<M, string>> propertyFunc)
-        {
-            return await new AllImpl<M>(DC).AllAsync(propertyFunc);
         }
 
         /// <summary>

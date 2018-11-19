@@ -34,22 +34,19 @@ namespace MyDAL.Core.Bases
         {
             var result = new PagingList<M>();
             DC.PageIndex = result.PageIndex = pageIndex;
-            DC.PageSize= result.PageSize = pageSize;
-            DC.Method = sqlType;            
-            DC.SqlProvider.GetSQL();
+            DC.PageSize = result.PageSize = pageSize;
+            PreExecuteHandle(sqlType);
             result.TotalCount = await DC.DS.ExecuteScalarAsync<int>();
             result.Data = await DC.DS.ExecuteReaderMultiRowAsync<M>();
             return result;
         }
-
         protected async Task<PagingList<VM>> PagingListAsyncHandle<M, VM>(int pageIndex, int pageSize, UiMethodEnum sqlType)
             where VM : class
         {
             var result = new PagingList<VM>();
             DC.PageIndex = result.PageIndex = pageIndex;
             DC.PageSize = result.PageSize = pageSize;
-            DC.Method = sqlType;
-            DC.SqlProvider.GetSQL();
+            PreExecuteHandle(sqlType);
             result.TotalCount = await DC.DS.ExecuteScalarAsync<int>();
             result.Data = await DC.DS.ExecuteReaderMultiRowAsync<VM>();
             return result;
@@ -57,7 +54,17 @@ namespace MyDAL.Core.Bases
 
         /**********************************************************************************************************/
 
-        internal void SelectMHandle<M>()
+        protected void SingleColumnHandle<M, T>(Expression<Func<M, T>> propertyFunc)
+            where M : class
+        {
+            DC.Action = ActionEnum.Select;
+            DC.Option = OptionEnum.Column;
+            DC.DPH.AddParameter(DC.EH.FuncMFExpression(propertyFunc)[0]);
+        }
+
+        /**********************************************************************************************************/
+
+        protected void SelectMHandle<M>()
         {
             DC.Action = ActionEnum.Select;
             var mType = typeof(M);
@@ -79,8 +86,7 @@ namespace MyDAL.Core.Bases
                 throw new Exception($"请使用 [[Task<List<VM>> ListAsync<VM>(Expression<Func<VM>> func)]] 方法! 或者 {mType.Name} 必须为 [[{string.Join(",", fullNames.Select(it => it.ClassName))}]] 其中之一 !");
             }
         }
-
-        internal void SelectMHandle<M, VM>()
+        protected void SelectMHandle<M, VM>()
         {
             var mType = typeof(M);
             var vmType = typeof(VM);
@@ -120,8 +126,7 @@ namespace MyDAL.Core.Bases
                 throw new Exception($"请使用 [[Task<List<VM>> ListAsync<VM>(Expression<Func<VM>> func)]] 方法! 或者 {mType.Name} 必须为 [[{string.Join(",", fullNames.Select(it => it.ClassName))}]] 其中之一 !");
             }
         }
-
-        internal void SelectMHandle<VM>(Expression<Func<VM>> func)
+        protected void SelectMHandle<VM>(Expression<Func<VM>> func)
         {
             DC.Action = ActionEnum.Select;
             var list = DC.EH.FuncTExpression(func);
@@ -131,8 +136,7 @@ namespace MyDAL.Core.Bases
                 DC.DPH.AddParameter(dic);
             }
         }
-
-        internal void SelectMHandle<M, VM>(Expression<Func<M, VM>> propertyFunc)
+        protected void SelectMHandle<M, VM>(Expression<Func<M, VM>> propertyFunc)
             where M : class
         {
             DC.Action = ActionEnum.Select;
@@ -146,12 +150,12 @@ namespace MyDAL.Core.Bases
 
         /**********************************************************************************************************/
 
-        internal void CreateMHandle<M>(M m)
+        protected void CreateMHandle<M>(M m)
         {
             DC.Option = OptionEnum.Insert;
             SetInsertValue(m, 0);
         }
-        internal void CreateMHandle<M>(IEnumerable<M> mList)
+        protected void CreateMHandle<M>(IEnumerable<M> mList)
         {
             var i = 0;
             DC.Option = OptionEnum.InsertTVP;
@@ -164,10 +168,18 @@ namespace MyDAL.Core.Bases
 
         /**********************************************************************************************************/
 
-        internal Impler(Context dc)
-            : base(dc)
+        protected void PreExecuteHandle(UiMethodEnum method)
         {
             DC.DPH.SetParameter();
+            DC.Method = method;
+            DC.SqlProvider.GetSQL();
+        }
+
+        /**********************************************************************************************************/
+
+        protected Impler(Context dc)
+            : base(dc)
+        {
         }
     }
 }

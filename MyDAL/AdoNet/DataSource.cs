@@ -202,7 +202,6 @@ namespace MyDAL.AdoNet
          * select -- 第一行
          */
         internal async Task<M> ExecuteReaderSingleRowAsync<M>()
-            where M : class
         {
             var command = new CommandInfo(SqlOne, Parameter);
             var needClose = Conn.State == ConnectionState.Closed;

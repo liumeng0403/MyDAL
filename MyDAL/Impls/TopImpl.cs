@@ -3,7 +3,6 @@ using MyDAL.Core.Enums;
 using MyDAL.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -22,8 +21,7 @@ namespace MyDAL.Impls
         {
             DC.PageIndex = 0;
             DC.PageSize = count;
-            DC.Method = UiMethodEnum.TopAsync;
-            DC.SqlProvider.GetSQL();
+            PreExecuteHandle(UiMethodEnum.TopAsync);
             return await DC.DS.ExecuteReaderMultiRowAsync<M>();
         }
 
@@ -34,8 +32,7 @@ namespace MyDAL.Impls
             DC.DPH.SetParameter();
             DC.PageIndex = 0;
             DC.PageSize = count;
-            DC.Method = UiMethodEnum.TopAsync;
-            DC.SqlProvider.GetSQL();
+            PreExecuteHandle(UiMethodEnum.TopAsync);
             return await DC.DS.ExecuteReaderMultiRowAsync<VM>();
         }
 
@@ -46,8 +43,7 @@ namespace MyDAL.Impls
             DC.DPH.SetParameter();
             DC.PageIndex = 0;
             DC.PageSize = count;
-            DC.Method = UiMethodEnum.TopAsync;
-            DC.SqlProvider.GetSQL();
+            PreExecuteHandle(UiMethodEnum.TopAsync);
             return await DC.DS.ExecuteReaderMultiRowAsync<VM>();
         }
     }
@@ -67,22 +63,19 @@ namespace MyDAL.Impls
             DC.DPH.SetParameter();
             DC.PageIndex = 0;
             DC.PageSize = count;
-            DC.Method = UiMethodEnum.JoinTopAsync;
-            DC.SqlProvider.GetSQL();
+            PreExecuteHandle(UiMethodEnum.TopAsync);
             return await DC.DS.ExecuteReaderMultiRowAsync<M>();
         }
 
-        public async Task<List<VM>> TopAsync<VM>(int count,Expression<Func<VM>> columnMapFunc)
+        public async Task<List<VM>> TopAsync<VM>(int count, Expression<Func<VM>> columnMapFunc)
             where VM : class
         {
             SelectMHandle(columnMapFunc);
             DC.DPH.SetParameter();
             DC.PageIndex = 0;
             DC.PageSize = count;
-            DC.Method = UiMethodEnum.JoinTopAsync;
-            DC.SqlProvider.GetSQL();
-            return await DC.DS.ExecuteReaderMultiRowAsync<VM>(
-                );
+            PreExecuteHandle(UiMethodEnum.TopAsync);
+            return await DC.DS.ExecuteReaderMultiRowAsync<VM>();
         }
     }
 }

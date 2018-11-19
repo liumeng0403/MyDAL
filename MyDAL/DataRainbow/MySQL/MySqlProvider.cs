@@ -868,19 +868,15 @@ namespace MyDAL.DataRainbow.MySQL
                     list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.FirstOrDefaultAsync:
-                case UiMethodEnum.JoinFirstOrDefaultAsync:
                     Select(sb); Distinct(sb); SelectColumn(sb); From(sb); Table(sb); Where(sb); OrderBy(sb); End(sb);
                     list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.ListAsync:
-                case UiMethodEnum.JoinListAsync:
                 case UiMethodEnum.TopAsync:
-                case UiMethodEnum.JoinTopAsync:
                     Select(sb); Distinct(sb); SelectColumn(sb); From(sb); Table(sb); Where(sb); OrderBy(sb); Limit(sb); End(sb);
                     list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.PagingListAsync:
-                case UiMethodEnum.JoinPagingListAsync:
                     Select(sb); CountCD(sb); From(sb); Table(sb); Where(sb); End(sb);
                     list.Add(sb.ToString());
                     sb.Clear();
@@ -900,7 +896,6 @@ namespace MyDAL.DataRainbow.MySQL
                     break;
                 case UiMethodEnum.ExistAsync:
                 case UiMethodEnum.CountAsync:
-                case UiMethodEnum.JoinCountAsync:
                     Select(sb); CountCD(sb); From(sb); Table(sb); Where(sb); End(sb);
                     list.Add(sb.ToString());
                     break;

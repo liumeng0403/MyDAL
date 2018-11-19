@@ -25,9 +25,7 @@ namespace MyDAL.Impls
             DC.Option = OptionEnum.Sum;
             DC.Compare = CompareEnum.None;
             DC.DPH.AddParameter(DC.DPH.SumDic(typeof(M).FullName, key));
-            DC.DPH.SetParameter();
-            DC.Method = UiMethodEnum.SumAsync;
-            DC.SqlProvider.GetSQL();
+            PreExecuteHandle(UiMethodEnum.SumAsync);
             return await DC.DS.ExecuteScalarAsync<F>();
         }
     }
