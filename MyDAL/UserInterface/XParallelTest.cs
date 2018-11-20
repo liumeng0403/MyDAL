@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Extensions;
+using Yunyong.DataExchange.UserInterface;
 
 namespace Yunyong.DataExchange
 {
-    public class XParallelTest<Req, Res>
-        where Req : class, new()
-        where Res : class, new()
+    public class XParallelTest
     {
 
         private void Process()
@@ -46,16 +45,32 @@ namespace Yunyong.DataExchange
                             {
                                 var res = Response.DeepClone();
                                 var req = Request.DeepClone();
-                                var api = TargetFunc.DeepClone();
+                                var api = default(Func<None, None>);
+                                if (IsHttpFunc)
+                                {
+                                    api = TargetFunc;
+                                }
+                                else
+                                {
+                                    api = TargetFunc.DeepClone();
+                                }
                                 var timer = new Stopwatch();
                                 timer.Start();
                                 res = api(req);
                                 timer.Stop();
                                 sync.Elapsed = timer.Elapsed;
-                                sync.Result = res.JsonSerialize().JsonDeserialize<SyncState>();
+                                if (IsHttpFunc)
+                                {
+                                    sync.Result = res.String;
+                                }
+                                else
+                                {
+                                    sync.Result = res.String;
+                                }
                                 if (IsLookTask)
                                 {
-                                    Console.WriteLine($"并行个数:{Parallelism},并行起点:{sync.Start},并行序号:{sync.LimitI},调用时间:{sync.Elapsed},调用状况:{sync.Result.SuccessFlag}");
+                                    var re = sync.Result?.Substring(0, sync.Result.Length > 50 ? 50 : sync.Result.Length);
+                                    Console.WriteLine($"并行个数:{Parallelism},批次:{sync.Start / Parallelism},序号:{sync.LimitI},耗时:{sync.Elapsed},结果:{re}");
                                 }
                             }
                             SyncBags.Add(sync);
@@ -110,8 +125,9 @@ namespace Yunyong.DataExchange
                 }
                 var avgT = totalTime.TotalMilliseconds * 1.00 / XConfig.PC.TotalCount;
                 var avgS = swallow.Elapsed.TotalMilliseconds * 1.00 / XConfig.PC.TotalCount;
-                Console.WriteLine($"万次吞吐,单计量,总时间:{totalTime},平均每次时间:{avgT} ms.");
-                Console.WriteLine($"万次吞吐,总计量,总时间:{swallow.Elapsed},平均每次时间:{avgS} ms.");
+                var msg = Parallelism == 1 ? "一次" : "万次";
+                Console.WriteLine($"{msg}吞吐,单计量,总时间:{totalTime},平均每次时间:{avgT} ms.");
+                Console.WriteLine($"{msg}吞吐,总计量,总时间:{swallow.Elapsed},平均每次时间:{avgS} ms.");
                 Console.WriteLine("======================= End ================================");
             }
             catch
@@ -126,10 +142,49 @@ namespace Yunyong.DataExchange
         private ConcurrentBag<SyncState> SyncBags { get; set; }
         private SyncState Simple { get; set; }
         private List<Task> TList { get; set; }
+        private HttpAsync Remoter
+        {
+            get
+            {
+                return new HttpAsync
+                {
+                    Token = Token,
+                    URL = URL,
+                    RequestMethod = RequestMethod,
+                    JsonContent = JsonContent
+                };
+            }
+        }
+        private Func<None, None> _targetFunc { get; set; }
+
         public bool IsLookTask { get; set; } = false;
-        public Req Request { get; set; }
-        public Res Response { get; set; }
-        public Func<Req, Res> TargetFunc { get; set; }
+        public None Request { get; set; } = new None();
+        public None Response { get; set; } = new None();
+
+        public bool IsHttpFunc { get; set; } = false;
+        public string Token { get; set; }
+        public string URL { get; set; }
+        public string RequestMethod { get; set; }
+        public string JsonContent { get; set; }
+
+        public Func<None, None> TargetFunc
+        {
+            get
+            {
+                if (IsHttpFunc)
+                {
+                    return Remoter.GetRemoteData;
+                }
+                else
+                {
+                    return _targetFunc;
+                }
+            }
+            set
+            {
+                _targetFunc = value;
+            }
+        }
 
         /***************************************************************************************************************************/
 
@@ -147,7 +202,7 @@ namespace Yunyong.DataExchange
         /***************************************************************************************************************************/
 
         /// <summary>
-        /// 万请求:并行度:一
+        /// 万吞吐:并行度:一
         /// </summary>
         public void Parallel_1_10000()
         {
@@ -155,7 +210,7 @@ namespace Yunyong.DataExchange
             Process();
         }
         /// <summary>
-        /// 万请求:并行度:五
+        /// 万吞吐:并行度:五
         /// </summary>
         public void Parallel_5_10000()
         {
@@ -163,7 +218,7 @@ namespace Yunyong.DataExchange
             Process();
         }
         /// <summary>
-        /// 万请求:并行度:十
+        /// 万吞吐:并行度:十
         /// </summary>
         public void Parallel_10_10000()
         {
@@ -171,7 +226,7 @@ namespace Yunyong.DataExchange
             Process();
         }
         /// <summary>
-        /// 万请求:并行度:二十
+        /// 万吞吐:并行度:二十
         /// </summary>
         public void Parallel_20_10000()
         {
@@ -179,7 +234,7 @@ namespace Yunyong.DataExchange
             Process();
         }
         /// <summary>
-        /// 万请求:并行度:三十
+        /// 万吞吐:并行度:三十
         /// </summary>
         public void Parallel_30_10000()
         {
@@ -187,7 +242,7 @@ namespace Yunyong.DataExchange
             Process();
         }
         /// <summary>
-        /// 万请求:并行度:四十
+        /// 万吞吐:并行度:四十
         /// </summary>
         public void Parallel_40_10000()
         {
@@ -195,7 +250,7 @@ namespace Yunyong.DataExchange
             Process();
         }
         /// <summary>
-        /// 万请求:并行度:五十
+        /// 万吞吐:并行度:五十
         /// </summary>
         public void Parallel_50_10000()
         {
@@ -203,7 +258,7 @@ namespace Yunyong.DataExchange
             Process();
         }
         /// <summary>
-        /// 万请求:并行度:六十
+        /// 万吞吐:并行度:六十
         /// </summary>
         public void Parallel_60_10000()
         {
@@ -211,7 +266,7 @@ namespace Yunyong.DataExchange
             Process();
         }
         /// <summary>
-        /// 万请求:并行度:七十
+        /// 万吞吐:并行度:七十
         /// </summary>
         public void Parallel_70_10000()
         {
@@ -219,7 +274,7 @@ namespace Yunyong.DataExchange
             Process();
         }
         /// <summary>
-        /// 万请求:并行度:八十
+        /// 万吞吐:并行度:八十
         /// </summary>
         public void Parallel_80_10000()
         {
@@ -227,7 +282,7 @@ namespace Yunyong.DataExchange
             Process();
         }
         /// <summary>
-        /// 万请求:并行度:九十
+        /// 万吞吐:并行度:九十
         /// </summary>
         public void Parallel_90_10000()
         {
@@ -235,7 +290,7 @@ namespace Yunyong.DataExchange
             Process();
         }
         /// <summary>
-        /// 万请求:并行度:一百
+        /// 万吞吐:并行度:一百
         /// </summary>
         public void Parallel_100_10000()
         {

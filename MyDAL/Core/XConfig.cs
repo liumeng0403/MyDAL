@@ -22,7 +22,7 @@ namespace Yunyong.DataExchange.Core
         internal static string MySQL { get; } = "MySql.Data.MySqlClient.MySqlConnection";
         internal static DbEnum DB { get; set; } = DbEnum.None;
 
-        internal static int CommandTimeout { get; set; } = 10;  // 10s 
+        internal static int CommandTimeout { get; set; } = 20;  // s 
 
         internal static BindingFlags ClassSelfMember { get; private set; } = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public;
 
