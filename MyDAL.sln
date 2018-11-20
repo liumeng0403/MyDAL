@@ -29,7 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.JoinQueryM", "My
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL", "MyDAL\MyDAL.csproj", "{06C72481-97EA-45A9-BE4D-9ED33DACC9D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDAL.Test.QuerySingleColumn", "MyDAL.Test.QuerySingleColumn\MyDAL.Test.QuerySingleColumn.csproj", "{766E1CC2-20B3-4612-BB2A-A8619F160511}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.QuerySingleColumn", "MyDAL.Test.QuerySingleColumn\MyDAL.Test.QuerySingleColumn.csproj", "{766E1CC2-20B3-4612-BB2A-A8619F160511}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDAL.Test.QueryParallel", "MyDAL.Test.QueryParallel\MyDAL.Test.QueryParallel.csproj", "{1B0C386F-488F-4C1F-B39A-DF60C060A6BE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,6 +95,10 @@ Global
 		{766E1CC2-20B3-4612-BB2A-A8619F160511}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{766E1CC2-20B3-4612-BB2A-A8619F160511}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{766E1CC2-20B3-4612-BB2A-A8619F160511}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B0C386F-488F-4C1F-B39A-DF60C060A6BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B0C386F-488F-4C1F-B39A-DF60C060A6BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B0C386F-488F-4C1F-B39A-DF60C060A6BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B0C386F-488F-4C1F-B39A-DF60C060A6BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
