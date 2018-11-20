@@ -20,7 +20,7 @@ namespace MyDAL.Core.Common
         internal TimeSpan Elapsed { get; set; }
 
         //
-        internal SyncState Result { get; set; }
+        internal string Result { get; set; }
         internal bool SuccessFlag { get; set; }
 
         //

@@ -88,8 +88,8 @@ namespace MyDAL.Test
             */
             var conn =
                 new MySqlConnection($"Server=localhost; Database={name}; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;")
-                .OpenDebug()  // 全局 debug 配置, 生产环境不要开启 
-                .OpenDB();  // 建议 每次新实例并打开,以获得更好的性能体验
+                .OpenDebug();  // 全局 debug 配置, 生产环境不要开启 
+                //.OpenDB();  // 建议 每次新实例并打开,以获得更好的性能体验
             return conn;
         }
         //private static IDbConnection GetOpenConnection3(string name)
