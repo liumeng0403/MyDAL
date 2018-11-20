@@ -24,6 +24,9 @@ namespace MyDAL.Test.Entities.EasyDal_Exchange
     [Table("Agent")]
     public class Agent 
     {
+        public Agent() { }
+        public Agent(string s1, int i2, decimal d3) { }
+
         public Guid Id { get; set; }
 
         public DateTime CreatedOn { get; set; }
