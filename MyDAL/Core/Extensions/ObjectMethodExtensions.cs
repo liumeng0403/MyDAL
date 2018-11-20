@@ -1,4 +1,5 @@
-﻿using System;
+using Newtonsoft.Json;
+using System;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -8,6 +9,50 @@ namespace Yunyong.DataExchange.Core.Extensions
 {
     internal static class ObjectMethodExtensions
     {
+        /// <summary>
+        /// JSON(string) ---> Object(T)
+        /// </summary>
+        public static T JsonDeserialize<T>(this string jsonStr)
+        {
+            var result = default(T);
+            try
+            {
+                if (jsonStr.IsNullStr())
+                {
+                    return result;
+                }
+
+                result = JsonConvert.DeserializeObject<T>(jsonStr);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("方法:JsonDeserialize<T>出错" + ex.Message);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Object(T) ---> JSON(string)   
+        /// </summary>
+        public static string JsonSerialize<T>(this T jsonObj)
+            where T : class, new()
+        {
+            var result = string.Empty;
+            try
+            {
+                if (jsonObj == null)
+                {
+                    return result;
+                }
+
+                result = JsonConvert.SerializeObject(jsonObj);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("方法:JsonSerialize<T>出错", ex);
+            }
+            return result;
+        }
 
         /// <summary>
         /// 深度复制 (值类型/包装类型/引用类型/序列化/非序列化/标识序列化/非标识序列化,皆可深度复制)
