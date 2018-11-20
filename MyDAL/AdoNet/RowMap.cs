@@ -33,13 +33,12 @@ namespace MyDAL.AdoNet
         }
         internal ConstructorInfo DefaultConstructor()
         {
-            var cons = Type.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-            if (cons.Length != 1
-                || cons[0].GetParameters().Length != 0)
+            var con = Type.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).FirstOrDefault(it => it.GetParameters().Length == 0);
+            if (con==null)
             {
-                throw new Exception($"请对Model类[[{Type.FullName}]]使用默认的构造函数!!!");
+                throw new Exception($"[Table-Model]类[[{Type.FullName}]]必须有默认的构造函数!!!");
             }
-            return cons[0];
+            return con;
         }
         internal MapType GetMember(string colName)
         {
