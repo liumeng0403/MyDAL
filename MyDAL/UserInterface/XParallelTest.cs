@@ -1,5 +1,4 @@
-﻿using MyDAL.Core;
-using MyDAL.Core.Common;
+﻿using MyDAL.Core.Common;
 using MyDAL.Core.Extensions;
 using MyDAL.UserInterface;
 using System;
@@ -20,7 +19,10 @@ namespace MyDAL
             {
 
                 //
-                Console.WriteLine("======================= Start ================================");
+                if (!IsSubTask)
+                {
+                    Console.WriteLine("======================= Start ================================");
+                }
                 var start = 0;
                 SyncBags = new ConcurrentBag<SyncState>();
                 var swallow = new Stopwatch();
@@ -106,29 +108,32 @@ namespace MyDAL
                     }
 
                     //
-                    if (start < (XConfig.PC.TotalCount - Parallelism))
+                    if (start < (TotalCount - Parallelism))
                     {
                         start = start + Parallelism;
                     }
                     else
                     {
-                        start = XConfig.PC.TotalCount;
+                        start = TotalCount;
                     }
                 }
-                while (start < XConfig.PC.TotalCount);
+                while (start < TotalCount);
                 swallow.Stop();
-                Console.WriteLine("======================= Mid ================================");
-                var totalTime = new TimeSpan(0, 0, 0, 0, 0);
-                foreach (var elap in SyncBags)
+                if (!IsSubTask)
                 {
-                    totalTime = totalTime.Add(elap.Elapsed);
+                    Console.WriteLine("======================= Mid ================================");
+                    var totalTime = new TimeSpan(0, 0, 0, 0, 0);
+                    foreach (var elap in SyncBags)
+                    {
+                        totalTime = totalTime.Add(elap.Elapsed);
+                    }
+                    var avgT = totalTime.TotalMilliseconds * 1.00 / TotalCount;
+                    var avgS = swallow.Elapsed.TotalMilliseconds * 1.00 / TotalCount;
+                    var msg = TotalCount == 1 ? "一次" : "万次";
+                    Console.WriteLine($"{msg}吞吐,单计量,总时间:{totalTime},平均每次时间:{avgT} ms.");
+                    Console.WriteLine($"{msg}吞吐,总计量,总时间:{swallow.Elapsed},平均每次时间:{avgS} ms.");
+                    Console.WriteLine("======================= End ================================");
                 }
-                var avgT = totalTime.TotalMilliseconds * 1.00 / XConfig.PC.TotalCount;
-                var avgS = swallow.Elapsed.TotalMilliseconds * 1.00 / XConfig.PC.TotalCount;
-                var msg = Parallelism == 1 ? "一次" : "万次";
-                Console.WriteLine($"{msg}吞吐,单计量,总时间:{totalTime},平均每次时间:{avgT} ms.");
-                Console.WriteLine($"{msg}吞吐,总计量,总时间:{swallow.Elapsed},平均每次时间:{avgS} ms.");
-                Console.WriteLine("======================= End ================================");
             }
             catch
             {
@@ -138,6 +143,21 @@ namespace MyDAL
 
         /***************************************************************************************************************************/
 
+        private bool IsDebug { get; set; } = false;
+        private int TotalCount
+        {
+            get
+            {
+                if (IsDebug)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 10000;
+                }
+            }
+        }
         private int Parallelism { get; set; }
         private ConcurrentBag<SyncState> SyncBags { get; set; }
         private SyncState Simple { get; set; }
@@ -158,6 +178,7 @@ namespace MyDAL
         private Func<None, None> _targetFunc { get; set; }
 
         public bool IsLookTask { get; set; } = false;
+        public bool IsSubTask { get; set; } = false;
         public None Request { get; set; } = new None();
         public None Response { get; set; } = new None();
 
@@ -193,10 +214,10 @@ namespace MyDAL
         /// </summary>
         public void ApiDebug()
         {
-            XConfig.PC.IsDebug = true;
+            IsDebug = true;
             Parallelism = 1;
             Process();
-            XConfig.PC.IsDebug = false;
+            IsDebug = false;
         }
 
         /***************************************************************************************************************************/
