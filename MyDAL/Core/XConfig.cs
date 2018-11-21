@@ -51,6 +51,5 @@ namespace Yunyong.DataExchange.Core
 
         internal static ExceptionConfig EC { get; } = new ExceptionConfig();
         internal static TypeConfig TC { get; } = new TypeConfig();
-        internal static ParallelConfig PC { get; } = new ParallelConfig();
     }
 }
