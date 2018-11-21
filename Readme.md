@@ -17,7 +17,7 @@
 博客地址：<a href="https://www.cnblogs.com/Meng-NET/p/8963476.html" target="_blank">Meng.NET -- 技术改变人生,网络改变生活,信息改变世界.</a>
 
 Nuget Gallery： 
-<a href="https://www.nuget.org/profiles/Meng.NET" target="_blank">PM> Install-Package MyDAL -Version 0.5.0</a>
+<a href="https://www.nuget.org/packages/MyDAL/" target="_blank">PM> Install-Package MyDAL -Version 0.5.0</a>
 
 Clone&Fork:  <b>克隆</b>的同学不要忘了<b>右上角</b>给点个<b>Star</b>(星).
 
