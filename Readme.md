@@ -2,8 +2,8 @@
   -- EasyDAL.Exchange 0.2.3 版本后 更名为 MyDAL 
 
 [![NuGet](https://img.shields.io/nuget/v/DotnetSpider2.Extension.svg)](https://www.nuget.org/packages/MyDAL/)
-[![](https://img.shields.io/bitbucket/issues-raw/atlassian/python-bitbucket.svg)](https://github.com/liumeng0403/MyDAL)
-[![Plugin on redmine.org](https://img.shields.io/redmine/plugin/stars/redmine_xlsx_format_issue_exporter.svg)](https://github.com/liumeng0403/MyDAL)
+[![](https://img.shields.io/bitbucket/issues-raw/atlassian/python-bitbucket.svg)](https://github.com/liumeng0403/MyDAL/issues)
+[![Plugin on redmine.org](https://img.shields.io/redmine/plugin/stars/redmine_xlsx_format_issue_exporter.svg)](https://github.com/liumeng0403/MyDAL/stargazers)
 
 ![Image text](https://github.com/liumeng0403/MyDAL/blob/master/MyDAL/Others/MyDAL.png)
 
