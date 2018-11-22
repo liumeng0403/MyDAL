@@ -1,5 +1,6 @@
 ﻿using MyDAL.Core.Bases;
 using MyDAL.Core.Enums;
+using MyDAL.Core.Extensions;
 using MyDAL.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -28,23 +29,29 @@ namespace MyDAL.Impls
         public async Task<List<VM>> TopAsync<VM>(int count)
             where VM : class
         {
-            SelectMHandle<M, VM>();
-            DC.DPH.SetParameter();
             DC.PageIndex = 0;
             DC.PageSize = count;
+            SelectMHandle<M, VM>();
             PreExecuteHandle(UiMethodEnum.TopAsync);
             return await DC.DS.ExecuteReaderMultiRowAsync<VM>();
         }
 
-        public async Task<List<VM>> TopAsync<VM>(int count, Expression<Func<M, VM>> columnMapFunc)
-            where VM : class
+        public async Task<List<T>> TopAsync<T>(int count, Expression<Func<M, T>> columnMapFunc)
         {
-            SelectMHandle(columnMapFunc);
-            DC.DPH.SetParameter();
             DC.PageIndex = 0;
             DC.PageSize = count;
-            PreExecuteHandle(UiMethodEnum.TopAsync);
-            return await DC.DS.ExecuteReaderMultiRowAsync<VM>();
+            if (typeof(T).IsSingleColumn())
+            {
+                SingleColumnHandle(columnMapFunc);
+                PreExecuteHandle(UiMethodEnum.TopAsync);
+                return await DC.DS.ExecuteReaderSingleColumnAsync(columnMapFunc.Compile());
+            }
+            else
+            {
+                SelectMHandle(columnMapFunc);
+                PreExecuteHandle(UiMethodEnum.TopAsync);
+                return await DC.DS.ExecuteReaderMultiRowAsync<T>();
+            }
         }
     }
 

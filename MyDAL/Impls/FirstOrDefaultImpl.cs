@@ -1,8 +1,8 @@
 ﻿using MyDAL.Core.Bases;
 using MyDAL.Core.Enums;
-using MyDAL.Core.Extensions;
 using MyDAL.Interfaces;
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -19,30 +19,18 @@ namespace MyDAL.Impls
 
         public async Task<M> FirstOrDefaultAsync()
         {
-            PreExecuteHandle(UiMethodEnum.FirstOrDefaultAsync);
-            return await DC.DS.ExecuteReaderSingleRowAsync<M>();
+            return (await new TopImpl<M>(DC).TopAsync(1)).FirstOrDefault();
         }
 
         public async Task<VM> FirstOrDefaultAsync<VM>()
             where VM : class
         {
-            SelectMHandle<M, VM>();
-            PreExecuteHandle(UiMethodEnum.FirstOrDefaultAsync);
-            return await DC.DS.ExecuteReaderSingleRowAsync<VM>();
+            return (await new TopImpl<M>(DC).TopAsync<VM>(1)).FirstOrDefault();
         }
 
-        public async Task<T> FirstOrDefaultAsync<T>(Expression<Func<M, T>> func)
+        public async Task<T> FirstOrDefaultAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
-            if (typeof(T).IsSingleColumn())
-            {
-                return default(T);
-            }
-            else
-            {
-                SelectMHandle(func);
-                PreExecuteHandle(UiMethodEnum.FirstOrDefaultAsync);
-                return await DC.DS.ExecuteReaderSingleRowAsync<T>();
-            }
+            return (await new TopImpl<M>(DC).TopAsync(1, columnMapFunc)).FirstOrDefault();
         }
     }
 

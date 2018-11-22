@@ -77,7 +77,7 @@ namespace MyDAL.AdoNet
             paramReader?.Invoke(cmd, command.Parameter);
             return cmd as DbCommand;
         }
-        private Task TryOpenAsync(IDbConnection cnn)
+        internal Task TryOpenAsync(IDbConnection cnn)
         {
             if (cnn is DbConnection dbConn)
             {
@@ -165,7 +165,6 @@ namespace MyDAL.AdoNet
          * select -- 所有行
          */
         internal async Task<List<M>> ExecuteReaderMultiRowAsync<M>()
-            where M : class
         {
             var command = new CommandInfo(SqlCount == 1 ? SqlOne : SqlTwo, Parameter);
             bool needClose = Conn.State == ConnectionState.Closed;

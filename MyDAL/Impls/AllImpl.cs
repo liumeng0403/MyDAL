@@ -41,7 +41,9 @@ namespace MyDAL.Impls
             }
             else
             {
-                return default(List<T>);
+                SelectMHandle(propertyFunc);
+                PreExecuteHandle(UiMethodEnum.AllAsync);
+                return await DC.DS.ExecuteReaderMultiRowAsync<T>();
             }
         }
     }

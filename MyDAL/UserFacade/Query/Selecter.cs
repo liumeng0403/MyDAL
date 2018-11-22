@@ -86,10 +86,9 @@ namespace MyDAL.UserFacade.Query
         /// </summary>
         /// <param name="count">top count</param>
         /// <returns>返回 top count 条数据</returns>
-        public async Task<List<VM>> TopAsync<VM>(int count, Expression<Func<M, VM>> columnMapFunc) 
-            where VM : class
+        public async Task<List<T>> TopAsync<T>(int count, Expression<Func<M, T>> columnMapFunc) 
         {
-            return await new TopImpl<M>(DC).TopAsync<VM>(count, columnMapFunc);
+            return await new TopImpl<M>(DC).TopAsync<T>(count, columnMapFunc);
         }
     }
 }

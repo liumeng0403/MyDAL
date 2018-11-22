@@ -35,13 +35,9 @@ namespace MyDAL.UserFacade.Query
         {
             return await new AllImpl<M>(DC).AllAsync<VM>();
         }
-        public async Task<List<F>> AllAsync<F>(Expression<Func<M, F>> propertyFunc)
+        public async Task<List<T>> AllAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
-            return await new AllImpl<M>(DC).AllAsync<F>(propertyFunc);
-        }
-        public async Task<List<string>> AllAsync(Expression<Func<M, string>> propertyFunc)
-        {
-            return await new AllImpl<M>(DC).AllAsync(propertyFunc);
+            return await new AllImpl<M>(DC).AllAsync<T>(columnMapFunc);
         }
 
         /// <summary>
@@ -91,10 +87,9 @@ namespace MyDAL.UserFacade.Query
         /// </summary>
         /// <param name="count">top count</param>
         /// <returns>返回 top count 条数据</returns>
-        public async Task<List<VM>> TopAsync<VM>(int count, Expression<Func<M, VM>> columnMapFunc)
-            where VM : class
+        public async Task<List<T>> TopAsync<T>(int count, Expression<Func<M, T>> columnMapFunc)
         {
-            return await new TopImpl<M>(DC).TopAsync<VM>(count, columnMapFunc);
+            return await new TopImpl<M>(DC).TopAsync<T>(count, columnMapFunc);
         }
 
         /// <summary>
