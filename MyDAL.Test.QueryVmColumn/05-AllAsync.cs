@@ -1,23 +1,25 @@
 ﻿using MyDAL.Test.Entities.EasyDal_Exchange;
-using System;
+using MyDAL.Test.ViewModels;
 using System.Threading.Tasks;
 using Xunit;
 using Yunyong.DataExchange;
 
-namespace MyDAL.Test.QuerySingleColumn
+namespace MyDAL.Test.QueryVmColumn
 {
-    public class _02_FirstOrDefaultAsync:TestBase
+    public class _05_AllAsync:TestBase
     {
         [Fact]
         public async Task test()
         {
             var xx1 = "";
 
-            var time1 = DateTime.Parse("2018-08-16 19:22:01.716307");
             var res1 = await Conn
                 .Selecter<Agent>()
-                .Where(it => it.CreatedOn == time1)
-                .FirstOrDefaultAsync(it => it.Id);
+                .AllAsync<AgentVM>(it => new AgentVM
+                {
+                    XXXX=it.Name,
+                    YYYY=it.PathId
+                });
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 

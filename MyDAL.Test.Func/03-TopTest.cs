@@ -170,6 +170,18 @@ namespace MyDAL.Test.Func
 
             /*******************************************************************************************************************************/
 
+            var xx11 = "";
+
+            var res11 = await Conn
+                .Selecter<Agent>()
+                .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
+                .TopAsync(25, it=>it.Name);
+            Assert.True(res11.Count == 25);
+
+            var tuple11 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*******************************************************************************************************************************/
+
             var xx = "";
 
         }

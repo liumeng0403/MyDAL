@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using System.Threading.Tasks;
 using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Interfaces;
@@ -24,6 +25,10 @@ namespace Yunyong.DataExchange.UserFacade.Transaction
             var errorMsg = string.Empty;
             using (DC.Conn)
             {
+                if(DC.Conn.State== ConnectionState.Closed)
+                {
+                    await DC.DS.TryOpenAsync(DC.Conn).ConfigureAwait(false);
+                }
                 using (DC.Tran = DC.Conn.BeginTransaction())
                 {
                     try
@@ -64,6 +69,10 @@ namespace Yunyong.DataExchange.UserFacade.Transaction
             var errMsg = string.Empty;
             using (DC.Conn)
             {
+                if (DC.Conn.State == ConnectionState.Closed)
+                {
+                    await DC.DS.TryOpenAsync(DC.Conn).ConfigureAwait(false);
+                }
                 using (DC.Tran = DC.Conn.BeginTransaction())
                 {
                     try
@@ -103,6 +112,10 @@ namespace Yunyong.DataExchange.UserFacade.Transaction
         {
             using (DC.Conn)
             {
+                if (DC.Conn.State == ConnectionState.Closed)
+                {
+                    await DC.DS.TryOpenAsync(DC.Conn).ConfigureAwait(false);
+                }
                 using (DC.Tran = DC.Conn.BeginTransaction())
                 {
                     try

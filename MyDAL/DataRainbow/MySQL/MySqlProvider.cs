@@ -68,7 +68,7 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
             foreach (var s in ss)
             {
                 i++;
-                preSymbol?.Invoke(sb);sb.Append(s); afterSymbol?.Invoke(sb);
+                preSymbol?.Invoke(sb); sb.Append(s); afterSymbol?.Invoke(sb);
                 if (i != n)
                 {
                     Comma(sb);
@@ -327,7 +327,7 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
                         list.Add(MultiCondition(item, isMulti));
                     }
                 }
-                return string.Join(XSQL.MultiAction(db.GroupAction), list);
+                return string.Join(MultiAction(db.GroupAction), list);
             }
             else
             {
@@ -570,13 +570,13 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
                     case ActionEnum.From: break;    // 已处理 
                     case ActionEnum.InnerJoin:
                     case ActionEnum.LeftJoin:
-                        CRLF(sb);Tab(sb);sb.Append(Action(item.Action));Spacing(sb);sb.Append(item.TableOne);AS(sb);sb.Append(item.TableAliasOne);
+                        CRLF(sb); Tab(sb); sb.Append(Action(item.Action)); Spacing(sb); sb.Append(item.TableOne); AS(sb); sb.Append(item.TableAliasOne);
                         break;
                     case ActionEnum.On:
-                        CRLF(sb);Tab(sb);Tab(sb);sb.Append(Action(item.Action));Spacing(sb);
-                        sb.Append(item.TableAliasOne);Dot(sb);Backquote(sb);sb.Append(item.ColumnOne);Backquote(sb);
+                        CRLF(sb); Tab(sb); Tab(sb); sb.Append(Action(item.Action)); Spacing(sb);
+                        sb.Append(item.TableAliasOne); Dot(sb); Backquote(sb); sb.Append(item.ColumnOne); Backquote(sb);
                         sb.Append(Compare(item.Compare));
-                        sb.Append(item.TableAliasTwo);Dot(sb);Backquote(sb);sb.Append(item.ColumnTwo);Backquote(sb);
+                        sb.Append(item.TableAliasTwo); Dot(sb); Backquote(sb); sb.Append(item.ColumnTwo); Backquote(sb);
                         break;
                 }
             }
@@ -868,9 +868,6 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
                     list.Add(sb.ToString());
                     break;
                 case UiMethodEnum.FirstOrDefaultAsync:
-                    Select(sb); Distinct(sb); SelectColumn(sb); From(sb); Table(sb); Where(sb); OrderBy(sb); End(sb);
-                    list.Add(sb.ToString());
-                    break;
                 case UiMethodEnum.ListAsync:
                 case UiMethodEnum.TopAsync:
                     Select(sb); Distinct(sb); SelectColumn(sb); From(sb); Table(sb); Where(sb); OrderBy(sb); Limit(sb); End(sb);
