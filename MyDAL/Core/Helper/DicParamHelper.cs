@@ -56,7 +56,6 @@ namespace MyDAL.Core.Helper
                 CsValue = ui.CsValue,
                 CsValueStr = ui.CsValueStr,
                 CsType = ui.CsType,
-                TvpIndex = ui.TvpIndex,
                 GroupRef = ui.GroupRef
             };
 
@@ -90,7 +89,14 @@ namespace MyDAL.Core.Helper
             }
 
             //
-            if (DC.IsInParameter(dic))
+            if(dic.Inserts!=null)
+            {
+                foreach(var ui in dic.Inserts)
+                {
+                    Unique(ui);
+                }
+            }
+            else if (DC.IsInParameter(dic))
             {
                 InNotIn(dic);
             }
@@ -152,6 +158,13 @@ namespace MyDAL.Core.Helper
                     DbParam(u, refDb);
                 }
             }
+            if(ui.Inserts!=null)
+            {
+                foreach(var u in ui.Inserts)
+                {
+                    DbParam(u, refDb);
+                }
+            }
         }
         private List<DicParam> FlatDics(List<DicParam> dics)
         {
@@ -169,6 +182,10 @@ namespace MyDAL.Core.Helper
                     else if (d.InItems != null)
                     {
                         ds.AddRange(FlatDics(d.InItems));
+                    }
+                    else if(d.Inserts!=null)
+                    {
+                        ds.AddRange(FlatDics(d.Inserts));
                     }
                     else
                     {
@@ -230,6 +247,10 @@ namespace MyDAL.Core.Helper
                     if (db.Group != null)
                     {
                         paras.Add(GetParameters(db.Group));
+                    }
+                    else if (db.Inserts != null)
+                    {
+                        paras.Add(GetParameters(db.Inserts));
                     }
                     else if (DC.IsInParameter(db))
                     {
@@ -482,7 +503,15 @@ namespace MyDAL.Core.Helper
 
         /*******************************************************************************************************/
 
-        internal DicParam InsertDic(string fullName, string key, (object val, string valStr) val, Type valType, int tvpIdx)
+        internal DicParam InsertDic(string fullName,List<DicParam> list)
+        {
+            var dic = SetDicBase(DC);
+            dic.ClassFullName = fullName;
+            dic.Inserts = list;
+
+            return dic;
+        }
+        internal DicParam InsertHelperDic(string fullName, string key, (object val, string valStr) val, Type valType)
         {
             var dic = SetDicBase(DC);
             dic.ClassFullName = fullName;
@@ -492,7 +521,6 @@ namespace MyDAL.Core.Helper
             dic.CsValue = val.val;
             dic.CsValueStr = val.valStr;
             dic.CsType = valType;
-            dic.TvpIndex = tvpIdx;
 
             return dic;
         }

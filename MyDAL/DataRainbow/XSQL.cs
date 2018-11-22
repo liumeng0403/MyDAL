@@ -5,7 +5,7 @@ namespace MyDAL.DataRainbow
 {
     internal abstract class XSQL
     {
-        
+
         protected static void Spacing(StringBuilder sb)
         {
             sb.Append(' ');
@@ -14,6 +14,10 @@ namespace MyDAL.DataRainbow
         {
             sb.Append('`');
         }
+        protected static void SingleQuote(StringBuilder sb)
+        {
+            sb.Append('\'');
+        }
         protected static void AT(StringBuilder sb)
         {
             sb.Append('@');
@@ -21,6 +25,10 @@ namespace MyDAL.DataRainbow
         protected static void Dot(StringBuilder sb)
         {
             sb.Append('.');
+        }
+        protected static void Star(StringBuilder sb)
+        {
+            sb.Append('*');
         }
         protected static void Comma(StringBuilder sb)
         {
@@ -41,6 +49,48 @@ namespace MyDAL.DataRainbow
         protected static void RightBracket(StringBuilder sb)
         {
             sb.Append(')');
+        }
+        protected static void Equal(StringBuilder sb)
+        {
+            sb.Append('=');
+        }
+
+        /****************************************************************************************************************/
+        /*
+         * MySQL
+         */
+        protected static void LockTables(StringBuilder sb)
+        {
+            sb.Append("LOCK TABLES");
+        }
+        protected static void Write(StringBuilder sb)
+        {
+            Spacing(sb);
+            sb.Append("WRITE");
+        }
+        protected static void UnlockTables(StringBuilder sb)
+        {
+            CRLF(sb);
+            sb.Append("UNLOCK TABLES");
+        }
+        protected static void DisableKeysS(StringBuilder sb)
+        {
+            CRLF(sb);
+            sb.Append("/*!40000 ALTER TABLE");
+        }
+        protected static void DisableKeysE(StringBuilder sb)
+        {
+            Spacing(sb);
+            sb.Append("DISABLE KEYS */");
+        }
+        protected static void EnableKeysS(StringBuilder sb)
+        {
+            DisableKeysS(sb);
+        }
+        protected static void EnableKeysE(StringBuilder sb)
+        {
+            Spacing(sb);
+            sb.Append("ENABLE KEYS */");
         }
 
         /****************************************************************************************************************/
@@ -199,6 +249,11 @@ namespace MyDAL.DataRainbow
         protected static void Select(StringBuilder sb)
         {
             sb.Append("select");
+        }
+        protected static void Values(StringBuilder sb)
+        {
+            CRLF(sb);
+            sb.Append("values");
         }
 
     }

@@ -13,6 +13,7 @@
         internal string _006 { get; } = "006";
         internal string _007 { get; } = "007";
         internal string _008 { get; } = "008";
+        internal string _009 { get; } = "009";
 
     }
 }
