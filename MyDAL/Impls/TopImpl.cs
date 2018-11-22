@@ -67,7 +67,6 @@ namespace Yunyong.DataExchange.Impls
             where M : class
         {
             SelectMHandle<M>();
-            DC.DPH.SetParameter();
             DC.PageIndex = 0;
             DC.PageSize = count;
             PreExecuteHandle(UiMethodEnum.TopAsync);
@@ -78,7 +77,6 @@ namespace Yunyong.DataExchange.Impls
             where VM : class
         {
             SelectMHandle(columnMapFunc);
-            DC.DPH.SetParameter();
             DC.PageIndex = 0;
             DC.PageSize = count;
             PreExecuteHandle(UiMethodEnum.TopAsync);

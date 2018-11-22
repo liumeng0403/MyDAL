@@ -16,6 +16,7 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
         : XSQL, ISqlProvider
     {
         private Context DC { get; set; }
+        private StringBuilder X { get; set; }
 
         private MySqlProvider() { }
         internal MySqlProvider(Context dc)
@@ -357,185 +358,138 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
 
         /****************************************************************************************************************/
 
-        private void LockTables(StringBuilder sb)
+        private void InsertColumn()
         {
-            sb.Append("LOCK TABLES");
-        }
-        private void Write(StringBuilder sb)
-        {
-            Spacing(sb);
-            sb.Append("WRITE");
-        }
-        private void UnlockTables(StringBuilder sb)
-        {
-            CRLF(sb);
-            sb.Append("UNLOCK TABLES");
-        }
-        private void DisableKeysS(StringBuilder sb)
-        {
-            CRLF(sb);
-            sb.Append("/*!40000 ALTER TABLE");
-        }
-        private void DisableKeysE(StringBuilder sb)
-        {
-            Spacing(sb);
-            sb.Append("DISABLE KEYS */");
-        }
-        private void EnableKeysS(StringBuilder sb)
-        {
-            DisableKeysS(sb);
-        }
-        private void EnableKeysE(StringBuilder sb)
-        {
-            Spacing(sb);
-            sb.Append("ENABLE KEYS */");
-        }
-
-        /****************************************************************************************************************/
-
-        private void InsertColumn(StringBuilder sb)
-        {
-            Spacing(sb);
-            var ps = DC.Parameters.Where(it => it.TvpIndex == 0);
+            Spacing(X);
+            var ps = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.Insert && (it.Option == OptionEnum.Insert || it.Option == OptionEnum.InsertTVP));
             if (ps != null)
             {
-                sb.Append("\r\n (");
-                ConcatWithComma(sb, ps.Select(it => it.ColumnOne), Backquote, Backquote);
-                sb.Append(") ");
+                CRLF(X);
+                LeftBracket(X); ConcatWithComma(X, ps.Inserts.Select(it => it.ColumnOne), Backquote, Backquote); RightBracket(X);
             }
         }
-        private void UpdateColumn(StringBuilder sb)
+        private void UpdateColumn()
         {
-            if (!DC.Parameters.Any(it => it.Action == ActionEnum.Update))
+            var list = DC.Parameters.Where(it => it.Action == ActionEnum.Update)?.ToList();
+            if (list == null || list.Count == 0) { throw new Exception("没有设置任何要更新的字段!"); }
+            var i = 0;
+            foreach (var item in list)
             {
-                throw new Exception("没有设置任何要更新的字段!");
-            }
-
-            var list = new List<string>();
-
-            foreach (var item in DC.Parameters)
-            {
-                switch (item.Action)
+                i++;
+                if (item.Option == OptionEnum.ChangeAdd
+                    || item.Option == OptionEnum.ChangeMinus)
                 {
-                    case ActionEnum.Update:
-                        switch (item.Option)
-                        {
-                            case OptionEnum.ChangeAdd:
-                            case OptionEnum.ChangeMinus:
-                                list.Add($" `{item.ColumnOne}`=`{item.ColumnOne}`{Option(item.Option)}@{item.Param} ");
-                                break;
-                            case OptionEnum.Set:
-                                list.Add($" `{item.ColumnOne}`{Option(item.Option)}@{item.Param} ");
-                                break;
-                        }
-                        break;
+                    if (i != 1) { CRLF(X); Tab(X); }
+                    Backquote(X); X.Append(item.ColumnOne); Backquote(X);
+                    Equal(X);
+                    Backquote(X); X.Append(item.ColumnOne); Backquote(X); X.Append(Option(item.Option)); AT(X); X.Append(item.Param);
                 }
+                else if (item.Option == OptionEnum.Set)
+                {
+                    if (i != 1) { CRLF(X); Tab(X); }
+                    Backquote(X); X.Append(item.ColumnOne); Backquote(X); X.Append(Option(item.Option)); AT(X); X.Append(item.Param);
+                }
+                else
+                {
+                    throw new Exception($"{XConfig.EC._009} -- [[{item.Action}-{item.Option}]] 不能解析!!!");
+                }
+                if (i != list.Count) { Comma(X); }
             }
-
-            sb.Append(string.Join(", \r\n\t", list));
         }
-        private void SelectColumn(StringBuilder sb)
+        private void SelectColumn()
         {
-            Spacing(sb);
-            var str = string.Empty;
-            var list = new List<string>();
-
-            foreach (var dic in DC.Parameters)
+            Spacing(X);
+            var items = DC.Parameters.Where(it => it.Action == ActionEnum.Select && (it.Option == OptionEnum.Column || it.Option == OptionEnum.ColumnAs))?.ToList();
+            if (items == null || items.Count == 0) { Star(X); }
+            var i = 0;
+            foreach (var dic in items)
             {
-                if (dic.Option != OptionEnum.Column
-                    && dic.Option != OptionEnum.ColumnAs)
+                i++;
+                if (dic.Func == FuncEnum.None)
                 {
-                    continue;
-                }
-
-                if (dic.Action == ActionEnum.Select)
-                {
-                    if (dic.Func == FuncEnum.None)
+                    if (dic.Crud == CrudTypeEnum.Join)
                     {
-                        if (dic.Crud == CrudTypeEnum.Join)
+                        if (dic.Option == OptionEnum.Column)
                         {
-                            if (dic.Option == OptionEnum.Column)
-                            {
-                                list.Add($" \t {dic.TableAliasOne}.`{dic.ColumnOne}` ");
-                            }
-                            else if (dic.Option == OptionEnum.ColumnAs)
-                            {
-                                list.Add($" \t {dic.TableAliasOne}.`{dic.ColumnOne}` as {dic.ColumnOneAlias} ");
-                            }
+                            if (i != 1) { CRLF(X); Tab(X); }
+                            X.Append(dic.TableAliasOne); Dot(X); Backquote(X); X.Append(dic.ColumnOne); Backquote(X);
                         }
-                        else if (dic.Crud == CrudTypeEnum.Query)
+                        else if (dic.Option == OptionEnum.ColumnAs)
                         {
-                            if (dic.Option == OptionEnum.Column)
-                            {
-                                list.Add($" \t `{dic.ColumnOne}` ");
-                            }
-                            else if (dic.Option == OptionEnum.ColumnAs)
-                            {
-                                list.Add($" \t `{dic.ColumnOne}` as {dic.ColumnOneAlias} ");
-                            }
+                            if (i != 1) { CRLF(X); Tab(X); }
+                            X.Append(dic.TableAliasOne); Dot(X); Backquote(X); X.Append(dic.ColumnOne); Backquote(X); As(X); X.Append(dic.ColumnOneAlias);
                         }
                     }
-                    else if (dic.Func == FuncEnum.DateFormat)
+                    else if (dic.Crud == CrudTypeEnum.Query)
                     {
-                        if (dic.Crud == CrudTypeEnum.Join)
+                        if (dic.Option == OptionEnum.Column)
                         {
-                            if (dic.Option == OptionEnum.Column)
-                            {
-                                list.Add($" \t DATE_FORMAT({dic.TableAliasOne}.`{dic.ColumnOne}`,'{dic.Format}') ");
-                            }
-                            else if (dic.Option == OptionEnum.ColumnAs)
-                            {
-                                list.Add($" \t DATE_FORMAT({dic.TableAliasOne}.`{dic.ColumnOne}`,'{dic.Format}') as {dic.ColumnOneAlias} ");
-                            }
+                            if (i != 1) { CRLF(X); Tab(X); }
+                            Backquote(X); X.Append(dic.ColumnOne); Backquote(X);
                         }
-                        else if (dic.Crud == CrudTypeEnum.Query)
+                        else if (dic.Option == OptionEnum.ColumnAs)
                         {
-                            if (dic.Option == OptionEnum.Column)
-                            {
-                                list.Add($" \t DATE_FORMAT(`{dic.ColumnOne}`,'{dic.Format}') ");
-                            }
-                            else if (dic.Option == OptionEnum.ColumnAs)
-                            {
-                                list.Add($" \t DATE_FORMAT(`{dic.ColumnOne}`,'{dic.Format}') as {dic.ColumnOneAlias} ");
-                            }
+                            if (i != 1) { CRLF(X); Tab(X); }
+                            Backquote(X); X.Append(dic.ColumnOne); Backquote(X); As(X); X.Append(dic.ColumnOneAlias);
                         }
                     }
-                    else
+                }
+                else if (dic.Func == FuncEnum.DateFormat)
+                {
+                    if (dic.Crud == CrudTypeEnum.Join)
                     {
-                        throw new Exception($"{XConfig.EC._007} -- [[{dic.Func}]] 不能解析!!!");
+                        if (dic.Option == OptionEnum.Column)
+                        {
+                            if (i != 1) { CRLF(X); Tab(X); }
+                            X.Append(Function(dic.Func)); LeftBracket(X);
+                            X.Append(dic.TableAliasOne); Dot(X); Backquote(X); X.Append(dic.ColumnOne); Backquote(X); Comma(X);
+                            SingleQuote(X); X.Append(dic.Format); SingleQuote(X); RightBracket(X);
+                        }
+                        else if (dic.Option == OptionEnum.ColumnAs)
+                        {
+                            if (i != 1) { CRLF(X); Tab(X); }
+                            X.Append(Function(dic.Func)); LeftBracket(X);
+                            X.Append(dic.TableAliasOne); Dot(X); Backquote(X); X.Append(dic.ColumnOne); Backquote(X); Comma(X);
+                            SingleQuote(X); X.Append(dic.Format); SingleQuote(X); RightBracket(X); As(X); X.Append(dic.ColumnOneAlias);
+                        }
+                    }
+                    else if (dic.Crud == CrudTypeEnum.Query)
+                    {
+                        if (dic.Option == OptionEnum.Column)
+                        {
+                            if (i != 1) { CRLF(X); Tab(X); }
+                            X.Append(Function(dic.Func)); LeftBracket(X);
+                            Backquote(X); X.Append(dic.ColumnOne); Backquote(X); Comma(X);
+                            SingleQuote(X); X.Append(dic.Format); SingleQuote(X); RightBracket(X);
+                        }
+                        else if (dic.Option == OptionEnum.ColumnAs)
+                        {
+                            if (i != 1) { CRLF(X); Tab(X); }
+                            X.Append(Function(dic.Func)); LeftBracket(X);
+                            Backquote(X); X.Append(dic.ColumnOne); Backquote(X); Comma(X);
+                            SingleQuote(X); X.Append(dic.Format); SingleQuote(X); RightBracket(X); As(X); X.Append(dic.ColumnOneAlias);
+                        }
                     }
                 }
-            }
-
-            if (list.Count > 0)
-            {
-                str = string.Join(",\r\n", list);
-            }
-            else
-            {
-                str = "*";
-            }
-            sb.Append(str);
-        }
-        private void Values(StringBuilder sb)
-        {
-            CRLF(sb);
-            sb.Append("values");
-        }
-        private void InsertValue(StringBuilder sb)
-        {
-            Spacing(sb);
-            var n = DC.Parameters.Max(it => it.TvpIndex) + 1;
-            for (var i = 0; i < n; i++)
-            {
-                var ps = DC.Parameters.Where(it => it.TvpIndex == i);
-                if (ps != null)
+                else
                 {
-                    CRLF(sb); LeftBracket(sb); ConcatWithComma(sb, ps.Select(it => it.Param), AT, null); RightBracket(sb);
+                    throw new Exception($"{XConfig.EC._007} -- [[{dic.Func}]] 不能解析!!!");
                 }
-                if (i != n - 1)
+                if (i != items.Count) { Comma(X); }
+            }
+        }
+        private void InsertValue()
+        {
+            Spacing(X);
+            var items = DC.Parameters.Where(it => it.Action == ActionEnum.Insert && (it.Option == OptionEnum.Insert || it.Option == OptionEnum.InsertTVP))?.ToList();
+            var i = 0;
+            foreach (var dic in items)
+            {
+                i++;
+                CRLF(X); LeftBracket(X); ConcatWithComma(X, dic.Inserts.Select(it => it.Param), AT, null); RightBracket(X);
+                if (i != items.Count)
                 {
-                    Comma(sb);
+                    Comma(X);
                 }
             }
         }
@@ -545,18 +499,18 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
             CRLF(sb);
             sb.Append("from");
         }
-        private void Table(StringBuilder sb)
+        private void Table()
         {
-            Spacing(sb);
+            Spacing(X);
             if (DC.Crud == CrudTypeEnum.Join)
             {
                 var dic = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.From);
-                Backquote(sb); sb.Append(dic.TableOne); Backquote(sb); AS(sb); sb.Append(dic.TableAliasOne);
-                Join(sb);
+                Backquote(X); X.Append(dic.TableOne); Backquote(X); As(X); X.Append(dic.TableAliasOne);
+                Join(X);
             }
             else
             {
-                Backquote(sb); sb.Append(DC.SC.GetTableName(DC.SC.GetModelKey(DC.SingleOpName))); Backquote(sb);
+                Backquote(X); X.Append(DC.SC.GetTableName(DC.SC.GetModelKey(DC.SingleOpName))); Backquote(X);
             }
         }
         private void Join(StringBuilder sb)
@@ -570,7 +524,7 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
                     case ActionEnum.From: break;    // 已处理 
                     case ActionEnum.InnerJoin:
                     case ActionEnum.LeftJoin:
-                        CRLF(sb); Tab(sb); sb.Append(Action(item.Action)); Spacing(sb); sb.Append(item.TableOne); AS(sb); sb.Append(item.TableAliasOne);
+                        CRLF(sb); Tab(sb); sb.Append(Action(item.Action)); Spacing(sb); sb.Append(item.TableOne); As(sb); sb.Append(item.TableAliasOne);
                         break;
                     case ActionEnum.On:
                         CRLF(sb); Tab(sb); Tab(sb); sb.Append(Action(item.Action)); Spacing(sb);
@@ -698,7 +652,7 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
                 Spacing(sb);
             }
         }
-        private void AS(StringBuilder sb)
+        private void As(StringBuilder sb)
         {
             Spacing(sb);
             sb.Append("as");
@@ -794,7 +748,7 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
             }
             if (string.IsNullOrWhiteSpace(tableName))
             {
-                throw new Exception($"类 [[{typeof(M).FullName}]] 必须是与 DB Table 对应的实体类,并且要由 XTableAttribute 或 TableAttribute 指定对应的表名!");
+                throw new Exception($"类 [[{typeof(M).FullName}]] 必须是与 DB Table 对应的实体类,并且要由 [XTable] 或 [Table] 标记指定类对应的表名!!!");
             }
             return tableName;
         }
@@ -842,63 +796,63 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
         void ISqlProvider.GetSQL()
         {
             var list = new List<string>();
+            X = new StringBuilder();
 
             //
-            var sb = new StringBuilder();
             switch (DC.Method)
             {
                 case UiMethodEnum.CreateAsync:
-                    InsertInto(sb); Table(sb); InsertColumn(sb); Values(sb); InsertValue(sb); End(sb);
-                    list.Add(sb.ToString());
+                    InsertInto(X); Table(); InsertColumn(); Values(X); InsertValue(); End(X);
+                    list.Add(X.ToString());
                     break;
                 case UiMethodEnum.CreateBatchAsync:
-                    LockTables(sb); Table(sb); Write(sb); End(sb);
-                    DisableKeysS(sb); Table(sb); DisableKeysE(sb); End(sb);
-                    InsertInto(sb); Table(sb); InsertColumn(sb); Values(sb); InsertValue(sb); End(sb);
-                    EnableKeysS(sb); Table(sb); EnableKeysE(sb); End(sb);
-                    UnlockTables(sb); End(sb);
-                    list.Add(sb.ToString());
+                    LockTables(X); Table(); Write(X); End(X);
+                    DisableKeysS(X); Table(); DisableKeysE(X); End(X);
+                    InsertInto(X); Table(); InsertColumn(); Values(X); InsertValue(); End(X);
+                    EnableKeysS(X); Table(); EnableKeysE(X); End(X);
+                    UnlockTables(X); End(X);
+                    list.Add(X.ToString());
                     break;
                 case UiMethodEnum.DeleteAsync:
-                    Delete(sb); From(sb); Table(sb); Where(sb); End(sb);
-                    list.Add(sb.ToString());
+                    Delete(X); From(X); Table(); Where(X); End(X);
+                    list.Add(X.ToString());
                     break;
                 case UiMethodEnum.UpdateAsync:
-                    Update(sb); Table(sb); Set(sb); UpdateColumn(sb); Where(sb); End(sb);
-                    list.Add(sb.ToString());
+                    Update(X); Table(); Set(X); UpdateColumn(); Where(X); End(X);
+                    list.Add(X.ToString());
                     break;
                 case UiMethodEnum.FirstOrDefaultAsync:
                 case UiMethodEnum.ListAsync:
                 case UiMethodEnum.TopAsync:
-                    Select(sb); Distinct(sb); SelectColumn(sb); From(sb); Table(sb); Where(sb); OrderBy(sb); Limit(sb); End(sb);
-                    list.Add(sb.ToString());
+                    Select(X); Distinct(X); SelectColumn(); From(X); Table(); Where(X); OrderBy(X); Limit(X); End(X);
+                    list.Add(X.ToString());
                     break;
                 case UiMethodEnum.PagingListAsync:
-                    Select(sb); CountCD(sb); From(sb); Table(sb); Where(sb); End(sb);
-                    list.Add(sb.ToString());
-                    sb.Clear();
-                    Select(sb); Distinct(sb); SelectColumn(sb); From(sb); Table(sb); Where(sb); OrderBy(sb); Limit(sb); End(sb);
-                    list.Add(sb.ToString());
+                    Select(X); CountCD(X); From(X); Table(); Where(X); End(X);
+                    list.Add(X.ToString());
+                    X.Clear();
+                    Select(X); Distinct(X); SelectColumn(); From(X); Table(); Where(X); OrderBy(X); Limit(X); End(X);
+                    list.Add(X.ToString());
                     break;
                 case UiMethodEnum.AllAsync:
-                    Select(sb); Distinct(sb); SelectColumn(sb); From(sb); Table(sb); OrderBy(sb); End(sb);
-                    list.Add(sb.ToString());
+                    Select(X); Distinct(X); SelectColumn(); From(X); Table(); OrderBy(X); End(X);
+                    list.Add(X.ToString());
                     break;
                 case UiMethodEnum.PagingAllListAsync:
-                    Select(sb); CountCD(sb); From(sb); Table(sb); End(sb);
-                    list.Add(sb.ToString());
-                    sb.Clear();
-                    Select(sb); Distinct(sb); SelectColumn(sb); From(sb); Table(sb); OrderBy(sb); Limit(sb); End(sb);
-                    list.Add(sb.ToString());
+                    Select(X); CountCD(X); From(X); Table(); End(X);
+                    list.Add(X.ToString());
+                    X.Clear();
+                    Select(X); Distinct(X); SelectColumn(); From(X); Table(); OrderBy(X); Limit(X); End(X);
+                    list.Add(X.ToString());
                     break;
                 case UiMethodEnum.ExistAsync:
                 case UiMethodEnum.CountAsync:
-                    Select(sb); CountCD(sb); From(sb); Table(sb); Where(sb); End(sb);
-                    list.Add(sb.ToString());
+                    Select(X); CountCD(X); From(X); Table(); Where(X); End(X);
+                    list.Add(X.ToString());
                     break;
                 case UiMethodEnum.SumAsync:
-                    Select(sb); Sum(sb); From(sb); Table(sb); Where(sb); End(sb);
-                    list.Add(sb.ToString());
+                    Select(X); Sum(X); From(X); Table(); Where(X); End(X);
+                    list.Add(X.ToString());
                     break;
             }
 

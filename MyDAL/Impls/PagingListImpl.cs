@@ -32,7 +32,6 @@ namespace Yunyong.DataExchange.Impls
             where VM : class
         {
             SelectMHandle(func);
-            DC.DPH.SetParameter();
             return await PagingListAsyncHandle<M, VM>(pageIndex, pageSize, UiMethodEnum.PagingListAsync);
         }
     }

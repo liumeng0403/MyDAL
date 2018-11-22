@@ -39,7 +39,7 @@ namespace Yunyong.DataExchange.Core.Common
         internal string Format { get; set; }
 
         //
-        internal int TvpIndex { get; set; }
+        //internal int TvpIndex { get; set; }
 
         //
         internal string Key { get; set; }
@@ -49,5 +49,6 @@ namespace Yunyong.DataExchange.Core.Common
         //
         internal List<DicParam> Group { get; set; }
         internal List<DicParam> InItems { get; set; }
+        internal List<DicParam> Inserts { get; set; }
     }
 }

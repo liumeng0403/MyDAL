@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Yunyong.Core;
+using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Enums;
 
 namespace Yunyong.DataExchange.Core.Bases
@@ -20,12 +21,14 @@ namespace Yunyong.DataExchange.Core.Bases
             var columns = DC.SC.GetColumnInfos(key);
             var fullName = typeof(M).FullName;
 
+            var list = new List<DicParam>();
             foreach (var prop in props)
             {
                 var val = DC.VH.PropertyValue(prop, m);
                 DC.Compare = CompareEnum.None;
-                DC.DPH.AddParameter(DC.DPH.InsertDic(fullName, prop.Name, val, prop.PropertyType, index));
+                list.Add(DC.DPH.InsertHelperDic(fullName, prop.Name, val, prop.PropertyType));
             }
+            DC.DPH.AddParameter(DC.DPH.InsertDic(fullName,list));
         }
 
         /**********************************************************************************************************/
@@ -158,8 +161,8 @@ namespace Yunyong.DataExchange.Core.Bases
         }
         protected void CreateMHandle<M>(IEnumerable<M> mList)
         {
-            var i = 0;
             DC.Option = OptionEnum.InsertTVP;
+            var i = 0;
             foreach (var m in mList)
             {
                 SetInsertValue(m, i);
