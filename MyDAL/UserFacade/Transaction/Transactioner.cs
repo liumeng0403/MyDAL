@@ -27,7 +27,7 @@ namespace MyDAL.UserFacade.Transaction
             {
                 if(DC.Conn.State== ConnectionState.Closed)
                 {
-                    await DC.DS.TryOpenAsync(DC.Conn).ConfigureAwait(false);
+                    await DC.DS.OpenAsync(DC.Conn);
                 }
                 using (DC.Tran = DC.Conn.BeginTransaction())
                 {
@@ -71,7 +71,7 @@ namespace MyDAL.UserFacade.Transaction
             {
                 if (DC.Conn.State == ConnectionState.Closed)
                 {
-                    await DC.DS.TryOpenAsync(DC.Conn).ConfigureAwait(false);
+                    await DC.DS.OpenAsync(DC.Conn);
                 }
                 using (DC.Tran = DC.Conn.BeginTransaction())
                 {
@@ -114,7 +114,7 @@ namespace MyDAL.UserFacade.Transaction
             {
                 if (DC.Conn.State == ConnectionState.Closed)
                 {
-                    await DC.DS.TryOpenAsync(DC.Conn).ConfigureAwait(false);
+                    await DC.DS.OpenAsync(DC.Conn);
                 }
                 using (DC.Tran = DC.Conn.BeginTransaction())
                 {
