@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Yunyong.Core;
+using Yunyong.DataExchange.AdoNet;
 using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Enums;
@@ -385,7 +386,10 @@ namespace Yunyong.DataExchange
 
         public static IDbConnection OpenDB(this IDbConnection conn)
         {
-            conn.Open();
+            if (conn.State == ConnectionState.Closed)
+            {
+                new DataSource().OpenAsync(conn).GetAwaiter().GetResult();
+            }
             return conn;
         }
         /// <summary>

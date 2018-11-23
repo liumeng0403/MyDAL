@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Yunyong.DataExchange.Core;
@@ -68,24 +69,24 @@ namespace Yunyong.DataExchange.AdoNet
             }
             return false;
         }
-        private DbCommand TrySetupAsyncCommand(CommandInfo command, IDbConnection cnn, Action<IDbCommand, DbParamInfo> paramReader)
+        private DbCommand SettingCommand(CommandInfo comm, IDbConnection cnn, Action<IDbCommand, DbParamInfo> paramReader)
         {
             var cmd = cnn.CreateCommand();
-            cmd.CommandText = command.CommandText;
+            cmd.CommandText = comm.CommandText;
             cmd.CommandTimeout = XConfig.CommandTimeout;
             cmd.CommandType = CommandType.Text;
-            paramReader?.Invoke(cmd, command.Parameter);
+            paramReader?.Invoke(cmd, comm.Parameter);
             return cmd as DbCommand;
         }
-        internal Task TryOpenAsync(IDbConnection cnn)
+        internal ConfiguredTaskAwaitable OpenAsync(IDbConnection cnn)
         {
             if (cnn is DbConnection dbConn)
             {
-                return dbConn.OpenAsync(default(CancellationToken));
+                return dbConn.OpenAsync(default(CancellationToken)).ConfigureAwait(false);
             }
             else
             {
-                throw new InvalidOperationException("Async operations require use of a DbConnection or an already-open IDbConnection");
+                throw new InvalidOperationException("请使用一个已打开连接的 IDbConnection 对象!!!");
             }
         }
         private static CommandBehavior DefaultAllowedCommandBehaviors { get; } = ~CommandBehavior.SingleResult;
@@ -151,7 +152,7 @@ namespace Yunyong.DataExchange.AdoNet
 
         /*********************************************************************************************************************************************/
 
-        private DataSource() { }
+        internal DataSource() { }
         internal DataSource(Context dc)
         {
             DC = dc;
@@ -166,14 +167,14 @@ namespace Yunyong.DataExchange.AdoNet
          */
         internal async Task<List<M>> ExecuteReaderMultiRowAsync<M>()
         {
-            var command = new CommandInfo(SqlCount == 1 ? SqlOne : SqlTwo, Parameter);
+            var comm = new CommandInfo(SqlCount == 1 ? SqlOne : SqlTwo, Parameter);
             bool needClose = Conn.State == ConnectionState.Closed;
-            using (var cmd = TrySetupAsyncCommand(command, Conn, command.Parameter.ParamReader))
+            using (var cmd = SettingCommand(comm, Conn, comm.Parameter.ParamReader))
             {
                 DbDataReader reader = null;
                 try
                 {
-                    if (needClose) { await TryOpenAsync(Conn).ConfigureAwait(false); }
+                    if (needClose) { await OpenAsync(Conn); }
                     reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, XConfig.MultiRow).ConfigureAwait(false);
                     if (reader.FieldCount == 0)
                     {
@@ -202,14 +203,14 @@ namespace Yunyong.DataExchange.AdoNet
          */
         internal async Task<M> ExecuteReaderSingleRowAsync<M>()
         {
-            var command = new CommandInfo(SqlOne, Parameter);
+            var comm = new CommandInfo(SqlOne, Parameter);
             var needClose = Conn.State == ConnectionState.Closed;
-            using (var cmd = TrySetupAsyncCommand(command, Conn, command.Parameter.ParamReader))
+            using (var cmd = SettingCommand(comm, Conn, comm.Parameter.ParamReader))
             {
                 DbDataReader reader = null;
                 try
                 {
-                    if (needClose) { await TryOpenAsync(Conn).ConfigureAwait(false); }
+                    if (needClose) { await OpenAsync(Conn); }
                     reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, XConfig.SingleRow).ConfigureAwait(false);
                     var result = default(M);
                     if (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false) && reader.FieldCount != 0)
@@ -235,13 +236,13 @@ namespace Yunyong.DataExchange.AdoNet
         internal async Task<List<F>> ExecuteReaderSingleColumnAsync<M, F>(Func<M, F> propertyFunc)
             where M : class
         {
-            var command = new CommandInfo(SqlOne, Parameter);
+            var comm = new CommandInfo(SqlOne, Parameter);
             var needClose = Conn.State == ConnectionState.Closed;
-            using (var cmd = TrySetupAsyncCommand(command, Conn, command.Parameter.ParamReader))
+            using (var cmd = SettingCommand(comm, Conn, comm.Parameter.ParamReader))
             {
                 try
                 {
-                    if (needClose) { await TryOpenAsync(Conn).ConfigureAwait(false); }
+                    if (needClose) { await OpenAsync(Conn); }
                     Reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, XConfig.MultiRow).ConfigureAwait(false);
                     return await ReadColumn(propertyFunc);
                 }
@@ -260,13 +261,13 @@ namespace Yunyong.DataExchange.AdoNet
          */
         internal async Task<int> ExecuteNonQueryAsync()
         {
-            var command = new CommandInfo(SqlOne, Parameter);
+            var comm = new CommandInfo(SqlOne, Parameter);
             var needClose = Conn.State == ConnectionState.Closed;
-            using (var cmd = TrySetupAsyncCommand(command, Conn, command.Parameter.ParamReader))
+            using (var cmd = SettingCommand(comm, Conn, comm.Parameter.ParamReader))
             {
                 try
                 {
-                    if (needClose) { await TryOpenAsync(Conn).ConfigureAwait(false); }
+                    if (needClose) { await OpenAsync(Conn); }
                     var result = await cmd.ExecuteNonQueryAsync(default(CancellationToken)).ConfigureAwait(false);
                     return result;
                 }
@@ -284,14 +285,14 @@ namespace Yunyong.DataExchange.AdoNet
          */
         internal async Task<T> ExecuteScalarAsync<T>()
         {
-            var command = new CommandInfo(SqlOne, Parameter);
+            var comm = new CommandInfo(SqlOne, Parameter);
             var cmd = default(DbCommand);
             var needClose = Conn.State == ConnectionState.Closed;
             var result = default(object);
             try
             {
-                cmd = TrySetupAsyncCommand(command, Conn, command.Parameter.ParamReader);
-                if (needClose) { await TryOpenAsync(Conn).ConfigureAwait(false); }
+                cmd = SettingCommand(comm, Conn, comm.Parameter.ParamReader);
+                if (needClose) { await OpenAsync(Conn); }
                 result = await cmd.ExecuteScalarAsync(default(CancellationToken)).ConfigureAwait(false);
             }
             finally
