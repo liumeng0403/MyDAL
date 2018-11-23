@@ -1,4 +1,6 @@
-﻿using MyDAL.Core.Enums;
+﻿using MyDAL.Core;
+using MyDAL.Core.Enums;
+using System;
 using System.Text;
 
 namespace MyDAL.DataRainbow
@@ -126,16 +128,20 @@ namespace MyDAL.DataRainbow
             }
             return " ";
         }
-        protected static string MultiAction(ActionEnum action)
+        protected static void MultiAction(ActionEnum action, StringBuilder sb)
         {
-            switch (action)
+            if (action == ActionEnum.And)
             {
-                case ActionEnum.And:
-                    return " && ";
-                case ActionEnum.Or:
-                    return " || ";
+                Spacing(sb); sb.Append("&&"); Spacing(sb);
             }
-            return " ";
+            else if (action == ActionEnum.Or)
+            {
+                Spacing(sb); sb.Append("||"); Spacing(sb);
+            }
+            else
+            {
+                throw new Exception($"{XConfig.EC._010} -- [[{action}]] 不能解析!!!");
+            }
         }
         protected static string Option(OptionEnum option)
         {
@@ -249,6 +255,11 @@ namespace MyDAL.DataRainbow
         protected static void Select(StringBuilder sb)
         {
             sb.Append("select");
+        }
+        protected static void From(StringBuilder sb)
+        {
+            CRLF(sb);
+            sb.Append("from");
         }
         protected static void Values(StringBuilder sb)
         {
