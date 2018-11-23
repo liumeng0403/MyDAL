@@ -281,33 +281,33 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
             }
             throw new Exception("LikeProcess 未能处理!!!");
         }
-        private string OneEqualOneProcess(DicParam db, bool isMulti)
+        private void OneEqualOneProcess(DicParam db, bool isMulti, StringBuilder sb)
         {
+            Spacing(sb);
             if (isMulti)
             {
-                return $" @{db.Param} ";
+                AT(sb); sb.Append(db.Param);
             }
             else
             {
-                return $" {Action(db.Action)} @{db.Param} ";
+                sb.Append(Action(db.Action)); Spacing(sb); AT(sb); sb.Append(db.Param);
             }
-            throw new Exception("OneEqualOneProcess 未能处理!!!");
         }
         private string InStrHandle(List<DicParam> dbs)
         {
             return $" {string.Join(",", dbs.Select(it => $" @{it.Param} "))} ";
         }
-        private string IsNullProcess(DicParam db, bool isMulti)
+        private void IsNullProcess(DicParam db, bool isMulti, StringBuilder sb)
         {
+            Spacing(sb);
             if (isMulti)
             {
-                return $" `{db.ColumnOne}` {Option(db.Option)} ";
+                Backquote(sb); sb.Append(db.ColumnOne); Backquote(sb); Spacing(sb); sb.Append(Option(db.Option));
             }
             else
             {
-                return $" {Action(db.Action)} `{db.ColumnOne}` {Option(db.Option)} ";
+                sb.Append(Action(db.Action)); Spacing(sb); Backquote(sb); sb.Append(db.ColumnOne); Backquote(sb); Spacing(sb); sb.Append(Option(db.Option));
             }
-            throw new Exception("IsNullProcess 未能处理!!!");
         }
 
         /****************************************************************************************************************/
@@ -328,7 +328,9 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
                         list.Add(MultiCondition(item, isMulti));
                     }
                 }
-                return string.Join(MultiAction(db.GroupAction), list);
+                var sb1 = new StringBuilder();
+                MultiAction(db.GroupAction, sb1);
+                return string.Join(sb1.ToString(), list);
             }
             else
             {
@@ -346,11 +348,15 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
                 }
                 else if (db.Option == OptionEnum.OneEqualOne)
                 {
-                    return OneEqualOneProcess(db, isMulti);
+                    var sb3 = new StringBuilder();
+                    OneEqualOneProcess(db, isMulti, sb3);
+                    return sb3.ToString();
                 }
                 else if (db.Option == OptionEnum.IsNull || db.Option == OptionEnum.IsNotNull)
                 {
-                    return IsNullProcess(db, isMulti);
+                    var sb2 = new StringBuilder();
+                    IsNullProcess(db, isMulti, sb2);
+                    return sb2.ToString();
                 }
                 return string.Empty;
             }
@@ -494,11 +500,6 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
             }
         }
 
-        private void From(StringBuilder sb)
-        {
-            CRLF(sb);
-            sb.Append("from");
-        }
         private void Table()
         {
             Spacing(X);
@@ -506,16 +507,16 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
             {
                 var dic = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.From);
                 Backquote(X); X.Append(dic.TableOne); Backquote(X); As(X); X.Append(dic.TableAliasOne);
-                Join(X);
+                Join();
             }
             else
             {
                 Backquote(X); X.Append(DC.SC.GetTableName(DC.SC.GetModelKey(DC.SingleOpName))); Backquote(X);
             }
         }
-        private void Join(StringBuilder sb)
+        private void Join()
         {
-            Spacing(sb);
+            Spacing(X);
             foreach (var item in DC.Parameters)
             {
                 if (item.Crud != CrudTypeEnum.Join) { continue; }
@@ -524,13 +525,13 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
                     case ActionEnum.From: break;    // 已处理 
                     case ActionEnum.InnerJoin:
                     case ActionEnum.LeftJoin:
-                        CRLF(sb); Tab(sb); sb.Append(Action(item.Action)); Spacing(sb); sb.Append(item.TableOne); As(sb); sb.Append(item.TableAliasOne);
+                        CRLF(X); Tab(X); X.Append(Action(item.Action)); Spacing(X); X.Append(item.TableOne); As(X); X.Append(item.TableAliasOne);
                         break;
                     case ActionEnum.On:
-                        CRLF(sb); Tab(sb); Tab(sb); sb.Append(Action(item.Action)); Spacing(sb);
-                        sb.Append(item.TableAliasOne); Dot(sb); Backquote(sb); sb.Append(item.ColumnOne); Backquote(sb);
-                        sb.Append(Compare(item.Compare));
-                        sb.Append(item.TableAliasTwo); Dot(sb); Backquote(sb); sb.Append(item.ColumnTwo); Backquote(sb);
+                        CRLF(X); Tab(X); Tab(X); X.Append(Action(item.Action)); Spacing(X);
+                        X.Append(item.TableAliasOne); Dot(X); Backquote(X); X.Append(item.ColumnOne); Backquote(X);
+                        X.Append(Compare(item.Compare));
+                        X.Append(item.TableAliasTwo); Dot(X); Backquote(X); X.Append(item.ColumnTwo); Backquote(X);
                         break;
                 }
             }

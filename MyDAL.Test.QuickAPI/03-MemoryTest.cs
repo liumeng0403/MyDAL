@@ -14,7 +14,7 @@ namespace MyDAL.Test.QuickAPI
         {
             var xx = "";
 
-            for(var i=0;i<500;i++)
+            for(var i=0;i<100;i++)
             {
                 var name = "张";
                 var res = await Conn

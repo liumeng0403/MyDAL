@@ -14,6 +14,7 @@
         internal string _007 { get; } = "007";
         internal string _008 { get; } = "008";
         internal string _009 { get; } = "009";
+        internal string _010 { get; } = "010";
 
     }
 }
