@@ -7,7 +7,7 @@ using Xunit;
 
 namespace MyDAL.Test.QuerySingleColumn
 {
-    public class _02_FirstOrDefaultAsync:TestBase
+    public class _01_FirstOrDefaultAsync:TestBase
     {
         [Fact]
         public async Task test()

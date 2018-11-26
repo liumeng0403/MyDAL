@@ -1,5 +1,6 @@
 ﻿using MyDAL.Core.Bases;
 using MyDAL.Core.Enums;
+using MyDAL.Core.Extensions;
 using MyDAL.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -32,12 +33,20 @@ namespace MyDAL.Impls
             return await DC.DS.ExecuteReaderMultiRowAsync<VM>();
         }
 
-        public async Task<List<VM>> ListAsync<VM>(Expression<Func<M, VM>> columnMapFunc)
-            where VM:class
+        public async Task<List<T>> ListAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
-            SelectMHandle(columnMapFunc);
-            PreExecuteHandle(UiMethodEnum.ListAsync);
-            return await DC.DS.ExecuteReaderMultiRowAsync<VM>();
+            if (typeof(T).IsSingleColumn())
+            {
+                SingleColumnHandle(columnMapFunc);
+                PreExecuteHandle(UiMethodEnum.ListAsync);
+                return await DC.DS.ExecuteReaderSingleColumnAsync(columnMapFunc.Compile());
+            }
+            else
+            {
+                SelectMHandle(columnMapFunc);
+                PreExecuteHandle(UiMethodEnum.ListAsync);
+                return await DC.DS.ExecuteReaderMultiRowAsync<T>();
+            }
         }
 
         public async Task<List<M>> ListAsync(int topCount)
@@ -51,10 +60,9 @@ namespace MyDAL.Impls
             return await new TopImpl<M>(DC).TopAsync<VM>(topCount);
         }
 
-        public async Task<List<VM>> ListAsync<VM>(int topCount, Expression<Func<M, VM>> columnMapFunc) 
-            where VM : class
+        public async Task<List<T>> ListAsync<T>(int topCount, Expression<Func<M, T>> columnMapFunc) 
         {
-            return await new TopImpl<M>(DC).TopAsync<VM>(topCount, columnMapFunc);
+            return await new TopImpl<M>(DC).TopAsync(topCount, columnMapFunc);
         }
     }
 
