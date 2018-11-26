@@ -5,7 +5,7 @@ using Yunyong.DataExchange;
 
 namespace MyDAL.Test.QuerySingleColumn
 {
-    public class _01_AllAsync:TestBase
+    public class _05_AllAsync:TestBase
     {
         [Fact]
         public async Task test()

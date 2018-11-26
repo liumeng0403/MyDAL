@@ -11,14 +11,12 @@ namespace Yunyong.DataExchange.Interfaces
         Task<List<M>> ListAsync();
         Task<List<VM>> ListAsync<VM>()
             where VM : class;
-        Task<List<VM>> ListAsync<VM>(Expression<Func<M, VM>> columnMapFunc)
-            where VM : class;
+        Task<List<T>> ListAsync<T>(Expression<Func<M, T>> columnMapFunc);
 
         Task<List<M>> ListAsync(int topCount);
         Task<List<VM>> ListAsync<VM>(int topCount)
             where VM : class;
-        Task<List<VM>> ListAsync<VM>(int topCount, Expression<Func<M, VM>> columnMapFunc)
-            where VM : class;
+        Task<List<T>> ListAsync<T>(int topCount, Expression<Func<M, T>> columnMapFunc);
     }
 
     internal interface IListX

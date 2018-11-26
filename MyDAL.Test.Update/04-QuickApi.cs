@@ -6,7 +6,7 @@ using Yunyong.DataExchange;
 
 namespace MyDAL.Test.Update
 {
-    public class _04_QuickApi:TestBase
+    public class _04_QuickApi : TestBase
     {
         [Fact]
         public async Task test()
@@ -14,21 +14,39 @@ namespace MyDAL.Test.Update
 
             /****************************************************************************************/
 
-            var xx13 = "";
+            var xx1 = "";
 
-            var pk = Guid.Parse("8f2cbb64-8356-4482-88ee-016558c05b2d");
-            var res13 = await Conn.UpdateAsync<AlipayPaymentRecord>(pk, new
+            var pk1 = Guid.Parse("8f2cbb64-8356-4482-88ee-016558c05b2d");
+            var res1 = await Conn.UpdateAsync<AlipayPaymentRecord>(pk1, new
             {
                 Description = "xxxxxx"
             });
-            Assert.True(res13 == 1);
+            Assert.True(res1 == 1);
 
-            var tuple13 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
-            var res131 = await Conn.GetAsync<AlipayPaymentRecord>(pk);
-            Assert.True(res131.Description == "xxxxxx");
+            var res11 = await Conn.GetAsync<AlipayPaymentRecord>(pk1);
+            Assert.True(res11.Description == "xxxxxx");
 
             /****************************************************************************************/
+
+            var xx2 = "";
+
+            var pk2 = Guid.Parse("d0a2d3f3-5cfb-4b3b-aeea-016557383999");
+            var res2 = await Conn.UpdateAsync<AlipayPaymentRecord>(it => it.Id == pk2, new
+            {
+                Description = "xxxxxx"
+            });
+            Assert.True(res2 == 1);
+
+            var tuple2 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            var res21 = await Conn.GetAsync<AlipayPaymentRecord>(pk2);
+            Assert.True(res21.Description == "xxxxxx");
+
+            /****************************************************************************************/
+
+            var xx = "";
 
         }
     }

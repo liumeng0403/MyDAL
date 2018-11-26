@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Core.Enums;
+using Yunyong.DataExchange.Core.Extensions;
 using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.Impls
@@ -32,12 +32,20 @@ namespace Yunyong.DataExchange.Impls
             return await DC.DS.ExecuteReaderMultiRowAsync<VM>();
         }
 
-        public async Task<List<VM>> ListAsync<VM>(Expression<Func<M, VM>> columnMapFunc)
-            where VM:class
+        public async Task<List<T>> ListAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
-            SelectMHandle(columnMapFunc);
-            PreExecuteHandle(UiMethodEnum.ListAsync);
-            return await DC.DS.ExecuteReaderMultiRowAsync<VM>();
+            if (typeof(T).IsSingleColumn())
+            {
+                SingleColumnHandle(columnMapFunc);
+                PreExecuteHandle(UiMethodEnum.ListAsync);
+                return await DC.DS.ExecuteReaderSingleColumnAsync(columnMapFunc.Compile());
+            }
+            else
+            {
+                SelectMHandle(columnMapFunc);
+                PreExecuteHandle(UiMethodEnum.ListAsync);
+                return await DC.DS.ExecuteReaderMultiRowAsync<T>();
+            }
         }
 
         public async Task<List<M>> ListAsync(int topCount)
@@ -51,10 +59,9 @@ namespace Yunyong.DataExchange.Impls
             return await new TopImpl<M>(DC).TopAsync<VM>(topCount);
         }
 
-        public async Task<List<VM>> ListAsync<VM>(int topCount, Expression<Func<M, VM>> columnMapFunc) 
-            where VM : class
+        public async Task<List<T>> ListAsync<T>(int topCount, Expression<Func<M, T>> columnMapFunc) 
         {
-            return await new TopImpl<M>(DC).TopAsync<VM>(topCount, columnMapFunc);
+            return await new TopImpl<M>(DC).TopAsync(topCount, columnMapFunc);
         }
     }
 
