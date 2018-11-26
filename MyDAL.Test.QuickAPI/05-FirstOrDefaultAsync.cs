@@ -1,5 +1,4 @@
 ﻿using MyDAL.Test.Entities.EasyDal_Exchange;
-using MyDAL.Test.Options;
 using MyDAL.Test.ViewModels;
 using System;
 using System.Threading.Tasks;
@@ -52,37 +51,37 @@ namespace MyDAL.Test.QuickAPI
 
             /****************************************************************************************/
 
-            var xx7 = "";
+            //var xx7 = "";
 
-            var option7 = new AlipayPaymentQueryOption();
-            option7.CreatedOn = date;
-            var res7 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord>(option7);
-            Assert.True(res7.Id == pk);
+            //var option7 = new AlipayPaymentQueryOption();
+            //option7.CreatedOn = date;
+            //var res7 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord>(option7);
+            //Assert.True(res7.Id == pk);
 
-            var tuple7 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /****************************************************************************************/
-
-            var xx8 = "";
-
-            var res8 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(option7);
-            Assert.True(res8.Id == pk);
-
-            var tuple8 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            //var tuple7 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /****************************************************************************************/
 
-            var xx9 = "";
+            //var xx8 = "";
 
-            var res9 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(option7, record => new AlipayPaymentRecordVM
-            {
-                Id = record.Id,
-                TotalAmount = record.TotalAmount,
-                Description = record.Description
-            });
-            Assert.True(res9.Id == pk);
+            //var res8 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(option7);
+            //Assert.True(res8.Id == pk);
 
-            var tuple9 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            //var tuple8 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /****************************************************************************************/
+
+            //var xx9 = "";
+
+            //var res9 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(option7, record => new AlipayPaymentRecordVM
+            //{
+            //    Id = record.Id,
+            //    TotalAmount = record.TotalAmount,
+            //    Description = record.Description
+            //});
+            //Assert.True(res9.Id == pk);
+
+            //var tuple9 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /****************************************************************************************/
 

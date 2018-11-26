@@ -17,7 +17,7 @@ namespace MyDAL.Test.Update
             var xx1 = "";
 
             var pk1 = Guid.Parse("8f2cbb64-8356-4482-88ee-016558c05b2d");
-            var res1 = await Conn.UpdateAsync<AlipayPaymentRecord>(pk1, new
+            var res1 = await Conn.UpdateAsync<AlipayPaymentRecord>(it=>it.Id==pk1, new
             {
                 Description = "xxxxxx"
             });
@@ -25,7 +25,7 @@ namespace MyDAL.Test.Update
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
-            var res11 = await Conn.GetAsync<AlipayPaymentRecord>(pk1);
+            var res11 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord>(it=>it.Id==pk1);
             Assert.True(res11.Description == "xxxxxx");
 
             /****************************************************************************************/
@@ -41,7 +41,7 @@ namespace MyDAL.Test.Update
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
-            var res21 = await Conn.GetAsync<AlipayPaymentRecord>(pk2);
+            var res21 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord>(it=>it.Id==pk2);
             Assert.True(res21.Description == "xxxxxx");
 
             /****************************************************************************************/

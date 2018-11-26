@@ -18,10 +18,7 @@ using Yunyong.DataExchange.UserFacade.Update;
 namespace Yunyong.DataExchange
 {
     /// <summary>
-    /// This is ORM lite start point. 
-    /// 博客:  https://www.cnblogs.com/Meng-NET/p/8963476.html  
-    /// GitHub:  https://github.com/liumeng0403/MyDAL  
-    /// NuGet:  https://www.nuget.org/packages/MyDAL/  
+    /// This is ORM lite start point.  https://www.cnblogs.com/Meng-NET/p/9831746.html 
     /// </summary>
     public static class XExtension
     {
@@ -156,18 +153,7 @@ namespace Yunyong.DataExchange
         {
             return await conn.Creater<M>().CreateBatchAsync(mList);
         }
-
-        /// <summary>
-        /// Deleter 快速 DeleteAsync by pk 方法
-        /// </summary>
-        public static async Task<int> DeleteAsync<M>(this IDbConnection conn, object pkValue)
-            where M : class
-        {
-            var deleter = conn.Deleter<M>();
-            var option = new QuickOption().GetCondition() as IDictionary<string, object>;
-            option[deleter.DC.SqlProvider.GetTablePK(typeof(M).FullName)] = pkValue;
-            return await deleter.Where(option).DeleteAsync();
-        }
+        
         /// <summary>
         /// Deleter 快速 DeleteAsync 方法
         /// </summary>
@@ -176,18 +162,7 @@ namespace Yunyong.DataExchange
         {
             return await conn.Deleter<M>().Where(compareFunc).DeleteAsync();
         }
-
-        /// <summary>
-        /// Updater 快速 UpdateAsync update fields by pk 方法
-        /// </summary>
-        public static async Task<int> UpdateAsync<M>(this IDbConnection conn, object pkValue, dynamic filedsObject)
-            where M : class
-        {
-            var updater = conn.Updater<M>();
-            var option = new QuickOption().GetCondition() as IDictionary<string, object>;
-            option[updater.DC.SqlProvider.GetTablePK(typeof(M).FullName)] = pkValue;
-            return await updater.Set(filedsObject as object).Where(option).UpdateAsync();
-        }
+        
         /// <summary>
         /// Updater 快速 UpdateAsync update fields 方法
         /// </summary>
@@ -196,73 +171,7 @@ namespace Yunyong.DataExchange
         {
             return await conn.Updater<M>().Set(filedsObject as object).Where(compareFunc).UpdateAsync();
         }
-
-
-        /// <summary>
-        /// Selecter 快速 FirstOrDefaultAsync by pk 方法
-        /// </summary>
-        public static async Task<M> GetAsync<M>(this IDbConnection conn, object pkValue)
-            where M : class
-        {
-            var selecter = conn.Selecter<M>();
-            var option = new QuickOption().GetCondition() as IDictionary<string, object>;
-            option[selecter.DC.SqlProvider.GetTablePK(typeof(M).FullName)] = pkValue;
-            return await selecter.Where(option).FirstOrDefaultAsync();
-        }
-
-        /// <summary>
-        /// Selecter 快速 FirstOrDefaultAsync by pk 方法
-        /// </summary>
-        public static async Task<VM> GetAsync<M, VM>(this IDbConnection conn, object pkValue)
-            where M : class
-            where VM : class
-        {
-            var selecter = conn.Selecter<M>();
-            var option = new QuickOption().GetCondition() as IDictionary<string, object>;
-            option[selecter.DC.SqlProvider.GetTablePK(typeof(M).FullName)] = pkValue;
-            return await selecter.Where(option).FirstOrDefaultAsync<VM>();
-        }
-
-        /// <summary>
-        /// Selecter 快速 FirstOrDefaultAsync by pk 方法
-        /// </summary>
-        public static async Task<VM> GetAsync<M, VM>(this IDbConnection conn, object pkValue, Expression<Func<M, VM>> columnMapFunc)
-            where M : class
-            where VM : class
-        {
-            var selecter = conn.Selecter<M>();
-            var option = new QuickOption().GetCondition() as IDictionary<string, object>;
-            option[selecter.DC.SqlProvider.GetTablePK(typeof(M).FullName)] = pkValue;
-            return await selecter.Where(option).FirstOrDefaultAsync<VM>(columnMapFunc);
-        }
-
-        /// <summary>
-        /// Selecter 快速 FirstOrDefaultAsync 方法
-        /// </summary>
-        public static async Task<M> FirstOrDefaultAsync<M>(this IDbConnection conn, QueryOption option)
-            where M : class
-        {
-            return await conn.Selecter<M>().Where(option).FirstOrDefaultAsync();
-        }
-        /// <summary>
-        /// Selecter 快速 FirstOrDefaultAsync 方法
-        /// </summary>
-        public static async Task<VM> FirstOrDefaultAsync<M, VM>(this IDbConnection conn, QueryOption option)
-            where M : class
-            where VM : class
-        {
-            return await conn.Selecter<M>().Where(option).FirstOrDefaultAsync<VM>();
-        }
-        /// <summary>
-        /// Selecter 快速 FirstOrDefaultAsync 方法
-        /// </summary>
-        public static async Task<VM> FirstOrDefaultAsync<M, VM>(this IDbConnection conn, QueryOption option, Expression<Func<M, VM>> columnMapFunc)
-            where M : class
-            where VM : class
-        {
-            return await conn.Selecter<M>().Where(option).FirstOrDefaultAsync<VM>(columnMapFunc);
-        }
-
+        
         /// <summary>
         /// Selecter 快速 FirstOrDefaultAsync 方法
         /// </summary>

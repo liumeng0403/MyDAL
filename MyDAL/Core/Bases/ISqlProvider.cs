@@ -8,7 +8,6 @@ namespace Yunyong.DataExchange.Core.Bases
     {
         string GetTableName<M>();
         Task<List<ColumnInfo>> GetColumnsInfos(string tableName);
-        string GetTablePK(string fullName);
         void GetSQL();
     }
 }
