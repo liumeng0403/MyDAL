@@ -115,17 +115,6 @@ namespace MyDAL.Core.Bases
             }
             return false;
         }
-        internal bool IsFilterCondition(ActionEnum action)
-        {
-            switch (action)
-            {
-                case ActionEnum.Where:
-                case ActionEnum.And:
-                case ActionEnum.Or:
-                    return true;
-            }
-            return false;
-        }
         internal bool IsSingleTableOption()
         {
             switch (Crud)

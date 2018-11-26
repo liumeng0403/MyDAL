@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -33,13 +32,13 @@ namespace MyDAL.Test.Create
                 CanceledOn = null,
                 PaymentUrl = "https://openapi.xxx?charset=UTF-8&app_id=xxx&biz_content=xxx&charset=UTF-8&format=JSON&method=zzz&return_url=xxx&sign_type=yyy&timestamp=zzz&version=1.0"
             };
-            await Conn.DeleteAsync<AlipayPaymentRecord>(pk);
+            await Conn.DeleteAsync<AlipayPaymentRecord>(it=>it.Id==pk);
             var res15 = await Conn.CreateAsync<AlipayPaymentRecord>(m15);
             Assert.True(res15 == 1);
 
             var tuple15 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
-            var res151 = await Conn.GetAsync<AlipayPaymentRecord>(pk);
+            var res151 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord>(it=>it.Id==pk);
             Assert.NotNull(res151);
 
             /****************************************************************************************/

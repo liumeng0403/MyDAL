@@ -56,7 +56,11 @@ namespace MyDAL.DataRainbow
         {
             sb.Append('=');
         }
-
+        protected static void End(StringBuilder sb)
+        {
+            sb.Append(';');
+        }
+        
         /****************************************************************************************************************/
         /*
          * MySQL
