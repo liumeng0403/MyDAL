@@ -14,7 +14,7 @@ namespace MyDAL
         /****************************************************************************************************************************************/
 
         /// <summary>
-        /// 过滤条件 https://www.cnblogs.com/Meng-NET/p/9978336.html 
+        /// 请参阅: <see langword=".Where() &amp; .And() &amp; .Or() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static WhereD<M> Or<M>(this WhereD<M> where, Expression<Func<M, bool>> compareFunc)
             where M : class
@@ -27,7 +27,7 @@ namespace MyDAL
         /****************************************************************************************************************************************/
 
         /// <summary>
-        /// 过滤条件 https://www.cnblogs.com/Meng-NET/p/9978336.html 
+        /// 请参阅: <see langword=".Where() &amp; .And() &amp; .Or() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static WhereU<M> Or<M>(this WhereU<M> where, Expression<Func<M, bool>> compareFunc)
             where M : class
@@ -40,7 +40,7 @@ namespace MyDAL
         /****************************************************************************************************************************************/
 
         /// <summary>
-        /// 过滤条件 https://www.cnblogs.com/Meng-NET/p/9978336.html 
+        /// 请参阅: <see langword=".Where() &amp; .And() &amp; .Or() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static WhereQ<M> Or<M>(this WhereQ<M> where, Expression<Func<M, bool>> compareFunc)
             where M : class
@@ -53,7 +53,7 @@ namespace MyDAL
         /****************************************************************************************************************************************/
 
         /// <summary>
-        /// 过滤条件 https://www.cnblogs.com/Meng-NET/p/9978336.html 
+        /// 请参阅: <see langword=".Where() &amp; .And() &amp; .Or() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static WhereX Or(this WhereX where, Expression<Func<bool>> compareFunc)
         {

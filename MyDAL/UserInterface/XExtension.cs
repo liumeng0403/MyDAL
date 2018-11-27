@@ -1,6 +1,5 @@
 ﻿using MyDAL.AdoNet;
 using MyDAL.Core;
-using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.UserFacade.Create;
 using MyDAL.UserFacade.Delete;
@@ -17,7 +16,7 @@ using System.Threading.Tasks;
 namespace MyDAL
 {
     /// <summary>
-    /// This is ORM lite start point.  https://www.cnblogs.com/Meng-NET/p/9831746.html 
+    /// 请参阅: <see langword="简介&amp;安装&amp;快速使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
     /// </summary>
     public static class XExtension
     {
@@ -152,7 +151,7 @@ namespace MyDAL
         {
             return await conn.Creater<M>().CreateBatchAsync(mList);
         }
-        
+
         /// <summary>
         /// Deleter 快速 DeleteAsync 方法
         /// </summary>
@@ -161,16 +160,16 @@ namespace MyDAL
         {
             return await conn.Deleter<M>().Where(compareFunc).DeleteAsync();
         }
-        
+
         /// <summary>
         /// Updater 快速 UpdateAsync update fields 方法
         /// </summary>
-        public static async Task<int> UpdateAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, dynamic filedsObject)
+        public static async Task<int> UpdateAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, dynamic filedsObject, SetEnum set = SetEnum.AllowedNull)
             where M : class
         {
-            return await conn.Updater<M>().Set(filedsObject as object).Where(compareFunc).UpdateAsync();
+            return await conn.Updater<M>().Set(filedsObject as object).Where(compareFunc).UpdateAsync(set);
         }
-        
+
         /// <summary>
         /// Selecter 快速 FirstOrDefaultAsync 方法
         /// </summary>

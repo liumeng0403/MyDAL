@@ -6,15 +6,6 @@ namespace MyDAL.AdoNet
 {
     internal class DbParamInfo
     {
-        private static object DbNull(object value)
-        {
-            if (value == null)
-            {
-                return DBNull.Value;
-            }
-
-            return value;
-        }
         private Dictionary<string, ParamInfo> Params { get; } = new Dictionary<string, ParamInfo>();
 
         internal Action<IDbCommand, DbParamInfo> ParamReader { get; } = (cmd, paras) => paras.AddParameters(cmd);
@@ -49,7 +40,7 @@ namespace MyDAL.AdoNet
 
                 //
                 dbPara.Direction = param.ParameterDirection;
-                dbPara.Value = DbNull(param.Value);
+                dbPara.Value = param.Value;
                 dbPara.DbType = param.Type;
                 if (param.Size != null)
                 {

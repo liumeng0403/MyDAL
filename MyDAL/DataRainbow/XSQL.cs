@@ -62,44 +62,6 @@ namespace MyDAL.DataRainbow
         }
         
         /****************************************************************************************************************/
-        /*
-         * MySQL
-         */
-        protected static void LockTables(StringBuilder sb)
-        {
-            sb.Append("LOCK TABLES");
-        }
-        protected static void Write(StringBuilder sb)
-        {
-            Spacing(sb);
-            sb.Append("WRITE");
-        }
-        protected static void UnlockTables(StringBuilder sb)
-        {
-            CRLF(sb);
-            sb.Append("UNLOCK TABLES");
-        }
-        protected static void DisableKeysS(StringBuilder sb)
-        {
-            CRLF(sb);
-            sb.Append("/*!40000 ALTER TABLE");
-        }
-        protected static void DisableKeysE(StringBuilder sb)
-        {
-            Spacing(sb);
-            sb.Append("DISABLE KEYS */");
-        }
-        protected static void EnableKeysS(StringBuilder sb)
-        {
-            DisableKeysS(sb);
-        }
-        protected static void EnableKeysE(StringBuilder sb)
-        {
-            Spacing(sb);
-            sb.Append("ENABLE KEYS */");
-        }
-
-        /****************************************************************************************************************/
 
         protected static string Action(ActionEnum action)
         {
@@ -122,11 +84,11 @@ namespace MyDAL.DataRainbow
                 case ActionEnum.On:
                     return " on ";
                 case ActionEnum.Where:
-                    return " \r\n where ";
+                    return "where ";
                 case ActionEnum.And:
-                    return " \r\n \t and ";
+                    return "\t and ";
                 case ActionEnum.Or:
-                    return " \r\n \t or ";
+                    return " \t or ";
                 case ActionEnum.OrderBy:
                     return "";
             }
@@ -269,6 +231,17 @@ namespace MyDAL.DataRainbow
         {
             CRLF(sb);
             sb.Append("values");
+        }
+        protected static void Set(StringBuilder sb)
+        {
+            CRLF(sb);
+            sb.Append("set");
+        }
+        protected static void As(StringBuilder sb)
+        {
+            Spacing(sb);
+            sb.Append("as");
+            Spacing(sb);
         }
 
     }

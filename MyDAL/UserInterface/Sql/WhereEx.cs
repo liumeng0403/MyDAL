@@ -14,7 +14,7 @@ namespace MyDAL
         /**************************************************************************************************************/
 
         /// <summary>
-        /// 过滤条件 https://www.cnblogs.com/Meng-NET/p/9978336.html 
+        /// 请参阅: <see langword=".Where() &amp; .And() &amp; .Or() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static WhereD<M> Where<M>(this Deleter<M> deleter, Expression<Func<M, bool>> compareFunc)
             where M : class
@@ -25,7 +25,7 @@ namespace MyDAL
         }
 
         /// <summary>
-        /// 过滤条件 https://www.cnblogs.com/Meng-NET/p/9978336.html 
+        /// 请参阅: <see langword=".Where() &amp; .And() &amp; .Or() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static WhereD<M> Where<M>(this Deleter<M> deleter, object mWhere)
             where M:class
@@ -38,7 +38,7 @@ namespace MyDAL
         /**************************************************************************************************************/
 
         /// <summary>
-        /// 过滤条件 https://www.cnblogs.com/Meng-NET/p/9978336.html 
+        /// 请参阅: <see langword=".Where() &amp; .And() &amp; .Or() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static WhereU<M> Where<M>(this SetU<M> set, Expression<Func<M, bool>> compareFunc)
             where M : class
@@ -49,7 +49,7 @@ namespace MyDAL
         }
 
         /// <summary>
-        /// 过滤条件 https://www.cnblogs.com/Meng-NET/p/9978336.html 
+        /// 请参阅: <see langword=".Where() &amp; .And() &amp; .Or() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static WhereU<M> Where<M>(this SetU<M> set, object mWhere)
             where M:class
@@ -62,7 +62,7 @@ namespace MyDAL
         /**************************************************************************************************************/
 
         /// <summary>
-        /// 过滤条件 https://www.cnblogs.com/Meng-NET/p/9978336.html 
+        /// 请参阅: <see langword=".Where() &amp; .And() &amp; .Or() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static WhereQ<M> Where<M>(this Selecter<M> selecter, Expression<Func<M, bool>> compareFunc)
             where M : class
@@ -73,7 +73,7 @@ namespace MyDAL
         }
 
         /// <summary>
-        /// 过滤条件 https://www.cnblogs.com/Meng-NET/p/9978336.html 
+        /// 请参阅: <see langword=".Where() &amp; .And() &amp; .Or() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static WhereQ<M> Where<M>(this Selecter<M> selecter, object mWhere)
             where M : class
@@ -86,7 +86,7 @@ namespace MyDAL
         /**************************************************************************************************************/
 
         /// <summary>
-        /// 过滤条件 https://www.cnblogs.com/Meng-NET/p/9978336.html 
+        /// 请参阅: <see langword=".Where() &amp; .And() &amp; .Or() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static WhereX Where(this OnX on, Expression<Func<bool>> compareFunc)
         {
