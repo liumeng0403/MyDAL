@@ -17,9 +17,9 @@ namespace Yunyong.DataExchange.UserFacade.Update
         /// 单表数据更新
         /// </summary>
         /// <returns>更新条目数</returns>
-        public async Task<int> UpdateAsync()
+        public async Task<int> UpdateAsync(SetEnum set = SetEnum.AllowedNull)
         {
-            return await new UpdateImpl<M>(DC).UpdateAsync();
+            return await new UpdateImpl<M>(DC).UpdateAsync(set);
         }
 
     }

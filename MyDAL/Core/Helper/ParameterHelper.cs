@@ -13,6 +13,15 @@ namespace Yunyong.DataExchange.Core.Helper
     {
 
         private Context DC { get; set; }
+        private static object DbNull(object value)
+        {
+            if (value == null)
+            {
+                return DBNull.Value;
+            }
+
+            return value;
+        }
         internal ParameterHelper(Context dc)
         {
             DC = dc;
@@ -700,7 +709,7 @@ namespace Yunyong.DataExchange.Core.Helper
             return new ParamInfo
             {
                 Name = paraName,
-                Value = dbVal,
+                Value = DbNull(dbVal),
                 Type = dbType,
                 ParameterDirection = ParameterDirection.Input,
                 Size = null,

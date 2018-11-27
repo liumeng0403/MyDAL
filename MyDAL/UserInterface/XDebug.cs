@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -58,7 +59,7 @@ namespace Yunyong.DataExchange
 
                     //
                     var dbVal = string.Empty;
-                    dbVal = dbM.ParamInfo.Value == null ? "DbNull" : dbM.ParamInfo.Value.ToString();
+                    dbVal = dbM.ParamInfo.Value == DBNull.Value ? "DbNull" : dbM.ParamInfo.Value.ToString();
                     return $"字段:【{field}】-->【{csVal}】;参数:【{dbM.Param}】-->【{dbVal}】.";
                 })
                 .ToList();
@@ -79,11 +80,11 @@ namespace Yunyong.DataExchange
                         || par.ParamInfo.Type == DbType.UInt32
                         || par.ParamInfo.Type == DbType.UInt64)
                     {
-                        sqlStr = sqlStr.Replace($"@{par.Param}", par.ParamInfo.Value == null ? "null" : par.ParamInfo.Value.ToString());
+                        sqlStr = sqlStr.Replace($"@{par.Param}", par.ParamInfo.Value == DBNull.Value ? "null" : par.ParamInfo.Value.ToString());
                     }
                     else
                     {
-                        sqlStr = sqlStr.Replace($"@{par.Param}", par.ParamInfo.Value == null ? "null" : $"'{par.ParamInfo.Value.ToString()}'");
+                        sqlStr = sqlStr.Replace($"@{par.Param}", par.ParamInfo.Value == DBNull.Value ? "null" : $"'{par.ParamInfo.Value.ToString()}'");
                     }
                 }
                 SqlWithParams.Add(sqlStr);

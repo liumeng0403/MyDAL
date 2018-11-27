@@ -71,6 +71,8 @@ namespace Yunyong.DataExchange.Core.Bases
         internal FuncEnum Func { get; set; } = FuncEnum.None;
         internal UiMethodEnum Method { get; set; } = UiMethodEnum.None;
 
+        internal SetEnum Set { get; set; } = SetEnum.AllowedNull;
+
         /************************************************************************************************************************/
 
         internal bool NeedSetSingle { get; set; } = true;

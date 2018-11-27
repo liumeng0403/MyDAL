@@ -7,15 +7,16 @@ namespace Yunyong.DataExchange.Impls
 {
     internal class UpdateImpl<M>
         : Impler, IUpdate<M>
-        where M:class
+        where M : class
     {
-        internal UpdateImpl(Context dc) 
+        internal UpdateImpl(Context dc)
             : base(dc)
         {
         }
 
-        public async Task<int> UpdateAsync()
+        public async Task<int> UpdateAsync(SetEnum set = SetEnum.AllowedNull)
         {
+            DC.Set = set;
             PreExecuteHandle(UiMethodEnum.UpdateAsync);
             return await DC.DS.ExecuteNonQueryAsync();
         }

@@ -31,8 +31,8 @@ namespace MyDAL.Test.QueryParallel
             //parallel.Parallel_50_10000();
             //parallel.Parallel_40_10000();
             //parallel.Parallel_30_10000();
-            parallel.Parallel_20_10000();
-            //parallel.Parallel_10_10000();
+            //parallel.Parallel_20_10000();
+            parallel.Parallel_10_10000();
             //parallel.Parallel_5_10000();
             //parallel.Parallel_1_10000();
         }
