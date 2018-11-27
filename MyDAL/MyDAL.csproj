@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>0.5.2</Version>
+    <Version>0.5.3</Version>
     <Authors>Meng.NET</Authors>
     <Company></Company>
     <Product>MyDAL(EasyDAL.Exchange 0.2.3 version 后 更名为 MyDAL)</Product>
@@ -12,7 +12,7 @@
     <PackageProjectUrl>https://www.cnblogs.com/Meng-NET/p/8963476.html</PackageProjectUrl>
     <RepositoryUrl>https://github.com/liumeng0403/MyDAL</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>MySQL,mysql,dal,my,mydal,mysql orm,mysqlorm,easy,easydal,exchange,orm,ormlite,netcore,netstandard,meng,meng-net</PackageTags>
+    <PackageTags>MySQL,mysql,dal,my,mydal,mysql orm,mysqlorm,easydal,orm,ormlite,net,netcore,netstandard,meng,meng-net</PackageTags>
     <PackageReleaseNotes>由一个开发项目中的 idea 演变,产生与实现!
        -- https://www.cnblogs.com/Meng-NET/p/8963476.html</PackageReleaseNotes>
     <ApplicationIcon>Others\MyDAL.ico</ApplicationIcon>
@@ -21,7 +21,8 @@
     <PackageIconUrl>http://images.cnblogs.com/cnblogs_com/Meng-NET/1310410/o_MyDAL.png</PackageIconUrl>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile></DocumentationFile>
+    <DocumentationFile>bin\Debug\MyDAL.xml</DocumentationFile>
+    <OutputPath>bin\Debug\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <WarningLevel>0</WarningLevel>
