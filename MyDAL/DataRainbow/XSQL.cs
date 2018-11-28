@@ -78,11 +78,11 @@ namespace Yunyong.DataExchange.DataRainbow
                 case ActionEnum.From:
                     return "";
                 case ActionEnum.InnerJoin:
-                    return " inner join ";
+                    return "inner join ";
                 case ActionEnum.LeftJoin:
-                    return " left join ";
+                    return "left join ";
                 case ActionEnum.On:
-                    return " on ";
+                    return "on ";
                 case ActionEnum.Where:
                     return "where ";
                 case ActionEnum.And:

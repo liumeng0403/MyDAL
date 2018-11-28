@@ -99,6 +99,38 @@ namespace MyDAL.Test.WhereEdge
 
             /************************************************************************************************************************/
 
+            var xx5 = "";
+
+            // is not null 
+            var res5 = await Conn
+                .Joiner<Agent,AgentInventoryRecord>(out var a5,out var r5)
+                .From(()=>a5)
+                    .LeftJoin(()=>r5)
+                        .On(()=>a5.Id==r5.AgentId)
+                .Where(() => a5.ActiveOrderId==null)
+                .ListAsync<Agent>();
+            Assert.True(res5.Count == 28085);
+
+            var tuple5 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************************/
+
+            var xx6 = "";
+
+            // is not null 
+            var res6 = await Conn
+                .Joiner<Agent, AgentInventoryRecord>(out var a6, out var r6)
+                .From(() => a6)
+                    .LeftJoin(() => r6)
+                        .On(() => a6.Id == r6.AgentId)
+                .Where(() => a6.ActiveOrderId != null)
+                .ListAsync<Agent>();
+            Assert.True(res6.Count == 554);
+
+            var tuple6 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************************/
+
             var xx = "";
 
         }
