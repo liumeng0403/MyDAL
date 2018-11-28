@@ -19,6 +19,9 @@
     <Win32Resource />
     <PackageId>MyDAL</PackageId>
     <PackageIconUrl>http://images.cnblogs.com/cnblogs_com/Meng-NET/1310410/o_MyDAL.png</PackageIconUrl>
+    <SignAssembly>true</SignAssembly>
+    <DelaySign>false</DelaySign>
+    <AssemblyOriginatorKeyFile>Others\MyDAL.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\MyDAL.xml</DocumentationFile>
