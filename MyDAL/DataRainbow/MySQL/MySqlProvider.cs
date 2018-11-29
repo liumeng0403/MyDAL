@@ -65,9 +65,15 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
                 if (i != orders.Count) { Comma(X); }
             }
         }
-        private string InStrHandle(List<DicParam> dbs)
+        private void InStrHandle(List<DicParam> dbs)
         {
-            return $" {string.Join(",", dbs.Select(it => $" @{it.Param} "))} ";
+            var i = 0;
+            foreach (var it in dbs)
+            {
+                i++;
+                AT(X); X.Append(it.Param);
+                if (i != dbs.Count) { Comma(X); }
+            }
         }
         private void ConcatWithComma(IEnumerable<string> ss, Action<StringBuilder> preSymbol, Action<StringBuilder> afterSymbol)
         {
@@ -83,28 +89,32 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
                 }
             }
         }
-        private string LikeStrHandle(DicParam dic)
+        private void LikeStrHandle(DicParam dic)
         {
+            Spacing(X);
             var name = dic.Param;
             var value = dic.ParamInfo.Value.ToString();
             if (!value.Contains("%")
                 && !value.Contains("_"))
             {
-                return $"CONCAT('%',@{name},'%')";
+                X.Append("CONCAT");
+                LeftBracket(X); SingleQuote(X); Percent(X); SingleQuote(X); Comma(X); AT(X); X.Append(name); Comma(X); SingleQuote(X); Percent(X); SingleQuote(X); RightBracket(X);
             }
             else if ((value.Contains("%") || value.Contains("_"))
                 && !value.Contains("/%")
                 && !value.Contains("/_"))
             {
-                return $"@{name}";
+                AT(X); X.Append(name);
             }
             else if (value.Contains("/%")
                 || value.Contains("/_"))
             {
-                return $"@{name} escape '/' ";
+                AT(X); X.Append(name); Spacing(X); Escape(X); Spacing(X); SingleQuote(X); EscapeChar(X); SingleQuote(X);
             }
-
-            throw new Exception(value);
+            else
+            {
+                throw new Exception($"{XConfig.EC._015} -- [[{dic.Action}-{dic.Option}-{value}]] 不能解析!!!");
+            }
         }
 
         /****************************************************************************************************************/
@@ -142,7 +152,7 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
             if (db.Crud == CrudTypeEnum.Join) { X.Append(db.TableAliasOne); Dot(X); }
             else if (DC.IsSingleTableOption()) { }
             Backquote(X); X.Append(db.ColumnOne); Backquote(X); Spacing(X);
-            X.Append(Function(db.Func)); LeftBracket(X); X.Append(InStrHandle(db.InItems)); RightBracket(X);
+            X.Append(Function(db.Func)); LeftBracket(X); InStrHandle(db.InItems); RightBracket(X);
         }
 
         /****************************************************************************************************************/
@@ -182,7 +192,7 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
             Spacing(X);
             if (db.Crud == CrudTypeEnum.Join) { X.Append(db.TableAliasOne); Dot(X); }
             else if (DC.IsSingleTableOption()) { }
-            Backquote(X); X.Append(db.ColumnOne); Backquote(X); X.Append(Option(db.Option)); X.Append(LikeStrHandle(db));
+            Backquote(X); X.Append(db.ColumnOne); Backquote(X); X.Append(Option(db.Option)); LikeStrHandle(db);
         }
         private void OneEqualOneProcess(DicParam db)
         {
@@ -430,10 +440,10 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
                     case ActionEnum.From: break;    // 已处理 
                     case ActionEnum.InnerJoin:
                     case ActionEnum.LeftJoin:
-                        CRLF(X); Tab(X); X.Append(Action(item.Action)); Spacing(X); X.Append(item.TableOne); As(X); X.Append(item.TableAliasOne);
+                        CRLF(X); Tab(X); Action(item.Action, X); Spacing(X); X.Append(item.TableOne); As(X); X.Append(item.TableAliasOne);
                         break;
                     case ActionEnum.On:
-                        CRLF(X); Tab(X); Tab(X); X.Append(Action(item.Action)); Spacing(X);
+                        CRLF(X); Tab(X); Tab(X); Action(item.Action, X); Spacing(X);
                         X.Append(item.TableAliasOne); Dot(X); Backquote(X); X.Append(item.ColumnOne); Backquote(X);
                         X.Append(Compare(item.Compare));
                         X.Append(item.TableAliasTwo); Dot(X); Backquote(X); X.Append(item.ColumnTwo); Backquote(X);
@@ -459,16 +469,16 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
                 if (aId < oId
                     || oId == -1)
                 {
-                    X.Append(Action(ActionEnum.Where)); Spacing(X); X.Append("true"); Spacing(X);
+                    Action(ActionEnum.Where, X); Spacing(X); X.Append("true"); Spacing(X);
                 }
                 else
                 {
-                    X.Append(Action(ActionEnum.Where)); Spacing(X); X.Append("false"); Spacing(X);
+                    Action(ActionEnum.Where, X); Spacing(X); X.Append("false"); Spacing(X);
                 }
             }
             foreach (var db in cons)
             {
-                CRLF(X); X.Append(Action(db.Action)); Spacing(X);
+                CRLF(X); Action(db.Action, X); Spacing(X);
                 if (db.Group == null)
                 {
                     MultiCondition(db);

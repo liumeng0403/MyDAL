@@ -12,6 +12,14 @@ namespace Yunyong.DataExchange.DataRainbow
         {
             sb.Append(' ');
         }
+        protected static void EscapeChar(StringBuilder sb)
+        {
+            sb.Append('/');
+        }
+        protected static void Percent(StringBuilder sb)
+        {
+            sb.Append('%');
+        }
         protected static void Backquote(StringBuilder sb)
         {
             sb.Append('`');
@@ -60,39 +68,41 @@ namespace Yunyong.DataExchange.DataRainbow
         {
             sb.Append(';');
         }
-        
+
         /****************************************************************************************************************/
 
-        protected static string Action(ActionEnum action)
+        protected static void Action(ActionEnum action, StringBuilder sb)
         {
             switch (action)
             {
                 case ActionEnum.None:
-                    return "";
                 case ActionEnum.Insert:
-                    return "";
                 case ActionEnum.Update:
-                    return "";
                 case ActionEnum.Select:
-                    return "";
                 case ActionEnum.From:
-                    return "";
-                case ActionEnum.InnerJoin:
-                    return "inner join ";
-                case ActionEnum.LeftJoin:
-                    return "left join ";
-                case ActionEnum.On:
-                    return "on ";
-                case ActionEnum.Where:
-                    return "where ";
-                case ActionEnum.And:
-                    return "\t and ";
-                case ActionEnum.Or:
-                    return " \t or ";
                 case ActionEnum.OrderBy:
-                    return "";
+                    return;
+                case ActionEnum.InnerJoin:
+                    Inner(sb); Spacing(sb); Join(sb);
+                    return;
+                case ActionEnum.LeftJoin:
+                    Left(sb);Spacing(sb);Join(sb);
+                    return;
+                case ActionEnum.On:
+                    On(sb);
+                    return;
+                case ActionEnum.Where:
+                    Where(sb);
+                    return;
+                case ActionEnum.And:
+                    Tab(sb);And(sb);
+                    return;
+                case ActionEnum.Or:
+                    Tab(sb);Or(sb);
+                    return;
+                default:
+                    throw new Exception($"{XConfig.EC._014} -- [[{action}]] 不能解析!!!");
             }
-            return " ";
         }
         protected static void MultiAction(ActionEnum action, StringBuilder sb)
         {
@@ -222,11 +232,42 @@ namespace Yunyong.DataExchange.DataRainbow
         {
             sb.Append("select");
         }
+
         protected static void From(StringBuilder sb)
         {
             CRLF(sb);
             sb.Append("from");
         }
+        protected static void Inner(StringBuilder sb)
+        {
+            sb.Append("inner");
+        }
+        protected static void Left(StringBuilder sb)
+        {
+            sb.Append("left");
+        }
+        protected static void Join(StringBuilder sb)
+        {
+            sb.Append("join");
+        }
+        protected static void On(StringBuilder sb)
+        {
+            sb.Append("on");
+        }
+
+        protected static void Where(StringBuilder sb)
+        {
+            sb.Append("where");
+        }
+        protected static void And(StringBuilder sb)
+        {
+            sb.Append("and");
+        }
+        protected static void Or(StringBuilder sb)
+        {
+            sb.Append("or");
+        }
+
         protected static void Values(StringBuilder sb)
         {
             CRLF(sb);
@@ -237,11 +278,16 @@ namespace Yunyong.DataExchange.DataRainbow
             CRLF(sb);
             sb.Append("set");
         }
+
         protected static void As(StringBuilder sb)
         {
             Spacing(sb);
             sb.Append("as");
             Spacing(sb);
+        }
+        protected static void Escape(StringBuilder sb)
+        {
+            sb.Append("escape");
         }
 
     }
