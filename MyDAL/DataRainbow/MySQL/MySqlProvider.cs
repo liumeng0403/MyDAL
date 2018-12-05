@@ -13,7 +13,7 @@ using Yunyong.DataExchange.Core.Extensions;
 namespace Yunyong.DataExchange.DataRainbow.MySQL
 {
     internal sealed class MySqlProvider
-        : SqlContext, ISqlProvider
+        : MySql, ISqlProvider
     {
         private Context DC { get; set; }
         private StringBuilder X { get; set; } = new StringBuilder();
@@ -39,11 +39,14 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
                 {
                     if (DC.Crud == CrudTypeEnum.Join)
                     {
-                        X.Append(o.TableAliasOne); Dot(X); Backquote(X); X.Append(o.ColumnOne); Backquote(X); Spacing(X); X.Append(Option(o.Option));
+                        X.Append(o.TableAliasOne); Dot(X);
+                        Column(o.ColumnOne, X);
+                        Spacing(X); X.Append(Option(o.Option));
                     }
                     else
                     {
-                        Backquote(X); X.Append(o.ColumnOne); Backquote(X); Spacing(X); X.Append(Option(o.Option));
+                        Column(o.ColumnOne, X);
+                        Spacing(X); X.Append(Option(o.Option));
                     }
                 }
                 else if (o.Func == FuncEnum.CharLength)
@@ -51,11 +54,15 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
                     if (DC.Crud == CrudTypeEnum.Join)
                     {
                         X.Append(Function(o.Func));
-                        LeftBracket(X); X.Append(o.TableAliasOne); Dot(X); Backquote(X); X.Append(o.ColumnOne); Backquote(X); RightBracket(X); Spacing(X); X.Append(Option(o.Option));
+                        LeftBracket(X); X.Append(o.TableAliasOne); Dot(X);
+                        Column(o.ColumnOne, X);
+                        RightBracket(X); Spacing(X); X.Append(Option(o.Option));
                     }
                     else
                     {
-                        X.Append(Function(o.Func)); LeftBracket(X); Backquote(X); X.Append(o.ColumnOne); Backquote(X); RightBracket(X); Spacing(X); X.Append(Option(o.Option));
+                        X.Append(Function(o.Func)); LeftBracket(X);
+                        Column(o.ColumnOne, X);
+                        RightBracket(X); Spacing(X); X.Append(Option(o.Option));
                     }
                 }
                 else
@@ -125,7 +132,8 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
             X.Append(Function(db.Func)); LeftBracket(X);
             if (db.Crud == CrudTypeEnum.Join) { X.Append(db.TableAliasOne); Dot(X); }
             else if (DC.IsSingleTableOption()) { }
-            Backquote(X); X.Append(db.ColumnOne); Backquote(X); RightBracket(X);
+            Column(db.ColumnOne, X);
+            RightBracket(X);
             X.Append(Compare(db.Compare)); AT(X); X.Append(db.Param);
         }
         private void DateFormatProcess(DicParam db)
@@ -134,7 +142,8 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
             X.Append(Function(db.Func)); LeftBracket(X);
             if (db.Crud == CrudTypeEnum.Join) { X.Append(db.TableAliasOne); Dot(X); }
             else if (DC.IsSingleTableOption()) { }
-            Backquote(X); X.Append(db.ColumnOne); Backquote(X); Comma(X); SingleQuote(X); X.Append(db.Format); SingleQuote(X);
+            Column(db.ColumnOne, X);
+            Comma(X); SingleQuote(X); X.Append(db.Format); SingleQuote(X);
             RightBracket(X); X.Append(Compare(db.Compare)); AT(X); X.Append(db.Param);
         }
         private void TrimProcess(DicParam db)
@@ -143,7 +152,8 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
             X.Append(Function(db.Func)); LeftBracket(X);
             if (db.Crud == CrudTypeEnum.Join) { X.Append(db.TableAliasOne); Dot(X); }
             else if (DC.IsSingleTableOption()) { }
-            Backquote(X); X.Append(db.ColumnOne); Backquote(X); RightBracket(X);
+            Column(db.ColumnOne, X);
+            RightBracket(X);
             X.Append(Compare(db.Compare)); AT(X); X.Append(db.Param);
         }
         private void InProcess(DicParam db)
@@ -151,7 +161,8 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
             Spacing(X);
             if (db.Crud == CrudTypeEnum.Join) { X.Append(db.TableAliasOne); Dot(X); }
             else if (DC.IsSingleTableOption()) { }
-            Backquote(X); X.Append(db.ColumnOne); Backquote(X); Spacing(X);
+            Column(db.ColumnOne, X);
+            Spacing(X);
             X.Append(Function(db.Func)); LeftBracket(X); InStrHandle(db.InItems); RightBracket(X);
         }
 
@@ -162,7 +173,8 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
             Spacing(X);
             if (db.Crud == CrudTypeEnum.Join) { X.Append(db.TableAliasOne); Dot(X); }
             else if (DC.IsSingleTableOption()) { }
-            Backquote(X); X.Append(db.ColumnOne); Backquote(X); X.Append(Compare(db.Compare)); AT(X); X.Append(db.Param);
+            Column(db.ColumnOne, X);
+            X.Append(Compare(db.Compare)); AT(X); X.Append(db.Param);
         }
         private void FunctionProcess(DicParam db)
         {
@@ -192,7 +204,8 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
             Spacing(X);
             if (db.Crud == CrudTypeEnum.Join) { X.Append(db.TableAliasOne); Dot(X); }
             else if (DC.IsSingleTableOption()) { }
-            Backquote(X); X.Append(db.ColumnOne); Backquote(X); X.Append(Option(db.Option)); LikeStrHandle(db);
+            Column(db.ColumnOne, X);
+            X.Append(Option(db.Option)); LikeStrHandle(db);
         }
         private void OneEqualOneProcess(DicParam db)
         {
@@ -204,7 +217,8 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
             Spacing(X);
             if (db.Crud == CrudTypeEnum.Join) { X.Append(db.TableAliasOne); Dot(X); }
             else if (DC.IsSingleTableOption()) { }
-            Backquote(X); X.Append(db.ColumnOne); Backquote(X); Spacing(X); X.Append(Option(db.Option));
+            Column(db.ColumnOne, X);
+            Spacing(X); X.Append(Option(db.Option));
         }
 
         /****************************************************************************************************************/
@@ -308,14 +322,16 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
                     || item.Option == OptionEnum.ChangeMinus)
                 {
                     if (i != 1) { CRLF(X); Tab(X); }
-                    Backquote(X); X.Append(item.ColumnOne); Backquote(X);
+                    Column(item.ColumnOne, X);
                     Equal(X);
-                    Backquote(X); X.Append(item.ColumnOne); Backquote(X); X.Append(Option(item.Option)); AT(X); X.Append(item.Param);
+                    Column(item.ColumnOne, X);
+                    X.Append(Option(item.Option)); AT(X); X.Append(item.Param);
                 }
                 else if (item.Option == OptionEnum.Set)
                 {
                     if (i != 1) { CRLF(X); Tab(X); }
-                    Backquote(X); X.Append(item.ColumnOne); Backquote(X); X.Append(Option(item.Option)); AT(X); X.Append(item.Param);
+                    Column(item.ColumnOne, X);
+                    X.Append(Option(item.Option)); AT(X); X.Append(item.Param);
                 }
                 else
                 {
@@ -340,22 +356,26 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
                     {
                         if (dic.Option == OptionEnum.Column)
                         {
-                            X.Append(dic.TableAliasOne); Dot(X); Backquote(X); X.Append(dic.ColumnOne); Backquote(X);
+                            X.Append(dic.TableAliasOne); Dot(X);
+                            Column(dic.ColumnOne, X);
                         }
                         else if (dic.Option == OptionEnum.ColumnAs)
                         {
-                            X.Append(dic.TableAliasOne); Dot(X); Backquote(X); X.Append(dic.ColumnOne); Backquote(X); As(X); X.Append(dic.ColumnOneAlias);
+                            X.Append(dic.TableAliasOne); Dot(X);
+                            Column(dic.ColumnOne, X);
+                            As(X); X.Append(dic.ColumnOneAlias);
                         }
                     }
                     else if (dic.Crud == CrudTypeEnum.Query)
                     {
                         if (dic.Option == OptionEnum.Column)
                         {
-                            Backquote(X); X.Append(dic.ColumnOne); Backquote(X);
+                            Column(dic.ColumnOne, X);
                         }
                         else if (dic.Option == OptionEnum.ColumnAs)
                         {
-                            Backquote(X); X.Append(dic.ColumnOne); Backquote(X); As(X); X.Append(dic.ColumnOneAlias);
+                            Column(dic.ColumnOne, X);
+                            As(X); X.Append(dic.ColumnOneAlias);
                         }
                     }
                 }
@@ -366,13 +386,17 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
                         if (dic.Option == OptionEnum.Column)
                         {
                             X.Append(Function(dic.Func)); LeftBracket(X);
-                            X.Append(dic.TableAliasOne); Dot(X); Backquote(X); X.Append(dic.ColumnOne); Backquote(X); Comma(X);
+                            X.Append(dic.TableAliasOne); Dot(X);
+                            Column(dic.ColumnOne, X);
+                            Comma(X);
                             SingleQuote(X); X.Append(dic.Format); SingleQuote(X); RightBracket(X);
                         }
                         else if (dic.Option == OptionEnum.ColumnAs)
                         {
                             X.Append(Function(dic.Func)); LeftBracket(X);
-                            X.Append(dic.TableAliasOne); Dot(X); Backquote(X); X.Append(dic.ColumnOne); Backquote(X); Comma(X);
+                            X.Append(dic.TableAliasOne); Dot(X);
+                            Column(dic.ColumnOne, X);
+                            Comma(X);
                             SingleQuote(X); X.Append(dic.Format); SingleQuote(X); RightBracket(X); As(X); X.Append(dic.ColumnOneAlias);
                         }
                     }
@@ -381,13 +405,15 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
                         if (dic.Option == OptionEnum.Column)
                         {
                             X.Append(Function(dic.Func)); LeftBracket(X);
-                            Backquote(X); X.Append(dic.ColumnOne); Backquote(X); Comma(X);
+                            Column(dic.ColumnOne, X);
+                            Comma(X);
                             SingleQuote(X); X.Append(dic.Format); SingleQuote(X); RightBracket(X);
                         }
                         else if (dic.Option == OptionEnum.ColumnAs)
                         {
                             X.Append(Function(dic.Func)); LeftBracket(X);
-                            Backquote(X); X.Append(dic.ColumnOne); Backquote(X); Comma(X);
+                            Column(dic.ColumnOne, X);
+                            Comma(X);
                             SingleQuote(X); X.Append(dic.Format); SingleQuote(X); RightBracket(X); As(X); X.Append(dic.ColumnOneAlias);
                         }
                     }
@@ -444,7 +470,8 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
                         break;
                     case ActionEnum.On:
                         CRLF(X); Tab(X); Tab(X); Action(item.Action, X); Spacing(X);
-                        X.Append(item.TableAliasOne); Dot(X); Backquote(X); X.Append(item.ColumnOne); Backquote(X);
+                        X.Append(item.TableAliasOne); Dot(X);
+                        Column(item.ColumnOne, X);
                         X.Append(Compare(item.Compare));
                         X.Append(item.TableAliasTwo); Dot(X); Backquote(X); X.Append(item.ColumnTwo); Backquote(X);
                         break;
@@ -523,11 +550,14 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
                     i++;
                     if (DC.Crud == CrudTypeEnum.Join)
                     {
-                        X.Append(dic.TableAliasOne); Dot(X); Backquote(X); X.Append(it.ColumnName); Backquote(X); Spacing(X); X.Append("desc");
+                        X.Append(dic.TableAliasOne); Dot(X);
+                        Column(it.ColumnName, X);
+                        Spacing(X); X.Append("desc");
                     }
                     else
                     {
-                        Backquote(X); X.Append(it.ColumnName); Backquote(X); Spacing(X); X.Append("desc");
+                        Column(it.ColumnName, X);
+                        Spacing(X); X.Append("desc");
                     }
                     if (i != pris.Count) { Comma(X); }
                 }
@@ -584,7 +614,9 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
                     }
                     else
                     {
-                        X.Append(Option(item.Option)); LeftBracket(X); Distinct(); Backquote(X); X.Append(item.ColumnOne); Backquote(X); RightBracket(X);
+                        X.Append(Option(item.Option)); LeftBracket(X); Distinct();
+                        Column(item.ColumnOne, X);
+                        RightBracket(X);
                     }
                 }
                 else if (item.Crud == CrudTypeEnum.Join)
@@ -595,7 +627,9 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
                     }
                     else
                     {
-                        X.Append(Option(item.Option)); LeftBracket(X); Distinct(); X.Append(item.TableAliasOne); Dot(X); Backquote(X); X.Append(item.ColumnOne); Backquote(X); RightBracket(X);
+                        X.Append(Option(item.Option)); LeftBracket(X); Distinct(); X.Append(item.TableAliasOne); Dot(X);
+                        Column(item.ColumnOne, X);
+                        RightBracket(X);
                     }
                 }
             }
@@ -610,11 +644,15 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
             var item = DC.Parameters.FirstOrDefault(it => it.Option == OptionEnum.Sum);
             if (item.Crud == CrudTypeEnum.Query)
             {
-                X.Append(Option(item.Option)); LeftBracket(X); Backquote(X); X.Append(item.ColumnOne); Backquote(X); RightBracket(X);
+                X.Append(Option(item.Option)); LeftBracket(X);
+                Column(item.ColumnOne, X);
+                RightBracket(X);
             }
             else if (item.Crud == CrudTypeEnum.Join)
             {
-                X.Append(Option(item.Option)); LeftBracket(X); X.Append(item.TableAliasOne); Dot(X); Backquote(X); X.Append(item.ColumnOne); Backquote(X); RightBracket(X);
+                X.Append(Option(item.Option)); LeftBracket(X); X.Append(item.TableAliasOne); Dot(X);
+                Column(item.ColumnOne, X);
+                RightBracket(X);
             }
         }
 

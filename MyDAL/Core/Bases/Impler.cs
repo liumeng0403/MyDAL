@@ -28,7 +28,7 @@ namespace Yunyong.DataExchange.Core.Bases
                 DC.Compare = CompareEnum.None;
                 list.Add(DC.DPH.InsertHelperDic(fullName, prop.Name, val, prop.PropertyType));
             }
-            DC.DPH.AddParameter(DC.DPH.InsertDic(fullName,list));
+            DC.DPH.AddParameter(DC.DPH.InsertDic(fullName, list));
         }
 
         /**********************************************************************************************************/
@@ -44,15 +44,22 @@ namespace Yunyong.DataExchange.Core.Bases
             result.Data = await DC.DS.ExecuteReaderMultiRowAsync<M>();
             return result;
         }
-        protected async Task<PagingList<VM>> PagingListAsyncHandle<M, VM>(int pageIndex, int pageSize, UiMethodEnum sqlType)
-            where VM : class
+        protected async Task<PagingList<T>> PagingListAsyncHandle<M, T>(UiMethodEnum sqlType, bool single, Func<M, T> mapFunc)
+            where M : class
         {
-            var result = new PagingList<VM>();
-            DC.PageIndex = result.PageIndex = pageIndex;
-            DC.PageSize = result.PageSize = pageSize;
+            var result = new PagingList<T>();
+            result.PageIndex = DC.PageIndex.Value;
+            result.PageSize = DC.PageSize.Value;
             PreExecuteHandle(sqlType);
             result.TotalCount = await DC.DS.ExecuteScalarAsync<int>();
-            result.Data = await DC.DS.ExecuteReaderMultiRowAsync<VM>();
+            if (single)
+            {
+                result.Data = await DC.DS.ExecuteReaderSingleColumnAsync(mapFunc);
+            }
+            else
+            {
+                result.Data = await DC.DS.ExecuteReaderMultiRowAsync<T>();
+            }
             return result;
         }
 

@@ -1,9 +1,8 @@
 using System;
 using System.Text;
-using Yunyong.DataExchange.Core;
 using Yunyong.DataExchange.Core.Enums;
 
-namespace Yunyong.DataExchange.DataRainbow
+namespace Yunyong.DataExchange.Core
 {
     internal abstract class XSQL
     {

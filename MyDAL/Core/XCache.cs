@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 using Yunyong.DataExchange.AdoNet;
 using Yunyong.DataExchange.Core.Bases;
@@ -75,7 +74,7 @@ namespace Yunyong.DataExchange.Core
         }
         internal string GetTableName(string key)
         {
-            return ModelTableNameCache[key];
+            return DC.AR.Invoke(key,p => ModelTableNameCache[p]);
         }
         internal void SetTableName(string key, string tableName)
         {
@@ -109,7 +108,7 @@ namespace Yunyong.DataExchange.Core
         internal static ConcurrentDictionary<string, string> ModelAttributePropValCache { get; } = new ConcurrentDictionary<string, string>();
         internal Type GetModelType<M>(string key)
         {
-            return ModelTypeCache[key];
+            return DC.AR.Invoke(key,p => ModelTypeCache[p]);
         }
         internal void SetModelType(string key, Type type)
         {
@@ -120,7 +119,7 @@ namespace Yunyong.DataExchange.Core
         }
         internal List<PropertyInfo> GetModelProperys(string key)
         {
-            return ModelPropertiesCache[key];
+            return DC.AR.Invoke(key,p => ModelPropertiesCache[p]);
         }
         internal void SetModelProperys(Type mType, Context dc)
         {
@@ -133,19 +132,7 @@ namespace Yunyong.DataExchange.Core
         }
         internal List<ColumnInfo> GetColumnInfos(string key)
         {
-            if(!ModelColumnInfosCache.TryGetValue(key,out var cols))
-            {
-                while(true)
-                {
-                    Thread.Sleep(1);
-                    if(ModelColumnInfosCache.ContainsKey(key))
-                    {
-                        cols = ModelColumnInfosCache[key];
-                        break;
-                    }
-                }
-            }
-            return cols;
+            return DC.AR.Invoke(key, p => ModelColumnInfosCache[p]);
         }
         internal async Task SetModelColumnInfos(string key, Context dc)
         {

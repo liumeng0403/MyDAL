@@ -236,7 +236,7 @@ namespace Yunyong.DataExchange.AdoNet
         internal async Task<List<F>> ExecuteReaderSingleColumnAsync<M, F>(Func<M, F> propertyFunc)
             where M : class
         {
-            var comm = new CommandInfo(SqlOne, Parameter);
+            var comm = new CommandInfo(SqlCount == 1 ? SqlOne : SqlTwo, Parameter);
             var needClose = Conn.State == ConnectionState.Closed;
             using (var cmd = SettingCommand(comm, Conn, comm.Parameter.ParamReader))
             {

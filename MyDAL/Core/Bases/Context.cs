@@ -41,6 +41,7 @@ namespace Yunyong.DataExchange.Core.Bases
             DPH = new DicParamHelper(this);
             BDH = new BatchDataHelper();
             DS = new DataSource(this);
+            AR = new AutoRetry();
 
             //
             if (XConfig.DB == DbEnum.MySQL)
@@ -55,6 +56,7 @@ namespace Yunyong.DataExchange.Core.Bases
         internal GenericHelper GH { get; private set; }
         internal ParameterHelper PH { get; private set; }
         internal BatchDataHelper BDH { get; private set; }
+        internal AutoRetry AR { get; private set; }
 
         /************************************************************************************************************************/
 

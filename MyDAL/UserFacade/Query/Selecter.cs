@@ -62,6 +62,10 @@ namespace Yunyong.DataExchange.UserFacade.Query
         {
             return await new AllPagingListImpl<M>(DC).PagingAllListAsync<VM>(pageIndex, pageSize);
         }
+        public async Task<PagingList<T>> PagingAllListAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
+        {
+            return await new AllPagingListImpl<M>(DC).PagingAllListAsync<T>(pageIndex, pageSize, columnMapFunc);
+        }
 
         /// <summary>
         /// 单表数据查询
