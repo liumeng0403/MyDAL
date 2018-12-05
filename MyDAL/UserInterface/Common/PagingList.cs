@@ -5,7 +5,7 @@ namespace MyDAL
     /// <summary>
     ///     分页列表
     /// </summary>
-    public sealed class PagingList<TEntity>
+    public sealed class PagingList<T>
     {
         /// <summary>
         ///     当前页码
@@ -41,6 +41,6 @@ namespace MyDAL
         /// <summary>
         ///     数据
         /// </summary>
-        public List<TEntity> Data { get; set; }
+        public List<T> Data { get; set; }
     }
 }

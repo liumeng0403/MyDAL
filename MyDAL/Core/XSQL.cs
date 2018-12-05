@@ -3,7 +3,7 @@ using MyDAL.Core.Enums;
 using System;
 using System.Text;
 
-namespace MyDAL.DataRainbow
+namespace MyDAL.Core
 {
     internal abstract class XSQL
     {

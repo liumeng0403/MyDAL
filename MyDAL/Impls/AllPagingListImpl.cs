@@ -1,15 +1,18 @@
 ﻿using MyDAL.Core.Bases;
 using MyDAL.Core.Enums;
+using MyDAL.Core.Extensions;
 using MyDAL.Interfaces;
+using System;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace MyDAL.Impls
 {
     internal class AllPagingListImpl<M>
         : Impler, IAllPagingList<M>
-        where M:class
+        where M : class
     {
-        internal AllPagingListImpl(Context dc) 
+        internal AllPagingListImpl(Context dc)
             : base(dc)
         {
         }
@@ -20,9 +23,27 @@ namespace MyDAL.Impls
         }
 
         public async Task<PagingList<VM>> PagingAllListAsync<VM>(int pageIndex, int pageSize)
-            where VM:class
+            where VM : class
         {
-            return await PagingListAsyncHandle<M, VM>(pageIndex, pageSize, UiMethodEnum.PagingAllListAsync);
+            DC.PageIndex = pageIndex;
+            DC.PageSize = pageSize;
+            return await PagingListAsyncHandle<M, VM>(UiMethodEnum.PagingAllListAsync, false, null);
+        }
+
+        public async Task<PagingList<T>> PagingAllListAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
+        {
+            DC.PageIndex = pageIndex;
+            DC.PageSize = pageSize;
+            var single = typeof(T).IsSingleColumn();
+            if (single)
+            {
+                SingleColumnHandle(columnMapFunc);
+            }
+            else
+            {
+                SelectMHandle(columnMapFunc);
+            }
+            return await PagingListAsyncHandle<M, T>(UiMethodEnum.PagingAllListAsync, single, columnMapFunc.Compile());
         }
     }
 }

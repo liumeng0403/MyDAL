@@ -24,14 +24,18 @@ namespace MyDAL.Impls
         public async Task<PagingList<VM>> PagingListAsync<VM>(int pageIndex, int pageSize)
             where VM : class
         {
-            return await PagingListAsyncHandle<M, VM>(pageIndex, pageSize, UiMethodEnum.PagingListAsync);
+            DC.PageIndex = pageIndex;
+            DC.PageSize = pageSize;
+            return await PagingListAsyncHandle<M, VM>(UiMethodEnum.PagingListAsync, false, null);
         }
 
         public async Task<PagingList<VM>> PagingListAsync<VM>(int pageIndex, int pageSize, Expression<Func<M, VM>> func)
             where VM : class
         {
+            DC.PageIndex = pageIndex;
+            DC.PageSize = pageSize;
             SelectMHandle(func);
-            return await PagingListAsyncHandle<M, VM>(pageIndex, pageSize, UiMethodEnum.PagingListAsync);
+            return await PagingListAsyncHandle<M, VM>(UiMethodEnum.PagingListAsync, false, null);
         }
     }
 
@@ -53,17 +57,21 @@ namespace MyDAL.Impls
         public async Task<PagingList<VM>> PagingListAsync<VM>(PagingQueryOption option)
             where VM : class
         {
+            DC.PageIndex = option.PageIndex;
+            DC.PageSize = option.PageSize;
             SelectMHandle<M, VM>();
             OrderByOptionHandle(option, typeof(M).FullName);
-            return await PagingListAsyncHandle<M, VM>(option.PageIndex, option.PageSize, UiMethodEnum.PagingListAsync);
+            return await PagingListAsyncHandle<M, VM>(UiMethodEnum.PagingListAsync, false, null);
         }
 
         public async Task<PagingList<VM>> PagingListAsync<VM>(PagingQueryOption option, Expression<Func<M, VM>> func)
             where VM : class
         {
+            DC.PageIndex = option.PageIndex;
+            DC.PageSize = option.PageSize;
             SelectMHandle(func);
             OrderByOptionHandle(option, typeof(M).FullName);
-            return await PagingListAsyncHandle<M, VM>(option.PageIndex, option.PageSize, UiMethodEnum.PagingListAsync);
+            return await PagingListAsyncHandle<M, VM>(UiMethodEnum.PagingListAsync, false, null);
         }
     }
 
