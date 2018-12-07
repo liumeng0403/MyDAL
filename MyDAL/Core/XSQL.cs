@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 using Yunyong.DataExchange.Core.Enums;
 
@@ -63,9 +64,11 @@ namespace Yunyong.DataExchange.Core
         {
             sb.Append('=');
         }
-        protected static void End(StringBuilder sb)
+        protected static void End(StringBuilder sb,List<string> sqls)
         {
             sb.Append(';');
+            sqls.Add(sb.ToString());
+            sb.Clear();
         }
 
         /****************************************************************************************************************/

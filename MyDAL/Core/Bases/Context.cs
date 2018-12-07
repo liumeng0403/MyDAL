@@ -81,7 +81,7 @@ namespace Yunyong.DataExchange.Core.Bases
         internal string SingleOpName { get; set; }
         internal int DicID { get; set; } = 1;
         internal List<DicParam> Parameters { get; set; }
-        internal List<string> SQL { get; set; }
+        internal List<string> SQL { get; private set; } = new List<string>();
         internal int? PageIndex { get; set; } = null;
         internal int? PageSize { get; set; } = null;
 

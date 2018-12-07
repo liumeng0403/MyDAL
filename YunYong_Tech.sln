@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26730.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.Func", "MyDAL.Test.Func\MyDAL.Test.Func.csproj", "{BF35B9CD-BAE0-49D8-AE0C-D88F5F2962CC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.QuickAPI", "MyDAL.Test.QuickAPI\MyDAL.Test.QuickAPI.csproj", "{054CCDC0-CB13-4AFC-AFA7-76651EF0947A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.ShortcutAPI", "MyDAL.Test.QuickAPI\MyDAL.Test.ShortcutAPI.csproj", "{054CCDC0-CB13-4AFC-AFA7-76651EF0947A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.QueryVM", "MyDAL.Test.QueryVM\MyDAL.Test.QueryVM.csproj", "{5B8C3CDE-7898-48B9-9088-10DB1159DC6C}"
 EndProject
@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yunyong.DataExchange", "MyD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.QuerySingleColumn", "MyDAL.Test.QuerySingleColumn\MyDAL.Test.QuerySingleColumn.csproj", "{766E1CC2-20B3-4612-BB2A-A8619F160511}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDAL.Test.QueryParallel", "MyDAL.Test.QueryParallel\MyDAL.Test.QueryParallel.csproj", "{1B0C386F-488F-4C1F-B39A-DF60C060A6BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.Parallel", "MyDAL.Test.QueryParallel\MyDAL.Test.Parallel.csproj", "{1B0C386F-488F-4C1F-B39A-DF60C060A6BE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
