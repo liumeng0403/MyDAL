@@ -10,8 +10,7 @@ namespace MyDAL.Interfaces
         Task<PagingList<M>> PagingListAsync(int pageIndex, int pageSize);
         Task<PagingList<VM>> PagingListAsync<VM>(int pageIndex, int pageSize)
             where VM : class;
-        Task<PagingList<VM>> PagingListAsync<VM>(int pageIndex, int pageSize, Expression<Func<M, VM>> func)
-            where VM : class;
+        Task<PagingList<T>> PagingListAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> func);
 
     }
 
@@ -21,8 +20,7 @@ namespace MyDAL.Interfaces
         Task<PagingList<M>> PagingListAsync(PagingQueryOption option);
         Task<PagingList<VM>> PagingListAsync<VM>(PagingQueryOption option)
             where VM : class;
-        Task<PagingList<VM>> PagingListAsync<VM>(PagingQueryOption option, Expression<Func<M, VM>> func)
-            where VM : class;
+        Task<PagingList<T>> PagingListAsync<T>(PagingQueryOption option, Expression<Func<M, T>> func);
 
     }
 

@@ -1,5 +1,6 @@
 ﻿using MyDAL.Core.Bases;
 using MyDAL.Core.Enums;
+using MyDAL.Core.Extensions;
 using MyDAL.Interfaces;
 using System;
 using System.Linq.Expressions;
@@ -29,13 +30,20 @@ namespace MyDAL.Impls
             return await PagingListAsyncHandle<M, VM>(UiMethodEnum.PagingListAsync, false, null);
         }
 
-        public async Task<PagingList<VM>> PagingListAsync<VM>(int pageIndex, int pageSize, Expression<Func<M, VM>> func)
-            where VM : class
+        public async Task<PagingList<T>> PagingListAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
         {
             DC.PageIndex = pageIndex;
             DC.PageSize = pageSize;
-            SelectMHandle(func);
-            return await PagingListAsyncHandle<M, VM>(UiMethodEnum.PagingListAsync, false, null);
+            var single = typeof(T).IsSingleColumn();
+            if (single)
+            {
+                SingleColumnHandle(columnMapFunc);
+            }
+            else
+            {
+                SelectMHandle(columnMapFunc);
+            }
+            return await PagingListAsyncHandle<M, T>(UiMethodEnum.PagingListAsync, single, columnMapFunc.Compile());
         }
     }
 
@@ -64,14 +72,21 @@ namespace MyDAL.Impls
             return await PagingListAsyncHandle<M, VM>(UiMethodEnum.PagingListAsync, false, null);
         }
 
-        public async Task<PagingList<VM>> PagingListAsync<VM>(PagingQueryOption option, Expression<Func<M, VM>> func)
-            where VM : class
+        public async Task<PagingList<T>> PagingListAsync<T>(PagingQueryOption option, Expression<Func<M, T>> columnMapFunc)
         {
             DC.PageIndex = option.PageIndex;
             DC.PageSize = option.PageSize;
-            SelectMHandle(func);
+            var single = typeof(T).IsSingleColumn();
+            if (single)
+            {
+                SingleColumnHandle(columnMapFunc);
+            }
+            else
+            {
+                SelectMHandle(columnMapFunc);
+            }
             OrderByOptionHandle(option, typeof(M).FullName);
-            return await PagingListAsyncHandle<M, VM>(UiMethodEnum.PagingListAsync, false, null);
+            return await PagingListAsyncHandle<M, T>(UiMethodEnum.PagingListAsync, single, columnMapFunc.Compile());
         }
     }
 

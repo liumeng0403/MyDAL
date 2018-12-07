@@ -350,16 +350,6 @@ namespace MyDAL
             XConfig.IsDebug = true;
             return conn;
         }
-        //public static IDbConnection OpenCodeFirst(this IDbConnection conn, string modelsNamespace)
-        //{
-        //    XConfig.IsCodeFirst = true;
-        //    XConfig.TablesNamespace = modelsNamespace;
-        //    if (XConfig.IsNeedChangeDb)
-        //    {
-        //        (new CodeFirstHelper(new DbContext(conn)).CodeFirstProcess(conn)).GetAwaiter().GetResult();
-        //    }
-        //    return conn;
-        //}
 
     }
 }

@@ -674,86 +674,72 @@ namespace MyDAL.DataRainbow.MySQL
         }
         async Task<List<ColumnInfo>> ISqlProvider.GetColumnsInfos(string tableName)
         {
-            DC.SQL = new List<string>{
-                                $@"
-                                        SELECT distinct
-                                            TABLE_NAME as TableName,
-                                            column_name as ColumnName,
-                                            DATA_TYPE as DataType,
-                                            column_default as ColumnDefault,
-                                            is_nullable AS IsNullable,
-                                            column_comment as ColumnComment,
-                                            column_key as KeyType
-                                        FROM
-                                            information_schema.COLUMNS
-                                        WHERE  ( 
-                                                            table_schema='{DC.Conn.Database.Trim().ToUpper()}' 
-                                                            or table_schema='{DC.Conn.Database.Trim().ToLower()}' 
-                                                            or table_schema='{DC.Conn.Database.Trim()}' 
-                                                            or table_schema='{DC.Conn.Database}' 
-                                                        )
-                                                        and  ( 
-                                                                    TABLE_NAME = '{tableName.Trim().ToUpper()}' 
-                                                                    or TABLE_NAME = '{tableName.Trim().ToLower()}' 
-                                                                    or TABLE_NAME = '{tableName.Trim()}' 
-                                                                    or TABLE_NAME = '{tableName}' 
-                                                                  )
-                                        ;
-                                  "
-            };
+            DC.SQL.Clear();
+            DC.SQL.Add($@"
+                                            SELECT distinct
+                                                TABLE_NAME as TableName,
+                                                column_name as ColumnName,
+                                                DATA_TYPE as DataType,
+                                                column_default as ColumnDefault,
+                                                is_nullable AS IsNullable,
+                                                column_comment as ColumnComment,
+                                                column_key as KeyType
+                                            FROM
+                                                information_schema.COLUMNS
+                                            WHERE  ( 
+                                                                table_schema='{DC.Conn.Database.Trim().ToUpper()}' 
+                                                                or table_schema='{DC.Conn.Database.Trim().ToLower()}' 
+                                                                or table_schema='{DC.Conn.Database.Trim()}' 
+                                                                or table_schema='{DC.Conn.Database}' 
+                                                            )
+                                                            and  ( 
+                                                                        TABLE_NAME = '{tableName.Trim().ToUpper()}' 
+                                                                        or TABLE_NAME = '{tableName.Trim().ToLower()}' 
+                                                                        or TABLE_NAME = '{tableName.Trim()}' 
+                                                                        or TABLE_NAME = '{tableName}' 
+                                                                        )
+                                            ;
+                                  ");
             return await DC.DS.ExecuteReaderMultiRowAsync<ColumnInfo>();
         }
         void ISqlProvider.GetSQL()
         {
-            var list = new List<string>();
-
-            //
+            DC.SQL.Clear();
             switch (DC.Method)
             {
                 case UiMethodEnum.CreateAsync:
                 case UiMethodEnum.CreateBatchAsync:
-                    InsertInto(X); Table(); InsertColumn(); Values(X); InsertValue(); End(X);
-                    list.Add(X.ToString()); X.Clear();
+                    InsertInto(X); Table(); InsertColumn(); Values(X); InsertValue(); End(X, DC.SQL);
                     break;
                 case UiMethodEnum.DeleteAsync:
-                    Delete(X); From(X); Table(); Where(); End(X);
-                    list.Add(X.ToString()); X.Clear();
+                    Delete(X); From(X); Table(); Where(); End(X, DC.SQL);
                     break;
                 case UiMethodEnum.UpdateAsync:
-                    Update(X); Table(); Set(X); UpdateColumn(); Where(); End(X);
-                    list.Add(X.ToString()); X.Clear();
+                    Update(X); Table(); Set(X); UpdateColumn(); Where(); End(X, DC.SQL);
                     break;
                 case UiMethodEnum.TopAsync:
                 case UiMethodEnum.ListAsync:
                 case UiMethodEnum.AllAsync:
                 case UiMethodEnum.FirstOrDefaultAsync:
-                    Select(X); Distinct(); SelectColumn(); From(X); Table(); Where(); OrderBy(); Limit(); End(X);
-                    list.Add(X.ToString()); X.Clear();
+                    Select(X); Distinct(); SelectColumn(); From(X); Table(); Where(); OrderBy(); Limit(); End(X, DC.SQL);
                     break;
                 case UiMethodEnum.PagingListAsync:
                 case UiMethodEnum.PagingAllListAsync:
-                    Select(X); CountCD(); From(X); Table(); Where(); End(X);
-                    list.Add(X.ToString()); X.Clear();
-                    Select(X); Distinct(); SelectColumn(); From(X); Table(); Where(); OrderBy(); Limit(); End(X);
-                    list.Add(X.ToString()); X.Clear();
+                    Select(X); CountCD(); From(X); Table(); Where(); End(X, DC.SQL);
+                    Select(X); Distinct(); SelectColumn(); From(X); Table(); Where(); OrderBy(); Limit(); End(X, DC.SQL);
                     break;
                 case UiMethodEnum.ExistAsync:
                 case UiMethodEnum.CountAsync:
-                    Select(X); CountCD(); From(X); Table(); Where(); End(X);
-                    list.Add(X.ToString()); X.Clear();
+                    Select(X); CountCD(); From(X); Table(); Where(); End(X, DC.SQL);
                     break;
                 case UiMethodEnum.SumAsync:
-                    Select(X); Sum(); From(X); Table(); Where(); End(X);
-                    list.Add(X.ToString()); X.Clear();
+                    Select(X); Sum(); From(X); Table(); Where(); End(X, DC.SQL);
                     break;
             }
-
-            //
             if (XConfig.IsDebug)
             {
-                XDebug.SQL = list;
+                XDebug.SQL = DC.SQL;
             }
-            DC.SQL = list;
         }
     }
 }

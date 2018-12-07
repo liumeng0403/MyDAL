@@ -1,6 +1,7 @@
 ﻿using MyDAL.Core;
 using MyDAL.Core.Enums;
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace MyDAL.Core
@@ -64,9 +65,11 @@ namespace MyDAL.Core
         {
             sb.Append('=');
         }
-        protected static void End(StringBuilder sb)
+        protected static void End(StringBuilder sb,List<string> sqls)
         {
             sb.Append(';');
+            sqls.Add(sb.ToString());
+            sb.Clear();
         }
 
         /****************************************************************************************************************/
