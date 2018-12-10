@@ -9,11 +9,11 @@ using Yunyong.DataExchange.Interfaces;
 
 namespace Yunyong.DataExchange.UserFacade.Query
 {
-    public sealed class Selecter<M>
+    public sealed class Queryer<M>
         : Operator, IAll<M>, IAllPagingList<M>, ITop<M>
         where M : class
     {
-        internal Selecter(Context dc)
+        internal Queryer(Context dc)
             : base(dc)
         { }
 

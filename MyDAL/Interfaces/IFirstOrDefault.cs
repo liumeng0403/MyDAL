@@ -16,7 +16,6 @@ namespace Yunyong.DataExchange.Interfaces
     {
         Task<M> FirstOrDefaultAsync<M>()
             where M : class;
-        Task<VM> FirstOrDefaultAsync<VM>(Expression<Func<VM>> func)
-            where VM : class;
+        Task<T> FirstOrDefaultAsync<T>(Expression<Func<T>> columnMapFunc);
     }
 }

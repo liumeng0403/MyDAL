@@ -8,9 +8,9 @@ using Yunyong.DataExchange.Core;
 
 namespace Yunyong.DataExchange.AdoNet
 {
-    internal struct IL<M>
+    internal class CommonIL
     {
-        private static RowMap GetTypeMap(Type mType)
+        internal static RowMap GetTypeMap(Type mType)
         {
             if (!XCache.TypeMaps.TryGetValue(mType, out var map))
             {
@@ -19,7 +19,7 @@ namespace Yunyong.DataExchange.AdoNet
             }
             return map;
         }
-        private static void EmitInt32(ILGenerator il, int value)
+        internal static void EmitInt32(ILGenerator il, int value)
         {
             switch (value)
             {
@@ -45,7 +45,7 @@ namespace Yunyong.DataExchange.AdoNet
                     break;
             }
         }
-        private static void StoreLocal(ILGenerator il, int index)
+        internal static void StoreLocal(ILGenerator il, int index)
         {
             if (index < 0 || index >= short.MaxValue) throw new ArgumentNullException(nameof(index));
             switch (index)
@@ -66,7 +66,7 @@ namespace Yunyong.DataExchange.AdoNet
                     break;
             }
         }
-        private static MethodInfo ResolveOperator(MethodInfo[] methods, Type from, Type to, string name)
+        internal static MethodInfo ResolveOperator(MethodInfo[] methods, Type from, Type to, string name)
         {
             for (int i = 0; i < methods.Length; i++)
             {
@@ -85,7 +85,7 @@ namespace Yunyong.DataExchange.AdoNet
             }
             return null;
         }
-        private static MethodInfo GetOperator(Type from, Type to)
+        internal static MethodInfo GetOperator(Type from, Type to)
         {
             if (to == null)
             {
@@ -97,7 +97,7 @@ namespace Yunyong.DataExchange.AdoNet
                 ?? ResolveOperator(fromMethods, from, to, "op_Explicit")
                 ?? ResolveOperator(toMethods, from, to, "op_Explicit");
         }
-        private static void FlexibleConvertBoxedFromHeadOfStack(ILGenerator il, Type from, Type to, Type via)
+        internal static void FlexibleConvertBoxedFromHeadOfStack(ILGenerator il, Type from, Type to, Type via)
         {
             MethodInfo op;
             if (from == (via ?? to))
@@ -178,7 +178,7 @@ namespace Yunyong.DataExchange.AdoNet
                 }
             }
         }
-        private static void LoadLocal(ILGenerator il, int index)
+        internal static void LoadLocal(ILGenerator il, int index)
         {
             if (index < 0
                 || index >= short.MaxValue)
@@ -211,7 +211,7 @@ namespace Yunyong.DataExchange.AdoNet
                     break;
             }
         }
-        private static char ReadChar(object value)
+        internal static char ReadChar(object value)
         {
             if (value == null
                 || value is DBNull)
@@ -226,7 +226,7 @@ namespace Yunyong.DataExchange.AdoNet
             }
             return s[0];
         }
-        private static char? ReadNullableChar(object value)
+        internal static char? ReadNullableChar(object value)
         {
             if (value == null
                 || value is DBNull)
@@ -240,167 +240,6 @@ namespace Yunyong.DataExchange.AdoNet
                 throw new ArgumentException("A single-character was expected", nameof(value));
             }
             return s[0];
-        }
-        private static Func<IDataReader, M> SetFunc(IDataReader reader)
-        {
-            // 
-            var mType = typeof(M);
-            var dm = new DynamicMethod("MyDAL" + Guid.NewGuid().ToString(), mType, new[] { typeof(IDataReader) }, mType, true);
-            var il = dm.GetILGenerator();
-            il.DeclareLocal(typeof(int));    // 定义 loc0  int
-            il.DeclareLocal(mType);    //  定义 loc1 M
-            il.Emit(OpCodes.Ldc_I4_0);
-            il.Emit(OpCodes.Stloc_0);   //  赋值 loc0 = 0
-
-            //
-            var length = reader.FieldCount;
-            var names = Enumerable.Range(0, length).Select(i => reader.GetName(i)).ToArray();
-            var typeMap = GetTypeMap(mType);
-            int index = 0;
-            var ctor = typeMap.DefaultConstructor();
-
-            //
-            il.Emit(OpCodes.Newobj, ctor);
-            il.Emit(OpCodes.Stloc_1);   //  赋值 loc1 = new M();
-            il.BeginExceptionBlock();    //  try begin 
-            il.Emit(OpCodes.Ldloc_1);    //   加载 loc1 
-
-            //
-            var members = names.Select(n => typeMap.GetMember(n)).ToList();
-            bool first = true;
-            var allDone = il.DefineLabel();
-            int enumDeclareLocal = -1;
-            int valueCopyLocal = il.DeclareLocal(typeof(object)).LocalIndex;    // 定义 loc_object 变量, 然后返回此本地变量的index值, 其实就是截止目前, 定义了本地变量的个数            
-            foreach (var item in members)
-            {
-                if (item != null)
-                {
-                    il.Emit(OpCodes.Dup); 
-                    Label isDbNullLabel = il.DefineLabel();
-                    Label finishLabel = il.DefineLabel();
-
-                    il.Emit(OpCodes.Ldarg_0); 
-                    EmitInt32(il, index); 
-                    il.Emit(OpCodes.Dup);
-                    il.Emit(OpCodes.Stloc_0);
-                    il.Emit(OpCodes.Callvirt, XConfig.GetItem);   //  获取reader读取的值, reader[index]
-                    il.Emit(OpCodes.Dup); 
-                    StoreLocal(il, valueCopyLocal);   //  将 reader[index]的值, 存放到本地变量 loc_object 中
-                    Type colType = reader.GetFieldType(index);    // reader[index] 的列的类型  source
-                    Type memberType = item.MemberType();   //  M[item] 的类型   
-
-                    if (memberType == typeof(char) || memberType == typeof(char?))
-                    {
-                        il.EmitCall(
-                            OpCodes.Call, 
-                            typeof(IL<M>).GetMethod(
-                                memberType == typeof(char) 
-                                ? nameof(ReadChar) 
-                                : nameof(ReadNullableChar), BindingFlags.Static | BindingFlags.NonPublic),
-                            null); 
-                    }
-                    else
-                    {
-                        il.Emit(OpCodes.Dup); 
-                        il.Emit(OpCodes.Isinst, typeof(DBNull));    //  判断是否为DBNull类型, 如果是, 则跳转到 标签isDbNullLabel 
-                        il.Emit(OpCodes.Brtrue_S, isDbNullLabel); 
-                        
-                        var nullUnderlyingType = Nullable.GetUnderlyingType(memberType);
-                        var unboxType = nullUnderlyingType?.IsEnum == true ? nullUnderlyingType : memberType;
-
-                        if (unboxType.IsEnum)
-                        {
-                            Type numericType = Enum.GetUnderlyingType(unboxType);
-                            if (colType == typeof(string))
-                            {
-                                if (enumDeclareLocal == -1)
-                                {
-                                    enumDeclareLocal = il.DeclareLocal(typeof(string)).LocalIndex;
-                                }
-                                il.Emit(OpCodes.Castclass, typeof(string)); // stack is now [target][target][string]
-                                StoreLocal(il, enumDeclareLocal); // stack is now [target][target]
-                                il.Emit(OpCodes.Ldtoken, unboxType); // stack is now [target][target][enum-type-token]
-                                il.EmitCall(OpCodes.Call, typeof(Type).GetMethod(nameof(Type.GetTypeFromHandle)), null);// stack is now [target][target][enum-type]
-                                LoadLocal(il, enumDeclareLocal); // stack is now [target][target][enum-type][string]
-                                il.Emit(OpCodes.Ldc_I4_1); // stack is now [target][target][enum-type][string][true]
-                                il.EmitCall(OpCodes.Call, XConfig.EnumParse, null); // stack is now [target][target][enum-as-object]
-                                il.Emit(OpCodes.Unbox_Any, unboxType); // stack is now [target][target][typed-value]
-                            }
-                            else
-                            {
-                                FlexibleConvertBoxedFromHeadOfStack(il, colType, unboxType, numericType);
-                            }
-
-                            if (nullUnderlyingType != null)
-                            {
-                                il.Emit(OpCodes.Newobj, memberType.GetConstructor(new[] { nullUnderlyingType })); // stack is now [target][target][typed-value]
-                            }
-                        }
-                        else if (memberType.FullName == XConfig.TC.LinqBinary)
-                        {
-                            il.Emit(OpCodes.Unbox_Any, typeof(byte[])); // stack is now [target][target][byte-array]
-                            il.Emit(OpCodes.Newobj, memberType.GetConstructor(new Type[] { typeof(byte[]) }));// stack is now [target][target][binary]
-                        }
-                        else
-                        {
-                            TypeCode dataTypeCode = Type.GetTypeCode(colType), unboxTypeCode = Type.GetTypeCode(unboxType);
-                            if (colType == unboxType || dataTypeCode == unboxTypeCode || dataTypeCode == Type.GetTypeCode(nullUnderlyingType))
-                            {
-                                il.Emit(OpCodes.Unbox_Any, unboxType); // stack is now [target][target][typed-value]
-                            }
-                            else
-                            {
-                                // not a direct match; need to tweak the unbox
-                                FlexibleConvertBoxedFromHeadOfStack(il, colType, nullUnderlyingType ?? unboxType, null);
-                                if (nullUnderlyingType != null)
-                                {
-                                    il.Emit(OpCodes.Newobj, unboxType.GetConstructor(new[] { nullUnderlyingType })); // stack is now [target][target][typed-value]
-                                }
-                            }
-                        }
-                    }
-                    // Store the value in the property/field
-                    if (item.Property != null)
-                    {
-                        il.Emit(OpCodes.Callvirt, RowMap.GetPropertySetter(item.Property, mType));
-                    }
-                    else
-                    {
-                        il.Emit(OpCodes.Stfld, item.Field); // stack is now [target]
-                    }
-
-                    il.Emit(OpCodes.Br_S, finishLabel); // stack is now [target]
-                    il.MarkLabel(isDbNullLabel); // incoming stack: [target][target][value]
-                    il.Emit(OpCodes.Pop); // stack is now [target][target]
-                    il.Emit(OpCodes.Pop); // stack is now [target]
-                    il.MarkLabel(finishLabel);
-                }
-                first = false;
-                index++;
-            }
-
-            il.Emit(OpCodes.Stloc_1); // stack is empty
-            il.MarkLabel(allDone);
-            il.BeginCatchBlock(typeof(Exception)); // stack is Exception
-            il.Emit(OpCodes.Ldloc_0); // stack is Exception, index
-            il.Emit(OpCodes.Ldarg_0); // stack is Exception, index, reader
-            LoadLocal(il, valueCopyLocal); // stack is Exception, index, reader, value
-            il.EmitCall(OpCodes.Call, typeof(IL<M>).GetMethod(nameof(ThrowDataException)), null);
-            il.EndExceptionBlock();
-
-            il.Emit(OpCodes.Ldloc_1); // stack is [rval]
-            il.Emit(OpCodes.Ret);
-
-            var funcType = Expression.GetFuncType(typeof(IDataReader), mType);
-            return (Func<IDataReader, M>)dm.CreateDelegate(funcType);
-        }
-
-        internal static Row<M> Row(IDataReader reader)
-        {
-            return new Row<M>
-            {
-                Handle = SetFunc(reader)
-            };
         }
 
         public static void ThrowDataException(Exception ex, int index, IDataReader reader, object value)
@@ -435,6 +274,335 @@ namespace Yunyong.DataExchange.AdoNet
                 toThrow = new DataException(ex.Message, ex);
             }
             throw toThrow;
+        }
+    }
+
+    internal class IL<M>
+    {
+        private static Func<IDataReader, M> SetFunc(IDataReader reader)
+        {
+            // 
+            var mType = typeof(M);
+            var dm = new DynamicMethod("MyDAL" + Guid.NewGuid().ToString(), mType, new[] { typeof(IDataReader) }, mType, true);
+            var il = dm.GetILGenerator();
+            il.DeclareLocal(typeof(int));    // 定义 loc0  int
+            il.DeclareLocal(mType);    //  定义 loc1 M
+            il.Emit(OpCodes.Ldc_I4_0);
+            il.Emit(OpCodes.Stloc_0);   //  赋值 loc0 = 0
+
+            //
+            var length = reader.FieldCount;
+            var names = Enumerable.Range(0, length).Select(i => reader.GetName(i)).ToArray();
+            var typeMap = CommonIL.GetTypeMap(mType);
+            int index = 0;
+            var ctor = typeMap.DefaultConstructor();
+
+            //
+            il.Emit(OpCodes.Newobj, ctor);
+            il.Emit(OpCodes.Stloc_1);   //  赋值 loc1 = new M();
+            il.BeginExceptionBlock();    //  try begin 
+            il.Emit(OpCodes.Ldloc_1);    //   加载 loc1 
+
+            //
+            var members = names.Select(n => typeMap.GetMember(n)).ToList();
+            bool first = true;
+            var allDone = il.DefineLabel();
+            int enumDeclareLocal = -1;
+            int valueCopyLocal = il.DeclareLocal(typeof(object)).LocalIndex;    // 定义 loc_object 变量, 然后返回此本地变量的index值, 其实就是截止目前, 定义了本地变量的个数            
+            foreach (var item in members)
+            {
+                if (item != null)
+                {
+                    il.Emit(OpCodes.Dup);
+                    Label isDbNullLabel = il.DefineLabel();
+                    Label finishLabel = il.DefineLabel();
+
+                    il.Emit(OpCodes.Ldarg_0);
+                    CommonIL.EmitInt32(il, index);
+                    il.Emit(OpCodes.Dup);
+                    il.Emit(OpCodes.Stloc_0);
+                    il.Emit(OpCodes.Callvirt, XConfig.GetItem);   //  获取reader读取的值, reader[index]
+                    il.Emit(OpCodes.Dup);
+                    CommonIL.StoreLocal(il, valueCopyLocal);   //  将 reader[index]的值, 存放到本地变量 loc_object 中
+                    Type colType = reader.GetFieldType(index);    // reader[index] 的列的类型  source
+                    Type memberType = item.MemberType();   //  M[item] 的类型   
+
+                    if (memberType == XConfig.TC.Char || memberType == XConfig.TC.CharNull)
+                    {
+                        il.EmitCall(
+                            OpCodes.Call,
+                            typeof(CommonIL).GetMethod(
+                                memberType == XConfig.TC.Char
+                                ? nameof(CommonIL.ReadChar)
+                                : nameof(CommonIL.ReadNullableChar), BindingFlags.Static | BindingFlags.NonPublic),
+                            null);
+                    }
+                    else
+                    {
+                        il.Emit(OpCodes.Dup);
+                        il.Emit(OpCodes.Isinst, typeof(DBNull));    //  判断是否为DBNull类型, 如果是, 则跳转到 标签isDbNullLabel 
+                        il.Emit(OpCodes.Brtrue_S, isDbNullLabel);
+
+                        var nullUnderlyingType = Nullable.GetUnderlyingType(memberType);
+                        var unboxType = nullUnderlyingType?.IsEnum == true ? nullUnderlyingType : memberType;
+
+                        if (unboxType.IsEnum)
+                        {
+                            Type numericType = Enum.GetUnderlyingType(unboxType);
+                            if (colType == typeof(string))
+                            {
+                                if (enumDeclareLocal == -1)
+                                {
+                                    enumDeclareLocal = il.DeclareLocal(typeof(string)).LocalIndex;
+                                }
+                                il.Emit(OpCodes.Castclass, typeof(string)); // stack is now [target][target][string]
+                                CommonIL.StoreLocal(il, enumDeclareLocal); // stack is now [target][target]
+                                il.Emit(OpCodes.Ldtoken, unboxType); // stack is now [target][target][enum-type-token]
+                                il.EmitCall(OpCodes.Call, typeof(Type).GetMethod(nameof(Type.GetTypeFromHandle)), null);// stack is now [target][target][enum-type]
+                                CommonIL.LoadLocal(il, enumDeclareLocal); // stack is now [target][target][enum-type][string]
+                                il.Emit(OpCodes.Ldc_I4_1); // stack is now [target][target][enum-type][string][true]
+                                il.EmitCall(OpCodes.Call, XConfig.EnumParse, null); // stack is now [target][target][enum-as-object]
+                                il.Emit(OpCodes.Unbox_Any, unboxType); // stack is now [target][target][typed-value]
+                            }
+                            else
+                            {
+                                CommonIL.FlexibleConvertBoxedFromHeadOfStack(il, colType, unboxType, numericType);
+                            }
+
+                            if (nullUnderlyingType != null)
+                            {
+                                il.Emit(OpCodes.Newobj, memberType.GetConstructor(new[] { nullUnderlyingType })); // stack is now [target][target][typed-value]
+                            }
+                        }
+                        else if (memberType.FullName == XConfig.TC.LinqBinary)
+                        {
+                            il.Emit(OpCodes.Unbox_Any, typeof(byte[])); // stack is now [target][target][byte-array]
+                            il.Emit(OpCodes.Newobj, memberType.GetConstructor(new Type[] { typeof(byte[]) }));// stack is now [target][target][binary]
+                        }
+                        else
+                        {
+                            TypeCode dataTypeCode = Type.GetTypeCode(colType), unboxTypeCode = Type.GetTypeCode(unboxType);
+                            if (colType == unboxType || dataTypeCode == unboxTypeCode || dataTypeCode == Type.GetTypeCode(nullUnderlyingType))
+                            {
+                                il.Emit(OpCodes.Unbox_Any, unboxType); // stack is now [target][target][typed-value]
+                            }
+                            else
+                            {
+                                // not a direct match; need to tweak the unbox
+                                CommonIL.FlexibleConvertBoxedFromHeadOfStack(il, colType, nullUnderlyingType ?? unboxType, null);
+                                if (nullUnderlyingType != null)
+                                {
+                                    il.Emit(OpCodes.Newobj, unboxType.GetConstructor(new[] { nullUnderlyingType })); // stack is now [target][target][typed-value]
+                                }
+                            }
+                        }
+                    }
+                    // Store the value in the property/field
+                    if (item.Property != null)
+                    {
+                        il.Emit(OpCodes.Callvirt, RowMap.GetPropertySetter(item.Property, mType));
+                    }
+                    else
+                    {
+                        il.Emit(OpCodes.Stfld, item.Field); // stack is now [target]
+                    }
+
+                    il.Emit(OpCodes.Br_S, finishLabel); // stack is now [target]
+                    il.MarkLabel(isDbNullLabel); // incoming stack: [target][target][value]
+                    il.Emit(OpCodes.Pop); // stack is now [target][target]
+                    il.Emit(OpCodes.Pop); // stack is now [target]
+                    il.MarkLabel(finishLabel);
+                }
+                first = false;
+                index++;
+            }
+
+            il.Emit(OpCodes.Stloc_1); // stack is empty
+            il.MarkLabel(allDone);
+            il.BeginCatchBlock(typeof(Exception)); // stack is Exception
+            il.Emit(OpCodes.Ldloc_0); // stack is Exception, index
+            il.Emit(OpCodes.Ldarg_0); // stack is Exception, index, reader
+            CommonIL.LoadLocal(il, valueCopyLocal); // stack is Exception, index, reader, value
+            il.EmitCall(OpCodes.Call, typeof(CommonIL).GetMethod(nameof(CommonIL.ThrowDataException)), null);
+            il.EndExceptionBlock();
+
+            il.Emit(OpCodes.Ldloc_1); // stack is [rval]
+            il.Emit(OpCodes.Ret);
+
+            var funcType = Expression.GetFuncType(typeof(IDataReader), mType);
+            return (Func<IDataReader, M>)dm.CreateDelegate(funcType);
+        }
+
+        internal static Row<M> Row(IDataReader reader)
+        {
+            return new Row<M>
+            {
+                Handle = SetFunc(reader)
+            };
+        }
+    }
+
+    internal class IL
+    {
+        private static Func<IDataReader, object> SetFunc(IDataReader reader, Type mType)
+        {
+            // 
+            var dm = new DynamicMethod("MyDAL" + Guid.NewGuid().ToString(), mType, new[] { typeof(IDataReader) }, mType, true);
+            var il = dm.GetILGenerator();
+            il.DeclareLocal(typeof(int));    // 定义 loc0  int
+            il.DeclareLocal(mType);    //  定义 loc1 M
+            il.Emit(OpCodes.Ldc_I4_0);
+            il.Emit(OpCodes.Stloc_0);   //  赋值 loc0 = 0
+
+            //
+            var length = reader.FieldCount;
+            var names = Enumerable.Range(0, length).Select(i => reader.GetName(i)).ToArray();
+            var typeMap = CommonIL.GetTypeMap(mType);
+            int index = 0;
+            var ctor = typeMap.DefaultConstructor();
+
+            //
+            il.Emit(OpCodes.Newobj, ctor);
+            il.Emit(OpCodes.Stloc_1);   //  赋值 loc1 = new M();
+            il.BeginExceptionBlock();    //  try begin 
+            il.Emit(OpCodes.Ldloc_1);    //   加载 loc1 
+
+            //
+            var members = names.Select(n => typeMap.GetMember(n)).ToList();
+            bool first = true;
+            var allDone = il.DefineLabel();
+            int enumDeclareLocal = -1;
+            int valueCopyLocal = il.DeclareLocal(typeof(object)).LocalIndex;    // 定义 loc_object 变量, 然后返回此本地变量的index值, 其实就是截止目前, 定义了本地变量的个数            
+            foreach (var item in members)
+            {
+                if (item != null)
+                {
+                    il.Emit(OpCodes.Dup);
+                    Label isDbNullLabel = il.DefineLabel();
+                    Label finishLabel = il.DefineLabel();
+
+                    il.Emit(OpCodes.Ldarg_0);
+                    CommonIL.EmitInt32(il, index);
+                    il.Emit(OpCodes.Dup);
+                    il.Emit(OpCodes.Stloc_0);
+                    il.Emit(OpCodes.Callvirt, XConfig.GetItem);   //  获取reader读取的值, reader[index]
+                    il.Emit(OpCodes.Dup);
+                    CommonIL.StoreLocal(il, valueCopyLocal);   //  将 reader[index]的值, 存放到本地变量 loc_object 中
+                    Type colType = reader.GetFieldType(index);    // reader[index] 的列的类型  source
+                    Type memberType = item.MemberType();   //  M[item] 的类型   
+
+                    if (memberType == XConfig.TC.Char || memberType == XConfig.TC.CharNull)
+                    {
+                        il.EmitCall(
+                            OpCodes.Call,
+                            typeof(CommonIL).GetMethod(
+                                memberType == typeof(char)
+                                ? nameof(CommonIL.ReadChar)
+                                : nameof(CommonIL.ReadNullableChar), BindingFlags.Static | BindingFlags.NonPublic),
+                            null);
+                    }
+                    else
+                    {
+                        il.Emit(OpCodes.Dup);
+                        il.Emit(OpCodes.Isinst, typeof(DBNull));    //  判断是否为DBNull类型, 如果是, 则跳转到 标签isDbNullLabel 
+                        il.Emit(OpCodes.Brtrue_S, isDbNullLabel);
+
+                        var nullUnderlyingType = Nullable.GetUnderlyingType(memberType);
+                        var unboxType = nullUnderlyingType?.IsEnum == true ? nullUnderlyingType : memberType;
+
+                        if (unboxType.IsEnum)
+                        {
+                            Type numericType = Enum.GetUnderlyingType(unboxType);
+                            if (colType == typeof(string))
+                            {
+                                if (enumDeclareLocal == -1)
+                                {
+                                    enumDeclareLocal = il.DeclareLocal(typeof(string)).LocalIndex;
+                                }
+                                il.Emit(OpCodes.Castclass, typeof(string)); // stack is now [target][target][string]
+                                CommonIL.StoreLocal(il, enumDeclareLocal); // stack is now [target][target]
+                                il.Emit(OpCodes.Ldtoken, unboxType); // stack is now [target][target][enum-type-token]
+                                il.EmitCall(OpCodes.Call, typeof(Type).GetMethod(nameof(Type.GetTypeFromHandle)), null);// stack is now [target][target][enum-type]
+                                CommonIL.LoadLocal(il, enumDeclareLocal); // stack is now [target][target][enum-type][string]
+                                il.Emit(OpCodes.Ldc_I4_1); // stack is now [target][target][enum-type][string][true]
+                                il.EmitCall(OpCodes.Call, XConfig.EnumParse, null); // stack is now [target][target][enum-as-object]
+                                il.Emit(OpCodes.Unbox_Any, unboxType); // stack is now [target][target][typed-value]
+                            }
+                            else
+                            {
+                                CommonIL.FlexibleConvertBoxedFromHeadOfStack(il, colType, unboxType, numericType);
+                            }
+
+                            if (nullUnderlyingType != null)
+                            {
+                                il.Emit(OpCodes.Newobj, memberType.GetConstructor(new[] { nullUnderlyingType })); // stack is now [target][target][typed-value]
+                            }
+                        }
+                        else if (memberType.FullName == XConfig.TC.LinqBinary)
+                        {
+                            il.Emit(OpCodes.Unbox_Any, typeof(byte[])); // stack is now [target][target][byte-array]
+                            il.Emit(OpCodes.Newobj, memberType.GetConstructor(new Type[] { typeof(byte[]) }));// stack is now [target][target][binary]
+                        }
+                        else
+                        {
+                            TypeCode dataTypeCode = Type.GetTypeCode(colType), unboxTypeCode = Type.GetTypeCode(unboxType);
+                            if (colType == unboxType || dataTypeCode == unboxTypeCode || dataTypeCode == Type.GetTypeCode(nullUnderlyingType))
+                            {
+                                il.Emit(OpCodes.Unbox_Any, unboxType); // stack is now [target][target][typed-value]
+                            }
+                            else
+                            {
+                                // not a direct match; need to tweak the unbox
+                                CommonIL.FlexibleConvertBoxedFromHeadOfStack(il, colType, nullUnderlyingType ?? unboxType, null);
+                                if (nullUnderlyingType != null)
+                                {
+                                    il.Emit(OpCodes.Newobj, unboxType.GetConstructor(new[] { nullUnderlyingType })); // stack is now [target][target][typed-value]
+                                }
+                            }
+                        }
+                    }
+                    // Store the value in the property/field
+                    if (item.Property != null)
+                    {
+                        il.Emit(OpCodes.Callvirt, RowMap.GetPropertySetter(item.Property, mType));
+                    }
+                    else
+                    {
+                        il.Emit(OpCodes.Stfld, item.Field); // stack is now [target]
+                    }
+
+                    il.Emit(OpCodes.Br_S, finishLabel); // stack is now [target]
+                    il.MarkLabel(isDbNullLabel); // incoming stack: [target][target][value]
+                    il.Emit(OpCodes.Pop); // stack is now [target][target]
+                    il.Emit(OpCodes.Pop); // stack is now [target]
+                    il.MarkLabel(finishLabel);
+                }
+                first = false;
+                index++;
+            }
+
+            il.Emit(OpCodes.Stloc_1); // stack is empty
+            il.MarkLabel(allDone);
+            il.BeginCatchBlock(typeof(Exception)); // stack is Exception
+            il.Emit(OpCodes.Ldloc_0); // stack is Exception, index
+            il.Emit(OpCodes.Ldarg_0); // stack is Exception, index, reader
+            CommonIL.LoadLocal(il, valueCopyLocal); // stack is Exception, index, reader, value
+            il.EmitCall(OpCodes.Call, typeof(CommonIL).GetMethod(nameof(CommonIL.ThrowDataException)), null);
+            il.EndExceptionBlock();
+
+            il.Emit(OpCodes.Ldloc_1); // stack is [rval]
+            il.Emit(OpCodes.Ret);
+
+            var funcType = Expression.GetFuncType(typeof(IDataReader), mType);
+            return (Func<IDataReader, object>)dm.CreateDelegate(funcType);
+        }
+
+        internal static Row Row(IDataReader reader, Type mType)
+        {
+            return new Row
+            {
+                Handle = SetFunc(reader, mType)
+            };
         }
     }
 }

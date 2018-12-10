@@ -104,12 +104,12 @@ namespace Yunyong.DataExchange.Core.Bases
             }
             return result;
         }
-        private List<(string key, string param, (object val, string valStr) val, Type valType, string colType, CompareEnum compare)> GetWhereKPV<M>(object objx)
+        private List<(ColumnParam cp, string param, (object val, string valStr) val, string colType, CompareEnum compare)> GetWhereKPV(object objx, Type mType)
         {
             var list = new List<DicDynamic>();
             var dic = default(IDictionary<string, object>);
             //
-            var mProps = typeof(M).GetProperties();
+            var mProps = mType.GetProperties();
             var oType = objx.GetType();
             if (objx is IQueryOption)
             {
@@ -184,8 +184,8 @@ namespace Yunyong.DataExchange.Core.Bases
             }
 
             //
-            var result = new List<(string key, string param, (object val, string valStr) val, Type valType, string colType, CompareEnum compare)>();
-            var columns = DC.SC.GetColumnInfos(DC.SC.GetModelKey(typeof(M).FullName));
+            var result = new List<(ColumnParam cp, string param, (object val, string valStr) val, string colType, CompareEnum compare)>();
+            var columns = DC.SC.GetColumnInfos(DC.SC.GetModelKey(mType.FullName));
             foreach (var prop in list)
             {
                 var val = default((object val, string valStr));
@@ -212,7 +212,13 @@ namespace Yunyong.DataExchange.Core.Bases
                         valType = ox.valType;
                         val = (ox.val, string.Empty);
                     }
-                    result.Add((prop.MField, prop.VmField, val, valType, columnType, prop.Compare));
+                    result.Add((new ColumnParam
+                    {
+                        Prop = prop.MField,
+                        Key = prop.MField,
+                        ValType = valType,
+                        ClassFullName = mType.FullName
+                    }, prop.VmField, val, columnType, prop.Compare));
                 }
                 else if (objx is ExpandoObject)
                 {
@@ -223,7 +229,13 @@ namespace Yunyong.DataExchange.Core.Bases
                     {
                         continue;
                     }
-                    result.Add((prop.MField, prop.VmField, val, valType, columnType, prop.Compare));
+                    result.Add((new ColumnParam
+                    {
+                        Prop = prop.MField,
+                        Key = prop.MField,
+                        ValType = valType,
+                        ClassFullName = mType.FullName
+                    }, prop.VmField, val, columnType, prop.Compare));
                 }
                 else
                 {
@@ -234,7 +246,13 @@ namespace Yunyong.DataExchange.Core.Bases
                     {
                         continue;
                     }
-                    result.Add((prop.MField, prop.VmField, val, valType, columnType, prop.Compare));
+                    result.Add((new ColumnParam
+                    {
+                        Prop = prop.MField,
+                        Key = prop.MField,
+                        ValType = valType,
+                        ClassFullName = mType.FullName
+                    }, prop.VmField, val, columnType, prop.Compare));
                 }
             }
             return result;
@@ -286,7 +304,7 @@ namespace Yunyong.DataExchange.Core.Bases
         internal void WhereHandle<M>(Expression<Func<M, bool>> func)
             where M : class
         {
-            DC.Action= ActionEnum.Where;
+            DC.Action = ActionEnum.Where;
             var field = DC.EH.FuncMBoolExpression(func);
             field.ClassFullName = typeof(M).FullName;
             DC.DPH.AddParameter(field);
@@ -294,9 +312,9 @@ namespace Yunyong.DataExchange.Core.Bases
 
         internal void WhereDynamicHandle<M>(object mWhere)
         {
-            var tuples = GetWhereKPV<M>(mWhere);
+            var mType = typeof(M);
+            var tuples = GetWhereKPV(mWhere, mType);
             var count = 0;
-            var fullName = typeof(M).FullName;
             foreach (var tp in tuples)
             {
                 count++;
@@ -314,27 +332,27 @@ namespace Yunyong.DataExchange.Core.Bases
                 {
                     DC.Option = OptionEnum.Like;
                     DC.Compare = CompareEnum.None;
-                    DC.DPH.AddParameter(DC.DPH.LikeDic(fullName, tp.key, string.Empty, tp.val, tp.valType));
+                    DC.DPH.AddParameter(DC.DPH.LikeDic(tp.cp, tp.val));
                 }
                 else if (tp.compare == CompareEnum.In)
                 {
                     DC.Option = OptionEnum.Function;
                     DC.Func = FuncEnum.In;
                     DC.Compare = CompareEnum.None;
-                    DC.DPH.AddParameter(DC.DPH.InDic(fullName, tp.key, string.Empty, tp.val, tp.valType));
+                    DC.DPH.AddParameter(DC.DPH.InDic(tp.cp, tp.val));
                 }
-                else if(tp.compare== CompareEnum.NotIn)
+                else if (tp.compare == CompareEnum.NotIn)
                 {
                     DC.Option = OptionEnum.Function;
                     DC.Func = FuncEnum.NotIn;
                     DC.Compare = CompareEnum.None;
-                    DC.DPH.AddParameter(DC.DPH.NotInDic(fullName, tp.key, string.Empty, tp.val, tp.valType));
+                    DC.DPH.AddParameter(DC.DPH.NotInDic(tp.cp, tp.val));
                 }
                 else
                 {
                     DC.Option = OptionEnum.Compare;
                     DC.Compare = tp.compare;
-                    DC.DPH.AddParameter(DC.DPH.CompareDic(fullName, tp.key, string.Empty, tp.val, tp.valType));
+                    DC.DPH.AddParameter(DC.DPH.CompareDic(tp.cp, tp.val));
                 }
             }
         }
@@ -369,7 +387,7 @@ namespace Yunyong.DataExchange.Core.Bases
                     break;
             }
 
-            DC.DPH.AddParameter(DC.DPH.OrderbyDic(keyDic.ClassFullName, keyDic.ColumnOne,keyDic.TableAliasOne));
+            DC.DPH.AddParameter(DC.DPH.OrderbyDic(keyDic.ClassFullName, keyDic.ColumnOne, keyDic.TableAliasOne));
         }
 
         internal void OrderByF<F>(Expression<Func<F>> func, OrderByEnum orderBy)
@@ -385,7 +403,7 @@ namespace Yunyong.DataExchange.Core.Bases
                     break;
             }
 
-            DC.DPH.AddParameter(DC.DPH.OrderbyDic(keyDic.ClassFullName, keyDic.ColumnOne,keyDic.TableAliasOne));
+            DC.DPH.AddParameter(DC.DPH.OrderbyDic(keyDic.ClassFullName, keyDic.ColumnOne, keyDic.TableAliasOne));
         }
 
         internal void OrderByOptionHandle(PagingQueryOption option, string fullName)

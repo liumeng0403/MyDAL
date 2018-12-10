@@ -135,7 +135,7 @@ namespace Yunyong.DataExchange.AdoNet
                                             ? dic.ColumnOne
                                             : dic.Option == OptionEnum.ColumnAs
                                                 ? dic.ColumnOneAlias
-                                                : throw new Exception($"{XConfig.EC._008} -- [[{dic.Option}]] 不能解析!!!"))), 1, 1).ToString(dic.Format)));
+                                                : throw new Exception($"{XConfig.EC._016} -- [[{dic.Option}]] 不能解析!!!"))), 1, 1).ToString(dic.Format)));
                 }
             }
             else
@@ -144,6 +144,39 @@ namespace Yunyong.DataExchange.AdoNet
                 while (await Reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
                 {
                     result.Add(propertyFunc(func(Reader)));
+                }
+            }
+            while (await Reader.NextResultAsync(default(CancellationToken)).ConfigureAwait(false)) { }
+            return result;
+        }
+        private async Task<List<F>> ReadColumn<F>()
+        {
+            var result = new List<F>();
+            if (IsDateTimeYearColumn(out var dic))
+            {
+                while (await Reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
+                {
+                    result.Add(
+                        DC.GH.ConvertT<F>(
+                            new DateTime(
+                                Reader.GetInt32(
+                                    Reader.GetOrdinal(
+                                        dic.Option == OptionEnum.Column
+                                            ? dic.ColumnOne
+                                            : dic.Option == OptionEnum.ColumnAs
+                                                ? dic.ColumnOneAlias
+                                                : throw new Exception($"{XConfig.EC._008} -- [[{dic.Option}]] 不能解析!!!"))), 1, 1).ToString(dic.Format)));
+                }
+            }
+            else
+            {
+                dic = DC.Parameters.First(it => it.Crud == CrudTypeEnum.Join && it.Action == ActionEnum.Select && it.Option == OptionEnum.Column);
+                var func = DC.SC.GetHandle(SqlOne, Reader, DC.SC.GetModelType(dic.Key));
+                var prop = DC.SC.GetModelProperys(dic.Key).FirstOrDefault(it => it.Name.Equals(dic.PropOne, StringComparison.Ordinal));
+                while (await Reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
+                {
+                    var obj = func(Reader);
+                    result.Add(DC.GH.ConvertT<F>(prop.GetValue(obj)));
                 }
             }
             while (await Reader.NextResultAsync(default(CancellationToken)).ConfigureAwait(false)) { }
@@ -245,6 +278,30 @@ namespace Yunyong.DataExchange.AdoNet
                     if (needClose) { await OpenAsync(Conn); }
                     Reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, XConfig.MultiRow).ConfigureAwait(false);
                     return await ReadColumn(propertyFunc);
+                }
+                finally
+                {
+                    using (Reader) { }
+                    if (needClose) { Conn.Close(); }
+                }
+            }
+        }
+
+        /*
+         * ado.net -- DbCommand.[Task<DbDataReader> ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)]
+         * select -- 单列
+         */
+        internal async Task<List<F>> ExecuteReaderSingleColumnAsync<F>()
+        {
+            var comm = new CommandInfo(SqlCount == 1 ? SqlOne : SqlTwo, Parameter);
+            var needClose = Conn.State == ConnectionState.Closed;
+            using (var cmd = SettingCommand(comm, Conn, comm.Parameter.ParamReader))
+            {
+                try
+                {
+                    if (needClose) { await OpenAsync(Conn); }
+                    Reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, XConfig.MultiRow).ConfigureAwait(false);
+                    return await ReadColumn<F>();
                 }
                 finally
                 {

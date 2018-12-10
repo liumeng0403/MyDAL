@@ -4,7 +4,7 @@ namespace Yunyong.DataExchange
 {
     public static class DistinctEx
     {
-        public static DistinctQ<M> Distinct<M>(this Selecter<M> selecter)
+        public static DistinctQ<M> Distinct<M>(this Queryer<M> selecter)
             where M : class
         {
             selecter.DistinctHandle();

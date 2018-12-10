@@ -5,7 +5,8 @@ using Yunyong.DataExchange.Core.Bases;
 
 namespace Yunyong.DataExchange.Core.Common
 {
-    internal class DicParam : DicBase
+    internal class DicParam 
+        : DicBase
     {
         //
         internal string ClassName
@@ -24,6 +25,7 @@ namespace Yunyong.DataExchange.Core.Common
         internal string ClassFullName { get; set; }
         internal string TableOne { get; set; }
         internal string TableAliasOne { get; set; }
+        internal string PropOne { get; set; }
         internal string ColumnOne { get; set; }
         internal string ColumnOneAlias { get; set; }
         internal string TableTwo { get; set; }
@@ -37,10 +39,7 @@ namespace Yunyong.DataExchange.Core.Common
         internal string CsValueStr { get; set; }
         internal Type CsType { get; set; }
         internal string Format { get; set; }
-
-        //
-        //internal int TvpIndex { get; set; }
-
+        
         //
         internal string Key { get; set; }
         internal string ColumnType { get; set; }

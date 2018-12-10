@@ -33,7 +33,7 @@ namespace Yunyong.DataExchange.Core
         private static ConcurrentDictionary<string, Type> ModelTypeCache { get; } = new ConcurrentDictionary<string, Type>();
         private static ConcurrentDictionary<string, List<PropertyInfo>> ModelPropertiesCache { get; } = new ConcurrentDictionary<string, List<PropertyInfo>>();
         private static ConcurrentDictionary<string, List<ColumnInfo>> ModelColumnInfosCache { get; } = new ConcurrentDictionary<string, List<ColumnInfo>>();
-        private static ConcurrentDictionary<string, object> ModelHandleCache { get; } = new ConcurrentDictionary<string, object>();
+        private static ConcurrentDictionary<string, IRow> ModelRowCache { get; } = new ConcurrentDictionary<string, IRow>();
 
         /*****************************************************************************************************************************************************/
 
@@ -74,7 +74,7 @@ namespace Yunyong.DataExchange.Core
         }
         internal string GetTableName(string key)
         {
-            return DC.AR.Invoke(key,p => ModelTableNameCache[p]);
+            return DC.AR.Invoke(key, p => ModelTableNameCache[p]);
         }
         internal void SetTableName(string key, string tableName)
         {
@@ -106,9 +106,9 @@ namespace Yunyong.DataExchange.Core
             return ass;
         }
         internal static ConcurrentDictionary<string, string> ModelAttributePropValCache { get; } = new ConcurrentDictionary<string, string>();
-        internal Type GetModelType<M>(string key)
+        internal Type GetModelType(string key)
         {
-            return DC.AR.Invoke(key,p => ModelTypeCache[p]);
+            return DC.AR.Invoke(key, p => ModelTypeCache[p]);
         }
         internal void SetModelType(string key, Type type)
         {
@@ -119,7 +119,7 @@ namespace Yunyong.DataExchange.Core
         }
         internal List<PropertyInfo> GetModelProperys(string key)
         {
-            return DC.AR.Invoke(key,p => ModelPropertiesCache[p]);
+            return DC.AR.Invoke(key, p => ModelPropertiesCache[p]);
         }
         internal void SetModelProperys(Type mType, Context dc)
         {
@@ -146,11 +146,20 @@ namespace Yunyong.DataExchange.Core
         internal Func<IDataReader, M> GetHandle<M>(string sql, IDataReader reader)
         {
             var key = GetHandleKey(sql.GetHashCode(), GetColumnHash(reader), typeof(M).FullName);
-            if (!ModelHandleCache.TryGetValue(key, out var row))
+            if (!ModelRowCache.TryGetValue(key, out var row))
             {
-                ModelHandleCache[key] = row = IL<M>.Row(reader).Handle;
+                ModelRowCache[key] = row = IL<M>.Row(reader);
             }
-            return (Func<IDataReader, M>)row;
+            return ((Row<M>)row).Handle;
+        }
+        internal Func<IDataReader, object> GetHandle(string sql, IDataReader reader, Type mType)
+        {
+            var key = GetHandleKey(sql.GetHashCode(), GetColumnHash(reader), mType.FullName);
+            if (!ModelRowCache.TryGetValue(key, out var row))
+            {
+                ModelRowCache[key] = row = IL.Row(reader, mType);
+            }
+            return ((Row)row).Handle;
         }
 
     }

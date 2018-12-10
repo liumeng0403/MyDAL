@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.QuerySingleColum
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.Parallel", "MyDAL.Test.QueryParallel\MyDAL.Test.Parallel.csproj", "{1B0C386F-488F-4C1F-B39A-DF60C060A6BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDAL.Test.JoinQuerySingleColumn", "MyDAL.Test.JoinQuerySingleColumn\MyDAL.Test.JoinQuerySingleColumn.csproj", "{B7B2666A-C3CE-4B98-A888-B43307FD1240}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,12 +89,10 @@ Global
 		{FD8FFE8F-B6AC-4DEE-BF55-0BA7A5ACA10B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD8FFE8F-B6AC-4DEE-BF55-0BA7A5ACA10B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD8FFE8F-B6AC-4DEE-BF55-0BA7A5ACA10B}.Release|Any CPU.Build.0 = Release|Any CPU
-<<<<<<< HEAD:YunYong_Tech.sln
 		{46FFB09E-0514-4295-B706-C56A6D806505}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{46FFB09E-0514-4295-B706-C56A6D806505}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46FFB09E-0514-4295-B706-C56A6D806505}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46FFB09E-0514-4295-B706-C56A6D806505}.Release|Any CPU.Build.0 = Release|Any CPU
-=======
 		{06C72481-97EA-45A9-BE4D-9ED33DACC9D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{06C72481-97EA-45A9-BE4D-9ED33DACC9D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06C72481-97EA-45A9-BE4D-9ED33DACC9D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -101,14 +101,14 @@ Global
 		{766E1CC2-20B3-4612-BB2A-A8619F160511}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{766E1CC2-20B3-4612-BB2A-A8619F160511}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{766E1CC2-20B3-4612-BB2A-A8619F160511}.Release|Any CPU.Build.0 = Release|Any CPU
-<<<<<<< HEAD:YunYong_Tech.sln
->>>>>>> 90209fd... [add] code refactor 11-19:MyDAL.sln
-=======
 		{1B0C386F-488F-4C1F-B39A-DF60C060A6BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1B0C386F-488F-4C1F-B39A-DF60C060A6BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B0C386F-488F-4C1F-B39A-DF60C060A6BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B0C386F-488F-4C1F-B39A-DF60C060A6BE}.Release|Any CPU.Build.0 = Release|Any CPU
->>>>>>> eeefb47... [add]  add x parallel:MyDAL.sln
+		{B7B2666A-C3CE-4B98-A888-B43307FD1240}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7B2666A-C3CE-4B98-A888-B43307FD1240}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7B2666A-C3CE-4B98-A888-B43307FD1240}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7B2666A-C3CE-4B98-A888-B43307FD1240}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

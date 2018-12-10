@@ -72,6 +72,12 @@ namespace Yunyong.DataExchange.Core.Bases
             DC.Option = OptionEnum.Column;
             DC.DPH.AddParameter(DC.EH.FuncMFExpression(propertyFunc)[0]);
         }
+        protected void SingleColumnHandle<T>(Expression<Func<T>> propertyFunc)
+        {
+            DC.Action = ActionEnum.Select;
+            DC.Option = OptionEnum.Column;
+            DC.DPH.AddParameter(DC.EH.FuncTExpression(propertyFunc)[0]);
+        }
 
         /**********************************************************************************************************/
 
@@ -80,12 +86,12 @@ namespace Yunyong.DataExchange.Core.Bases
             DC.Action = ActionEnum.Select;
             var mType = typeof(M);
             var fullName = mType.FullName;
-            var tab = DC.Parameters.FirstOrDefault(it => fullName.Equals(it.ClassFullName, StringComparison.OrdinalIgnoreCase));
-            if (tab != null)
+            var dic = DC.Parameters.FirstOrDefault(it => fullName.Equals(it.ClassFullName, StringComparison.OrdinalIgnoreCase));
+            if (dic != null)
             {
                 DC.Option = OptionEnum.Column;
                 DC.Compare = CompareEnum.None;
-                DC.DPH.AddParameter(DC.DPH.ColumnDic("*", tab.TableAliasOne, fullName));
+                DC.DPH.AddParameter(DC.DPH.ColumnDic("*", dic.TableAliasOne, fullName, dic.PropOne));
             }
             else if (DC.Parameters.Count == 0)
             {
@@ -122,7 +128,7 @@ namespace Yunyong.DataExchange.Core.Bases
                     {
                         if (prop.Name.Equals(vProp.Name, StringComparison.OrdinalIgnoreCase))
                         {
-                            DC.DPH.AddParameter(DC.DPH.ColumnDic(prop.Name, tab.TableAliasOne, fullName));
+                            DC.DPH.AddParameter(DC.DPH.ColumnDic(prop.Name, tab.TableAliasOne, fullName, prop.Name));
                         }
                     }
                 }

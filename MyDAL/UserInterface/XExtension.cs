@@ -54,47 +54,98 @@ namespace Yunyong.DataExchange
             dc.Crud = CrudTypeEnum.Update;
             return new Updater<M>(dc);
         }
+
         /// <summary>
         /// 单表查询 方法簇
         /// </summary>
         /// <typeparam name="M">M:与DB Table 一 一对应</typeparam>
-        public static Selecter<M> Selecter<M>(this IDbConnection conn)
+        [Obsolete("过期方法,建议使用 Queryer ,用法一致,方法名替换即可!!!")]
+        public static Queryer<M> Selecter<M>(this IDbConnection conn)
             where M : class
         {
-            var dc = new XContext<M>(conn);
-            dc.Crud = CrudTypeEnum.Query;
-            return new Selecter<M>(dc);
+            return conn.Queryer<M>();
+        }
+        /// <summary>
+        /// 连接查询 方法簇
+        /// </summary>
+        [Obsolete("过期方法,建议使用 Queryer ,用法一致,方法名替换即可!!!")]
+        public static Queryer Joiner<M1, M2>(this IDbConnection conn, out M1 table1, out M2 table2)
+        {
+            return conn.Queryer(out table1,out table2);
+        }
+        /// <summary>
+        /// 连接查询 方法簇
+        /// </summary>
+        [Obsolete("过期方法,建议使用 Queryer ,用法一致,方法名替换即可!!!")]
+        public static Queryer Joiner<M1, M2, M3>(this IDbConnection conn, out M1 table1, out M2 table2, out M3 table3)
+        {
+            return conn.Queryer(out table1, out table2, out table3);
+        }
+        /// <summary>
+        /// 连接查询 方法簇
+        /// </summary>
+        [Obsolete("过期方法,建议使用 Queryer ,用法一致,方法名替换即可!!!")]
+        public static Queryer Joiner<M1, M2, M3, M4>(this IDbConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4)
+        {
+            return conn.Queryer(out table1, out table2, out table3, out table4);
+        }
+        /// <summary>
+        /// 连接查询 方法簇
+        /// </summary>
+        [Obsolete("过期方法,建议使用 Queryer ,用法一致,方法名替换即可!!!")]
+        public static Queryer Joiner<M1, M2, M3, M4, M5>(this IDbConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4, out M5 table5)
+        {
+            return conn.Queryer(out table1, out table2, out table3, out table4, out table5);
+        }
+        /// <summary>
+        /// 连接查询 方法簇
+        /// </summary>
+        [Obsolete("过期方法,建议使用 Queryer ,用法一致,方法名替换即可!!!")]
+        public static Queryer Joiner<M1, M2, M3, M4, M5, M6>(this IDbConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4, out M5 table5, out M6 table6)
+        {
+            return conn.Queryer(out table1, out table2, out table3, out table4, out table5, out table6);
         }
 
         /******************************************************************************************************************************/
 
         /// <summary>
+        /// 单表查询 方法簇
+        /// </summary>
+        /// <typeparam name="M1">M1:与DB Table 一 一对应</typeparam>
+        public static Queryer<M1> Queryer<M1>(this IDbConnection conn)
+            where M1 : class
+        {
+            var dc = new XContext<M1>(conn);
+            dc.Crud = CrudTypeEnum.Query;
+            return new Queryer<M1>(dc);
+        }
+        /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Joiner Joiner<M1, M2>(this IDbConnection conn, out M1 table1, out M2 table2)
+        public static Queryer Queryer<M1, M2>(this IDbConnection conn, out M1 table1, out M2 table2)
         {
             table1 = Activator.CreateInstance<M1>();
             table2 = Activator.CreateInstance<M2>();
             var dc = new XContext<M1, M2>(conn);
             dc.Crud = CrudTypeEnum.Join;
-            return new Joiner(dc);
+            return new Queryer(dc);
         }
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Joiner Joiner<M1, M2, M3>(this IDbConnection conn, out M1 table1, out M2 table2, out M3 table3)
+        public static Queryer Queryer<M1, M2, M3>(this IDbConnection conn, out M1 table1, out M2 table2, out M3 table3)
         {
             table1 = Activator.CreateInstance<M1>();
             table2 = Activator.CreateInstance<M2>();
             table3 = Activator.CreateInstance<M3>();
             var dc = new XContext<M1, M2, M3>(conn);
             dc.Crud = CrudTypeEnum.Join;
-            return new Joiner(dc);
+            return new Queryer(dc);
         }
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Joiner Joiner<M1, M2, M3, M4>(this IDbConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4)
+        public static Queryer Queryer<M1, M2, M3, M4>(this IDbConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4)
         {
             table1 = Activator.CreateInstance<M1>();
             table2 = Activator.CreateInstance<M2>();
@@ -102,12 +153,12 @@ namespace Yunyong.DataExchange
             table4 = Activator.CreateInstance<M4>();
             var dc = new XContext<M1, M2, M3, M4>(conn);
             dc.Crud = CrudTypeEnum.Join;
-            return new Joiner(dc);
+            return new Queryer(dc);
         }
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Joiner Joiner<M1, M2, M3, M4, M5>(this IDbConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4, out M5 table5)
+        public static Queryer Queryer<M1, M2, M3, M4, M5>(this IDbConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4, out M5 table5)
         {
             table1 = Activator.CreateInstance<M1>();
             table2 = Activator.CreateInstance<M2>();
@@ -116,12 +167,12 @@ namespace Yunyong.DataExchange
             table5 = Activator.CreateInstance<M5>();
             var dc = new XContext<M1, M2, M3, M4, M5>(conn);
             dc.Crud = CrudTypeEnum.Join;
-            return new Joiner(dc);
+            return new Queryer(dc);
         }
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Joiner Joiner<M1, M2, M3, M4, M5, M6>(this IDbConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4, out M5 table5, out M6 table6)
+        public static Queryer Queryer<M1, M2, M3, M4, M5, M6>(this IDbConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4, out M5 table5, out M6 table6)
         {
             table1 = Activator.CreateInstance<M1>();
             table2 = Activator.CreateInstance<M2>();
@@ -131,7 +182,7 @@ namespace Yunyong.DataExchange
             table6 = Activator.CreateInstance<M6>();
             var dc = new XContext<M1, M2, M3, M4, M5, M6>(conn);
             dc.Crud = CrudTypeEnum.Join;
-            return new Joiner(dc);
+            return new Queryer(dc);
         }
 
         /******************************************************************************************************************************/
