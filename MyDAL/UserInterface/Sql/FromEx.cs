@@ -8,7 +8,7 @@ namespace MyDAL
     public static class FromEx
     {
 
-        public static FromX From<M>(this Joiner join, Expression<Func<M>> tableModelFunc)
+        public static FromX From<M>(this Queryer join, Expression<Func<M>> tableModelFunc)
         {
             join.DC.Action = ActionEnum.From;
             var dic = join.DC.EH.FuncTExpression(tableModelFunc)[0];

@@ -36,11 +36,9 @@ namespace MyDAL.UserFacade.Join
         /// <summary>
         /// 多表单条数据查询
         /// </summary>
-        /// <typeparam name="VM">ViewModel</typeparam>
-        public async Task<VM> FirstOrDefaultAsync<VM>(Expression<Func<VM>> columnMapFunc)
-            where VM:class
+        public async Task<T> FirstOrDefaultAsync<T>(Expression<Func<T>> columnMapFunc)
         {
-            return await new FirstOrDefaultXImpl(DC).FirstOrDefaultAsync<VM>(columnMapFunc);
+            return await new FirstOrDefaultXImpl(DC).FirstOrDefaultAsync(columnMapFunc);
         }
 
         /// <summary>
@@ -131,10 +129,9 @@ namespace MyDAL.UserFacade.Join
         /// <summary>
         /// 多表多条数据查询
         /// </summary>
-        public async Task<List<VM>> TopAsync<VM>(int count, Expression<Func<VM>> columnMapFunc) 
-            where VM : class
+        public async Task<List<T>> TopAsync<T>(int count, Expression<Func<T>> columnMapFunc) 
         {
-            return await new TopXImpl(DC).TopAsync<VM>(count, columnMapFunc);
+            return await new TopXImpl(DC).TopAsync(count, columnMapFunc);
         }
     }
 }

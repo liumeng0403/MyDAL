@@ -104,7 +104,7 @@ namespace MyDAL.Core
 
             return alias;
         }
-        private (string key, string alias, Type valType, string classFullName, string format) GetKey(Expression bodyL, FuncEnum func, string format = "")
+        private ColumnParam GetKey(Expression bodyL, FuncEnum func, string format = "")
         {
             if (bodyL.NodeType == ExpressionType.Convert)
             {
@@ -115,7 +115,7 @@ namespace MyDAL.Core
             else if (bodyL.NodeType == ExpressionType.MemberAccess)
             {
                 var leftBody = bodyL as MemberExpression;
-                var info = default(PropertyInfo);
+                var prop = default(PropertyInfo);
 
                 //
                 var mType = default(Type);
@@ -128,12 +128,12 @@ namespace MyDAL.Core
                     {
                         var clMemExpr = exp as MemberExpression;
                         mType = clMemExpr.Expression.Type;
-                        info = mType.GetProperty(clMemExpr.Member.Name);
+                        prop = mType.GetProperty(clMemExpr.Member.Name);
                     }
                     else if (exp is ParameterExpression)
                     {
                         mType = leftBody.Expression.Type;
-                        info = mType.GetProperty(leftBody.Member.Name);
+                        prop = mType.GetProperty(leftBody.Member.Name);
                     }
                     else
                     {
@@ -143,12 +143,12 @@ namespace MyDAL.Core
                 else
                 {
                     mType = leftBody.Expression.Type;
-                    info = mType.GetProperty(leftBody.Member.Name);
+                    prop = mType.GetProperty(leftBody.Member.Name);
                 }
 
                 //
-                var type = info.PropertyType;
-                var attr = DC.SC.GetXColumnAttribute(info, DC.SC.GetAttrKey(XConfig.XColumnFullName, info.Name, mType.FullName));
+                var type = prop.PropertyType;
+                var attr = DC.SC.GetXColumnAttribute(prop, DC.SC.GetAttrKey(XConfig.XColumnFullName, prop.Name, mType.FullName));
                 var field = string.Empty;
                 if (attr != null)
                 {
@@ -156,11 +156,19 @@ namespace MyDAL.Core
                 }
                 else
                 {
-                    field = info.Name;
+                    field = prop.Name;
                 }
 
                 //
-                return (field, alias, type, mType.FullName, format);
+                return new ColumnParam
+                {
+                    Prop = prop.Name,
+                    Key = field,
+                    Alias = alias,
+                    ValType = type,
+                    ClassFullName = mType.FullName,
+                    Format = format
+                };
             }
             else if (bodyL.NodeType == ExpressionType.Call)
             {
@@ -183,9 +191,15 @@ namespace MyDAL.Core
                     var val = DC.VH.ValueProcess(mcExpr.Arguments[0], XConfig.TC.String);
                     return GetKey(mem, func, val.val.ToString());
                 }
+                else
+                {
+                    throw new Exception($"{XConfig.EC._018} -- [[{bodyL.NodeType}-{func}]] 不能解析!!!");
+                }
             }
-
-            return (default(string), default(string), default(Type), default(string), default(string));
+            else
+            {
+                throw new Exception($"{XConfig.EC._017} -- [[{bodyL.NodeType}]] 不能解析!!!");
+            }
         }
 
         private bool IsBinaryExpr(ExpressionType type)
@@ -260,25 +274,25 @@ namespace MyDAL.Core
                     var memType = objExpr.Type;
                     if (memType == typeof(string))
                     {
-                        var keyTuple = GetKey(memO, FuncEnum.None);
+                        var cp = GetKey(memO, FuncEnum.None);
                         var val = default((object val, string valStr));
                         var valExpr = mcExpr.Arguments[0];
                         switch (type)
                         {
                             case StringLikeEnum.Contains:
-                                val = DC.VH.ValueProcess(valExpr, keyTuple.valType);
+                                val = DC.VH.ValueProcess(valExpr, cp.ValType);
                                 break;
                             case StringLikeEnum.StartsWith:
-                                val = ($"{DC.VH.ValueProcess(valExpr, keyTuple.valType).val}%", string.Empty);
+                                val = ($"{DC.VH.ValueProcess(valExpr, cp.ValType).val}%", string.Empty);
                                 break;
                             case StringLikeEnum.EndsWith:
-                                val = ($"%{DC.VH.ValueProcess(valExpr, keyTuple.valType).val}", string.Empty);
+                                val = ($"%{DC.VH.ValueProcess(valExpr, cp.ValType).val}", string.Empty);
                                 break;
                         }
                         DC.Option = OptionEnum.Like;
                         DC.Compare = CompareEnum.None;
                         DC.Func = FuncEnum.None;
-                        return DC.DPH.LikeDic(keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType);
+                        return DC.DPH.LikeDic(cp, val);
                     }
                 }
             }
@@ -287,52 +301,45 @@ namespace MyDAL.Core
         }
         private DicParam CollectionIn(Expression expr, MemberExpression memExpr, string funcStr)
         {
-            var keyTuple = GetKey(expr, FuncEnum.In);
-            var val = DC.VH.ValueProcess(memExpr, keyTuple.valType);
+            var cp = GetKey(expr, FuncEnum.In);
+            var val = DC.VH.ValueProcess(memExpr, cp.ValType);
             DC.Option = OptionEnum.Function;
             DC.Func = FuncEnum.In;
             DC.Compare = CompareEnum.None;
-            return DC.DPH.InDic(keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType);
+            return DC.DPH.InDic(cp, val);
         }
         private DicParam NewCollectionIn(ExpressionType nodeType, Expression keyExpr, Expression valExpr, string funcStr)
         {
             if (nodeType == ExpressionType.NewArrayInit)
             {
                 var naExpr = valExpr as NewArrayExpression;
-                var keyTuple = GetKey(keyExpr, FuncEnum.In);
+                var cp = GetKey(keyExpr, FuncEnum.In);
                 var vals = new List<(object val, string valStr)>();
                 foreach (var exp in naExpr.Expressions)
                 {
-                    if (exp.NodeType == ExpressionType.Constant)
-                    {
-                        vals.Add(DC.VH.ValueProcess(exp as ConstantExpression, keyTuple.valType));
-                    }
-                    else if (exp.NodeType == ExpressionType.Convert)
-                    {
-                        vals.Add(DC.VH.ValueProcess(exp as UnaryExpression, keyTuple.valType));
-                    }
+                    vals.Add(DC.VH.ValueProcess(exp, cp.ValType));
                 }
 
                 var val = (string.Join(",", vals.Select(it => it.val)), string.Empty);
                 DC.Option = OptionEnum.Function;
                 DC.Func = FuncEnum.In;
                 DC.Compare = CompareEnum.None;
-                return DC.DPH.InDic(keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType);
+                return DC.DPH.InDic(cp, val);
             }
             else if (nodeType == ExpressionType.ListInit)
             {
                 var liExpr = valExpr as ListInitExpression;
-                var keyTuple = GetKey(keyExpr, FuncEnum.In);
+                var cp = GetKey(keyExpr, FuncEnum.In);
                 var vals = new List<(object val, string valStr)>();
                 foreach (var ini in liExpr.Initializers)
                 {
-                    vals.Add(DC.VH.ValueProcess(ini.Arguments[0], keyTuple.valType));
+                    vals.Add(DC.VH.ValueProcess(ini.Arguments[0], cp.ValType));
                 }
                 var val = (string.Join(",", vals.Select(it => it.val)), string.Empty);
                 DC.Option = OptionEnum.Function;
                 DC.Func = FuncEnum.In;
                 DC.Compare = CompareEnum.None;
-                return DC.DPH.InDic(keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType);
+                return DC.DPH.InDic(cp, val);
             }
             else if (nodeType == ExpressionType.MemberInit)
             {
@@ -341,9 +348,15 @@ namespace MyDAL.Core
                 {
                     throw new Exception($"【{keyExpr}】 中 集合为空!!!");
                 }
+                else
+                {
+                    throw new Exception($"{XConfig.EC._019} -- [[{nodeType}]] 不能解析!!!");
+                }
             }
-
-            return null;
+            else
+            {
+                throw new Exception($"{XConfig.EC._020} -- [[{nodeType}]] 不能解析!!!");
+            }
         }
 
         /********************************************************************************************************************/
@@ -355,7 +368,7 @@ namespace MyDAL.Core
                 && binTuple.right.NodeType == ExpressionType.Constant
                 && (binTuple.right as ConstantExpression).Value == null)
             {
-                var tuple = GetKey(binTuple.left, FuncEnum.None);
+                var cp = GetKey(binTuple.left, FuncEnum.None);
                 if (binTuple.node == ExpressionType.Equal)
                 {
                     DC.Option = OptionEnum.IsNull;
@@ -364,7 +377,7 @@ namespace MyDAL.Core
                 {
                     DC.Option = OptionEnum.IsNotNull;
                 }
-                return DC.DPH.IsNullDic(tuple.classFullName, tuple.key, tuple.alias, tuple.valType);
+                return DC.DPH.IsNullDic(cp);
             }
             else
             {
@@ -372,67 +385,61 @@ namespace MyDAL.Core
                 if (leftStr.Contains(".Length")
                     && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
                 {
-                    var keyTuple = GetKey(binTuple.left, FuncEnum.CharLength);
-                    var val = DC.VH.ValueProcess(binTuple.right, keyTuple.valType);
+                    var cp = GetKey(binTuple.left, FuncEnum.CharLength);
+                    var val = DC.VH.ValueProcess(binTuple.right, cp.ValType);
                     DC.Option = OptionEnum.Function;
                     DC.Func = FuncEnum.CharLength;
                     DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
-                    return DC.DPH.CharLengthDic(keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType);
+                    return DC.DPH.CharLengthDic(cp, val);
                 }
                 else if (leftStr.Contains(".Trim(")
                     && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
                 {
-                    var tuple = GetKey(binTuple.left, FuncEnum.Trim);
-                    var val = DC.VH.ValueProcess(binTuple.right, tuple.valType);
+                    var cp = GetKey(binTuple.left, FuncEnum.Trim);
+                    var val = DC.VH.ValueProcess(binTuple.right, cp.ValType);
                     DC.Option = OptionEnum.Function;
                     DC.Func = FuncEnum.Trim;
                     DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
-                    var dic = DC.DPH.TrimDic(tuple.key, tuple.alias, val, tuple.valType);
-                    dic.ClassFullName = tuple.classFullName;
-                    return dic;
+                    return DC.DPH.TrimDic(cp, val);
                 }
                 else if (leftStr.Contains(".TrimStart(")
                     && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
                 {
-                    var tuple = GetKey(binTuple.left, FuncEnum.LTrim);
-                    var val = DC.VH.ValueProcess(binTuple.right, tuple.valType);
+                    var cp = GetKey(binTuple.left, FuncEnum.LTrim);
+                    var val = DC.VH.ValueProcess(binTuple.right, cp.ValType);
                     DC.Option = OptionEnum.Function;
                     DC.Func = FuncEnum.LTrim;
                     DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
-                    var dic = DC.DPH.LTrimDic(tuple.key, tuple.alias, val, tuple.valType);
-                    dic.ClassFullName = tuple.classFullName;
-                    return dic;
+                    return DC.DPH.LTrimDic(cp, val);
                 }
                 else if (leftStr.Contains(".TrimEnd(")
                     && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
                 {
-                    var tuple = GetKey(binTuple.left, FuncEnum.RTrim);
-                    var val = DC.VH.ValueProcess(binTuple.right, tuple.valType);
+                    var cp = GetKey(binTuple.left, FuncEnum.RTrim);
+                    var val = DC.VH.ValueProcess(binTuple.right, cp.ValType);
                     DC.Option = OptionEnum.Function;
                     DC.Func = FuncEnum.RTrim;
                     DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
-                    var dic = DC.DPH.RTrimDic(tuple.key, tuple.alias, val, tuple.valType);
-                    dic.ClassFullName = tuple.classFullName;
-                    return dic;
+                    return DC.DPH.RTrimDic(cp, val);
                 }
                 else if (leftStr.Contains(".ToString(")
                     && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
                 {
-                    var tuple = GetKey(binTuple.left, FuncEnum.DateFormat);
-                    var val = DC.VH.ValueProcess(binTuple.right, tuple.valType, tuple.format);
+                    var cp = GetKey(binTuple.left, FuncEnum.DateFormat);
+                    var val = DC.VH.ValueProcess(binTuple.right, cp.ValType, cp.Format);
                     DC.Option = OptionEnum.Function;
                     DC.Func = FuncEnum.DateFormat;
                     DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
                     var format = string.Empty;
-                    if ("yyyy-MM-dd".Equals(tuple.format.Trim(), StringComparison.OrdinalIgnoreCase))
+                    if ("yyyy-MM-dd".Equals(cp.Format.Trim(), StringComparison.OrdinalIgnoreCase))
                     {
                         format = "%Y-%m-%d";
                     }
-                    else if ("yyyy-MM".Equals(tuple.format.Trim(), StringComparison.OrdinalIgnoreCase))
+                    else if ("yyyy-MM".Equals(cp.Format.Trim(), StringComparison.OrdinalIgnoreCase))
                     {
                         format = "%Y-%m";
                     }
-                    else if ("yyyy".Equals(tuple.format.Trim(), StringComparison.OrdinalIgnoreCase))
+                    else if ("yyyy".Equals(cp.Format.Trim(), StringComparison.OrdinalIgnoreCase))
                     {
                         format = "%Y";
                     }
@@ -440,18 +447,16 @@ namespace MyDAL.Core
                     {
                         throw new Exception($"{XConfig.EC._004} -- [[{funcStr}]] 未能解析!!!");
                     }
-                    var dic = DC.DPH.DateFormatDic(tuple.key, tuple.alias, val, tuple.valType, format);
-                    dic.ClassFullName = tuple.classFullName;
-                    return dic;
+                    return DC.DPH.DateFormatDic(cp, val, format);
                 }
                 else
                 {
-                    var keyTuple = GetKey(binTuple.left, FuncEnum.None);
-                    var val = DC.VH.ValueProcess(binTuple.right, keyTuple.valType);
+                    var cp = GetKey(binTuple.left, FuncEnum.None);
+                    var val = DC.VH.ValueProcess(binTuple.right, cp.ValType);
                     DC.Option = OptionEnum.Compare;
                     DC.Func = FuncEnum.None;
                     DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
-                    return DC.DPH.CompareDic(keyTuple.classFullName, keyTuple.key, keyTuple.alias, val, keyTuple.valType);
+                    return DC.DPH.CompareDic(cp, val);
                 }
             }
         }
@@ -527,20 +532,19 @@ namespace MyDAL.Core
         }
         private DicParam HandConditionMemberAccess(MemberExpression memExpr)
         {
-            var tuple = GetMemTuple(memExpr);
-            if (tuple.valType == typeof(bool))
+            var cp = GetMemTuple(memExpr);
+            if (cp.ValType == typeof(bool))
             {
                 DC.Option = OptionEnum.Compare;
                 DC.Compare = CompareEnum.Equal;
-                return DC.DPH.CompareDic(tuple.classFullName, tuple.key, tuple.alias, (true.ToString(), string.Empty), tuple.valType);
+                return DC.DPH.CompareDic(cp, (true.ToString(), string.Empty));
             }
 
             return null;
         }
-        private (string key, string alias, Type valType, string classFullName) GetMemTuple(MemberExpression memExpr)
+        private ColumnParam GetMemTuple(MemberExpression memExpr)
         {
-            var tuple = GetKey(memExpr, FuncEnum.None);
-            return (tuple.key, tuple.alias, tuple.valType, tuple.classFullName);
+            return GetKey(memExpr, FuncEnum.None);
         }
 
         /********************************************************************************************************************/
@@ -553,11 +557,11 @@ namespace MyDAL.Core
             {
                 var mbEx = mb as MemberAssignment;
                 var maMem = mbEx.Expression as MemberExpression;
-                var tuple = GetMemTuple(maMem);
+                var cp = GetMemTuple(maMem);
                 var colAlias = mbEx.Member.Name;
                 DC.Option = OptionEnum.None;
                 DC.Compare = CompareEnum.None;
-                result.Add(DC.DPH.SelectMemberInitDic(tuple.classFullName, tuple.key, tuple.alias, colAlias));
+                result.Add(DC.DPH.SelectMemberInitDic(cp, colAlias));
             }
 
             return result;
@@ -567,11 +571,11 @@ namespace MyDAL.Core
 
         private DicParam HandOnBinary(BinaryExpression binExpr)
         {
-            var tuple1 = GetKey(binExpr.Left, FuncEnum.None);
-            var tuple2 = GetKey(binExpr.Right, FuncEnum.None);
+            var cp1 = GetKey(binExpr.Left, FuncEnum.None);
+            var cp2 = GetKey(binExpr.Right, FuncEnum.None);
             DC.Option = OptionEnum.Compare;
             DC.Compare = GetCompareType(binExpr.NodeType, false);
-            return DC.DPH.OnDic(tuple1.classFullName, tuple1.key, tuple1.alias, tuple2.key, tuple2.alias);
+            return DC.DPH.OnDic(cp1, cp2);
         }
 
         /********************************************************************************************************************/
@@ -758,13 +762,12 @@ namespace MyDAL.Core
                 if (DC.IsSingleTableOption()
                     || DC.Crud == CrudTypeEnum.None)
                 {
-                    var keyTuple = GetKey(memExpr, FuncEnum.None);
-                    var key = keyTuple.key;
-
-                    if (!string.IsNullOrWhiteSpace(key))
+                    var cp = GetKey(memExpr, FuncEnum.None);
+                    if (string.IsNullOrWhiteSpace(cp.Key))
                     {
-                        result.Add(DC.DPH.ColumnDic(keyTuple.classFullName, key));
+                        throw new Exception("无法解析 列名 !!!");
                     }
+                    result.Add(DC.DPH.ColumnDic(cp));
                 }
                 else if (DC.Crud == CrudTypeEnum.Join)
                 {
@@ -779,17 +782,17 @@ namespace MyDAL.Core
                         if (leftStr.Contains(".Length")
                             && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
                         {
-                            var keyTuple = GetKey(memExpr, FuncEnum.CharLength);
+                            var cp = GetKey(memExpr, FuncEnum.CharLength);
                             DC.Func = FuncEnum.CharLength;
                             DC.Compare = CompareEnum.None;
-                            result.Add(DC.DPH.CharLengthDic(keyTuple.classFullName, keyTuple.key, keyTuple.alias, (null, string.Empty), keyTuple.valType));
+                            result.Add(DC.DPH.CharLengthDic(cp, (null, string.Empty)));
                         }
                         else
                         {
                             var exp2 = memExpr.Expression as MemberExpression;
                             var alias = exp2.Member.Name;
                             var field = memExpr.Member.Name;
-                            result.Add(DC.DPH.JoinColumnDic(exp2.Type.FullName, field, alias));
+                            result.Add(DC.DPH.JoinColumnDic(exp2.Type.FullName, field, alias, field));
                         }
                     }
                 }
@@ -800,20 +803,20 @@ namespace MyDAL.Core
                 if (leftStr.Contains(".ToString(")
                     && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
                 {
-                    var tuple = GetKey(body, FuncEnum.DateFormat);
+                    var cp = GetKey(body, FuncEnum.DateFormat);
                     DC.Option = OptionEnum.ColumnAs;
                     DC.Func = FuncEnum.DateFormat;
                     DC.Compare = CompareEnum.None;
                     var format = string.Empty;
-                    if ("yyyy-MM-dd".Equals(tuple.format.Trim(), StringComparison.OrdinalIgnoreCase))
+                    if ("yyyy-MM-dd".Equals(cp.Format.Trim(), StringComparison.OrdinalIgnoreCase))
                     {
                         format = "%Y-%m-%d";
                     }
-                    else if ("yyyy-MM".Equals(tuple.format.Trim(), StringComparison.OrdinalIgnoreCase))
+                    else if ("yyyy-MM".Equals(cp.Format.Trim(), StringComparison.OrdinalIgnoreCase))
                     {
                         format = "%Y-%m";
                     }
-                    else if ("yyyy".Equals(tuple.format.Trim(), StringComparison.OrdinalIgnoreCase))
+                    else if ("yyyy".Equals(cp.Format.Trim(), StringComparison.OrdinalIgnoreCase))
                     {
                         format = "%Y";
                     }
@@ -821,19 +824,17 @@ namespace MyDAL.Core
                     {
                         throw new Exception($"{XConfig.EC._001} -- [[{body}]] 未能解析!!!");
                     }
-                    var dic = DC.DPH.DateFormatDic(tuple.key, tuple.alias, (null, string.Empty), tuple.valType, format);
-                    dic.ClassFullName = tuple.classFullName;
-                    result.Add(dic);
+                    result.Add(DC.DPH.DateFormatDic(cp, (null, string.Empty), format));
                 }
             }
             else if (nodeType == ExpressionType.Convert)
             {
-                var tuple = GetKey(body, FuncEnum.None);
-                var key = tuple.key;
-                if (!string.IsNullOrWhiteSpace(key))
+                var cp = GetKey(body, FuncEnum.None);
+                if (string.IsNullOrWhiteSpace(cp.Key))
                 {
-                    result.Add(DC.DPH.ColumnDic(tuple.classFullName, key));
+                    throw new Exception("无法解析 列名2 !!!");
                 }
+                result.Add(DC.DPH.ColumnDic(cp));
             }
             else if (nodeType == ExpressionType.MemberInit)
             {
@@ -847,11 +848,11 @@ namespace MyDAL.Core
                 var mems = nExpr.Members;
                 for (var i = 0; i < args.Count; i++)
                 {
-                    var tuple = GetMemTuple(args[i] as MemberExpression);
+                    var cp = GetMemTuple(args[i] as MemberExpression);
                     var colAlias = mems[i].Name;
                     DC.Option = OptionEnum.None;
                     DC.Compare = CompareEnum.None;
-                    result.Add(DC.DPH.SelectMemberInitDic(tuple.classFullName, tuple.key, tuple.alias, colAlias));
+                    result.Add(DC.DPH.SelectMemberInitDic(cp, colAlias));
                 }
 
             }

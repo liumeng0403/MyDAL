@@ -35,3 +35,5 @@
 /MyDAL.Test.QuerySingleColumn/obj/
 /MyDAL.Test.QueryParallel/bin/
 /MyDAL.Test.QueryParallel/obj/
+/MyDAL.Test.JoinQuerySingleColumn/bin/
+/MyDAL.Test.JoinQuerySingleColumn/obj/

@@ -12,13 +12,13 @@ namespace MyDAL.Core.Helper
 {
     internal class DicParamHelper
     {
-        private static DicParam SetDicBase( Context dc)
+        private static DicParam SetDicBase(Context dc)
         {
             return new DicParam
             {
                 //
                 ID = 0,
-                IsDbSet=false,
+                IsDbSet = false,
                 Crud = dc.Crud,
                 Action = dc.Action,
                 Option = dc.Option,
@@ -26,8 +26,8 @@ namespace MyDAL.Core.Helper
                 Func = dc.Func,
 
                 //
-                GroupAction= ActionEnum.None,
-                GroupRef=null
+                GroupAction = ActionEnum.None,
+                GroupRef = null
             };
         }
         private static DicParam InHelper(DicParam ui, object csVal, string csValStr)
@@ -36,7 +36,7 @@ namespace MyDAL.Core.Helper
             {
                 //
                 ID = ui.ID,
-                IsDbSet=false,
+                IsDbSet = false,
                 Crud = ui.Crud,
                 Action = ui.Action,
                 Option = ui.Option,
@@ -89,9 +89,9 @@ namespace MyDAL.Core.Helper
             }
 
             //
-            if(dic.Inserts!=null)
+            if (dic.Inserts != null)
             {
-                foreach(var ui in dic.Inserts)
+                foreach (var ui in dic.Inserts)
                 {
                     Unique(ui);
                 }
@@ -115,7 +115,7 @@ namespace MyDAL.Core.Helper
         }
         private void DbParam(DicParam ui, DicParam refDb)
         {
-            if(ui.IsDbSet)
+            if (ui.IsDbSet)
             {
                 return;
             }
@@ -158,9 +158,9 @@ namespace MyDAL.Core.Helper
                     DbParam(u, refDb);
                 }
             }
-            if(ui.Inserts!=null)
+            if (ui.Inserts != null)
             {
-                foreach(var u in ui.Inserts)
+                foreach (var u in ui.Inserts)
                 {
                     DbParam(u, refDb);
                 }
@@ -183,7 +183,7 @@ namespace MyDAL.Core.Helper
                     {
                         ds.AddRange(FlatDics(d.InItems));
                     }
-                    else if(d.Inserts!=null)
+                    else if (d.Inserts != null)
                     {
                         ds.AddRange(FlatDics(d.Inserts));
                     }
@@ -278,134 +278,147 @@ namespace MyDAL.Core.Helper
             //
             return paras;
         }
-        
+
         /*******************************************************************************************************/
 
-        internal DicParam CharLengthDic(string fullName, string key, string alias, (object val, string valStr) value, Type valType)
+        internal DicParam CharLengthDic(ColumnParam cp, (object val, string valStr) value)
         {
             var dic = SetDicBase(DC);
-            dic.ClassFullName = fullName;
-            dic.ColumnOne = key;
-            dic.TableAliasOne = alias;
-            dic.Param = key;
-            dic.ParamRaw = key;
+            dic.ClassFullName = cp.ClassFullName;
+            dic.PropOne = cp.Prop;
+            dic.ColumnOne = cp.Key;
+            dic.TableAliasOne = cp.Alias;
+            dic.Param = cp.Key;
+            dic.ParamRaw = cp.Key;
             dic.CsValue = value.val;
             dic.CsValueStr = value.valStr;
-            dic.CsType = valType;
+            dic.CsType = cp.ValType;
 
             return dic;
         }
 
-        internal DicParam TrimDic(string key, string alias, (object val, string valStr) value, Type valType)
+        internal DicParam TrimDic(ColumnParam cp, (object val, string valStr) value)
         {
             var dic = SetDicBase(DC);
-            dic.ColumnOne = key;
-            dic.TableAliasOne = alias;
-            dic.Param = key;
-            dic.ParamRaw = key;
+            dic.ClassFullName = cp.ClassFullName;
+            dic.PropOne = cp.Prop;
+            dic.ColumnOne = cp.Key;
+            dic.TableAliasOne = cp.Alias;
+            dic.Param = cp.Key;
+            dic.ParamRaw = cp.Key;
             dic.CsValue = value.val;
             dic.CsValueStr = value.valStr;
-            dic.CsType = valType;
+            dic.CsType = cp.ValType;
 
             return dic;
         }
-        internal DicParam LTrimDic(string key, string alias, (object val, string valStr) value, Type valType)
+        internal DicParam LTrimDic(ColumnParam cp, (object val, string valStr) value)
         {
             var dic = SetDicBase(DC);
-            dic.ColumnOne = key;
-            dic.TableAliasOne = alias;
-            dic.Param = key;
-            dic.ParamRaw = key;
+            dic.ClassFullName = cp.ClassFullName;
+            dic.PropOne = cp.Prop;
+            dic.ColumnOne = cp.Key;
+            dic.TableAliasOne = cp.Alias;
+            dic.Param = cp.Key;
+            dic.ParamRaw = cp.Key;
             dic.CsValue = value.val;
             dic.CsValueStr = value.valStr;
-            dic.CsType = valType;
+            dic.CsType = cp.ValType;
 
             return dic;
         }
-        internal DicParam RTrimDic(string key, string alias, (object val, string valStr) value, Type valType)
+        internal DicParam RTrimDic(ColumnParam cp, (object val, string valStr) value)
         {
             var dic = SetDicBase(DC);
-            dic.ColumnOne = key;
-            dic.TableAliasOne = alias;
-            dic.Param = key;
-            dic.ParamRaw = key;
+            dic.ClassFullName = cp.ClassFullName;
+            dic.PropOne = cp.Prop;
+            dic.ColumnOne = cp.Key;
+            dic.TableAliasOne = cp.Alias;
+            dic.Param = cp.Key;
+            dic.ParamRaw = cp.Key;
             dic.CsValue = value.val;
             dic.CsValueStr = value.valStr;
-            dic.CsType = valType;
+            dic.CsType = cp.ValType;
 
             return dic;
         }
-        internal DicParam DateFormatDic(string key, string alias, (object val, string valStr) value, Type valType,string format)
+        internal DicParam DateFormatDic(ColumnParam cp, (object val, string valStr) value, string format)
         {
             var dic = SetDicBase(DC);
-            dic.ColumnOne = key;
-            dic.ColumnOneAlias = key;
-            dic.TableAliasOne = alias;
-            dic.Param = key;
-            dic.ParamRaw = key;
+            dic.ClassFullName = cp.ClassFullName;
+            dic.PropOne = cp.Prop;
+            dic.ColumnOne = cp.Key;
+            dic.ColumnOneAlias = cp.Key;
+            dic.TableAliasOne = cp.Alias;
+            dic.Param = cp.Key;
+            dic.ParamRaw = cp.Key;
             dic.CsValue = value.val;
             dic.CsValueStr = value.valStr;
-            dic.CsType = valType;
+            dic.CsType = cp.ValType;
             dic.Format = format;
 
             return dic;
         }
 
-        internal DicParam CompareDic(string classFullName, string key, string alias, (object val, string valStr) value, Type valType)
+        internal DicParam CompareDic(ColumnParam cp, (object val, string valStr) value)
         {
             var dic = SetDicBase(DC);
-            dic.ClassFullName = classFullName;
-            dic.ColumnOne = key;
-            dic.TableAliasOne = alias;
+            dic.ClassFullName = cp.ClassFullName;
+            dic.PropOne = cp.Prop;
+            dic.ColumnOne = cp.Key;
+            dic.TableAliasOne = cp.Alias;
             dic.CsValue = value.val;
             dic.CsValueStr = value.valStr;
-            dic.CsType = valType;
-            dic.Param = key;
-            dic.ParamRaw = key;
+            dic.CsType = cp.ValType;
+            dic.Param = cp.Key;
+            dic.ParamRaw = cp.Key;
 
             return dic;
         }
 
-        internal DicParam InDic(string classFullName, string key, string alias, (object val, string valStr) value, Type valType)
+        internal DicParam InDic(ColumnParam cp, (object val, string valStr) value)
         {
             var dic = SetDicBase(DC);
-            dic.ClassFullName = classFullName;
-            dic.ColumnOne = key;
-            dic.TableAliasOne = alias;
+            dic.ClassFullName = cp.ClassFullName;
+            dic.PropOne = cp.Prop;
+            dic.ColumnOne = cp.Key;
+            dic.TableAliasOne = cp.Alias;
             dic.CsValue = value.val;
             dic.CsValueStr = value.valStr;
-            dic.CsType = valType;
-            dic.Param = key;
-            dic.ParamRaw = key;
+            dic.CsType = cp.ValType;
+            dic.Param = cp.Key;
+            dic.ParamRaw = cp.Key;
 
             return dic;
         }
-        internal DicParam NotInDic(string classFullName, string key, string alias, (object val, string valStr) value, Type valType)
+        internal DicParam NotInDic(ColumnParam cp, (object val, string valStr) value)
         {
             var dic = SetDicBase(DC);
-            dic.ClassFullName = classFullName;
-            dic.ColumnOne = key;
-            dic.TableAliasOne = alias;
+            dic.ClassFullName = cp.ClassFullName;
+            dic.PropOne = cp.Prop;
+            dic.ColumnOne = cp.Key;
+            dic.TableAliasOne = cp.Alias;
             dic.CsValue = value.val;
             dic.CsValueStr = value.valStr;
-            dic.CsType = valType;
-            dic.Param = key;
-            dic.ParamRaw = key;
+            dic.CsType = cp.ValType;
+            dic.Param = cp.Key;
+            dic.ParamRaw = cp.Key;
 
             return dic;
         }
 
-        internal DicParam LikeDic(string classFullName, string key, string alias, (object val, string valStr) value, Type valType)
+        internal DicParam LikeDic(ColumnParam cp, (object val, string valStr) value)
         {
             var dic = SetDicBase(DC);
-            dic.ClassFullName = classFullName;
-            dic.ColumnOne = key;
-            dic.TableAliasOne = alias;
+            dic.ClassFullName = cp.ClassFullName;
+            dic.PropOne = cp.Prop;
+            dic.ColumnOne = cp.Key;
+            dic.TableAliasOne = cp.Alias;
             dic.CsValue = value.val;
             dic.CsValueStr = value.valStr;
-            dic.CsType = valType;
-            dic.Param = key;
-            dic.ParamRaw = key;
+            dic.CsType = cp.ValType;
+            dic.Param = cp.Key;
+            dic.ParamRaw = cp.Key;
 
             return dic;
         }
@@ -423,29 +436,31 @@ namespace MyDAL.Core.Helper
             return dic;
         }
 
-        internal DicParam IsNullDic(string classFullName, string key, string alias, Type valType)
+        internal DicParam IsNullDic(ColumnParam cp)
         {
             var dic = SetDicBase(DC);
-            dic.ClassFullName = classFullName;
-            dic.ColumnOne = key;
-            dic.TableAliasOne = alias;
-            dic.Param = key;
-            dic.ParamRaw = key;
+            dic.ClassFullName = cp.ClassFullName;
+            dic.PropOne = cp.Prop;
+            dic.ColumnOne = cp.Key;
+            dic.TableAliasOne = cp.Alias;
+            dic.Param = cp.Key;
+            dic.ParamRaw = cp.Key;
             dic.CsValue = null;
             dic.CsValueStr = string.Empty;
-            dic.CsType = valType;
+            dic.CsType = cp.ValType;
 
             return dic;
         }
 
         /*******************************************************************************************************/
 
-        internal DicParam SelectMemberInitDic(string fullName, string key, string alias, string colAlias)
+        internal DicParam SelectMemberInitDic(ColumnParam cp, string colAlias)
         {
             var dic = SetDicBase(DC);
-            dic.ClassFullName = fullName;
-            dic.TableAliasOne = alias;
-            dic.ColumnOne = key;
+            dic.ClassFullName = cp.ClassFullName;
+            dic.TableAliasOne = cp.Alias;
+            dic.PropOne = cp.Prop;
+            dic.ColumnOne = cp.Key;
             dic.ColumnOneAlias = colAlias;
 
             return dic;
@@ -454,16 +469,6 @@ namespace MyDAL.Core.Helper
         internal DicParam DistinctDic()
         {
             var dic = SetDicBase(DC);
-
-            return dic;
-        }
-
-        internal DicParam ColumnDic(string columnOne, string tableAliasOne, string fullName)
-        {
-            var dic = SetDicBase(DC);
-            dic.ClassFullName = fullName;
-            dic.ColumnOne = columnOne;
-            dic.TableAliasOne = tableAliasOne;
 
             return dic;
         }
@@ -503,7 +508,7 @@ namespace MyDAL.Core.Helper
 
         /*******************************************************************************************************/
 
-        internal DicParam InsertDic(string fullName,List<DicParam> list)
+        internal DicParam InsertDic(string fullName, List<DicParam> list)
         {
             var dic = SetDicBase(DC);
             dic.ClassFullName = fullName;
@@ -543,14 +548,14 @@ namespace MyDAL.Core.Helper
 
         /*******************************************************************************************************/
 
-        internal DicParam OnDic(string fullName, string key1, string alias1, string key2, string alias2)
+        internal DicParam OnDic(ColumnParam cp1, ColumnParam cp2)
         {
             var dic = SetDicBase(DC);
-            dic.ClassFullName = fullName;
-            dic.ColumnOne = key1;
-            dic.TableAliasOne = alias1;
-            dic.ColumnTwo = key2;
-            dic.TableAliasTwo = alias2;
+            dic.ClassFullName = cp1.ClassFullName;
+            dic.ColumnOne = cp1.Key;
+            dic.TableAliasOne = cp1.Alias;
+            dic.ColumnTwo = cp2.Key;
+            dic.TableAliasTwo = cp2.Alias;
 
             return dic;
         }
@@ -565,20 +570,32 @@ namespace MyDAL.Core.Helper
             return dic;
         }
 
-        internal DicParam ColumnDic(string fullName, string key)
+        internal DicParam ColumnDic(ColumnParam cp)
+        {
+            var dic = SetDicBase(DC);
+            dic.ClassFullName = cp.ClassFullName;
+            dic.PropOne = cp.Prop;
+            dic.ColumnOne = cp.Key;
+
+            return dic;
+        }
+        internal DicParam ColumnDic(string columnOne, string tableAliasOne, string fullName,string prop)
         {
             var dic = SetDicBase(DC);
             dic.ClassFullName = fullName;
-            dic.ColumnOne = key;
+            dic.PropOne = prop;
+            dic.ColumnOne = columnOne;
+            dic.TableAliasOne = tableAliasOne;
 
             return dic;
         }
 
-        internal DicParam JoinColumnDic(string fullName, string key, string alias)
+        internal DicParam JoinColumnDic(string fullName, string key, string alias,string prop)
         {
             var dic = SetDicBase(DC);
             dic.ClassFullName = fullName;
             dic.TableAliasOne = alias;
+            dic.PropOne = prop;
             dic.ColumnOne = key;
             return dic;
         }

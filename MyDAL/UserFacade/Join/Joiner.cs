@@ -2,10 +2,10 @@
 
 namespace MyDAL.UserFacade.Join
 {
-    public sealed class Joiner 
+    public sealed class Queryer
         : Operator
     {
-        internal Joiner(Context dc)
+        internal Queryer(Context dc)
             : base(dc)
         { }
 

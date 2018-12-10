@@ -13,6 +13,7 @@ namespace MyDAL.Core.Configs
         internal Type ByteArray { get; } = typeof(byte[]);
         internal string LinqBinary { get; } = "System.Data.Linq.Binary";
         internal Type Char { get; } = typeof(char);
+        internal Type CharNull { get; } = typeof(char?);
         internal Type Decimal { get; } = typeof(decimal);
         internal Type Double { get; } = typeof(double);
         internal Type Float { get; } = typeof(float);
