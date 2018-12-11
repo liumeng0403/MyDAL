@@ -82,7 +82,7 @@ namespace MyDAL.AdoNet
         {
             if (cnn is DbConnection dbConn)
             {
-                return dbConn.OpenAsync(default(CancellationToken)).ConfigureAwait(false);
+                return dbConn.OpenAsync().ConfigureAwait(false);
             }
             else
             {
@@ -111,10 +111,10 @@ namespace MyDAL.AdoNet
         }
         private Task<DbDataReader> ExecuteReaderWithFlagsFallbackAsync(DbCommand cmd, bool wasClosed, CommandBehavior behavior)
         {
-            var task = cmd.ExecuteReaderAsync(GetBehavior(wasClosed, behavior), default(CancellationToken));
+            var task = cmd.ExecuteReaderAsync(GetBehavior(wasClosed, behavior));
             if (task.Status == TaskStatus.Faulted && DisableCommandBehaviorOptimizations(behavior, task.Exception.InnerException))
             {
-                return cmd.ExecuteReaderAsync(GetBehavior(wasClosed, behavior), default(CancellationToken));
+                return cmd.ExecuteReaderAsync(GetBehavior(wasClosed, behavior));
             }
             return task;
         }
@@ -124,7 +124,7 @@ namespace MyDAL.AdoNet
             var result = new List<F>();
             if (IsDateTimeYearColumn(out var dic))
             {
-                while (await Reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
+                while (await Reader.ReadAsync().ConfigureAwait(false))
                 {
                     result.Add(
                         DC.GH.ConvertT<F>(
@@ -141,12 +141,12 @@ namespace MyDAL.AdoNet
             else
             {
                 var func = DC.SC.GetHandle<M>(SqlOne, Reader);
-                while (await Reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
+                while (await Reader.ReadAsync().ConfigureAwait(false))
                 {
                     result.Add(propertyFunc(func(Reader)));
                 }
             }
-            while (await Reader.NextResultAsync(default(CancellationToken)).ConfigureAwait(false)) { }
+            while (await Reader.NextResultAsync().ConfigureAwait(false)) { }
             return result;
         }
         private async Task<List<F>> ReadColumn<F>()
@@ -154,7 +154,7 @@ namespace MyDAL.AdoNet
             var result = new List<F>();
             if (IsDateTimeYearColumn(out var dic))
             {
-                while (await Reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
+                while (await Reader.ReadAsync().ConfigureAwait(false))
                 {
                     result.Add(
                         DC.GH.ConvertT<F>(
@@ -173,13 +173,13 @@ namespace MyDAL.AdoNet
                 dic = DC.Parameters.First(it => it.Crud == CrudTypeEnum.Join && it.Action == ActionEnum.Select && it.Option == OptionEnum.Column);
                 var func = DC.SC.GetHandle(SqlOne, Reader, DC.SC.GetModelType(dic.Key));
                 var prop = DC.SC.GetModelProperys(dic.Key).FirstOrDefault(it => it.Name.Equals(dic.PropOne, StringComparison.Ordinal));
-                while (await Reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
+                while (await Reader.ReadAsync().ConfigureAwait(false))
                 {
                     var obj = func(Reader);
                     result.Add(DC.GH.ConvertT<F>(prop.GetValue(obj)));
                 }
             }
-            while (await Reader.NextResultAsync(default(CancellationToken)).ConfigureAwait(false)) { }
+            while (await Reader.NextResultAsync().ConfigureAwait(false)) { }
             return result;
         }
 
@@ -215,43 +215,11 @@ namespace MyDAL.AdoNet
                     }
                     var func = DC.SC.GetHandle<M>(SqlCount == 1 ? SqlOne : SqlTwo, reader);
                     var result = new List<M>();
-                    while (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false))
+                    while (await reader.ReadAsync().ConfigureAwait(false))
                     {
                         result.Add(func(reader));
                     }
-                    while (await reader.NextResultAsync(default(CancellationToken)).ConfigureAwait(false)) { }
-                    return result;
-                }
-                finally
-                {
-                    using (reader) { }
-                    if (needClose) { Conn.Close(); }
-                }
-            }
-        }
-
-        /*
-         * ado.net -- DbCommand.[Task<DbDataReader> ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)]
-         * select -- 第一行
-         */
-        internal async Task<M> ExecuteReaderSingleRowAsync<M>()
-        {
-            var comm = new CommandInfo(SqlOne, Parameter);
-            var needClose = Conn.State == ConnectionState.Closed;
-            using (var cmd = SettingCommand(comm, Conn, comm.Parameter.ParamReader))
-            {
-                DbDataReader reader = null;
-                try
-                {
-                    if (needClose) { await OpenAsync(Conn); }
-                    reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, XConfig.SingleRow).ConfigureAwait(false);
-                    var result = default(M);
-                    if (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false) && reader.FieldCount != 0)
-                    {
-                        result = DC.SC.GetHandle<M>(SqlOne, reader)(reader);
-                        while (await reader.ReadAsync(default(CancellationToken)).ConfigureAwait(false)) { }
-                    }
-                    while (await reader.NextResultAsync(default(CancellationToken)).ConfigureAwait(false)) { }
+                    while (await reader.NextResultAsync().ConfigureAwait(false)) { }
                     return result;
                 }
                 finally
@@ -325,7 +293,7 @@ namespace MyDAL.AdoNet
                 try
                 {
                     if (needClose) { await OpenAsync(Conn); }
-                    var result = await cmd.ExecuteNonQueryAsync(default(CancellationToken)).ConfigureAwait(false);
+                    var result = await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
                     return result;
                 }
                 finally
@@ -350,7 +318,7 @@ namespace MyDAL.AdoNet
             {
                 cmd = SettingCommand(comm, Conn, comm.Parameter.ParamReader);
                 if (needClose) { await OpenAsync(Conn); }
-                result = await cmd.ExecuteScalarAsync(default(CancellationToken)).ConfigureAwait(false);
+                result = await cmd.ExecuteScalarAsync().ConfigureAwait(false);
             }
             finally
             {

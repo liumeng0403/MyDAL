@@ -1,5 +1,4 @@
 ﻿using MyDAL.Core.Bases;
-using MyDAL.Core.Enums;
 using MyDAL.Interfaces;
 using System;
 using System.Linq;
@@ -45,9 +44,7 @@ namespace MyDAL.Impls
         public async Task<M> FirstOrDefaultAsync<M>()
             where M : class
         {
-            SelectMHandle<M>();
-            PreExecuteHandle(UiMethodEnum.FirstOrDefaultAsync);
-            return await DC.DS.ExecuteReaderSingleRowAsync<M>();
+            return (await new TopXImpl(DC).TopAsync<M>(1)).FirstOrDefault();
         }
 
         public async Task<T> FirstOrDefaultAsync<T>(Expression<Func<T>> columnMapFunc)

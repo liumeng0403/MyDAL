@@ -203,7 +203,7 @@ namespace MyDAL.Test.JoinQueryM
             var xx1 = "";
 
             var res1 = await Conn
-                .Joiner<AspnetUsers, AspnetUserRoles, AspnetRoles>(out var user1, out var userRole1, out var role1)
+                .Queryer<AspnetUsers, AspnetUserRoles, AspnetRoles>(out var user1, out var userRole1, out var role1)
                 .From(() => user1)
                     .InnerJoin(() => userRole1)
                         .On(() => user1.Id == userRole1.UserId)
@@ -222,7 +222,7 @@ namespace MyDAL.Test.JoinQueryM
 
             // order by id  -- 手动查看
             var res2 = await Conn
-                .Joiner<AspnetUsers, AspnetUserRoles, AspnetRoles>(out var user2, out var userRole2, out var role2)
+                .Queryer<AspnetUsers, AspnetUserRoles, AspnetRoles>(out var user2, out var userRole2, out var role2)
                 .From(() => user2)
                     .InnerJoin(() => userRole2)
                         .On(() => user2.Id == userRole2.UserId)
@@ -239,7 +239,7 @@ namespace MyDAL.Test.JoinQueryM
 
             // order by createdon -- 手动查看
             var res3 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var agent3, out var record3)
+                .Queryer<Agent, AgentInventoryRecord>(out var agent3, out var record3)
                 .From(() => agent3)
                     .InnerJoin(() => record3)
                         .On(() => agent3.Id == record3.AgentId)
@@ -253,7 +253,7 @@ namespace MyDAL.Test.JoinQueryM
             var xx4 = "";
 
             var res4 = await Conn
-                .Joiner<AspnetUsers, AspnetUserRoles, AspnetRoles>(out var user4, out var userRole4, out var role4)
+                .Queryer<AspnetUsers, AspnetUserRoles, AspnetRoles>(out var user4, out var userRole4, out var role4)
                 .From(() => user4)
                     .InnerJoin(() => userRole4)
                         .On(() => user4.Id == userRole4.UserId)
