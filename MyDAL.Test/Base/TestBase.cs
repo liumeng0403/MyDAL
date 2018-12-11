@@ -87,11 +87,11 @@ namespace MyDAL.Test
             /*
              * 
             */
-            var conn =
+            return 
                 new MySqlConnection($"Server=localhost; Database={name}; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;")
-                .OpenDebug();  // 全局 debug 配置, 生产环境不要开启 
-                //.OpenDB();  // 建议 每次新实例并打开,以获得更好的性能体验
-            return conn;
+                .OpenDebug()  // 全局 debug 配置, 生产环境不要开启 
+                //.OpenDB()  // 建议 每次新实例并打开,以获得更好的性能体验, 但是 用完要注意手动释放, 防止 连接池 资源耗尽!!!
+                ;
         }
         //private static IDbConnection GetOpenConnection3(string name)
         //{
