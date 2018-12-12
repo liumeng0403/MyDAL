@@ -20,6 +20,17 @@ namespace MyDAL.Test.QuickAPI
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
+            /********************************************************************************************************************************************/
+
+            var xx2 = "";
+            
+            var res2 = Conn.Exist<AlipayPaymentRecord>(it => it.CreatedOn == date && it.OrderId == id);
+            Assert.True(res2);
+
+            var tuple2 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /********************************************************************************************************************************************/
+
             var xx = "";
         }
     }
