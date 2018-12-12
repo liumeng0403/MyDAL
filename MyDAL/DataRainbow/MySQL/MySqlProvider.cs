@@ -349,7 +349,8 @@ namespace MyDAL.DataRainbow.MySQL
             foreach (var dic in items)
             {
                 i++;
-                if (i != 1) { CRLF(X); Tab(X); }
+                if (i != 1) { CRLF(X); }
+                if (items.Count > 1) { Tab(X); }
                 if (dic.Func == FuncEnum.None)
                 {
                     if (dic.Crud == CrudTypeEnum.Join)
