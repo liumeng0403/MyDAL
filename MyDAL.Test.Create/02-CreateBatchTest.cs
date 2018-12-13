@@ -4,13 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace MyDAL.Test.Create
 {
-    public class _02_CreateBatchTest:TestBase
+    public class _02_CreateBatchTest : TestBase
     {
         private async Task<List<AddressInfo>> PreCreateBatch()
         {

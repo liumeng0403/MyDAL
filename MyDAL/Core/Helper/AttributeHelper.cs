@@ -1,5 +1,4 @@
 ﻿using MyDAL.Core.Bases;
-using MyDAL.Core.Extensions;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -7,7 +6,7 @@ using System.Reflection;
 
 namespace MyDAL.Core.Helper
 {
-    internal class AttributeHelper 
+    internal class AttributeHelper
     {
 
         private Context DC { get; set; }
@@ -21,8 +20,8 @@ namespace MyDAL.Core.Helper
         }
 
         /*************************************************************************************************************************************/
-        
-        internal string GetAttributePropVal<M,A>(Expression<Func<A, string>> attrPropFunc)
+
+        internal string GetAttributePropVal<M, A>(Expression<Func<A, string>> attrPropFunc)
             where A : Attribute
         {
             var dic = DC.EH.FuncMFExpression(attrPropFunc)[0];
@@ -31,7 +30,7 @@ namespace MyDAL.Core.Helper
             if (!XCache.ModelAttributePropValCache.ContainsKey(key))
             {
                 var attr = mType.GetCustomAttributes(typeof(A), false).FirstOrDefault();
-                var  value = attr == null ? string.Empty : attrPropFunc.Compile()((A)attr);
+                var value = attr == null ? string.Empty : attrPropFunc.Compile()((A)attr);
                 if (!XCache.ModelAttributePropValCache.ContainsKey(key)
                     && !value.IsNullStr())
                 {

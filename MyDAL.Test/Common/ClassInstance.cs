@@ -1,4 +1,8 @@
-﻿namespace MyDAL.Core.Common
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace MyDAL.Test.Common
 {
     /// <summary>
     /// T 实例

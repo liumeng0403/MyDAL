@@ -25,7 +25,7 @@ namespace MyDAL.Test.WhereEdge
 
             //   =    >=    <=
             var res1 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(option1)
                 .ListAsync();
             Assert.True(res1.Count == 555);
@@ -42,7 +42,7 @@ namespace MyDAL.Test.WhereEdge
 
             //   >=   <=  
             var res2 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(option2)
                 .ListAsync();
             Assert.True(res2.Count == 28619);
@@ -58,7 +58,7 @@ namespace MyDAL.Test.WhereEdge
 
             //   like  
             var res3 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(option3)
                 .ListAsync();
             Assert.True(res3.Count == 2002);
@@ -78,7 +78,7 @@ namespace MyDAL.Test.WhereEdge
 
             // in
             var res4 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(option4)
                 .ListAsync();
             Assert.True(res4.Count == 555);
@@ -98,7 +98,7 @@ namespace MyDAL.Test.WhereEdge
 
             // in
             var res5 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(option5)
                 .ListAsync();
             Assert.True(res5.Count == 28064 || res5.Count == 28065);

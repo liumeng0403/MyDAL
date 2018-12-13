@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace MyDAL.Core.Common
+namespace MyDAL.Test.Common
 {
     internal class SyncState
         : ClassInstance<SyncState>

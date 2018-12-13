@@ -7,8 +7,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace MyDAL.AdoNet
@@ -78,11 +76,11 @@ namespace MyDAL.AdoNet
             paramReader?.Invoke(cmd, comm.Parameter);
             return cmd as DbCommand;
         }
-        internal ConfiguredTaskAwaitable OpenAsync(IDbConnection cnn)
+        internal async Task OpenAsync(IDbConnection cnn)
         {
             if (cnn is DbConnection dbConn)
             {
-                return dbConn.OpenAsync().ConfigureAwait(false);
+                await dbConn.OpenAsync();
             }
             else
             {
@@ -124,7 +122,7 @@ namespace MyDAL.AdoNet
             var result = new List<F>();
             if (IsDateTimeYearColumn(out var dic))
             {
-                while (await Reader.ReadAsync().ConfigureAwait(false))
+                while (await Reader.ReadAsync())
                 {
                     result.Add(
                         DC.GH.ConvertT<F>(
@@ -141,12 +139,12 @@ namespace MyDAL.AdoNet
             else
             {
                 var func = DC.SC.GetHandle<M>(SqlOne, Reader);
-                while (await Reader.ReadAsync().ConfigureAwait(false))
+                while (await Reader.ReadAsync())
                 {
                     result.Add(propertyFunc(func(Reader)));
                 }
             }
-            while (await Reader.NextResultAsync().ConfigureAwait(false)) { }
+            while (await Reader.NextResultAsync()) { }
             return result;
         }
         private async Task<List<F>> ReadColumn<F>()
@@ -154,7 +152,7 @@ namespace MyDAL.AdoNet
             var result = new List<F>();
             if (IsDateTimeYearColumn(out var dic))
             {
-                while (await Reader.ReadAsync().ConfigureAwait(false))
+                while (await Reader.ReadAsync())
                 {
                     result.Add(
                         DC.GH.ConvertT<F>(
@@ -173,13 +171,13 @@ namespace MyDAL.AdoNet
                 dic = DC.Parameters.First(it => it.Crud == CrudTypeEnum.Join && it.Action == ActionEnum.Select && it.Option == OptionEnum.Column);
                 var func = DC.SC.GetHandle(SqlOne, Reader, DC.SC.GetModelType(dic.Key));
                 var prop = DC.SC.GetModelProperys(dic.Key).FirstOrDefault(it => it.Name.Equals(dic.PropOne, StringComparison.Ordinal));
-                while (await Reader.ReadAsync().ConfigureAwait(false))
+                while (await Reader.ReadAsync())
                 {
                     var obj = func(Reader);
                     result.Add(DC.GH.ConvertT<F>(prop.GetValue(obj)));
                 }
             }
-            while (await Reader.NextResultAsync().ConfigureAwait(false)) { }
+            while (await Reader.NextResultAsync()) { }
             return result;
         }
 
@@ -208,18 +206,18 @@ namespace MyDAL.AdoNet
                 try
                 {
                     if (needClose) { await OpenAsync(Conn); }
-                    reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, XConfig.MultiRow).ConfigureAwait(false);
+                    reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, XConfig.MultiRow);
                     if (reader.FieldCount == 0)
                     {
                         return new List<M>();
                     }
                     var func = DC.SC.GetHandle<M>(SqlCount == 1 ? SqlOne : SqlTwo, reader);
                     var result = new List<M>();
-                    while (await reader.ReadAsync().ConfigureAwait(false))
+                    while (await reader.ReadAsync())
                     {
                         result.Add(func(reader));
                     }
-                    while (await reader.NextResultAsync().ConfigureAwait(false)) { }
+                    while (await reader.NextResultAsync()) { }
                     return result;
                 }
                 finally
@@ -244,7 +242,7 @@ namespace MyDAL.AdoNet
                 try
                 {
                     if (needClose) { await OpenAsync(Conn); }
-                    Reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, XConfig.MultiRow).ConfigureAwait(false);
+                    Reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, XConfig.MultiRow);
                     return await ReadColumn(propertyFunc);
                 }
                 finally
@@ -268,7 +266,7 @@ namespace MyDAL.AdoNet
                 try
                 {
                     if (needClose) { await OpenAsync(Conn); }
-                    Reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, XConfig.MultiRow).ConfigureAwait(false);
+                    Reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, XConfig.MultiRow);
                     return await ReadColumn<F>();
                 }
                 finally
@@ -293,7 +291,7 @@ namespace MyDAL.AdoNet
                 try
                 {
                     if (needClose) { await OpenAsync(Conn); }
-                    var result = await cmd.ExecuteNonQueryAsync().ConfigureAwait(false);
+                    var result = await cmd.ExecuteNonQueryAsync();
                     return result;
                 }
                 finally
@@ -318,7 +316,7 @@ namespace MyDAL.AdoNet
             {
                 cmd = SettingCommand(comm, Conn, comm.Parameter.ParamReader);
                 if (needClose) { await OpenAsync(Conn); }
-                result = await cmd.ExecuteScalarAsync().ConfigureAwait(false);
+                result = await cmd.ExecuteScalarAsync();
             }
             finally
             {

@@ -1,4 +1,6 @@
-﻿namespace MyDAL.Test.QueryParallel
+﻿using MyDAL.Test.Parallels;
+
+namespace MyDAL.Test.QueryParallel
 {
     public class HttpTest
     {

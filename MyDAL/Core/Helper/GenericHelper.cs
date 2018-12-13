@@ -67,19 +67,10 @@ namespace MyDAL.Core.Helper
         
         /*******************************************************************************************************************/
 
-        internal object GetTypeValue(PropertyInfo outerProp, object outerObj)
+        internal object GetObjPropValue(PropertyInfo outerProp, object outerObj)
         {
             return outerProp.GetValue(outerObj);
         }
-        internal object GetTypeValue(FieldInfo outerField, object outerObj)
-        {
-            return outerField.GetValue(outerObj);
-        }
-        internal object GetTypeValue(object objVal)
-        {
-            return objVal;
-        }
-
         internal List<PropertyInfo> GetPropertyInfos(Type mType)
         {
             var props = mType.GetProperties(BindingFlags.GetProperty | BindingFlags.Instance | BindingFlags.Public).ToList();
