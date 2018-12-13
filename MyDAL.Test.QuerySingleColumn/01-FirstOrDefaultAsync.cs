@@ -15,9 +15,9 @@ namespace MyDAL.Test.QuerySingleColumn
 
             var time1 = DateTime.Parse("2018-08-16 19:22:01.716307");
             var res1 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => it.CreatedOn == time1)
-                .FirstOrDefaultAsync(it => it.Id);
+                .FirstOrDefaultAsync<Guid>(it => it.Id);
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
