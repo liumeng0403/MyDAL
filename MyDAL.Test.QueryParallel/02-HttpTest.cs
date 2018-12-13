@@ -1,4 +1,5 @@
-﻿using Yunyong.DataExchange;
+using MyDAL.Test.Parallels;
+using Yunyong.DataExchange;
 
 namespace MyDAL.Test.QueryParallel
 {

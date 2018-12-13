@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
@@ -11,7 +12,6 @@ using Yunyong.DataExchange.Core.Extensions;
 namespace Yunyong.DataExchange.Core.Bases
 {
     public abstract class Operator
-        : IObjectMethod
     {
 
         internal Operator(Context dc)
@@ -21,11 +21,25 @@ namespace Yunyong.DataExchange.Core.Bases
 
         private bool CheckWhereVal(object val, Type valType)
         {
-            if (val == null
-                || (valType.IsEnum && "0".Equals(val.ToString(), StringComparison.OrdinalIgnoreCase))
-                || (valType == typeof(DateTime) && Convert.ToDateTime("0001-01-01 00:00:00.000000").Equals(val))
-                || (valType.IsList() && (val as dynamic).Count <= 0)
-                || (valType.IsArray && (val as dynamic).Length <= 0))
+            if (val == null)
+            {
+                return false;
+            }
+            if (valType.IsEnum && "0".Equals(val.ToString(), StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
+            }
+            if (valType == typeof(DateTime) && Convert.ToDateTime("0001-01-01 00:00:00.000000").Equals(val))
+            {
+                return false;
+            }
+            //|| (valType.IsList() && (val as dynamic).Count <= 0)
+            if (valType.IsList() && (val as IList).Count <= 0)
+            {
+                return false;
+            }
+            //|| (valType.IsArray && (val as dynamic).Length <= 0))
+            if (valType.IsArray && (val as IList).Count <= 0)
             {
                 return false;
             }

@@ -39,7 +39,7 @@ namespace Yunyong.DataExchange
         public static SetU<M> Set<M>(this Updater<M> updater, dynamic filedsObject)
         {
             updater.DC.Action = ActionEnum.Update;
-            updater.SetDynamicHandle<M>(filedsObject);
+            updater.SetDynamicHandle<M>(filedsObject as object);
             return new SetU<M>(updater.DC);
         }
 

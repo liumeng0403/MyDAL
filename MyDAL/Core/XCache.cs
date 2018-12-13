@@ -6,8 +6,8 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Yunyong.DataExchange.AdoNet;
 using Yunyong.DataExchange.Core.Bases;
+using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Helper;
-using Yunyong.DataExchange.DataRainbow;
 
 namespace Yunyong.DataExchange.Core
 {

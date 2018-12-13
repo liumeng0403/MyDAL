@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Threading;
-using Yunyong.Core;
 
-namespace Yunyong.DataExchange.Core.Common
+namespace MyDAL.Test.Common
 {
     internal class SyncState
         : ClassInstance<SyncState>

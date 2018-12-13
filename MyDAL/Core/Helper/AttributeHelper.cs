@@ -3,11 +3,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Yunyong.DataExchange.Core.Bases;
-using Yunyong.DataExchange.Core.Extensions;
 
 namespace Yunyong.DataExchange.Core.Helper
 {
-    internal class AttributeHelper 
+    internal class AttributeHelper
     {
 
         private Context DC { get; set; }
@@ -21,8 +20,8 @@ namespace Yunyong.DataExchange.Core.Helper
         }
 
         /*************************************************************************************************************************************/
-        
-        internal string GetAttributePropVal<M,A>(Expression<Func<A, string>> attrPropFunc)
+
+        internal string GetAttributePropVal<M, A>(Expression<Func<A, string>> attrPropFunc)
             where A : Attribute
         {
             var dic = DC.EH.FuncMFExpression(attrPropFunc)[0];
@@ -31,7 +30,7 @@ namespace Yunyong.DataExchange.Core.Helper
             if (!XCache.ModelAttributePropValCache.ContainsKey(key))
             {
                 var attr = mType.GetCustomAttributes(typeof(A), false).FirstOrDefault();
-                var  value = attr == null ? string.Empty : attrPropFunc.Compile()((A)attr);
+                var value = attr == null ? string.Empty : attrPropFunc.Compile()((A)attr);
                 if (!XCache.ModelAttributePropValCache.ContainsKey(key)
                     && !value.IsNullStr())
                 {

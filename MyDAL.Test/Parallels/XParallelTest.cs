@@ -1,14 +1,13 @@
+using MyDAL.Test.Common;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Yunyong.DataExchange.Core.Common;
-using Yunyong.DataExchange.Core.Extensions;
-using Yunyong.DataExchange.UserInterface;
+using Yunyong.DataExchange;
 
-namespace Yunyong.DataExchange
+namespace MyDAL.Test.Parallels
 {
     public class XParallelTest
     {

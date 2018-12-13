@@ -10,7 +10,7 @@ using Yunyong.DataExchange;
 
 namespace MyDAL.Test.Create
 {
-    public class _02_CreateBatchTest:TestBase
+    public class _02_CreateBatchTest : TestBase
     {
         private async Task<List<AddressInfo>> PreCreateBatch()
         {
