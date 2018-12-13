@@ -21,7 +21,7 @@ namespace MyDAL.Test.QueryM
 
             //  == Guid
             var res1 = await Conn
-                .Selecter<BodyFitRecord>()
+                .Queryer<BodyFitRecord>()
                 .Where(it => it.Id == Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"))
                 .FirstOrDefaultAsync();
             Assert.NotNull(res1);
@@ -29,7 +29,7 @@ namespace MyDAL.Test.QueryM
             var tuple1 = (XDebug.SQL, XDebug.Parameters);
 
             var resR1 = await Conn
-                .Selecter<BodyFitRecord>()
+                .Queryer<BodyFitRecord>()
                 .Where(it => Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e") == it.Id)
                 .FirstOrDefaultAsync();
             Assert.NotNull(resR1);
@@ -43,7 +43,7 @@ namespace MyDAL.Test.QueryM
 
             // == DateTime
             var res2 = await Conn
-                .Selecter<BodyFitRecord>()
+                .Queryer<BodyFitRecord>()
                 .Where(it => it.CreatedOn == Convert.ToDateTime("2018-08-23 13:36:58"))
                 .FirstOrDefaultAsync();
             Assert.NotNull(res2);
@@ -51,7 +51,7 @@ namespace MyDAL.Test.QueryM
             var tuple2 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             var resR2 = await Conn
-                .Selecter<BodyFitRecord>()
+                .Queryer<BodyFitRecord>()
                 .Where(it => Convert.ToDateTime("2018-08-23 13:36:58") == it.CreatedOn)
                 .FirstOrDefaultAsync();
             Assert.NotNull(resR2);
@@ -65,7 +65,7 @@ namespace MyDAL.Test.QueryM
 
             // == string
             var res3 = await Conn
-                .Selecter<BodyFitRecord>()
+                .Queryer<BodyFitRecord>()
                 .Where(it => it.BodyMeasureProperty == "xxxx")
                 .FirstOrDefaultAsync();
             Assert.NotNull(res3);
@@ -73,7 +73,7 @@ namespace MyDAL.Test.QueryM
             var tuple3 = (XDebug.SQL, XDebug.Parameters);
 
             var resR3 = await Conn
-                .Selecter<BodyFitRecord>()
+                .Queryer<BodyFitRecord>()
                 .Where(it => "xxxx" == it.BodyMeasureProperty)
                 .FirstOrDefaultAsync();
             Assert.NotNull(resR3);

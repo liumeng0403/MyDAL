@@ -1,5 +1,6 @@
 ﻿using MyDAL.Test.Entities.EasyDal_Exchange;
 using MyDAL.Test.ViewModels;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -12,16 +13,12 @@ namespace MyDAL.Test.JoinQueryVmColumn
         public async Task test()
         {
 
-            /*************************************************************************************************************************/
-
-
-
-            /*************************************************************************************************************************/
-
+            /****************************************************************************************************************************************/
+            
             var xx12 = "";
 
             var res12 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var agent12, out var record12)
+                .Queryer<Agent, AgentInventoryRecord>(out var agent12, out var record12)
                 .From(() => agent12)
                     .InnerJoin(() => record12)
                         .On(() => agent12.Id == record12.AgentId)
