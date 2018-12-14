@@ -81,12 +81,20 @@ namespace Yunyong.DataExchange.Impls
             return await DC.DS.ExecuteReaderMultiRowAsync<M>();
         }
 
-        public async Task<List<VM>> ListAsync<VM>(Expression<Func<VM>> columnMapFunc)
-            where VM:class
+        public async Task<List<T>> ListAsync<T>(Expression<Func<T>> columnMapFunc)
         {
-            SelectMHandle(columnMapFunc);
-            PreExecuteHandle(UiMethodEnum.ListAsync);
-            return await DC.DS.ExecuteReaderMultiRowAsync<VM>();
+            if (typeof(T).IsSingleColumn())
+            {
+                SingleColumnHandle(columnMapFunc);
+                PreExecuteHandle(UiMethodEnum.ListAsync);
+                return await DC.DS.ExecuteReaderSingleColumnAsync<T>();
+            }
+            else
+            {
+                SelectMHandle(columnMapFunc);
+                PreExecuteHandle(UiMethodEnum.ListAsync);
+                return await DC.DS.ExecuteReaderMultiRowAsync<T>();
+            }
         }
 
         public async Task<List<M>> ListAsync<M>(int topCount) 

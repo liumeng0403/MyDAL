@@ -2,33 +2,49 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Yunyong.Core;
 using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Impls;
+using Yunyong.DataExchange;
 using Yunyong.DataExchange.Interfaces;
+using Yunyong.Core;
 
 namespace Yunyong.DataExchange.UserFacade.Join
 {
-    public class ThenOrderByX
-        : Operator, IFirstOrDefaultX, IListX, IPagingListX, IPagingListXO,ITopX
+    public sealed class DistinctX
+        : Operator, ITopX, IFirstOrDefaultX, Yunyong.DataExchange.Interfaces.IListX, IPagingListX, IPagingListXO
     {
-        internal ThenOrderByX(Context dc) 
+        internal DistinctX(Context dc)
             : base(dc)
         {
+        }
+
+        /// <summary>
+        /// 多表多条数据查询
+        /// </summary>
+        public async Task<List<M>> TopAsync<M>(int count)
+            where M : class
+        {
+            return await new TopXImpl(DC).TopAsync<M>(count);
+        }
+        /// <summary>
+        /// 多表多条数据查询
+        /// </summary>
+        public async Task<List<T>> TopAsync<T>(int count, Expression<Func<T>> columnMapFunc)
+        {
+            return await new TopXImpl(DC).TopAsync(count, columnMapFunc);
         }
 
         /// <summary>
         /// 多表单条数据查询
         /// </summary>
         public async Task<M> FirstOrDefaultAsync<M>()
-            where M:class
+            where M : class
         {
             return await new FirstOrDefaultXImpl(DC).FirstOrDefaultAsync<M>();
         }
         /// <summary>
         /// 多表单条数据查询
         /// </summary>
-        /// <typeparam name="VM">ViewModel</typeparam>
         public async Task<T> FirstOrDefaultAsync<T>(Expression<Func<T>> columnMapFunc)
         {
             return await new FirstOrDefaultXImpl(DC).FirstOrDefaultAsync(columnMapFunc);
@@ -38,7 +54,7 @@ namespace Yunyong.DataExchange.UserFacade.Join
         /// 多表多条数据查询
         /// </summary>
         public async Task<List<M>> ListAsync<M>()
-            where M:class
+            where M : class
         {
             return await new ListXImpl(DC).ListAsync<M>();
         }
@@ -72,7 +88,7 @@ namespace Yunyong.DataExchange.UserFacade.Join
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
         public async Task<PagingList<M>> PagingListAsync<M>(int pageIndex, int pageSize)
-            where M:class
+            where M : class
         {
             return await new PagingListXImpl(DC).PagingListAsync<M>(pageIndex, pageSize);
         }
@@ -83,7 +99,7 @@ namespace Yunyong.DataExchange.UserFacade.Join
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
         public async Task<PagingList<VM>> PagingListAsync<VM>(int pageIndex, int pageSize, Expression<Func<VM>> columnMapFunc)
-            where VM:class
+            where VM : class
         {
             return await new PagingListXImpl(DC).PagingListAsync<VM>(pageIndex, pageSize, columnMapFunc);
         }
@@ -94,7 +110,7 @@ namespace Yunyong.DataExchange.UserFacade.Join
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
         public async Task<PagingList<M>> PagingListAsync<M>(PagingQueryOption option)
-            where M:class
+            where M : class
         {
             return await new PagingListXOImpl(DC).PagingListAsync<M>(option);
         }
@@ -105,25 +121,10 @@ namespace Yunyong.DataExchange.UserFacade.Join
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
         public async Task<PagingList<VM>> PagingListAsync<VM>(PagingQueryOption option, Expression<Func<VM>> columnMapFunc)
-            where VM:class
+            where VM : class
         {
             return await new PagingListXOImpl(DC).PagingListAsync<VM>(option, columnMapFunc);
         }
 
-        /// <summary>
-        /// 多表多条数据查询
-        /// </summary>
-        public async Task<List<M>> TopAsync<M>(int count)
-            where M : class
-        {
-            return await new TopXImpl(DC).TopAsync<M>(count);
-        }
-        /// <summary>
-        /// 多表多条数据查询
-        /// </summary>
-        public async Task<List<T>> TopAsync<T>(int count, Expression<Func<T>> columnMapFunc)
-        {
-            return await new TopXImpl(DC).TopAsync(count, columnMapFunc);
-        }
     }
 }

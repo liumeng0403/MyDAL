@@ -1,3 +1,4 @@
+using Yunyong.DataExchange.UserFacade.Join;
 using Yunyong.DataExchange.UserFacade.Query;
 
 namespace Yunyong.DataExchange
@@ -16,6 +17,12 @@ namespace Yunyong.DataExchange
         {
             where.DistinctHandle();
             return new DistinctQ<M>(where.DC);
+        }
+
+        public static DistinctX Distinct(this WhereX where)
+        {
+            where.DistinctHandle();
+            return new DistinctX(where.DC);
         }
 
         public static DistinctQ<M> Distinct<M>(this OrderByQ<M> orderBy)

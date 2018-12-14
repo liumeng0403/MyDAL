@@ -13,13 +13,13 @@ namespace MyDAL.Test.JoinQueryM
         private async Task<Agent> PreData01()
         {
             return await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => it.Id == Guid.Parse("0ce552c0-2f5e-4c22-b26d-01654443b30e"))
                 .FirstOrDefaultAsync();
         }
 
         [Fact]
-        public async Task test()
+        public async Task test01()
         {
 
             var m = await PreData01();
@@ -32,7 +32,7 @@ namespace MyDAL.Test.JoinQueryM
 
             //
             var res1 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var agent1, out var record1)
+                .Queryer<Agent, AgentInventoryRecord>(out var agent1, out var record1)
                 .From(() => agent1)
                     .InnerJoin(() => record1)
                         .On(() => agent1.Id == record1.AgentId)
@@ -48,7 +48,7 @@ namespace MyDAL.Test.JoinQueryM
 
             // 
             var res2 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var agent2, out var record2)
+                .Queryer<Agent, AgentInventoryRecord>(out var agent2, out var record2)
                 .From(() => agent2)
                     .InnerJoin(() => record2)
                         .On(() => agent2.Id == record2.AgentId)
@@ -64,7 +64,7 @@ namespace MyDAL.Test.JoinQueryM
 
             // 
             var res3 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var agent3, out var record3)
+                .Queryer<Agent, AgentInventoryRecord>(out var agent3, out var record3)
                 .From(() => agent3)
                     .InnerJoin(() => record3)
                         .On(() => agent3.Id == record3.AgentId)
@@ -81,7 +81,7 @@ namespace MyDAL.Test.JoinQueryM
 
             // 
             var res4 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var agent4, out var record4)
+                .Queryer<Agent, AgentInventoryRecord>(out var agent4, out var record4)
                 .From(() => agent4)
                     .InnerJoin(() => record4)
                         .On(() => agent4.Id == record4.AgentId)
@@ -97,7 +97,7 @@ namespace MyDAL.Test.JoinQueryM
 
             // 
             var res5 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var agent5, out var record5)
+                .Queryer<Agent, AgentInventoryRecord>(out var agent5, out var record5)
                 .From(() => agent5)
                     .InnerJoin(() => record5)
                         .On(() => agent5.Id == record5.AgentId)
@@ -113,7 +113,7 @@ namespace MyDAL.Test.JoinQueryM
 
             // 
             var res6 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var agent6, out var record6)
+                .Queryer<Agent, AgentInventoryRecord>(out var agent6, out var record6)
                 .From(() => agent6)
                     .InnerJoin(() => record6)
                         .On(() => agent6.Id == record6.AgentId)
@@ -130,7 +130,7 @@ namespace MyDAL.Test.JoinQueryM
 
             // 
             var res7 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var agent7, out var record7)
+                .Queryer<Agent, AgentInventoryRecord>(out var agent7, out var record7)
                 .From(() => agent7)
                     .InnerJoin(() => record7)
                         .On(() => agent7.Id == record7.AgentId)
@@ -146,7 +146,7 @@ namespace MyDAL.Test.JoinQueryM
 
             // 
             var res8 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var agent8, out var record8)
+                .Queryer<Agent, AgentInventoryRecord>(out var agent8, out var record8)
                 .From(() => agent8)
                     .InnerJoin(() => record8)
                         .On(() => agent8.Id == record8.AgentId)
@@ -162,7 +162,7 @@ namespace MyDAL.Test.JoinQueryM
 
             // 
             var res9 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var agent9, out var record9)
+                .Queryer<Agent, AgentInventoryRecord>(out var agent9, out var record9)
                 .From(() => agent9)
                     .InnerJoin(() => record9)
                         .On(() => agent9.Id == record9.AgentId)
@@ -177,7 +177,7 @@ namespace MyDAL.Test.JoinQueryM
             var xx10 = "";
 
             var res10 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var agent10, out var record10)
+                .Queryer<Agent, AgentInventoryRecord>(out var agent10, out var record10)
                 .From(() => agent10)
                     .InnerJoin(() => record10)
                         .On(() => agent10.Id == record10.AgentId)
@@ -196,7 +196,7 @@ namespace MyDAL.Test.JoinQueryM
 
 
         [Fact]
-        public async Task test2()
+        public async Task test02()
         {
 
             /*********************************************************************************************************************************************************/

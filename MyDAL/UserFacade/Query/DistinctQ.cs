@@ -10,7 +10,7 @@ using Yunyong.DataExchange.Interfaces;
 namespace Yunyong.DataExchange.UserFacade.Query
 {
     public sealed class DistinctQ<M>
-        : Operator, IAll<M>, IAllPagingList<M>, ITop<M>, IFirstOrDefault<M>, Interfaces.IList<M>, IPagingList<M>, IPagingListO<M>, ICount<M>
+        : Operator, IAll<M>, IAllPagingList<M>, ITop<M>, IFirstOrDefault<M>, Interfaces.IList<M>, IPagingList<M>, IPagingListO<M>
         where M : class
     {
         internal DistinctQ(Context dc) 
@@ -229,21 +229,6 @@ namespace Yunyong.DataExchange.UserFacade.Query
         {
             return await new PagingListOImpl<M>(DC).PagingListAsync<T>(option, columnMapFunc);
         }
-
-        /// <summary>
-        /// 查询符合条件数据条目数
-        /// </summary>
-        public async Task<int> CountAsync()
-        {
-            return await new CountImpl<M>(DC).CountAsync();
-        }
-        /// <summary>
-        /// 查询符合条件数据条目数
-        /// </summary>
-        public async Task<int> CountAsync<F>(Expression<Func<M, F>> propertyFunc)
-        {
-            return await new CountImpl<M>(DC).CountAsync(propertyFunc);
-        }
-
+        
     }
 }
