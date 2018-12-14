@@ -5,6 +5,7 @@ using MyDAL.UserFacade.Query;
 using MyDAL.UserFacade.Update;
 using System;
 using System.Linq.Expressions;
+using static System.Net.WebRequestMethods;
 
 namespace MyDAL
 {
@@ -28,7 +29,7 @@ namespace MyDAL
         /// 请参阅: <see langword=".Where() &amp; .And() &amp; .Or() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static WhereD<M> Where<M>(this Deleter<M> deleter, object mWhere)
-            where M:class
+            where M : class
         {
             deleter.DC.Action = ActionEnum.Where;
             deleter.WhereDynamicHandle<M>(mWhere);
@@ -52,7 +53,7 @@ namespace MyDAL
         /// 请参阅: <see langword=".Where() &amp; .And() &amp; .Or() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static WhereU<M> Where<M>(this SetU<M> set, object mWhere)
-            where M:class
+            where M : class
         {
             set.DC.Action = ActionEnum.Where;
             set.WhereDynamicHandle<M>(mWhere);

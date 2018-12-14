@@ -10,7 +10,7 @@ namespace MyDAL
     {
 
         /// <summary>
-        /// 深度复制 (值类型/包装类型/引用类型/序列化/非序列化/标识序列化/非标识序列化,皆可深度复制)
+        /// 深度复制 [[只要你能点出来这个方法,就可以对该对象进行深度复制~~]]
         /// </summary>
         public static T DeepClone<T>(this T obj)
         {

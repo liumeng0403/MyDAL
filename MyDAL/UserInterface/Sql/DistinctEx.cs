@@ -1,4 +1,5 @@
 ﻿using MyDAL.Core.Enums;
+using MyDAL.UserFacade.Join;
 using MyDAL.UserFacade.Query;
 
 namespace MyDAL
@@ -17,6 +18,12 @@ namespace MyDAL
         {
             where.DistinctHandle();
             return new DistinctQ<M>(where.DC);
+        }
+
+        public static DistinctX Distinct(this WhereX where)
+        {
+            where.DistinctHandle();
+            return new DistinctX(where.DC);
         }
 
         public static DistinctQ<M> Distinct<M>(this OrderByQ<M> orderBy)

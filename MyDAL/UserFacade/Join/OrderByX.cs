@@ -44,10 +44,9 @@ namespace MyDAL.UserFacade.Join
         /// <summary>
         /// 多表多条数据查询
         /// </summary>
-        public async Task<List<VM>> ListAsync<VM>(Expression<Func<VM>> columnMapFunc)
-            where VM:class
+        public async Task<List<T>> ListAsync<T>(Expression<Func<T>> columnMapFunc)
         {
-            return await new ListXImpl(DC).ListAsync<VM>(columnMapFunc);
+            return await new ListXImpl(DC).ListAsync(columnMapFunc);
         }
         /// <summary>
         /// 多表多条数据查询
