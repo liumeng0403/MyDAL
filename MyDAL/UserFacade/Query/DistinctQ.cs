@@ -97,25 +97,23 @@ namespace MyDAL.UserFacade.Query
         }
 
         /// <summary>
-        /// 单表单条数据查询
+        /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<M> FirstOrDefaultAsync()
         {
             return await new FirstOrDefaultImpl<M>(DC).FirstOrDefaultAsync();
         }
         /// <summary>
-        /// 单表单条数据查询
+        /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        /// <typeparam name="VM">ViewModel</typeparam>
         public async Task<VM> FirstOrDefaultAsync<VM>()
             where VM : class
         {
             return await new FirstOrDefaultImpl<M>(DC).FirstOrDefaultAsync<VM>();
         }
         /// <summary>
-        /// 单表单条数据查询
+        /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        /// <typeparam name="VM">ViewModel</typeparam>
         public async Task<T> FirstOrDefaultAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
             return await new FirstOrDefaultImpl<M>(DC).FirstOrDefaultAsync<T>(columnMapFunc);

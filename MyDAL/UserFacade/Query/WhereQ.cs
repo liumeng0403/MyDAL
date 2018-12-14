@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Query
 {
     public sealed class WhereQ<M>
-        : Operator, IExist, IFirstOrDefault<M>, Interfaces.IList<M>, IPagingList<M>, IPagingListO<M>, ICount<M>,ITop<M>,ISum<M>
+        : Operator, IExist, IFirstOrDefault<M>, Interfaces.IList<M>, IPagingList<M>, IPagingListO<M>, ICount<M>, ITop<M>, ISum<M>
         where M : class
     {
         internal WhereQ(Context dc)
@@ -49,25 +49,23 @@ namespace MyDAL.UserFacade.Query
         }
 
         /// <summary>
-        /// 单表单条数据查询
+        /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<M> FirstOrDefaultAsync()
         {
             return await new FirstOrDefaultImpl<M>(DC).FirstOrDefaultAsync();
         }
         /// <summary>
-        /// 单表单条数据查询
+        /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        /// <typeparam name="VM">ViewModel</typeparam>
         public async Task<VM> FirstOrDefaultAsync<VM>()
-            where VM:class
+            where VM : class
         {
             return await new FirstOrDefaultImpl<M>(DC).FirstOrDefaultAsync<VM>();
         }
         /// <summary>
-        /// 单表单条数据查询
+        /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        /// <typeparam name="VM">ViewModel</typeparam>
         public async Task<T> FirstOrDefaultAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
             return await new FirstOrDefaultImpl<M>(DC).FirstOrDefaultAsync<T>(columnMapFunc);
@@ -85,7 +83,7 @@ namespace MyDAL.UserFacade.Query
         /// </summary>
         /// <typeparam name="VM">ViewModel</typeparam>
         public async Task<List<VM>> ListAsync<VM>()
-            where VM:class
+            where VM : class
         {
             return await new ListImpl<M>(DC).ListAsync<VM>();
         }
@@ -106,7 +104,7 @@ namespace MyDAL.UserFacade.Query
         /// <summary>
         /// 单表多条数据查询
         /// </summary>
-        public async Task<List<VM>> ListAsync<VM>(int topCount) 
+        public async Task<List<VM>> ListAsync<VM>(int topCount)
             where VM : class
         {
             return await new ListImpl<M>(DC).ListAsync<VM>(topCount);
@@ -114,7 +112,7 @@ namespace MyDAL.UserFacade.Query
         /// <summary>
         /// 单表多条数据查询
         /// </summary>
-        public async Task<List<T>> ListAsync<T>(int topCount, Expression<Func<M, T>> columnMapFunc) 
+        public async Task<List<T>> ListAsync<T>(int topCount, Expression<Func<M, T>> columnMapFunc)
         {
             return await new ListImpl<M>(DC).ListAsync(topCount, columnMapFunc);
         }
@@ -135,7 +133,7 @@ namespace MyDAL.UserFacade.Query
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
         public async Task<PagingList<VM>> PagingListAsync<VM>(int pageIndex, int pageSize)
-            where VM:class
+            where VM : class
         {
             return await new PagingListImpl<M>(DC).PagingListAsync<VM>(pageIndex, pageSize);
         }
@@ -166,7 +164,7 @@ namespace MyDAL.UserFacade.Query
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
         public async Task<PagingList<VM>> PagingListAsync<VM>(PagingQueryOption option)
-            where VM:class
+            where VM : class
         {
             return await new PagingListOImpl<M>(DC).PagingListAsync<VM>(option);
         }

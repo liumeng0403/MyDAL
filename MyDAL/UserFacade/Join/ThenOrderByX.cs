@@ -18,7 +18,7 @@ namespace MyDAL.UserFacade.Join
         }
 
         /// <summary>
-        /// 多表单条数据查询
+        /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<M> FirstOrDefaultAsync<M>()
             where M:class
@@ -26,9 +26,8 @@ namespace MyDAL.UserFacade.Join
             return await new FirstOrDefaultXImpl(DC).FirstOrDefaultAsync<M>();
         }
         /// <summary>
-        /// 多表单条数据查询
+        /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        /// <typeparam name="VM">ViewModel</typeparam>
         public async Task<T> FirstOrDefaultAsync<T>(Expression<Func<T>> columnMapFunc)
         {
             return await new FirstOrDefaultXImpl(DC).FirstOrDefaultAsync(columnMapFunc);
