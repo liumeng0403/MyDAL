@@ -37,3 +37,5 @@
 /MyDAL.Test.QueryParallel/obj/
 /MyDAL.Test.JoinQuerySingleColumn/bin/
 /MyDAL.Test.JoinQuerySingleColumn/obj/
+/MyDAL.Test.NetCore/bin/
+/MyDAL.Test.NetCore/obj/

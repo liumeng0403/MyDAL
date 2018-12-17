@@ -15,7 +15,7 @@ namespace MyDAL.Test.QueryM
             var xx3 = "";
 
             var res3 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .PagingAllListAsync(1, 10);
             Assert.True(res3.TotalCount == 28620);
 
