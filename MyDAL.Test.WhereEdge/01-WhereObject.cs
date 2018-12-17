@@ -24,7 +24,7 @@ namespace MyDAL.Test.WhereEdge
 
             // where object
             var res1 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(new
                 {
                     Id = Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"),
@@ -46,7 +46,7 @@ namespace MyDAL.Test.WhereEdge
             option.Name = "樊士芹";
             // where method
             var res2 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(option.GetCondition())
                 .PagingListAsync(option);
             Assert.True(res2.TotalCount == 1);
@@ -67,7 +67,7 @@ namespace MyDAL.Test.WhereEdge
             };
             // where method -- option orderby 
             var res3 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(option.GetCondition())
                 .PagingListAsync<AgentVM>(option);
             Assert.True(res3.TotalCount == 1);
@@ -80,7 +80,7 @@ namespace MyDAL.Test.WhereEdge
 
             // where object --> no where
             var res4 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(new
                 {
                     //Id = Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"),
@@ -94,7 +94,7 @@ namespace MyDAL.Test.WhereEdge
 
             // no where --> and or
             var res41 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(new
                 {
                     //Id = Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"),
@@ -110,7 +110,7 @@ namespace MyDAL.Test.WhereEdge
 
             // no where --> or and 
             var res42 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(new
                 {
                     //Id = Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"),
@@ -134,21 +134,21 @@ namespace MyDAL.Test.WhereEdge
             };
             // where method -- option orderby 
             var res5 = await Conn
-                .Selecter<Product>()
+                .Queryer<Product>()
                 .Where(option2.GetCondition())
                 .PagingListAsync(option2);
             Assert.True(res5.Data.Count == 4);
 
             option2.VipProduct = false;
             var res51 = await Conn
-                .Selecter<Product>()
+                .Queryer<Product>()
                 .Where(option2.GetCondition())
                 .PagingListAsync(option2);
             Assert.True(res51.Data.Count == 4);
 
             option2.VipProduct = true;
             var res52 = await Conn
-                .Selecter<Product>()
+                .Queryer<Product>()
                 .Where(option2.GetCondition())
                 .PagingListAsync(option2);
             Assert.True(res52.Data.Count == 0);

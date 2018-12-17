@@ -20,7 +20,9 @@ namespace Yunyong.DataExchange.Impls
 
         public async Task<PagingList<M>> PagingListAsync(int pageIndex, int pageSize)
         {
-            return await PagingListAsyncHandle<M>(pageIndex, pageSize, UiMethodEnum.PagingListAsync);
+            DC.PageIndex = pageIndex;
+            DC.PageSize = pageSize;
+            return await PagingListAsyncHandle<M>(UiMethodEnum.PagingListAsync, false);
         }
 
         public async Task<PagingList<VM>> PagingListAsync<VM>(int pageIndex, int pageSize)
@@ -59,8 +61,10 @@ namespace Yunyong.DataExchange.Impls
 
         public async Task<PagingList<M>> PagingListAsync(PagingQueryOption option)
         {
+            DC.PageIndex = option.PageIndex;
+            DC.PageSize = option.PageSize;
             OrderByOptionHandle(option, typeof(M).FullName);
-            return await PagingListAsyncHandle<M>(option.PageIndex, option.PageSize, UiMethodEnum.PagingListAsync);
+            return await PagingListAsyncHandle<M>(UiMethodEnum.PagingListAsync, false);
         }
 
         public async Task<PagingList<VM>> PagingListAsync<VM>(PagingQueryOption option)
@@ -102,15 +106,26 @@ namespace Yunyong.DataExchange.Impls
         public async Task<PagingList<M>> PagingListAsync<M>(int pageIndex, int pageSize)
             where M : class
         {
+            DC.PageIndex = pageIndex;
+            DC.PageSize = pageSize;
             SelectMHandle<M>();
-            return await PagingListAsyncHandle<M>(pageIndex, pageSize, UiMethodEnum.PagingListAsync);
+            return await PagingListAsyncHandle<M>(UiMethodEnum.PagingListAsync, false);
         }
 
-        public async Task<PagingList<VM>> PagingListAsync<VM>(int pageIndex, int pageSize, Expression<Func<VM>> func)
-            where VM : class
+        public async Task<PagingList<T>> PagingListAsync<T>(int pageIndex, int pageSize, Expression<Func<T>> columnMapFunc)
         {
-            SelectMHandle(func);
-            return await PagingListAsyncHandle<VM>(pageIndex, pageSize, UiMethodEnum.PagingListAsync);
+            DC.PageIndex = pageIndex;
+            DC.PageSize = pageSize;
+            var single = typeof(T).IsSingleColumn();
+            if (single)
+            {
+                SingleColumnHandle(columnMapFunc);
+            }
+            else
+            {
+                SelectMHandle(columnMapFunc);
+            }
+            return await PagingListAsyncHandle<T>(UiMethodEnum.PagingListAsync, single);
         }
     }
 
@@ -125,17 +140,28 @@ namespace Yunyong.DataExchange.Impls
         public async Task<PagingList<M>> PagingListAsync<M>(PagingQueryOption option)
             where M : class
         {
+            DC.PageIndex = option.PageIndex;
+            DC.PageSize = option.PageSize;
             SelectMHandle<M>();
             OrderByOptionHandle(option, typeof(M).FullName);
-            return await PagingListAsyncHandle<M>(option.PageIndex, option.PageSize, UiMethodEnum.PagingListAsync);
+            return await PagingListAsyncHandle<M>(UiMethodEnum.PagingListAsync, false);
         }
 
-        public async Task<PagingList<VM>> PagingListAsync<VM>(PagingQueryOption option, Expression<Func<VM>> func)
-            where VM : class
+        public async Task<PagingList<T>> PagingListAsync<T>(PagingQueryOption option, Expression<Func<T>> columnMapFunc)
         {
-            SelectMHandle(func);
+            DC.PageIndex = option.PageIndex;
+            DC.PageSize = option.PageSize;
+            var single = typeof(T).IsSingleColumn();
+            if (single)
+            {
+                SingleColumnHandle(columnMapFunc);
+            }
+            else
+            {
+                SelectMHandle(columnMapFunc);
+            }
             OrderByOptionHandle(option, string.Empty);
-            return await PagingListAsyncHandle<VM>(option.PageIndex, option.PageSize, UiMethodEnum.PagingListAsync);
+            return await PagingListAsyncHandle<T>(UiMethodEnum.PagingListAsync, single);
         }
     }
 }

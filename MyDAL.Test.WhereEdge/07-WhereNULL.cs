@@ -12,7 +12,7 @@ namespace MyDAL.Test.WhereEdge
         public async Task<Agent> PreData3()
         {
             var m = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => it.Id == Guid.Parse("0001c614-dbef-4335-94b4-01654433a215"))
                 .FirstOrDefaultAsync();
 
@@ -43,7 +43,7 @@ namespace MyDAL.Test.WhereEdge
 
             // is null 
             var res1 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => it.ActiveOrderId == null)
                 .ListAsync();
             Assert.True(res1.Count == 28066);
@@ -56,7 +56,7 @@ namespace MyDAL.Test.WhereEdge
 
             // is not null 
             var res2 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => it.ActiveOrderId != null)
                 .ListAsync();
             Assert.True(res2.Count == 554);
@@ -72,7 +72,7 @@ namespace MyDAL.Test.WhereEdge
             try
             {
                 var res3 = await Conn
-                    .Selecter<Agent>()
+                    .Queryer<Agent>()
                     .Where(it => it.AgentLevel == WhereTest.AgentLevelNull)
                     .ListAsync();
             }
@@ -90,7 +90,7 @@ namespace MyDAL.Test.WhereEdge
 
             // is not null 
             var res4 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => it.ActivedOn != null && it.ActiveOrderId != null && it.CrmUserId == null)
                 .ListAsync();
             Assert.True(res4.Count == 554);
@@ -103,7 +103,7 @@ namespace MyDAL.Test.WhereEdge
 
             // is not null 
             var res5 = await Conn
-                .Joiner<Agent,AgentInventoryRecord>(out var a5,out var r5)
+                .Queryer<Agent,AgentInventoryRecord>(out var a5,out var r5)
                 .From(()=>a5)
                     .LeftJoin(()=>r5)
                         .On(()=>a5.Id==r5.AgentId)
@@ -119,7 +119,7 @@ namespace MyDAL.Test.WhereEdge
 
             // is not null 
             var res6 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var a6, out var r6)
+                .Queryer<Agent, AgentInventoryRecord>(out var a6, out var r6)
                 .From(() => a6)
                     .LeftJoin(() => r6)
                         .On(() => a6.Id == r6.AgentId)

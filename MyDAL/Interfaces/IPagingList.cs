@@ -11,7 +11,7 @@ namespace Yunyong.DataExchange.Interfaces
         Task<PagingList<M>> PagingListAsync(int pageIndex, int pageSize);
         Task<PagingList<VM>> PagingListAsync<VM>(int pageIndex, int pageSize)
             where VM : class;
-        Task<PagingList<T>> PagingListAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> func);
+        Task<PagingList<T>> PagingListAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc);
 
     }
 
@@ -21,7 +21,7 @@ namespace Yunyong.DataExchange.Interfaces
         Task<PagingList<M>> PagingListAsync(PagingQueryOption option);
         Task<PagingList<VM>> PagingListAsync<VM>(PagingQueryOption option)
             where VM : class;
-        Task<PagingList<T>> PagingListAsync<T>(PagingQueryOption option, Expression<Func<M, T>> func);
+        Task<PagingList<T>> PagingListAsync<T>(PagingQueryOption option, Expression<Func<M, T>> columnMapFunc);
 
     }
 
@@ -29,17 +29,13 @@ namespace Yunyong.DataExchange.Interfaces
     {
         Task<PagingList<M>> PagingListAsync<M>(int pageIndex, int pageSize)
             where M : class;
-        Task<PagingList<VM>> PagingListAsync<VM>(int pageIndex, int pageSize, Expression<Func<VM>> func)
-            where VM : class;
-
+        Task<PagingList<T>> PagingListAsync<T>(int pageIndex, int pageSize, Expression<Func<T>> columnMapFunc);
     }
 
     internal interface IPagingListXO
     {
         Task<PagingList<M>> PagingListAsync<M>(PagingQueryOption option)
             where M : class;
-        Task<PagingList<VM>> PagingListAsync<VM>(PagingQueryOption option, Expression<Func<VM>> func)
-            where VM : class;
-
+        Task<PagingList<T>> PagingListAsync<T>(PagingQueryOption option, Expression<Func<T>> columnMapFunc);
     }
 }
