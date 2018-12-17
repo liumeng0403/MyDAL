@@ -32,15 +32,21 @@ namespace MyDAL.Core.Bases
 
         /**********************************************************************************************************/
 
-        protected async Task<PagingList<M>> PagingListAsyncHandle<M>(int pageIndex, int pageSize, UiMethodEnum sqlType)
-            where M : class
+        protected async Task<PagingList<T>> PagingListAsyncHandle<T>(UiMethodEnum sqlType, bool single)
         {
-            var result = new PagingList<M>();
-            DC.PageIndex = result.PageIndex = pageIndex;
-            DC.PageSize = result.PageSize = pageSize;
+            var result = new PagingList<T>();
+            result.PageIndex = DC.PageIndex.Value;
+            result.PageSize = DC.PageSize.Value;
             PreExecuteHandle(sqlType);
             result.TotalCount = await DC.DS.ExecuteScalarAsync<int>();
-            result.Data = await DC.DS.ExecuteReaderMultiRowAsync<M>();
+            if (single)
+            {
+                result.Data = await DC.DS.ExecuteReaderSingleColumnAsync<T>();
+            }
+            else
+            {
+                result.Data = await DC.DS.ExecuteReaderMultiRowAsync<T>();
+            }
             return result;
         }
         protected async Task<PagingList<T>> PagingListAsyncHandle<M, T>(UiMethodEnum sqlType, bool single, Func<M, T> mapFunc)

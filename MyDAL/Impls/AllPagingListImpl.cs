@@ -19,7 +19,9 @@ namespace MyDAL.Impls
 
         public async Task<PagingList<M>> PagingAllListAsync(int pageIndex, int pageSize)
         {
-            return await PagingListAsyncHandle<M>(pageIndex, pageSize, UiMethodEnum.PagingAllListAsync);
+            DC.PageIndex = pageIndex;
+            DC.PageSize = pageSize;
+            return await PagingListAsyncHandle<M>(UiMethodEnum.PagingAllListAsync,false);
         }
 
         public async Task<PagingList<VM>> PagingAllListAsync<VM>(int pageIndex, int pageSize)
