@@ -1,18 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>1.1.44</Version>
+    <Version>1.2.0</Version>
     <Authors>Meng.NET</Authors>
     <Company></Company>
     <Product>MyDAL</Product>
     <Description>The fastest and best ORM lite on .NET Core for MySQL ! 
         -- 友好, 轻量, 极致性能, 无任何第三方依赖, 持续演进~~</Description>
-    <Copyright>2018 myself</Copyright>
+    <Copyright>2018 Meng.NET</Copyright>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <PackageProjectUrl>https://www.cnblogs.com/Meng-NET/p/8963476.html</PackageProjectUrl>
     <RepositoryUrl>https://github.com/liumeng0403/MyDAL</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>my,mydal,easydal.exchange,meng.net</PackageTags>
+    <PackageTags>MyDAL,EasyDAL.Exchange,Yunyong.DataExchange</PackageTags>
     <PackageReleaseNotes>由一个开发项目中的 idea 演变,产生与实现!
        -- https://www.cnblogs.com/Meng-NET/p/8963476.html</PackageReleaseNotes>
     <ApplicationIcon>Others\favicon.ico</ApplicationIcon>
