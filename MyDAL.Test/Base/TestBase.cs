@@ -5,6 +5,7 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using Yunyong.DataExchange;
 
 namespace MyDAL.Test
@@ -23,7 +24,7 @@ namespace MyDAL.Test
                     AgentLevelXX = AgentLevel.DistiAgent,
                     AgentLevelNull = null,
                     ContainStr = "~00-d-3-1-",
-                    ContainStr2= "~00-d-3-",
+                    ContainStr2 = "~00-d-3-",
                     In_List_枚举 = new List<AgentLevel?>
                     {
                         AgentLevel.CityAgent,
@@ -65,46 +66,31 @@ namespace MyDAL.Test
 
         protected IDbConnection Conn
         {
-            /*
-             * CREATE DATABASE `MyDAL_TestDB`;
-             */
             get
             {
-                return GetOpenConnection("MyDAL_TestDB");
+                return GetMySQLConnection();  // MySql 5.7.21
+                //return GetTSQLConnection();  // SQL Server 2014
             }
         }
-        
-        //protected IDbConnection Conn3
-        //{
-        //    /*
-        //     * CREATE DATABASE `EasyDal_Exchange2` 
-        //     */
-        //    get { return GetOpenConnection3("EasyDal_Exchange2"); }
-        //}
 
-        private static IDbConnection GetOpenConnection(string name)
+        private static IDbConnection GetMySQLConnection()
         {
-            /*
-             * 
-            */
-            return 
-                new MySqlConnection($"Server=localhost; Database={name}; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;")
+            // Nuget : Package : MySql.Data
+            return
+                new MySqlConnection("Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;")
                 .OpenDebug()  // 全局 debug 配置, 生产环境不要开启 
-                //.OpenDB()  // 建议 每次新实例并打开,以获得更好的性能体验, 但是 用完要注意手动释放, 防止 连接池 资源耗尽!!!
+                              //.OpenDB()  // 建议 每次新实例并打开,以获得更好的性能体验, 但是 用完要注意手动释放, 防止 连接池 资源耗尽!!!
                 ;
         }
-        //private static IDbConnection GetOpenConnection3(string name)
-        //{
-        //    /*
-        //     * 
-        //    */
-        //    var conn =
-        //        new MySqlConnection($"Server=localhost; Database={name}; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;")
-        //        .OpenCodeFirst("MyDAL.Test.Entities.EasyDal_Exchange")  // 开启 CodeFirst 模式
-        //        .OpenDebug()  // 全局 debug 配置, 生产环境不要开启 
-        //        .OpenDB();  // 建议 每次新实例并打开,以获得更好的性能体验
-        //    return conn;
-        //}
+        private static IDbConnection GetTSQLConnection()
+        {
+            // Nuget : Package : System.Data.SqlClient
+            return
+                new SqlConnection("Data Source=.\\SQLEXPRESS;Initial Catalog=MyDAL_TestDB;User Id=sa;Password=1010;")
+                .OpenDebug()  // 全局 debug 配置, 生产环境不要开启 
+                              //.OpenDB()  // 建议 每次新实例并打开,以获得更好的性能体验, 但是 用完要注意手动释放, 防止 连接池 资源耗尽!!!
+                ;
+        }
 
     }
 

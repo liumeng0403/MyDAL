@@ -16,7 +16,7 @@ namespace Yunyong.DataExchange.Core.Common
                 }
                 catch (Exception ex)
                 {
-                    Thread.Sleep(50);
+                    Thread.Sleep(10);
                     if (i < XConfig.CacheRetry)
                     {
                         continue;

@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using Xunit;
 using Yunyong.DataExchange;
 
-namespace MyDAL.Test.QuickAPI
+namespace MyDAL.Test.ShortcutAPI
 {
-    public class _08_ExistAsync:TestBase
+    public class _07_ExistAsync:TestBase
     {
         [Fact]
         public async Task test()

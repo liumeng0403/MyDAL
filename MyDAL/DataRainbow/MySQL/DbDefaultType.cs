@@ -5,7 +5,7 @@ using Yunyong.DataExchange.Core.Enums;
 namespace Yunyong.DataExchange.DataRainbow.MySQL
 {
     /*
-     * CREATE TABLE `mysqlcloumntype` (
+     * CREATE TABLE `MySqlCloumnType` (
      * `Bool` bit(1) NOT NULL,
      * `BoolNull` bit(1) DEFAULT NULL,
      * `Byte` tinyint(3) unsigned NOT NULL,
@@ -44,8 +44,8 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
      * PRIMARY KEY (`Guid`)
      * ) ENGINE=InnoDB DEFAULT CHARSET=utf8
      */
-    [Table("MySqlCodeFirstCloumnType")]
-    internal class MySqlCodeFirstCloumnType
+    [Table("MySqlCloumnType")]
+    internal class DbDefaultType
     {
         public bool Bool { get; set; }  // bit(1) NOT NULL
         public bool? BoolNull { get; set; }  // bit(1) DEFAULT NULL

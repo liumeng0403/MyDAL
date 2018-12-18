@@ -448,12 +448,13 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
             if (DC.Crud == CrudTypeEnum.Join)
             {
                 var dic = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.From);
-                Backquote(X); X.Append(dic.TableOne); Backquote(X); As(X); X.Append(dic.TableAliasOne);
+                TableX(dic.TableOne, X);
+                As(X); X.Append(dic.TableAliasOne);
                 Join();
             }
             else
             {
-                Backquote(X); X.Append(DC.SC.GetTableName(DC.SC.GetModelKey(DC.SingleOpName))); Backquote(X);
+                TableX(DC.SC.GetTableName(DC.SC.GetModelKey(DC.SingleOpName)), X);
             }
         }
         private void Join()
@@ -474,7 +475,8 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
                         X.Append(item.TableAliasOne); Dot(X);
                         Column(item.ColumnOne, X);
                         X.Append(Compare(item.Compare));
-                        X.Append(item.TableAliasTwo); Dot(X); Backquote(X); X.Append(item.ColumnTwo); Backquote(X);
+                        X.Append(item.TableAliasTwo); Dot(X);
+                        Column(item.ColumnTwo, X);
                         break;
                 }
             }
@@ -535,11 +537,13 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
                 if (DC.Crud == CrudTypeEnum.Join)
                 {
                     X.Append(dic.TableAliasOne); Dot(X);
-                    Backquote(X); X.Append(props.First(it => "CreatedOn".Equals(it.Name, StringComparison.OrdinalIgnoreCase)).Name); Backquote(X); Spacing(X); X.Append("desc");
+                    Column("CreatedOn", X);
+                    Spacing(X); X.Append("desc");
                 }
                 else
                 {
-                    Backquote(X); X.Append(props.First(it => "CreatedOn".Equals(it.Name, StringComparison.OrdinalIgnoreCase)).Name); Backquote(X); Spacing(X); X.Append("desc");
+                    Column("CreatedOn", X);
+                    Spacing(X); X.Append("desc");
                 }
             }
             else if (cols.Any(it => "PRI".Equals(it.KeyType, StringComparison.OrdinalIgnoreCase)))
@@ -567,11 +571,14 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
             {
                 if (DC.Crud == CrudTypeEnum.Join)
                 {
-                    X.Append(dic.TableAliasOne); Dot(X); Backquote(X); X.Append(props.First().Name); Backquote(X); Spacing(X); X.Append("desc");
+                    X.Append(dic.TableAliasOne); Dot(X);
+                    Column(props.First().Name, X);
+                    Spacing(X); X.Append("desc");
                 }
                 else
                 {
-                    Backquote(X); X.Append(props.First().Name); Backquote(X); Spacing(X); X.Append("desc");
+                    Column(props.First().Name, X);
+                    Spacing(X); X.Append("desc");
                 }
             }
         }

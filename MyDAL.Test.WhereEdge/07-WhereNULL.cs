@@ -79,7 +79,7 @@ namespace MyDAL.Test.WhereEdge
             catch (Exception ex)
             {
                 var tuple3 = (XDebug.SQL, XDebug.Parameters);
-                Assert.True(ex.Message.Equals("[[Convert(value(MyDAL.Test.WhereEdge._07_WhereNULL).WhereTest.AgentLevelNull, Nullable`1)]] 中,传入的 SQL 筛选条件为 Null !!!", StringComparison.OrdinalIgnoreCase));
+                Assert.Equal("[[Convert(value(MyDAL.Test.WhereEdge._07_WhereNULL).WhereTest.AgentLevelNull, Nullable`1)]] 中,传入的 SQL 筛选条件为 Null !!!", ex.Message, ignoreCase: true);
             }
 
             await ClearData3(m);

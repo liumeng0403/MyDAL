@@ -15,7 +15,7 @@ namespace MyDAL.Test.QuerySingleColumn
             var xx1 = "";
 
             var res1 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
                 .ListAsync(25, it=>it.Name);
             Assert.True(res1.Count == 25);
@@ -27,7 +27,7 @@ namespace MyDAL.Test.QuerySingleColumn
             var xx2 = "";
 
             var res2 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
                 .ListAsync(it => it.Name);
             Assert.True(res2.Count == 555);
