@@ -12,17 +12,17 @@ namespace MyDAL.Test.WhereEdge
         public async Task test()
         {
 
-            var xx1 = "";
+            var xx = string.Empty;
 
             // where 1=1
             var res1 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => false) // true  false
                 .ListAsync();
             Assert.True(res1.Count == 0);
 
             var res11 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => true) // true  false
                 .ListAsync();
             Assert.True(res11.Count == 28620);
@@ -31,24 +31,24 @@ namespace MyDAL.Test.WhereEdge
 
             /********************************************************************************************************************************************/
 
-            var xx2 = "";
+            xx = string.Empty;
 
             var res2 = await Conn
-                .Selecter<AddressInfo>()
+                .Queryer<AddressInfo>()
                 .Where(it => it.IsDefault)  //  false  none(true)  
                 .ListAsync();
             Assert.True(res2.Count == 5);
             Assert.True(res2.First().IsDefault);
 
             var res21 = await Conn
-                .Selecter<AddressInfo>()
+                .Queryer<AddressInfo>()
                 .Where(it => it.IsDefault == true)  //  false  none(true)  
                 .ListAsync();
             Assert.True(res21.Count == 5);
             Assert.True(res21.First().IsDefault);
 
             var res22 = await Conn
-                .Selecter<AddressInfo>()
+                .Queryer<AddressInfo>()
                 .Where(it => it.IsDefault == false)  //  false  none(true)  
                 .ListAsync();
             Assert.True(res22.Count == 2);
@@ -58,11 +58,11 @@ namespace MyDAL.Test.WhereEdge
 
             /********************************************************************************************************************************************/
 
-            var xx3 = "";
+            xx = string.Empty;
 
             // where 1=1
             var res3 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var agent3, out var record3)
+                .Queryer<Agent, AgentInventoryRecord>(out var agent3, out var record3)
                 .From(() => agent3)
                     .InnerJoin(() => record3)
                         .On(() => agent3.Id == record3.AgentId)
@@ -71,7 +71,7 @@ namespace MyDAL.Test.WhereEdge
             Assert.True(res3.Count == 574);
 
             var res31 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var agent31, out var record31)
+                .Queryer<Agent, AgentInventoryRecord>(out var agent31, out var record31)
                 .From(() => agent31)
                     .InnerJoin(() => record31)
                         .On(() => agent31.Id == record31.AgentId)
@@ -83,10 +83,10 @@ namespace MyDAL.Test.WhereEdge
 
             /********************************************************************************************************************************************/
 
-            var xx4 = "";
+            xx = string.Empty;
 
             var res4 = await Conn
-                .Joiner<AddressInfo, AddressInfo>(out var address4, out var address44)
+                .Queryer<AddressInfo, AddressInfo>(out var address4, out var address44)
                 .From(() => address4)
                     .InnerJoin(() => address44)
                         .On(() => address4.Id == address44.Id)
@@ -96,7 +96,7 @@ namespace MyDAL.Test.WhereEdge
             Assert.True(res4.First().IsDefault);
 
             var res41 = await Conn
-                .Joiner<AddressInfo, AddressInfo>(out var address41, out var address411)
+                .Queryer<AddressInfo, AddressInfo>(out var address41, out var address411)
                 .From(() => address41)
                     .InnerJoin(() => address411)
                         .On(() => address41.Id == address411.Id)
@@ -106,7 +106,7 @@ namespace MyDAL.Test.WhereEdge
             Assert.True(res41.First().IsDefault);
 
             var res42 = await Conn
-                .Joiner<AddressInfo, AddressInfo>(out var address42, out var address421)
+                .Queryer<AddressInfo, AddressInfo>(out var address42, out var address421)
                 .From(() => address42)
                     .InnerJoin(() => address421)
                         .On(() => address42.Id == address421.Id)
@@ -123,7 +123,7 @@ namespace MyDAL.Test.WhereEdge
 
             var guid5 = Guid.Parse("08d6036c-66c8-7c2c-83b0-725f93ff8137");
             var res5 = await Conn
-                .Joiner<AddressInfo, AddressInfo>(out var address5, out var address55)
+                .Queryer<AddressInfo, AddressInfo>(out var address5, out var address55)
                 .From(() => address5)
                     .InnerJoin(() => address55)
                         .On(() => address5.Id == address55.Id)
@@ -133,7 +133,7 @@ namespace MyDAL.Test.WhereEdge
             Assert.True(res5.First().IsDefault);
 
             var res51 = await Conn
-                .Joiner<AddressInfo, AddressInfo>(out var address51, out var address511)
+                .Queryer<AddressInfo, AddressInfo>(out var address51, out var address511)
                 .From(() => address51)
                     .InnerJoin(() => address511)
                         .On(() => address51.Id == address511.Id)
@@ -144,7 +144,7 @@ namespace MyDAL.Test.WhereEdge
 
             var guid52 = Guid.Parse("6f390324-2c07-40cf-90ca-0165569461b1");
             var res52 = await Conn
-                .Joiner<AddressInfo, AddressInfo>(out var address52, out var address521)
+                .Queryer<AddressInfo, AddressInfo>(out var address52, out var address521)
                 .From(() => address52)
                     .InnerJoin(() => address521)
                         .On(() => address52.Id == address521.Id)
@@ -158,7 +158,7 @@ namespace MyDAL.Test.WhereEdge
 
             /********************************************************************************************************************************************/
 
-            var xx = "";
+            xx = string.Empty;
 
         }
     }

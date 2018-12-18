@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Xunit;
 
-namespace MyDAL.Test.QuickAPI
+namespace MyDAL.Test.ShortcutAPI
 {
     public class _09_CountAsync:TestBase
     {

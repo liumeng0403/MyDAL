@@ -4,7 +4,7 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace MyDAL.Test.QuickAPI
+namespace MyDAL.Test.ShortcutAPI
 {
     public class _01_FirstOrDefaultAsync:TestBase
     {

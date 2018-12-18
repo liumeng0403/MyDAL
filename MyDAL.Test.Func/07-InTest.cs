@@ -261,7 +261,7 @@ namespace MyDAL.Test.Func
             };
             // where in  --  variable  string[]  
             var res15 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => nameArray.Contains(it.Name))
                 .ListAsync();
 
@@ -273,7 +273,7 @@ namespace MyDAL.Test.Func
 
             // where in -- obj.prop string[]
             var res16 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => WhereTest.In_Array_String.Contains(it.Name))
                 .ListAsync();
 
@@ -286,7 +286,7 @@ namespace MyDAL.Test.Func
             StringArray = nameArray;
             // where in -- this.prop string[]
             var res17 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => StringArray.Contains(it.Name))
                 .ListAsync();
 
@@ -306,7 +306,7 @@ namespace MyDAL.Test.Func
 
             // where in -- int[]  init 
             var res18 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => new int[] { 5, 10 }.Contains(it.DirectorStarCount))
                 .ListAsync();
 
@@ -318,7 +318,7 @@ namespace MyDAL.Test.Func
 
             // where in -- long[] init
             var res19 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => new long[] { 5L, 10L }.Contains(it.DirectorStarCount))
                 .ListAsync();
 
@@ -330,7 +330,7 @@ namespace MyDAL.Test.Func
 
             // where in -- short[] init
             var res20 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => new short[] { 5, 10 }.Contains((short)(it.DirectorStarCount)))
                 .ListAsync();
 
@@ -346,7 +346,7 @@ namespace MyDAL.Test.Func
 
             // where in -- string[] init
             var res21 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => new string[] { "黄银凤", "刘建芬" }.Contains(it.Name))
                 .ListAsync();
             Assert.True(res21.Count == 2);
@@ -359,7 +359,7 @@ namespace MyDAL.Test.Func
 
             // where in -- enum[] init
             var res22 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => new AgentLevel?[] { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel))
                 .ListAsync();
             Assert.True(res22.Count == 555);
@@ -372,7 +372,7 @@ namespace MyDAL.Test.Func
 
             // where in -- enum[] init
             var res23 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var agent, out var record)
+                .Queryer<Agent, AgentInventoryRecord>(out var agent, out var record)
                 .From(() => agent)
                 .InnerJoin(() => record)
                 .On(() => agent.Id == record.AgentId)
@@ -390,7 +390,7 @@ namespace MyDAL.Test.Func
             var guid242 = Guid.Parse("004f4290-9576-43b9-903f-01654434da0f");
             // where in -- string[] init
             var res24 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => new string[] { "黄银凤", "刘建芬" }.Contains(it.Name) || new List<Guid> { guid241, guid242 }.Contains(it.Id))
                 .ListAsync();
             Assert.True(res24.Count == 4);
@@ -403,7 +403,7 @@ namespace MyDAL.Test.Func
             
             // where in -- string[] init
             var res25 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => new string[] {"刘建芬" }.Contains(it.Name))
                 .ListAsync();
             Assert.True(res25.Count == 1);
@@ -416,7 +416,7 @@ namespace MyDAL.Test.Func
 
             // where in -- string[] init
             var res26 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => new string[] { "刘建芬" }.Contains(it.Name) || new List<Guid> { guid241 }.Contains(it.Id))
                 .ListAsync();
             Assert.True(res26.Count == 2);
@@ -431,13 +431,13 @@ namespace MyDAL.Test.Func
             {
                 // where in -- string[] init
                 var res27 = await Conn
-                    .Selecter<Agent>()
+                    .Queryer<Agent>()
                     .Where(it => new List<Guid> { }.Contains(it.Id))
                     .ListAsync();
             }
             catch(Exception ex)
             {
-                Assert.True(ex.Message.Equals("【new List`1() {}.Contains(it.Id)】 中 集合为空!!!", StringComparison.OrdinalIgnoreCase));
+                Assert.Equal("【new List`1() {}.Contains(it.Id)】 中 集合为空!!!", ex.Message, ignoreCase: true);
             }
             
             /*******************************************************************************************************************/

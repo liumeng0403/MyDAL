@@ -5,9 +5,9 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace MyDAL.Test.QuickAPI
+namespace MyDAL.Test.ShortcutAPI
 {
-    public class _07_PagingListAsync:TestBase
+    public class _03_PagingListAsync:TestBase
     {
         [Fact]
         public async Task test()

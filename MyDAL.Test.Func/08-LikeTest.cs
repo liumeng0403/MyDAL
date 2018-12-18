@@ -123,7 +123,7 @@ namespace MyDAL.Test.Func
 
             // 无通配符 -- "陈" -- "%"+"陈"+"%"
             var res0 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => it.Name.Contains(LikeTest.无通配符))
                 .ListAsync();
             Assert.True(res0.Count == 1431);
@@ -134,7 +134,7 @@ namespace MyDAL.Test.Func
 
             // 百分号 -- "陈%" -- "陈%"
             var res5 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => it.Name.Contains(LikeTest.百分号))
                 .ListAsync();
             Assert.True(res5.Count == 1421);
@@ -145,7 +145,7 @@ namespace MyDAL.Test.Func
 
             // 下划线 -- "王_" -- "王_" 
             var res6 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => it.Name.Contains(LikeTest.下划线))
                 .ListAsync();
             Assert.True(res6.Count == 498);

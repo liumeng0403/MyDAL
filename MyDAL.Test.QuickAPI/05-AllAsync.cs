@@ -4,9 +4,9 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace MyDAL.Test.QuickAPI
+namespace MyDAL.Test.ShortcutAPI
 {
-    public class _10_AllAsync:TestBase
+    public class _05_AllAsync:TestBase
     {
         [Fact]
         public async Task test()
