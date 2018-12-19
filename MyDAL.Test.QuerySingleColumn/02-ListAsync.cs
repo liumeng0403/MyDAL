@@ -6,25 +6,25 @@ using Yunyong.DataExchange;
 
 namespace MyDAL.Test.QuerySingleColumn
 {
-    public class _02_ListAsync:TestBase
+    public class _02_ListAsync : TestBase
     {
         [Fact]
         public async Task test()
         {
 
-            var xx1 = "";
+            var xx = string.Empty;
 
             var res1 = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
-                .ListAsync(25, it=>it.Name);
+                .ListAsync(25, it => it.Name);
             Assert.True(res1.Count == 25);
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*******************************************************************************************************************************/
 
-            var xx2 = "";
+            xx = string.Empty;
 
             var res2 = await Conn
                 .Queryer<Agent>()
@@ -32,11 +32,11 @@ namespace MyDAL.Test.QuerySingleColumn
                 .ListAsync(it => it.Name);
             Assert.True(res2.Count == 555);
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*******************************************************************************************************************************/
 
-            var xx = "";
+            xx = string.Empty;
 
         }
     }

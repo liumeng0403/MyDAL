@@ -17,7 +17,7 @@ namespace MyDAL.Test.QueryM
 
             var res3 = await Conn
                 .Queryer<Agent>()
-                .PagingAllListAsync(1, 10);
+                .PagingAllAsync(1, 10);
             Assert.True(res3.TotalCount == 28620);
 
             var tuple3 = (XDebug.SQL, XDebug.Parameters);

@@ -47,4 +47,36 @@ namespace Yunyong.DataExchange.Impls
             }
         }
     }
+
+    internal class AllXImpl
+        : Impler, IAllX
+    {
+        public AllXImpl(Context dc) 
+            : base(dc)
+        {
+        }
+
+        public async Task<List<M>> AllAsync<M>() where M : class
+        {
+            SelectMHandle<M>();
+            PreExecuteHandle(UiMethodEnum.AllAsync);
+            return await DC.DS.ExecuteReaderMultiRowAsync<M>();
+        }
+
+        public async Task<List<T>> AllAsync<T>(Expression<Func<T>> columnMapFunc)
+        {
+            if (typeof(T).IsSingleColumn())
+            {
+                SingleColumnHandle(columnMapFunc);
+                PreExecuteHandle(UiMethodEnum.AllAsync);
+                return await DC.DS.ExecuteReaderSingleColumnAsync<T>();
+            }
+            else
+            {
+                SelectMHandle(columnMapFunc);
+                PreExecuteHandle(UiMethodEnum.AllAsync);
+                return await DC.DS.ExecuteReaderMultiRowAsync<T>();
+            }
+        }
+    }
 }

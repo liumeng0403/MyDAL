@@ -1,6 +1,6 @@
-namespace Yunyong.DataExchange
+﻿namespace Yunyong.DataExchange.DataRainbow.MySQL
 {
-    public enum DataTypeEnum
+    internal enum DbDataType
     {
         None,
 
@@ -153,7 +153,7 @@ namespace Yunyong.DataExchange
         /// 
         /// </summary>
         VarBinary,
-        
+
         /// <summary>
         /// [0,255]byte
         /// </summary>

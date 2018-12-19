@@ -1,11 +1,12 @@
 ﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+using MyDAL.Test.ViewModels;
 using System.Threading.Tasks;
 using Xunit;
 using Yunyong.DataExchange;
 
-namespace MyDAL.Test.QuerySingleColumn
+namespace MyDAL.Test.QueryVmColumn
 {
-    public class _04_AllPagingListAsync:TestBase
+    public class _04_PagingAllAsync : TestBase
     {
         [Fact]
         public async Task test()
@@ -13,8 +14,12 @@ namespace MyDAL.Test.QuerySingleColumn
             var xx1 = "";
 
             var res1 = await Conn
-                .Selecter<Agent>()
-                .PagingAllListAsync(1, 10, it => it.Id);
+                .Queryer<Agent>()
+                .PagingAllAsync(1, 10, it => new AgentVM
+                {
+                    XXXX = it.Name,
+                    YYYY = it.PathId
+                });
             Assert.True(res1.Data.Count == 10);
             Assert.True(res1.TotalCount == 28620);
 

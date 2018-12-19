@@ -11,7 +11,7 @@ using Yunyong.Core;
 namespace Yunyong.DataExchange.UserFacade.Join
 {
     public sealed class DistinctX
-        : Operator, ITopX, IFirstOrDefaultX, Yunyong.DataExchange.Interfaces.IListX, IPagingListX, IPagingListXO
+        : Operator, ITopX, IFirstOrDefaultX, Interfaces.IListX, IPagingListX, IPagingListXO,IAllX
     {
         internal DistinctX(Context dc)
             : base(dc)
@@ -122,6 +122,15 @@ namespace Yunyong.DataExchange.UserFacade.Join
         public async Task<PagingList<T>> PagingListAsync<T>(PagingQueryOption option, Expression<Func<T>> columnMapFunc)
         {
             return await new PagingListXOImpl(DC).PagingListAsync(option, columnMapFunc);
+        }
+
+        public async Task<List<M>> AllAsync<M>() where M : class
+        {
+            return await new AllXImpl(DC).AllAsync<M>();
+        }
+        public async Task<List<T>> AllAsync<T>(Expression<Func<T>> columnMapFunc)
+        {
+            return await new AllXImpl(DC).AllAsync(columnMapFunc);
         }
 
     }

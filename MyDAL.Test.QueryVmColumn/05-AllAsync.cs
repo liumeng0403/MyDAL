@@ -14,7 +14,7 @@ namespace MyDAL.Test.QueryVmColumn
             var xx1 = "";
 
             var res1 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .AllAsync<AgentVM>(it => new AgentVM
                 {
                     XXXX=it.Name,

@@ -1,6 +1,4 @@
-﻿using MyDAL.Test;
-
-namespace MyDAL.Test.NetCore
+﻿namespace MyDAL.Test.NetCore
 {
     public class NetCore_2_1
     {
@@ -38,11 +36,41 @@ namespace MyDAL.Test.NetCore
             // QueryVmColumn
             //
             await new QueryVmColumn._01_FirstOrDefaultAsync().test();
-            //await new QueryVmColumn.
-            //await new QueryVmColumn.
-            //await new QueryVmColumn.
-            //await new QueryVmColumn.
-            //await new QueryVmColumn.
+            await new QueryVmColumn._02_ListAsync().test();
+            await new QueryVmColumn._03_PagingListAsync().test();
+            await new QueryVmColumn._04_PagingAllAsync().test();
+            await new QueryVmColumn._05_AllAsync().test();
+            await new QueryVmColumn._06_TopAsync().test();
+
+            // 
+            // QueryVM
+            //
+            await new QueryVM._02_ListAsync().test();
+            await new QueryVM._03_PagingListAsync().test();
+            await new QueryVM._04_PagingAllAsync().test();
+            await new QueryVM._05_AllAsync().test();
+            await new QueryVM._06_TopAsync().test();
+
+            //
+            // QuerySingleColumn
+            //
+            await new QuerySingleColumn._01_FirstOrDefaultAsync().test();
+            await new QuerySingleColumn._02_ListAsync().test();
+            await new QuerySingleColumn._03_PagingListAsync().test();
+            await new QuerySingleColumn._04_PagingAllAsync().test();
+            await new QuerySingleColumn._05_AllAsync().test();
+            await new QuerySingleColumn._06_TopAsync().test();
+
+            //
+            // QueryM
+            //
+            //await new QueryM.
+            //await new QueryM.
+            //await new QueryM.
+            //await new QueryM.
+            //await new QueryM.
+            //await new QueryM.
+
 
         }
     }

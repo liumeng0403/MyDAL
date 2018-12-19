@@ -1,6 +1,6 @@
-namespace Yunyong.DataExchange
+namespace Yunyong.DataExchange.DataRainbow.MySQL
 {
-    public enum KeyTypeEnum
+    internal enum DbKeyType
     {
         None,
 

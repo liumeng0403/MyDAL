@@ -6,7 +6,7 @@ using Yunyong.DataExchange;
 
 namespace MyDAL.Test.QueryM
 {
-    public class _01_FirstOrDefaultAsync:TestBase
+    public class _01_FirstOrDefaultAsync : TestBase
     {
         [Fact]
         public async Task test()
@@ -16,7 +16,7 @@ namespace MyDAL.Test.QueryM
 
             /****************************************************************************************************************************************/
 
-            var xx1 = "";
+            var xx = string.Empty;
 
             //  == Guid
             var res1 = await Conn
@@ -25,7 +25,7 @@ namespace MyDAL.Test.QueryM
                 .FirstOrDefaultAsync();
             Assert.NotNull(res1);
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters);
+            var tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             var resR1 = await Conn
                 .Queryer<BodyFitRecord>()
@@ -34,11 +34,11 @@ namespace MyDAL.Test.QueryM
             Assert.NotNull(resR1);
             Assert.True(res1.Id == resR1.Id);
 
-            var tupleR1 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /****************************************************************************************************************************************/
 
-            var xx2 = "";
+            xx = string.Empty;
 
             // == DateTime
             var res2 = await Conn
@@ -47,7 +47,7 @@ namespace MyDAL.Test.QueryM
                 .FirstOrDefaultAsync();
             Assert.NotNull(res2);
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             var resR2 = await Conn
                 .Queryer<BodyFitRecord>()
@@ -56,11 +56,11 @@ namespace MyDAL.Test.QueryM
             Assert.NotNull(resR2);
             Assert.True(res2.Id == resR2.Id);
 
-            var tupleR2 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /****************************************************************************************************************************************/
 
-            var xx3 = "";
+            xx = string.Empty;
 
             // == string
             var res3 = await Conn
@@ -97,7 +97,7 @@ namespace MyDAL.Test.QueryM
             /****************************************************************************************************************************************/
 
             var xx5 = "";
-            
+
             var res5 = await Conn
                 .Selecter<Agent>()
                 .Where(it => it.Name == "刘中华")
@@ -111,7 +111,7 @@ namespace MyDAL.Test.QueryM
 
             /****************************************************************************************************************************************/
 
-            var xx = "";
+            xx = "";
 
         }
 
@@ -128,15 +128,10 @@ namespace MyDAL.Test.QueryM
             };
 
             // 清理数据
-            var resd = await Conn
-                .Deleter<BodyFitRecord>()
-                .Where(it => it.Id == m.Id)
-                .DeleteAsync();
+            var resd = await Conn.DeleteAsync<BodyFitRecord>(it => it.Id == m.Id);
 
             // 造数据
-            var resc = await Conn
-                .Creater<BodyFitRecord>()
-                .CreateAsync(m);
+            var resc = await Conn.CreateAsync(m);
 
             return m;
         }
