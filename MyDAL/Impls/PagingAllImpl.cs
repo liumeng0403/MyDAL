@@ -8,23 +8,23 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Impls
 {
-    internal class AllPagingListImpl<M>
-        : Impler, IAllPagingList<M>
+    internal class PagingAllImpl<M>
+        : Impler, IPagingAll<M>
         where M : class
     {
-        internal AllPagingListImpl(Context dc)
+        internal PagingAllImpl(Context dc)
             : base(dc)
         {
         }
 
-        public async Task<PagingList<M>> PagingAllListAsync(int pageIndex, int pageSize)
+        public async Task<PagingList<M>> PagingAllAsync(int pageIndex, int pageSize)
         {
             DC.PageIndex = pageIndex;
             DC.PageSize = pageSize;
             return await PagingListAsyncHandle<M>(UiMethodEnum.PagingAllListAsync,false);
         }
 
-        public async Task<PagingList<VM>> PagingAllListAsync<VM>(int pageIndex, int pageSize)
+        public async Task<PagingList<VM>> PagingAllAsync<VM>(int pageIndex, int pageSize)
             where VM : class
         {
             DC.PageIndex = pageIndex;
@@ -32,7 +32,7 @@ namespace MyDAL.Impls
             return await PagingListAsyncHandle<M, VM>(UiMethodEnum.PagingAllListAsync, false, null);
         }
 
-        public async Task<PagingList<T>> PagingAllListAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
+        public async Task<PagingList<T>> PagingAllAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
         {
             DC.PageIndex = pageIndex;
             DC.PageSize = pageSize;

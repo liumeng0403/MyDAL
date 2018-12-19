@@ -1,6 +1,6 @@
-﻿namespace MyDAL
+﻿namespace MyDAL.DataRainbow.MySQL
 {
-    public enum KeyTypeEnum
+    internal enum DbKeyType
     {
         None,
 

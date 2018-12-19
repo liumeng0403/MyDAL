@@ -1,6 +1,6 @@
-﻿namespace MyDAL
+﻿namespace MyDAL.DataRainbow.MySQL
 {
-    public enum DataTypeEnum
+    internal enum DbDataType
     {
         None,
 
@@ -153,7 +153,7 @@
         /// 
         /// </summary>
         VarBinary,
-        
+
         /// <summary>
         /// [0,255]byte
         /// </summary>

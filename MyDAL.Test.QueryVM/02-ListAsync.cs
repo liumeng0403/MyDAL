@@ -14,7 +14,7 @@ namespace MyDAL.Test.QueryVM
             var xx4 = "";
 
             var res4 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
                 .OrderBy(it => it.CreatedOn)
                 .ListAsync<AgentVM>();

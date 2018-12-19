@@ -13,4 +13,11 @@ namespace MyDAL.Interfaces
             where VM : class;
         Task<List<F>> AllAsync<F>(Expression<Func<M, F>> propertyFunc);
     }
+
+    internal interface IAllX
+    {
+        Task<List<M>> AllAsync<M>()
+            where M : class;
+        Task<List<T>> AllAsync<T>(Expression<Func<T>> columnMapFunc);
+    }
 }

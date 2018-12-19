@@ -1,8 +1,8 @@
 ﻿using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
+using MyDAL.Core.Extensions;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -54,6 +54,247 @@ namespace MyDAL.Core
                 return ActionEnum.Or;
             }
             return ActionEnum.None;
+        }
+
+        private static bool IsToStringFunc(string expStr)
+        {
+            if (expStr.Contains(".ToString(")
+                && expStr.IndexOf(".") < expStr.LastIndexOf("."))
+            {
+                return true;
+            }
+
+            return false;
+        }
+        private static bool IsLengthFunc(string expStr)
+        {
+            if (expStr.Contains(".Length")
+                && expStr.IndexOf(".") < expStr.LastIndexOf("."))
+            {
+                return true;
+            }
+
+            return false;
+        }
+        private static ContainsLikeParam IsContainsLikeFunc(MethodCallExpression mcExpr)
+        {
+            var exprStr = mcExpr.ToString();
+            if (exprStr.Contains(".Contains("))
+            {
+                if (mcExpr.Object != null)
+                {
+                    var objExpr = mcExpr.Object;
+                    var objNodeType = mcExpr.Object.NodeType;
+                    if (objNodeType == ExpressionType.MemberAccess)
+                    {
+                        var memType = objExpr.Type;
+                        if (memType == XConfig.TC.String)
+                        {
+                            return new ContainsLikeParam
+                            {
+                                Flag = true,
+                                Like = StringLikeEnum.Contains
+                            };
+                        }
+                        else
+                        {
+                            return new ContainsLikeParam
+                            {
+                                Flag = false,
+                                Like = StringLikeEnum.None
+                            };
+                        }
+                    }
+                    else
+                    {
+                        return new ContainsLikeParam
+                        {
+                            Flag = false,
+                            Like = StringLikeEnum.None
+                        };
+                    }
+                }
+                else
+                {
+                    return new ContainsLikeParam
+                    {
+                        Flag = false,
+                        Like = StringLikeEnum.None
+                    };
+                }
+            }
+            else if (exprStr.Contains(".StartsWith("))
+            {
+                return new ContainsLikeParam
+                {
+                    Flag = true,
+                    Like = StringLikeEnum.StartsWith
+                };
+            }
+            else if (exprStr.Contains(".EndsWith("))
+            {
+                return new ContainsLikeParam
+                {
+                    Flag = true,
+                    Like = StringLikeEnum.EndsWith
+                };
+            }
+            else
+            {
+                return new ContainsLikeParam
+                {
+                    Flag = false,
+                    Like = StringLikeEnum.None
+                };
+            }
+        }
+        private static ContainsInParam IsContainsInFunc(MethodCallExpression mcExpr)
+        {
+            var exprStr = mcExpr.ToString();
+            if (exprStr.Contains(".Contains("))
+            {
+                if (mcExpr.Object == null)
+                {
+                    var memKey = mcExpr.Arguments[1];
+                    var memVal = mcExpr.Arguments[0];
+                    if (memVal.NodeType == ExpressionType.MemberAccess)
+                    {
+                        return new ContainsInParam
+                        {
+                            Flag = true,
+                            Type = ExpressionType.MemberAccess,
+                            Key = memKey,
+                            Val = memVal
+                        };
+                    }
+                    else if (memVal.NodeType == ExpressionType.NewArrayInit)
+                    {
+                        return new ContainsInParam
+                        {
+                            Flag = true,
+                            Type = ExpressionType.NewArrayInit,
+                            Key = memKey,
+                            Val = memVal
+                        };
+                    }
+                    else
+                    {
+                        return new ContainsInParam
+                        {
+                            Flag = false,
+                            Type = default(ExpressionType),
+                            Key = default(Expression),
+                            Val = default(Expression)
+                        };
+                    }
+                }
+                else
+                {
+                    var objExpr = mcExpr.Object;
+                    if (objExpr.NodeType == ExpressionType.MemberAccess)
+                    {
+                        var memType = objExpr.Type;
+                        if (memType.IsList())
+                        {
+                            return new ContainsInParam
+                            {
+                                Flag = true,
+                                Type = ExpressionType.MemberAccess,
+                                Key = mcExpr,
+                                Val = objExpr
+                            };
+                        }
+                        else
+                        {
+                            return new ContainsInParam
+                            {
+                                Flag = false,
+                                Type = default(ExpressionType),
+                                Key = default(Expression),
+                                Val = default(Expression)
+                            };
+                        }
+                    }
+                    else if (objExpr.NodeType == ExpressionType.ListInit)
+                    {
+                        return new ContainsInParam
+                        {
+                            Flag = true,
+                            Type = ExpressionType.ListInit,
+                            Key = mcExpr,
+                            Val = objExpr
+                        };
+                    }
+                    else if (objExpr.NodeType == ExpressionType.MemberInit)
+                    {
+                        return new ContainsInParam
+                        {
+                            Flag = true,
+                            Type = ExpressionType.MemberInit,
+                            Key = mcExpr,
+                            Val = objExpr
+                        };
+                    }
+                    else
+                    {
+                        return new ContainsInParam
+                        {
+                            Flag = false,
+                            Type = default(ExpressionType),
+                            Key = default(Expression),
+                            Val = default(Expression)
+                        };
+                    }
+                }
+            }
+            else
+            {
+                return new ContainsInParam
+                {
+                    Flag = false,
+                    Type = default(ExpressionType),
+                    Key = default(Expression),
+                    Val = default(Expression)
+                };
+            }
+        }
+        private static TrimParam IsTrimFunc(string expStr)
+        {
+            if (expStr.Contains(".Trim(")
+                && expStr.IndexOf(".") < expStr.LastIndexOf("."))
+            {
+                return new TrimParam
+                {
+                    Flag = true,
+                    Trim = FuncEnum.Trim
+                };
+            }
+            else if (expStr.Contains(".TrimStart(")
+                && expStr.IndexOf(".") < expStr.LastIndexOf("."))
+            {
+                return new TrimParam
+                {
+                    Flag = true,
+                    Trim = FuncEnum.LTrim
+                };
+            }
+            else if (expStr.Contains(".TrimEnd(")
+                && expStr.IndexOf(".") < expStr.LastIndexOf("."))
+            {
+                return new TrimParam
+                {
+                    Flag = true,
+                    Trim = FuncEnum.RTrim
+                };
+            }
+            else
+            {
+                return new TrimParam
+                {
+                    Flag = false,
+                    Trim = FuncEnum.None
+                };
+            }
         }
 
         /********************************************************************************************************************/
@@ -299,18 +540,18 @@ namespace MyDAL.Core
 
             return null;
         }
-        private DicParam CollectionIn(Expression expr, MemberExpression memExpr, string funcStr)
+        private DicParam CollectionIn(ExpressionType nodeType, Expression keyExpr, Expression valExpr, string funcStr)
         {
-            var cp = GetKey(expr, FuncEnum.In);
-            var val = DC.VH.ValueProcess(memExpr, cp.ValType);
-            DC.Option = OptionEnum.Function;
-            DC.Func = FuncEnum.In;
-            DC.Compare = CompareEnum.None;
-            return DC.DPH.InDic(cp, val);
-        }
-        private DicParam NewCollectionIn(ExpressionType nodeType, Expression keyExpr, Expression valExpr, string funcStr)
-        {
-            if (nodeType == ExpressionType.NewArrayInit)
+            if (nodeType == ExpressionType.MemberAccess)
+            {
+                var cp = GetKey(keyExpr, FuncEnum.In);
+                var val = DC.VH.ValueProcess(valExpr, cp.ValType);
+                DC.Option = OptionEnum.Function;
+                DC.Func = FuncEnum.In;
+                DC.Compare = CompareEnum.None;
+                return DC.DPH.InDic(cp, val);
+            }
+            else if (nodeType == ExpressionType.NewArrayInit)
             {
                 var naExpr = valExpr as NewArrayExpression;
                 var cp = GetKey(keyExpr, FuncEnum.In);
@@ -382,8 +623,10 @@ namespace MyDAL.Core
             else
             {
                 var leftStr = binTuple.left.ToString();
-                if (leftStr.Contains(".Length")
-                    && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
+                var length = IsLengthFunc(leftStr);
+                var tp = length ? new TrimParam { Flag = false } : IsTrimFunc(leftStr);
+                var toString = tp.Flag ? false : IsToStringFunc(leftStr);
+                if (length)
                 {
                     var cp = GetKey(binTuple.left, FuncEnum.CharLength);
                     var val = DC.VH.ValueProcess(binTuple.right, cp.ValType);
@@ -392,38 +635,16 @@ namespace MyDAL.Core
                     DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
                     return DC.DPH.CharLengthDic(cp, val);
                 }
-                else if (leftStr.Contains(".Trim(")
-                    && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
+                else if (tp.Flag)
                 {
-                    var cp = GetKey(binTuple.left, FuncEnum.Trim);
+                    var cp = GetKey(binTuple.left, tp.Trim);
                     var val = DC.VH.ValueProcess(binTuple.right, cp.ValType);
                     DC.Option = OptionEnum.Function;
-                    DC.Func = FuncEnum.Trim;
+                    DC.Func = tp.Trim;
                     DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
                     return DC.DPH.TrimDic(cp, val);
                 }
-                else if (leftStr.Contains(".TrimStart(")
-                    && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
-                {
-                    var cp = GetKey(binTuple.left, FuncEnum.LTrim);
-                    var val = DC.VH.ValueProcess(binTuple.right, cp.ValType);
-                    DC.Option = OptionEnum.Function;
-                    DC.Func = FuncEnum.LTrim;
-                    DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
-                    return DC.DPH.LTrimDic(cp, val);
-                }
-                else if (leftStr.Contains(".TrimEnd(")
-                    && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
-                {
-                    var cp = GetKey(binTuple.left, FuncEnum.RTrim);
-                    var val = DC.VH.ValueProcess(binTuple.right, cp.ValType);
-                    DC.Option = OptionEnum.Function;
-                    DC.Func = FuncEnum.RTrim;
-                    DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
-                    return DC.DPH.RTrimDic(cp, val);
-                }
-                else if (leftStr.Contains(".ToString(")
-                    && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
+                else if (toString)
                 {
                     var cp = GetKey(binTuple.left, FuncEnum.DateFormat);
                     var val = DC.VH.ValueProcess(binTuple.right, cp.ValType, cp.Format);
@@ -462,61 +683,39 @@ namespace MyDAL.Core
         }
         private DicParam HandConditionCall(MethodCallExpression mcExpr, string funcStr)
         {
-            var exprStr = mcExpr.ToString();
-            if (exprStr.Contains(".Contains("))
+            var clp = IsContainsLikeFunc(mcExpr);
+            var cip = clp.Flag ? new ContainsInParam { Flag = false } : IsContainsInFunc(mcExpr);
+            if (clp.Flag)
             {
-                if (mcExpr.Object == null)
+                if (clp.Like == StringLikeEnum.Contains
+                    || clp.Like == StringLikeEnum.StartsWith
+                    || clp.Like == StringLikeEnum.EndsWith)
                 {
-                    var memKey = mcExpr.Arguments[1];
-                    var memVal = mcExpr.Arguments[0];
-                    if (memVal.NodeType == ExpressionType.MemberAccess)
-                    {
-                        return CollectionIn(memKey, memVal as MemberExpression, funcStr);
-                    }
-                    else if (memVal.NodeType == ExpressionType.NewArrayInit)
-                    {
-                        return NewCollectionIn(memVal.NodeType, memKey, memVal, funcStr);
-                    }
+                    return StringLike(mcExpr, clp.Like, funcStr);
                 }
                 else
                 {
-                    var objExpr = mcExpr.Object;
-                    var objNodeType = mcExpr.Object.NodeType;
-                    if (objNodeType == ExpressionType.MemberAccess)
-                    {
-                        var memO = objExpr as MemberExpression;
-                        var memType = objExpr.Type;
-                        if (memType.GetInterfaces() != null
-                            && memType.GetInterfaces().Contains(typeof(IList))
-                            && !memType.IsArray)
-                        {
-                            return CollectionIn(mcExpr, memO, funcStr);
-                        }
-                        else if (memType == typeof(string))
-                        {
-                            return StringLike(mcExpr, StringLikeEnum.Contains, funcStr);
-                        }
-                    }
-                    else if (objNodeType == ExpressionType.ListInit)
-                    {
-                        return NewCollectionIn(objNodeType, mcExpr, objExpr, funcStr);
-                    }
-                    else if (objNodeType == ExpressionType.MemberInit)
-                    {
-                        return NewCollectionIn(objNodeType, mcExpr, objExpr, funcStr);
-                    }
+                    throw new Exception($"出现异常 -- [[{mcExpr.ToString()}]] 不能解析!!!");
                 }
             }
-            else if (exprStr.Contains(".StartsWith("))
+            else if (cip.Flag)
             {
-                return StringLike(mcExpr, StringLikeEnum.StartsWith, funcStr);
+                if (cip.Type == ExpressionType.MemberAccess
+                    || cip.Type == ExpressionType.NewArrayInit
+                    || cip.Type == ExpressionType.ListInit
+                    || cip.Type == ExpressionType.MemberInit)
+                {
+                    return CollectionIn(cip.Type, cip.Key, cip.Val, funcStr);
+                }
+                else
+                {
+                    throw new Exception($"出现异常 -- [[{mcExpr.ToString()}]] 不能解析!!!");
+                }
             }
-            else if (exprStr.Contains(".EndsWith("))
+            else
             {
-                return StringLike(mcExpr, StringLikeEnum.EndsWith, funcStr);
+                throw new Exception($"出现异常 -- [[{mcExpr.ToString()}]] 不能解析!!!");
             }
-
-            return null;
         }
         private DicParam HandConditionConstant(ConstantExpression cExpr, Type valType)
         {
@@ -532,7 +731,7 @@ namespace MyDAL.Core
         }
         private DicParam HandConditionMemberAccess(MemberExpression memExpr)
         {
-            var cp = GetMemTuple(memExpr);
+            var cp = GetKey(memExpr, FuncEnum.None); //GetMemTuple(memExpr);
             if (cp.ValType == typeof(bool))
             {
                 DC.Option = OptionEnum.Compare;
@@ -541,10 +740,6 @@ namespace MyDAL.Core
             }
 
             return null;
-        }
-        private ColumnParam GetMemTuple(MemberExpression memExpr)
-        {
-            return GetKey(memExpr, FuncEnum.None);
         }
 
         /********************************************************************************************************************/
@@ -556,8 +751,17 @@ namespace MyDAL.Core
             foreach (var mb in miExpr.Bindings)
             {
                 var mbEx = mb as MemberAssignment;
-                var maMem = mbEx.Expression as MemberExpression;
-                var cp = GetMemTuple(maMem);
+                //var maMem = mbEx.Expression as MemberExpression;
+                var expStr = mbEx.Expression.ToString();
+                var cp = default(ColumnParam);
+                if (IsToStringFunc(expStr))
+                {
+                    //cp=
+                }
+                else
+                {
+                    cp = GetKey(mbEx.Expression, FuncEnum.None); //GetMemTuple(maMem);
+                }
                 var colAlias = mbEx.Member.Name;
                 DC.Option = OptionEnum.None;
                 DC.Compare = CompareEnum.None;
@@ -579,7 +783,7 @@ namespace MyDAL.Core
         }
 
         /********************************************************************************************************************/
-        
+
         private DicParam BodyProcess(Expression body, ParameterExpression firstParam, string funcStr)
         {
             //
@@ -674,8 +878,7 @@ namespace MyDAL.Core
                     else if (memExpr.Expression.NodeType == ExpressionType.MemberAccess)
                     {
                         var leftStr = memExpr.ToString();
-                        if (leftStr.Contains(".Length")
-                            && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
+                        if (IsLengthFunc(leftStr))
                         {
                             var cp = GetKey(memExpr, FuncEnum.CharLength);
                             DC.Func = FuncEnum.CharLength;
@@ -695,8 +898,7 @@ namespace MyDAL.Core
             else if (nodeType == ExpressionType.Call)
             {
                 var leftStr = body.ToString();
-                if (leftStr.Contains(".ToString(")
-                    && leftStr.IndexOf(".") < leftStr.LastIndexOf("."))
+                if (IsToStringFunc(leftStr))
                 {
                     var cp = GetKey(body, FuncEnum.DateFormat);
                     DC.Option = OptionEnum.ColumnAs;
@@ -743,7 +945,7 @@ namespace MyDAL.Core
                 var mems = nExpr.Members;
                 for (var i = 0; i < args.Count; i++)
                 {
-                    var cp = GetMemTuple(args[i] as MemberExpression);
+                    var cp = GetKey(args[i], FuncEnum.None);//GetMemTuple(args[i] as MemberExpression);
                     var colAlias = mems[i].Name;
                     DC.Option = OptionEnum.None;
                     DC.Compare = CompareEnum.None;

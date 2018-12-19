@@ -8,19 +8,29 @@ using System.Threading.Tasks;
 
 namespace MyDAL.UserFacade.Join
 {
-    public sealed  class OnX 
-        : Operator, IFirstOrDefaultX, IListX, IPagingListX, IPagingListXO,ITopX
+    public sealed class OnX
+        : Operator, IFirstOrDefaultX, IListX, IPagingListX, IPagingListXO, ITopX, IAllX
     {
 
         internal OnX(Context dc)
             : base(dc)
         { }
 
+        public async Task<List<M>> AllAsync<M>()
+            where M : class
+        {
+            return await new AllXImpl(DC).AllAsync<M>();
+        }
+        public async Task<List<T>> AllAsync<T>(Expression<Func<T>> columnMapFunc)
+        {
+            return await new AllXImpl(DC).AllAsync(columnMapFunc);
+        }
+
         /// <summary>
         /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<M> FirstOrDefaultAsync<M>()
-            where M:class
+            where M : class
         {
             return await new FirstOrDefaultXImpl(DC).FirstOrDefaultAsync<M>();
         }
@@ -36,7 +46,7 @@ namespace MyDAL.UserFacade.Join
         /// 多表多条数据查询
         /// </summary>
         public async Task<List<M>> ListAsync<M>()
-            where M:class
+            where M : class
         {
             return await new ListXImpl(DC).ListAsync<M>();
         }
@@ -70,7 +80,7 @@ namespace MyDAL.UserFacade.Join
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
         public async Task<PagingList<M>> PagingListAsync<M>(int pageIndex, int pageSize)
-            where M:class
+            where M : class
         {
             return await new PagingListXImpl(DC).PagingListAsync<M>(pageIndex, pageSize);
         }
@@ -91,7 +101,7 @@ namespace MyDAL.UserFacade.Join
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
         public async Task<PagingList<M>> PagingListAsync<M>(PagingQueryOption option)
-            where M:class
+            where M : class
         {
             return await new PagingListXOImpl(DC).PagingListAsync<M>(option);
         }

@@ -5,7 +5,7 @@ using Xunit;
 
 namespace MyDAL.Test.QueryVmColumn
 {
-    public class _04_AllPagingListAsync : TestBase
+    public class _04_PagingAllAsync : TestBase
     {
         [Fact]
         public async Task test()
@@ -13,8 +13,8 @@ namespace MyDAL.Test.QueryVmColumn
             var xx1 = "";
 
             var res1 = await Conn
-                .Selecter<Agent>()
-                .PagingAllListAsync(1, 10, it => new AgentVM
+                .Queryer<Agent>()
+                .PagingAllAsync(1, 10, it => new AgentVM
                 {
                     XXXX = it.Name,
                     YYYY = it.PathId

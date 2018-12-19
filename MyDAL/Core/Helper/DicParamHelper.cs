@@ -312,36 +312,7 @@ namespace MyDAL.Core.Helper
 
             return dic;
         }
-        internal DicParam LTrimDic(ColumnParam cp, (object val, string valStr) value)
-        {
-            var dic = SetDicBase(DC);
-            dic.ClassFullName = cp.ClassFullName;
-            dic.PropOne = cp.Prop;
-            dic.ColumnOne = cp.Key;
-            dic.TableAliasOne = cp.Alias;
-            dic.Param = cp.Key;
-            dic.ParamRaw = cp.Key;
-            dic.CsValue = value.val;
-            dic.CsValueStr = value.valStr;
-            dic.CsType = cp.ValType;
 
-            return dic;
-        }
-        internal DicParam RTrimDic(ColumnParam cp, (object val, string valStr) value)
-        {
-            var dic = SetDicBase(DC);
-            dic.ClassFullName = cp.ClassFullName;
-            dic.PropOne = cp.Prop;
-            dic.ColumnOne = cp.Key;
-            dic.TableAliasOne = cp.Alias;
-            dic.Param = cp.Key;
-            dic.ParamRaw = cp.Key;
-            dic.CsValue = value.val;
-            dic.CsValueStr = value.valStr;
-            dic.CsType = cp.ValType;
-
-            return dic;
-        }
         internal DicParam DateFormatDic(ColumnParam cp, (object val, string valStr) value, string format)
         {
             var dic = SetDicBase(DC);

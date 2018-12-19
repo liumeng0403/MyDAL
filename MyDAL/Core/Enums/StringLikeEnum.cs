@@ -2,6 +2,7 @@
 {
     internal enum StringLikeEnum
     {
+        None,
         Contains,
         StartsWith,
         EndsWith

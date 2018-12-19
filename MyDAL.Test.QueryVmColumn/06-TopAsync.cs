@@ -20,7 +20,7 @@ namespace MyDAL.Test.QueryVmColumn
             var xx3 = "";
 
             var res3 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
                 .TopAsync<AgentVM>(25, agent => new AgentVM
                 {
@@ -36,7 +36,7 @@ namespace MyDAL.Test.QueryVmColumn
             var xx6 = "";
 
             var res6 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
                 .ListAsync<AgentVM>(25, agent => new AgentVM
                 {

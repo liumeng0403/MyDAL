@@ -4,22 +4,22 @@ using Xunit;
 
 namespace MyDAL.Test.QuerySingleColumn
 {
-    public class _04_AllPagingListAsync:TestBase
+    public class _04_PagingAllAsync : TestBase
     {
         [Fact]
         public async Task test()
         {
-            var xx1 = "";
+            var xx = string.Empty;
 
             var res1 = await Conn
-                .Selecter<Agent>()
-                .PagingAllListAsync(1, 10, it => it.Id);
+                .Queryer<Agent>()
+                .PagingAllAsync(1, 10, it => it.Id);
             Assert.True(res1.Data.Count == 10);
             Assert.True(res1.TotalCount == 28620);
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
-            var xx = "";
+            xx = string.Empty;
         }
     }
 }

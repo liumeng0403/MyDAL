@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Query
 {
     public sealed class Queryer<M>
-        : Operator, IAll<M>, IAllPagingList<M>, ITop<M>
+        : Operator, IAll<M>, IPagingAll<M>, ITop<M>
         where M : class
     {
         internal Queryer(Context dc)
@@ -45,9 +45,9 @@ namespace MyDAL.UserFacade.Query
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
         /// <returns>返回全表分页数据</returns>
-        public async Task<PagingList<M>> PagingAllListAsync(int pageIndex, int pageSize)
+        public async Task<PagingList<M>> PagingAllAsync(int pageIndex, int pageSize)
         {
-            return await new AllPagingListImpl<M>(DC).PagingAllListAsync(pageIndex, pageSize);
+            return await new PagingAllImpl<M>(DC).PagingAllAsync(pageIndex, pageSize);
         }
         /// <summary>
         /// 单表分页查询
@@ -56,14 +56,14 @@ namespace MyDAL.UserFacade.Query
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
         /// <returns>返回全表分页数据</returns>
-        public async Task<PagingList<VM>> PagingAllListAsync<VM>(int pageIndex, int pageSize)
+        public async Task<PagingList<VM>> PagingAllAsync<VM>(int pageIndex, int pageSize)
             where VM : class
         {
-            return await new AllPagingListImpl<M>(DC).PagingAllListAsync<VM>(pageIndex, pageSize);
+            return await new PagingAllImpl<M>(DC).PagingAllAsync<VM>(pageIndex, pageSize);
         }
-        public async Task<PagingList<T>> PagingAllListAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
+        public async Task<PagingList<T>> PagingAllAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
         {
-            return await new AllPagingListImpl<M>(DC).PagingAllListAsync<T>(pageIndex, pageSize, columnMapFunc);
+            return await new PagingAllImpl<M>(DC).PagingAllAsync<T>(pageIndex, pageSize, columnMapFunc);
         }
 
         /// <summary>
