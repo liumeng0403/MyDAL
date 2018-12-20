@@ -8,11 +8,6 @@ namespace Yunyong.DataExchange.Core.Enums
         /// ""
         /// </summary>
         None,
-
-        /// <summary>
-        /// ""
-        /// </summary>
-        //Column,
         
         /// <summary>
         /// " char_length"

@@ -1,6 +1,5 @@
-﻿using Yunyong.DataExchange.Core.Common;
+using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Enums;
-using Yunyong.DataExchange.DataRainbow;
 
 namespace Yunyong.DataExchange.Core.Bases
 {

@@ -281,7 +281,7 @@ namespace Yunyong.DataExchange.Core.Bases
         internal void SetChangeHandle<M, F>(Expression<Func<M, F>> propertyFunc, F modVal, OptionEnum option)
             where M : class
         {
-            var keyDic = DC.EH.FuncMFExpression(propertyFunc)[0];
+            var keyDic = DC.EH.FuncMFExpression(propertyFunc);
             var key = keyDic.ColumnOne;
             var val = default((object val, string valStr));
             if (modVal == null)
@@ -390,7 +390,7 @@ namespace Yunyong.DataExchange.Core.Bases
         internal void OrderByMF<M, F>(Expression<Func<M, F>> propertyFunc, OrderByEnum orderBy)
             where M : class
         {
-            var keyDic = DC.EH.FuncMFExpression(propertyFunc)[0];
+            var keyDic = DC.EH.FuncMFExpression(propertyFunc);
             switch (orderBy)
             {
                 case OrderByEnum.Asc:
@@ -406,7 +406,7 @@ namespace Yunyong.DataExchange.Core.Bases
 
         internal void OrderByF<F>(Expression<Func<F>> func, OrderByEnum orderBy)
         {
-            var keyDic = DC.EH.FuncTExpression(func)[0];
+            var keyDic = DC.EH.FuncTExpression(func);
             switch (orderBy)
             {
                 case OrderByEnum.Asc:

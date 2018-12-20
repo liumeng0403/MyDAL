@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Core.Enums;
@@ -7,9 +8,9 @@ namespace Yunyong.DataExchange.Impls
 {
     internal class CreateImpl<M>
         : Impler, ICreate<M>
-        where M:class
+        where M : class
     {
-        public CreateImpl(Context dc) 
+        public CreateImpl(Context dc)
             : base(dc)
         {
         }
@@ -17,7 +18,7 @@ namespace Yunyong.DataExchange.Impls
         public async Task<int> CreateAsync(M m)
         {
             DC.Action = ActionEnum.Insert;
-            CreateMHandle(m);
+            CreateMHandle(new List<M> { m });
             PreExecuteHandle(UiMethodEnum.CreateAsync);
             return await DC.DS.ExecuteNonQueryAsync();
         }

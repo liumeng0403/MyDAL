@@ -6,7 +6,6 @@ using Yunyong.DataExchange.AdoNet;
 using Yunyong.DataExchange.Core.Bases;
 using Yunyong.DataExchange.Core.Common;
 using Yunyong.DataExchange.Core.Enums;
-using Yunyong.DataExchange.Core.Extensions;
 
 namespace Yunyong.DataExchange.Core.Helper
 {
@@ -89,18 +88,7 @@ namespace Yunyong.DataExchange.Core.Helper
             }
 
             //
-            if (dic.Inserts != null)
-            {
-                foreach (var ui in dic.Inserts)
-                {
-                    Unique(ui);
-                }
-            }
-            else if (DC.IsInParameter(dic))
-            {
-                InNotIn(dic);
-            }
-            else if (dic.Group != null)
+            if (dic.Group != null)
             {
                 foreach (var ui in dic.Group)
                 {
@@ -111,6 +99,24 @@ namespace Yunyong.DataExchange.Core.Helper
                     Unique(ui);
                     ui.GroupRef = dic;
                 }
+            }
+            else if (dic.Inserts != null)
+            {
+                foreach (var ui in dic.Inserts)
+                {
+                    Unique(ui);
+                }
+            }
+            else if (dic.Columns != null)
+            {
+                foreach (var ui in dic.Columns)
+                {
+                    Unique(ui);
+                }
+            }
+            else if (DC.IsInParameter(dic))
+            {
+                InNotIn(dic);
             }
         }
         private void DbParam(DicParam ui, DicParam refDb)
@@ -161,6 +167,13 @@ namespace Yunyong.DataExchange.Core.Helper
             if (ui.Inserts != null)
             {
                 foreach (var u in ui.Inserts)
+                {
+                    DbParam(u, refDb);
+                }
+            }
+            if (ui.Columns != null)
+            {
+                foreach (var u in ui.Columns)
                 {
                     DbParam(u, refDb);
                 }
@@ -550,7 +563,7 @@ namespace Yunyong.DataExchange.Core.Helper
 
             return dic;
         }
-        internal DicParam ColumnDic(string columnOne, string tableAliasOne, string fullName,string prop)
+        internal DicParam ColumnDic(string columnOne, string tableAliasOne, string fullName, string prop)
         {
             var dic = SetDicBase(DC);
             dic.ClassFullName = fullName;
@@ -561,7 +574,7 @@ namespace Yunyong.DataExchange.Core.Helper
             return dic;
         }
 
-        internal DicParam JoinColumnDic(string fullName, string key, string alias,string prop)
+        internal DicParam JoinColumnDic(string fullName, string key, string alias, string prop)
         {
             var dic = SetDicBase(DC);
             dic.ClassFullName = fullName;
@@ -578,6 +591,18 @@ namespace Yunyong.DataExchange.Core.Helper
             var dic = SetDicBase(DC);
             dic.Group = new List<DicParam>();
             dic.GroupAction = action;
+            return dic;
+        }
+
+        internal DicParam GetNewDic()
+        {
+            return SetDicBase(DC);
+        }
+
+        internal DicParam SelectColumnDic(List<DicParam> cols)
+        {
+            var dic = SetDicBase(DC);
+            dic.Columns = cols;
             return dic;
         }
 

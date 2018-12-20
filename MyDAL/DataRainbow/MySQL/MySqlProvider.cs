@@ -278,7 +278,7 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
         private void InsertColumn()
         {
             Spacing(X);
-            var ps = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.Insert && (it.Option == OptionEnum.Insert || it.Option == OptionEnum.InsertTVP));
+            var ps = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.Insert && it.Option == OptionEnum.Insert);
             if (ps != null)
             {
                 CRLF(X);
@@ -342,8 +342,10 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
         private void SelectColumn()
         {
             Spacing(X);
-            var items = DC.Parameters.Where(it => it.Action == ActionEnum.Select && (it.Option == OptionEnum.Column || it.Option == OptionEnum.ColumnAs))?.ToList();
-            if (items == null || items.Count == 0) { Star(X); }
+            var col = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.Select);
+            if (col == null) { Star(X); }
+            var items = col.Columns.Where(it => it.Option == OptionEnum.Column || it.Option == OptionEnum.ColumnAs)?.ToList();
+            if (items == null || items.Count <= 0) { Star(X); }
             var i = 0;
             foreach (var dic in items)
             {
@@ -428,7 +430,7 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
         private void InsertValue()
         {
             Spacing(X);
-            var items = DC.Parameters.Where(it => it.Action == ActionEnum.Insert && (it.Option == OptionEnum.Insert || it.Option == OptionEnum.InsertTVP))?.ToList();
+            var items = DC.Parameters.Where(it => it.Action == ActionEnum.Insert && it.Option == OptionEnum.Insert)?.ToList();
             var i = 0;
             foreach (var dic in items)
             {

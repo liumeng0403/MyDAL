@@ -129,8 +129,6 @@ namespace Yunyong.DataExchange.Core
                     return "<<<<<";
                 case OptionEnum.Insert:
                     return "";
-                case OptionEnum.InsertTVP:
-                    return "";
                 case OptionEnum.Set:
                     return "=";
                 case OptionEnum.ChangeAdd:

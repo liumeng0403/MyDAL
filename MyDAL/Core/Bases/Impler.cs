@@ -76,13 +76,13 @@ namespace Yunyong.DataExchange.Core.Bases
         {
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
-            DC.DPH.AddParameter(DC.EH.FuncMFExpression(propertyFunc)[0]);
+            DC.DPH.AddParameter(DC.EH.FuncMFExpression(propertyFunc));
         }
         protected void SingleColumnHandle<T>(Expression<Func<T>> propertyFunc)
         {
             DC.Action = ActionEnum.Select;
-            DC.Option = OptionEnum.Column;
-            DC.DPH.AddParameter(DC.EH.FuncTExpression(propertyFunc)[0]);
+            var col = DC.EH.FuncTExpression(propertyFunc);
+            DC.DPH.AddParameter(col);
         }
 
         /**********************************************************************************************************/
@@ -152,37 +152,32 @@ namespace Yunyong.DataExchange.Core.Bases
         protected void SelectMHandle<VM>(Expression<Func<VM>> func)
         {
             DC.Action = ActionEnum.Select;
-            var list = DC.EH.FuncTExpression(func);
-            foreach (var dic in list)
+            var col = DC.EH.FuncTExpression(func);
+            foreach (var dic in col.Columns)
             {
                 dic.Option = OptionEnum.ColumnAs;
-                DC.DPH.AddParameter(dic);
             }
+            DC.DPH.AddParameter(col);
         }
         protected void SelectMHandle<M, VM>(Expression<Func<M, VM>> propertyFunc)
             where M : class
         {
             DC.Action = ActionEnum.Select;
-            var list = DC.EH.FuncMFExpression(propertyFunc);
-            foreach (var dic in list)
+            var col = DC.EH.FuncMFExpression(propertyFunc);
+            foreach (var dic in col.Columns)
             {
                 dic.Option = OptionEnum.ColumnAs;
-                DC.DPH.AddParameter(dic);
             }
+            DC.DPH.AddParameter(col);
         }
 
         /**********************************************************************************************************/
 
-        protected void CreateMHandle<M>(M m)
+        protected void CreateMHandle<M>(IEnumerable<M> ms)
         {
             DC.Option = OptionEnum.Insert;
-            SetInsertValue(m, 0);
-        }
-        protected void CreateMHandle<M>(IEnumerable<M> mList)
-        {
-            DC.Option = OptionEnum.InsertTVP;
             var i = 0;
-            foreach (var m in mList)
+            foreach (var m in ms)
             {
                 SetInsertValue(m, i);
                 i++;

@@ -13,12 +13,7 @@ namespace Yunyong.DataExchange.Core.Enums
         /// ""
         /// </summary>
         Insert,
-
-        /// <summary>
-        /// ""
-        /// </summary>
-        InsertTVP,
-
+        
         /// <summary>
         /// =
         /// </summary>
