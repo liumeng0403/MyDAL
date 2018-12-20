@@ -30,7 +30,7 @@ namespace MyDAL.Impls
         public async Task<int> CountAsync<F>(Expression<Func<M, F>> propertyFunc)
         {
             DC.Action = ActionEnum.Select;
-            var keyDic = DC.EH.FuncMFExpression(propertyFunc)[0];
+            var keyDic = DC.EH.FuncMFExpression(propertyFunc);
             var key = keyDic.ColumnOne;
             DC.Option = OptionEnum.Count;
             DC.Compare = CompareEnum.None;
@@ -62,7 +62,7 @@ namespace MyDAL.Impls
         public async Task<int> CountAsync<F>(Expression<Func<F>> propertyFunc)
         {
             DC.Action = ActionEnum.Select;
-            var dic = DC.EH.FuncTExpression(propertyFunc)[0];
+            var dic = DC.EH.FuncTExpression(propertyFunc);
             DC.Option = OptionEnum.Count;
             DC.Compare = CompareEnum.None;
             DC.DPH.AddParameter(DC.DPH.CountDic(dic.ClassFullName, dic.ColumnOne, dic.TableAliasOne));

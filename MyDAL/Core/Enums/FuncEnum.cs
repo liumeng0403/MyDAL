@@ -8,11 +8,6 @@ namespace MyDAL.Core.Enums
         /// ""
         /// </summary>
         None,
-
-        /// <summary>
-        /// ""
-        /// </summary>
-        //Column,
         
         /// <summary>
         /// " char_length"

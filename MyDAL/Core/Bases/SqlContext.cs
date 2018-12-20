@@ -1,6 +1,5 @@
 ﻿using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
-using MyDAL.DataRainbow;
 
 namespace MyDAL.Core.Bases
 {

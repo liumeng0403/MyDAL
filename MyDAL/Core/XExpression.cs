@@ -502,7 +502,7 @@ namespace MyDAL.Core
                 }
                 else
                 {
-                    cp = GetKey(mbEx.Expression, FuncEnum.None); //GetMemTuple(maMem);
+                    cp = GetKey(mbEx.Expression, FuncEnum.None);
                 }
                 var colAlias = mbEx.Member.Name;
                 DC.Option = OptionEnum.None;
@@ -593,9 +593,8 @@ namespace MyDAL.Core
             //
             return result;
         }
-        private List<DicParam> BodyProcess2(Expression body)
+        private DicParam BodyProcess2(Expression body)
         {
-            var result = new List<DicParam>();
             var nodeType = body.NodeType;
             if (nodeType == ExpressionType.MemberAccess)
             {
@@ -608,14 +607,14 @@ namespace MyDAL.Core
                     {
                         throw new Exception("无法解析 列名 !!!");
                     }
-                    result.Add(DC.DPH.ColumnDic(cp));
+                    return DC.DPH.ColumnDic(cp);
                 }
                 else if (DC.Crud == CrudTypeEnum.Join)
                 {
                     if (memExpr.Expression.NodeType == ExpressionType.Constant)
                     {
                         var alias = memExpr.Member.Name;
-                        result.Add(DC.DPH.TableDic(memExpr.Type.FullName, alias));
+                        return DC.DPH.TableDic(memExpr.Type.FullName, alias);
                     }
                     else if (memExpr.Expression.NodeType == ExpressionType.MemberAccess)
                     {
@@ -625,16 +624,25 @@ namespace MyDAL.Core
                             var cp = GetKey(memExpr, FuncEnum.CharLength);
                             DC.Func = FuncEnum.CharLength;
                             DC.Compare = CompareEnum.None;
-                            result.Add(DC.DPH.CharLengthDic(cp, (null, string.Empty)));
+                            return DC.DPH.CharLengthDic(cp, (null, string.Empty));
                         }
                         else
                         {
                             var exp2 = memExpr.Expression as MemberExpression;
                             var alias = exp2.Member.Name;
                             var field = memExpr.Member.Name;
-                            result.Add(DC.DPH.JoinColumnDic(exp2.Type.FullName, field, alias, field));
+                            DC.Option = OptionEnum.Column;
+                            return DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.JoinColumnDic(exp2.Type.FullName, field, alias, field) });
                         }
                     }
+                    else
+                    {
+                        throw new Exception($"{XConfig.EC._021} -- [[{memExpr.Expression.NodeType} - {body.ToString()}]] 不能解析!!!");
+                    }
+                }
+                else
+                {
+                    throw new Exception($"未知的操作 -- [[{DC.Crud}]] !!!");
                 }
             }
             else if (nodeType == ExpressionType.Call)
@@ -647,7 +655,11 @@ namespace MyDAL.Core
                     DC.Func = FuncEnum.DateFormat;
                     DC.Compare = CompareEnum.None;
                     var format = DC.TSH.DateTime(cp.Format);
-                    result.Add(DC.DPH.DateFormatDic(cp, (null, string.Empty), format));
+                    return DC.DPH.DateFormatDic(cp, (null, string.Empty), format);
+                }
+                else
+                {
+                    throw new Exception($"{XConfig.EC._004} -- [[{body.ToString()}]] 不能解析!!!");
                 }
             }
             else if (nodeType == ExpressionType.Convert)
@@ -657,43 +669,43 @@ namespace MyDAL.Core
                 {
                     throw new Exception("无法解析 列名2 !!!");
                 }
-                result.Add(DC.DPH.ColumnDic(cp));
+                return DC.DPH.ColumnDic(cp);
             }
             else if (nodeType == ExpressionType.MemberInit)
             {
                 var miExpr = body as MemberInitExpression;
-                result = HandSelectMemberInit(miExpr);
+                return DC.DPH.SelectColumnDic(HandSelectMemberInit(miExpr));
             }
             else if (nodeType == ExpressionType.New)
             {
+                var list = new List<DicParam>();
                 var nExpr = body as NewExpression;
                 var args = nExpr.Arguments;
                 var mems = nExpr.Members;
                 for (var i = 0; i < args.Count; i++)
                 {
-                    var cp = GetKey(args[i], FuncEnum.None);//GetMemTuple(args[i] as MemberExpression);
+                    var cp = GetKey(args[i], FuncEnum.None);
                     var colAlias = mems[i].Name;
                     DC.Option = OptionEnum.None;
                     DC.Compare = CompareEnum.None;
-                    result.Add(DC.DPH.SelectMemberInitDic(cp, colAlias));
+                    list.Add(DC.DPH.SelectMemberInitDic(cp, colAlias));
                 }
-
+                return DC.DPH.SelectColumnDic(list);
             }
             else
             {
                 throw new Exception($"{XConfig.EC._002} -- [[{body.ToString()}]] 不能解析!!!");
             }
-            return result;
         }
 
         /********************************************************************************************************************/
 
-        internal List<DicParam> FuncMFExpression<M, F>(Expression<Func<M, F>> propertyFunc)
+        internal DicParam FuncMFExpression<M, F>(Expression<Func<M, F>> propertyFunc)
             where M : class
         {
             return BodyProcess2(propertyFunc.Body);
         }
-        internal List<DicParam> FuncTExpression<T>(Expression<Func<T>> mOrPropFunc)
+        internal DicParam FuncTExpression<T>(Expression<Func<T>> mOrPropFunc)
         {
             return BodyProcess2(mOrPropFunc.Body);
         }

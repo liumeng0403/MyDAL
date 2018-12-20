@@ -17,7 +17,7 @@ namespace MyDAL.Test.JoinQueryM
 
             var guid6 = Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef");
             var res6 = await Conn
-                .Queryer<Agent, AgentInventoryRecord>(out var agent6, out var record6)
+                .Queryer(out Agent agent6, out AgentInventoryRecord record6)
                 .From(() => agent6)
                     .InnerJoin(() => record6)
                         .On(() => agent6.Id == record6.AgentId)

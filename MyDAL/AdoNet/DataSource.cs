@@ -168,7 +168,8 @@ namespace MyDAL.AdoNet
             }
             else
             {
-                dic = DC.Parameters.First(it => it.Crud == CrudTypeEnum.Join && it.Action == ActionEnum.Select && it.Option == OptionEnum.Column);
+                var col = DC.Parameters.First(it => it.Crud == CrudTypeEnum.Join && it.Action == ActionEnum.Select);
+                dic = col.Columns.First(it => it.Option == OptionEnum.Column);
                 var func = DC.SC.GetHandle(SqlOne, Reader, DC.SC.GetModelType(dic.Key));
                 var prop = DC.SC.GetModelProperys(dic.Key).FirstOrDefault(it => it.Name.Equals(dic.PropOne, StringComparison.Ordinal));
                 while (await Reader.ReadAsync())

@@ -20,7 +20,7 @@ namespace MyDAL.Impls
             where F : struct
         {
             DC.Action = ActionEnum.Select;
-            var keyDic = DC.EH.FuncMFExpression(propertyFunc)[0];
+            var keyDic = DC.EH.FuncMFExpression(propertyFunc);
             var key = keyDic.ColumnOne;
             DC.Option = OptionEnum.Sum;
             DC.Compare = CompareEnum.None;

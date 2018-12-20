@@ -24,7 +24,7 @@ namespace MyDAL.Core.Helper
         internal string GetAttributePropVal<M, A>(Expression<Func<A, string>> attrPropFunc)
             where A : Attribute
         {
-            var dic = DC.EH.FuncMFExpression(attrPropFunc)[0];
+            var dic = DC.EH.FuncMFExpression(attrPropFunc);
             var mType = typeof(M);
             var key = DC.SC.GetAttrPropKey(dic.ColumnOne, typeof(A).FullName, mType.FullName);
             if (!XCache.ModelAttributePropValCache.ContainsKey(key))

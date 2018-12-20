@@ -18,7 +18,7 @@ namespace MyDAL.Test.JoinQuerySingleColumn
                     .InnerJoin(() => agentRecord)
                         .On(() => agent.Id == agentRecord.AgentId)
                 .Where(() => agent.AgentLevel == AgentLevel.DistiAgent)
-                .FirstOrDefaultAsync<string>(() => agent.Name);
+                .FirstOrDefaultAsync(() => agent.Name);
             Assert.NotNull(res1);
 
             var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
