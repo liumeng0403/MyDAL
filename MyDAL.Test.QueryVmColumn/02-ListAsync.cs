@@ -9,13 +9,13 @@ using Xunit;
 
 namespace MyDAL.Test.QueryVmColumn
 {
-    public class _02_ListAsync:TestBase
+    public class _02_ListAsync : TestBase
     {
         [Fact]
         public async Task test()
         {
 
-            var xx4 = "";
+            var xx = string.Empty;
 
             var testQ4 = new WhereTestModel
             {
@@ -26,21 +26,21 @@ namespace MyDAL.Test.QueryVmColumn
                 ContainStr = "~00-d-3-1-"
             };
             var res4 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => it.CreatedOn >= testQ4.StartTime)
                 .ListAsync<AgentVM>();
             Assert.True(res4.Count == 28619);
             Assert.NotNull(res4.First().Name);
             Assert.Null(res4.First().XXXX);
 
-            var tuple4 = (XDebug.SQL, XDebug.Parameters);
+            var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /********************************************************************************************************************************/
 
-            var xx5 = "";
+            xx = string.Empty;
 
             var res5 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
                 .ListAsync(agent => new AgentVM
                 {
@@ -49,9 +49,11 @@ namespace MyDAL.Test.QueryVmColumn
                 });
             Assert.True(res5.Count == 555);
 
-            var tuple5 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*************************************************************************************************************************/
+
+            xx = string.Empty;
 
         }
     }

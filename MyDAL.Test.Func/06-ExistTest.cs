@@ -17,7 +17,7 @@ namespace MyDAL.Test.Func
             var xx1 = "";
 
             var res1 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
                 .ExistAsync();
             Assert.True(res1);

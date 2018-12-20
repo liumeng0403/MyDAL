@@ -20,12 +20,6 @@ namespace MyDAL
             return new DistinctQ<M>(where.DC);
         }
 
-        public static DistinctX Distinct(this WhereX where)
-        {
-            where.DistinctHandle();
-            return new DistinctX(where.DC);
-        }
-
         public static DistinctQ<M> Distinct<M>(this OrderByQ<M> orderBy)
             where M : class
         {
@@ -39,5 +33,12 @@ namespace MyDAL
             orderBy.DistinctHandle();
             return new DistinctQ<M>(orderBy.DC);
         }
+
+        public static DistinctX Distinct(this WhereX where)
+        {
+            where.DistinctHandle();
+            return new DistinctX(where.DC);
+        }
+
     }
 }

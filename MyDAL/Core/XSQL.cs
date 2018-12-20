@@ -196,8 +196,6 @@ namespace MyDAL.Core
             {
                 case FuncEnum.None:
                     return "";
-                case FuncEnum.Column:
-                    return "";
                 case FuncEnum.CharLength:
                     return " char_length";
                 case FuncEnum.DateFormat:

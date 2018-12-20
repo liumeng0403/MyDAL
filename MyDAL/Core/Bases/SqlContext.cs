@@ -11,7 +11,6 @@ namespace MyDAL.Core.Bases
         {
             if (param.Action == ActionEnum.OrderBy
                 && (param.Func == FuncEnum.None
-                        || param.Func == FuncEnum.Column
                         || param.Func == FuncEnum.CharLength))
             {
                 return true;

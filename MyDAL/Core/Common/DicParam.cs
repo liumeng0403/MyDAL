@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace MyDAL.Core.Common
 {
-    internal class DicParam 
+    internal class DicParam
         : DicBase
     {
         //
@@ -39,7 +39,7 @@ namespace MyDAL.Core.Common
         internal string CsValueStr { get; set; }
         internal Type CsType { get; set; }
         internal string Format { get; set; }
-        
+
         //
         internal string Key { get; set; }
         internal string ColumnType { get; set; }
@@ -49,5 +49,6 @@ namespace MyDAL.Core.Common
         internal List<DicParam> Group { get; set; }
         internal List<DicParam> InItems { get; set; }
         internal List<DicParam> Inserts { get; set; }
+        internal List<DicParam> Columns { get; set; }
     }
 }

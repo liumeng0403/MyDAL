@@ -8,7 +8,7 @@ namespace MyDAL.Test.QueryParallel
         public None test(None none)
         {
             var res5 = (Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => it.Name == "刘中华")
                 .Distinct()
                 .FirstOrDefaultAsync()).GetAwaiter().GetResult();
