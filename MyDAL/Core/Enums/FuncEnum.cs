@@ -12,7 +12,7 @@ namespace Yunyong.DataExchange.Core.Enums
         /// <summary>
         /// ""
         /// </summary>
-        Column,
+        //Column,
         
         /// <summary>
         /// " char_length"

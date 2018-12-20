@@ -1,6 +1,6 @@
 ﻿using Yunyong.DataExchange.Core.Enums;
 
-namespace MyDAL.Core.Common
+namespace Yunyong.DataExchange.Core.Common
 {
     internal class TrimParam
     {

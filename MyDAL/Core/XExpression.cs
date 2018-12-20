@@ -57,247 +57,6 @@ namespace Yunyong.DataExchange.Core
             return ActionEnum.None;
         }
 
-        private static bool IsToStringFunc(string expStr)
-        {
-            if (expStr.Contains(".ToString(")
-                && expStr.IndexOf(".") < expStr.LastIndexOf("."))
-            {
-                return true;
-            }
-
-            return false;
-        }
-        private static bool IsLengthFunc(string expStr)
-        {
-            if (expStr.Contains(".Length")
-                && expStr.IndexOf(".") < expStr.LastIndexOf("."))
-            {
-                return true;
-            }
-
-            return false;
-        }
-        private static ContainsLikeParam IsContainsLikeFunc(MethodCallExpression mcExpr)
-        {
-            var exprStr = mcExpr.ToString();
-            if (exprStr.Contains(".Contains("))
-            {
-                if (mcExpr.Object != null)
-                {
-                    var objExpr = mcExpr.Object;
-                    var objNodeType = mcExpr.Object.NodeType;
-                    if (objNodeType == ExpressionType.MemberAccess)
-                    {
-                        var memType = objExpr.Type;
-                        if (memType == XConfig.TC.String)
-                        {
-                            return new ContainsLikeParam
-                            {
-                                Flag = true,
-                                Like = StringLikeEnum.Contains
-                            };
-                        }
-                        else
-                        {
-                            return new ContainsLikeParam
-                            {
-                                Flag = false,
-                                Like = StringLikeEnum.None
-                            };
-                        }
-                    }
-                    else
-                    {
-                        return new ContainsLikeParam
-                        {
-                            Flag = false,
-                            Like = StringLikeEnum.None
-                        };
-                    }
-                }
-                else
-                {
-                    return new ContainsLikeParam
-                    {
-                        Flag = false,
-                        Like = StringLikeEnum.None
-                    };
-                }
-            }
-            else if (exprStr.Contains(".StartsWith("))
-            {
-                return new ContainsLikeParam
-                {
-                    Flag = true,
-                    Like = StringLikeEnum.StartsWith
-                };
-            }
-            else if (exprStr.Contains(".EndsWith("))
-            {
-                return new ContainsLikeParam
-                {
-                    Flag = true,
-                    Like = StringLikeEnum.EndsWith
-                };
-            }
-            else
-            {
-                return new ContainsLikeParam
-                {
-                    Flag = false,
-                    Like = StringLikeEnum.None
-                };
-            }
-        }
-        private static ContainsInParam IsContainsInFunc(MethodCallExpression mcExpr)
-        {
-            var exprStr = mcExpr.ToString();
-            if (exprStr.Contains(".Contains("))
-            {
-                if (mcExpr.Object == null)
-                {
-                    var memKey = mcExpr.Arguments[1];
-                    var memVal = mcExpr.Arguments[0];
-                    if (memVal.NodeType == ExpressionType.MemberAccess)
-                    {
-                        return new ContainsInParam
-                        {
-                            Flag = true,
-                            Type = ExpressionType.MemberAccess,
-                            Key = memKey,
-                            Val = memVal
-                        };
-                    }
-                    else if (memVal.NodeType == ExpressionType.NewArrayInit)
-                    {
-                        return new ContainsInParam
-                        {
-                            Flag = true,
-                            Type = ExpressionType.NewArrayInit,
-                            Key = memKey,
-                            Val = memVal
-                        };
-                    }
-                    else
-                    {
-                        return new ContainsInParam
-                        {
-                            Flag = false,
-                            Type = default(ExpressionType),
-                            Key = default(Expression),
-                            Val = default(Expression)
-                        };
-                    }
-                }
-                else
-                {
-                    var objExpr = mcExpr.Object;
-                    if (objExpr.NodeType == ExpressionType.MemberAccess)
-                    {
-                        var memType = objExpr.Type;
-                        if (memType.IsList())
-                        {
-                            return new ContainsInParam
-                            {
-                                Flag = true,
-                                Type = ExpressionType.MemberAccess,
-                                Key = mcExpr,
-                                Val = objExpr
-                            };
-                        }
-                        else
-                        {
-                            return new ContainsInParam
-                            {
-                                Flag = false,
-                                Type = default(ExpressionType),
-                                Key = default(Expression),
-                                Val = default(Expression)
-                            };
-                        }
-                    }
-                    else if (objExpr.NodeType == ExpressionType.ListInit)
-                    {
-                        return new ContainsInParam
-                        {
-                            Flag = true,
-                            Type = ExpressionType.ListInit,
-                            Key = mcExpr,
-                            Val = objExpr
-                        };
-                    }
-                    else if (objExpr.NodeType == ExpressionType.MemberInit)
-                    {
-                        return new ContainsInParam
-                        {
-                            Flag = true,
-                            Type = ExpressionType.MemberInit,
-                            Key = mcExpr,
-                            Val = objExpr
-                        };
-                    }
-                    else
-                    {
-                        return new ContainsInParam
-                        {
-                            Flag = false,
-                            Type = default(ExpressionType),
-                            Key = default(Expression),
-                            Val = default(Expression)
-                        };
-                    }
-                }
-            }
-            else
-            {
-                return new ContainsInParam
-                {
-                    Flag = false,
-                    Type = default(ExpressionType),
-                    Key = default(Expression),
-                    Val = default(Expression)
-                };
-            }
-        }
-        private static TrimParam IsTrimFunc(string expStr)
-        {
-            if (expStr.Contains(".Trim(")
-                && expStr.IndexOf(".") < expStr.LastIndexOf("."))
-            {
-                return new TrimParam
-                {
-                    Flag = true,
-                    Trim = FuncEnum.Trim
-                };
-            }
-            else if (expStr.Contains(".TrimStart(")
-                && expStr.IndexOf(".") < expStr.LastIndexOf("."))
-            {
-                return new TrimParam
-                {
-                    Flag = true,
-                    Trim = FuncEnum.LTrim
-                };
-            }
-            else if (expStr.Contains(".TrimEnd(")
-                && expStr.IndexOf(".") < expStr.LastIndexOf("."))
-            {
-                return new TrimParam
-                {
-                    Flag = true,
-                    Trim = FuncEnum.RTrim
-                };
-            }
-            else
-            {
-                return new TrimParam
-                {
-                    Flag = false,
-                    Trim = FuncEnum.None
-                };
-            }
-        }
-
         /********************************************************************************************************************/
 
         private Context DC { get; set; }
@@ -624,9 +383,9 @@ namespace Yunyong.DataExchange.Core
             else
             {
                 var leftStr = binTuple.left.ToString();
-                var length = IsLengthFunc(leftStr);
-                var tp = length ? new TrimParam { Flag = false } : IsTrimFunc(leftStr);
-                var toString = tp.Flag ? false : IsToStringFunc(leftStr);
+                var length = DC.CFH.IsLengthFunc(leftStr);
+                var tp = length ? new TrimParam { Flag = false } : DC.CFH.IsTrimFunc(leftStr);
+                var toString = tp.Flag ? false : DC.CFH.IsToStringFunc(leftStr);
                 if (length)
                 {
                     var cp = GetKey(binTuple.left, FuncEnum.CharLength);
@@ -652,23 +411,7 @@ namespace Yunyong.DataExchange.Core
                     DC.Option = OptionEnum.Function;
                     DC.Func = FuncEnum.DateFormat;
                     DC.Compare = GetCompareType(binTuple.node, binTuple.isR);
-                    var format = string.Empty;
-                    if ("yyyy-MM-dd".Equals(cp.Format.Trim(), StringComparison.OrdinalIgnoreCase))
-                    {
-                        format = "%Y-%m-%d";
-                    }
-                    else if ("yyyy-MM".Equals(cp.Format.Trim(), StringComparison.OrdinalIgnoreCase))
-                    {
-                        format = "%Y-%m";
-                    }
-                    else if ("yyyy".Equals(cp.Format.Trim(), StringComparison.OrdinalIgnoreCase))
-                    {
-                        format = "%Y";
-                    }
-                    else
-                    {
-                        throw new Exception($"{XConfig.EC._004} -- [[{funcStr}]] 未能解析!!!");
-                    }
+                    var format = DC.TSH.DateTime(cp.Format);
                     return DC.DPH.DateFormatDic(cp, val, format);
                 }
                 else
@@ -684,8 +427,8 @@ namespace Yunyong.DataExchange.Core
         }
         private DicParam HandConditionCall(MethodCallExpression mcExpr, string funcStr)
         {
-            var clp = IsContainsLikeFunc(mcExpr);
-            var cip = clp.Flag ? new ContainsInParam { Flag = false } : IsContainsInFunc(mcExpr);
+            var clp = DC.CFH.IsContainsLikeFunc(mcExpr);
+            var cip = clp.Flag ? new ContainsInParam { Flag = false } : DC.CFH.IsContainsInFunc(mcExpr);
             if (clp.Flag)
             {
                 if (clp.Like == StringLikeEnum.Contains
@@ -755,7 +498,7 @@ namespace Yunyong.DataExchange.Core
                 //var maMem = mbEx.Expression as MemberExpression;
                 var expStr = mbEx.Expression.ToString();
                 var cp = default(ColumnParam);
-                if (IsToStringFunc(expStr))
+                if (DC.CFH.IsToStringFunc(expStr))
                 {
                     //cp=
                 }
@@ -879,7 +622,7 @@ namespace Yunyong.DataExchange.Core
                     else if (memExpr.Expression.NodeType == ExpressionType.MemberAccess)
                     {
                         var leftStr = memExpr.ToString();
-                        if (IsLengthFunc(leftStr))
+                        if (DC.CFH.IsLengthFunc(leftStr))
                         {
                             var cp = GetKey(memExpr, FuncEnum.CharLength);
                             DC.Func = FuncEnum.CharLength;
@@ -899,29 +642,13 @@ namespace Yunyong.DataExchange.Core
             else if (nodeType == ExpressionType.Call)
             {
                 var leftStr = body.ToString();
-                if (IsToStringFunc(leftStr))
+                if (DC.CFH.IsToStringFunc(leftStr))
                 {
                     var cp = GetKey(body, FuncEnum.DateFormat);
                     DC.Option = OptionEnum.ColumnAs;
                     DC.Func = FuncEnum.DateFormat;
                     DC.Compare = CompareEnum.None;
-                    var format = string.Empty;
-                    if ("yyyy-MM-dd".Equals(cp.Format.Trim(), StringComparison.OrdinalIgnoreCase))
-                    {
-                        format = "%Y-%m-%d";
-                    }
-                    else if ("yyyy-MM".Equals(cp.Format.Trim(), StringComparison.OrdinalIgnoreCase))
-                    {
-                        format = "%Y-%m";
-                    }
-                    else if ("yyyy".Equals(cp.Format.Trim(), StringComparison.OrdinalIgnoreCase))
-                    {
-                        format = "%Y";
-                    }
-                    else
-                    {
-                        throw new Exception($"{XConfig.EC._001} -- [[{body}]] 未能解析!!!");
-                    }
+                    var format = DC.TSH.DateTime(cp.Format);
                     result.Add(DC.DPH.DateFormatDic(cp, (null, string.Empty), format));
                 }
             }

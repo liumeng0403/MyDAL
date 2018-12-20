@@ -34,8 +34,7 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
             foreach (var o in orders)
             {
                 i++;
-                if (o.Func == FuncEnum.None
-                    || o.Func == FuncEnum.Column)
+                if (o.Func == FuncEnum.None)
                 {
                     if (DC.Crud == CrudTypeEnum.Join)
                     {

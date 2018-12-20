@@ -13,7 +13,7 @@ namespace MyDAL.Test.Func
             var xx1 = "";
 
             var res1 = await Conn
-                .Selecter<AlipayPaymentRecord>()
+                .Queryer<AlipayPaymentRecord>()
                 .Where(it => it.CreatedOn > WhereTest.CreatedOn)
                 .SumAsync(it => it.TotalAmount);
             Assert.True(res1 == 1527.2600000000000000000000000M);

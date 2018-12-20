@@ -20,54 +20,6 @@ namespace MyDAL.Test.QuerySingleColumn
 
             var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
-            /*************************************************************************************************************************/
-
-            xx = string.Empty;
-
-            var res2 = await Conn
-                .Queryer<Agent>()
-                .Distinct()
-                .AllAsync(it => it.Name);
-            Assert.True(res2.Count == 24444);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /***************************************************************************************************************************/
-
-            xx = string.Empty;
-
-            var res3 = await Conn
-                .Queryer<Agent>()
-                .Distinct()
-                .AllAsync(it => it.CreatedOn.ToString("yyyy-MM-dd"));
-            Assert.True(res3.Count == 2);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /***************************************************************************************************************************/
-
-            xx = string.Empty;
-
-            var res4 = await Conn
-                .Queryer<Agent>()
-                .Distinct()
-                .AllAsync(it => it.CreatedOn.ToString("yyyy-MM"));
-            Assert.True(res4.Count == 2);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /***************************************************************************************************************************/
-
-            xx = string.Empty;
-
-            var res5 = await Conn
-                .Queryer<Agent>()
-                .Distinct()
-                .AllAsync(it => it.CreatedOn.ToString("yyyy"));
-            Assert.True(res5.Count == 2);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
             /***************************************************************************************************************************/
 
             xx = string.Empty;

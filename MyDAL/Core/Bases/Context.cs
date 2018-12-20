@@ -36,6 +36,8 @@ namespace Yunyong.DataExchange.Core.Bases
             VH = new CsValueHelper(this);
             GH = new GenericHelper(this);
             EH = new XExpression(this);
+            CFH = new CsFuncHelper();
+            TSH = new ToStringHelper();
             SC = new XCache(this);
             PH = new ParameterHelper(this);
             DPH = new DicParamHelper(this);
@@ -61,6 +63,10 @@ namespace Yunyong.DataExchange.Core.Bases
         /************************************************************************************************************************/
 
         internal XExpression EH { get; private set; }
+
+        internal CsFuncHelper CFH { get; private set; }
+        internal ToStringHelper TSH { get; private set; }
+
         internal CsValueHelper VH { get; private set; }
         internal DicParamHelper DPH { get; private set; }
 
