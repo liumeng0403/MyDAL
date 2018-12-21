@@ -634,7 +634,14 @@ namespace Yunyong.DataExchange.Core
                             var alias = exp2.Member.Name;
                             var field = memExpr.Member.Name;
                             DC.Option = OptionEnum.Column;
-                            return DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.JoinColumnDic(exp2.Type.FullName, field, alias, field) });
+                            if (DC.Action == ActionEnum.Select)
+                            {
+                                return DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.JoinColumnDic(exp2.Type.FullName, field, alias, field) });
+                            }
+                            else
+                            {
+                                return DC.DPH.JoinColumnDic(exp2.Type.FullName, field, alias, field);
+                            }
                         }
                     }
                     else
