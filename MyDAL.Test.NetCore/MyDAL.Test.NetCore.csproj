@@ -6,19 +6,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MyDAL.Test.Create\MyDAL.Test.Create.csproj" />
-    <ProjectReference Include="..\MyDAL.Test.Delete\MyDAL.Test.Delete.csproj" />
-    <ProjectReference Include="..\MyDAL.Test.Func\MyDAL.Test.Func.csproj" />
-    <ProjectReference Include="..\MyDAL.Test.JoinQueryM\MyDAL.Test.JoinQueryM.csproj" />
-    <ProjectReference Include="..\MyDAL.Test.JoinQuerySingleColumn\MyDAL.Test.JoinQuerySingleColumn.csproj" />
-    <ProjectReference Include="..\MyDAL.Test.JoinQueryVmColumn\MyDAL.Test.JoinQueryVmColumn.csproj" />
-    <ProjectReference Include="..\MyDAL.Test.QueryM\MyDAL.Test.QueryM.csproj" />
-    <ProjectReference Include="..\MyDAL.Test.QuerySingleColumn\MyDAL.Test.QuerySingleColumn.csproj" />
-    <ProjectReference Include="..\MyDAL.Test.QueryVmColumn\MyDAL.Test.QueryVmColumn.csproj" />
-    <ProjectReference Include="..\MyDAL.Test.QueryVM\MyDAL.Test.QueryVM.csproj" />
-    <ProjectReference Include="..\MyDAL.Test.QuickAPI\MyDAL.Test.ShortcutAPI.csproj" />
-    <ProjectReference Include="..\MyDAL.Test.Update\MyDAL.Test.Update.csproj" />
-    <ProjectReference Include="..\MyDAL.Test.WhereEdge\MyDAL.Test.WhereEdge.csproj" />
+    <ProjectReference Include="..\NetCore21\MyDAL.Test.Create\MyDAL.Test.Create.csproj" />
+    <ProjectReference Include="..\NetCore21\MyDAL.Test.Delete\MyDAL.Test.Delete.csproj" />
+    <ProjectReference Include="..\NetCore21\MyDAL.Test.Func\MyDAL.Test.Func.csproj" />
+    <ProjectReference Include="..\NetCore21\MyDAL.Test.JoinQueryM\MyDAL.Test.JoinQueryM.csproj" />
+    <ProjectReference Include="..\NetCore21\MyDAL.Test.JoinQuerySingleColumn\MyDAL.Test.JoinQuerySingleColumn.csproj" />
+    <ProjectReference Include="..\NetCore21\MyDAL.Test.JoinQueryVmColumn\MyDAL.Test.JoinQueryVmColumn.csproj" />
+    <ProjectReference Include="..\NetCore21\MyDAL.Test.QueryM\MyDAL.Test.QueryM.csproj" />
+    <ProjectReference Include="..\NetCore21\MyDAL.Test.QuerySingleColumn\MyDAL.Test.QuerySingleColumn.csproj" />
+    <ProjectReference Include="..\NetCore21\MyDAL.Test.QueryVmColumn\MyDAL.Test.QueryVmColumn.csproj" />
+    <ProjectReference Include="..\NetCore21\MyDAL.Test.QueryVM\MyDAL.Test.QueryVM.csproj" />
+    <ProjectReference Include="..\NetCore21\MyDAL.Test.ShortcutAPI\MyDAL.Test.ShortcutAPI.csproj" />
+    <ProjectReference Include="..\NetCore21\MyDAL.Test.Update\MyDAL.Test.Update.csproj" />
+    <ProjectReference Include="..\NetCore21\MyDAL.Test.WhereEdge\MyDAL.Test.WhereEdge.csproj" />
   </ItemGroup>
 
 </Project>

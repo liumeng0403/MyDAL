@@ -343,9 +343,17 @@ namespace MyDAL.DataRainbow.MySQL
         {
             Spacing(X);
             var col = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.Select);
-            if (col == null) { Star(X); }
+            if (col == null)
+            {
+                Star(X);
+                return;
+            }
             var items = col.Columns.Where(it => it.Option == OptionEnum.Column || it.Option == OptionEnum.ColumnAs)?.ToList();
-            if (items == null || items.Count <= 0) { Star(X); }
+            if (items == null || items.Count <= 0)
+            {
+                Star(X);
+                return;
+            }
             var i = 0;
             foreach (var dic in items)
             {
