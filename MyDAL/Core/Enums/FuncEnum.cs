@@ -40,7 +40,12 @@ namespace MyDAL.Core.Enums
         /// " not in "
         /// </summary>
         NotIn,
-        InHelper
+        InHelper,
+
+        /// <summary>
+        /// " count"
+        /// </summary>
+        Count
 
     }
 }

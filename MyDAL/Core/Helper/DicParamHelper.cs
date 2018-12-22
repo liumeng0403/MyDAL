@@ -134,8 +134,8 @@ namespace MyDAL.Core.Helper
             }
             else
             {
-                ui.Key = DC.SC.GetModelKey(ui.ClassFullName);
-                ui.TableOne = DC.SC.GetTableName(ui.Key);
+                ui.Key = DC.XC.GetModelKey(ui.ClassFullName);
+                ui.TableOne = DC.XC.GetTableName(ui.Key);
             }
             if (ui.CsType != null)
             {

@@ -15,9 +15,9 @@ namespace MyDAL.Core.Bases
 
         private void SetInsertValue<M>(M m, int index)
         {
-            var key = DC.SC.GetModelKey(m.GetType().FullName);
-            var props = DC.SC.GetModelProperys(key);
-            var columns = DC.SC.GetColumnInfos(key);
+            var key = DC.XC.GetModelKey(m.GetType().FullName);
+            var props = DC.XC.GetModelProperys(key);
+            var columns = DC.XC.GetColumnInfos(key);
             var fullName = typeof(M).FullName;
 
             var list = new List<DicParam>();
@@ -75,12 +75,13 @@ namespace MyDAL.Core.Bases
         {
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
-            var col = DC.DPH.SelectColumnDic(new List<DicParam> { DC.EH.FuncMFExpression(propertyFunc) });
+            var col = DC.EH.FuncMFExpression(propertyFunc);
             DC.DPH.AddParameter(col);
         }
         protected void SingleColumnHandle<T>(Expression<Func<T>> propertyFunc)
         {
             DC.Action = ActionEnum.Select;
+            DC.Option = OptionEnum.Column;
             var col = DC.EH.FuncTExpression(propertyFunc);
             DC.DPH.AddParameter(col);
         }
@@ -121,9 +122,9 @@ namespace MyDAL.Core.Bases
 
             //
             DC.Action = ActionEnum.Select;
-            var fullName = mType.FullName;
-            var mProps = DC.GH.GetPropertyInfos(mType);
-            var tab = DC.Parameters.FirstOrDefault(it => fullName.Equals(it.ClassFullName, StringComparison.OrdinalIgnoreCase));
+            var mFullName = mType.FullName;
+            var mProps = DC.XC.GetModelProperys(DC.XC.GetModelKey(mFullName)); //DC.GH.GetPropertyInfos(mType);
+            var tab = DC.Parameters.FirstOrDefault(it => mFullName.Equals(it.ClassFullName, StringComparison.OrdinalIgnoreCase));
             var vmProps = DC.GH.GetPropertyInfos(vmType);
             if (tab != null)
             {
@@ -136,7 +137,7 @@ namespace MyDAL.Core.Bases
                     {
                         if (prop.Name.Equals(vProp.Name, StringComparison.OrdinalIgnoreCase))
                         {
-                            list.Add(DC.DPH.ColumnDic(prop.Name, tab.TableAliasOne, fullName, prop.Name));
+                            list.Add(DC.DPH.ColumnDic(prop.Name, tab.TableAliasOne, mFullName, prop.Name));
                         }
                     }
                 }

@@ -40,10 +40,10 @@ namespace MyDAL.Core.Enums
         /// </summary>
         Like,
 
-        /// <summary>
-        /// " count"
-        /// </summary>
-        Count,
+        ///// <summary>
+        ///// " count"
+        ///// </summary>
+        //Count,
 
         /// <summary>
         /// " sum"

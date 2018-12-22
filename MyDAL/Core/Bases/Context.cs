@@ -38,7 +38,7 @@ namespace MyDAL.Core.Bases
             EH = new XExpression(this);
             CFH = new CsFuncHelper();
             TSH = new ToStringHelper();
-            SC = new XCache(this);
+            XC = new XCache(this);
             PH = new ParameterHelper(this);
             DPH = new DicParamHelper(this);
             BDH = new BatchDataHelper();
@@ -96,7 +96,7 @@ namespace MyDAL.Core.Bases
         internal IDbConnection Conn { get; private set; }
         internal IDbTransaction Tran { get; set; }
         internal ISqlProvider SqlProvider { get; set; }
-        internal XCache SC { get; private set; }
+        internal XCache XC { get; private set; }
         internal DataSource DS { get; private set; }
 
         /************************************************************************************************************************/
@@ -157,7 +157,7 @@ namespace MyDAL.Core.Bases
         {
             //
             var type = typeof(M);
-            var key = SC.GetModelKey(type.FullName);
+            var key = XC.GetModelKey(type.FullName);
             if (NeedSetSingle)
             {
                 SingleOpName = type.FullName;
@@ -165,12 +165,12 @@ namespace MyDAL.Core.Bases
             }
 
             //
-            if (SC.ExistTableName(key)) return;
+            if (XC.ExistTableName(key)) return;
             var table = SqlProvider.GetTableName<M>();
-            SC.SetTableName(key, table);
-            SC.SetModelType(key, type);
-            SC.SetModelProperys(type, this);
-            (SC.SetModelColumnInfos(key, this)).GetAwaiter().GetResult();
+            XC.SetTableName(key, table);
+            XC.SetModelType(key, type);
+            XC.SetModelProperys(type, this);
+            (XC.SetModelColumnInfos(key, this)).GetAwaiter().GetResult();
         }
 
     }

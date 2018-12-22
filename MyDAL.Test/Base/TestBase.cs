@@ -67,8 +67,8 @@ namespace MyDAL.Test
         {
             get
             {
-                return GetMySQLConnection();  // MySql 5.7.21
-                //return GetTSQLConnection();  // SQL Server 2014
+                return GetMySQLConnection();  // MySql
+                //return GetTSQLConnection();  // SQL Server
             }
         }
 
