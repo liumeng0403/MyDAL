@@ -138,7 +138,7 @@ namespace Yunyong.DataExchange.Core
         {
             if (!ModelColumnInfosCache.ContainsKey(key))
             {
-                var columns = await dc.SqlProvider.GetColumnsInfos(dc.SC.GetTableName(key));
+                var columns = await dc.SqlProvider.GetColumnsInfos(dc.XC.GetTableName(key));
                 ModelColumnInfosCache[key] = columns;
             }
         }

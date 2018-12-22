@@ -28,7 +28,7 @@ namespace Yunyong.DataExchange
         /// </summary>
         /// <typeparam name="M">M:与DB Table 一 一对应</typeparam>
         public static Creater<M> Creater<M>(this IDbConnection conn)
-            where M : class
+            where M : class, new()
         {
             var dc = new XContext<M>(conn);
             dc.Crud = CrudTypeEnum.Create;
@@ -39,6 +39,7 @@ namespace Yunyong.DataExchange
         /// </summary>
         /// <typeparam name="M">M:与DB Table 一 一对应</typeparam>
         public static Deleter<M> Deleter<M>(this IDbConnection conn)
+            where M : class, new()
         {
             var dc = new XContext<M>(conn);
             dc.Crud = CrudTypeEnum.Delete;
@@ -49,6 +50,7 @@ namespace Yunyong.DataExchange
         /// </summary>
         /// <typeparam name="M">M:与DB Table 一 一对应</typeparam>
         public static Updater<M> Updater<M>(this IDbConnection conn)
+            where M : class, new()
         {
             var dc = new XContext<M>(conn);
             dc.Crud = CrudTypeEnum.Update;
@@ -61,7 +63,7 @@ namespace Yunyong.DataExchange
         /// <typeparam name="M">M:与DB Table 一 一对应</typeparam>
         [Obsolete("过期方法,建议使用 Queryer ,用法一致,方法名替换即可!!!")]
         public static Queryer<M> Selecter<M>(this IDbConnection conn)
-            where M : class
+            where M : class, new()
         {
             return conn.Queryer<M>();
         }
@@ -70,6 +72,8 @@ namespace Yunyong.DataExchange
         /// </summary>
         [Obsolete("过期方法,建议使用 Queryer ,用法一致,方法名替换即可!!!")]
         public static Queryer Joiner<M1, M2>(this IDbConnection conn, out M1 table1, out M2 table2)
+            where M1 : class, new()
+            where M2 : class, new()
         {
             return conn.Queryer(out table1, out table2);
         }
@@ -78,6 +82,9 @@ namespace Yunyong.DataExchange
         /// </summary>
         [Obsolete("过期方法,建议使用 Queryer ,用法一致,方法名替换即可!!!")]
         public static Queryer Joiner<M1, M2, M3>(this IDbConnection conn, out M1 table1, out M2 table2, out M3 table3)
+            where M1 : class, new()
+            where M2 : class, new()
+            where M3 : class, new()
         {
             return conn.Queryer(out table1, out table2, out table3);
         }
@@ -86,6 +93,10 @@ namespace Yunyong.DataExchange
         /// </summary>
         [Obsolete("过期方法,建议使用 Queryer ,用法一致,方法名替换即可!!!")]
         public static Queryer Joiner<M1, M2, M3, M4>(this IDbConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4)
+            where M1 : class, new()
+            where M2 : class, new()
+            where M3 : class, new()
+            where M4 : class, new()
         {
             return conn.Queryer(out table1, out table2, out table3, out table4);
         }
@@ -94,6 +105,11 @@ namespace Yunyong.DataExchange
         /// </summary>
         [Obsolete("过期方法,建议使用 Queryer ,用法一致,方法名替换即可!!!")]
         public static Queryer Joiner<M1, M2, M3, M4, M5>(this IDbConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4, out M5 table5)
+            where M1 : class, new()
+            where M2 : class, new()
+            where M3 : class, new()
+            where M4 : class, new()
+            where M5 : class, new()
         {
             return conn.Queryer(out table1, out table2, out table3, out table4, out table5);
         }
@@ -102,6 +118,12 @@ namespace Yunyong.DataExchange
         /// </summary>
         [Obsolete("过期方法,建议使用 Queryer ,用法一致,方法名替换即可!!!")]
         public static Queryer Joiner<M1, M2, M3, M4, M5, M6>(this IDbConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4, out M5 table5, out M6 table6)
+            where M1 : class, new()
+            where M2 : class, new()
+            where M3 : class, new()
+            where M4 : class, new()
+            where M5 : class, new()
+            where M6 : class, new()
         {
             return conn.Queryer(out table1, out table2, out table3, out table4, out table5, out table6);
         }
@@ -113,7 +135,7 @@ namespace Yunyong.DataExchange
         /// </summary>
         /// <typeparam name="M1">M1:与DB Table 一 一对应</typeparam>
         public static Queryer<M1> Queryer<M1>(this IDbConnection conn)
-            where M1 : class
+            where M1 : class, new()
         {
             var dc = new XContext<M1>(conn);
             dc.Crud = CrudTypeEnum.Query;
@@ -123,9 +145,11 @@ namespace Yunyong.DataExchange
         /// 连接查询 方法簇
         /// </summary>
         public static Queryer Queryer<M1, M2>(this IDbConnection conn, out M1 table1, out M2 table2)
+            where M1 : class, new()
+            where M2 : class, new()
         {
-            table1 = Activator.CreateInstance<M1>();
-            table2 = Activator.CreateInstance<M2>();
+            table1 = new M1();
+            table2 = new M2();
             var dc = new XContext<M1, M2>(conn);
             dc.Crud = CrudTypeEnum.Join;
             return new Queryer(dc);
@@ -134,10 +158,13 @@ namespace Yunyong.DataExchange
         /// 连接查询 方法簇
         /// </summary>
         public static Queryer Queryer<M1, M2, M3>(this IDbConnection conn, out M1 table1, out M2 table2, out M3 table3)
+            where M1 : class, new()
+            where M2 : class, new()
+            where M3 : class, new()
         {
-            table1 = Activator.CreateInstance<M1>();
-            table2 = Activator.CreateInstance<M2>();
-            table3 = Activator.CreateInstance<M3>();
+            table1 = new M1();
+            table2 = new M2();
+            table3 = new M3();
             var dc = new XContext<M1, M2, M3>(conn);
             dc.Crud = CrudTypeEnum.Join;
             return new Queryer(dc);
@@ -146,11 +173,15 @@ namespace Yunyong.DataExchange
         /// 连接查询 方法簇
         /// </summary>
         public static Queryer Queryer<M1, M2, M3, M4>(this IDbConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4)
+            where M1 : class, new()
+            where M2 : class, new()
+            where M3 : class, new()
+            where M4 : class, new()
         {
-            table1 = Activator.CreateInstance<M1>();
-            table2 = Activator.CreateInstance<M2>();
-            table3 = Activator.CreateInstance<M3>();
-            table4 = Activator.CreateInstance<M4>();
+            table1 = new M1();
+            table2 = new M2();
+            table3 = new M3();
+            table4 = new M4();
             var dc = new XContext<M1, M2, M3, M4>(conn);
             dc.Crud = CrudTypeEnum.Join;
             return new Queryer(dc);
@@ -159,12 +190,17 @@ namespace Yunyong.DataExchange
         /// 连接查询 方法簇
         /// </summary>
         public static Queryer Queryer<M1, M2, M3, M4, M5>(this IDbConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4, out M5 table5)
+            where M1 : class, new()
+            where M2 : class, new()
+            where M3 : class, new()
+            where M4 : class, new()
+            where M5 : class, new()
         {
-            table1 = Activator.CreateInstance<M1>();
-            table2 = Activator.CreateInstance<M2>();
-            table3 = Activator.CreateInstance<M3>();
-            table4 = Activator.CreateInstance<M4>();
-            table5 = Activator.CreateInstance<M5>();
+            table1 = new M1();
+            table2 = new M2();
+            table3 = new M3();
+            table4 = new M4();
+            table5 = new M5();
             var dc = new XContext<M1, M2, M3, M4, M5>(conn);
             dc.Crud = CrudTypeEnum.Join;
             return new Queryer(dc);
@@ -173,13 +209,19 @@ namespace Yunyong.DataExchange
         /// 连接查询 方法簇
         /// </summary>
         public static Queryer Queryer<M1, M2, M3, M4, M5, M6>(this IDbConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4, out M5 table5, out M6 table6)
+            where M1 : class, new()
+            where M2 : class, new()
+            where M3 : class, new()
+            where M4 : class, new()
+            where M5 : class, new()
+            where M6 : class, new()
         {
-            table1 = Activator.CreateInstance<M1>();
-            table2 = Activator.CreateInstance<M2>();
-            table3 = Activator.CreateInstance<M3>();
-            table4 = Activator.CreateInstance<M4>();
-            table5 = Activator.CreateInstance<M5>();
-            table6 = Activator.CreateInstance<M6>();
+            table1 = new M1();
+            table2 = new M2();
+            table3 = new M3();
+            table4 = new M4();
+            table5 = new M5();
+            table6 = new M6();
             var dc = new XContext<M1, M2, M3, M4, M5, M6>(conn);
             dc.Crud = CrudTypeEnum.Join;
             return new Queryer(dc);
@@ -191,7 +233,7 @@ namespace Yunyong.DataExchange
         /// Creater 便捷 CreateAsync 方法
         /// </summary>
         public static async Task<int> CreateAsync<M>(this IDbConnection conn, M m)
-            where M : class
+            where M : class, new()
         {
             return await conn.Creater<M>().CreateAsync(m);
         }
@@ -200,7 +242,7 @@ namespace Yunyong.DataExchange
         /// Creater 便捷 CreateBatchAsync 方法
         /// </summary>
         public static async Task<int> CreateBatchAsync<M>(this IDbConnection conn, IEnumerable<M> mList)
-            where M : class
+            where M : class, new()
         {
             return await conn.Creater<M>().CreateBatchAsync(mList);
         }
@@ -209,7 +251,7 @@ namespace Yunyong.DataExchange
         /// Deleter 便捷 DeleteAsync 方法
         /// </summary>
         public static async Task<int> DeleteAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class
+            where M : class, new()
         {
             return await conn.Deleter<M>().Where(compareFunc).DeleteAsync();
         }
@@ -218,33 +260,33 @@ namespace Yunyong.DataExchange
         /// Updater 便捷 UpdateAsync update fields 方法
         /// </summary>
         public static async Task<int> UpdateAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, dynamic filedsObject, SetEnum set = SetEnum.AllowedNull)
-            where M : class
+            where M : class, new()
         {
             return await conn.Updater<M>().Set(filedsObject as object).Where(compareFunc).UpdateAsync(set);
         }
 
         /// <summary>
-        /// Queryer 便捷 FirstOrDefaultAsync 方法
+        /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static async Task<M> FirstOrDefaultAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class
+            where M : class, new()
         {
             return await conn.Queryer<M>().Where(compareFunc).FirstOrDefaultAsync();
         }
         /// <summary>
-        /// Queryer 便捷 FirstOrDefaultAsync 方法
+        /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static async Task<VM> FirstOrDefaultAsync<M, VM>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class
+            where M : class, new()
             where VM : class
         {
             return await conn.Queryer<M>().Where(compareFunc).FirstOrDefaultAsync<VM>();
         }
         /// <summary>
-        /// Queryer 便捷 FirstOrDefaultAsync 方法
+        /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static async Task<T> FirstOrDefaultAsync<M, T>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, T>> columnMapFunc)
-            where M : class
+            where M : class, new()
         {
             return await conn.Queryer<M>().Where(compareFunc).FirstOrDefaultAsync(columnMapFunc);
         }
@@ -252,7 +294,7 @@ namespace Yunyong.DataExchange
         /// Queryer 便捷-同步 FirstOrDefaultAsync 方法
         /// </summary>
         public static M FirstOrDefault<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class
+            where M : class, new()
         {
             return (conn.FirstOrDefaultAsync(compareFunc)).GetAwaiter().GetResult();
         }
@@ -260,7 +302,7 @@ namespace Yunyong.DataExchange
         /// Queryer 便捷-同步 FirstOrDefaultAsync 方法
         /// </summary>
         public static VM FirstOrDefault<M, VM>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class
+            where M : class, new()
             where VM : class
         {
             return (conn.FirstOrDefaultAsync<M, VM>(compareFunc)).GetAwaiter().GetResult();
@@ -269,7 +311,7 @@ namespace Yunyong.DataExchange
         /// Queryer 便捷-同步 FirstOrDefaultAsync 方法
         /// </summary>
         public static T FirstOrDefault<M, T>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, T>> columnMapFunc)
-            where M : class
+            where M : class, new()
         {
             return (conn.FirstOrDefaultAsync(compareFunc, columnMapFunc)).GetAwaiter().GetResult();
         }
@@ -279,7 +321,7 @@ namespace Yunyong.DataExchange
         /// Queryer 便捷 ListAsync 方法
         /// </summary>
         public static async Task<List<M>> ListAsync<M>(this IDbConnection conn, QueryOption option)
-            where M : class
+            where M : class, new()
         {
             return await conn.Queryer<M>().Where(option).ListAsync();
         }
@@ -287,7 +329,7 @@ namespace Yunyong.DataExchange
         /// Queryer 便捷 ListAsync 方法
         /// </summary>
         public static async Task<List<VM>> ListAsync<M, VM>(this IDbConnection conn, QueryOption option)
-            where M : class
+            where M : class, new()
             where VM : class
         {
             return await conn.Queryer<M>().Where(option).ListAsync<VM>();
@@ -296,7 +338,7 @@ namespace Yunyong.DataExchange
         /// Queryer 便捷 ListAsync 方法
         /// </summary>
         public static async Task<List<VM>> ListAsync<M, VM>(this IDbConnection conn, QueryOption option, Expression<Func<M, VM>> columnMapFunc)
-            where M : class
+            where M : class, new()
             where VM : class
         {
             return await conn.Queryer<M>().Where(option).ListAsync<VM>(columnMapFunc);
@@ -306,7 +348,7 @@ namespace Yunyong.DataExchange
         /// Queryer 便捷 ListAsync 方法
         /// </summary>
         public static async Task<List<M>> ListAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class
+            where M : class, new()
         {
             return await conn.Queryer<M>().Where(compareFunc).ListAsync();
         }
@@ -314,7 +356,7 @@ namespace Yunyong.DataExchange
         /// Queryer 便捷 ListAsync 方法
         /// </summary>
         public static async Task<List<VM>> ListAsync<M, VM>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class
+            where M : class, new()
             where VM : class
         {
             return await conn.Queryer<M>().Where(compareFunc).ListAsync<VM>();
@@ -323,7 +365,7 @@ namespace Yunyong.DataExchange
         /// Queryer 便捷 ListAsync 方法
         /// </summary>
         public static async Task<List<VM>> ListAsync<M, VM>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, VM>> columnMapFunc)
-            where M : class
+            where M : class, new()
             where VM : class
         {
             return await conn.Queryer<M>().Where(compareFunc).ListAsync<VM>(columnMapFunc);
@@ -333,7 +375,7 @@ namespace Yunyong.DataExchange
         /// Queryer 便捷 PagingListAsync 方法
         /// </summary>
         public static async Task<PagingList<M>> PagingListAsync<M>(this IDbConnection conn, PagingQueryOption option)
-            where M : class
+            where M : class, new()
         {
             return await conn.Queryer<M>().Where(option).PagingListAsync(option);
         }
@@ -341,7 +383,7 @@ namespace Yunyong.DataExchange
         /// Queryer 便捷 PagingListAsync 方法
         /// </summary>
         public static async Task<PagingList<VM>> PagingListAsync<M, VM>(this IDbConnection conn, PagingQueryOption option)
-            where M : class
+            where M : class, new()
             where VM : class
         {
             return await conn.Queryer<M>().Where(option).PagingListAsync<VM>(option);
@@ -350,7 +392,7 @@ namespace Yunyong.DataExchange
         /// Queryer 便捷 PagingListAsync 方法
         /// </summary>
         public static async Task<PagingList<VM>> PagingListAsync<M, VM>(this IDbConnection conn, PagingQueryOption option, Expression<Func<M, VM>> columnMapFunc)
-            where M : class
+            where M : class, new()
             where VM : class
         {
             return await conn.Queryer<M>().Where(option).PagingListAsync<VM>(option, columnMapFunc);
@@ -360,7 +402,7 @@ namespace Yunyong.DataExchange
         /// Queryer 便捷 AllAsync 方法
         /// </summary>
         public static async Task<List<M>> AllAsync<M>(this IDbConnection conn)
-            where M : class
+            where M : class, new()
         {
             return await conn.Queryer<M>().AllAsync();
         }
@@ -368,7 +410,7 @@ namespace Yunyong.DataExchange
         /// Queryer 便捷 AllAsync 方法
         /// </summary>
         public static async Task<List<VM>> AllAsync<M, VM>(this IDbConnection conn)
-            where M : class
+            where M : class, new()
             where VM : class
         {
             return await conn.Queryer<M>().AllAsync<VM>();
@@ -377,7 +419,7 @@ namespace Yunyong.DataExchange
         /// Queryer 便捷 AllAsync 方法
         /// </summary>
         public static async Task<List<T>> AllAsync<M, T>(this IDbConnection conn, Expression<Func<M, T>> propertyFunc)
-            where M : class
+            where M : class, new()
         {
             return await conn.Queryer<M>().AllAsync(propertyFunc);
         }
@@ -386,7 +428,7 @@ namespace Yunyong.DataExchange
         /// Queryer 便捷 ExistAsync 方法
         /// </summary>
         public static async Task<bool> ExistAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class
+            where M : class, new()
         {
             return await conn.Queryer<M>().Where(compareFunc).ExistAsync();
         }
@@ -394,7 +436,7 @@ namespace Yunyong.DataExchange
         /// Queryer 便捷-同步 ExistAsync 方法
         /// </summary>
         public static bool Exist<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class
+            where M : class, new()
         {
             return (conn.ExistAsync(compareFunc)).GetAwaiter().GetResult();
         }
@@ -404,7 +446,7 @@ namespace Yunyong.DataExchange
         /// Queryer 便捷 CountAsync 方法
         /// </summary>
         public static async Task<int> CountAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class
+            where M : class, new()
         {
             return await conn.Queryer<M>().Where(compareFunc).CountAsync();
         }

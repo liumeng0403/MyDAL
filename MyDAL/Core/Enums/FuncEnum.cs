@@ -40,7 +40,12 @@ namespace Yunyong.DataExchange.Core.Enums
         /// " not in "
         /// </summary>
         NotIn,
-        InHelper
+        InHelper,
+
+        /// <summary>
+        /// " count"
+        /// </summary>
+        Count
 
     }
 }

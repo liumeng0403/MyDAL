@@ -143,8 +143,6 @@ namespace Yunyong.DataExchange.Core
                     return "";
                 case OptionEnum.Like:
                     return " like ";
-                case OptionEnum.Count:
-                    return " count";
                 case OptionEnum.Sum:
                     return " sum";
                 case OptionEnum.OneEqualOne:
@@ -207,6 +205,8 @@ namespace Yunyong.DataExchange.Core
                     return " in ";
                 case FuncEnum.NotIn:
                     return " not in ";
+                case FuncEnum.Count:
+                    return " count";
             }
             return " ";
         }

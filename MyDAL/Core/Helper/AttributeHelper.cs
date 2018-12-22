@@ -26,7 +26,7 @@ namespace Yunyong.DataExchange.Core.Helper
         {
             var dic = DC.EH.FuncMFExpression(attrPropFunc);
             var mType = typeof(M);
-            var key = DC.SC.GetAttrPropKey(dic.ColumnOne, typeof(A).FullName, mType.FullName);
+            var key = DC.XC.GetAttrPropKey(dic.ColumnOne, typeof(A).FullName, mType.FullName);
             if (!XCache.ModelAttributePropValCache.ContainsKey(key))
             {
                 var attr = mType.GetCustomAttributes(typeof(A), false).FirstOrDefault();

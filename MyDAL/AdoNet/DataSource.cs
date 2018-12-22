@@ -53,8 +53,14 @@ namespace Yunyong.DataExchange.AdoNet
         private DbDataReader Reader { get; set; }
         private bool IsDateTimeYearColumn(out DicParam dic)
         {
-            dic = DC
-                .Parameters
+            var col = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.Select && it.Columns != null);
+            if (col == null)
+            {
+                dic = default(DicParam);
+                return false;
+            }
+            dic = col
+                .Columns
                 .FirstOrDefault(it =>
                     it.Func == FuncEnum.DateFormat
                     && (it.CsType == XConfig.TC.DateTime || it.CsType == XConfig.TC.DateTimeNull)
@@ -66,6 +72,22 @@ namespace Yunyong.DataExchange.AdoNet
                 return true;
             }
             return false;
+        }
+        private async void ProcessDateTimeYearColumn<F>(List<F> result,DicParam dic)
+        {
+            while (await Reader.ReadAsync())
+            {
+                result.Add(
+                    DC.GH.ConvertT<F>(
+                        new DateTime(
+                            Reader.GetInt32(
+                                Reader.GetOrdinal(
+                                    dic.Option == OptionEnum.Column
+                                        ? dic.ColumnOne
+                                        : dic.Option == OptionEnum.ColumnAs
+                                            ? dic.ColumnOneAlias
+                                            : throw new Exception($"{XConfig.EC._016} -- [[{dic.Option}]] 不能解析!!!"))), 1, 1).ToString(dic.Format)));
+            }
         }
         private DbCommand SettingCommand(CommandInfo comm, IDbConnection cnn, Action<IDbCommand, DbParamInfo> paramReader)
         {
@@ -122,23 +144,11 @@ namespace Yunyong.DataExchange.AdoNet
             var result = new List<F>();
             if (IsDateTimeYearColumn(out var dic))
             {
-                while (await Reader.ReadAsync())
-                {
-                    result.Add(
-                        DC.GH.ConvertT<F>(
-                            new DateTime(
-                                Reader.GetInt32(
-                                    Reader.GetOrdinal(
-                                        dic.Option == OptionEnum.Column
-                                            ? dic.ColumnOne
-                                            : dic.Option == OptionEnum.ColumnAs
-                                                ? dic.ColumnOneAlias
-                                                : throw new Exception($"{XConfig.EC._016} -- [[{dic.Option}]] 不能解析!!!"))), 1, 1).ToString(dic.Format)));
-                }
+                ProcessDateTimeYearColumn(result, dic);
             }
             else
             {
-                var func = DC.SC.GetHandle<M>(SqlOne, Reader);
+                var func = DC.XC.GetHandle<M>(SqlOne, Reader);
                 while (await Reader.ReadAsync())
                 {
                     result.Add(propertyFunc(func(Reader)));
@@ -152,26 +162,18 @@ namespace Yunyong.DataExchange.AdoNet
             var result = new List<F>();
             if (IsDateTimeYearColumn(out var dic))
             {
-                while (await Reader.ReadAsync())
-                {
-                    result.Add(
-                        DC.GH.ConvertT<F>(
-                            new DateTime(
-                                Reader.GetInt32(
-                                    Reader.GetOrdinal(
-                                        dic.Option == OptionEnum.Column
-                                            ? dic.ColumnOne
-                                            : dic.Option == OptionEnum.ColumnAs
-                                                ? dic.ColumnOneAlias
-                                                : throw new Exception($"{XConfig.EC._008} -- [[{dic.Option}]] 不能解析!!!"))), 1, 1).ToString(dic.Format)));
-                }
+                ProcessDateTimeYearColumn(result, dic);
             }
             else
             {
-                var col = DC.Parameters.First(it => it.Crud == CrudTypeEnum.Join && it.Action == ActionEnum.Select);
-                dic = col.Columns.First(it => it.Option == OptionEnum.Column);
-                var func = DC.SC.GetHandle(SqlOne, Reader, DC.SC.GetModelType(dic.Key));
-                var prop = DC.SC.GetModelProperys(dic.Key).FirstOrDefault(it => it.Name.Equals(dic.PropOne, StringComparison.Ordinal));
+                var col = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.Select && it.Columns != null);
+                dic = col?.Columns.FirstOrDefault(it => it.Option == OptionEnum.Column);
+                if (dic == null)
+                {
+                    throw new Exception("[[ReadColumn<F>()]] - 多表连接 - 单列 - 查询 - 异常 !!!");
+                }
+                var func = DC.XC.GetHandle(SqlOne, Reader, DC.XC.GetModelType(dic.Key));
+                var prop = DC.XC.GetModelProperys(dic.Key).FirstOrDefault(it => it.Name.Equals(dic.PropOne, StringComparison.Ordinal));
                 while (await Reader.ReadAsync())
                 {
                     var obj = func(Reader);
@@ -212,7 +214,7 @@ namespace Yunyong.DataExchange.AdoNet
                     {
                         return new List<M>();
                     }
-                    var func = DC.SC.GetHandle<M>(SqlCount == 1 ? SqlOne : SqlTwo, reader);
+                    var func = DC.XC.GetHandle<M>(SqlCount == 1 ? SqlOne : SqlTwo, reader);
                     var result = new List<M>();
                     while (await reader.ReadAsync())
                     {

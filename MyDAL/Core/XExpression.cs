@@ -149,7 +149,7 @@ namespace Yunyong.DataExchange.Core
 
                 //
                 var type = prop.PropertyType;
-                var attr = DC.SC.GetXColumnAttribute(prop, DC.SC.GetAttrKey(XConfig.XColumnFullName, prop.Name, mType.FullName));
+                var attr = DC.XC.GetXColumnAttribute(prop, DC.XC.GetAttrKey(XConfig.XColumnFullName, prop.Name, mType.FullName));
                 var field = string.Empty;
                 if (attr != null)
                 {
@@ -609,7 +609,14 @@ namespace Yunyong.DataExchange.Core
                     {
                         throw new Exception("无法解析 列名 !!!");
                     }
-                    return DC.DPH.ColumnDic(cp);
+                    if (DC.Action == ActionEnum.Select)
+                    {
+                        return DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.ColumnDic(cp) });
+                    }
+                    else
+                    {
+                        return DC.DPH.ColumnDic(cp);
+                    }
                 }
                 else if (DC.Crud == CrudTypeEnum.Join)
                 {
@@ -664,7 +671,14 @@ namespace Yunyong.DataExchange.Core
                     DC.Func = FuncEnum.DateFormat;
                     DC.Compare = CompareEnum.None;
                     var format = DC.TSH.DateTime(cp.Format);
-                    return DC.DPH.DateFormatDic(cp, (null, string.Empty), format);
+                    if (DC.Action == ActionEnum.Select)
+                    {
+                        return DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.DateFormatDic(cp, (null, string.Empty), format) });
+                    }
+                    else
+                    {
+                        return DC.DPH.DateFormatDic(cp, (null, string.Empty), format);
+                    }
                 }
                 else
                 {

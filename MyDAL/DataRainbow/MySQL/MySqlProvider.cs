@@ -342,7 +342,7 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
         private void SelectColumn()
         {
             Spacing(X);
-            var col = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.Select);
+            var col = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.Select && it.Columns != null);
             if (col == null)
             {
                 Star(X);
@@ -463,7 +463,7 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
             }
             else
             {
-                TableX(DC.SC.GetTableName(DC.SC.GetModelKey(DC.SingleOpName)), X);
+                TableX(DC.XC.GetTableName(DC.XC.GetModelKey(DC.SingleOpName)), X);
             }
         }
         private void Join()
@@ -533,9 +533,9 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
             CRLF(X);
             X.Append("order by"); Spacing(X);
             var dic = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.From);
-            var key = dic != null ? dic.Key : DC.SC.GetModelKey(DC.SingleOpName);
-            var cols = DC.SC.GetColumnInfos(key);
-            var props = DC.SC.GetModelProperys(key);
+            var key = dic != null ? dic.Key : DC.XC.GetModelKey(DC.SingleOpName);
+            var cols = DC.XC.GetColumnInfos(key);
+            var props = DC.XC.GetModelProperys(key);
 
             if (DC.Parameters.Any(it => it.Action == ActionEnum.OrderBy))
             {
@@ -620,33 +620,29 @@ namespace Yunyong.DataExchange.DataRainbow.MySQL
              * count(distinct col)
              */
             Spacing(X);
-            var item = DC.Parameters.FirstOrDefault(it => it.Option == OptionEnum.Count);
+            var item = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.Select && it.Option == OptionEnum.Column && it.Columns != null)?.Columns.FirstOrDefault();
             if (item != null)
             {
                 if (item.Crud == CrudTypeEnum.Query)
                 {
                     if ("*".Equals(item.ColumnOne, StringComparison.OrdinalIgnoreCase))
                     {
-                        X.Append(Option(item.Option)); LeftBracket(X); X.Append(item.ColumnOne); RightBracket(X);
+                        X.Append(Function(item.Func)); LeftBracket(X); X.Append(item.ColumnOne); RightBracket(X);
                     }
                     else
                     {
-                        X.Append(Option(item.Option)); LeftBracket(X); Distinct();
-                        Column(item.ColumnOne, X);
-                        RightBracket(X);
+                        X.Append(Function(item.Func)); LeftBracket(X); Distinct(); Column(item.ColumnOne, X); RightBracket(X);
                     }
                 }
                 else if (item.Crud == CrudTypeEnum.Join)
                 {
                     if ("*".Equals(item.ColumnOne, StringComparison.OrdinalIgnoreCase))
                     {
-                        X.Append(Option(item.Option)); LeftBracket(X); X.Append(item.ColumnOne); RightBracket(X);
+                        X.Append(Function(item.Func)); LeftBracket(X); X.Append(item.ColumnOne); RightBracket(X);
                     }
                     else
                     {
-                        X.Append(Option(item.Option)); LeftBracket(X); Distinct(); X.Append(item.TableAliasOne); Dot(X);
-                        Column(item.ColumnOne, X);
-                        RightBracket(X);
+                        X.Append(Function(item.Func)); LeftBracket(X); Distinct(); X.Append(item.TableAliasOne); Dot(X); Column(item.ColumnOne, X); RightBracket(X);
                     }
                 }
             }
