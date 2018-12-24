@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>0.6.1</Version>
+    <Version>0.6.2</Version>
     <Authors>Meng.NET</Authors>
     <Company></Company>
     <Product>MyDAL(EasyDAL.Exchange 0.2.3 version 后 更名为 MyDAL)</Product>
@@ -19,9 +19,6 @@
     <Win32Resource />
     <PackageId>MyDAL</PackageId>
     <PackageIconUrl>http://images.cnblogs.com/cnblogs_com/Meng-NET/1310410/o_MyDAL.png</PackageIconUrl>
-    <SignAssembly>false</SignAssembly>
-    <DelaySign>false</DelaySign>
-    <AssemblyOriginatorKeyFile>Others\MyDAL.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\MyDAL.xml</DocumentationFile>
