@@ -505,8 +505,6 @@ namespace MyDAL.Core
                     cp = GetKey(mbEx.Expression, FuncEnum.None);
                 }
                 var colAlias = mbEx.Member.Name;
-                DC.Option = OptionEnum.None;
-                DC.Compare = CompareEnum.None;
                 result.Add(DC.DPH.SelectMemberInitDic(cp, colAlias));
             }
 

@@ -2,7 +2,7 @@
 
 namespace MyDAL.AdoNet
 {
-    internal struct CommandInfo
+    internal class CommandInfo
     {
         internal string CommandText { get; }
         internal DbParamInfo Parameter { get; }

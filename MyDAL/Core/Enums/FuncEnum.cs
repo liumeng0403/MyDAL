@@ -45,7 +45,12 @@ namespace MyDAL.Core.Enums
         /// <summary>
         /// " count"
         /// </summary>
-        Count
+        Count,
+
+        /// <summary>
+        /// " sum"
+        /// </summary>
+        Sum
 
     }
 }

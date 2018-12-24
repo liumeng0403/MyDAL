@@ -558,8 +558,11 @@ namespace MyDAL.Core.Helper
         {
             var dic = SetDicBase(DC);
             dic.ClassFullName = cp.ClassFullName;
-            dic.PropOne = cp.Prop;
+            dic.TableAliasOne = cp.Alias;
             dic.ColumnOne = cp.Key;
+            dic.Param = cp.Key;
+            dic.ParamRaw = cp.Key;
+            dic.PropOne = cp.Prop;
 
             return dic;
         }
