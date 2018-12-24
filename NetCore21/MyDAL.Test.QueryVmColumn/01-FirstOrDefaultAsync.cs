@@ -18,7 +18,7 @@ namespace MyDAL.Test.QueryVmColumn
             var res3 = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
-                .FirstOrDefaultAsync<AgentVM>(it => new AgentVM
+                .FirstOrDefaultAsync(it => new AgentVM
                 {
                     XXXX = it.Name,
                     YYYY = it.PathId

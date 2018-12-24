@@ -45,7 +45,12 @@ namespace Yunyong.DataExchange.Core.Enums
         /// <summary>
         /// " count"
         /// </summary>
-        Count
+        Count,
+
+        /// <summary>
+        /// " sum"
+        /// </summary>
+        Sum
 
     }
 }

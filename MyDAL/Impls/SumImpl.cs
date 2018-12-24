@@ -20,11 +20,12 @@ namespace Yunyong.DataExchange.Impls
             where F : struct
         {
             DC.Action = ActionEnum.Select;
-            var keyDic = DC.EH.FuncMFExpression(propertyFunc);
-            var key = keyDic.ColumnOne;
-            DC.Option = OptionEnum.Sum;
+            //DC.Option = OptionEnum.Sum;
+            DC.Option = OptionEnum.Column;
             DC.Compare = CompareEnum.None;
-            DC.DPH.AddParameter(DC.DPH.SumDic(typeof(M).FullName, key));
+            DC.Func = FuncEnum.Sum;
+            var dic = DC.EH.FuncMFExpression(propertyFunc);
+            DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.SumAsync);
             return await DC.DS.ExecuteScalarAsync<F>();
         }

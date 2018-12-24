@@ -13,7 +13,7 @@ namespace Yunyong.DataExchange.Core.Enums
         /// ""
         /// </summary>
         Insert,
-        
+
         /// <summary>
         /// =
         /// </summary>
@@ -45,11 +45,11 @@ namespace Yunyong.DataExchange.Core.Enums
         ///// </summary>
         //Count,
 
-        /// <summary>
-        /// " sum"
-        /// </summary>
-        Sum,
-        
+        ///// <summary>
+        ///// " sum"
+        ///// </summary>
+        //Sum,
+
         /// <summary>
         /// " distinct "
         /// </summary>

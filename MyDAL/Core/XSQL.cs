@@ -64,7 +64,7 @@ namespace Yunyong.DataExchange.Core
         {
             sb.Append('=');
         }
-        protected static void End(StringBuilder sb,List<string> sqls)
+        protected static void End(StringBuilder sb, List<string> sqls)
         {
             sb.Append(';');
             sqls.Add(sb.ToString());
@@ -88,7 +88,7 @@ namespace Yunyong.DataExchange.Core
                     Inner(sb); Spacing(sb); Join(sb);
                     return;
                 case ActionEnum.LeftJoin:
-                    Left(sb);Spacing(sb);Join(sb);
+                    Left(sb); Spacing(sb); Join(sb);
                     return;
                 case ActionEnum.On:
                     On(sb);
@@ -97,10 +97,10 @@ namespace Yunyong.DataExchange.Core
                     Where(sb);
                     return;
                 case ActionEnum.And:
-                    Tab(sb);And(sb);
+                    Tab(sb); And(sb);
                     return;
                 case ActionEnum.Or:
-                    Tab(sb);Or(sb);
+                    Tab(sb); Or(sb);
                     return;
                 default:
                     throw new Exception($"{XConfig.EC._014} -- [[{action}]] 不能解析!!!");
@@ -121,94 +121,118 @@ namespace Yunyong.DataExchange.Core
                 throw new Exception($"{XConfig.EC._010} -- [[{action}]] 不能解析!!!");
             }
         }
-        protected static string Option(OptionEnum option)
+        protected static void Option(OptionEnum option, StringBuilder sb)
         {
             switch (option)
             {
                 case OptionEnum.None:
-                    return "<<<<<";
                 case OptionEnum.Insert:
-                    return "";
-                case OptionEnum.Set:
-                    return "=";
-                case OptionEnum.ChangeAdd:
-                    return "+";
-                case OptionEnum.ChangeMinus:
-                    return "-";
                 case OptionEnum.Column:
-                    return "";
                 case OptionEnum.ColumnAs:
-                    break;
                 case OptionEnum.Compare:
-                    return "";
-                case OptionEnum.Like:
-                    return " like ";
-                case OptionEnum.Sum:
-                    return " sum";
                 case OptionEnum.OneEqualOne:
-                    return "";
+                    return;
+                case OptionEnum.Set:
+                    sb.Append("=");
+                    return;
+                case OptionEnum.ChangeAdd:
+                    sb.Append("+");
+                    return;
+                case OptionEnum.ChangeMinus:
+                    sb.Append("-");
+                    return;
+                case OptionEnum.Like:
+                    sb.Append(" like ");
+                    return;
                 case OptionEnum.IsNull:
-                    return " is null ";
+                    sb.Append(" is null ");
+                    return;
                 case OptionEnum.IsNotNull:
-                    return " is not null ";
+                    sb.Append(" is not null ");
+                    return;
                 case OptionEnum.Asc:
-                    return " asc ";
+                    sb.Append(" asc ");
+                    return;
                 case OptionEnum.Desc:
-                    return " desc ";
+                    sb.Append(" desc ");
+                    return;
+                default:
+                    throw new Exception($"{XConfig.EC._022} - [[{option}]] 不能解析!!!");
             }
-            return " ";
         }
-        protected static string Compare(CompareEnum compare)
+        protected static void Compare(CompareEnum compare, StringBuilder sb)
         {
             switch (compare)
             {
                 case CompareEnum.None:
-                    return " ";
+                    return;
                 case CompareEnum.Equal:
-                    return "=";
+                    sb.Append("=");
+                    return;
                 case CompareEnum.NotEqual:
-                    return "<>";
+                    sb.Append("<>");
+                    return;
                 case CompareEnum.LessThan:
-                    return "<";
+                    sb.Append("<");
+                    return;
                 case CompareEnum.LessThanOrEqual:
-                    return "<=";
+                    sb.Append("<=");
+                    return;
                 case CompareEnum.GreaterThan:
-                    return ">";
+                    sb.Append(">");
+                    return;
                 case CompareEnum.GreaterThanOrEqual:
-                    return ">=";
+                    sb.Append(">=");
+                    return;
                 case CompareEnum.Like:
-                    return " like ";
+                    sb.Append(" like ");
+                    return;
                 case CompareEnum.In:
-                    return " in ";
+                    sb.Append(" in ");
+                    return;
                 case CompareEnum.NotIn:
-                    return " not in ";
+                    sb.Append(" not in ");
+                    return;
+                default:
+                    throw new Exception($"{XConfig.EC._023} - [[{compare}]] 不能解析!!!");
             }
-            return " ";
         }
-        protected static string Function(FuncEnum func)
+        protected static void Function(FuncEnum func, StringBuilder sb)
         {
             switch (func)
             {
                 case FuncEnum.None:
-                    return "";
+                    return;
                 case FuncEnum.CharLength:
-                    return " char_length";
+                    sb.Append(" char_length");
+                    return;
                 case FuncEnum.DateFormat:
-                    return " date_format";
+                    sb.Append(" date_format");
+                    return;
                 case FuncEnum.Trim:
-                    return " trim";
+                    sb.Append(" trim");
+                    return;
                 case FuncEnum.LTrim:
-                    return " ltrim";
+                    sb.Append(" ltrim");
+                    return;
                 case FuncEnum.RTrim:
-                    return " rtrim";
+                    sb.Append(" rtrim");
+                    return;
                 case FuncEnum.In:
-                    return " in ";
+                    sb.Append(" in ");
+                    return;
                 case FuncEnum.NotIn:
-                    return " not in ";
+                    sb.Append(" not in ");
+                    return;
                 case FuncEnum.Count:
-                    return " count";
+                    sb.Append(" count");
+                    return;
+                case FuncEnum.Sum:
+                    sb.Append(" sum");
+                    return;
+                default:
+                    throw new Exception($"{XConfig.EC._008} - [[{func}]] 不能解析!!!");
             }
-            return " ";
         }
 
         /****************************************************************************************************************/

@@ -157,22 +157,16 @@ namespace Yunyong.DataExchange.Core.Bases
         protected void SelectMHandle<VM>(Expression<Func<VM>> func)
         {
             DC.Action = ActionEnum.Select;
+            DC.Option = OptionEnum.ColumnAs;
             var col = DC.EH.FuncTExpression(func);
-            foreach (var dic in col.Columns)
-            {
-                dic.Option = OptionEnum.ColumnAs;
-            }
             DC.DPH.AddParameter(col);
         }
         protected void SelectMHandle<M, VM>(Expression<Func<M, VM>> propertyFunc)
             where M : class
         {
             DC.Action = ActionEnum.Select;
+            DC.Option = OptionEnum.ColumnAs;
             var col = DC.EH.FuncMFExpression(propertyFunc);
-            foreach (var dic in col.Columns)
-            {
-                dic.Option = OptionEnum.ColumnAs;
-            }
             DC.DPH.AddParameter(col);
         }
 

@@ -5,13 +5,13 @@ namespace Yunyong.DataExchange.AdoNet
 {
     internal interface IRow { }
 
-    internal struct Row<M>
+    internal class Row<M>
         :IRow
     {
         internal Func<IDataReader, M> Handle { get; set; }
     }
 
-    internal struct Row
+    internal class Row
         :IRow
     {
         internal Func<IDataReader, object> Handle { get; set; }
