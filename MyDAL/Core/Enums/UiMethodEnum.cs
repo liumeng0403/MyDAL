@@ -12,7 +12,7 @@ namespace Yunyong.DataExchange.Core.Enums
         ListAsync,
         PagingListAsync,
         AllAsync,
-        PagingAllListAsync,
+        PagingAllAsync,
         ExistAsync,
         CountAsync,
         SumAsync

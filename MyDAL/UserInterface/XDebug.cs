@@ -23,14 +23,14 @@ namespace Yunyong.DataExchange
                 .Select(dbM =>
                 {
                     var field = string.Empty;
-                    if (dbM.Crud == CrudTypeEnum.Query
-                        || dbM.Crud == CrudTypeEnum.Update
-                        || dbM.Crud == CrudTypeEnum.Create
-                        || dbM.Crud == CrudTypeEnum.Delete)
+                    if (dbM.Crud == CrudEnum.Query
+                        || dbM.Crud == CrudEnum.Update
+                        || dbM.Crud == CrudEnum.Create
+                        || dbM.Crud == CrudEnum.Delete)
                     {
                         field = dbM.ColumnOne;
                     }
-                    else if (dbM.Crud == CrudTypeEnum.Join)
+                    else if (dbM.Crud == CrudEnum.Join)
                     {
                         field = $"{dbM.TableAliasOne}.{dbM.ColumnOne}";
                     }

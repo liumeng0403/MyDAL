@@ -28,7 +28,7 @@ namespace Yunyong.DataExchange.Core
         {
             sb.Append('\'');
         }
-        protected static void AT(StringBuilder sb)
+        protected static void At(StringBuilder sb)
         {
             sb.Append('@');
         }
@@ -301,11 +301,13 @@ namespace Yunyong.DataExchange.Core
             sb.Append("set");
         }
 
+        protected static void Distinct(StringBuilder sb)
+        {
+            Spacing(sb); sb.Append("distinct"); Spacing(sb);
+        }
         protected static void As(StringBuilder sb)
         {
-            Spacing(sb);
-            sb.Append("as");
-            Spacing(sb);
+            Spacing(sb); sb.Append("as"); Spacing(sb);
         }
         protected static void Escape(StringBuilder sb)
         {

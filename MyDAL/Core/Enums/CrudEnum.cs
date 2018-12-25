@@ -1,6 +1,6 @@
 namespace Yunyong.DataExchange.Core.Enums
 {
-    internal enum CrudTypeEnum
+    internal enum CrudEnum
     {
 
         None,

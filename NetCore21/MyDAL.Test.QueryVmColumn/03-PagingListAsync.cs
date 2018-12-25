@@ -16,7 +16,7 @@ namespace MyDAL.Test.QueryVmColumn
         public async Task test()
         {
 
-            var xx7 = "";
+            var xx = string.Empty;
 
             var option = new AgentQueryOption();
             option.Id = Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b");
@@ -32,7 +32,7 @@ namespace MyDAL.Test.QueryVmColumn
 
             // where method -- option orderby 
             var res7 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => it.Name == "樊士芹")
                 .PagingListAsync(option, agent => new AgentVM
                 {
@@ -41,14 +41,14 @@ namespace MyDAL.Test.QueryVmColumn
                 });
             Assert.True(res7.Data.Count == 1);
 
-            var tuple7 = (XDebug.SQL, XDebug.Parameters);
+            var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*************************************************************************************************************************/
 
-            var xx8 = "";
+            xx = string.Empty;
 
             var res8 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => it.CreatedOn >= WhereTest.CreatedOn)
                 .PagingListAsync(1, 10, agent => new AgentVM
                 {
@@ -56,11 +56,11 @@ namespace MyDAL.Test.QueryVmColumn
                     YYYY = agent.PathId
                 });
 
-            var tuple8 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*************************************************************************************************************************/
 
-            var xx = "";
+            xx = string.Empty;
 
         }
     }

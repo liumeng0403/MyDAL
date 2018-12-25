@@ -34,26 +34,17 @@ namespace Yunyong.DataExchange.Core.Enums
         /// </summary>
         Column,
         ColumnAs,
+        ColumnOther,
 
         /// <summary>
         /// " like "
         /// </summary>
         Like,
-
+        
         ///// <summary>
-        ///// " count"
+        ///// " distinct "
         ///// </summary>
-        //Count,
-
-        ///// <summary>
-        ///// " sum"
-        ///// </summary>
-        //Sum,
-
-        /// <summary>
-        /// " distinct "
-        /// </summary>
-        Distinct,
+        //Distinct,
 
         /// <summary>
         /// ""

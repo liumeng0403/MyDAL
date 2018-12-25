@@ -448,8 +448,8 @@ namespace Yunyong.DataExchange.Core.Bases
         internal void DistinctHandle()
         {
             DC.Action = ActionEnum.Select;
-            DC.Option = OptionEnum.Distinct;
-            DC.Compare = CompareEnum.None;
+            DC.Option = OptionEnum.ColumnOther;
+            DC.Compare = CompareEnum.Distinct;
             DC.Func = FuncEnum.None;
             DC.DPH.AddParameter(DC.DPH.DistinctDic());
         }

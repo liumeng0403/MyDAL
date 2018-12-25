@@ -31,7 +31,7 @@ namespace Yunyong.DataExchange
             where M : class, new()
         {
             var dc = new XContext<M>(conn);
-            dc.Crud = CrudTypeEnum.Create;
+            dc.Crud = CrudEnum.Create;
             return new Creater<M>(dc);
         }
         /// <summary>
@@ -42,7 +42,7 @@ namespace Yunyong.DataExchange
             where M : class, new()
         {
             var dc = new XContext<M>(conn);
-            dc.Crud = CrudTypeEnum.Delete;
+            dc.Crud = CrudEnum.Delete;
             return new Deleter<M>(dc);
         }
         /// <summary>
@@ -53,7 +53,7 @@ namespace Yunyong.DataExchange
             where M : class, new()
         {
             var dc = new XContext<M>(conn);
-            dc.Crud = CrudTypeEnum.Update;
+            dc.Crud = CrudEnum.Update;
             return new Updater<M>(dc);
         }
 
@@ -138,7 +138,7 @@ namespace Yunyong.DataExchange
             where M1 : class, new()
         {
             var dc = new XContext<M1>(conn);
-            dc.Crud = CrudTypeEnum.Query;
+            dc.Crud = CrudEnum.Query;
             return new Queryer<M1>(dc);
         }
         /// <summary>
@@ -151,7 +151,7 @@ namespace Yunyong.DataExchange
             table1 = new M1();
             table2 = new M2();
             var dc = new XContext<M1, M2>(conn);
-            dc.Crud = CrudTypeEnum.Join;
+            dc.Crud = CrudEnum.Join;
             return new Queryer(dc);
         }
         /// <summary>
@@ -166,7 +166,7 @@ namespace Yunyong.DataExchange
             table2 = new M2();
             table3 = new M3();
             var dc = new XContext<M1, M2, M3>(conn);
-            dc.Crud = CrudTypeEnum.Join;
+            dc.Crud = CrudEnum.Join;
             return new Queryer(dc);
         }
         /// <summary>
@@ -183,7 +183,7 @@ namespace Yunyong.DataExchange
             table3 = new M3();
             table4 = new M4();
             var dc = new XContext<M1, M2, M3, M4>(conn);
-            dc.Crud = CrudTypeEnum.Join;
+            dc.Crud = CrudEnum.Join;
             return new Queryer(dc);
         }
         /// <summary>
@@ -202,7 +202,7 @@ namespace Yunyong.DataExchange
             table4 = new M4();
             table5 = new M5();
             var dc = new XContext<M1, M2, M3, M4, M5>(conn);
-            dc.Crud = CrudTypeEnum.Join;
+            dc.Crud = CrudEnum.Join;
             return new Queryer(dc);
         }
         /// <summary>
@@ -223,7 +223,7 @@ namespace Yunyong.DataExchange
             table5 = new M5();
             table6 = new M6();
             var dc = new XContext<M1, M2, M3, M4, M5, M6>(conn);
-            dc.Crud = CrudTypeEnum.Join;
+            dc.Crud = CrudEnum.Join;
             return new Queryer(dc);
         }
 

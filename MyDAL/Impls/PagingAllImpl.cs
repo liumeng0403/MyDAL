@@ -22,7 +22,7 @@ namespace Yunyong.DataExchange.Impls
         {
             DC.PageIndex = pageIndex;
             DC.PageSize = pageSize;
-            return await PagingListAsyncHandle<M>(UiMethodEnum.PagingAllListAsync, false);
+            return await PagingListAsyncHandle<M>(UiMethodEnum.PagingAllAsync, false);
         }
 
         public async Task<PagingList<VM>> PagingAllAsync<VM>(int pageIndex, int pageSize)
@@ -30,7 +30,7 @@ namespace Yunyong.DataExchange.Impls
         {
             DC.PageIndex = pageIndex;
             DC.PageSize = pageSize;
-            return await PagingListAsyncHandle<M, VM>(UiMethodEnum.PagingAllListAsync, false, null);
+            return await PagingListAsyncHandle<M, VM>(UiMethodEnum.PagingAllAsync, false, null);
         }
 
         public async Task<PagingList<T>> PagingAllAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
@@ -46,7 +46,7 @@ namespace Yunyong.DataExchange.Impls
             {
                 SelectMHandle(columnMapFunc);
             }
-            return await PagingListAsyncHandle<M, T>(UiMethodEnum.PagingAllListAsync, single, columnMapFunc.Compile());
+            return await PagingListAsyncHandle<M, T>(UiMethodEnum.PagingAllAsync, single, columnMapFunc.Compile());
         }
     }
 }

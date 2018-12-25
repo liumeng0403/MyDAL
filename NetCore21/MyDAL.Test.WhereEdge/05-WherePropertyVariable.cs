@@ -7,7 +7,7 @@ using Yunyong.DataExchange;
 
 namespace MyDAL.Test.WhereEdge
 {
-    public class _05_WherePropertyVariable:TestBase
+    public class _05_WherePropertyVariable : TestBase
     {
 
         public Guid AgentId { get; set; }
@@ -15,18 +15,18 @@ namespace MyDAL.Test.WhereEdge
         [Fact]
         public async Task Property()
         {
-            var xx1 = "";
+            var xx = string.Empty;
 
             AgentId = Guid.Parse("00079c84-a511-418b-bd5b-0165442eb30a");
             var res1 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => it.Id == AgentId)
                 .FirstOrDefaultAsync<AgentVM>();
             Assert.NotNull(res1);
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters);
+            var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
-            var xx = "";
+            xx = string.Empty;
         }
 
     }

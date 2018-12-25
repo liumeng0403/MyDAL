@@ -7,7 +7,7 @@ namespace Yunyong.DataExchange.Core.Bases
         //
         internal int ID { get; set; }
         internal bool IsDbSet { get; set; }
-        internal CrudTypeEnum Crud { get; set; }
+        internal CrudEnum Crud { get; set; }
         internal ActionEnum Action { get; set; }
         internal OptionEnum Option { get; set; }
         internal CompareEnum Compare { get; set; }
