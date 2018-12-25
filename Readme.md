@@ -7,15 +7,15 @@
 
 # Project Introduction 
 
-[![](https://img.shields.io/badge/Download-2,704-golden.svg)](https://www.nuget.org/profiles/Meng.NET)
+[![](https://img.shields.io/badge/Download-2,709-golden.svg)](https://www.nuget.org/profiles/Meng.NET)
 [![](https://img.shields.io/badge/Star-11-yellow.svg)](https://github.com/liumeng0403/MyDAL/stargazers)
 [![](https://img.shields.io/badge/Fork-3-orange.svg)](https://github.com/liumeng0403/MyDAL/network/members)
 [![](https://img.shields.io/badge/Apache-2.0-blue.svg)](https://github.com/liumeng0403/MyDAL/blob/master/License)
 [![](https://img.shields.io/badge/MySQL-5.7.21-purple.svg)](https://www.cnblogs.com/Meng-NET/p/9831746.html)
-[![](https://img.shields.io/badge/Nuget-0.6.2-green.svg)](https://www.nuget.org/packages/MyDAL/)
+[![](https://img.shields.io/badge/Nuget-0.6.3-green.svg)](https://www.nuget.org/packages/MyDAL/)
 
 <b>Nuget:</b>
-><a href="https://www.nuget.org/packages/MyDAL/" target="_blank">PM> Install-Package MyDAL -Version 0.6.2</a>
+><a href="https://www.nuget.org/packages/MyDAL/" target="_blank">PM> Install-Package MyDAL -Version 0.6.3</a>
 
 <b>Tutorials:</b><br/>
 * <a href="https://www.cnblogs.com/Meng-NET/p/9831746.html" target="_blank">MyDAL - 简介&安装&快速使用</a>
