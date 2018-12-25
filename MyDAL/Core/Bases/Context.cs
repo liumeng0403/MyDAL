@@ -72,11 +72,12 @@ namespace MyDAL.Core.Bases
 
         /************************************************************************************************************************/
 
-        internal CrudTypeEnum Crud { get; set; } = CrudTypeEnum.None;
+        internal CrudEnum Crud { get; set; } = CrudEnum.None;
         internal ActionEnum Action { get; set; } = ActionEnum.None;
         internal OptionEnum Option { get; set; } = OptionEnum.None;
         internal CompareEnum Compare { get; set; } = CompareEnum.None;
         internal FuncEnum Func { get; set; } = FuncEnum.None;
+
         internal UiMethodEnum Method { get; set; } = UiMethodEnum.None;
 
         internal SetEnum Set { get; set; } = SetEnum.AllowedNull;
@@ -129,10 +130,10 @@ namespace MyDAL.Core.Bases
         {
             switch (Crud)
             {
-                case CrudTypeEnum.Query:
-                case CrudTypeEnum.Update:
-                case CrudTypeEnum.Delete:
-                case CrudTypeEnum.Create:
+                case CrudEnum.Query:
+                case CrudEnum.Update:
+                case CrudEnum.Delete:
+                case CrudEnum.Create:
                     return true;
             }
             return false;

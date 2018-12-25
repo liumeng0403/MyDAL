@@ -16,65 +16,65 @@ namespace MyDAL.Test.Func
              */
             /************************************************************************************************************************/
 
-            var xx1 = "";
+            var xx = string.Empty;
 
             // .Where(a => a.Name.Length > 0)
             var res1 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => it.Name.Length > 2)
                 .ListAsync();
             Assert.True(res1.Count == 22660);
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters);
+            var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
-            var xxR1 = "";
+            xx = string.Empty;
 
             // .Where(a => a.Name.Length > 0)
             var resR1 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => 2 < it.Name.Length)
                 .ListAsync();
             Assert.True(res1.Count == resR1.Count);
             Assert.True(res1.Count == 22660);
 
-            var tupleR1 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /************************************************************************************************************************/
 
-            var xx2 = "";
+            xx = string.Empty;
 
             // .Where(a => a.Name.Length > 0)
             var res2 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var agent2, out var record2)
+                .Queryer(out Agent agent2, out AgentInventoryRecord record2)
                 .From(() => agent2)
-                .InnerJoin(() => record2)
-                .On(() => agent2.Id == record2.AgentId)
+                    .InnerJoin(() => record2)
+                        .On(() => agent2.Id == record2.AgentId)
                 .Where(() => agent2.Name.Length > 2)
                 .ListAsync<Agent>();
             Assert.True(res2.Count == 457);
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /************************************************************************************************************************/
 
-            var xx3 = "";
+            xx = string.Empty;
 
             // .Where(a => a.Name.Length > 0)
             var res3 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var agent3, out var record3)
+                .Queryer(out Agent agent3, out AgentInventoryRecord record3)
                 .From(() => agent3)
                     .InnerJoin(() => record3)
                         .On(() => agent3.Id == record3.AgentId)
                 .Where(() => agent3.Name.Length > 2)
-                .OrderBy(()=>agent3.Name.Length)
+                .OrderBy(() => agent3.Name.Length)
                 .ListAsync<Agent>();
             Assert.True(res3.Count == 457);
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /************************************************************************************************************************/
 
-            var xx = "";
+            xx = string.Empty;
         }
 
 

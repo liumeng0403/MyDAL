@@ -11,8 +11,6 @@ namespace MyDAL
         /// <summary>
         /// set 单个字段数据
         /// </summary>
-        /// <param name="func">格式: it => it.CreatedOn</param>
-        /// <param name="newVal">新值</param>
         public static SetU<M> Set<M, F>(this Updater<M> updater, Expression<Func<M, F>> propertyFunc, F newVal)
             where M : class
         {
@@ -23,8 +21,6 @@ namespace MyDAL
         /// <summary>
         /// set 单个字段数据
         /// </summary>
-        /// <param name="func">格式: it => it.CreatedOn</param>
-        /// <param name="newVal">新值</param>
         public static SetU<M> Set<M, F>(this SetU<M> set, Expression<Func<M, F>> propertyFunc, F newVal)
             where M : class
         {

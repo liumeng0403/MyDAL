@@ -7,62 +7,67 @@ namespace MyDAL
         /// <summary>
         /// " "
         /// </summary>
-        [Description(" ")]
+        //[Description(" ")]
         None,
 
         /// <summary>
         /// =
         /// </summary>
-        [Description("=")]
+        //[Description("=")]
         Equal,
 
         /// <summary>
         /// !=
         /// </summary>
-        [Description("<>")]
+        //[Description("<>")]
         NotEqual,
 
         /// <summary>
         /// &lt;
         /// </summary>
-        [Description("<")]
+        //[Description("<")]
         LessThan,
 
         /// <summary>
         /// &lt;=
         /// </summary>
-        [Description("<=")]
+        //[Description("<=")]
         LessThanOrEqual,
 
         /// <summary>
         /// &gt;
         /// </summary>
-        [Description(">")]
+        //[Description(">")]
         GreaterThan,
 
         /// <summary>
         /// &gt;=
         /// </summary>
-        [Description(">=")]
+        //[Description(">=")]
         GreaterThanOrEqual,
 
         /// <summary>
         /// " like "
         /// </summary>
-        [Description(" like ")]
+        //[Description(" like ")]
         Like,
 
         /// <summary>
         /// " in "
         /// </summary>
-        [Description(" in ")]
+        //[Description(" in ")]
         In,
 
         /// <summary>
         /// " not in "
         /// </summary>
-        [Description(" not in ")]
-        NotIn
+        //[Description(" not in ")]
+        NotIn,
+
+        /// <summary>
+        /// " distinct "
+        /// </summary>
+        Distinct
 
     }
 }

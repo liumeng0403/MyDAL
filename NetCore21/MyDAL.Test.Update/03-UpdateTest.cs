@@ -40,7 +40,8 @@ namespace MyDAL.Test.Update
         [Fact]
         public async Task UpdateAsyncTest()
         {
-            var xx0 = "";
+            var xx = string.Empty;
+            var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             var m = await CreateDbData();
             var Id = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e");
@@ -49,7 +50,7 @@ namespace MyDAL.Test.Update
 
             /***************************************************************************************************************************/
 
-            var xx1 = "";
+            xx = string.Empty;
 
             // DB data
             var m1 = new BodyFitRecord
@@ -71,11 +72,11 @@ namespace MyDAL.Test.Update
                 .UpdateAsync();
             Assert.True(res1 == 1);
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /***************************************************************************************************************************/
 
-            var xx2 = "";
+            xx = string.Empty;
 
             // set field 2
             var res2 = await Conn
@@ -86,11 +87,11 @@ namespace MyDAL.Test.Update
                 .UpdateAsync();
             Assert.True(res2 == 2);
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /***************************************************************************************************************************/
 
-            var xx3 = "";
+            xx = string.Empty;
 
             // set dynamic
             var res3 = await Conn
@@ -104,11 +105,11 @@ namespace MyDAL.Test.Update
                 .UpdateAsync();
             Assert.True(res3 == 1);
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /***************************************************************************************************************************/
 
-            var xx4 = "";
+            xx = string.Empty;
 
             dynamic obj = new ExpandoObject();
             obj.TotalSaleCount = 2000;
@@ -121,11 +122,11 @@ namespace MyDAL.Test.Update
                 .UpdateAsync();
             Assert.True(res4 == 1);
 
-            var tuple4 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /***************************************************************************************************************************/
 
-            var xx5 = "";
+            xx = string.Empty;
 
             // where change
             var res5 = await Conn
@@ -136,14 +137,14 @@ namespace MyDAL.Test.Update
                 .UpdateAsync();
             Assert.True(res5 == 1);
 
-            var tuple5 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /***************************************************************************************************************************/
 
-            var xx6 = "";
+            xx = string.Empty;
 
             var resx6 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
                 .FirstOrDefaultAsync();
             resx6.ActivedOn = null;
@@ -156,11 +157,11 @@ namespace MyDAL.Test.Update
                 .UpdateAsync();
             Assert.True(res6 == 1);
 
-            var tuple6 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /***************************************************************************************************************************/
 
-            var xx7 = "";
+            xx = string.Empty;
 
             var guid7 = Guid.Parse("b3866d7c-2b51-46ae-85cb-0165c9121e8f");
             var resxxx7 = await Conn
@@ -169,7 +170,7 @@ namespace MyDAL.Test.Update
                 .Where(it => it.Id == guid7)
                 .UpdateAsync();
             var resx7 = await Conn
-                .Selecter<Product>()
+                .Queryer<Product>()
                 .Where(it => it.Id == guid7)
                 .FirstOrDefaultAsync();
             Assert.NotNull(resx7);
@@ -184,17 +185,17 @@ namespace MyDAL.Test.Update
                 .UpdateAsync();
             Assert.True(res7 == 1);
 
-            var tuple7 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             var resxx7 = await Conn
-                .Selecter<Product>()
+                .Queryer<Product>()
                 .Where(it => it.Id == guid7)
                 .FirstOrDefaultAsync();
             Assert.True(resxx7.VipProduct);
 
             /***************************************************************************************************************************/
 
-            var xx8 = "";
+            xx = string.Empty;
 
             var res8 = await Conn
                 .Updater<Agent>()
@@ -202,16 +203,16 @@ namespace MyDAL.Test.Update
                 .Where(it => it.Id == Guid.Parse("0014f62d-2a96-4b5b-b4bd-01654438e3d4"))
                 .UpdateAsync();
             var res81 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => it.Id == Guid.Parse("0014f62d-2a96-4b5b-b4bd-01654438e3d4"))
                 .FirstOrDefaultAsync();
             Assert.True(res81.AgentLevel == AgentLevel.NewCustomer);
 
-            var tuple8 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /***************************************************************************************************************************/
 
-            var xx = "";
+            xx = string.Empty;
         }
 
     }

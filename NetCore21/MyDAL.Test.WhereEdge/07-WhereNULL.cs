@@ -23,7 +23,7 @@ namespace MyDAL.Test.WhereEdge
 
             return m;
         }
-        public async Task ClearData3(Agent m)
+        private async Task ClearData3(Agent m)
         {
             await Conn
                 .Updater<Agent>()

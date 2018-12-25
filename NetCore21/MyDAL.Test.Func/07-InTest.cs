@@ -17,7 +17,7 @@ namespace MyDAL.Test.Func
         private async Task PereValue()
         {
             var res1 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => it.Id == Guid.Parse("03f0a7b4-acd3-4003-b686-01654436e906"))
                 .FirstOrDefaultAsync();
             var res2 = await Conn
@@ -26,7 +26,7 @@ namespace MyDAL.Test.Func
                 .Where(it => it.Id == res1.Id)
                 .UpdateAsync();
             var res3 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => it.Id == Guid.Parse("03fc18e2-4b1e-4aa2-832b-0165443388bd"))
                 .FirstOrDefaultAsync();
             var res4 = await Conn
@@ -42,7 +42,8 @@ namespace MyDAL.Test.Func
 
             /*******************************************************************************************************************/
 
-            var xx1 = "";
+            var xx = string.Empty;
+            var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             var enums = new List<AgentLevel?>
             {
@@ -51,37 +52,37 @@ namespace MyDAL.Test.Func
             };
             // where in  --  variable  List<enum>  
             var res1 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => enums.Contains(it.AgentLevel))
                 .ListAsync();
             Assert.True(res1.Count == 555);
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*******************************************************************************************************************/
 
-            var xx2 = "";
+            xx = string.Empty;
 
             // where in -- obj.prop List<enum>
             var res2 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => WhereTest.In_List_枚举.Contains(it.AgentLevel))
                 .ListAsync();
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*******************************************************************************************************************/
 
-            var xx3 = "";
+            xx = string.Empty;
 
             EnumList = enums;
             // where in -- this.prop List<enum>
             var res3 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => EnumList.Contains(it.AgentLevel))
                 .ListAsync();
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             Assert.True(res1.Count == res2.Count);
             Assert.True(res2.Count == res3.Count);
@@ -89,7 +90,7 @@ namespace MyDAL.Test.Func
 
             /*******************************************************************************************************************/
 
-            var xx4 = "";
+            xx = string.Empty;
 
             var names = new List<string>
             {
@@ -98,36 +99,36 @@ namespace MyDAL.Test.Func
             };
             // where in  --  variable  List<string>  
             var res4 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => names.Contains(it.Name))
                 .ListAsync();
 
-            var tuple4 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*******************************************************************************************************************/
 
-            var xx5 = "";
+            xx = string.Empty;
 
             // where in -- obj.prop List<string>
             var res5 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => WhereTest.In_List_String.Contains(it.Name))
                 .ListAsync();
 
-            var tuple5 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*******************************************************************************************************************/
 
-            var xx6 = "";
+            xx = string.Empty;
 
             StringList = names;
             // where in -- this.prop List<string>
             var res6 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => StringList.Contains(it.Name))
                 .ListAsync();
 
-            var tuple6 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             Assert.True(res4.Count == res5.Count);
             Assert.True(res5.Count == res6.Count);
@@ -140,39 +141,39 @@ namespace MyDAL.Test.Func
 
             /*******************************************************************************************************************/
 
-            var xx7 = "";
+            xx = string.Empty;
 
             // where in -- List<int>  init 
             var res7 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => new List<int> { 5, 10 }.Contains(it.DirectorStarCount))
                 .ListAsync();
 
-            var tuple7 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*******************************************************************************************************************/
 
-            var xx8 = "";
+            xx = string.Empty;
 
             // where in -- List<long> init
             var res8 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => new List<long> { 5, 10 }.Contains(it.DirectorStarCount))
                 .ListAsync();
 
-            var tuple8 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*******************************************************************************************************************/
 
-            var xx9 = "";
+            xx = string.Empty;
 
             // where in -- List<short> init
             var res9 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => new List<short> { 5, 10 }.Contains((short)(it.DirectorStarCount)))
                 .ListAsync();
 
-            var tuple9 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             Assert.True(res7.Count == res8.Count);
             Assert.True(res8.Count == res9.Count);
@@ -180,33 +181,33 @@ namespace MyDAL.Test.Func
 
             /*******************************************************************************************************************/
 
-            var xx10 = "";
+            xx = string.Empty;
 
             // where in -- List<string> init
             var res10 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => new List<string> { "黄银凤", "刘建芬" }.Contains(it.Name))
                 .ListAsync();
             Assert.True(res10.Count == 2);
 
-            var tuple10 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*******************************************************************************************************************/
 
-            var xx11 = "";
+            xx = string.Empty;
 
             // where in -- List<enum> init
             var res11 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => new List<AgentLevel?> { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel))
                 .ListAsync();
             Assert.True(res11.Count == 555);
 
-            var tuple11 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*******************************************************************************************************************/
 
-            var xx12 = "";
+            xx = string.Empty;
 
             var enumArray = new AgentLevel?[]
             {
@@ -215,36 +216,36 @@ namespace MyDAL.Test.Func
             };
             // where in  --  variable  enum[]  
             var res12 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => enumArray.Contains(it.AgentLevel))
                 .ListAsync();
 
-            var tuple12 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*******************************************************************************************************************/
 
-            var xx13 = "";
+            xx = string.Empty;
 
             // where in -- obj.prop enum[]
             var res13 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => WhereTest.In_Array_枚举.Contains(it.AgentLevel))
                 .ListAsync();
 
-            var tuple13 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*******************************************************************************************************************/
 
-            var xx14 = "";
+            xx = string.Empty;
 
             EnumArray = enumArray;
             // where in -- this.prop enum[]
             var res14 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => EnumArray.Contains(it.AgentLevel))
                 .ListAsync();
 
-            var tuple14 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             Assert.True(res12.Count == res13.Count);
             Assert.True(res13.Count == res14.Count);
@@ -252,7 +253,7 @@ namespace MyDAL.Test.Func
 
             /*******************************************************************************************************************/
 
-            var xx15 = "";
+            xx = string.Empty;
 
             var nameArray = new string[]
             {
@@ -265,11 +266,11 @@ namespace MyDAL.Test.Func
                 .Where(it => nameArray.Contains(it.Name))
                 .ListAsync();
 
-            var tuple15 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*******************************************************************************************************************/
 
-            var xx16 = "";
+            xx = string.Empty;
 
             // where in -- obj.prop string[]
             var res16 = await Conn
@@ -277,11 +278,11 @@ namespace MyDAL.Test.Func
                 .Where(it => WhereTest.In_Array_String.Contains(it.Name))
                 .ListAsync();
 
-            var tuple16 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*******************************************************************************************************************/
 
-            var xx17 = "";
+            xx = string.Empty;
 
             StringArray = nameArray;
             // where in -- this.prop string[]
@@ -290,7 +291,7 @@ namespace MyDAL.Test.Func
                 .Where(it => StringArray.Contains(it.Name))
                 .ListAsync();
 
-            var tuple17 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             Assert.True(res15.Count == res16.Count);
             Assert.True(res16.Count == res17.Count);
@@ -302,7 +303,7 @@ namespace MyDAL.Test.Func
 
             /*******************************************************************************************************************/
 
-            var xx18 = "";
+            xx = string.Empty;
 
             // where in -- int[]  init 
             var res18 = await Conn
@@ -310,7 +311,7 @@ namespace MyDAL.Test.Func
                 .Where(it => new int[] { 5, 10 }.Contains(it.DirectorStarCount))
                 .ListAsync();
 
-            var tuple18 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*******************************************************************************************************************/
 
@@ -439,10 +440,10 @@ namespace MyDAL.Test.Func
             {
                 Assert.Equal("【new List`1() {}.Contains(it.Id)】 中 集合为空!!!", ex.Message, ignoreCase: true);
             }
-            
+
             /*******************************************************************************************************************/
 
-            var xx = "";
+            xx = string.Empty;
         }
 
     }

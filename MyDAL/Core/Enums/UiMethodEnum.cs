@@ -12,7 +12,7 @@
         ListAsync,
         PagingListAsync,
         AllAsync,
-        PagingAllListAsync,
+        PagingAllAsync,
         ExistAsync,
         CountAsync,
         SumAsync

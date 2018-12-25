@@ -40,7 +40,7 @@ namespace MyDAL.Test.Update
             }
             catch (Exception ex)
             {
-                Assert.True(ex.Message.Equals("NotAllowedNull -- 字段:[[PathId]]的值不能设为 Null !!!", StringComparison.OrdinalIgnoreCase));
+                Assert.Equal("NotAllowedNull -- 字段:[[PathId]]的值不能设为 Null !!!", ex.Message, ignoreCase: true);
             }
 
             var tuple2 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -64,7 +64,7 @@ namespace MyDAL.Test.Update
             var tuple3 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             var res31 = await Conn.FirstOrDefaultAsync<Agent>(it => it.Id == agent.Id);
-            Assert.True(res31.PathId.Equals("xxxxxxx", StringComparison.OrdinalIgnoreCase));
+            Assert.Equal("xxxxxxx", res31.PathId, ignoreCase: true);
             Assert.NotNull(res31.ActiveOrderId);
 
             /*****************************************************************************************************************************************************************/
@@ -96,7 +96,7 @@ namespace MyDAL.Test.Update
             }
             catch (Exception ex)
             {
-                Assert.True(ex.Message.Equals("NotAllowedNull -- 字段:[[PathId]]的值不能设为 Null !!!", StringComparison.OrdinalIgnoreCase));
+                Assert.Equal("NotAllowedNull -- 字段:[[PathId]]的值不能设为 Null !!!", ex.Message, ignoreCase: true);
             }
 
             /*****************************************************************************************************************************************************************/
@@ -114,7 +114,7 @@ namespace MyDAL.Test.Update
             var tuple6 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             var res61 = await Conn.FirstOrDefaultAsync<Agent>(it => it.Id == agent.Id);
-            Assert.True(res61.PathId.Equals("yyyyyyy", StringComparison.OrdinalIgnoreCase));
+            Assert.Equal("yyyyyyy", res61.PathId, ignoreCase: true);
             Assert.NotNull(res61.ActiveOrderId);
 
             /*****************************************************************************************************************************************************************/

@@ -558,7 +558,7 @@ namespace MyDAL.Core
                     };
                     result = HandConditionBinary(binExpr, pres, funcStr);
                 }
-                else if (DC.Crud == CrudTypeEnum.Join)
+                else if (DC.Crud == CrudEnum.Join)
                 {
                     var binExpr = body as BinaryExpression;
                     if (DC.Action == ActionEnum.On)
@@ -598,7 +598,7 @@ namespace MyDAL.Core
             {
                 var memExpr = body as MemberExpression;
                 if (DC.IsSingleTableOption()
-                    || DC.Crud == CrudTypeEnum.None)
+                    || DC.Crud == CrudEnum.None)
                 {
                     var cp = GetKey(memExpr, FuncEnum.None);
                     if (string.IsNullOrWhiteSpace(cp.Key))
@@ -614,7 +614,7 @@ namespace MyDAL.Core
                         return DC.DPH.ColumnDic(cp);
                     }
                 }
-                else if (DC.Crud == CrudTypeEnum.Join)
+                else if (DC.Crud == CrudEnum.Join)
                 {
                     if (memExpr.Expression.NodeType == ExpressionType.Constant)
                     {
