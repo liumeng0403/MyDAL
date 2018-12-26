@@ -16,7 +16,7 @@ namespace MyDAL.Test.QueryM
             var xx1 = "";
 
             var res1 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .TopAsync(25);
             Assert.True(res1.Count == 25);
 

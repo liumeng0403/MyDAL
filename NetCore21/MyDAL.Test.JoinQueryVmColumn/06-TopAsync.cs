@@ -17,7 +17,7 @@ namespace MyDAL.Test.JoinQueryVmColumn
             var xx7 = "";
 
             var res7 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var agent7, out var record7)
+                .Queryer(out Agent agent7, out AgentInventoryRecord record7)
                 .From(() => agent7)
                     .InnerJoin(() => record7)
                         .On(() => agent7.Id == record7.AgentId)
@@ -39,7 +39,7 @@ namespace MyDAL.Test.JoinQueryVmColumn
             var xx9 = "";
 
             var res9 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var agent9, out var record9)
+                .Queryer(out Agent agent9, out AgentInventoryRecord record9)
                 .From(() => agent9)
                     .InnerJoin(() => record9)
                         .On(() => agent9.Id == record9.AgentId)

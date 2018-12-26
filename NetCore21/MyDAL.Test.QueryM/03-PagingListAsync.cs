@@ -21,10 +21,10 @@ namespace MyDAL.Test.QueryM
 
             // order by
             var res1 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => it.AgentLevel == (AgentLevel)128)
                 .OrderBy(it => it.PathId)
-                .ThenOrderBy(it => it.Name, OrderByEnum.Asc)
+                    .ThenOrderBy(it => it.Name, OrderByEnum.Asc)
                 .PagingListAsync(1, 10);
             Assert.True(res1.TotalCount == 555);
 
@@ -36,7 +36,7 @@ namespace MyDAL.Test.QueryM
 
             // key
             var res2 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => it.AgentLevel == (AgentLevel)2)
                 .PagingListAsync(1, 10);
             Assert.True(res2.TotalPage == 2807);
@@ -49,7 +49,7 @@ namespace MyDAL.Test.QueryM
 
             // none key
             var res3 = await Conn
-                .Selecter<WechatPaymentRecord>()
+                .Queryer<WechatPaymentRecord>()
                 .Where(it => it.Amount > 1)
                 .PagingListAsync(1, 10);
             Assert.True(res3.TotalPage == 56);
@@ -61,14 +61,14 @@ namespace MyDAL.Test.QueryM
             var xx4 = "";
 
             var res4 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => it.CreatedOn >= WhereTest.CreatedOn)
                 .PagingListAsync(1, 10);
 
             var tuple4 = (XDebug.SQL, XDebug.Parameters);
 
             var resR4 = await Conn
-                .Selecter<Agent>()
+                .Queryer<Agent>()
                 .Where(it => WhereTest.CreatedOn <= it.CreatedOn)
                 .PagingListAsync(1, 10);
             Assert.True(res4.TotalCount == resR4.TotalCount);

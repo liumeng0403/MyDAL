@@ -8,7 +8,7 @@ using Yunyong.DataExchange;
 
 namespace MyDAL.Test.JoinQueryM
 {
-    public class _06_TopAsync:TestBase
+    public class _06_TopAsync : TestBase
     {
         [Fact]
         public async Task test()
@@ -19,7 +19,7 @@ namespace MyDAL.Test.JoinQueryM
             var xx8 = "";
 
             var res8 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var agent8, out var record8)
+                .Queryer(out Agent agent8, out AgentInventoryRecord record8)
                 .From(() => agent8)
                     .InnerJoin(() => record8)
                         .On(() => agent8.Id == record8.AgentId)
@@ -34,7 +34,7 @@ namespace MyDAL.Test.JoinQueryM
             var xx10 = "";
 
             var res10 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var agent10, out var record10)
+                .Queryer(out Agent agent10, out AgentInventoryRecord record10)
                 .From(() => agent10)
                     .InnerJoin(() => record10)
                         .On(() => agent10.Id == record10.AgentId)

@@ -19,9 +19,9 @@ namespace MyDAL.Test.WhereEdge
                 var xx2 = "";
 
                 if (!await Conn
-                        .Selecter<PlatformMonthlyPerformance>()
+                        .Queryer<PlatformMonthlyPerformance>()
                         .Where(it => it.Year == vm.Year)
-                        .And(it => it.Month == vm.Month)
+                            .And(it => it.Month == vm.Month)
                         .ExistAsync())
                 {
                     Assert.True(true);

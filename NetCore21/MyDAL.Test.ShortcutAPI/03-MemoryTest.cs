@@ -18,7 +18,7 @@ namespace MyDAL.Test.ShortcutAPI
             {
                 var name = "张";
                 var res = await Conn
-                    .Selecter<Agent>()
+                    .Queryer<Agent>()
                     .Where(it => it.Name.Contains($"{name}%") && it.CreatedOn > WhereTest.CreatedOn || it.AgentLevel == AgentLevel.DistiAgent)
                     .ListAsync();
                 Assert.True(res.Count == 2506);

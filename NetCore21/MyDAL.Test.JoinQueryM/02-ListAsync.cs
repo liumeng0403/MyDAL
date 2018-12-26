@@ -36,7 +36,7 @@ namespace MyDAL.Test.JoinQueryM
                 .From(() => agent1)
                     .InnerJoin(() => record1)
                         .On(() => agent1.Id == record1.AgentId)
-                .Where(() => agent1.CreatedOn >= WhereTest.CreatedOn.AddDays(-60))                                                               //  const  method  DateTime  >=
+                .Where(() => agent1.CreatedOn >= WhereTest.CreatedOn.AddDays(-60))                                                    
                 .ListAsync<AgentInventoryRecord>();
             Assert.True(res1.Count == 574);
 
