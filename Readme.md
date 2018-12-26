@@ -1,7 +1,8 @@
 <p align="center">
   <img src="https://github.com/liumeng0403/MyDAL/blob/master/MyDAL/Others/MyDAL.png">
   <p align="center">
-    EasyDAL.Exchange 0.2.3 版本后 更名为 MyDAL
+    The fastest and best ORM lite on .NET Core for MySQL ! <br/>
+       -- 友好, 轻量, 极致性能, 无任何第三方依赖, 持续演进~~
   </p>
 </p>
 
@@ -25,3 +26,8 @@
 
 <b>Clone && Fork:</b>
 >有帮助的同学不要忘了<b>右上角</b>给点个<b>Star(★)</b>.
+
+<b>Histories:</b>
+><a href="https://www.nuget.org/packages/EasyDAL.Exchange/" target="_blank">EasyDAL.Exchange (0.0.1-0.2.3)</a><br/>
+><a href="https://www.nuget.org/packages/Yunyong.DataExchange/" target="_blank">Yunyong.DataExchange (1.0.23-1.3.0)</a>
+
