@@ -1,4 +1,4 @@
-﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.Enums;
 using System;
 using System.Linq;
@@ -27,7 +27,7 @@ namespace MyDAL.Test.JoinQueryM
 
             /**************************************************************************************************************************/
 
-            var xx1 = "";
+            xx = "";
 
             //
             var res1 = await Conn
@@ -39,7 +39,7 @@ namespace MyDAL.Test.JoinQueryM
                 .ListAsync<AgentInventoryRecord>();
             Assert.True(res1.Count == 574);
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /**************************************************************************************************************************/
 
@@ -88,7 +88,7 @@ namespace MyDAL.Test.JoinQueryM
                 .ListAsync<AgentInventoryRecord>();
             Assert.True(res4.Count == 1);
 
-            var tuple4 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /**************************************************************************************************************************/
 
@@ -137,11 +137,11 @@ namespace MyDAL.Test.JoinQueryM
                 .ListAsync<AgentInventoryRecord>();
             Assert.True(res7.Count == 1);
 
-            var tuple7 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /**************************************************************************************************************************/
 
-            var xx8 = "";
+            xx = "";
 
             // 
             var res8 = await Conn
@@ -153,11 +153,11 @@ namespace MyDAL.Test.JoinQueryM
                 .ListAsync<AgentInventoryRecord>();
             Assert.True(res8.Count == 574);
 
-            var tuple8 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /**************************************************************************************************************************/
 
-            var xx9 = "";
+            xx = "";
 
             // 
             var res9 = await Conn
@@ -173,7 +173,7 @@ namespace MyDAL.Test.JoinQueryM
 
             /**************************************************************************************************************************/
             
-            var xx10 = "";
+            xx = "";
 
             var res10 = await Conn
                 .Queryer<Agent, AgentInventoryRecord>(out var agent10, out var record10)
@@ -185,11 +185,11 @@ namespace MyDAL.Test.JoinQueryM
                 .ListAsync<Agent>();
             Assert.True(res10.Count == 1);
 
-            var tuple10 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /**************************************************************************************************************************/
 
-            var xx = "";
+            xx = string.Empty;
 
         }
 
@@ -200,7 +200,7 @@ namespace MyDAL.Test.JoinQueryM
 
             /*********************************************************************************************************************************************************/
 
-            var xx1 = "";
+            xx = "";
 
             var res1 = await Conn
                 .Queryer(out AspnetUsers user1, out AspnetUserRoles userRole1, out AspnetRoles role1)
@@ -214,7 +214,7 @@ namespace MyDAL.Test.JoinQueryM
             Assert.True(res1.Count == 29180);
             Assert.True(res1.First().UserName == "45285586990");
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*********************************************************************************************************************************************************/
 
@@ -264,11 +264,11 @@ namespace MyDAL.Test.JoinQueryM
                 .ListAsync<AspnetUsers>();
             Assert.True(res4.Count == 29180);
 
-            var tuple4 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*********************************************************************************************************************************************************/
 
-            var xx = "";
+            xx = string.Empty;
 
         }
 

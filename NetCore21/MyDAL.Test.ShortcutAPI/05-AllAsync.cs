@@ -1,4 +1,4 @@
-﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.ViewModels;
 using System;
 using System.Threading.Tasks;
@@ -11,16 +11,16 @@ namespace MyDAL.Test.ShortcutAPI
         [Fact]
         public async Task test()
         {
-            var xx1 = "";
+            var xx1 = string.Empty;
 
             var res1 = await Conn.AllAsync<Agent>();
             Assert.True(res1.Count == 28620);
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /***************************************************************************************************************************/
 
-            var xx2 = "";
+            var xx2 = string.Empty;
 
             var res2 = await Conn.AllAsync<Agent,AgentVM>();
             Assert.True(res2.Count == 28620);
@@ -29,7 +29,7 @@ namespace MyDAL.Test.ShortcutAPI
 
             /***************************************************************************************************************************/
 
-            var xx3 = "";
+            var xx3 = string.Empty;
 
             var res3 = await Conn.AllAsync<Agent, Guid>(it => it.Id);
             Assert.True(res3.Count == 28620);
@@ -38,7 +38,7 @@ namespace MyDAL.Test.ShortcutAPI
 
             /***************************************************************************************************************************/
 
-            var xx4 = "";
+            var xx4 = string.Empty;
 
             var res4 = await Conn.AllAsync<Agent, AgentVM>(it => new AgentVM
             {
@@ -47,11 +47,11 @@ namespace MyDAL.Test.ShortcutAPI
             });
             Assert.True(res4.Count == 28620);
 
-            var tuple4 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /***************************************************************************************************************************/
 
-            var xx = "";
+            var xx = string.Empty;
         }
     }
 }

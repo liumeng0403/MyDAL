@@ -1,4 +1,4 @@
-﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.Enums;
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ namespace MyDAL.Test.QueryM
 
             /******************************************************************************************************/
 
-            var xx1 = "";
+            var xx1 = string.Empty;
 
             // order by
             var res1 = await Conn
@@ -27,11 +27,11 @@ namespace MyDAL.Test.QueryM
                 .PagingListAsync(1, 10);
             Assert.True(res1.TotalCount == 555);
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /******************************************************************************************************/
 
-            var xx2 = "";
+            var xx2 = string.Empty;
 
             // key
             var res2 = await Conn
@@ -44,7 +44,7 @@ namespace MyDAL.Test.QueryM
 
             /******************************************************************************************************/
 
-            var xx3 = "";
+            var xx3 = string.Empty;
 
             // none key
             var res3 = await Conn
@@ -57,14 +57,14 @@ namespace MyDAL.Test.QueryM
 
             /******************************************************************************************************/
 
-            var xx4 = "";
+            var xx4 = string.Empty;
 
             var res4 = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.CreatedOn >= WhereTest.CreatedOn)
                 .PagingListAsync(1, 10);
 
-            var tuple4 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             var resR4 = await Conn
                 .Queryer<Agent>()

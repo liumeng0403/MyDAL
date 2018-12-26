@@ -1,4 +1,4 @@
-﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.Enums;
 using System;
 using System.Linq;
@@ -7,12 +7,12 @@ using Xunit;
 
 namespace MyDAL.Test.WhereEdge
 {
-    public class _09_WhereMultiCondition:TestBase
+    public class _09_WhereMultiCondition : TestBase
     {
         [Fact]
         public async Task test()
         {
-            var xx1 = "";
+            xx = string.Empty;
 
             var guid1 = Guid.Parse("000cecd5-56dc-4085-804b-0165443bdf5d");
             var pathId1 = "~00-d-3-2-1-c-2-f-4-3-1-2-4";
@@ -22,11 +22,11 @@ namespace MyDAL.Test.WhereEdge
                 .ListAsync();
             Assert.True(res1.Count == 1);
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /***************************************************************************************************************************/
 
-            var xx2 = "";
+            xx = string.Empty;
 
             var guid2 = Guid.Parse("000a9465-8665-40bf-90e3-0165442d9120");
             var pathId2 = "~00-d-3-1-1-5-1-3-4-2-2-1-1-11-6-1-8-4";
@@ -36,40 +36,39 @@ namespace MyDAL.Test.WhereEdge
                 .ListAsync();
             Assert.True(res2.Count == 2);
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /***************************************************************************************************************************/
 
-            var xx3 = "";
+            xx = string.Empty;
 
             var guid3 = Guid.Parse("000a9465-8665-40bf-90e3-0165442d9120");
-            var pathId3 = "~00-d-3-1-1-5-1-3-4-2-2-1-1-11-6-1-8-4";
             var res3 = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.CreatedOn >= WhereTest.StartTime && it.CreatedOn <= WhereTest.EndTime)
                 .ListAsync();
             Assert.True(res3.Count == 28619);
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /***************************************************************************************************************************/
 
-            var xx4 = "";
+            xx = string.Empty;
 
             var guid4 = Guid.Parse("000cecd5-56dc-4085-804b-0165443bdf5d");
             var pathId4 = "~00-d-3-2-1-c-2-f-4-3-1-2-4";
             var level4 = AgentLevel.Customer;
             var res4 = await Conn
                 .Queryer<Agent>()
-                .Where(it => it.Id == guid4 && it.AgentLevel==level4  && it.PathId == pathId4)
+                .Where(it => it.Id == guid4 && it.AgentLevel == level4 && it.PathId == pathId4)
                 .ListAsync();
             Assert.True(res4.Count == 1);
 
-            var tuple4 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /***************************************************************************************************************************/
 
-            var xx5 = "";
+            xx = string.Empty;
 
             var guid5 = Guid.Parse("000cecd5-56dc-4085-804b-0165443bdf5d");
             var guid51 = Guid.Parse("000f5f16-5502-4324-b5d6-016544300263");
@@ -80,11 +79,11 @@ namespace MyDAL.Test.WhereEdge
                 .ListAsync();
             Assert.True(res5.Count == 3);
 
-            var tuple5 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /***************************************************************************************************************************/
 
-            var xx6 = "";
+            xx = string.Empty;
 
             var guid6 = Guid.Parse("000cecd5-56dc-4085-804b-0165443bdf5d");
             var guid61 = Guid.Parse("000f5f16-5502-4324-b5d6-016544300263");
@@ -96,11 +95,11 @@ namespace MyDAL.Test.WhereEdge
             Assert.True(res6.Count == 1);
             Assert.True(res6.First().Id == guid62);
 
-            var tuple6 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /***************************************************************************************************************************/
 
-            var xx7 = "";
+            xx = string.Empty;
 
             var guid7 = Guid.Parse("000cecd5-56dc-4085-804b-0165443bdf5d");
             var guid71 = Guid.Parse("000f5f16-5502-4324-b5d6-016544300263");
@@ -112,11 +111,11 @@ namespace MyDAL.Test.WhereEdge
             Assert.True(res7.Count == 1);
             Assert.True(res7.First().Id == guid7);
 
-            var tuple7 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /***************************************************************************************************************************/
 
-            var xx8 = "";
+            xx = string.Empty;
 
             var guid8 = Guid.Parse("000cecd5-56dc-4085-804b-0165443bdf5d");
             var guid81 = Guid.Parse("000f5f16-5502-4324-b5d6-016544300263");
@@ -124,16 +123,16 @@ namespace MyDAL.Test.WhereEdge
             var pathId83 = "~00-d-3-2-1-c-1-1-1-3";
             var res8 = await Conn
                 .Queryer<Agent>()
-                .Where(it => (it.Id == guid8 || it.Id == guid81) && it.Id == guid82||it.PathId== pathId83)
+                .Where(it => (it.Id == guid8 || it.Id == guid81) && it.Id == guid82 || it.PathId == pathId83)
                 .ListAsync();
             Assert.True(res8.Count == 1);
             Assert.True(res8.First().PathId == pathId83);
 
-            var tuple8 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /***************************************************************************************************************************/
 
-            var xx = "";
+            xx = string.Empty;
         }
     }
 }

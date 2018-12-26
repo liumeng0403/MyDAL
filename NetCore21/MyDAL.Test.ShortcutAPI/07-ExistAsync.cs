@@ -1,4 +1,4 @@
-﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using System;
 using System.Threading.Tasks;
 using Xunit;
@@ -17,7 +17,7 @@ namespace MyDAL.Test.ShortcutAPI
             var res1 = await Conn.ExistAsync<AlipayPaymentRecord>(it => it.CreatedOn == date && it.OrderId == id);
             Assert.True(res1);
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /********************************************************************************************************************************************/
 

@@ -1,4 +1,4 @@
-﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.Enums;
 using System.Threading.Tasks;
 using Xunit;
@@ -21,7 +21,7 @@ namespace MyDAL.Test.JoinQuerySingleColumn
                 .FirstOrDefaultAsync(() => agent.Name);
             Assert.NotNull(res1);
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             var xx = "";
         }

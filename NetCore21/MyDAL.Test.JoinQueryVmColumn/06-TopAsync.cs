@@ -1,4 +1,4 @@
-﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.ViewModels;
 using System.Threading.Tasks;
 using Xunit;
@@ -31,11 +31,11 @@ namespace MyDAL.Test.JoinQueryVmColumn
                 });
             Assert.True(res7.Count == 25);
 
-            var tuple7 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*******************************************************************************************************************************/
 
-            var xx9 = "";
+            xx = "";
 
             var res9 = await Conn
                 .Queryer(out Agent agent9, out AgentInventoryRecord record9)

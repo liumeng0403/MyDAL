@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyDAL.Test.Entities.EasyDal_Exchange
+namespace MyDAL.Test.Entities.MyDAL_TestDB
 {
     /*
      * CREATE TABLE `alipaypaymentrecord` (

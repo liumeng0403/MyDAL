@@ -2,7 +2,7 @@
 using MyDAL.Test.Enums;
 using System;
 
-namespace MyDAL.Test.Entities.EasyDal_Exchange
+namespace MyDAL.Test.Entities.MyDAL_TestDB
 {
     /*
      * CREATE TABLE `aspnetusers` (

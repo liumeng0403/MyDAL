@@ -1,4 +1,4 @@
-﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ namespace MyDAL.Test.ShortcutAPI
 
             /****************************************************************************************/
 
-            var xx3 = "";
+            var xx3 = string.Empty;
 
             var res3 = Conn.FirstOrDefault<AlipayPaymentRecord, Guid>(it => it.Id == pk && it.CreatedOn == date, it => it.Id);
             Assert.True(res3 == pk);
@@ -28,7 +28,7 @@ namespace MyDAL.Test.ShortcutAPI
 
             /****************************************************************************************/
 
-            var xx4 = "";
+            var xx4 = string.Empty;
 
             var res4 = Conn.FirstOrDefault<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.Id == pk && it.CreatedOn == date,
                 it => new AlipayPaymentRecordVM
@@ -39,11 +39,11 @@ namespace MyDAL.Test.ShortcutAPI
                 });
             Assert.NotNull(res4);
 
-            var tuple4 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /****************************************************************************************/
 
-            var xx5 = "";
+            var xx5 = string.Empty;
 
             var res5 = Conn.FirstOrDefault<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.Id == pk && it.CreatedOn == date);
             Assert.NotNull(res5);
@@ -52,7 +52,7 @@ namespace MyDAL.Test.ShortcutAPI
 
             /****************************************************************************************/
 
-            var xx6 = "";
+            var xx6 = string.Empty;
 
             var res6 = Conn.FirstOrDefault<AlipayPaymentRecord>(it => it.Id == pk && it.CreatedOn == date);
             Assert.NotNull(res6);
@@ -65,7 +65,7 @@ namespace MyDAL.Test.ShortcutAPI
 
             /****************************************************************************************/
 
-            var xx = "";
+            var xx = string.Empty;
 
         }
     }

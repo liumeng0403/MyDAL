@@ -1,4 +1,4 @@
-﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using System;
 using System.Threading.Tasks;
 using Xunit;
@@ -48,7 +48,7 @@ namespace MyDAL.Test.Func
                 .FirstOrDefaultAsync();
             Assert.True(res1.Title == "  演示商品01  ");
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /******************************************************************************************************************/
 

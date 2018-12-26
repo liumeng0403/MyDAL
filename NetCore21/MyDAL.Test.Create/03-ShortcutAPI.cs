@@ -1,4 +1,4 @@
-﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -36,14 +36,14 @@ namespace MyDAL.Test.Create
             var res15 = await Conn.CreateAsync<AlipayPaymentRecord>(m15);
             Assert.True(res15 == 1);
 
-            var tuple15 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             var res151 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord>(it=>it.Id==pk);
             Assert.NotNull(res151);
 
             /****************************************************************************************/
 
-            var xx16 = "";
+            xx = "";
 
             var json = File.ReadAllText(@"C:\Users\liume\Desktop\Work\DalTestDB\ProfileData.json");
             var list16 = JsonConvert.DeserializeObject<List<UserInfo>>(json);
@@ -55,7 +55,7 @@ namespace MyDAL.Test.Create
             var res16 = await Conn.CreateBatchAsync<UserInfo>(list16);
             Assert.True(list16.Count == res16);
 
-            var tuple16 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /****************************************************************************************/
 

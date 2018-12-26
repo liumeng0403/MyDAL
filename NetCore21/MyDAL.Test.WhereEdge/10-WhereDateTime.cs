@@ -1,4 +1,4 @@
-﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,7 +21,7 @@ namespace MyDAL.Test.WhereEdge
                 .ListAsync();
             Assert.True(res1.Count == 28619);
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /**************************************************************************************************************************************/
             
@@ -57,11 +57,11 @@ namespace MyDAL.Test.WhereEdge
                 .ListAsync();
             Assert.True(res4.Count == 554);
 
-            var tuple4 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /**************************************************************************************************************************************/
 
-            var xx = "";
+            var xx = string.Empty;
         }
     }
 }

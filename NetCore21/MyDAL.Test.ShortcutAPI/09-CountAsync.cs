@@ -1,4 +1,4 @@
-﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -14,7 +14,7 @@ namespace MyDAL.Test.ShortcutAPI
             var res1 = await Conn.CountAsync<Agent>(it => it.Name.Length > 3);
             Assert.True(res1 == 116);
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             var xx = "";
         }

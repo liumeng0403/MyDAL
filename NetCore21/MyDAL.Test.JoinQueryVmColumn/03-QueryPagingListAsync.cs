@@ -1,4 +1,4 @@
-﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.Enums;
 using MyDAL.Test.Options;
 using MyDAL.Test.ViewModels;
@@ -16,7 +16,7 @@ namespace MyDAL.Test.JoinQueryVmColumn
         public async Task test()
         {
 
-            var xx9 = "";
+            xx = "";
 
             var res9 = await Conn
                 .Queryer(out Agent agent9, out AgentInventoryRecord record9)
@@ -35,7 +35,7 @@ namespace MyDAL.Test.JoinQueryVmColumn
 
             /*************************************************************************************************************************/
 
-            var xx10 = "";
+            xx = "";
 
             var option10 = new AgentQueryOption();
             option10.AgentLevel = AgentLevel.DistiAgent;
@@ -52,11 +52,11 @@ namespace MyDAL.Test.JoinQueryVmColumn
                 });
             Assert.True(res10.TotalCount == 574);
 
-            var tuple10 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*************************************************************************************************************************/
 
-            var xx11 = "";
+            xx = "";
 
             var option11 = new AgentQueryOption();
             option11.AgentLevel = AgentLevel.DistiAgent;
@@ -78,7 +78,7 @@ namespace MyDAL.Test.JoinQueryVmColumn
             Assert.True(res11.PageIndex == 5);
             Assert.True(res11.Data.Count == 10);
 
-            var tuple11 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*************************************************************************************************************************/
 

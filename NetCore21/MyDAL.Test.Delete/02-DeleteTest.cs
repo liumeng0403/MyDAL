@@ -1,4 +1,4 @@
-﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.Enums;
 using System;
 using System.Threading.Tasks;
@@ -10,7 +10,7 @@ namespace MyDAL.Test.Delete
     {
         private async Task<BodyFitRecord> PreDelete()
         {
-            var xx0 = "";
+            xx = "";
 
             // 造数据 
             var m = new BodyFitRecord
@@ -48,7 +48,7 @@ namespace MyDAL.Test.Delete
                 .DeleteAsync();
             Assert.True(res1 == 1);
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             var xx2 = "";
 
@@ -86,7 +86,7 @@ namespace MyDAL.Test.Delete
                 .Or(it => it.CreatedOn >= WhereTest.StartTime)
                 .DeleteAsync();
 
-            var tuple4 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             var xx = "";
         }

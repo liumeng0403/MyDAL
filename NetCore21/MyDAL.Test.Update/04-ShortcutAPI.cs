@@ -1,4 +1,4 @@
-﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using System;
 using System.Threading.Tasks;
 using Xunit;
@@ -22,7 +22,7 @@ namespace MyDAL.Test.Update
             });
             Assert.True(res1 == 1);
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             var res11 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord>(it=>it.Id==pk1);
             Assert.True(res11.Description == "xxxxxx");

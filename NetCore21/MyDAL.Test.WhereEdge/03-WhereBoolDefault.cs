@@ -1,4 +1,4 @@
-﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,7 +27,7 @@ namespace MyDAL.Test.WhereEdge
                 .ListAsync();
             Assert.True(res11.Count == 28620);
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /********************************************************************************************************************************************/
 
@@ -115,11 +115,11 @@ namespace MyDAL.Test.WhereEdge
             Assert.True(res42.Count == 2);
             Assert.True(res42.First().IsDefault == false);
 
-            var tuple4 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /********************************************************************************************************************************************/
 
-            var xx5 = "";
+            var xx5 = string.Empty;
 
             var guid5 = Guid.Parse("08d6036c-66c8-7c2c-83b0-725f93ff8137");
             var res5 = await Conn

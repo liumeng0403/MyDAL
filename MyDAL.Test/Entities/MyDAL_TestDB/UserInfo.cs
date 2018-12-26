@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace MyDAL.Test.Entities.EasyDal_Exchange
+namespace MyDAL.Test.Entities.MyDAL_TestDB
 {
     /*
      * CREATE TABLE `userinfo` (

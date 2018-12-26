@@ -1,4 +1,4 @@
-﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.Enums;
 using System;
 using System.Collections.Generic;
@@ -24,7 +24,7 @@ namespace MyDAL.Test.JoinQuerySingleColumn
                 .PagingListAsync(1,10,() => agent1.Id);
             Assert.True(res1.TotalCount == 574);
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             var xx = "";
 

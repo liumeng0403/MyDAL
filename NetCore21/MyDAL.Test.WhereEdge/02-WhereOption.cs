@@ -1,4 +1,4 @@
-﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.Enums;
 using MyDAL.Test.Options;
 using System;
@@ -16,7 +16,7 @@ namespace MyDAL.Test.WhereEdge
 
             /*****************************************************************************************************************************/
 
-            var xx1 = "";
+            var xx1 = string.Empty;
 
             var option1 = new AgentQueryOption();
             option1.StartTime = WhereTest.CreatedOn;
@@ -30,11 +30,11 @@ namespace MyDAL.Test.WhereEdge
                 .ListAsync();
             Assert.True(res1.Count == 555);
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*****************************************************************************************************************************/
 
-            var xx2 = "";
+            var xx2 = string.Empty;
 
             var option2 = new AgentQueryOption();
             option2.StartTime = WhereTest.CreatedOn;
@@ -51,7 +51,7 @@ namespace MyDAL.Test.WhereEdge
 
             /*****************************************************************************************************************************/
 
-            var xx3 = "";
+            var xx3 = string.Empty;
 
             var option3 = new AgentQueryOption();
             option3.Name = "张";
@@ -67,7 +67,7 @@ namespace MyDAL.Test.WhereEdge
 
             /*****************************************************************************************************************************/
 
-            var xx4 = "";
+            var xx4 = string.Empty;
 
             var option4 = new AgentQueryOption();
             option4.EnumListIn = new List<AgentLevel>
@@ -83,11 +83,11 @@ namespace MyDAL.Test.WhereEdge
                 .ListAsync();
             Assert.True(res4.Count == 555);
 
-            var tuple4 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*****************************************************************************************************************************/
 
-            var xx5 = "";
+            var xx5 = string.Empty;
 
             var option5 = new AgentQueryOption();
             option5.EnumListNotIn = new List<AgentLevel>
@@ -107,7 +107,7 @@ namespace MyDAL.Test.WhereEdge
 
             /*****************************************************************************************************************************/
 
-            var xx = "";
+            var xx = string.Empty;
 
         }
     }

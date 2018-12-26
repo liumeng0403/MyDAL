@@ -1,4 +1,4 @@
-﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.Options;
 using MyDAL.Test.ViewModels;
 using System;
@@ -22,7 +22,7 @@ namespace MyDAL.Test.ShortcutAPI
             var res1 = await Conn.PagingListAsync<AlipayPaymentRecord>(option1);
             Assert.True(res1.TotalCount == 29);
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /****************************************************************************************/
 

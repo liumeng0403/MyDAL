@@ -1,4 +1,4 @@
-﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -60,7 +60,7 @@ namespace MyDAL.Test.Create
 
             var list3 = await PreCreateBatch();
 
-            var xx3 = "";
+            var xx3 = string.Empty;
 
             var res3 = await Conn
                 .Creater<AddressInfo>()
@@ -79,7 +79,7 @@ namespace MyDAL.Test.Create
                 item.CreatedOn = DateTime.Now;
             }
 
-            var xx4 = "";
+            var xx4 = string.Empty;
 
             Assert.True(!list.Any(it => it.RootUser));
             Assert.True(!list.Any(it => it.InvitedCount > 0));
@@ -91,11 +91,11 @@ namespace MyDAL.Test.Create
                 .CreateBatchAsync(list);
             Assert.True(res4 == list.Count);
 
-            var tuple4 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /********************************************************************************************************************************/
 
-            var xx = "";
+            var xx = string.Empty;
 
         }
 

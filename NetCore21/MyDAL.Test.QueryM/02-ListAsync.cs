@@ -1,5 +1,5 @@
 ﻿using MyDAL.Test.Entities;
-using MyDAL.Test.Entities.EasyDal_Exchange;
+using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.Enums;
 using System;
 using System.Threading.Tasks;
@@ -15,7 +15,7 @@ namespace MyDAL.Test.QueryM
 
             /********************************************************************************************************************************/
 
-            var xx1 = "";
+            var xx1 = string.Empty;
 
             // >= obj.DateTime
             var res1 = await Conn
@@ -23,7 +23,7 @@ namespace MyDAL.Test.QueryM
                 .Where(it => it.CreatedOn >= WhereTest.CreatedOn)
                 .ListAsync();
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             var resR1 = await Conn
                 .Queryer<BodyFitRecord>()
@@ -36,7 +36,7 @@ namespace MyDAL.Test.QueryM
 
             /********************************************************************************************************************************/
 
-            var xx2 = "";
+            var xx2 = string.Empty;
 
             var start = WhereTest.CreatedOn.AddDays(-10);
             // >= variable(DateTime)
@@ -58,7 +58,7 @@ namespace MyDAL.Test.QueryM
 
             /********************************************************************************************************************************/
 
-            var xx3 = "";
+            var xx3 = string.Empty;
 
             // <= DateTime
             var res3 = await Conn
@@ -88,7 +88,7 @@ namespace MyDAL.Test.QueryM
                 ContainStr = "~00-d-3-1-"
             };
 
-            var xx4 = "";
+            var xx4 = string.Empty;
 
             var res4 = await Conn
                 .Queryer<Agent>()
@@ -96,11 +96,11 @@ namespace MyDAL.Test.QueryM
                 .ListAsync();
             Assert.True(res4.Count == 28619);
 
-            var tuple4 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /********************************************************************************************************************************/
 
-            var xx5 = "";
+            var xx5 = string.Empty;
 
             var res5 = await Conn
                 .Queryer<Agent>()
@@ -112,7 +112,7 @@ namespace MyDAL.Test.QueryM
 
             /********************************************************************************************************************************/
 
-            var xx = "";
+            var xx = string.Empty;
 
         }
     }

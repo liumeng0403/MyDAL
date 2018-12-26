@@ -1,4 +1,4 @@
-﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.Enums;
 using MyDAL.Test.Options;
 using MyDAL.Test.ViewModels;
@@ -33,7 +33,7 @@ namespace MyDAL.Test.WhereEdge
             Assert.True(res1.Count == 1);
             Assert.True(res1.First().Name == "樊士芹");
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*************************************************************************************************************************/
 
@@ -88,7 +88,7 @@ namespace MyDAL.Test.WhereEdge
                 .ListAsync();
             Assert.True(res4.Count == 28620);
 
-            var tuple4 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             // no where --> and or
             var res41 = await Conn
@@ -104,7 +104,7 @@ namespace MyDAL.Test.WhereEdge
                 .ListAsync();
             Assert.True(res41.Count == 556);
 
-            var tuple41 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             // no where --> or and 
             var res42 = await Conn
@@ -120,7 +120,7 @@ namespace MyDAL.Test.WhereEdge
                 .ListAsync();
             Assert.True(res42.Count == 1);
 
-            var tuple42 = (XDebug.SQL, XDebug.Parameters);
+            tuple2 = (XDebug.SQL, XDebug.Parameters);
 
             /*************************************************************************************************************************/
 

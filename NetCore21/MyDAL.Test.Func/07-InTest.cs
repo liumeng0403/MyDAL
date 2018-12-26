@@ -1,4 +1,4 @@
-﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.Enums;
 using System;
 using System.Collections.Generic;
@@ -322,11 +322,11 @@ namespace MyDAL.Test.Func
                 .Where(it => new long[] { 5L, 10L }.Contains(it.DirectorStarCount))
                 .ListAsync();
 
-            var tuple19 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*******************************************************************************************************************/
 
-            var xx20 = "";
+            xx = "";
 
             // where in -- short[] init
             var res20 = await Conn
@@ -334,7 +334,7 @@ namespace MyDAL.Test.Func
                 .Where(it => new short[] { 5, 10 }.Contains((short)(it.DirectorStarCount)))
                 .ListAsync();
 
-            var tuple20 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             Assert.True(res18.Count == res19.Count);
             Assert.True(res19.Count == res20.Count);
@@ -342,7 +342,7 @@ namespace MyDAL.Test.Func
 
             /*******************************************************************************************************************/
 
-            var xx21 = "";
+            xx = "";
 
             // where in -- string[] init
             var res21 = await Conn

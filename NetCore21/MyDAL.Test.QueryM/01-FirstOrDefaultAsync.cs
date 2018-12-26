@@ -1,4 +1,4 @@
-﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using System;
 using System.Threading.Tasks;
 using Xunit;
@@ -81,7 +81,7 @@ namespace MyDAL.Test.QueryM
 
             /****************************************************************************************************************************************/
 
-            var xx4 = "";
+            var xx4 = string.Empty;
 
             // where and
             var res4 = await Conn
@@ -91,11 +91,11 @@ namespace MyDAL.Test.QueryM
                 .FirstOrDefaultAsync();
             Assert.NotNull(res4);
 
-            var tuple4 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /****************************************************************************************************************************************/
 
-            xx = "";
+            xx = string.Empty;
 
         }
 

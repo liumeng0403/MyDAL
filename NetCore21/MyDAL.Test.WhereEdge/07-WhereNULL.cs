@@ -1,4 +1,4 @@
-﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using System;
 using System.Threading.Tasks;
 using Xunit;
@@ -38,7 +38,7 @@ namespace MyDAL.Test.WhereEdge
 
             /************************************************************************************************************************/
 
-            var xx1 = "";
+            var xx1 = string.Empty;
 
             // is null 
             var res1 = await Conn
@@ -47,11 +47,11 @@ namespace MyDAL.Test.WhereEdge
                 .ListAsync();
             Assert.True(res1.Count == 28066);
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /************************************************************************************************************************/
 
-            var xx2 = "";
+            var xx2 = string.Empty;
 
             // is not null 
             var res2 = await Conn
@@ -64,7 +64,7 @@ namespace MyDAL.Test.WhereEdge
 
             /************************************************************************************************************************/
 
-            var xx3 = "";
+            var xx3 = string.Empty;
 
             var m = await PreData3();
             // 
@@ -85,7 +85,7 @@ namespace MyDAL.Test.WhereEdge
 
             /************************************************************************************************************************/
 
-            var xx4 = "";
+            var xx4 = string.Empty;
 
             // is not null 
             var res4 = await Conn
@@ -94,11 +94,11 @@ namespace MyDAL.Test.WhereEdge
                 .ListAsync();
             Assert.True(res4.Count == 554);
 
-            var tuple4 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /************************************************************************************************************************/
 
-            var xx5 = "";
+            var xx5 = string.Empty;
 
             // is not null 
             var res5 = await Conn
@@ -114,7 +114,7 @@ namespace MyDAL.Test.WhereEdge
 
             /************************************************************************************************************************/
 
-            var xx6 = "";
+            var xx6 = string.Empty;
 
             // is not null 
             var res6 = await Conn
@@ -130,7 +130,7 @@ namespace MyDAL.Test.WhereEdge
 
             /************************************************************************************************************************/
 
-            var xx = "";
+            var xx = string.Empty;
 
         }
 

@@ -1,13 +1,10 @@
-﻿using MyDAL.Test.Entities.EasyDal_Exchange;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace MyDAL.Test.ShortcutAPI
 {
-    public class _02_BussinessUnitOption:TestBase
+    public class _02_BussinessUnitOption : TestBase
     {
 
         [Fact]
@@ -17,15 +14,15 @@ namespace MyDAL.Test.ShortcutAPI
             /***********************************************************************************************************/
 
             // return string
-            var tuple1 = await Conn
+            var ts1 = await Conn
                 .Transactioner()
                 .BusinessUnitOption(async () => "xxxxyyyyzzzzz");
-            Assert.Equal("xxxxyyyyzzzzz", tuple1);
+            Assert.Equal("xxxxyyyyzzzzz", ts1);
 
             /***********************************************************************************************************/
 
             // return M data
-            var tuple2 = await Conn
+            var ts2 = await Conn
                 .Transactioner()
                 .BusinessUnitOption(async () =>
                 {
@@ -39,12 +36,12 @@ namespace MyDAL.Test.ShortcutAPI
                     return dbRecord;
 
                 });
-            Assert.Null(tuple2.data);
+            Assert.Null(ts2.data);
 
             /***********************************************************************************************************/
 
             // return (string errMsg, M data)
-            var tuple3 = await Conn
+            var ts3 = await Conn
                 .Transactioner()
                 .BusinessUnitOption(async () =>
                 {
@@ -60,11 +57,11 @@ namespace MyDAL.Test.ShortcutAPI
 
                     return (string.Empty, false);
                 });
-            Assert.False(tuple3.data);
+            Assert.False(ts3.data);
 
             /***********************************************************************************************************/
 
-            var xx = "";
+            xx = string.Empty;
 
         }
 

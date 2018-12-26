@@ -1,4 +1,4 @@
-﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -19,7 +19,7 @@ namespace MyDAL.Test.QueryM
                 .TopAsync(25);
             Assert.True(res1.Count == 25);
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
         }
     }

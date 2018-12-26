@@ -1,4 +1,4 @@
-﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using System;
 using System.Threading.Tasks;
 using Xunit;
@@ -14,7 +14,7 @@ namespace MyDAL.Test.Update
 
             /*****************************************************************************************************************************************************************/
 
-            var xx1 = "";
+            var xx1 = string.Empty;
 
             var res1 = await Conn
                 .Updater<Agent>()
@@ -24,11 +24,11 @@ namespace MyDAL.Test.Update
             var res11 = await Conn.FirstOrDefaultAsync<Agent>(it => it.Id == agent.Id);
             Assert.Null(res11.PathId);
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*****************************************************************************************************************************************************************/
 
-            var xx2 = "";
+            var xx2 = string.Empty;
 
             try
             {
@@ -47,7 +47,7 @@ namespace MyDAL.Test.Update
 
             /*****************************************************************************************************************************************************************/
 
-            var xx3 = "";
+            var xx3 = string.Empty;
 
             agent.PathId = "xxxxxxx";
             agent.ActiveOrderId = null;
@@ -69,7 +69,7 @@ namespace MyDAL.Test.Update
 
             /*****************************************************************************************************************************************************************/
 
-            var xx4 = "";
+            var xx4 = string.Empty;
 
             agent.PathId = null;
             var res4 = await Conn.UpdateAsync<Agent>(it => it.Id == agent.Id, new
@@ -77,14 +77,14 @@ namespace MyDAL.Test.Update
                 agent.PathId
             });
 
-            var tuple4 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             var res41 = await Conn.FirstOrDefaultAsync<Agent>(it => it.Id == agent.Id);
             Assert.Null(res11.PathId);
 
             /*****************************************************************************************************************************************************************/
 
-            var xx5 = "";
+            var xx5 = string.Empty;
 
             agent.PathId = null;
             try
@@ -101,7 +101,7 @@ namespace MyDAL.Test.Update
 
             /*****************************************************************************************************************************************************************/
 
-            var xx6 = "";
+            var xx6 = string.Empty;
 
             agent.PathId = "yyyyyyy";
             agent.ActiveOrderId = null;
@@ -119,7 +119,7 @@ namespace MyDAL.Test.Update
 
             /*****************************************************************************************************************************************************************/
 
-            var xx = "";
+            var xx = string.Empty;
 
         }
     }

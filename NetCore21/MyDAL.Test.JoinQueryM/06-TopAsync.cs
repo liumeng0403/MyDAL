@@ -1,7 +1,4 @@
-﻿using MyDAL.Test.Entities.EasyDal_Exchange;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -15,7 +12,7 @@ namespace MyDAL.Test.JoinQueryM
 
             /*******************************************************************************************************************************/
 
-            var xx8 = "";
+            xx = "";
 
             var res8 = await Conn
                 .Queryer(out Agent agent8, out AgentInventoryRecord record8)
@@ -26,11 +23,11 @@ namespace MyDAL.Test.JoinQueryM
                 .TopAsync<Agent>(25);
             Assert.True(res8.Count == 25);
 
-            var tuple8 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*******************************************************************************************************************************/
 
-            var xx10 = "";
+            xx = "";
 
             var res10 = await Conn
                 .Queryer(out Agent agent10, out AgentInventoryRecord record10)
@@ -41,7 +38,7 @@ namespace MyDAL.Test.JoinQueryM
                 .ListAsync<Agent>(25);
             Assert.True(res10.Count == 25);
 
-            var tuple10 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
         }
     }

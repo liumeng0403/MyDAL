@@ -1,4 +1,4 @@
-﻿using MyDAL.Test.Entities.EasyDal_Exchange;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.Enums;
 using System;
 using System.Threading.Tasks;
@@ -12,7 +12,7 @@ namespace MyDAL.Test.Create
         {
             // 清除数据
 
-            var xx2 = "";
+            xx = "";
 
             var res2 = await Conn
                 .Deleter<BodyFitRecord>()
@@ -50,7 +50,7 @@ namespace MyDAL.Test.Create
             };
             await PreCreate(m1);
 
-            var xx1 = "";
+            xx = "";
 
             // 新建
             var res1 = await Conn
@@ -58,7 +58,7 @@ namespace MyDAL.Test.Create
                 .CreateAsync(m1);
             Assert.True(res1 == 1);
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /********************************************************************************************************************************/
 
@@ -172,11 +172,11 @@ namespace MyDAL.Test.Create
                 .FirstOrDefaultAsync<Agent>();
             Assert.True(res71.CreatedOn == Convert.ToDateTime("2018-08-16 19:34:25.116759"));
 
-            var tuple7 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /********************************************************************************************************************************/
 
-            var xx = "";
+            xx = "";
         }
 
     }
