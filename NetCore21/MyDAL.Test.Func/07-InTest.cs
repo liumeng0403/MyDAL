@@ -43,7 +43,6 @@ namespace MyDAL.Test.Func
             /*******************************************************************************************************************/
 
             var xx = string.Empty;
-            var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             var enums = new List<AgentLevel?>
             {

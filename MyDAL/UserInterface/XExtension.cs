@@ -55,77 +55,6 @@ namespace MyDAL
             return new Updater<M>(dc);
         }
 
-        /// <summary>
-        /// 单表查询 方法簇
-        /// </summary>
-        /// <typeparam name="M">M:与DB Table 一 一对应</typeparam>
-        [Obsolete("过期方法,建议使用 Queryer ,用法一致,方法名替换即可!!!")]
-        public static Queryer<M> Selecter<M>(this IDbConnection conn)
-            where M : class, new()
-        {
-            return conn.Queryer<M>();
-        }
-        /// <summary>
-        /// 连接查询 方法簇
-        /// </summary>
-        [Obsolete("过期方法,建议使用 Queryer ,用法一致,方法名替换即可!!!")]
-        public static Queryer Joiner<M1, M2>(this IDbConnection conn, out M1 table1, out M2 table2)
-            where M1 : class, new()
-            where M2 : class, new()
-        {
-            return conn.Queryer(out table1, out table2);
-        }
-        /// <summary>
-        /// 连接查询 方法簇
-        /// </summary>
-        [Obsolete("过期方法,建议使用 Queryer ,用法一致,方法名替换即可!!!")]
-        public static Queryer Joiner<M1, M2, M3>(this IDbConnection conn, out M1 table1, out M2 table2, out M3 table3)
-            where M1 : class, new()
-            where M2 : class, new()
-            where M3 : class, new()
-        {
-            return conn.Queryer(out table1, out table2, out table3);
-        }
-        /// <summary>
-        /// 连接查询 方法簇
-        /// </summary>
-        [Obsolete("过期方法,建议使用 Queryer ,用法一致,方法名替换即可!!!")]
-        public static Queryer Joiner<M1, M2, M3, M4>(this IDbConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4)
-            where M1 : class, new()
-            where M2 : class, new()
-            where M3 : class, new()
-            where M4 : class, new()
-        {
-            return conn.Queryer(out table1, out table2, out table3, out table4);
-        }
-        /// <summary>
-        /// 连接查询 方法簇
-        /// </summary>
-        [Obsolete("过期方法,建议使用 Queryer ,用法一致,方法名替换即可!!!")]
-        public static Queryer Joiner<M1, M2, M3, M4, M5>(this IDbConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4, out M5 table5)
-            where M1 : class, new()
-            where M2 : class, new()
-            where M3 : class, new()
-            where M4 : class, new()
-            where M5 : class, new()
-        {
-            return conn.Queryer(out table1, out table2, out table3, out table4, out table5);
-        }
-        /// <summary>
-        /// 连接查询 方法簇
-        /// </summary>
-        [Obsolete("过期方法,建议使用 Queryer ,用法一致,方法名替换即可!!!")]
-        public static Queryer Joiner<M1, M2, M3, M4, M5, M6>(this IDbConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4, out M5 table5, out M6 table6)
-            where M1 : class, new()
-            where M2 : class, new()
-            where M3 : class, new()
-            where M4 : class, new()
-            where M5 : class, new()
-            where M6 : class, new()
-        {
-            return conn.Queryer(out table1, out table2, out table3, out table4, out table5, out table6);
-        }
-
         /******************************************************************************************************************************/
 
         /// <summary>
@@ -316,7 +245,7 @@ namespace MyDAL
 
 
         /// <summary>
-        /// Queryer 便捷 ListAsync 方法
+        /// 请参阅: <see langword=".ListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static async Task<List<M>> ListAsync<M>(this IDbConnection conn, QueryOption option)
             where M : class, new()
@@ -343,7 +272,7 @@ namespace MyDAL
         }
 
         /// <summary>
-        /// Queryer 便捷 ListAsync 方法
+        /// 请参阅: <see langword=".ListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static async Task<List<M>> ListAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
             where M : class, new()
@@ -351,7 +280,7 @@ namespace MyDAL
             return await conn.Queryer<M>().Where(compareFunc).ListAsync();
         }
         /// <summary>
-        /// Queryer 便捷 ListAsync 方法
+        /// 请参阅: <see langword=".ListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static async Task<List<VM>> ListAsync<M, VM>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
             where M : class, new()
@@ -360,13 +289,12 @@ namespace MyDAL
             return await conn.Queryer<M>().Where(compareFunc).ListAsync<VM>();
         }
         /// <summary>
-        /// Queryer 便捷 ListAsync 方法
+        /// 请参阅: <see langword=".ListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public static async Task<List<VM>> ListAsync<M, VM>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, VM>> columnMapFunc)
+        public static async Task<List<T>> ListAsync<M, T>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, T>> columnMapFunc)
             where M : class, new()
-            where VM : class
         {
-            return await conn.Queryer<M>().Where(compareFunc).ListAsync<VM>(columnMapFunc);
+            return await conn.Queryer<M>().Where(compareFunc).ListAsync(columnMapFunc);
         }
 
         /// <summary>

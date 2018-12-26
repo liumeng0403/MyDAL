@@ -14,11 +14,11 @@ namespace MyDAL.Test.JoinQueryVmColumn
         {
 
             /****************************************************************************************************************************************/
-            
-            var xx12 = "";
+
+            xx = string.Empty;
 
             var res12 = await Conn
-                .Queryer<Agent, AgentInventoryRecord>(out var agent12, out var record12)
+                .Queryer(out Agent agent12, out AgentInventoryRecord record12)
                 .From(() => agent12)
                     .InnerJoin(() => record12)
                         .On(() => agent12.Id == record12.AgentId)
@@ -33,12 +33,12 @@ namespace MyDAL.Test.JoinQueryVmColumn
                 });
             Assert.True(res12.Count == 574);
 
-            var tuple12 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
             var yy2 = res12.First().nn;
 
             /*************************************************************************************************************************/
 
-            var xx = "";
+            xx = string.Empty;
         }
     }
 }

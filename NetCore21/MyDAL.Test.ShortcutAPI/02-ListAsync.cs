@@ -14,26 +14,26 @@ namespace MyDAL.Test.ShortcutAPI
         {
             /****************************************************************************************/
 
-            var xx1 = "";
+            xx = string.Empty;
 
             var date = DateTime.Parse("2018-08-20");
             var res1 = await Conn.ListAsync<AlipayPaymentRecord>(it => it.CreatedOn >= date);
             Assert.True(res1.Count == 29);
 
-            var tuple1 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /****************************************************************************************/
 
-            var xx2 = "";
+            xx = string.Empty;
 
             var res2 = await Conn.ListAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.CreatedOn >= date);
             Assert.True(res1.Count == 29);
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /****************************************************************************************/
 
-            var xx3 = "";
+            xx = string.Empty;
 
             var res3 = await Conn.ListAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.CreatedOn >= date,
                 it => new AlipayPaymentRecordVM
@@ -43,31 +43,31 @@ namespace MyDAL.Test.ShortcutAPI
                 });
             Assert.True(res3.Count == 29);
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /****************************************************************************************/
 
-            var xx4 = "";
+            xx = string.Empty;
 
             var option4 = new AlipayPaymentQueryOption();
             option4.StartTime = date;
             var res4 = await Conn.ListAsync<AlipayPaymentRecord>(option4);
             Assert.True(res4.Count == 29);
 
-            var tuple4 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /****************************************************************************************/
 
-            var xx5 = "";
+            xx = string.Empty;
 
             var res5 = await Conn.ListAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(option4);
             Assert.True(res4.Count == 29);
 
-            var tuple5 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /****************************************************************************************/
 
-            var xx6 = "";
+            xx = string.Empty;
 
             var res6 = await Conn.ListAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(option4,
                 record => new AlipayPaymentRecordVM
@@ -77,9 +77,20 @@ namespace MyDAL.Test.ShortcutAPI
                 });
             Assert.True(res4.Count == 29);
 
-            var tuple6 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /****************************************************************************************/
+
+            xx = string.Empty;
+
+            var res7 = await Conn.ListAsync<Agent, string>(it => it.Name.StartsWith("张"), it => it.Name);
+            Assert.True(res7.Count == 1996);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /****************************************************************************************/
+
+            xx = string.Empty;
 
         }
     }

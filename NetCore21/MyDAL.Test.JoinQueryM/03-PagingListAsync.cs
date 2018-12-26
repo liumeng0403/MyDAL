@@ -17,10 +17,10 @@ namespace MyDAL.Test.JoinQueryM
 
             /*************************************************************************************************************************/
 
-            var xx5 = "";
+            xx = string.Empty;
 
             var res5 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var agent5, out var record5)
+                .Queryer(out Agent agent5, out AgentInventoryRecord record5)
                 .From(() => agent5)
                     .InnerJoin(() => record5)
                         .On(() => agent5.Id == record5.AgentId)
@@ -33,10 +33,10 @@ namespace MyDAL.Test.JoinQueryM
             var option6 = new AgentQueryOption();
             option6.AgentLevel = AgentLevel.DistiAgent;
 
-            var xx6 = "";
+            xx = string.Empty;
 
             var res6 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var agent6, out var record6)
+                .Queryer(out Agent agent6, out AgentInventoryRecord record6)
                 .From(() => agent6)
                     .InnerJoin(() => record6)
                         .On(() => agent6.Id == record6.AgentId)
@@ -44,11 +44,11 @@ namespace MyDAL.Test.JoinQueryM
                 .PagingListAsync<Agent>(option6);
             Assert.True(res6.TotalCount == 574);
 
-            var tuple6 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*************************************************************************************************************************/
 
-            var xx = "";
+            xx = string.Empty;
 
         }
     }

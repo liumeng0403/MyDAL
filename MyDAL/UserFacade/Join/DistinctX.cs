@@ -49,7 +49,7 @@ namespace MyDAL.UserFacade.Join
         }
 
         /// <summary>
-        /// 多表多条数据查询
+        /// 请参阅: <see langword=".ListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<List<M>> ListAsync<M>()
             where M : class
@@ -57,7 +57,7 @@ namespace MyDAL.UserFacade.Join
             return await new ListXImpl(DC).ListAsync<M>();
         }
         /// <summary>
-        /// 多表多条数据查询
+        /// 请参阅: <see langword=".ListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<List<T>> ListAsync<T>(Expression<Func<T>> columnMapFunc)
         {

@@ -19,7 +19,7 @@ namespace MyDAL.Test.JoinQueryVmColumn
             var xx9 = "";
 
             var res9 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var agent9, out var record9)
+                .Queryer(out Agent agent9, out AgentInventoryRecord record9)
                 .From(() => agent9)
                     .InnerJoin(() => record9)
                         .On(() => agent9.Id == record9.AgentId)
@@ -40,7 +40,7 @@ namespace MyDAL.Test.JoinQueryVmColumn
             var option10 = new AgentQueryOption();
             option10.AgentLevel = AgentLevel.DistiAgent;
             var res10 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var agent10, out var record10)
+                .Queryer(out Agent agent10, out AgentInventoryRecord record10)
                 .From(() => agent10)
                     .InnerJoin(() => record10)
                         .On(() => agent10.Id == record10.AgentId)
@@ -63,7 +63,7 @@ namespace MyDAL.Test.JoinQueryVmColumn
             option11.PageIndex = 5;
             option11.PageSize = 10;
             var res11 = await Conn
-                .Joiner<Agent, AgentInventoryRecord>(out var agent11, out var record11)
+                .Queryer(out Agent agent11, out AgentInventoryRecord record11)
                 .From(() => agent11)
                     .InnerJoin(() => record11)
                         .On(() => agent11.Id == record11.AgentId)

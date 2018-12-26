@@ -72,23 +72,22 @@ namespace MyDAL.UserFacade.Query
         }
 
         /// <summary>
-        /// 单表多条数据查询
+        /// 请参阅: <see langword=".ListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<List<M>> ListAsync()
         {
             return await new ListImpl<M>(DC).ListAsync();
         }
         /// <summary>
-        /// 单表多条数据查询
+        /// 请参阅: <see langword=".ListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        /// <typeparam name="VM">ViewModel</typeparam>
         public async Task<List<VM>> ListAsync<VM>()
             where VM : class
         {
             return await new ListImpl<M>(DC).ListAsync<VM>();
         }
         /// <summary>
-        /// 单表多条数据查询
+        /// 请参阅: <see langword=".ListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<List<T>> ListAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
