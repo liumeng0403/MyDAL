@@ -20,7 +20,7 @@ namespace MyDAL
         /// <summary>
         ///     条目总数
         /// </summary>
-        public int TotalCount { get; set; }
+        public long TotalCount { get; set; }
 
         /// <summary>
         ///     页面总数

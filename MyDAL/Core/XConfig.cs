@@ -12,7 +12,7 @@ namespace MyDAL.Core
         internal static bool IsDebug { get; set; } = false;
 
         /************************************************************************************************************/
-        
+
         internal static string MySQL { get; } = "MySql.Data.MySqlClient.MySqlConnection";
         internal static DbEnum DB { get; set; } = DbEnum.None;
 
@@ -23,6 +23,7 @@ namespace MyDAL.Core
         internal static MethodInfo EnumParse { get; } = typeof(Enum).GetMethod(nameof(Enum.Parse), new Type[] { typeof(Type), typeof(string), typeof(bool) });
 
         internal static CommandBehavior MultiRow { get; } = CommandBehavior.SequentialAccess | CommandBehavior.SingleResult;
+        internal static CommandBehavior SingleRow { get; } = CommandBehavior.SequentialAccess | CommandBehavior.SingleResult | CommandBehavior.SingleRow;
 
         /************************************************************************************************************/
 

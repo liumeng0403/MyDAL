@@ -171,9 +171,9 @@ namespace MyDAL.Core.Helper
                     DbParam(u, refDb);
                 }
             }
-            if(ui.Columns !=null)
+            if (ui.Columns != null)
             {
-                foreach(var u in ui.Columns)
+                foreach (var u in ui.Columns)
                 {
                     DbParam(u, refDb);
                 }
@@ -250,9 +250,8 @@ namespace MyDAL.Core.Helper
         }
         internal DbParamInfo GetParameters(List<DicParam> list)
         {
-            var paras = new DbParamInfo();
-
             //
+            var paras = new DbParamInfo();
             foreach (var db in list)
             {
                 if (DC.IsParameter(db.Action))

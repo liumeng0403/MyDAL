@@ -73,7 +73,7 @@ namespace MyDAL.AdoNet
             }
             return false;
         }
-        private async void ProcessDateTimeYearColumn<F>(List<F> result,DicParam dic)
+        private async void ProcessDateTimeYearColumn<F>(List<F> result, DicParam dic)
         {
             while (await Reader.ReadAsync())
             {
@@ -109,34 +109,14 @@ namespace MyDAL.AdoNet
                 throw new InvalidOperationException("请使用一个已打开连接的 IDbConnection 对象!!!");
             }
         }
-        private static CommandBehavior DefaultAllowedCommandBehaviors { get; } = ~CommandBehavior.SingleResult;
-        private CommandBehavior AllowedCommandBehaviors { get; set; } = DefaultAllowedCommandBehaviors;
-        private CommandBehavior GetBehavior(bool close, CommandBehavior @default)
+        private Task<DbDataReader> ExecuteReaderWithRetryAsync(DbCommand cmd, CommandBehavior behavior)
         {
-            return (close ? (@default | CommandBehavior.CloseConnection) : @default) & AllowedCommandBehaviors;
-        }
-        private bool DisableCommandBehaviorOptimizations(CommandBehavior behavior, Exception ex)
-        {
-            if (AllowedCommandBehaviors == DefaultAllowedCommandBehaviors
-                && (behavior & (CommandBehavior.SingleResult | CommandBehavior.SingleRow)) != 0)
+            var reader = cmd.ExecuteReaderAsync(behavior);
+            if (reader.Status == TaskStatus.Faulted)
             {
-                if (ex.Message.Contains(nameof(CommandBehavior.SingleResult))
-                    || ex.Message.Contains(nameof(CommandBehavior.SingleRow)))
-                {
-                    AllowedCommandBehaviors &= ~(CommandBehavior.SingleResult | CommandBehavior.SingleRow);
-                    return true;
-                }
+                return cmd.ExecuteReaderAsync(behavior);
             }
-            return false;
-        }
-        private Task<DbDataReader> ExecuteReaderWithFlagsFallbackAsync(DbCommand cmd, bool wasClosed, CommandBehavior behavior)
-        {
-            var task = cmd.ExecuteReaderAsync(GetBehavior(wasClosed, behavior));
-            if (task.Status == TaskStatus.Faulted && DisableCommandBehaviorOptimizations(behavior, task.Exception.InnerException))
-            {
-                return cmd.ExecuteReaderAsync(GetBehavior(wasClosed, behavior));
-            }
-            return task;
+            return reader;
         }
         private async Task<List<F>> ReadColumn<M, F>(Func<M, F> propertyFunc)
             where M : class
@@ -154,7 +134,6 @@ namespace MyDAL.AdoNet
                     result.Add(propertyFunc(func(Reader)));
                 }
             }
-            while (await Reader.NextResultAsync()) { }
             return result;
         }
         private async Task<List<F>> ReadColumn<F>()
@@ -180,7 +159,20 @@ namespace MyDAL.AdoNet
                     result.Add(DC.GH.ConvertT<F>(prop.GetValue(obj)));
                 }
             }
-            while (await Reader.NextResultAsync()) { }
+            return result;
+        }
+        private async Task<List<M>> ReadRow<M>()
+        {
+            var result = new List<M>();
+            if (Reader.FieldCount == 0)
+            {
+                return new List<M>();
+            }
+            var func = DC.XC.GetHandle<M>(SqlCount == 1 ? SqlOne : SqlTwo, Reader);
+            while (await Reader.ReadAsync())
+            {
+                result.Add(func(Reader));
+            }
             return result;
         }
 
@@ -195,138 +187,158 @@ namespace MyDAL.AdoNet
 
         /*********************************************************************************************************************************************/
 
-        /*
-         * ado.net -- DbCommand.[Task<DbDataReader> ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)]
-         * select -- 所有行
-         */
-        internal async Task<List<M>> ExecuteReaderMultiRowAsync<M>()
-        {
-            var comm = new CommandInfo(SqlCount == 1 ? SqlOne : SqlTwo, Parameter);
-            bool needClose = Conn.State == ConnectionState.Closed;
-            using (var cmd = SettingCommand(comm, Conn, comm.Parameter.ParamReader))
-            {
-                DbDataReader reader = null;
-                try
-                {
-                    if (needClose) { await OpenAsync(Conn); }
-                    reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, XConfig.MultiRow);
-                    if (reader.FieldCount == 0)
-                    {
-                        return new List<M>();
-                    }
-                    var func = DC.XC.GetHandle<M>(SqlCount == 1 ? SqlOne : SqlTwo, reader);
-                    var result = new List<M>();
-                    while (await reader.ReadAsync())
-                    {
-                        result.Add(func(reader));
-                    }
-                    while (await reader.NextResultAsync()) { }
-                    return result;
-                }
-                finally
-                {
-                    using (reader) { }
-                    if (needClose) { Conn.Close(); }
-                }
-            }
-        }
-
-        /*
-         * ado.net -- DbCommand.[Task<DbDataReader> ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)]
-         * select -- 单列
-         */
-        internal async Task<List<F>> ExecuteReaderSingleColumnAsync<M, F>(Func<M, F> propertyFunc)
+        internal async Task<PagingList<T>> ExecuteReaderPagingAsync<M, T>(bool single, Func<M, T> mapFunc)
             where M : class
         {
-            var comm = new CommandInfo(SqlCount == 1 ? SqlOne : SqlTwo, Parameter);
-            var needClose = Conn.State == ConnectionState.Closed;
-            using (var cmd = SettingCommand(comm, Conn, comm.Parameter.ParamReader))
-            {
-                try
-                {
-                    if (needClose) { await OpenAsync(Conn); }
-                    Reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, XConfig.MultiRow);
-                    return await ReadColumn(propertyFunc);
-                }
-                finally
-                {
-                    using (Reader) { }
-                    if (needClose) { Conn.Close(); }
-                }
-            }
-        }
-
-        /*
-         * ado.net -- DbCommand.[Task<DbDataReader> ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)]
-         * select -- 单列
-         */
-        internal async Task<List<F>> ExecuteReaderSingleColumnAsync<F>()
-        {
-            var comm = new CommandInfo(SqlCount == 1 ? SqlOne : SqlTwo, Parameter);
-            var needClose = Conn.State == ConnectionState.Closed;
-            using (var cmd = SettingCommand(comm, Conn, comm.Parameter.ParamReader))
-            {
-                try
-                {
-                    if (needClose) { await OpenAsync(Conn); }
-                    Reader = await ExecuteReaderWithFlagsFallbackAsync(cmd, needClose, XConfig.MultiRow);
-                    return await ReadColumn<F>();
-                }
-                finally
-                {
-                    using (Reader) { }
-                    if (needClose) { Conn.Close(); }
-                }
-            }
-        }
-
-        /*
-         * ado.net -- DbCommand.[Task<int> ExecuteNonQueryAsync(CancellationToken cancellationToken)]
-         * Update,Insert,Delete -- 执行成功是返回值为该命令所影响的行数，如果影响的行数为0时返回的值为0，如果数据操作回滚得话返回值为-1
-         * 对数据库结构的操作 -- 操作成功时返回的却是-1 , 操作失败的话（如数据表已经存在）往往会发生异常
-         */
-        internal async Task<int> ExecuteNonQueryAsync()
-        {
-            var comm = new CommandInfo(SqlOne, Parameter);
-            var needClose = Conn.State == ConnectionState.Closed;
-            using (var cmd = SettingCommand(comm, Conn, comm.Parameter.ParamReader))
-            {
-                try
-                {
-                    if (needClose) { await OpenAsync(Conn); }
-                    var result = await cmd.ExecuteNonQueryAsync();
-                    return result;
-                }
-                finally
-                {
-                    if (needClose) { Conn.Close(); }
-                }
-            }
-        }
-
-        /* 
-         * ado.net -- DbCommand.[Task<object> ExecuteScalarAsync(CancellationToken cancellationToken)]
-         * select -- 返回结果是查询后的第一行的第一列
-         * 非select -- 返回一个未实例化的对象
-         */
-        internal async Task<T> ExecuteScalarAsync<T>()
-        {
-            var comm = new CommandInfo(SqlOne, Parameter);
-            var cmd = default(DbCommand);
-            var needClose = Conn.State == ConnectionState.Closed;
-            var result = default(object);
+            var result = new PagingList<T>();
+            result.PageIndex = DC.PageIndex.Value;
+            result.PageSize = DC.PageSize.Value;
+            result.Data = new List<T>();
+            bool needClose = Conn.State == ConnectionState.Closed;
             try
             {
-                cmd = SettingCommand(comm, Conn, comm.Parameter.ParamReader);
                 if (needClose) { await OpenAsync(Conn); }
-                result = await cmd.ExecuteScalarAsync();
+                var ci = new CommandInfo(SqlOne, Parameter);
+                using (var cmdC = SettingCommand(ci, Conn, ci.Parameter.ParamReader))
+                {
+                    var obj = await cmdC.ExecuteScalarAsync();
+                    result.TotalCount = DC.GH.ConvertT<long>(obj);
+                }
+                ci = new CommandInfo(SqlTwo, Parameter);
+                using (var cmdD = SettingCommand(ci, Conn, ci.Parameter.ParamReader))
+                {
+                    using (Reader = await ExecuteReaderWithRetryAsync(cmdD, XConfig.MultiRow))
+                    {
+                        if (single)
+                        {
+                            if (mapFunc == null)
+                            {
+                                result.Data = await ReadColumn<T>();
+                            }
+                            else
+                            {
+                                result.Data = await ReadColumn(mapFunc);
+                            }
+                        }
+                        else
+                        {
+                            result.Data = await ReadRow<T>();
+                        }
+                    }
+                }
             }
             finally
             {
                 if (needClose) { Conn.Close(); }
-                cmd?.Dispose();
             }
-            return DC.GH.ConvertT<T>(result);
+            return result;
+        }
+        internal async Task<List<M>> ExecuteReaderMultiRowAsync<M>()
+        {
+            var result = new List<M>();
+            var ci = new CommandInfo(SqlOne, Parameter);
+            bool needClose = Conn.State == ConnectionState.Closed;
+            try
+            {
+                if (needClose) { await OpenAsync(Conn); }
+                using (var cmd = SettingCommand(ci, Conn, ci.Parameter.ParamReader))
+                {
+                    using (Reader = await ExecuteReaderWithRetryAsync(cmd, XConfig.MultiRow))
+                    {
+                        result = await ReadRow<M>();
+                    }
+                }
+            }
+            finally
+            {
+                if (needClose) { Conn.Close(); }
+            }
+            return result;
+        }
+        internal async Task<List<F>> ExecuteReaderSingleColumnAsync<M, F>(Func<M, F> propertyFunc)
+            where M : class
+        {
+            var result = new List<F>();
+            var comm = new CommandInfo(SqlOne, Parameter);
+            var needClose = Conn.State == ConnectionState.Closed;
+            try
+            {
+                if (needClose) { await OpenAsync(Conn); }
+                using (var cmd = SettingCommand(comm, Conn, comm.Parameter.ParamReader))
+                {
+                    using (Reader = await ExecuteReaderWithRetryAsync(cmd, XConfig.MultiRow))
+                    {
+                        result = await ReadColumn(propertyFunc);
+                    }
+                }
+            }
+            finally
+            {
+                if (needClose) { Conn.Close(); }
+            }
+            return result;
+        }
+        internal async Task<List<F>> ExecuteReaderSingleColumnAsync<F>()
+        {
+            var result = new List<F>();
+            var comm = new CommandInfo(SqlOne, Parameter);
+            var needClose = Conn.State == ConnectionState.Closed;
+            try
+            {
+                if (needClose) { await OpenAsync(Conn); }
+                using (var cmd = SettingCommand(comm, Conn, comm.Parameter.ParamReader))
+                {
+                    using (Reader = await ExecuteReaderWithRetryAsync(cmd, XConfig.MultiRow))
+                    {
+                        result = await ReadColumn<F>();
+                    }
+                }
+            }
+            finally
+            {
+                if (needClose) { Conn.Close(); }
+            }
+            return result;
+        }
+        internal async Task<int> ExecuteNonQueryAsync()
+        {
+            var result = default(int);
+            var comm = new CommandInfo(SqlOne, Parameter);
+            var needClose = Conn.State == ConnectionState.Closed;
+            try
+            {
+                if (needClose) { await OpenAsync(Conn); }
+                using (var cmd = SettingCommand(comm, Conn, comm.Parameter.ParamReader))
+                {
+                    result = await cmd.ExecuteNonQueryAsync();
+                }
+            }
+            finally
+            {
+                if (needClose) { Conn.Close(); }
+            }
+            return result;
+        }
+        internal async Task<T> ExecuteScalarAsync<T>()
+            where T : struct
+        {
+            var result = default(T);
+            var comm = new CommandInfo(SqlOne, Parameter);
+            var needClose = Conn.State == ConnectionState.Closed;
+            try
+            {
+                if (needClose) { await OpenAsync(Conn); }
+                using (var cmd = SettingCommand(comm, Conn, comm.Parameter.ParamReader))
+                {
+                    var obj = await cmd.ExecuteScalarAsync();
+                    result = DC.GH.ConvertT<T>(obj);
+                }
+            }
+            finally
+            {
+                if (needClose) { Conn.Close(); }
+            }
+            return result;
         }
 
     }
