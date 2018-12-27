@@ -32,11 +32,11 @@ namespace MyDAL.Test.ShortcutAPI
             Assert.True(res2.TotalCount == 29);
             Assert.True(res2.Data.Count == 10);
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /****************************************************************************************/
 
-            var xx3 = "";
+            xx=string.Empty;
 
             var res3 = await Conn.PagingListAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(option1, record => new AlipayPaymentRecordVM
             {
@@ -45,11 +45,11 @@ namespace MyDAL.Test.ShortcutAPI
             });
             Assert.True(res3.TotalCount == 29);
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /****************************************************************************************/
 
-            var xx = "";
+            xx=string.Empty;
 
         }
     }

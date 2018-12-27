@@ -47,7 +47,7 @@ namespace MyDAL.Test.WhereEdge
                 .ListAsync();
             Assert.True(res2.Count == 28619);
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*****************************************************************************************************************************/
 
@@ -63,7 +63,7 @@ namespace MyDAL.Test.WhereEdge
                 .ListAsync();
             Assert.True(res3.Count == 2002);
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*****************************************************************************************************************************/
 

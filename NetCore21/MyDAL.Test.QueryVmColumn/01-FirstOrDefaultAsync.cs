@@ -12,7 +12,7 @@ namespace MyDAL.Test.QueryVmColumn
         public async Task test()
         {
 
-            var xx3 = "";
+            xx=string.Empty;
 
             var res3 = await Conn
                 .Queryer<Agent>()
@@ -24,11 +24,11 @@ namespace MyDAL.Test.QueryVmColumn
                 });
             Assert.Equal("樊士芹", res3.XXXX);
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /********************************************************************************************************************************/
 
-            var xx = "";
+            xx=string.Empty;
 
         }
     }

@@ -45,7 +45,7 @@ namespace MyDAL.Test.QueryM
                 .Where(it => it.CreatedOn >= start)
                 .ListAsync();
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             var resR2 = await Conn
                 .Queryer<BodyFitRecord>()
@@ -66,7 +66,7 @@ namespace MyDAL.Test.QueryM
                 .Where(it => it.CreatedOn <= DateTime.Now)
                 .ListAsync();
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             var resR3 = await Conn
                 .Queryer<BodyFitRecord>()

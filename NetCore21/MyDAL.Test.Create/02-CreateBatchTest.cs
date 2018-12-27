@@ -67,7 +67,7 @@ namespace MyDAL.Test.Create
                 .CreateBatchAsync(list3);
             Assert.True(res3 == 10);
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /********************************************************************************************************************************/
 

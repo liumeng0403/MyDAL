@@ -62,9 +62,9 @@ namespace MyDAL.Test.Delete
                 .DeleteAsync();
             Assert.True(res3 == 1);
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
-            var xx3 = "";
+            xx=string.Empty;
 
             // where or
             var res2 = await Conn
@@ -74,7 +74,7 @@ namespace MyDAL.Test.Delete
                 .DeleteAsync();
             Assert.True(res2 == 28063);
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             var xx4 = "";
 
@@ -88,7 +88,7 @@ namespace MyDAL.Test.Delete
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
-            var xx = "";
+            xx=string.Empty;
         }
     }
 }

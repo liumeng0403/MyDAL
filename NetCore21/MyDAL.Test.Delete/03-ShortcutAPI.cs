@@ -30,14 +30,14 @@ namespace MyDAL.Test.Delete
             var res2 = await Conn.DeleteAsync<AlipayPaymentRecord>(it => it.Id == pk2);
             Assert.True(res2 == 1);
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             var res21 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord>(it=>it.Id==pk2);
             Assert.Null(res21);
 
             /****************************************************************************************/
 
-            var xx = "";
+            xx=string.Empty;
         }
     }
 }

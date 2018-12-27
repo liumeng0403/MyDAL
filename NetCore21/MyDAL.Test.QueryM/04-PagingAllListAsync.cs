@@ -12,14 +12,14 @@ namespace MyDAL.Test.QueryM
 
             /*************************************************************************************************************************/
 
-            var xx3 = "";
+            xx=string.Empty;
 
             var res3 = await Conn
                 .Queryer<Agent>()
                 .PagingAllAsync(1, 10);
             Assert.True(res3.TotalCount == 28620);
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
         }
     }

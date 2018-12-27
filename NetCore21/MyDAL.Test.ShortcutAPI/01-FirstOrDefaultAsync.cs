@@ -22,7 +22,7 @@ namespace MyDAL.Test.ShortcutAPI
             var res3 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord, Guid>(it => it.Id == pk && it.CreatedOn == date,it=>it.Id);
             Assert.True(res3==pk);
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /****************************************************************************************/
 

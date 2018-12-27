@@ -49,11 +49,11 @@ namespace MyDAL.Test.WhereEdge
                 .PagingListAsync(option);
             Assert.True(res2.TotalCount == 1);
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*************************************************************************************************************************/
 
-            var xx3 = "";
+            xx=string.Empty;
 
             option.OrderBys = new List<OrderBy>
             {
@@ -70,7 +70,7 @@ namespace MyDAL.Test.WhereEdge
                 .PagingListAsync<AgentVM>(option);
             Assert.True(res3.TotalCount == 1);
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*************************************************************************************************************************/
 
@@ -120,7 +120,7 @@ namespace MyDAL.Test.WhereEdge
                 .ListAsync();
             Assert.True(res42.Count == 1);
 
-            tuple2 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*************************************************************************************************************************/
 

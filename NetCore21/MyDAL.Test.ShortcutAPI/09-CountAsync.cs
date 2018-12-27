@@ -16,7 +16,7 @@ namespace MyDAL.Test.ShortcutAPI
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
-            var xx = "";
+            xx=string.Empty;
         }
     }
 }

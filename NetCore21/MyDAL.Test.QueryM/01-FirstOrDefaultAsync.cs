@@ -68,7 +68,7 @@ namespace MyDAL.Test.QueryM
                 .FirstOrDefaultAsync();
             Assert.NotNull(res3);
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             var resR3 = await Conn
                 .Queryer<BodyFitRecord>()

@@ -33,11 +33,11 @@ namespace MyDAL.Test.WhereEdge
                 .ListAsync();
             Assert.True(res2.Count == 28619);
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /**************************************************************************************************************************************/
 
-            var xx3 = "";
+            xx=string.Empty;
 
             var res3 = await Conn
                 .Queryer<Agent>()
@@ -45,7 +45,7 @@ namespace MyDAL.Test.WhereEdge
                 .ListAsync();
             Assert.True(res3.Count == 28619);
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /**************************************************************************************************************************************/
 
@@ -61,7 +61,7 @@ namespace MyDAL.Test.WhereEdge
 
             /**************************************************************************************************************************************/
 
-            var xx = string.Empty;
+            xx = string.Empty;
         }
     }
 }

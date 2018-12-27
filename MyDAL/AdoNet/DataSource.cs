@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MyDAL.AdoNet
@@ -106,7 +107,7 @@ namespace MyDAL.AdoNet
             }
             else
             {
-                throw new InvalidOperationException("请使用一个已打开连接的 IDbConnection 对象!!!");
+                throw new InvalidOperationException("请使用一个继承自 DbConnection 对象的实例!!!");
             }
         }
         private Task<DbDataReader> ExecuteReaderWithRetryAsync(DbCommand cmd, CommandBehavior behavior)
@@ -129,7 +130,7 @@ namespace MyDAL.AdoNet
             else
             {
                 var func = DC.XC.GetHandle<M>(SqlOne, Reader);
-                while (await Reader.ReadAsync())
+                while (await Reader.ReadAsync(CancellationToken.None).ConfigureAwait(false))
                 {
                     result.Add(propertyFunc(func(Reader)));
                 }
@@ -153,7 +154,7 @@ namespace MyDAL.AdoNet
                 }
                 var func = DC.XC.GetHandle(SqlOne, Reader, DC.XC.GetModelType(dic.Key));
                 var prop = DC.XC.GetModelProperys(dic.Key).FirstOrDefault(it => it.Name.Equals(dic.PropOne, StringComparison.Ordinal));
-                while (await Reader.ReadAsync())
+                while (await Reader.ReadAsync(CancellationToken.None).ConfigureAwait(false))
                 {
                     var obj = func(Reader);
                     result.Add(DC.GH.ConvertT<F>(prop.GetValue(obj)));
@@ -169,7 +170,7 @@ namespace MyDAL.AdoNet
                 return new List<M>();
             }
             var func = DC.XC.GetHandle<M>(SqlCount == 1 ? SqlOne : SqlTwo, Reader);
-            while (await Reader.ReadAsync())
+            while (await Reader.ReadAsync(CancellationToken.None).ConfigureAwait(false))
             {
                 result.Add(func(Reader));
             }

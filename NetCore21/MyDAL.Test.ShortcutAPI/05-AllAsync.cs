@@ -25,7 +25,7 @@ namespace MyDAL.Test.ShortcutAPI
             var res2 = await Conn.AllAsync<Agent,AgentVM>();
             Assert.True(res2.Count == 28620);
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /***************************************************************************************************************************/
 
@@ -34,7 +34,7 @@ namespace MyDAL.Test.ShortcutAPI
             var res3 = await Conn.AllAsync<Agent, Guid>(it => it.Id);
             Assert.True(res3.Count == 28620);
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /***************************************************************************************************************************/
 

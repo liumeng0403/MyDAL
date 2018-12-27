@@ -43,7 +43,7 @@ namespace MyDAL.Test.Update
                 Assert.Equal("NotAllowedNull -- 字段:[[PathId]]的值不能设为 Null !!!", ex.Message, ignoreCase: true);
             }
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*****************************************************************************************************************************************************************/
 
@@ -61,7 +61,7 @@ namespace MyDAL.Test.Update
                 .Where(it => it.Id == agent.Id)
                 .UpdateAsync(SetEnum.IgnoreNull);
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             var res31 = await Conn.FirstOrDefaultAsync<Agent>(it => it.Id == agent.Id);
             Assert.Equal("xxxxxxx", res31.PathId, ignoreCase: true);

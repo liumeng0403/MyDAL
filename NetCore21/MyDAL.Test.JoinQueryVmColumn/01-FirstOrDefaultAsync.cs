@@ -34,7 +34,7 @@ namespace MyDAL.Test.JoinQueryVmColumn
             Assert.NotNull(res2);
             Assert.Equal("夏明君", res2.zz);
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
         }
     }

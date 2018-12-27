@@ -17,7 +17,7 @@ namespace MyDAL.Test.QueryVmColumn
 
             /*******************************************************************************************************************************/
 
-            var xx3 = "";
+            xx=string.Empty;
 
             var res3 = await Conn
                 .Queryer<Agent>()
@@ -29,7 +29,7 @@ namespace MyDAL.Test.QueryVmColumn
                 });
             Assert.True(res3.Count == 25);
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*******************************************************************************************************************************/
 

@@ -64,11 +64,12 @@ namespace MyDAL.Test.Update
             // 修改
 
             // set field 1
+            var pk1 = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e");
             var res1 = await Conn
                 .Updater<BodyFitRecord>()
-                .Set(it => it.CreatedOn, m1.CreatedOn)
-                .Set(it => it.BodyMeasureProperty, m1.BodyMeasureProperty)
-                .Where(it => it.Id == m.Id)
+                .Set(it => it.CreatedOn, DateTime.Now)
+                .Set(it => it.BodyMeasureProperty, "{xxx:yyy,mmm:nnn,zzz:aaa}")
+                .Where(it => it.Id == pk1)
                 .UpdateAsync();
             Assert.True(res1 == 1);
 

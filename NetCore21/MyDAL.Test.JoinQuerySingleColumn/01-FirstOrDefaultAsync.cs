@@ -23,7 +23,7 @@ namespace MyDAL.Test.JoinQuerySingleColumn
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
-            var xx = "";
+            xx=string.Empty;
         }
     }
 }

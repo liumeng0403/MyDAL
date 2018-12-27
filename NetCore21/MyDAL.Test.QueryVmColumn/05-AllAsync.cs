@@ -22,7 +22,7 @@ namespace MyDAL.Test.QueryVmColumn
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
-            var xx = "";
+            xx=string.Empty;
         }
     }
 }

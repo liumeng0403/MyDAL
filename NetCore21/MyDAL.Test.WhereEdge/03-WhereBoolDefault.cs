@@ -54,7 +54,7 @@ namespace MyDAL.Test.WhereEdge
             Assert.True(res22.Count == 2);
             Assert.True(res22.First().IsDefault == false);
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /********************************************************************************************************************************************/
 
@@ -79,7 +79,7 @@ namespace MyDAL.Test.WhereEdge
                 .ListAsync<Agent>();
             Assert.True(res31.Count == 0);
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /********************************************************************************************************************************************/
 

@@ -40,7 +40,7 @@ namespace MyDAL.Test.QueryM
                 .PagingListAsync(1, 10);
             Assert.True(res2.TotalPage == 2807);
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /******************************************************************************************************/
 
@@ -53,7 +53,7 @@ namespace MyDAL.Test.QueryM
                 .PagingListAsync(1, 10);
             Assert.True(res3.TotalPage == 56);
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /******************************************************************************************************/
 

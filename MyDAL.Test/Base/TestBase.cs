@@ -88,7 +88,7 @@ namespace MyDAL.Test
             return
                 new MySqlConnection("Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;allowPublicKeyRetrieval=true;")
                 .OpenDebug()  // 全局 debug 配置, 生产环境不要开启 
-                              //.OpenDB()  // 建议 每次新实例并打开,以获得更好的性能体验, 但是 用完要注意手动释放, 防止 连接池 资源耗尽!!!
+                //.OpenAsync()  // 建议 每次新实例并打开,以获得更好的性能体验, 但是 用完要注意手动释放, 防止 连接池 资源耗尽!!!
                 ;
         }
         private static IDbConnection GetTSQLConnection()
@@ -99,7 +99,7 @@ namespace MyDAL.Test
             return
                 new SqlConnection("Data Source=.\\SQLEXPRESS;Initial Catalog=MyDAL_TestDB;User Id=sa;Password=1010;")
                 .OpenDebug()  // 全局 debug 配置, 生产环境不要开启 
-                              //.OpenDB()  // 建议 每次新实例并打开,以获得更好的性能体验, 但是 用完要注意手动释放, 防止 连接池 资源耗尽!!!
+                //.OpenAsync()  // 建议 每次新实例并打开,以获得更好的性能体验, 但是 用完要注意手动释放, 防止 连接池 资源耗尽!!!
                 ;
         }
 

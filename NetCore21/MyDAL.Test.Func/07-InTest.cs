@@ -351,7 +351,7 @@ namespace MyDAL.Test.Func
                 .ListAsync();
             Assert.True(res21.Count == 2);
 
-            var tuple21 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*******************************************************************************************************************/
 
@@ -364,7 +364,7 @@ namespace MyDAL.Test.Func
                 .ListAsync();
             Assert.True(res22.Count == 555);
 
-            var tuple22 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*******************************************************************************************************************/
 
@@ -380,7 +380,7 @@ namespace MyDAL.Test.Func
                 .ListAsync<Agent>();
             Assert.True(res23.Count == 574);
 
-            var tuple23 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*******************************************************************************************************************/
 
@@ -395,7 +395,7 @@ namespace MyDAL.Test.Func
                 .ListAsync();
             Assert.True(res24.Count == 4);
 
-            var tuple24 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*******************************************************************************************************************/
 
@@ -408,7 +408,7 @@ namespace MyDAL.Test.Func
                 .ListAsync();
             Assert.True(res25.Count == 1);
 
-            var tuple25 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*******************************************************************************************************************/
 
@@ -421,7 +421,7 @@ namespace MyDAL.Test.Func
                 .ListAsync();
             Assert.True(res26.Count == 2);
 
-            var tuple26 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*******************************************************************************************************************/
 

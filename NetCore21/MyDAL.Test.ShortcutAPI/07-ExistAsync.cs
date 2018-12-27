@@ -26,11 +26,11 @@ namespace MyDAL.Test.ShortcutAPI
             var res2 = Conn.Exist<AlipayPaymentRecord>(it => it.CreatedOn == date && it.OrderId == id);
             Assert.True(res2);
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /********************************************************************************************************************************************/
 
-            var xx = "";
+            xx=string.Empty;
         }
     }
 }

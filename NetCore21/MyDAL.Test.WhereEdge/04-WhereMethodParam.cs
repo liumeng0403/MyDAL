@@ -59,7 +59,7 @@ namespace MyDAL.Test.WhereEdge
         }
         private async Task yyy(List<Guid> list)
         {
-            var xx = "";
+            xx=string.Empty;
 
             var res = await Conn
                 .Queryer<Agent>()
@@ -67,11 +67,11 @@ namespace MyDAL.Test.WhereEdge
                 .ListAsync();
             Assert.True(res.Count == 2);
 
-            var xxx = "";
+            xx=string.Empty;
         }
         private async Task yyy(Guid[] arrays)
         {
-            var xx = "";
+            xx=string.Empty;
 
             var res = await Conn
                 .Queryer<Agent>()
@@ -79,7 +79,7 @@ namespace MyDAL.Test.WhereEdge
                 .ListAsync();
             Assert.True(res.Count == 2);
 
-            var xxx = "";
+            xx=string.Empty;
         }
 
 

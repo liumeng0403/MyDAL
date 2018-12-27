@@ -11,7 +11,7 @@ namespace MyDAL.Test.ShortcutAPI
         [Fact]
         public async Task test()
         {
-            var xx = "";
+            xx=string.Empty;
 
             for(var i=0;i<100;i++)
             {

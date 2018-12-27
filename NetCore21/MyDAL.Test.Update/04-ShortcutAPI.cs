@@ -16,16 +16,20 @@ namespace MyDAL.Test.Update
             var xx1 = "";
 
             var pk1 = Guid.Parse("8f2cbb64-8356-4482-88ee-016558c05b2d");
-            var res1 = await Conn.UpdateAsync<AlipayPaymentRecord>(it=>it.Id==pk1, new
+
+            // 修改一条数据: AlipayPaymentRecord
+            var res1 = await Conn.UpdateAsync<AlipayPaymentRecord>(it=>it.Id==pk1, new    //  where 条件: it=>it.Id==pk1
             {
-                Description = "xxxxxx"
+                Description = "new desc",    // 修改 AlipayPaymentRecord 字段 Description 的值为: "new desc"
+                PaymentUrl = "new url"    //  修改 AlipayPaymentRecord 字段 PaymentUrl 的值为: "new url"
             });
             Assert.True(res1 == 1);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
+            // 查询一条数据: AlipayPaymentRecord
             var res11 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord>(it=>it.Id==pk1);
-            Assert.True(res11.Description == "xxxxxx");
+            Assert.True(res11.Description == "new desc");
 
             /****************************************************************************************/
 
@@ -38,14 +42,14 @@ namespace MyDAL.Test.Update
             });
             Assert.True(res2 == 1);
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             var res21 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord>(it=>it.Id==pk2);
             Assert.True(res21.Description == "xxxxxx");
 
             /****************************************************************************************/
 
-            var xx = "";
+            xx=string.Empty;
 
         }
     }

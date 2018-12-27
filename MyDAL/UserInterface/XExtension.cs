@@ -377,8 +377,11 @@ namespace MyDAL
         }
 
         /******************************************************************************************************************************/
-        
-        public static IDbConnection OpenDB(this IDbConnection conn)
+
+        /// <summary>
+        /// 异步打开 DB 连接
+        /// </summary>
+        public static IDbConnection OpenAsync(this IDbConnection conn)
         {
             if (conn.State == ConnectionState.Closed)
             {

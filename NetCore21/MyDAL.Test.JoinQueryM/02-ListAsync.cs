@@ -7,7 +7,7 @@ using Xunit;
 
 namespace MyDAL.Test.JoinQueryM
 {
-    public class _02_ListAsync:TestBase
+    public class _02_ListAsync : TestBase
     {
         private async Task<Agent> PreData01()
         {
@@ -27,7 +27,7 @@ namespace MyDAL.Test.JoinQueryM
 
             /**************************************************************************************************************************/
 
-            xx = "";
+            xx = string.Empty;
 
             //
             var res1 = await Conn
@@ -35,15 +35,15 @@ namespace MyDAL.Test.JoinQueryM
                 .From(() => agent1)
                     .InnerJoin(() => record1)
                         .On(() => agent1.Id == record1.AgentId)
-                .Where(() => agent1.CreatedOn >= WhereTest.CreatedOn.AddDays(-60))                                                    
+                .Where(() => agent1.CreatedOn >= WhereTest.CreatedOn.AddDays(-60))
                 .ListAsync<AgentInventoryRecord>();
             Assert.True(res1.Count == 574);
 
-            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /**************************************************************************************************************************/
 
-            var xx2 = "";
+            var xx2 = string.Empty;
 
             // 
             var res2 = await Conn
@@ -55,11 +55,11 @@ namespace MyDAL.Test.JoinQueryM
                 .ListAsync<AgentInventoryRecord>();
             Assert.True(res2.Count == 523);
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /**************************************************************************************************************************/
 
-            var xx3 = "";
+            var xx3 = string.Empty;
 
             // 
             var res3 = await Conn
@@ -72,11 +72,11 @@ namespace MyDAL.Test.JoinQueryM
             Assert.True(res3.Count == 1);
             Assert.Equal(res3.First().Id, Guid.Parse("02dbc81c-5c9a-4cdf-8bf0-016551f756c4"));
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /**************************************************************************************************************************/
 
-            var xx4 = "";
+            var xx4 = string.Empty;
 
             // 
             var res4 = await Conn
@@ -88,11 +88,11 @@ namespace MyDAL.Test.JoinQueryM
                 .ListAsync<AgentInventoryRecord>();
             Assert.True(res4.Count == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /**************************************************************************************************************************/
 
-            var xx5 = "";
+            var xx5 = string.Empty;
 
             // 
             var res5 = await Conn
@@ -108,7 +108,7 @@ namespace MyDAL.Test.JoinQueryM
 
             /**************************************************************************************************************************/
 
-            var xx6 = "";
+            var xx6 = string.Empty;
 
             // 
             var res6 = await Conn
@@ -125,7 +125,7 @@ namespace MyDAL.Test.JoinQueryM
 
             /**************************************************************************************************************************/
 
-            var xx7 = "";
+            var xx7 = string.Empty;
 
             // 
             var res7 = await Conn
@@ -137,11 +137,11 @@ namespace MyDAL.Test.JoinQueryM
                 .ListAsync<AgentInventoryRecord>();
             Assert.True(res7.Count == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /**************************************************************************************************************************/
 
-            xx = "";
+            xx = string.Empty;
 
             // 
             var res8 = await Conn
@@ -153,11 +153,11 @@ namespace MyDAL.Test.JoinQueryM
                 .ListAsync<AgentInventoryRecord>();
             Assert.True(res8.Count == 574);
 
-            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /**************************************************************************************************************************/
 
-            xx = "";
+            xx = string.Empty;
 
             // 
             var res9 = await Conn
@@ -172,8 +172,8 @@ namespace MyDAL.Test.JoinQueryM
             var tuple9 = (XDebug.SQL, XDebug.Parameters);
 
             /**************************************************************************************************************************/
-            
-            xx = "";
+
+            xx = string.Empty;
 
             var res10 = await Conn
                 .Queryer<Agent, AgentInventoryRecord>(out var agent10, out var record10)
@@ -185,7 +185,7 @@ namespace MyDAL.Test.JoinQueryM
                 .ListAsync<Agent>();
             Assert.True(res10.Count == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /**************************************************************************************************************************/
 
@@ -231,38 +231,39 @@ namespace MyDAL.Test.JoinQueryM
                 .ListAsync<AspnetUsers>();
             Assert.True(res2.Count == 29180);
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*********************************************************************************************************************************************************/
 
-            var xx3 = "";
+            xx=string.Empty;
 
             // order by createdon -- 手动查看
             var res3 = await Conn
-                .Queryer<Agent, AgentInventoryRecord>(out var agent3, out var record3)
+                .Queryer(out Agent agent3, out AgentInventoryRecord record3)
                 .From(() => agent3)
                     .InnerJoin(() => record3)
                         .On(() => agent3.Id == record3.AgentId)
                 .ListAsync<Agent>();
             Assert.True(res3.Count == 574);
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*********************************************************************************************************************************************************/
 
-            var xx4 = "";
+            xx = "";
 
             var res4 = await Conn
-                .Queryer<AspnetUsers, AspnetUserRoles, AspnetRoles>(out var user4, out var userRole4, out var role4)
+                .Queryer(out AspnetUsers user4, out AspnetUserRoles userRole4, out AspnetRoles role4)
                 .From(() => user4)
                     .InnerJoin(() => userRole4)
                         .On(() => user4.Id == userRole4.UserId)
                     .InnerJoin(() => role4)
                         .On(() => userRole4.RoleId == role4.Id)
+                .Where(() => user4.NickName.StartsWith("刘"))
                 .OrderBy(() => user4.UserName)
                     .ThenOrderBy(() => user4.AgentLevel, OrderByEnum.Asc)
                 .ListAsync<AspnetUsers>();
-            Assert.True(res4.Count == 29180);
+            Assert.True(res4.Count == 1480);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 

@@ -17,7 +17,7 @@ namespace MyDAL.Test.Entities.MyDAL_TestDB
      *  PRIMARY KEY (`Id`)
      *) ENGINE=InnoDB DEFAULT CHARSET=utf8
      */
-    [XTable(Name = "AlipayPaymentRecord")]
+    [XTable(Name = "AlipayPaymentRecord")]     // XTableAttribute 指明 该 Model 对应 DB 中的 table 名.
     public class AlipayPaymentRecord
     {
         public Guid Id { get; set; }

@@ -30,10 +30,13 @@ namespace MyDAL.Test.Create
                 PaymentSN = "2018082021001004180510465833",
                 PayedOn = DateTime.Parse("2018-08-20 20:36:35.720525"),
                 CanceledOn = null,
-                PaymentUrl = "https://openapi.xxx?charset=UTF-8&app_id=xxx&biz_content=xxx&charset=UTF-8&format=JSON&method=zzz&return_url=xxx&sign_type=yyy&timestamp=zzz&version=1.0"
+                PaymentUrl = "https://openapi.xxx?charset=UTF-8&app_id=zzz&version=1.0"
             };
+            // 删除一条数据: AlipayPaymentRecord
             await Conn.DeleteAsync<AlipayPaymentRecord>(it=>it.Id==pk);
-            var res15 = await Conn.CreateAsync<AlipayPaymentRecord>(m15);
+
+            // 新增一条数据: AlipayPaymentRecord
+            var res15 = await Conn.CreateAsync(m15);
             Assert.True(res15 == 1);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);

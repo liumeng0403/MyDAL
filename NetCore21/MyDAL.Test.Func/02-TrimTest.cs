@@ -61,11 +61,11 @@ namespace MyDAL.Test.Func
                 .FirstOrDefaultAsync();
             Assert.True(res2.Title == "  演示商品01");
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /******************************************************************************************************************/
 
-            var xx3 = "";
+            xx=string.Empty;
 
             await PreRTrim();
             var res3 = await Conn
@@ -74,11 +74,11 @@ namespace MyDAL.Test.Func
                 .FirstOrDefaultAsync();
             Assert.True(res3.Title == "演示商品01  ");
 
-            var tuple3 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /******************************************************************************************************************/
 
-            var xx = "";
+            xx=string.Empty;
 
         }
 

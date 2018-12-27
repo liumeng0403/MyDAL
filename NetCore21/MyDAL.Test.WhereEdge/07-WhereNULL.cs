@@ -60,7 +60,7 @@ namespace MyDAL.Test.WhereEdge
                 .ListAsync();
             Assert.True(res2.Count == 554);
 
-            var tuple2 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /************************************************************************************************************************/
 
@@ -77,7 +77,7 @@ namespace MyDAL.Test.WhereEdge
             }
             catch (Exception ex)
             {
-                var tuple3 = (XDebug.SQL, XDebug.Parameters);
+                tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
                 Assert.Equal("[[Convert(value(MyDAL.Test.WhereEdge._07_WhereNULL).WhereTest.AgentLevelNull, Nullable`1)]] 中,传入的 SQL 筛选条件为 Null !!!", ex.Message, ignoreCase: true);
             }
 
