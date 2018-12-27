@@ -141,28 +141,6 @@ namespace MyDAL.UserFacade.Query
         {
             return await new ListImpl<M>(DC).ListAsync(columnMapFunc);
         }
-        /// <summary>
-        /// 单表多条数据查询
-        /// </summary>
-        public async Task<List<M>> ListAsync(int topCount)
-        {
-            return await new ListImpl<M>(DC).ListAsync(topCount);
-        }
-        /// <summary>
-        /// 单表多条数据查询
-        /// </summary>
-        public async Task<List<VM>> ListAsync<VM>(int topCount)
-            where VM : class
-        {
-            return await new ListImpl<M>(DC).ListAsync<VM>(topCount);
-        }
-        /// <summary>
-        /// 单表多条数据查询
-        /// </summary>
-        public async Task<List<T>> ListAsync<T>(int topCount, Expression<Func<M, T>> columnMapFunc)
-        {
-            return await new ListImpl<M>(DC).ListAsync(topCount, columnMapFunc);
-        }
 
         /// <summary>
         /// 单表分页查询

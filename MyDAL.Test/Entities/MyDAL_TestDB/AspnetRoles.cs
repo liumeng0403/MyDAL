@@ -13,7 +13,7 @@ namespace MyDAL.Test.Entities.MyDAL_TestDB
      *   UNIQUE KEY `RoleNameIndex` (`NormalizedName`) USING BTREE
      * ) ENGINE=InnoDB DEFAULT CHARSET=utf8
      */
-    [XTable("AspNetRoles")]
+    [XTable(Name = "AspNetRoles")]
     public class AspnetRoles : IdentityRole<Guid>
     {
     }

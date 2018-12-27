@@ -12,11 +12,6 @@ namespace MyDAL.Interfaces
         Task<List<VM>> ListAsync<VM>()
             where VM : class;
         Task<List<T>> ListAsync<T>(Expression<Func<M, T>> columnMapFunc);
-
-        Task<List<M>> ListAsync(int topCount);
-        Task<List<VM>> ListAsync<VM>(int topCount)
-            where VM : class;
-        Task<List<T>> ListAsync<T>(int topCount, Expression<Func<M, T>> columnMapFunc);
     }
 
     internal interface IListX
@@ -24,10 +19,5 @@ namespace MyDAL.Interfaces
         Task<List<M>> ListAsync<M>()
             where M : class;
         Task<List<T>> ListAsync<T>(Expression<Func<T>> columnMapFunc);
-
-        Task<List<M>> ListAsync<M>(int topCount)
-            where M : class;
-        Task<List<VM>> ListAsync<VM>(int topCount, Expression<Func<VM>> columnMapFunc)
-            where VM : class;
     }
 }

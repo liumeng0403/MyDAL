@@ -13,8 +13,8 @@ namespace MyDAL.Test.Entities.MyDAL_TestDB
      *   CONSTRAINT `aspnetuserroles_ibfk_2` FOREIGN KEY (`UserId`) REFERENCES `aspnetusers` (`Id`) ON DELETE CASCADE
      * ) ENGINE=InnoDB DEFAULT CHARSET=utf8
      */
-    [XTable("AspNetUserRoles")]
-    public class AspnetUserRoles:IdentityUserRole<Guid>
+    [XTable(Name = "AspNetUserRoles")]
+    public class AspnetUserRoles : IdentityUserRole<Guid>
     {
     }
 }

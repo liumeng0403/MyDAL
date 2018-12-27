@@ -1,7 +1,5 @@
 ﻿using MyDAL.Core.Enums;
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyDAL.DataRainbow.SQLServer
 {
@@ -49,7 +47,7 @@ namespace MyDAL.DataRainbow.SQLServer
      *   )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
      *   ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
      */
-    [Table("TSqlCloumnType")]
+    [XTable(Name = "TSqlCloumnType")]
     internal class DbDefaultType
     {
         public bool Bool { get; set; }  // [bit] NOT NULL
@@ -123,11 +121,11 @@ namespace MyDAL.DataRainbow.SQLServer
         public ushort Ushort { get; set; }  // [int] NOT NULL
         public ushort? UshortNull { get; set; }  // [int] NULL
 
-        /*
-         * 不被 CodeFirst 支持的类型
-         */
-        [NotMapped]
-        public object Object { get; set; }
+        ///*
+        // * 不被 CodeFirst 支持的类型
+        // */
+        //[NotMapped]
+        //public object Object { get; set; }
 
         public string String { get; set; }  // [nvarchar](max) NULL
 
@@ -137,7 +135,7 @@ namespace MyDAL.DataRainbow.SQLServer
         public TimeSpan TimeSpan { get; set; }  // [time](7) NOT NULL
         public TimeSpan? TimeSpanNull { get; set; }  // [time](7) NULL
 
-        [Key]
+        //[Key]
         public Guid Guid { get; set; }  // [uniqueidentifier] NOT NULL
         public Guid? GuidNull { get; set; }  // [uniqueidentifier] NULL
 

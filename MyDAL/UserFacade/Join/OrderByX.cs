@@ -48,22 +48,6 @@ namespace MyDAL.UserFacade.Join
         {
             return await new ListXImpl(DC).ListAsync(columnMapFunc);
         }
-        /// <summary>
-        /// 多表多条数据查询
-        /// </summary>
-        public async Task<List<M>> ListAsync<M>(int topCount)
-            where M : class
-        {
-            return await new ListXImpl(DC).ListAsync<M>(topCount);
-        }
-        /// <summary>
-        /// 多表多条数据查询
-        /// </summary>
-        public async Task<List<VM>> ListAsync<VM>(int topCount, Expression<Func<VM>> columnMapFunc)
-            where VM : class
-        {
-            return await new ListXImpl(DC).ListAsync<VM>(topCount, columnMapFunc);
-        }
 
         /// <summary>
         /// 多表分页查询

@@ -5,7 +5,6 @@ using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -643,17 +642,12 @@ namespace MyDAL.DataRainbow.MySQL
 
         string ISqlProvider.GetTableName<M>()
         {
-            var tableName = string.Empty;
-            tableName = DC.AH.GetAttributePropVal<M, XTableAttribute>(a => a.Name);
-            if (tableName.IsNullStr())
+            var name = DC.AH.GetAttributePropVal<M, XTableAttribute>(a => a.Name);
+            if (name.IsNullStr())
             {
-                tableName = DC.AH.GetAttributePropVal<M, TableAttribute>(a => a.Name);
+                throw new Exception($"类 [[{typeof(M).FullName}]] 必须是与 DB Table 对应的实体类,并且要由 [XTable] 标记指定类对应的表名!!!");
             }
-            if (string.IsNullOrWhiteSpace(tableName))
-            {
-                throw new Exception($"类 [[{typeof(M).FullName}]] 必须是与 DB Table 对应的实体类,并且要由 [XTable] 或 [Table] 标记指定类对应的表名!!!");
-            }
-            return tableName;
+            return name;
         }
         async Task<List<ColumnInfo>> ISqlProvider.GetColumnsInfos(string tableName)
         {

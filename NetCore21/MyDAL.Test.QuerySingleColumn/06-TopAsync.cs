@@ -10,19 +10,17 @@ namespace MyDAL.Test.QuerySingleColumn
         [Fact]
         public async Task test()
         {
-
-            /*******************************************************************************************************************************/
-
+            
             var xx = string.Empty;
 
-            var res4 = await Conn
-                .Queryer<Agent>()
-                .Where(it => it.AgentLevel == AgentLevel.Customer)
-                .OrderBy(it => it.PathId)
-                .ListAsync(25);
-            Assert.True(res4.Count == 25);
+            //var res4 = await Conn
+            //    .Queryer<Agent>()
+            //    .Where(it => it.AgentLevel == AgentLevel.Customer)
+            //    .OrderBy(it => it.PathId)
+            //    .ListAsync(25);
+            //Assert.True(res4.Count == 25);
 
-            var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            //var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*******************************************************************************************************************************/
 

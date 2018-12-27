@@ -17,18 +17,18 @@ namespace MyDAL.Test.Entities.MyDAL_TestDB
      *  PRIMARY KEY (`Id`)
      *) ENGINE=InnoDB DEFAULT CHARSET=utf8
      */
-    [XTable("AlipayPaymentRecord")]
-    public class AlipayPaymentRecord 
+    [XTable(Name = "AlipayPaymentRecord")]
+    public class AlipayPaymentRecord
     {
-        public Guid Id { get; set; }        
-        public DateTime CreatedOn { get; set; }        
-        public Guid PaymentRecordId { get; set; }        
-        public Guid OrderId { get; set; }        
-        public decimal TotalAmount { get; set; }        
-        public string Description { get; set; }        
-        public string PaymentSN { get; set; }        
-        public DateTime? PayedOn { get; set; }        
-        public DateTime? CanceledOn { get; set; }        
+        public Guid Id { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public Guid PaymentRecordId { get; set; }
+        public Guid OrderId { get; set; }
+        public decimal TotalAmount { get; set; }
+        public string Description { get; set; }
+        public string PaymentSN { get; set; }
+        public DateTime? PayedOn { get; set; }
+        public DateTime? CanceledOn { get; set; }
         public string PaymentUrl { get; set; }
     }
 }

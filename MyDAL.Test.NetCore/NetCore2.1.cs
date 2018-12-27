@@ -24,7 +24,6 @@
             //
             await new ShortcutAPI._01_FirstOrDefault().test();
             await new ShortcutAPI._01_FirstOrDefaultAsync().test();
-            await new ShortcutAPI._02_BussinessUnitOption().test();
             await new ShortcutAPI._02_ListAsync().test();
             await new ShortcutAPI._03_MemoryTest().test();
             await new ShortcutAPI._03_PagingListAsync().test();

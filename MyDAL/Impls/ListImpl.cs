@@ -48,22 +48,6 @@ namespace MyDAL.Impls
                 return await DC.DS.ExecuteReaderMultiRowAsync<T>();
             }
         }
-
-        public async Task<List<M>> ListAsync(int topCount)
-        {
-            return await new TopImpl<M>(DC).TopAsync(topCount);
-        }
-
-        public async Task<List<VM>> ListAsync<VM>(int topCount) 
-            where VM : class
-        {
-            return await new TopImpl<M>(DC).TopAsync<VM>(topCount);
-        }
-
-        public async Task<List<T>> ListAsync<T>(int topCount, Expression<Func<M, T>> columnMapFunc) 
-        {
-            return await new TopImpl<M>(DC).TopAsync(topCount, columnMapFunc);
-        }
     }
 
     internal class ListXImpl
@@ -96,18 +80,6 @@ namespace MyDAL.Impls
                 PreExecuteHandle(UiMethodEnum.ListAsync);
                 return await DC.DS.ExecuteReaderMultiRowAsync<T>();
             }
-        }
-
-        public async Task<List<M>> ListAsync<M>(int topCount) 
-            where M : class
-        {
-            return await new TopXImpl(DC).TopAsync<M>(topCount);
-        }
-
-        public async Task<List<VM>> ListAsync<VM>(int topCount, Expression<Func<VM>> columnMapFunc) 
-            where VM : class
-        {
-            return await new TopXImpl(DC).TopAsync<VM>(topCount, columnMapFunc);
         }
     }
 }

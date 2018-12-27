@@ -1,6 +1,5 @@
 ﻿using MyDAL.Core.Enums;
 using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyDAL.DataRainbow.MySQL
 {
@@ -44,7 +43,7 @@ namespace MyDAL.DataRainbow.MySQL
      * PRIMARY KEY (`Guid`)
      * ) ENGINE=InnoDB DEFAULT CHARSET=utf8
      */
-    [Table("MySqlCloumnType")]
+    [XTable(Name="MySqlCloumnType")]
     internal class DbDefaultType
     {
         public bool Bool { get; set; }  // bit(1) NOT NULL
@@ -118,11 +117,11 @@ namespace MyDAL.DataRainbow.MySQL
         public ushort Ushort { get; set; }  // smallint(5) unsigned NOT NULL
         public ushort? UshortNull { get; set; }  // smallint(5) unsigned DEFAULT NULL
 
-        /*
-         * 不被 CodeFirst 支持的类型
-         */
-        [NotMapped]
-        public object Object { get; set; }
+        ///*
+        // * 不被 CodeFirst 支持的类型
+        // */
+        //[NotMapped]
+        //public object Object { get; set; }
 
         public string String { get; set; }  // longtext
 

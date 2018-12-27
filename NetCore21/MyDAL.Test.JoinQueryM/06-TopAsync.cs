@@ -29,16 +29,16 @@ namespace MyDAL.Test.JoinQueryM
 
             xx = "";
 
-            var res10 = await Conn
-                .Queryer(out Agent agent10, out AgentInventoryRecord record10)
-                .From(() => agent10)
-                    .InnerJoin(() => record10)
-                        .On(() => agent10.Id == record10.AgentId)
-                .Where(() => record10.CreatedOn >= WhereTest.CreatedOn)
-                .ListAsync<Agent>(25);
-            Assert.True(res10.Count == 25);
+            //var res10 = await Conn
+            //    .Queryer(out Agent agent10, out AgentInventoryRecord record10)
+            //    .From(() => agent10)
+            //        .InnerJoin(() => record10)
+            //            .On(() => agent10.Id == record10.AgentId)
+            //    .Where(() => record10.CreatedOn >= WhereTest.CreatedOn)
+            //    .ListAsync<Agent>(25);
+            //Assert.True(res10.Count == 25);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            //tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
         }
     }

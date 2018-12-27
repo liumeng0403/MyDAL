@@ -5,7 +5,6 @@ using MyDAL.UserFacade.Create;
 using MyDAL.UserFacade.Delete;
 using MyDAL.UserFacade.Join;
 using MyDAL.UserFacade.Query;
-using MyDAL.UserFacade.Transaction;
 using MyDAL.UserFacade.Update;
 using System;
 using System.Collections.Generic;
@@ -378,17 +377,7 @@ namespace MyDAL
         }
 
         /******************************************************************************************************************************/
-
-        /// <summary>
-        /// 事务单元
-        /// </summary>
-        public static Transactioner Transactioner(this IDbConnection conn)
-        {
-            return new Transactioner(new XContext(conn));
-        }
-
-        /******************************************************************************************************************************/
-
+        
         public static IDbConnection OpenDB(this IDbConnection conn)
         {
             if (conn.State == ConnectionState.Closed)

@@ -131,14 +131,14 @@ namespace MyDAL.Core.Bases
                 {
                     foreach (var sp in oProps)
                     {
-                        var spAttr = DC.AH.GetAttribute<QueryColumnAttribute>(oType, sp) as QueryColumnAttribute;
+                        var spAttr = DC.AH.GetAttribute<XQueryAttribute>(oType, sp) as XQueryAttribute;
                         var spName = string.Empty;
                         var compare = CompareEnum.Equal;
                         if (spAttr != null
-                            && !string.IsNullOrWhiteSpace(spAttr.ColumnName))
+                            && !string.IsNullOrWhiteSpace(spAttr.Name))
                         {
-                            spName = spAttr.ColumnName;
-                            compare = spAttr.CompareCondition;
+                            spName = spAttr.Name;
+                            compare = spAttr.Compare;
                         }
                         else
                         {

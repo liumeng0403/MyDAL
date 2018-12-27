@@ -2,17 +2,15 @@
 
 namespace MyDAL
 {
-    [AttributeUsage(AttributeTargets.Class,AllowMultiple =false,Inherited =false)]
-    public sealed class XTableAttribute:Attribute
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+    public sealed class XTableAttribute 
+        : Attribute
     {
-        public XTableAttribute(string tableName)
-        {
-            Name = tableName;
-        }
+        public XTableAttribute() { }
 
         /// <summary>
-        /// DB 表名
+        /// DB - 表名
         /// </summary>
-        public string Name { get; }
+        public string Name { get; set; }
     }
 }

@@ -8,21 +8,21 @@ namespace MyDAL.Test.Options
     {
         public Guid? Id { get; set; }
 
-        [QueryColumn("Name", CompareEnum.Like)]
+        [XQuery(Name = "Name", Compare = CompareEnum.Like)]
         public string Name { get; set; }
 
-        [QueryColumn("CreatedOn", CompareEnum.GreaterThanOrEqual)]
+        [XQuery(Name = "CreatedOn", Compare = CompareEnum.GreaterThanOrEqual)]
         public DateTime StartTime { get; set; }
 
-        [QueryColumn("CreatedOn", CompareEnum.LessThanOrEqual)]
+        [XQuery(Name = "CreatedOn", Compare = CompareEnum.LessThanOrEqual)]
         public DateTime EndTime { get; set; }
 
         public AgentLevel AgentLevel { get; set; }
 
-        [QueryColumn("AgentLevel", CompareEnum.In)]
+        [XQuery(Name = "AgentLevel", Compare = CompareEnum.In)]
         public List<AgentLevel> EnumListIn { get; set; }
 
-        [QueryColumn("AgentLevel", CompareEnum.NotIn)]
+        [XQuery(Name = "AgentLevel", Compare = CompareEnum.NotIn)]
         public List<AgentLevel> EnumListNotIn { get; set; }
     }
 }

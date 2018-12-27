@@ -38,12 +38,12 @@ namespace MyDAL.Test.Entities.MyDAL_TestDB
      *   KEY `EmailIndex` (`NormalizedEmail`) USING BTREE
      * ) ENGINE=InnoDB DEFAULT CHARSET=utf8
      */
-    [XTable("AspNetUsers")]
+    [XTable(Name = "AspNetUsers")]
     public class AspnetUsers : IdentityUser<Guid>
     {
-        public Guid? AgentId { get; set; }        
-        public Guid? CustomerServiceId { get; set; }        
-        public string NickName { get; set; }        
+        public Guid? AgentId { get; set; }
+        public Guid? CustomerServiceId { get; set; }
+        public string NickName { get; set; }
         public Guid InviterId { get; set; }
         public int InvitedCount { get; set; }
         public string PathId { get; set; }

@@ -28,17 +28,15 @@ namespace MyDAL.Test.QueryVM
 
             xx = string.Empty;
 
-            var res5 = await Conn
-                .Queryer<Agent>()
-                .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
-                .ListAsync<AgentVM>(25);
-            Assert.True(res5.Count == 25);
+            //var res5 = await Conn
+            //    .Queryer<Agent>()
+            //    .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
+            //    .ListAsync<AgentVM>(25);
+            //Assert.True(res5.Count == 25);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /*******************************************************************************************************************************/
-
-            xx = string.Empty;
+            //tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
+            //xx = string.Empty;
 
         }
     }
