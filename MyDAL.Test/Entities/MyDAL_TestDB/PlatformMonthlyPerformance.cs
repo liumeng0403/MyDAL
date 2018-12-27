@@ -15,7 +15,7 @@ namespace MyDAL.Test.Entities.MyDAL_TestDB
      * PRIMARY KEY (`Id`)
      * ) ENGINE=InnoDB DEFAULT CHARSET=utf8
      */
-    [Table("platformmonthlyperformance")]
+    [XTable(Name ="platformmonthlyperformance")]
     public class PlatformMonthlyPerformance 
     {
         public Guid Id { get; set; }

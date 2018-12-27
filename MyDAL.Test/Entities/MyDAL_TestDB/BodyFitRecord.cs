@@ -15,7 +15,7 @@ namespace MyDAL.Test.Entities.MyDAL_TestDB
      * ) ENGINE=InnoDB DEFAULT CHARSET=utf8
      */
 
-    [Table("BodyFitRecord")]
+    [XTable(Name ="BodyFitRecord")]
     public class BodyFitRecord
     {
         public Guid Id { get; set; }

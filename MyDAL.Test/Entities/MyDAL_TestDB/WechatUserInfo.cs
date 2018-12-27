@@ -22,7 +22,7 @@ namespace MyDAL.Test.Entities.MyDAL_TestDB
      * PRIMARY KEY (`Id`)
      * ) ENGINE=InnoDB DEFAULT CHARSET=utf8
      */
-    [Table("WechatUserInfo")]
+    [XTable(Name ="WechatUserInfo")]
     public class WechatUserInfo 
     {
         public Guid Id { get; set; }

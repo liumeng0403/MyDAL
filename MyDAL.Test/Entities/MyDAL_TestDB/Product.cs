@@ -16,7 +16,7 @@ namespace MyDAL.Test.Entities.MyDAL_TestDB
      * PRIMARY KEY (`Id`)
      * ) ENGINE=InnoDB DEFAULT CHARSET=utf8
      */
-    [Table("Product")]
+    [XTable(Name ="Product")]
     public class Product 
     {
         public Guid Id { get; set; }

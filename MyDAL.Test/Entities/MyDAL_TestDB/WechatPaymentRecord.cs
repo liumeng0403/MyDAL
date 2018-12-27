@@ -13,7 +13,7 @@ namespace MyDAL.Test.Entities.MyDAL_TestDB
      * `WechatpayTradeNo` longtext
      * ) ENGINE=InnoDB DEFAULT CHARSET=utf8
      */
-    [Table("WechatPaymentRecord")]
+    [XTable(Name ="WechatPaymentRecord")]
     public class WechatPaymentRecord 
     {
 

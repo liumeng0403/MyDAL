@@ -19,7 +19,7 @@ namespace MyDAL.Test.Entities.MyDAL_TestDB
      * PRIMARY KEY (`Id`)
      * ) ENGINE=InnoDB DEFAULT CHARSET=utf8
      */
-    [Table("AgentInventoryRecord")]
+    [XTable(Name ="AgentInventoryRecord")]
     public class AgentInventoryRecord 
     {
 
