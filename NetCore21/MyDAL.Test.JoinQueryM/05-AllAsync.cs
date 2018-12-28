@@ -12,7 +12,7 @@ namespace MyDAL.Test.JoinQueryM
         [Fact]
         public async Task test()
         {
-            var xx = string.Empty;
+            xx = string.Empty;
 
             var res1 = await Conn
                 .Queryer(out Agent agent1, out AgentInventoryRecord record1)
@@ -22,7 +22,7 @@ namespace MyDAL.Test.JoinQueryM
                 .AllAsync<Agent>();
             Assert.True(res1.Count == 574);
 
-            var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             xx = string.Empty;
 

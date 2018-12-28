@@ -10,7 +10,7 @@ namespace MyDAL.Test.ShortcutAPI
         [Fact]
         public async Task test()
         {
-            var xx1 = "";
+            var xx1 = string.Empty;
 
             var date = DateTime.Parse("2018-08-20 20:33:21.584925");
             var id = Guid.Parse("89c9407f-7427-4570-92b7-0165590ac07e");
@@ -21,7 +21,7 @@ namespace MyDAL.Test.ShortcutAPI
 
             /********************************************************************************************************************************************/
 
-            var xx2 = "";
+            var xx2 = string.Empty;
             
             var res2 = Conn.Exist<AlipayPaymentRecord>(it => it.CreatedOn == date && it.OrderId == id);
             Assert.True(res2);

@@ -11,7 +11,7 @@ namespace MyDAL.Test.Delete
         public async Task test()
         {
 
-            var xx1 = "";
+            var xx1 = string.Empty;
 
             var pk1 = Guid.Parse("8f2cbb64-8356-4482-88ee-016558c05b2d");
             var res1 = await Conn.DeleteAsync<AlipayPaymentRecord>(it=>it.Id==pk1);
@@ -24,7 +24,7 @@ namespace MyDAL.Test.Delete
 
             /****************************************************************************************/
 
-            var xx2 = "";
+            var xx2 = string.Empty;
 
             var pk2 = Guid.Parse("72d551bf-d9f4-4817-800f-01655794cf42");
             var res2 = await Conn.DeleteAsync<AlipayPaymentRecord>(it => it.Id == pk2);

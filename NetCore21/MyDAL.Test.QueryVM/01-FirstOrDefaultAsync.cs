@@ -14,8 +14,7 @@ namespace MyDAL.Test.QueryVM
         public async Task test()
         {
 
-            var xx = string.Empty;
-            var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            xx = string.Empty;
 
             /****************************************************************************************************************************************/
 

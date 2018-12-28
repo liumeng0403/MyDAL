@@ -12,7 +12,7 @@ namespace MyDAL.Test.WhereEdge
         public async Task test()
         {
 
-            var xx = string.Empty;
+            xx = string.Empty;
 
             // where 1=1
             var res1 = await Conn
@@ -154,7 +154,7 @@ namespace MyDAL.Test.WhereEdge
             Assert.True(res52.First(it => it.Id != guid52).IsDefault == false);
             Assert.True(res52.First(it => it.Id == guid52).IsDefault);
 
-            var tuple5 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /********************************************************************************************************************************************/
 

@@ -10,7 +10,7 @@ namespace MyDAL.Test.Delete
     {
         private async Task<BodyFitRecord> PreDelete()
         {
-            xx = "";
+            xx = string.Empty;
 
             // 造数据 
             var m = new BodyFitRecord
@@ -39,7 +39,7 @@ namespace MyDAL.Test.Delete
         {
             var m = await PreDelete();
 
-            var xx1 = "";
+            var xx1 = string.Empty;
 
             // where 
             var res1 = await Conn
@@ -50,7 +50,7 @@ namespace MyDAL.Test.Delete
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
-            var xx2 = "";
+            var xx2 = string.Empty;
 
             var path = "~00-c-1-2-1-1-1-1-1-4-1-1-1-4-1-2-1-7";
             var level = 2;
@@ -76,7 +76,7 @@ namespace MyDAL.Test.Delete
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
-            var xx4 = "";
+            var xx4 = string.Empty;
 
             // where and or
             var res4 = await Conn

@@ -12,7 +12,7 @@ namespace MyDAL.Test.Create
         {
             // 清除数据
 
-            xx = "";
+            xx = string.Empty;
 
             var res2 = await Conn
                 .Deleter<BodyFitRecord>()
@@ -50,7 +50,7 @@ namespace MyDAL.Test.Create
             };
             await PreCreate(m1);
 
-            xx = "";
+            xx = string.Empty;
 
             // 新建
             var res1 = await Conn
@@ -78,7 +78,7 @@ namespace MyDAL.Test.Create
                 DirectorStarCount = 5
             };
 
-            var xx2 = "";
+            var xx2 = string.Empty;
 
             var res2 = await Conn
                 .Creater<Agent>()
@@ -89,7 +89,7 @@ namespace MyDAL.Test.Create
 
             /********************************************************************************************************************************/
 
-            var xx5 = "";
+            var xx5 = string.Empty;
 
             var res5 = await Conn
                 .Creater<Agent>()
@@ -109,11 +109,11 @@ namespace MyDAL.Test.Create
                     DirectorStarCount = 1
                 });
 
-            var tuple5 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /********************************************************************************************************************************/
 
-            var xx6 = "";
+            var xx6 = string.Empty;
 
 
             await ClearData6();
@@ -141,11 +141,11 @@ namespace MyDAL.Test.Create
                 .FirstOrDefaultAsync<Agent>();
             Assert.True(res61.AgentLevel == AgentLevel.DistiAgent);
 
-            var tuple6 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /********************************************************************************************************************************/
 
-            var xx7 = "";
+            var xx7 = string.Empty;
 
             await ClearData7();
             var m7 = new Agent
@@ -176,7 +176,7 @@ namespace MyDAL.Test.Create
 
             /********************************************************************************************************************************/
 
-            xx = "";
+            xx = string.Empty;
         }
 
     }

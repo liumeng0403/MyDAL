@@ -10,8 +10,7 @@ namespace MyDAL.Test.JoinQuerySingleColumn
         [Fact]
         public async Task test()
         {
-            var xx = string.Empty;
-            var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            xx = string.Empty;
 
             var res1 = await Conn
                 .Queryer(out Agent agent1, out AgentInventoryRecord record1)

@@ -111,7 +111,7 @@ namespace MyDAL.Test.Update
                     agent.ActiveOrderId
                 }, SetEnum.IgnoreNull);
 
-            var tuple6 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             var res61 = await Conn.FirstOrDefaultAsync<Agent>(it => it.Id == agent.Id);
             Assert.Equal("yyyyyyy", res61.PathId, ignoreCase: true);
@@ -119,7 +119,7 @@ namespace MyDAL.Test.Update
 
             /*****************************************************************************************************************************************************************/
 
-            var xx = string.Empty;
+            xx = string.Empty;
 
         }
     }

@@ -11,9 +11,6 @@ namespace MyDAL.Test.Func
         [Fact]
         public async Task test()
         {
-            var xx = string.Empty;
-            var tuple = default((List<string>, List<string>, List<string>));
-
             /*************************************************************************************************************************/
 
             xx = string.Empty;

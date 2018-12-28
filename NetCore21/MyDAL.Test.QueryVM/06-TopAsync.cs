@@ -14,7 +14,7 @@ namespace MyDAL.Test.QueryVM
 
             /*******************************************************************************************************************************/
 
-            var xx = string.Empty;
+            xx = string.Empty;
 
             var res2 = await Conn
                 .Queryer<Agent>()
@@ -22,7 +22,7 @@ namespace MyDAL.Test.QueryVM
                 .TopAsync<AgentVM>(25);
             Assert.True(res2.Count == 25);
 
-            var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*******************************************************************************************************************************/
 

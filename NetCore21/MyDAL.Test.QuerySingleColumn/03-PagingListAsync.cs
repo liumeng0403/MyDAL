@@ -12,7 +12,7 @@ namespace MyDAL.Test.QuerySingleColumn
         [Fact]
         public async Task test()
         {
-            var xx = string.Empty;
+            xx = string.Empty;
 
             var res1 = await Conn
                 .Queryer<Agent>()
@@ -20,7 +20,7 @@ namespace MyDAL.Test.QuerySingleColumn
                 .PagingListAsync(1, 10, it => it.Name);
             Assert.True(res1.Data.Count == 10);
 
-            var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*****************************************************************************************************************************/
 

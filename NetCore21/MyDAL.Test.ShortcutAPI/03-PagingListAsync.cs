@@ -15,7 +15,7 @@ namespace MyDAL.Test.ShortcutAPI
 
             /****************************************************************************************/
 
-            var xx1 = "";
+            var xx1 = string.Empty;
 
             var option1 = new AlipayPaymentPaggingQueryOption();
             option1.StartTime = DateTime.Parse("2018-08-20");
@@ -26,7 +26,7 @@ namespace MyDAL.Test.ShortcutAPI
 
             /****************************************************************************************/
 
-            var xx2 = "";
+            var xx2 = string.Empty;
 
             var res2 = await Conn.PagingListAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(option1);
             Assert.True(res2.TotalCount == 29);

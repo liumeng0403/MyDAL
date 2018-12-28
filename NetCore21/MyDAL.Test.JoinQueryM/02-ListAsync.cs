@@ -104,7 +104,7 @@ namespace MyDAL.Test.JoinQueryM
                 .ListAsync<AgentInventoryRecord>();
             Assert.True(res5.Count == 574);
 
-            var tuple5 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /**************************************************************************************************************************/
 
@@ -121,7 +121,7 @@ namespace MyDAL.Test.JoinQueryM
             Assert.True(res6.Count == 1);
             Assert.Equal(res6.First().Id, Guid.Parse("0ce552c0-2f5e-4c22-b26d-01654443b30e"));
 
-            var tuple6 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /**************************************************************************************************************************/
 
@@ -169,7 +169,7 @@ namespace MyDAL.Test.JoinQueryM
                 .ListAsync<AgentInventoryRecord>();
             Assert.True(res9.Count == 574);
 
-            var tuple9 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /**************************************************************************************************************************/
 
@@ -200,7 +200,7 @@ namespace MyDAL.Test.JoinQueryM
 
             /*********************************************************************************************************************************************************/
 
-            xx = "";
+            xx = string.Empty;
 
             var res1 = await Conn
                 .Queryer(out AspnetUsers user1, out AspnetUserRoles userRole1, out AspnetRoles role1)
@@ -218,7 +218,7 @@ namespace MyDAL.Test.JoinQueryM
 
             /*********************************************************************************************************************************************************/
 
-            var xx2 = "";
+            var xx2 = string.Empty;
 
             // order by id  -- 手动查看
             var res2 = await Conn
@@ -250,7 +250,7 @@ namespace MyDAL.Test.JoinQueryM
 
             /*********************************************************************************************************************************************************/
 
-            xx = "";
+            xx = string.Empty;
 
             var res4 = await Conn
                 .Queryer(out AspnetUsers user4, out AspnetUserRoles userRole4, out AspnetRoles role4)

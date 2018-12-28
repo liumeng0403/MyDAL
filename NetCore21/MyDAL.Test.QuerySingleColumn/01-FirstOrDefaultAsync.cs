@@ -12,8 +12,7 @@ namespace MyDAL.Test.QuerySingleColumn
         [Fact]
         public async Task test()
         {
-            var xx = string.Empty;
-            var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            xx = string.Empty;
 
             var time1 = DateTime.Parse("2018-08-16 19:22:01.716307");
             var res1 = await Conn

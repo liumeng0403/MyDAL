@@ -13,7 +13,7 @@ namespace MyDAL.Test.JoinQueryVmColumn
         [Fact]
         public async Task test()
         {
-            var xx = string.Empty;
+            xx = string.Empty;
 
             //var res1 = await Conn
             //    .Queryer(out Agent agent1, out AgentInventoryRecord record1)
@@ -26,7 +26,7 @@ namespace MyDAL.Test.JoinQueryVmColumn
             //        YYYY = record1.Id.ToString()
             //    });
 
-            var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             xx = string.Empty;
         }

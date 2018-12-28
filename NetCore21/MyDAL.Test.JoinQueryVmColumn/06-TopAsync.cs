@@ -13,7 +13,7 @@ namespace MyDAL.Test.JoinQueryVmColumn
 
             /*******************************************************************************************************************************/
 
-            var xx7 = "";
+            var xx7 = string.Empty;
 
             var res7 = await Conn
                 .Queryer(out Agent agent7, out AgentInventoryRecord record7)
@@ -35,26 +35,8 @@ namespace MyDAL.Test.JoinQueryVmColumn
 
             /*******************************************************************************************************************************/
 
-            xx = "";
-
-            //var res9 = await Conn
-            //    .Queryer(out Agent agent9, out AgentInventoryRecord record9)
-            //    .From(() => agent9)
-            //        .InnerJoin(() => record9)
-            //            .On(() => agent9.Id == record9.AgentId)
-            //    .Where(() => record9.CreatedOn >= WhereTest.CreatedOn)
-            //    .ListAsync(25, () => new AgentVM
-            //    {
-            //        nn = agent9.PathId,
-            //        yy = record9.Id,
-            //        xx = agent9.Id,
-            //        zz = agent9.Name,
-            //        mm = record9.LockedCount
-            //    });
-            //Assert.True(res9.Count == 25);
-
-            //var tuple9 = (XDebug.SQL, XDebug.Parameters);
-
+            xx = string.Empty;
+            
         }
     }
 }

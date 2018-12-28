@@ -24,7 +24,7 @@ namespace MyDAL.Test.ShortcutAPI
                 Thread.Sleep(5);
             }
 
-            var yy = "";
+            var yy = string.Empty;
         }
     }
 }

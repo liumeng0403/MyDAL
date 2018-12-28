@@ -12,14 +12,14 @@ namespace MyDAL.Test.QueryVM
         public async Task test()
         {
 
-            var xx = string.Empty;
+            xx = string.Empty;
 
             var res6 = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.CreatedOn >= WhereTest.CreatedOn)
                 .PagingListAsync<AgentVM>(1, 10);
 
-            var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             var resR6 = await Conn
                 .Queryer<Agent>()

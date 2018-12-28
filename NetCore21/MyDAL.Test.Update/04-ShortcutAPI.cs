@@ -13,7 +13,7 @@ namespace MyDAL.Test.Update
 
             /****************************************************************************************/
 
-            var xx1 = "";
+            var xx1 = string.Empty;
 
             var pk1 = Guid.Parse("8f2cbb64-8356-4482-88ee-016558c05b2d");
 
@@ -33,7 +33,7 @@ namespace MyDAL.Test.Update
 
             /****************************************************************************************/
 
-            var xx2 = "";
+            var xx2 = string.Empty;
 
             var pk2 = Guid.Parse("d0a2d3f3-5cfb-4b3b-aeea-016557383999");
             var res2 = await Conn.UpdateAsync<AlipayPaymentRecord>(it => it.Id == pk2, new

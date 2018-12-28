@@ -40,8 +40,8 @@ namespace MyDAL.Test.Update
         [Fact]
         public async Task UpdateAsyncTest()
         {
-            var xx = string.Empty;
-            var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            xx = string.Empty;
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             var m = await CreateDbData();
             var Id = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e");

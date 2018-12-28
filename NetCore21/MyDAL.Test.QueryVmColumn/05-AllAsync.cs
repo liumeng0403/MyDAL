@@ -10,7 +10,7 @@ namespace MyDAL.Test.QueryVmColumn
         [Fact]
         public async Task test()
         {
-            var xx1 = "";
+            var xx1 = string.Empty;
 
             var res1 = await Conn
                 .Queryer<Agent>()

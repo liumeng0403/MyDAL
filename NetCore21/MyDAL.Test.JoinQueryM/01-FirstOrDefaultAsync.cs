@@ -13,7 +13,7 @@ namespace MyDAL.Test.JoinQueryM
         public async Task test()
         {
 
-            var xx6 = "";
+            var xx6 = string.Empty;
 
             var guid6 = Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef");
             var res6 = await Conn
@@ -26,7 +26,7 @@ namespace MyDAL.Test.JoinQueryM
             Assert.NotNull(res6);
             Assert.Equal("夏明君", res6.Name);
 
-            var tuple6 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /****************************************************************************************************************************************/
 

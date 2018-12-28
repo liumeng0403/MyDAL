@@ -15,7 +15,7 @@ namespace MyDAL.Test.WhereEdge
             // 在接口注入中使用 勿删!!!
             public async Task eee(ApplyStockholderAwardAccountingVM vm)
             {
-                var xx2 = "";
+                var xx2 = string.Empty;
 
                 if (!await Conn
                         .Queryer<PlatformMonthlyPerformance>()
@@ -36,7 +36,7 @@ namespace MyDAL.Test.WhereEdge
         public async Task test()
         {
 
-            var xx2 = "";
+            var xx2 = string.Empty;
 
             var vm = new ApplyStockholderAwardAccountingVM();
             vm.Year = 2018;

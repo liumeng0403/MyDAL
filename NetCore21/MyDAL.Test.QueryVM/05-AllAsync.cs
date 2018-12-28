@@ -12,7 +12,7 @@ namespace MyDAL.Test.QueryVM
         public async Task test()
         {
 
-            var xx = string.Empty;
+            xx = string.Empty;
 
             var res2 = await Conn
                 .Queryer<Agent>()
@@ -21,7 +21,7 @@ namespace MyDAL.Test.QueryVM
             Assert.NotNull(res2.First().Name);
             Assert.Null(res2.First().XXXX);
 
-            var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /********************************************************************************************************/
 

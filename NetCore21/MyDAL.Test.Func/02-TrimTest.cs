@@ -39,7 +39,7 @@ namespace MyDAL.Test.Func
 
             /******************************************************************************************************************/
 
-            var xx1 = "";
+            var xx1 = string.Empty;
 
             await PreTrim();
             var res1 = await Conn
@@ -52,7 +52,7 @@ namespace MyDAL.Test.Func
 
             /******************************************************************************************************************/
 
-            var xx2 = "";
+            var xx2 = string.Empty;
 
             await PreLTrim();
             var res2 = await Conn

@@ -16,7 +16,7 @@ namespace MyDAL.Test.JoinQueryVmColumn
         public async Task test()
         {
 
-            xx = "";
+            xx = string.Empty;
 
             var res9 = await Conn
                 .Queryer(out Agent agent9, out AgentInventoryRecord record9)
@@ -31,11 +31,11 @@ namespace MyDAL.Test.JoinQueryVmColumn
                 });
             Assert.True(res9.TotalCount == 574);
 
-            var tuple9 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*************************************************************************************************************************/
 
-            xx = "";
+            xx = string.Empty;
 
             var option10 = new AgentQueryOption();
             option10.AgentLevel = AgentLevel.DistiAgent;
@@ -56,7 +56,7 @@ namespace MyDAL.Test.JoinQueryVmColumn
 
             /*************************************************************************************************************************/
 
-            xx = "";
+            xx = string.Empty;
 
             var option11 = new AgentQueryOption();
             option11.AgentLevel = AgentLevel.DistiAgent;

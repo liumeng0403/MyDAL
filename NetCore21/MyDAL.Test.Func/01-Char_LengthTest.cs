@@ -16,7 +16,7 @@ namespace MyDAL.Test.Func
              */
             /************************************************************************************************************************/
 
-            var xx = string.Empty;
+            xx = string.Empty;
 
             // .Where(a => a.Name.Length > 0)
             var res1 = await Conn
@@ -25,7 +25,7 @@ namespace MyDAL.Test.Func
                 .ListAsync();
             Assert.True(res1.Count == 22660);
 
-            var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             xx = string.Empty;
 

@@ -48,7 +48,7 @@ namespace MyDAL.Test.ShortcutAPI
             var res5 = Conn.FirstOrDefault<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.Id == pk && it.CreatedOn == date);
             Assert.NotNull(res5);
 
-            var tuple5 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /****************************************************************************************/
 
@@ -57,7 +57,7 @@ namespace MyDAL.Test.ShortcutAPI
             var res6 = Conn.FirstOrDefault<AlipayPaymentRecord>(it => it.Id == pk && it.CreatedOn == date);
             Assert.NotNull(res6);
 
-            var tuple6 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /****************************************************************************************/
 
@@ -65,7 +65,7 @@ namespace MyDAL.Test.ShortcutAPI
 
             /****************************************************************************************/
 
-            var xx = string.Empty;
+            xx = string.Empty;
 
         }
     }

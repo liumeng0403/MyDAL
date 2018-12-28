@@ -103,11 +103,11 @@ namespace MyDAL.Test.WhereEdge
                 .ListAsync();
             Assert.True(res5.Count == 28064 || res5.Count == 28065);
 
-            var tuple5 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*****************************************************************************************************************************/
 
-            var xx = string.Empty;
+            xx = string.Empty;
 
         }
     }

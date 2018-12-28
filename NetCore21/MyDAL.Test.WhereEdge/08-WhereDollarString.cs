@@ -10,7 +10,7 @@ namespace MyDAL.Test.WhereEdge
         [Fact]
         public async Task test()
         {
-            var xx = string.Empty;
+            xx = string.Empty;
 
             var res1 = await Conn
                 .Queryer<Agent>()
@@ -18,7 +18,7 @@ namespace MyDAL.Test.WhereEdge
                 .FirstOrDefaultAsync();
             Assert.NotNull(res1);
 
-            var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*******************************************************************************************************************/
 

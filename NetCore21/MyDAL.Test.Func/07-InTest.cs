@@ -42,7 +42,7 @@ namespace MyDAL.Test.Func
 
             /*******************************************************************************************************************/
 
-            var xx = string.Empty;
+            xx = string.Empty;
 
             var enums = new List<AgentLevel?>
             {
@@ -314,7 +314,7 @@ namespace MyDAL.Test.Func
 
             /*******************************************************************************************************************/
 
-            var xx19 = "";
+            var xx19 = string.Empty;
 
             // where in -- long[] init
             var res19 = await Conn
@@ -326,7 +326,7 @@ namespace MyDAL.Test.Func
 
             /*******************************************************************************************************************/
 
-            xx = "";
+            xx = string.Empty;
 
             // where in -- short[] init
             var res20 = await Conn
@@ -342,7 +342,7 @@ namespace MyDAL.Test.Func
 
             /*******************************************************************************************************************/
 
-            xx = "";
+            xx = string.Empty;
 
             // where in -- string[] init
             var res21 = await Conn
@@ -355,7 +355,7 @@ namespace MyDAL.Test.Func
 
             /*******************************************************************************************************************/
 
-            var xx22 = "";
+            var xx22 = string.Empty;
 
             // where in -- enum[] init
             var res22 = await Conn
@@ -368,7 +368,7 @@ namespace MyDAL.Test.Func
 
             /*******************************************************************************************************************/
 
-            var xx23 = "";
+            var xx23 = string.Empty;
 
             // where in -- enum[] init
             var res23 = await Conn
@@ -384,7 +384,7 @@ namespace MyDAL.Test.Func
 
             /*******************************************************************************************************************/
 
-            var xx24 = "";
+            var xx24 = string.Empty;
 
             var guid241 = Guid.Parse("0048793b-ca61-457e-a2b4-0165442f3684");
             var guid242 = Guid.Parse("004f4290-9576-43b9-903f-01654434da0f");
@@ -399,7 +399,7 @@ namespace MyDAL.Test.Func
 
             /*******************************************************************************************************************/
 
-            var xx25 = "";
+            var xx25 = string.Empty;
             
             // where in -- string[] init
             var res25 = await Conn
@@ -412,7 +412,7 @@ namespace MyDAL.Test.Func
 
             /*******************************************************************************************************************/
 
-            var xx26 = "";
+            var xx26 = string.Empty;
 
             // where in -- string[] init
             var res26 = await Conn
@@ -425,7 +425,7 @@ namespace MyDAL.Test.Func
 
             /*******************************************************************************************************************/
 
-            var xx27 = "";
+            var xx27 = string.Empty;
 
             try
             {

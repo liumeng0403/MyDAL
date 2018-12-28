@@ -32,7 +32,7 @@ namespace MyDAL.Test.QueryM
             Assert.True(res1.Count == resR1.Count);
             //Assert.True(res1.Count >0);
 
-            var tupleR1 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /********************************************************************************************************************************/
 
@@ -54,7 +54,7 @@ namespace MyDAL.Test.QueryM
             Assert.True(res2.Count == resR2.Count);
             //Assert.True(res2.Count > 0);
 
-            var tupleR2 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /********************************************************************************************************************************/
 
@@ -75,7 +75,7 @@ namespace MyDAL.Test.QueryM
             Assert.True(res3.Count == resR3.Count);
             //Assert.True(res3.Count >0 );
 
-            var tupleR3 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /********************************************************************************************************************************/
 
@@ -108,11 +108,11 @@ namespace MyDAL.Test.QueryM
                 .ListAsync();
             Assert.True(res5.Count == 555);
 
-            var tuple5 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /********************************************************************************************************************************/
 
-            var xx = string.Empty;
+            xx = string.Empty;
 
         }
     }

@@ -9,7 +9,7 @@ namespace MyDAL.Test.QuerySingleColumn
         [Fact]
         public async Task test()
         {
-            var xx = string.Empty;
+            xx = string.Empty;
 
             var res1 = await Conn
                 .Queryer<Agent>()
@@ -17,7 +17,7 @@ namespace MyDAL.Test.QuerySingleColumn
             Assert.True(res1.Data.Count == 10);
             Assert.True(res1.TotalCount == 28620);
 
-            var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             xx = string.Empty;
         }

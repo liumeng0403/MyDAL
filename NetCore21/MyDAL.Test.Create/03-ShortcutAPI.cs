@@ -16,7 +16,7 @@ namespace MyDAL.Test.Create
 
             /****************************************************************************************/
 
-            var xx15 = "";
+            var xx15 = string.Empty;
 
             var pk = Guid.Parse("8f2cbb64-8356-4482-88ee-016558c05b2d");
             var m15 = new AlipayPaymentRecord
@@ -46,7 +46,7 @@ namespace MyDAL.Test.Create
 
             /****************************************************************************************/
 
-            xx = "";
+            xx = string.Empty;
 
             var json = File.ReadAllText(@"C:\Users\liume\Desktop\Work\DalTestDB\ProfileData.json");
             var list16 = JsonConvert.DeserializeObject<List<UserInfo>>(json);

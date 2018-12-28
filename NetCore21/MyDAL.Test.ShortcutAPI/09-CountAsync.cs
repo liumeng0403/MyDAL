@@ -9,7 +9,7 @@ namespace MyDAL.Test.ShortcutAPI
         [Fact]
         public async Task test()
         {
-            var xx1 = "";
+            var xx1 = string.Empty;
 
             var res1 = await Conn.CountAsync<Agent>(it => it.Name.Length > 3);
             Assert.True(res1 == 116);

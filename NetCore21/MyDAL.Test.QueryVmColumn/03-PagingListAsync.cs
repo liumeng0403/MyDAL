@@ -14,7 +14,7 @@ namespace MyDAL.Test.QueryVmColumn
         public async Task test()
         {
 
-            var xx = string.Empty;
+            xx = string.Empty;
 
             var option = new AgentQueryOption();
             option.Id = Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b");
@@ -39,7 +39,7 @@ namespace MyDAL.Test.QueryVmColumn
                 });
             Assert.True(res7.Data.Count == 1);
 
-            var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*************************************************************************************************************************/
 

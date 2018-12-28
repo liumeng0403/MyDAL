@@ -12,7 +12,7 @@ namespace MyDAL.Test.WhereEdge
         [Fact]
         public async Task test()
         {
-            var xx1 = "";
+            var xx1 = string.Empty;
 
             var date = DateTime.Parse("2018-08-16 12:03:47.225916");
             var res1 = await Conn
@@ -25,7 +25,7 @@ namespace MyDAL.Test.WhereEdge
 
             /**************************************************************************************************************************************/
             
-            var xx2 = "";
+            var xx2 = string.Empty;
             
             var res2 = await Conn
                 .Queryer<Agent>()
@@ -49,7 +49,7 @@ namespace MyDAL.Test.WhereEdge
 
             /**************************************************************************************************************************************/
 
-            var xx4 = "";
+            var xx4 = string.Empty;
 
             var res4 = await Conn
                 .Queryer<Agent>()

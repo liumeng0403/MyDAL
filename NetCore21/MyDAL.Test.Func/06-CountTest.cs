@@ -20,8 +20,7 @@ namespace MyDAL.Test.Func
 
             /************************************************************************************************************************/
 
-            var xx = string.Empty;
-            var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            xx = string.Empty;
 
             // count(id)  like "陈%"
             var res2 = await Conn

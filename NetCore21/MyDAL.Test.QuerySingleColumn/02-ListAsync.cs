@@ -10,19 +10,6 @@ namespace MyDAL.Test.QuerySingleColumn
         [Fact]
         public async Task test()
         {
-
-            var xx = string.Empty;
-
-            //var res1 = await Conn
-            //    .Queryer<Agent>()
-            //    .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
-            //    .ListAsync(25, it => it.Name);
-            //Assert.True(res1.Count == 25);
-
-            //var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /*******************************************************************************************************************************/
-
             xx = string.Empty;
 
             var res2 = await Conn

@@ -16,14 +16,14 @@ namespace MyDAL.Test.QueryVM
 
             /****************************************************************************************************************************************/
 
-            var xx = string.Empty;
+            xx = string.Empty;
 
             var res7 = await Conn
                 .Queryer<Agent>()
                 .PagingAllAsync<AgentVM>(1, 10);
             Assert.True(res7.TotalCount == 28620);
 
-            var tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*************************************************************************************************************************/
 

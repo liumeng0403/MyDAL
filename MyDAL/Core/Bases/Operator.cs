@@ -204,10 +204,10 @@ namespace MyDAL.Core.Bases
                 var val = default((object val, string valStr));
                 var valType = default(Type);
                 var columnType = string.Empty;
-                var xx = columns.FirstOrDefault(it => it.ColumnName.Equals(prop.MField, StringComparison.OrdinalIgnoreCase));
-                if (xx != null)
+                var ci = columns.FirstOrDefault(it => it.ColumnName.Equals(prop.MField, StringComparison.OrdinalIgnoreCase));
+                if (ci != null)
                 {
-                    columnType = xx.DataType;
+                    columnType = ci.DataType;
                 }
                 if (objx is IQueryOption)
                 {

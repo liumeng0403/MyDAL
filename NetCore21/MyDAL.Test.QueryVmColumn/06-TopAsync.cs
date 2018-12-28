@@ -33,20 +33,8 @@ namespace MyDAL.Test.QueryVmColumn
 
             /*******************************************************************************************************************************/
 
-            var xx6 = "";
-
-            //var res6 = await Conn
-            //    .Queryer<Agent>()
-            //    .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
-            //    .ListAsync<AgentVM>(25, agent => new AgentVM
-            //    {
-            //        XXXX = agent.Name,
-            //        YYYY = agent.PathId
-            //    });
-            //Assert.True(res6.Count == 25);
-
-            //var tuple6 = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
+            var xx6 = string.Empty;
+            
         }
     }
 }

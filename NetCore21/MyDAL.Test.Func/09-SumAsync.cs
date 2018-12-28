@@ -9,7 +9,7 @@ namespace MyDAL.Test.Func
         [Fact]
         public async Task test()
         {
-            var xx1 = "";
+            var xx1 = string.Empty;
 
             var res1 = await Conn
                 .Queryer<AlipayPaymentRecord>()
@@ -17,7 +17,7 @@ namespace MyDAL.Test.Func
                 .SumAsync(it => it.TotalAmount);
             Assert.True(res1 == 1527.2600000000000000000000000M);
 
-            var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             xx=string.Empty;
         }

@@ -14,7 +14,7 @@ namespace MyDAL.Test.WhereEdge
         [Fact]
         public async Task Property()
         {
-            var xx = string.Empty;
+            xx = string.Empty;
 
             AgentId = Guid.Parse("00079c84-a511-418b-bd5b-0165442eb30a");
             var res1 = await Conn
@@ -23,7 +23,7 @@ namespace MyDAL.Test.WhereEdge
                 .FirstOrDefaultAsync<AgentVM>();
             Assert.NotNull(res1);
 
-            var tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             xx = string.Empty;
         }

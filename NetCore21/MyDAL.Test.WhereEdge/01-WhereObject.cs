@@ -18,7 +18,7 @@ namespace MyDAL.Test.WhereEdge
 
             /*************************************************************************************************************************/
 
-            var xx1 = "";
+            var xx1 = string.Empty;
 
             // where object
             var res1 = await Conn
@@ -37,7 +37,7 @@ namespace MyDAL.Test.WhereEdge
 
             /*************************************************************************************************************************/
 
-            var xx2 = "";
+            var xx2 = string.Empty;
 
             var option = new AgentQueryOption();
             option.Id = Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b");
@@ -74,7 +74,7 @@ namespace MyDAL.Test.WhereEdge
 
             /*************************************************************************************************************************/
 
-            var xx4 = "";
+            var xx4 = string.Empty;
 
             // where object --> no where
             var res4 = await Conn
@@ -124,7 +124,7 @@ namespace MyDAL.Test.WhereEdge
 
             /*************************************************************************************************************************/
 
-            var xx5 = "";
+            var xx5 = string.Empty;
 
             var option2 = new ProductQueryOption
             {
@@ -151,7 +151,7 @@ namespace MyDAL.Test.WhereEdge
                 .PagingListAsync(option2);
             Assert.True(res52.Data.Count == 0);
 
-            var tuple5 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
         }
     }

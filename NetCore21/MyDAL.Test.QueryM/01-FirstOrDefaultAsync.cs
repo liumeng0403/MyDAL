@@ -15,7 +15,7 @@ namespace MyDAL.Test.QueryM
 
             /****************************************************************************************************************************************/
 
-            var xx = string.Empty;
+            xx = string.Empty;
 
             //  == Guid
             var res1 = await Conn
@@ -24,7 +24,7 @@ namespace MyDAL.Test.QueryM
                 .FirstOrDefaultAsync();
             Assert.NotNull(res1);
 
-            var tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             var resR1 = await Conn
                 .Queryer<BodyFitRecord>()
@@ -77,7 +77,7 @@ namespace MyDAL.Test.QueryM
             Assert.NotNull(resR3);
             Assert.True(res3.Id == resR3.Id);
 
-            var tupleR3 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /****************************************************************************************************************************************/
 
