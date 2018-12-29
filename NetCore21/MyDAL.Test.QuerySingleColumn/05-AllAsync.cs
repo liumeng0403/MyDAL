@@ -14,7 +14,7 @@ namespace MyDAL.Test.QuerySingleColumn
 
             var res1 = await Conn
                 .Queryer<Agent>()
-                .AllAsync(it => it.Id);
+                .QueryAllAsync(it => it.Id);
             Assert.True(res1.Count == 28620);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);

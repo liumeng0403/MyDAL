@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Join
 {
     public sealed class DistinctX
-        : Operator, ITopX, IFirstOrDefaultX, Interfaces.IListX, IPagingListX, IPagingListXO,IAllX
+        : Operator, ITopX, IFirstOrDefaultX, Interfaces.IListX, IPagingListX, IPagingListXO, IQueryAllX
     {
         internal DistinctX(Context dc)
             : base(dc)
@@ -101,13 +101,13 @@ namespace MyDAL.UserFacade.Join
             return await new PagingListXOImpl(DC).PagingListAsync(option, columnMapFunc);
         }
 
-        public async Task<List<M>> AllAsync<M>() where M : class
+        public async Task<List<M>> QueryAllAsync<M>() where M : class
         {
-            return await new AllXImpl(DC).AllAsync<M>();
+            return await new QueryAllXImpl(DC).QueryAllAsync<M>();
         }
-        public async Task<List<T>> AllAsync<T>(Expression<Func<T>> columnMapFunc)
+        public async Task<List<T>> QueryAllAsync<T>(Expression<Func<T>> columnMapFunc)
         {
-            return await new AllXImpl(DC).AllAsync(columnMapFunc);
+            return await new QueryAllXImpl(DC).QueryAllAsync(columnMapFunc);
         }
 
     }

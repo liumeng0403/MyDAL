@@ -18,7 +18,7 @@ namespace MyDAL.Test.Func
             var res2 = await Conn
                 .Queryer<Agent>()
                 .Distinct()
-                .AllAsync(it => it.Name);
+                .QueryAllAsync(it => it.Name);
             Assert.True(res2.Count == 24444);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -30,7 +30,7 @@ namespace MyDAL.Test.Func
             var res3 = await Conn
                 .Queryer<Agent>()
                 .Distinct()
-                .AllAsync(it => it.CreatedOn.ToString("yyyy-MM-dd"));
+                .QueryAllAsync(it => it.CreatedOn.ToString("yyyy-MM-dd"));
             Assert.True(res3.Count == 2);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -42,7 +42,7 @@ namespace MyDAL.Test.Func
             var res4 = await Conn
                 .Queryer<Agent>()
                 .Distinct()
-                .AllAsync(it => it.CreatedOn.ToString("yyyy-MM"));
+                .QueryAllAsync(it => it.CreatedOn.ToString("yyyy-MM"));
             Assert.True(res4.Count == 2);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -54,7 +54,7 @@ namespace MyDAL.Test.Func
             var res5 = await Conn
                 .Queryer<Agent>()
                 .Distinct()
-                .AllAsync(it => it.CreatedOn.ToString("yyyy"));
+                .QueryAllAsync(it => it.CreatedOn.ToString("yyyy"));
             Assert.True(res5.Count == 2);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);

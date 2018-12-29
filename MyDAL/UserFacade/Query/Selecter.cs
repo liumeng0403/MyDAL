@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Query
 {
     public sealed class Queryer<M>
-        : Operator, IAll<M>, IPagingAll<M>, ITop<M>
+        : Operator, IQueryAll<M>, IPagingAll<M>, ITop<M>
         where M : class
     {
         internal Queryer(Context dc)
@@ -20,23 +20,23 @@ namespace MyDAL.UserFacade.Query
         /// 单表数据查询
         /// </summary>
         /// <returns>返回全表数据</returns>
-        public async Task<List<M>> AllAsync()
+        public async Task<List<M>> QueryAllAsync()
         {
-            return await new AllImpl<M>(DC).AllAsync();
+            return await new QueryAllImpl<M>(DC).QueryAllAsync();
         }
         /// <summary>
         /// 单表数据查询
         /// </summary>
         /// <typeparam name="VM">ViewModel</typeparam>
         /// <returns>返回全表数据</returns>
-        public async Task<List<VM>> AllAsync<VM>()
+        public async Task<List<VM>> QueryAllAsync<VM>()
             where VM : class
         {
-            return await new AllImpl<M>(DC).AllAsync<VM>();
+            return await new QueryAllImpl<M>(DC).QueryAllAsync<VM>();
         }
-        public async Task<List<F>> AllAsync<F>(Expression<Func<M, F>> propertyFunc)
+        public async Task<List<F>> QueryAllAsync<F>(Expression<Func<M, F>> propertyFunc)
         {
-            return await new AllImpl<M>(DC).AllAsync<F>(propertyFunc);
+            return await new QueryAllImpl<M>(DC).QueryAllAsync<F>(propertyFunc);
         }
 
         /// <summary>

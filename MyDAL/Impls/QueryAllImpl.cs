@@ -9,29 +9,29 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Impls
 {
-    internal class AllImpl<M>
-        : Impler, IAll<M>
+    internal class QueryAllImpl<M>
+        : Impler, IQueryAll<M>
         where M : class
     {
-        internal AllImpl(Context dc)
+        internal QueryAllImpl(Context dc)
             : base(dc)
         {
         }
 
-        public async Task<List<M>> AllAsync()
+        public async Task<List<M>> QueryAllAsync()
         {
             PreExecuteHandle(UiMethodEnum.AllAsync);
             return await DC.DS.ExecuteReaderMultiRowAsync<M>();
         }
 
-        public async Task<List<VM>> AllAsync<VM>()
+        public async Task<List<VM>> QueryAllAsync<VM>()
             where VM : class
         {
             PreExecuteHandle(UiMethodEnum.AllAsync);
             return await DC.DS.ExecuteReaderMultiRowAsync<VM>();
         }
 
-        public async Task<List<T>> AllAsync<T>(Expression<Func<M, T>> propertyFunc)
+        public async Task<List<T>> QueryAllAsync<T>(Expression<Func<M, T>> propertyFunc)
         {
             if (typeof(T).IsSingleColumn())
             {
@@ -48,22 +48,22 @@ namespace MyDAL.Impls
         }
     }
 
-    internal class AllXImpl
-        : Impler, IAllX
+    internal class QueryAllXImpl
+        : Impler, IQueryAllX
     {
-        public AllXImpl(Context dc) 
+        public QueryAllXImpl(Context dc) 
             : base(dc)
         {
         }
 
-        public async Task<List<M>> AllAsync<M>() where M : class
+        public async Task<List<M>> QueryAllAsync<M>() where M : class
         {
             SelectMHandle<M>();
             PreExecuteHandle(UiMethodEnum.AllAsync);
             return await DC.DS.ExecuteReaderMultiRowAsync<M>();
         }
 
-        public async Task<List<T>> AllAsync<T>(Expression<Func<T>> columnMapFunc)
+        public async Task<List<T>> QueryAllAsync<T>(Expression<Func<T>> columnMapFunc)
         {
             if (typeof(T).IsSingleColumn())
             {

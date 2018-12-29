@@ -326,27 +326,27 @@ namespace MyDAL
         /// <summary>
         /// Queryer 便捷 AllAsync 方法
         /// </summary>
-        public static async Task<List<M>> AllAsync<M>(this IDbConnection conn)
+        public static async Task<List<M>> QueryAllAsync<M>(this IDbConnection conn)
             where M : class, new()
         {
-            return await conn.Queryer<M>().AllAsync();
+            return await conn.Queryer<M>().QueryAllAsync();
         }
         /// <summary>
         /// Queryer 便捷 AllAsync 方法
         /// </summary>
-        public static async Task<List<VM>> AllAsync<M, VM>(this IDbConnection conn)
+        public static async Task<List<VM>> QueryAllAsync<M, VM>(this IDbConnection conn)
             where M : class, new()
             where VM : class
         {
-            return await conn.Queryer<M>().AllAsync<VM>();
+            return await conn.Queryer<M>().QueryAllAsync<VM>();
         }
         /// <summary>
         /// Queryer 便捷 AllAsync 方法
         /// </summary>
-        public static async Task<List<T>> AllAsync<M, T>(this IDbConnection conn, Expression<Func<M, T>> propertyFunc)
+        public static async Task<List<T>> QueryAllAsync<M, T>(this IDbConnection conn, Expression<Func<M, T>> propertyFunc)
             where M : class, new()
         {
-            return await conn.Queryer<M>().AllAsync(propertyFunc);
+            return await conn.Queryer<M>().QueryAllAsync(propertyFunc);
         }
 
         /// <summary>

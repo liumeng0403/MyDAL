@@ -16,7 +16,7 @@ namespace MyDAL.Test.QueryVM
 
             var res2 = await Conn
                 .Queryer<Agent>()
-                .AllAsync<AgentVM>();
+                .QueryAllAsync<AgentVM>();
             Assert.True(res2.Count == 28620);
             Assert.NotNull(res2.First().Name);
             Assert.Null(res2.First().XXXX);

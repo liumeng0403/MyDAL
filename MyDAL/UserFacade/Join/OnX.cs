@@ -9,21 +9,21 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Join
 {
     public sealed class OnX
-        : Operator, IFirstOrDefaultX, IListX, IPagingListX, IPagingListXO, ITopX, IAllX
+        : Operator, IFirstOrDefaultX, IListX, IPagingListX, IPagingListXO, ITopX, IQueryAllX
     {
 
         internal OnX(Context dc)
             : base(dc)
         { }
 
-        public async Task<List<M>> AllAsync<M>()
+        public async Task<List<M>> QueryAllAsync<M>()
             where M : class
         {
-            return await new AllXImpl(DC).AllAsync<M>();
+            return await new QueryAllXImpl(DC).QueryAllAsync<M>();
         }
-        public async Task<List<T>> AllAsync<T>(Expression<Func<T>> columnMapFunc)
+        public async Task<List<T>> QueryAllAsync<T>(Expression<Func<T>> columnMapFunc)
         {
-            return await new AllXImpl(DC).AllAsync(columnMapFunc);
+            return await new QueryAllXImpl(DC).QueryAllAsync(columnMapFunc);
         }
 
         /// <summary>

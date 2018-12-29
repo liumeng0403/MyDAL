@@ -19,7 +19,7 @@ namespace MyDAL.Test.JoinQueryM
                 .From(() => agent1)
                     .InnerJoin(() => record1)
                         .On(() => agent1.Id == record1.AgentId)
-                .AllAsync<Agent>();
+                .QueryAllAsync<Agent>();
             Assert.True(res1.Count == 574);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Query
 {
     public sealed class DistinctQ<M>
-        : Operator, IAll<M>, IPagingAll<M>, ITop<M>, IFirstOrDefault<M>, Interfaces.IList<M>, IPagingList<M>, IPagingListO<M>
+        : Operator, IQueryAll<M>, IPagingAll<M>, ITop<M>, IFirstOrDefault<M>, Interfaces.IList<M>, IPagingList<M>, IPagingListO<M>
         where M : class
     {
         internal DistinctQ(Context dc) 
@@ -21,23 +21,23 @@ namespace MyDAL.UserFacade.Query
         /// 单表数据查询
         /// </summary>
         /// <returns>返回全表数据</returns>
-        public async Task<List<M>> AllAsync()
+        public async Task<List<M>> QueryAllAsync()
         {
-            return await new AllImpl<M>(DC).AllAsync();
+            return await new QueryAllImpl<M>(DC).QueryAllAsync();
         }
         /// <summary>
         /// 单表数据查询
         /// </summary>
         /// <typeparam name="VM">ViewModel</typeparam>
         /// <returns>返回全表数据</returns>
-        public async Task<List<VM>> AllAsync<VM>()
+        public async Task<List<VM>> QueryAllAsync<VM>()
             where VM : class
         {
-            return await new AllImpl<M>(DC).AllAsync<VM>();
+            return await new QueryAllImpl<M>(DC).QueryAllAsync<VM>();
         }
-        public async Task<List<T>> AllAsync<T>(Expression<Func<M, T>> columnMapFunc)
+        public async Task<List<T>> QueryAllAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
-            return await new AllImpl<M>(DC).AllAsync<T>(columnMapFunc);
+            return await new QueryAllImpl<M>(DC).QueryAllAsync<T>(columnMapFunc);
         }
 
         /// <summary>
