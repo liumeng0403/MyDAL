@@ -69,7 +69,7 @@ namespace MyDAL.Test.Func
                 .Distinct()
                 .FirstOrDefaultAsync();
             Assert.NotNull(res6);
-            var res61 = await Conn.ListAsync<Agent>(it => it.Name == "刘中华");
+            var res61 = await Conn.QueryListAsync<Agent>(it => it.Name == "刘中华");
             Assert.True(res61.Count == 2);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -85,7 +85,7 @@ namespace MyDAL.Test.Func
                         .On(() => agent1.Id == record1.AgentId)
                 .Where(() => agent1.AgentLevel == AgentLevel.DistiAgent)
                 .Distinct()
-                .ListAsync(() => agent1.Name);
+                .QueryListAsync(() => agent1.Name);
 
             Assert.True(res7.Count == 543);
 

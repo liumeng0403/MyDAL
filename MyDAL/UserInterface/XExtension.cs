@@ -241,59 +241,31 @@ namespace MyDAL
         {
             return (conn.FirstOrDefaultAsync(compareFunc, columnMapFunc)).GetAwaiter().GetResult();
         }
-
-
+        
         /// <summary>
         /// 请参阅: <see langword=".ListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public static async Task<List<M>> ListAsync<M>(this IDbConnection conn, QueryOption option)
+        public static async Task<List<M>> QueryListAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
             where M : class, new()
         {
-            return await conn.Queryer<M>().Where(option).ListAsync();
+            return await conn.Queryer<M>().Where(compareFunc).QueryListAsync();
         }
         /// <summary>
-        /// Queryer 便捷 ListAsync 方法
+        /// 请参阅: <see langword=".ListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public static async Task<List<VM>> ListAsync<M, VM>(this IDbConnection conn, QueryOption option)
+        public static async Task<List<VM>> QueryListAsync<M, VM>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
             where M : class, new()
             where VM : class
         {
-            return await conn.Queryer<M>().Where(option).ListAsync<VM>();
-        }
-        /// <summary>
-        /// Queryer 便捷 ListAsync 方法
-        /// </summary>
-        public static async Task<List<VM>> ListAsync<M, VM>(this IDbConnection conn, QueryOption option, Expression<Func<M, VM>> columnMapFunc)
-            where M : class, new()
-            where VM : class
-        {
-            return await conn.Queryer<M>().Where(option).ListAsync<VM>(columnMapFunc);
-        }
-
-        /// <summary>
-        /// 请参阅: <see langword=".ListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        public static async Task<List<M>> ListAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class, new()
-        {
-            return await conn.Queryer<M>().Where(compareFunc).ListAsync();
+            return await conn.Queryer<M>().Where(compareFunc).QueryListAsync<VM>();
         }
         /// <summary>
         /// 请参阅: <see langword=".ListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public static async Task<List<VM>> ListAsync<M, VM>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class, new()
-            where VM : class
-        {
-            return await conn.Queryer<M>().Where(compareFunc).ListAsync<VM>();
-        }
-        /// <summary>
-        /// 请参阅: <see langword=".ListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        public static async Task<List<T>> ListAsync<M, T>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, T>> columnMapFunc)
+        public static async Task<List<T>> QueryListAsync<M, T>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, T>> columnMapFunc)
             where M : class, new()
         {
-            return await conn.Queryer<M>().Where(compareFunc).ListAsync(columnMapFunc);
+            return await conn.Queryer<M>().Where(compareFunc).QueryListAsync(columnMapFunc);
         }
 
         /// <summary>

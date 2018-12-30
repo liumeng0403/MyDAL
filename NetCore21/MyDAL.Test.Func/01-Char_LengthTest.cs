@@ -22,7 +22,7 @@ namespace MyDAL.Test.Func
             var res1 = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.Name.Length > 2)
-                .ListAsync();
+                .QueryListAsync();
             Assert.True(res1.Count == 22660);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -33,7 +33,7 @@ namespace MyDAL.Test.Func
             var resR1 = await Conn
                 .Queryer<Agent>()
                 .Where(it => 2 < it.Name.Length)
-                .ListAsync();
+                .QueryListAsync();
             Assert.True(res1.Count == resR1.Count);
             Assert.True(res1.Count == 22660);
 
@@ -50,7 +50,7 @@ namespace MyDAL.Test.Func
                     .InnerJoin(() => record2)
                         .On(() => agent2.Id == record2.AgentId)
                 .Where(() => agent2.Name.Length > 2)
-                .ListAsync<Agent>();
+                .QueryListAsync<Agent>();
             Assert.True(res2.Count == 457);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -67,7 +67,7 @@ namespace MyDAL.Test.Func
                         .On(() => agent3.Id == record3.AgentId)
                 .Where(() => agent3.Name.Length > 2)
                 .OrderBy(() => agent3.Name.Length)
-                .ListAsync<Agent>();
+                .QueryListAsync<Agent>();
             Assert.True(res3.Count == 457);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);

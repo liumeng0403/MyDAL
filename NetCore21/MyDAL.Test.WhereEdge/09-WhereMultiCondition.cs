@@ -19,7 +19,7 @@ namespace MyDAL.Test.WhereEdge
             var res1 = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.Id == guid1 && it.PathId == pathId1)
-                .ListAsync();
+                .QueryListAsync();
             Assert.True(res1.Count == 1);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -33,7 +33,7 @@ namespace MyDAL.Test.WhereEdge
             var res2 = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.Id == guid2 || it.PathId == pathId2)
-                .ListAsync();
+                .QueryListAsync();
             Assert.True(res2.Count == 2);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -46,7 +46,7 @@ namespace MyDAL.Test.WhereEdge
             var res3 = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.CreatedOn >= WhereTest.StartTime && it.CreatedOn <= WhereTest.EndTime)
-                .ListAsync();
+                .QueryListAsync();
             Assert.True(res3.Count == 28619);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -61,7 +61,7 @@ namespace MyDAL.Test.WhereEdge
             var res4 = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.Id == guid4 && it.AgentLevel == level4 && it.PathId == pathId4)
-                .ListAsync();
+                .QueryListAsync();
             Assert.True(res4.Count == 1);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -76,7 +76,7 @@ namespace MyDAL.Test.WhereEdge
             var res5 = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.Id == guid5 || it.Id == guid51 || it.Id == guid52)
-                .ListAsync();
+                .QueryListAsync();
             Assert.True(res5.Count == 3);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -91,7 +91,7 @@ namespace MyDAL.Test.WhereEdge
             var res6 = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.Id == guid6 && it.Id == guid61 || it.Id == guid62)
-                .ListAsync();
+                .QueryListAsync();
             Assert.True(res6.Count == 1);
             Assert.True(res6.First().Id == guid62);
 
@@ -107,7 +107,7 @@ namespace MyDAL.Test.WhereEdge
             var res7 = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.Id == guid7 || it.Id == guid71 && it.Id == guid72)
-                .ListAsync();
+                .QueryListAsync();
             Assert.True(res7.Count == 1);
             Assert.True(res7.First().Id == guid7);
 
@@ -124,7 +124,7 @@ namespace MyDAL.Test.WhereEdge
             var res8 = await Conn
                 .Queryer<Agent>()
                 .Where(it => (it.Id == guid8 || it.Id == guid81) && it.Id == guid82 || it.PathId == pathId83)
-                .ListAsync();
+                .QueryListAsync();
             Assert.True(res8.Count == 1);
             Assert.True(res8.First().PathId == pathId83);
 

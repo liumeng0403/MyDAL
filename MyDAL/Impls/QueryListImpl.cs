@@ -10,30 +10,28 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Impls
 {
-    internal class ListImpl<M>
-        : Impler, Interfaces.IList<M>
+    internal class QueryListImpl<M>
+        : Impler, IQueryList<M>
         where M : class
     {
-        internal ListImpl(Context dc)
-            : base(dc)
-        {
-        }
+        internal QueryListImpl(Context dc)
+            : base(dc) { }
 
-        public async Task<List<M>> ListAsync()
+        public async Task<List<M>> QueryListAsync()
         {
             PreExecuteHandle(UiMethodEnum.ListAsync);
             return await DC.DS.ExecuteReaderMultiRowAsync<M>();
         }
 
-        public async Task<List<VM>> ListAsync<VM>()
-            where VM:class
+        public async Task<List<VM>> QueryListAsync<VM>()
+            where VM : class
         {
             SelectMHandle<M, VM>();
             PreExecuteHandle(UiMethodEnum.ListAsync);
             return await DC.DS.ExecuteReaderMultiRowAsync<VM>();
         }
 
-        public async Task<List<T>> ListAsync<T>(Expression<Func<M, T>> columnMapFunc)
+        public async Task<List<T>> QueryListAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
             if (typeof(T).IsSingleColumn())
             {
@@ -50,23 +48,21 @@ namespace MyDAL.Impls
         }
     }
 
-    internal class ListXImpl
-        : Impler, IListX
+    internal class QueryListXImpl
+        : Impler, IQueryListX
     {
-        internal ListXImpl(Context dc)
-            : base(dc)
-        {
-        }
+        internal QueryListXImpl(Context dc)
+            : base(dc) { }
 
-        public async Task<List<M>> ListAsync<M>()
-            where M:class
+        public async Task<List<M>> QueryListAsync<M>()
+            where M : class
         {
             SelectMHandle<M>();
             PreExecuteHandle(UiMethodEnum.ListAsync);
             return await DC.DS.ExecuteReaderMultiRowAsync<M>();
         }
 
-        public async Task<List<T>> ListAsync<T>(Expression<Func<T>> columnMapFunc)
+        public async Task<List<T>> QueryListAsync<T>(Expression<Func<T>> columnMapFunc)
         {
             if (typeof(T).IsSingleColumn())
             {

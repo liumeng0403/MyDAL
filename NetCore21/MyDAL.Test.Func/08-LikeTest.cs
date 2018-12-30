@@ -105,7 +105,7 @@ namespace MyDAL.Test.Func
             xx = string.Empty;
 
             // 无通配符 -- "陈" -- "%"+"陈"+"%"
-            var res4 = await Conn.ListAsync<Agent>(it => it.Name.Contains(LikeTest.无通配符));
+            var res4 = await Conn.QueryListAsync<Agent>(it => it.Name.Contains(LikeTest.无通配符));
             Assert.True(res4.Count == 1431);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -113,7 +113,7 @@ namespace MyDAL.Test.Func
             xx = string.Empty;
 
             // 百分号 -- "陈%" -- "陈%"
-            var res5 = await Conn.ListAsync<Agent>(it => it.Name.Contains(LikeTest.百分号));
+            var res5 = await Conn.QueryListAsync<Agent>(it => it.Name.Contains(LikeTest.百分号));
             Assert.True(res5.Count == 1421);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -121,7 +121,7 @@ namespace MyDAL.Test.Func
             xx = string.Empty;
 
             // 下划线 -- "王_" -- "王_" 
-            var res6 = await Conn.ListAsync<Agent>(it => it.Name.Contains(LikeTest.下划线));
+            var res6 = await Conn.QueryListAsync<Agent>(it => it.Name.Contains(LikeTest.下划线));
             Assert.True(res6.Count == 498);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -135,7 +135,7 @@ namespace MyDAL.Test.Func
                     .And(it => it.Id == resx4.Id)
                     .And(it => it.Name.Contains("%华"))
                     .And(it => it.Name.Contains("%/%%"))
-                .ListAsync();
+                .QueryListAsync();
             Assert.True(res7.Count == 1);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -143,7 +143,7 @@ namespace MyDAL.Test.Func
             xx = string.Empty;
 
             // 下划线转义 -- "何/__" -- "何/__"
-            var res8 = await Conn.ListAsync<Agent>(it => it.Name.Contains(LikeTest.下划线转义));
+            var res8 = await Conn.QueryListAsync<Agent>(it => it.Name.Contains(LikeTest.下划线转义));
             Assert.True(res8.Count == 1);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -158,7 +158,7 @@ namespace MyDAL.Test.Func
                     .InnerJoin(() => record9)
                         .On(() => agent9.Id == record9.AgentId)
                 .Where(() => agent9.Name.Contains(LikeTest.无通配符))
-                .ListAsync<AgentInventoryRecord>();
+                .QueryListAsync<AgentInventoryRecord>();
             Assert.True(res9.Count == 24);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -173,7 +173,7 @@ namespace MyDAL.Test.Func
                     .InnerJoin(() => record10)
                         .On(() => agent10.Id == record10.AgentId)
                 .Where(() => agent10.Name.StartsWith("张"))
-                .ListAsync<Agent>();
+                .QueryListAsync<Agent>();
             Assert.True(res10.Count == 45);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -188,7 +188,7 @@ namespace MyDAL.Test.Func
                     .InnerJoin(() => record11)
                         .On(() => agent11.Id == record11.AgentId)
                 .Where(() => agent11.Name.EndsWith("华"))
-                .ListAsync<Agent>();
+                .QueryListAsync<Agent>();
             Assert.True(res11.Count == 22);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);

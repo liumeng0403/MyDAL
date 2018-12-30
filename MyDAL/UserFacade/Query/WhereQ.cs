@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Query
 {
     public sealed class WhereQ<M>
-        : Operator, IExist, IFirstOrDefault<M>, Interfaces.IList<M>, IPagingList<M>, IPagingListO<M>, ICount<M>, ITop<M>, ISum<M>
+        : Operator, IExist, IFirstOrDefault<M>, IQueryList<M>, IPagingList<M>, IPagingListO<M>, ICount<M>, ITop<M>, ISum<M>
         where M : class
     {
         internal WhereQ(Context dc)
@@ -74,24 +74,24 @@ namespace MyDAL.UserFacade.Query
         /// <summary>
         /// 请参阅: <see langword=".ListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<List<M>> ListAsync()
+        public async Task<List<M>> QueryListAsync()
         {
-            return await new ListImpl<M>(DC).ListAsync();
+            return await new QueryListImpl<M>(DC).QueryListAsync();
         }
         /// <summary>
         /// 请参阅: <see langword=".ListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<List<VM>> ListAsync<VM>()
+        public async Task<List<VM>> QueryListAsync<VM>()
             where VM : class
         {
-            return await new ListImpl<M>(DC).ListAsync<VM>();
+            return await new QueryListImpl<M>(DC).QueryListAsync<VM>();
         }
         /// <summary>
         /// 请参阅: <see langword=".ListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<List<T>> ListAsync<T>(Expression<Func<M, T>> columnMapFunc)
+        public async Task<List<T>> QueryListAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
-            return await new ListImpl<M>(DC).ListAsync(columnMapFunc);
+            return await new QueryListImpl<M>(DC).QueryListAsync(columnMapFunc);
         }
 
         /// <summary>

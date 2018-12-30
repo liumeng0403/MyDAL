@@ -64,7 +64,7 @@ namespace MyDAL.Test.WhereEdge
             var res = await Conn
                 .Queryer<Agent>()
                 .Where(it => list.Contains(it.Id))
-                .ListAsync();
+                .QueryListAsync();
             Assert.True(res.Count == 2);
 
             xx=string.Empty;
@@ -76,7 +76,7 @@ namespace MyDAL.Test.WhereEdge
             var res = await Conn
                 .Queryer<Agent>()
                 .Where(it => arrays.Contains(it.Id))
-                .ListAsync();
+                .QueryListAsync();
             Assert.True(res.Count == 2);
 
             xx=string.Empty;

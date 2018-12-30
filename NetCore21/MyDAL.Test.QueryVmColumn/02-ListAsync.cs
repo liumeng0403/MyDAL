@@ -22,7 +22,7 @@ namespace MyDAL.Test.QueryVmColumn
             var res5 = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
-                .ListAsync(agent => new AgentVM
+                .QueryListAsync(agent => new AgentVM
                 {
                     XXXX = agent.Name,
                     YYYY = agent.PathId

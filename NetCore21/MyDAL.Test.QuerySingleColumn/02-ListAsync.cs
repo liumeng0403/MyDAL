@@ -15,7 +15,7 @@ namespace MyDAL.Test.QuerySingleColumn
             var res2 = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
-                .ListAsync(it => it.Name);
+                .QueryListAsync(it => it.Name);
             Assert.True(res2.Count == 555);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);

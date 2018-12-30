@@ -36,7 +36,7 @@ namespace MyDAL.Test.JoinQueryM
                     .InnerJoin(() => record1)
                         .On(() => agent1.Id == record1.AgentId)
                 .Where(() => agent1.CreatedOn >= WhereTest.CreatedOn.AddDays(-60))
-                .ListAsync<AgentInventoryRecord>();
+                .QueryListAsync<AgentInventoryRecord>();
             Assert.True(res1.Count == 574);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -52,7 +52,7 @@ namespace MyDAL.Test.JoinQueryM
                     .InnerJoin(() => record2)
                         .On(() => agent2.Id == record2.AgentId)
                 .Where(() => agent2.CreatedOn >= Convert.ToDateTime("2018-08-16 19:20:28.118853"))                      //  const  method  DateTime  >=
-                .ListAsync<AgentInventoryRecord>();
+                .QueryListAsync<AgentInventoryRecord>();
             Assert.True(res2.Count == 523);
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
@@ -68,7 +68,7 @@ namespace MyDAL.Test.JoinQueryM
                     .InnerJoin(() => record3)
                         .On(() => agent3.Id == record3.AgentId)
                 .Where(() => record3.AgentId == Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef"))                  //  const  method  Guid  ==
-                .ListAsync<AgentInventoryRecord>();
+                .QueryListAsync<AgentInventoryRecord>();
             Assert.True(res3.Count == 1);
             Assert.Equal(res3.First().Id, Guid.Parse("02dbc81c-5c9a-4cdf-8bf0-016551f756c4"));
 
@@ -85,7 +85,7 @@ namespace MyDAL.Test.JoinQueryM
                     .InnerJoin(() => record4)
                         .On(() => agent4.Id == record4.AgentId)
                 .Where(() => agent4.Name == "辛文丽")                                                                                                            //  const  string  ==
-                .ListAsync<AgentInventoryRecord>();
+                .QueryListAsync<AgentInventoryRecord>();
             Assert.True(res4.Count == 1);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -101,7 +101,7 @@ namespace MyDAL.Test.JoinQueryM
                     .InnerJoin(() => record5)
                         .On(() => agent5.Id == record5.AgentId)
                 .Where(() => agent5.AgentLevel == AgentLevel.DistiAgent)                                                                           //  const  enum  ==
-                .ListAsync<AgentInventoryRecord>();
+                .QueryListAsync<AgentInventoryRecord>();
             Assert.True(res5.Count == 574);
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
@@ -117,7 +117,7 @@ namespace MyDAL.Test.JoinQueryM
                     .InnerJoin(() => record6)
                         .On(() => agent6.Id == record6.AgentId)
                 .Where(() => agent6.Id == m.Id)                                                                                                                              //  virable  prop  Guid  ==
-                .ListAsync<Agent>();
+                .QueryListAsync<Agent>();
             Assert.True(res6.Count == 1);
             Assert.Equal(res6.First().Id, Guid.Parse("0ce552c0-2f5e-4c22-b26d-01654443b30e"));
 
@@ -134,7 +134,7 @@ namespace MyDAL.Test.JoinQueryM
                     .InnerJoin(() => record7)
                         .On(() => agent7.Id == record7.AgentId)
                 .Where(() => agent7.Name == name)                                                                                                                 //  virable  string  ==
-                .ListAsync<AgentInventoryRecord>();
+                .QueryListAsync<AgentInventoryRecord>();
             Assert.True(res7.Count == 1);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -150,7 +150,7 @@ namespace MyDAL.Test.JoinQueryM
                     .InnerJoin(() => record8)
                         .On(() => agent8.Id == record8.AgentId)
                 .Where(() => agent8.AgentLevel == (AgentLevel)level)                                                                                        //  virable  enum  ==
-                .ListAsync<AgentInventoryRecord>();
+                .QueryListAsync<AgentInventoryRecord>();
             Assert.True(res8.Count == 574);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -166,7 +166,7 @@ namespace MyDAL.Test.JoinQueryM
                     .InnerJoin(() => record9)
                         .On(() => agent9.Id == record9.AgentId)
                 .Where(() => agent9.CreatedOn >= WhereTest.CreatedOn)                                                              //  prop prop DateTime  >=
-                .ListAsync<AgentInventoryRecord>();
+                .QueryListAsync<AgentInventoryRecord>();
             Assert.True(res9.Count == 574);
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
@@ -182,7 +182,7 @@ namespace MyDAL.Test.JoinQueryM
                         .On(() => agent10.Id == record10.AgentId)
                 .Where(() => agent10.Id == Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef"))
                     .And(() => record10.CreatedOn >= WhereTest.CreatedOn.AddDays(-60))
-                .ListAsync<Agent>();
+                .QueryListAsync<Agent>();
             Assert.True(res10.Count == 1);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -210,7 +210,7 @@ namespace MyDAL.Test.JoinQueryM
                     .InnerJoin(() => role1)
                         .On(() => userRole1.RoleId == role1.Id)
                 .OrderBy(() => user1.UserName)
-                .ListAsync<AspnetUsers>();
+                .QueryListAsync<AspnetUsers>();
             Assert.True(res1.Count == 29180);
             Assert.True(res1.First().UserName == "45285586990");
 
@@ -228,7 +228,7 @@ namespace MyDAL.Test.JoinQueryM
                         .On(() => user2.Id == userRole2.UserId)
                     .InnerJoin(() => role2)
                         .On(() => userRole2.RoleId == role2.Id)
-                .ListAsync<AspnetUsers>();
+                .QueryListAsync<AspnetUsers>();
             Assert.True(res2.Count == 29180);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -243,7 +243,7 @@ namespace MyDAL.Test.JoinQueryM
                 .From(() => agent3)
                     .InnerJoin(() => record3)
                         .On(() => agent3.Id == record3.AgentId)
-                .ListAsync<Agent>();
+                .QueryListAsync<Agent>();
             Assert.True(res3.Count == 574);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -262,7 +262,7 @@ namespace MyDAL.Test.JoinQueryM
                 .Where(() => user4.NickName.StartsWith("刘"))
                 .OrderBy(() => user4.UserName)
                     .ThenOrderBy(() => user4.AgentLevel, OrderByEnum.Asc)
-                .ListAsync<AspnetUsers>();
+                .QueryListAsync<AspnetUsers>();
             Assert.True(res4.Count == 1480);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);

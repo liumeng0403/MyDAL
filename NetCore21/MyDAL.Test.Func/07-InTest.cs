@@ -53,7 +53,7 @@ namespace MyDAL.Test.Func
             var res1 = await Conn
                 .Queryer<Agent>()
                 .Where(it => enums.Contains(it.AgentLevel))
-                .ListAsync();
+                .QueryListAsync();
             Assert.True(res1.Count == 555);
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
@@ -66,7 +66,7 @@ namespace MyDAL.Test.Func
             var res2 = await Conn
                 .Queryer<Agent>()
                 .Where(it => WhereTest.In_List_枚举.Contains(it.AgentLevel))
-                .ListAsync();
+                .QueryListAsync();
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
@@ -79,7 +79,7 @@ namespace MyDAL.Test.Func
             var res3 = await Conn
                 .Queryer<Agent>()
                 .Where(it => EnumList.Contains(it.AgentLevel))
-                .ListAsync();
+                .QueryListAsync();
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
@@ -100,7 +100,7 @@ namespace MyDAL.Test.Func
             var res4 = await Conn
                 .Queryer<Agent>()
                 .Where(it => names.Contains(it.Name))
-                .ListAsync();
+                .QueryListAsync();
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
@@ -112,7 +112,7 @@ namespace MyDAL.Test.Func
             var res5 = await Conn
                 .Queryer<Agent>()
                 .Where(it => WhereTest.In_List_String.Contains(it.Name))
-                .ListAsync();
+                .QueryListAsync();
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
@@ -125,7 +125,7 @@ namespace MyDAL.Test.Func
             var res6 = await Conn
                 .Queryer<Agent>()
                 .Where(it => StringList.Contains(it.Name))
-                .ListAsync();
+                .QueryListAsync();
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
@@ -146,7 +146,7 @@ namespace MyDAL.Test.Func
             var res7 = await Conn
                 .Queryer<Agent>()
                 .Where(it => new List<int> { 5, 10 }.Contains(it.DirectorStarCount))
-                .ListAsync();
+                .QueryListAsync();
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
@@ -158,7 +158,7 @@ namespace MyDAL.Test.Func
             var res8 = await Conn
                 .Queryer<Agent>()
                 .Where(it => new List<long> { 5, 10 }.Contains(it.DirectorStarCount))
-                .ListAsync();
+                .QueryListAsync();
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
@@ -170,7 +170,7 @@ namespace MyDAL.Test.Func
             var res9 = await Conn
                 .Queryer<Agent>()
                 .Where(it => new List<short> { 5, 10 }.Contains((short)(it.DirectorStarCount)))
-                .ListAsync();
+                .QueryListAsync();
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
@@ -186,7 +186,7 @@ namespace MyDAL.Test.Func
             var res10 = await Conn
                 .Queryer<Agent>()
                 .Where(it => new List<string> { "黄银凤", "刘建芬" }.Contains(it.Name))
-                .ListAsync();
+                .QueryListAsync();
             Assert.True(res10.Count == 2);
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
@@ -199,7 +199,7 @@ namespace MyDAL.Test.Func
             var res11 = await Conn
                 .Queryer<Agent>()
                 .Where(it => new List<AgentLevel?> { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel))
-                .ListAsync();
+                .QueryListAsync();
             Assert.True(res11.Count == 555);
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
@@ -217,7 +217,7 @@ namespace MyDAL.Test.Func
             var res12 = await Conn
                 .Queryer<Agent>()
                 .Where(it => enumArray.Contains(it.AgentLevel))
-                .ListAsync();
+                .QueryListAsync();
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
@@ -229,7 +229,7 @@ namespace MyDAL.Test.Func
             var res13 = await Conn
                 .Queryer<Agent>()
                 .Where(it => WhereTest.In_Array_枚举.Contains(it.AgentLevel))
-                .ListAsync();
+                .QueryListAsync();
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
@@ -242,7 +242,7 @@ namespace MyDAL.Test.Func
             var res14 = await Conn
                 .Queryer<Agent>()
                 .Where(it => EnumArray.Contains(it.AgentLevel))
-                .ListAsync();
+                .QueryListAsync();
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
@@ -263,7 +263,7 @@ namespace MyDAL.Test.Func
             var res15 = await Conn
                 .Queryer<Agent>()
                 .Where(it => nameArray.Contains(it.Name))
-                .ListAsync();
+                .QueryListAsync();
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
@@ -275,7 +275,7 @@ namespace MyDAL.Test.Func
             var res16 = await Conn
                 .Queryer<Agent>()
                 .Where(it => WhereTest.In_Array_String.Contains(it.Name))
-                .ListAsync();
+                .QueryListAsync();
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
@@ -288,7 +288,7 @@ namespace MyDAL.Test.Func
             var res17 = await Conn
                 .Queryer<Agent>()
                 .Where(it => StringArray.Contains(it.Name))
-                .ListAsync();
+                .QueryListAsync();
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
@@ -308,7 +308,7 @@ namespace MyDAL.Test.Func
             var res18 = await Conn
                 .Queryer<Agent>()
                 .Where(it => new int[] { 5, 10 }.Contains(it.DirectorStarCount))
-                .ListAsync();
+                .QueryListAsync();
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
@@ -320,7 +320,7 @@ namespace MyDAL.Test.Func
             var res19 = await Conn
                 .Queryer<Agent>()
                 .Where(it => new long[] { 5L, 10L }.Contains(it.DirectorStarCount))
-                .ListAsync();
+                .QueryListAsync();
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
@@ -332,7 +332,7 @@ namespace MyDAL.Test.Func
             var res20 = await Conn
                 .Queryer<Agent>()
                 .Where(it => new short[] { 5, 10 }.Contains((short)(it.DirectorStarCount)))
-                .ListAsync();
+                .QueryListAsync();
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
@@ -348,7 +348,7 @@ namespace MyDAL.Test.Func
             var res21 = await Conn
                 .Queryer<Agent>()
                 .Where(it => new string[] { "黄银凤", "刘建芬" }.Contains(it.Name))
-                .ListAsync();
+                .QueryListAsync();
             Assert.True(res21.Count == 2);
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
@@ -361,7 +361,7 @@ namespace MyDAL.Test.Func
             var res22 = await Conn
                 .Queryer<Agent>()
                 .Where(it => new AgentLevel?[] { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel))
-                .ListAsync();
+                .QueryListAsync();
             Assert.True(res22.Count == 555);
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
@@ -377,7 +377,7 @@ namespace MyDAL.Test.Func
                 .InnerJoin(() => record)
                 .On(() => agent.Id == record.AgentId)
                 .Where(() => new AgentLevel?[] { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(agent.AgentLevel))
-                .ListAsync<Agent>();
+                .QueryListAsync<Agent>();
             Assert.True(res23.Count == 574);
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
@@ -392,7 +392,7 @@ namespace MyDAL.Test.Func
             var res24 = await Conn
                 .Queryer<Agent>()
                 .Where(it => new string[] { "黄银凤", "刘建芬" }.Contains(it.Name) || new List<Guid> { guid241, guid242 }.Contains(it.Id))
-                .ListAsync();
+                .QueryListAsync();
             Assert.True(res24.Count == 4);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -405,7 +405,7 @@ namespace MyDAL.Test.Func
             var res25 = await Conn
                 .Queryer<Agent>()
                 .Where(it => new string[] {"刘建芬" }.Contains(it.Name))
-                .ListAsync();
+                .QueryListAsync();
             Assert.True(res25.Count == 1);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -418,7 +418,7 @@ namespace MyDAL.Test.Func
             var res26 = await Conn
                 .Queryer<Agent>()
                 .Where(it => new string[] { "刘建芬" }.Contains(it.Name) || new List<Guid> { guid241 }.Contains(it.Id))
-                .ListAsync();
+                .QueryListAsync();
             Assert.True(res26.Count == 2);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -433,7 +433,7 @@ namespace MyDAL.Test.Func
                 var res27 = await Conn
                     .Queryer<Agent>()
                     .Where(it => new List<Guid> { }.Contains(it.Id))
-                    .ListAsync();
+                    .QueryListAsync();
             }
             catch(Exception ex)
             {

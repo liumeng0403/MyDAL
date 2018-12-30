@@ -18,7 +18,7 @@ namespace MyDAL.Test.JoinQuerySingleColumn
                     .InnerJoin(() => record1)
                         .On(() => agent1.Id == record1.AgentId)
                 .Where(() => agent1.AgentLevel == AgentLevel.DistiAgent)
-                .ListAsync(() => agent1.CreatedOn);
+                .QueryListAsync(() => agent1.CreatedOn);
             Assert.True(res1.Count == 574);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Join
 {
     public sealed class OnX
-        : Operator, IFirstOrDefaultX, IListX, IPagingListX, IPagingListXO, ITopX, IQueryAllX
+        : Operator, IFirstOrDefaultX, IQueryListX, IPagingListX, IPagingListXO, ITopX, IQueryAllX
     {
 
         internal OnX(Context dc)
@@ -45,17 +45,17 @@ namespace MyDAL.UserFacade.Join
         /// <summary>
         /// 请参阅: <see langword=".ListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<List<M>> ListAsync<M>()
+        public async Task<List<M>> QueryListAsync<M>()
             where M : class
         {
-            return await new ListXImpl(DC).ListAsync<M>();
+            return await new QueryListXImpl(DC).QueryListAsync<M>();
         }
         /// <summary>
         /// 请参阅: <see langword=".ListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<List<T>> ListAsync<T>(Expression<Func<T>> columnMapFunc)
+        public async Task<List<T>> QueryListAsync<T>(Expression<Func<T>> columnMapFunc)
         {
-            return await new ListXImpl(DC).ListAsync(columnMapFunc);
+            return await new QueryListXImpl(DC).QueryListAsync(columnMapFunc);
         }
 
         /// <summary>

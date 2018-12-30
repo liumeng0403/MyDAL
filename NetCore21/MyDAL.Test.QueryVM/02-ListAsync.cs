@@ -23,7 +23,7 @@ namespace MyDAL.Test.QueryVM
                 .Queryer<Agent>()
                 .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
                 .OrderBy(it => it.CreatedOn)
-                .ListAsync<AgentVM>();
+                .QueryListAsync<AgentVM>();
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
@@ -42,7 +42,7 @@ namespace MyDAL.Test.QueryVM
             var res5 = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.CreatedOn >= testQ5.StartTime)
-                .ListAsync<AgentVM>();
+                .QueryListAsync<AgentVM>();
             Assert.True(res5.Count == 28619);
             Assert.NotNull(res5.First().Name);
             Assert.Null(res5.First().XXXX);

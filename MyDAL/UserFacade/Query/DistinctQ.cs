@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Query
 {
     public sealed class DistinctQ<M>
-        : Operator, IQueryAll<M>, IPagingAll<M>, ITop<M>, IFirstOrDefault<M>, Interfaces.IList<M>, IPagingList<M>, IPagingListO<M>
+        : Operator, IQueryAll<M>, IPagingAll<M>, ITop<M>, IFirstOrDefault<M>, IQueryList<M>, IPagingList<M>, IPagingListO<M>
         where M : class
     {
         internal DistinctQ(Context dc) 
@@ -122,24 +122,24 @@ namespace MyDAL.UserFacade.Query
         /// <summary>
         /// 请参阅: <see langword=".ListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<List<M>> ListAsync()
+        public async Task<List<M>> QueryListAsync()
         {
-            return await new ListImpl<M>(DC).ListAsync();
+            return await new QueryListImpl<M>(DC).QueryListAsync();
         }
         /// <summary>
         /// 请参阅: <see langword=".ListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<List<VM>> ListAsync<VM>()
+        public async Task<List<VM>> QueryListAsync<VM>()
             where VM : class
         {
-            return await new ListImpl<M>(DC).ListAsync<VM>();
+            return await new QueryListImpl<M>(DC).QueryListAsync<VM>();
         }
         /// <summary>
         /// 请参阅: <see langword=".ListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<List<T>> ListAsync<T>(Expression<Func<M, T>> columnMapFunc)
+        public async Task<List<T>> QueryListAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
-            return await new ListImpl<M>(DC).ListAsync(columnMapFunc);
+            return await new QueryListImpl<M>(DC).QueryListAsync(columnMapFunc);
         }
 
         /// <summary>

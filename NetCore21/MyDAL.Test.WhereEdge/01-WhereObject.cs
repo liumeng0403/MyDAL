@@ -29,7 +29,7 @@ namespace MyDAL.Test.WhereEdge
                     Name = "樊士芹",
                     xxx = "xxx"
                 })
-                .ListAsync();
+                .QueryListAsync();
             Assert.True(res1.Count == 1);
             Assert.True(res1.First().Name == "樊士芹");
 
@@ -85,7 +85,7 @@ namespace MyDAL.Test.WhereEdge
                     //Name = "樊士芹",
                     xxx = "xxx"
                 })
-                .ListAsync();
+                .QueryListAsync();
             Assert.True(res4.Count == 28620);
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
@@ -101,7 +101,7 @@ namespace MyDAL.Test.WhereEdge
                 })
                 .And(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
                 .Or(it => it.AgentLevel == AgentLevel.DistiAgent)
-                .ListAsync();
+                .QueryListAsync();
             Assert.True(res41.Count == 556);
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
@@ -117,7 +117,7 @@ namespace MyDAL.Test.WhereEdge
                 })
                 .Or(it => it.AgentLevel == AgentLevel.Customer)
                 .And(it => it.Name == "金月琴")
-                .ListAsync();
+                .QueryListAsync();
             Assert.True(res42.Count == 1);
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);

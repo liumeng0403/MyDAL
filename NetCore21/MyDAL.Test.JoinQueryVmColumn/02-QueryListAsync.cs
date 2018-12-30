@@ -23,7 +23,7 @@ namespace MyDAL.Test.JoinQueryVmColumn
                     .InnerJoin(() => record12)
                         .On(() => agent12.Id == record12.AgentId)
                 .Where(() => record12.CreatedOn >= WhereTest.CreatedOn)
-                .ListAsync(() => new AgentVM
+                .QueryListAsync(() => new AgentVM
                 {
                     nn = agent12.PathId,
                     yy = record12.Id,
