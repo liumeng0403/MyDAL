@@ -36,7 +36,7 @@ namespace MyDAL.Core.Bases
             VH = new CsValueHelper(this);
             GH = new GenericHelper(this);
             EH = new XExpression(this);
-            CFH = new CsFuncHelper();
+            CFH = new CsFuncHelper(this);
             TSH = new ToStringHelper();
             XC = new XCache(this);
             PH = new ParameterHelper(this);

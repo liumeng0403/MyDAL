@@ -1,4 +1,5 @@
-﻿using MyDAL.Core.Common;
+﻿using MyDAL.Core.Bases;
+using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
 using System;
@@ -10,6 +11,12 @@ namespace MyDAL.Core.Helper
 {
     internal class CsFuncHelper
     {
+        private Context DC { get; set; }
+        private CsFuncHelper() { }
+        internal CsFuncHelper(Context dc)
+        {
+            DC = dc;
+        }
 
         internal bool IsToStringFunc(string expStr)
         {
@@ -212,6 +219,33 @@ namespace MyDAL.Core.Helper
                     Val = default(Expression)
                 };
             }
+        }
+        internal ToStringParam IsToStringFunc(MethodCallExpression mcExpr)
+        {
+            var expStr = mcExpr.ToString();
+            if (expStr.Contains(".ToString(")
+                && expStr.IndexOf(".") < expStr.LastIndexOf("."))
+            {
+                if (DC.Action == ActionEnum.Select)
+                {
+                    return new ToStringParam
+                    {
+                        Flag = true
+                    };
+                }
+                else
+                {
+                    return new ToStringParam
+                    {
+                        Flag = true
+                    };
+                }
+            }
+
+            return new ToStringParam
+            {
+                Flag = false
+            };
         }
         internal TrimParam IsTrimFunc(string expStr)
         {
