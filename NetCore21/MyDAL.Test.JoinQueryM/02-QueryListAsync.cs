@@ -7,7 +7,7 @@ using Xunit;
 
 namespace MyDAL.Test.JoinQueryM
 {
-    public class _02_ListAsync : TestBase
+    public class _02_QueryListAsync : TestBase
     {
         private async Task<Agent> PreData01()
         {

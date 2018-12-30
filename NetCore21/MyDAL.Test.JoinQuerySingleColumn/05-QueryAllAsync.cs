@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace MyDAL.Test.JoinQueryM
+namespace MyDAL.Test.JoinQuerySingleColumn
 {
-    public class _05_AllAsync:TestBase
+    public class _05_QueryAllAsync : TestBase
     {
         [Fact]
         public async Task test()
@@ -19,13 +19,12 @@ namespace MyDAL.Test.JoinQueryM
                 .From(() => agent1)
                     .InnerJoin(() => record1)
                         .On(() => agent1.Id == record1.AgentId)
-                .QueryAllAsync<Agent>();
+                .QueryAllAsync(() => agent1.Id);
             Assert.True(res1.Count == 574);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             xx = string.Empty;
-
         }
     }
 }

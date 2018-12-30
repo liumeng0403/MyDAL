@@ -7,7 +7,7 @@ using Xunit;
 
 namespace MyDAL.Test.ShortcutAPI
 {
-    public class _02_ListAsync : TestBase
+    public class _02_QueryListAsync : TestBase
     {
         [Fact]
         public async Task test()

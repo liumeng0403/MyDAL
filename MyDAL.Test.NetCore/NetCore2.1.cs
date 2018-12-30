@@ -24,10 +24,10 @@
             //
             await new ShortcutAPI._01_FirstOrDefault().test();
             await new ShortcutAPI._01_FirstOrDefaultAsync().test();
-            await new ShortcutAPI._02_ListAsync().test();
+            await new ShortcutAPI._02_QueryListAsync().test();
             await new ShortcutAPI._03_MemoryTest().test();
             await new ShortcutAPI._03_PagingListAsync().test();
-            await new ShortcutAPI._05_AllAsync().test();
+            await new ShortcutAPI._05_QueryAllAsync().test();
             await new ShortcutAPI._07_ExistAsync().test();
             await new ShortcutAPI._09_CountAsync().test();
 
@@ -35,29 +35,29 @@
             // QueryVmColumn
             //
             await new QueryVmColumn._01_FirstOrDefaultAsync().test();
-            await new QueryVmColumn._02_ListAsync().test();
+            await new QueryVmColumn._02_QueryListAsync().test();
             await new QueryVmColumn._03_PagingListAsync().test();
             await new QueryVmColumn._04_PagingAllAsync().test();
-            await new QueryVmColumn._05_AllAsync().test();
+            await new QueryVmColumn._05_QueryAllAsync().test();
             await new QueryVmColumn._06_TopAsync().test();
 
             // 
             // QueryVM
             //
-            await new QueryVM._02_ListAsync().test();
+            await new QueryVM._02_QueryListAsync().test();
             await new QueryVM._03_PagingListAsync().test();
             await new QueryVM._04_PagingAllAsync().test();
-            await new QueryVM._05_AllAsync().test();
+            await new QueryVM._05_QueryAllAsync().test();
             await new QueryVM._06_TopAsync().test();
 
             //
             // QuerySingleColumn
             //
             await new QuerySingleColumn._01_FirstOrDefaultAsync().test();
-            await new QuerySingleColumn._02_ListAsync().test();
+            await new QuerySingleColumn._02_QueryListAsync().test();
             await new QuerySingleColumn._03_PagingListAsync().test();
             await new QuerySingleColumn._04_PagingAllAsync().test();
-            await new QuerySingleColumn._05_AllAsync().test();
+            await new QuerySingleColumn._05_QueryAllAsync().test();
             await new QuerySingleColumn._06_TopAsync().test();
 
             //

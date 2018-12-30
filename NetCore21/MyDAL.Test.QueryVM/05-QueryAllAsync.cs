@@ -6,7 +6,7 @@ using Xunit;
 
 namespace MyDAL.Test.QueryVM
 {
-    public class _05_AllAsync : TestBase
+    public class _05_QueryAllAsync : TestBase
     {
         [Fact]
         public async Task test()
