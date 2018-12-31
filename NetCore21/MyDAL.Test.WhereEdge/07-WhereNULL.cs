@@ -38,7 +38,7 @@ namespace MyDAL.Test.WhereEdge
 
             /************************************************************************************************************************/
 
-            var xx1 = string.Empty;
+            xx = string.Empty;
 
             // is null 
             var res1 = await Conn
@@ -51,7 +51,7 @@ namespace MyDAL.Test.WhereEdge
 
             /************************************************************************************************************************/
 
-            var xx2 = string.Empty;
+            xx = string.Empty;
 
             // is not null 
             var res2 = await Conn

@@ -3,6 +3,7 @@ using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MyDAL.Impls
@@ -12,28 +13,38 @@ namespace MyDAL.Impls
         where M : class
     {
         internal ExistImpl(Context dc)
-            : base(dc)
-        {
-        }
+            : base(dc) { }
 
         public async Task<bool> ExistAsync()
         {
             DC.Action = ActionEnum.Select;
-            //DC.Option = OptionEnum.Count;
             DC.Option = OptionEnum.Column;
             DC.Compare = CompareEnum.None;
             DC.Func = FuncEnum.Count;
             DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(typeof(M).FullName, "*") }));
             PreExecuteHandle(UiMethodEnum.ExistAsync);
             var count = await DC.DS.ExecuteScalarAsync<long>();
-            if (count > 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return count > 0;
+        }
+    }
+
+    internal class ExistXImpl
+        : Impler, IExistX
+    {
+        public ExistXImpl(Context dc) 
+            : base(dc) {   }
+
+        public async Task<bool> ExistAsync()
+        {
+            DC.Action = ActionEnum.Select;
+            DC.Option = OptionEnum.Column;
+            DC.Compare = CompareEnum.None;
+            DC.Func = FuncEnum.Count;
+            var dic = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.From);
+            DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(dic.ClassFullName, "*") }));
+            PreExecuteHandle(UiMethodEnum.ExistAsync);
+            var count = await DC.DS.ExecuteScalarAsync<long>();
+            return count > 0;
         }
     }
 }

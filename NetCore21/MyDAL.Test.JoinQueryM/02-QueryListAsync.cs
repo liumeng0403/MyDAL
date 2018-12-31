@@ -43,7 +43,7 @@ namespace MyDAL.Test.JoinQueryM
 
             /**************************************************************************************************************************/
 
-            var xx2 = string.Empty;
+            xx = string.Empty;
 
             // 
             var res2 = await Conn
@@ -218,7 +218,7 @@ namespace MyDAL.Test.JoinQueryM
 
             /*********************************************************************************************************************************************************/
 
-            var xx2 = string.Empty;
+            xx = string.Empty;
 
             // order by id  -- 手动查看
             var res2 = await Conn

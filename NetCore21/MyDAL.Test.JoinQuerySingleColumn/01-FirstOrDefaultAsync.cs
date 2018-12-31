@@ -10,7 +10,7 @@ namespace MyDAL.Test.JoinQuerySingleColumn
         [Fact]
         public async Task test()
         {
-            var xx1 = string.Empty;
+            xx = string.Empty;
 
             var res1 = await Conn
                 .Queryer<Agent, AgentInventoryRecord>(out var agent, out var agentRecord)

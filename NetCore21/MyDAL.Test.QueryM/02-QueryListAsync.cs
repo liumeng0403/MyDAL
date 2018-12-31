@@ -15,7 +15,7 @@ namespace MyDAL.Test.QueryM
 
             /********************************************************************************************************************************/
 
-            var xx1 = string.Empty;
+            xx = string.Empty;
 
             // >= obj.DateTime
             var res1 = await Conn
@@ -36,7 +36,7 @@ namespace MyDAL.Test.QueryM
 
             /********************************************************************************************************************************/
 
-            var xx2 = string.Empty;
+            xx = string.Empty;
 
             var start = WhereTest.CreatedOn.AddDays(-10);
             // >= variable(DateTime)

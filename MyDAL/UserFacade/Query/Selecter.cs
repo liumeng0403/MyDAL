@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Query
 {
     public sealed class Queryer<M>
-        : Operator, IQueryAll<M>, IPagingAll<M>, ITop<M>
+        : Operator, IQueryAll<M>, IPagingAll<M>, ITop<M>,IExist
         where M : class
     {
         internal Queryer(Context dc)
@@ -93,6 +93,11 @@ namespace MyDAL.UserFacade.Query
         public async Task<List<T>> TopAsync<T>(int count, Expression<Func<M, T>> columnMapFunc) 
         {
             return await new TopImpl<M>(DC).TopAsync<T>(count, columnMapFunc);
+        }
+
+        public async Task<bool> ExistAsync()
+        {
+            return await new ExistImpl<M>(DC).ExistAsync();
         }
     }
 }

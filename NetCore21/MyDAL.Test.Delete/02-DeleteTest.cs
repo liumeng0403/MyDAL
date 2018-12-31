@@ -39,7 +39,7 @@ namespace MyDAL.Test.Delete
         {
             var m = await PreDelete();
 
-            var xx1 = string.Empty;
+            xx = string.Empty;
 
             // where 
             var res1 = await Conn
@@ -50,7 +50,7 @@ namespace MyDAL.Test.Delete
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
-            var xx2 = string.Empty;
+            xx = string.Empty;
 
             var path = "~00-c-1-2-1-1-1-1-1-4-1-1-1-4-1-2-1-7";
             var level = 2;

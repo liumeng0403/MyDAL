@@ -16,7 +16,7 @@ namespace MyDAL.Test.WhereEdge
 
             /*****************************************************************************************************************************/
 
-            var xx1 = string.Empty;
+            xx = string.Empty;
 
             var option1 = new AgentQueryOption();
             option1.StartTime = WhereTest.CreatedOn;
@@ -34,7 +34,7 @@ namespace MyDAL.Test.WhereEdge
 
             /*****************************************************************************************************************************/
 
-            var xx2 = string.Empty;
+            xx = string.Empty;
 
             var option2 = new AgentQueryOption();
             option2.StartTime = WhereTest.CreatedOn;

@@ -14,7 +14,7 @@ namespace MyDAL.Test.JoinQueryVmColumn
 
             /*************************************************************************************************************************/
 
-            var xx2 = string.Empty;
+            xx = string.Empty;
 
             var guid2 = Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef");
             var res2 = await Conn

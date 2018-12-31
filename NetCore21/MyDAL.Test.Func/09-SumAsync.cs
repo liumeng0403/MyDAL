@@ -9,7 +9,7 @@ namespace MyDAL.Test.Func
         [Fact]
         public async Task test()
         {
-            var xx1 = string.Empty;
+            xx = string.Empty;
 
             var res1 = await Conn
                 .Queryer<AlipayPaymentRecord>()

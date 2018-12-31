@@ -18,7 +18,7 @@ namespace MyDAL.Test.WhereEdge
 
             /*************************************************************************************************************************/
 
-            var xx1 = string.Empty;
+            xx = string.Empty;
 
             // where object
             var res1 = await Conn
@@ -37,7 +37,7 @@ namespace MyDAL.Test.WhereEdge
 
             /*************************************************************************************************************************/
 
-            var xx2 = string.Empty;
+            xx = string.Empty;
 
             var option = new AgentQueryOption();
             option.Id = Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b");

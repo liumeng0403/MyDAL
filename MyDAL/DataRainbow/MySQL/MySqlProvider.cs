@@ -463,8 +463,7 @@ namespace MyDAL.DataRainbow.MySQL
             if (DC.Crud == CrudEnum.Join)
             {
                 var dic = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.From);
-                TableX(dic.TableOne, X);
-                As(X); X.Append(dic.TableAliasOne);
+                TableX(dic.TableOne, X); As(X); X.Append(dic.TableAliasOne);
                 Join();
             }
             else
@@ -483,12 +482,12 @@ namespace MyDAL.DataRainbow.MySQL
                     case ActionEnum.From: break;    // 已处理 
                     case ActionEnum.InnerJoin:
                     case ActionEnum.LeftJoin:
-                        CRLF(X); Tab(X); Action(item.Action, X); Spacing(X);
-                        X.Append(item.TableOne); As(X); X.Append(item.TableAliasOne);
+                        CRLF(X); Tab(X);
+                        Action(item.Action, X); Spacing(X); TableX(item.TableOne, X); As(X); X.Append(item.TableAliasOne);
                         break;
                     case ActionEnum.On:
-                        CRLF(X); Tab(X); Tab(X); Action(item.Action, X); Spacing(X);
-                        Column(item.TableAliasOne, item.ColumnOne, X); Compare(item.Compare, X); Column(item.TableAliasTwo, item.ColumnTwo, X);
+                        CRLF(X); Tab(X); Tab(X);
+                        Action(item.Action, X); Spacing(X); Column(item.TableAliasOne, item.ColumnOne, X); Compare(item.Compare, X); Column(item.TableAliasTwo, item.ColumnTwo, X);
                         break;
                 }
             }

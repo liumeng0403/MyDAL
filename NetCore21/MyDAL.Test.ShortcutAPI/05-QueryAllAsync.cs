@@ -11,7 +11,7 @@ namespace MyDAL.Test.ShortcutAPI
         [Fact]
         public async Task test()
         {
-            var xx1 = string.Empty;
+            xx = string.Empty;
 
             var res1 = await Conn.QueryAllAsync<Agent>();
             Assert.True(res1.Count == 28620);
@@ -20,7 +20,7 @@ namespace MyDAL.Test.ShortcutAPI
 
             /***************************************************************************************************************************/
 
-            var xx2 = string.Empty;
+            xx = string.Empty;
 
             var res2 = await Conn.QueryAllAsync<Agent,AgentVM>();
             Assert.True(res2.Count == 28620);

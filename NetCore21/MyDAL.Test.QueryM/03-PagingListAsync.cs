@@ -16,7 +16,7 @@ namespace MyDAL.Test.QueryM
 
             /******************************************************************************************************/
 
-            var xx1 = string.Empty;
+            xx = string.Empty;
 
             // order by
             var res1 = await Conn
@@ -31,7 +31,7 @@ namespace MyDAL.Test.QueryM
 
             /******************************************************************************************************/
 
-            var xx2 = string.Empty;
+            xx = string.Empty;
 
             // key
             var res2 = await Conn

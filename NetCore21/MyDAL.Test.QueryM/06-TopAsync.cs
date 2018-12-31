@@ -12,7 +12,7 @@ namespace MyDAL.Test.QueryM
 
             /*******************************************************************************************************************************/
 
-            var xx1 = string.Empty;
+            xx = string.Empty;
 
             var res1 = await Conn
                 .Queryer<Agent>()

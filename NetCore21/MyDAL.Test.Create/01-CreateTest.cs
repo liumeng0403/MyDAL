@@ -78,7 +78,7 @@ namespace MyDAL.Test.Create
                 DirectorStarCount = 5
             };
 
-            var xx2 = string.Empty;
+            xx = string.Empty;
 
             var res2 = await Conn
                 .Creater<Agent>()

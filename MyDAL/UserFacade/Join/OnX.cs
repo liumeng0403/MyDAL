@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Join
 {
     public sealed class OnX
-        : Operator, IFirstOrDefaultX, IQueryListX, IPagingListX, IPagingListXO, ITopX, IQueryAllX
+        : Operator, IFirstOrDefaultX, IQueryListX, IPagingListX, IPagingListXO, ITopX, IQueryAllX,IExistX
     {
 
         internal OnX(Context dc)
@@ -108,6 +108,11 @@ namespace MyDAL.UserFacade.Join
         public async Task<List<T>> TopAsync<T>(int count, Expression<Func<T>> columnMapFunc)
         {
             return await new TopXImpl(DC).TopAsync(count, columnMapFunc);
+        }
+
+        public async Task<bool> ExistAsync()
+        {
+            return await new ExistXImpl(DC).ExistAsync();
         }
     }
 }
