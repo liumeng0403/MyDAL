@@ -11,7 +11,7 @@ namespace MyDAL.Test.QueryM
     public class _03_PagingListAsync:TestBase
     {
         [Fact]
-        public async Task test()
+        public async Task Test()
         {
 
             /******************************************************************************************************/
@@ -73,7 +73,7 @@ namespace MyDAL.Test.QueryM
             Assert.True(res4.TotalCount == resR4.TotalCount);
             Assert.True(res4.TotalCount == 28619);
 
-            var tupleR4 = (XDebug.SQL, XDebug.Parameters);
+            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             /*************************************************************************************************************************/
 

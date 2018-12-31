@@ -9,7 +9,7 @@ namespace MyDAL.Test.ShortcutAPI
     public class _03_MemoryTest:TestBase
     {
         [Fact]
-        public async Task test()
+        public async Task Test()
         {
             xx=string.Empty;
 

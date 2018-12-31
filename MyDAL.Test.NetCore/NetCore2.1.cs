@@ -22,14 +22,14 @@
             //
             // ShortcutAPI
             //
-            await new ShortcutAPI._01_FirstOrDefault().test();
+            new ShortcutAPI._01_FirstOrDefault().Test();
             await new ShortcutAPI._01_FirstOrDefaultAsync().test();
             await new ShortcutAPI._02_QueryListAsync().test();
-            await new ShortcutAPI._03_MemoryTest().test();
+            await new ShortcutAPI._03_MemoryTest().Test();
             await new ShortcutAPI._03_PagingListAsync().test();
             await new ShortcutAPI._05_QueryAllAsync().test();
             await new ShortcutAPI._07_ExistAsync().test();
-            await new ShortcutAPI._09_CountAsync().test();
+            await new ShortcutAPI._09_CountAsync().Test();
 
             //
             // QueryVmColumn

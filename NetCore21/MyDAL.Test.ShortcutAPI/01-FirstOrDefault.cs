@@ -11,7 +11,7 @@ namespace MyDAL.Test.ShortcutAPI
     public class _01_FirstOrDefault:TestBase
     {
         [Fact]
-        public async Task test()
+        public void Test()
         {
 
             var pk = Guid.Parse("8f2cbb64-8356-4482-88ee-016558c05b2d");

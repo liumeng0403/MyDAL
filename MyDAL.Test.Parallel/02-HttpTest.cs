@@ -4,13 +4,10 @@ namespace MyDAL.Test.QueryParallel
 {
     public class HttpTest
     {
-        private string token = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjllNWQ0MTA0ODY3ZTI5MDhiMGVjMzVmY2IwZThiZWE5IiwidHlwIjoiSldUIn0.eyJuYmYiOjE1NDI3NjkzMTIsImV4cCI6MTU0NTQ0NzcxMiwiaXNzIjoiaHR0cDovL2FwaS5zdC5tYWltYWliYS5zaG9wL2lkZW50aXR5IiwiYXVkIjpbImh0dHA6Ly9hcGkuc3QubWFpbWFpYmEuc2hvcC9pZGVudGl0eS9yZXNvdXJjZXMiLCJPcmRlcmluZ0FwaSJdLCJjbGllbnRfaWQiOiJza3lsYXJrLmNsaWVudCIsInN1YiI6IjA4ZDU5NWU2LTczODYtMDI2OS02MjRiLWY5Y2Q1Y2ZkN2YxYSIsImF1dGhfdGltZSI6MTU0Mjc2OTMxMiwiaWRwIjoibG9jYWwiLCJVc2VySWQiOiIwOGQ1OTVlNi03Mzg2LTAyNjktNjI0Yi1mOWNkNWNmZDdmMWEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiMTMxNjIxMDg4NTMiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9tb2JpbGVwaG9uZSI6IjEzMTYyMTA4ODUzIiwicm9sZSI6WyJVc2VyIiwiVmVuZG9yIiwiU2hvcE93bmVyIiwiQ3VzdG9tZXIiLCJDdXN0b21lclNlcnZpY2UiXSwiVmVuZG9ySWQiOiIwOGQ1YzZiYS1jMjhjLTZkMDgtMGVmOS1jNzg5NmMyYTA1NTkiLCJTaG9wT3duZXJJZCI6IjcyYzg1OGRkLTgxMWMtMTFlOC04ZjZmLTUyNTQwMDI0OWUzZCIsIkN1c3RvbWVySWQiOiIwOGQ1YjU3Yy02ZjRjLWU4MzgtMzZiMS01MWU2MDM1MTVlMTQiLCJDdXN0b21lclNlcnZpY2VJZCI6IjA4ZDU5NWU2LTc0NjEtOTY3NC1mZDNhLTg4OTJhZWY1MzM4ZSIsIkludml0ZXJJZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsIlBJZCI6IiIsInNjb3BlIjpbIk9yZGVyaW5nQXBpIl0sImFtciI6WyJwd2QiXX0.C0yxCWLyahrgeT0in_4AubH2YbFiQt2-J0SNHvBW8SdEtcZSqyV0NjhmBb0MleyKGBoyz2hwWgYo5CryVS6YcL-i-XgXePWvSyZX0woqswt9h_3UPkxpRv31Lnq58ZDTn0GSUSSr1Atoh5m9yt5W7yWZImUw3ee3wkYC4l_uwNpk8nRTBaN2C8IpPIC3TBR3UbuGcSy-OVok2rT1VBe3x2RSw7t5xS5NMrdQd2JDgv60kf2rmlFGeUxQ06-F-Jb_hqCHSIM7uM_6J1Kxhpaoz-4GxtJ54Hj3HmXPEOFX08z9LsChSsaB8sCBbB-w8ujXKvEWBUtCz9rVbFn5GJcI5w";
-        private string token2 = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjllNWQ0MTA0ODY3ZTI5MDhiMGVjMzVmY2IwZThiZWE5IiwidHlwIjoiSldUIn0.eyJuYmYiOjE1NDI3Njk1NzgsImV4cCI6MTU0NTQ0Nzk3OCwiaXNzIjoiaHR0cDovL2FwaS5zdC5tYWltYWliYS5zaG9wL2lkZW50aXR5IiwiYXVkIjpbImh0dHA6Ly9hcGkuc3QubWFpbWFpYmEuc2hvcC9pZGVudGl0eS9yZXNvdXJjZXMiLCJDYXJ0QXBpIiwiT3JkZXJpbmdBcGkiXSwiY2xpZW50X2lkIjoic2t5bGFyay5jbGllbnQiLCJzdWIiOiIwOGQ1OTVlNi03Mzg2LTAyNjktNjI0Yi1mOWNkNWNmZDdmMWEiLCJhdXRoX3RpbWUiOjE1NDI3Njk1NzgsImlkcCI6ImxvY2FsIiwiVXNlcklkIjoiMDhkNTk1ZTYtNzM4Ni0wMjY5LTYyNGItZjljZDVjZmQ3ZjFhIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6IjEzMTYyMTA4ODUzIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbW9iaWxlcGhvbmUiOiIxMzE2MjEwODg1MyIsInJvbGUiOlsiVXNlciIsIlZlbmRvciIsIlNob3BPd25lciIsIkN1c3RvbWVyIiwiQ3VzdG9tZXJTZXJ2aWNlIl0sIlZlbmRvcklkIjoiMDhkNWM2YmEtYzI4Yy02ZDA4LTBlZjktYzc4OTZjMmEwNTU5IiwiU2hvcE93bmVySWQiOiI3MmM4NThkZC04MTFjLTExZTgtOGY2Zi01MjU0MDAyNDllM2QiLCJDdXN0b21lcklkIjoiMDhkNWI1N2MtNmY0Yy1lODM4LTM2YjEtNTFlNjAzNTE1ZTE0IiwiQ3VzdG9tZXJTZXJ2aWNlSWQiOiIwOGQ1OTVlNi03NDYxLTk2NzQtZmQzYS04ODkyYWVmNTMzOGUiLCJJbnZpdGVySWQiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDAiLCJQSWQiOiIiLCJzY29wZSI6WyJDYXJ0QXBpIiwiT3JkZXJpbmdBcGkiXSwiYW1yIjpbInB3ZCJdfQ.HSJzgA8DVdRJG-E1P_LaUIhlk707V1YshmISjyCme8nDPpwua1WJUO4cxdYbziqvyhMFn0AXzr0pdYai2Bb3MWIfgEnnymfeZVuGlK9gmFNMHnP-CDpYtownvkQ4k6VffDWYNbx9ghTod5SldyX0kTZVS2GgD8bBPiYOtlin6nFJWxlBg4Nha9kR9mbWewkeK4d7F33foWMPgBHfv-Kfpznc3ZyatmE3S-3868fUgEzisKY4Xe33qg-_aD3H0v2h2dZRDh-Cpx1-FZlj2GNYvePoBf6Ex4HWMMlWih1Gqd4e6LG9VsTJwZnfONzUtVZ0K-OPzwNxLcAVsM9Zclu5dg";
-
-        private bool IsLookTask = true;
-
         private void HttpAsyncTest1()
         {
+            var IsLookTask = true;
+            var token = "dGl0elIjpbIkVS6YcL-i-XgXePWvSyZX0woqGcSy-j3HmXPEOFX08z9LsChSsaB8sCBbB-w8ujXKvEWBUtCz9rVbFn5GJcI5w";
             var json = @"
 {
 	'CreateCustomerOrderItems': [{
@@ -58,18 +55,22 @@ namespace MyDAL.Test.QueryParallel
 }
                                     ";
 
-            var parallel = new XParallelTest();
-            parallel.IsLookTask = IsLookTask;
-            parallel.IsSubTask = true;
-            parallel.IsHttpFunc = true;
-            parallel.Token = token2;
-            parallel.URL = "http://api.st.maimaiba.shop/Ordering/api/CustomerOrder/AddOrders";
-            parallel.RequestMethod = "POST";
-            parallel.JsonContent = json;
+            var parallel = new XParallelTest
+            {
+                IsLookTask = IsLookTask,
+                IsSubTask = true,
+                IsHttpFunc = true,
+                Token = token,
+                URL = "http://api.st.maimaiba.shop/Ordering/api/CustomerOrder/AddOrders",
+                RequestMethod = "POST",
+                JsonContent = json
+            };
             parallel.ApiDebug();
         }
         public void HttpAsyncTest2()
         {
+            var IsLookTask = true;
+            var token = "dGl0elIjpbIkVS6YcL-i-XgXePWvSyZX0woqGcSy-j3HmXPEOFX08z9LsChSsaB8sCBbB-w8ujXKvEWBUtCz9rVbFn5GJcI5w";
             var json = @"
 {
 	'Quantity': 1,
@@ -127,7 +128,7 @@ namespace MyDAL.Test.QueryParallel
 		'IsEnable': false,
 		'Product': {
 			'VendorId': '08d5947b-8947-6f0e-d27f-8699b3208748',
-			'MainImageGuidsList': ['08d5a65b-92ba-7133-1076-5ba790ff1a6b', '08d5a65b-92b9-d317-39b5-0951fbd2ebdc', '08d5a65b-92c1-55ae-681e-cc9f39242543', '08d5a65b-92c1-166c-05b7-08767b024f5f', '08d5a65b-92c1-8f76-c149-bef3597dbd43'],
+			'MainImageGuidsList': ['08d5a65b-92c1-166c-05b7-08767b024f5f', '08d5a65b-92c1-8f76-c149-bef3597dbd43'],
 			'Id': '08d5a65b-cdea-c47b-14ad-b87fb80ffbba',
 			'ProdcutName': '六甲村 雅致型授乳巾',
 			'RootCategoryName': '47cc4a03-b21d-47b6-90f7-f748ed69aa23',
@@ -139,18 +140,22 @@ namespace MyDAL.Test.QueryParallel
 }
                                     ";
 
-            var parallel = new XParallelTest();
-            parallel.IsLookTask = IsLookTask;
-            parallel.IsSubTask = true;
-            parallel.IsHttpFunc = true;
-            parallel.Token = token2;
-            parallel.URL = "http://api.st.maimaiba.shop/cart/api/CustomerCart/AddToBasket";
-            parallel.RequestMethod = "POST";
-            parallel.JsonContent = json;
+            var parallel = new XParallelTest
+            {
+                IsLookTask = IsLookTask,
+                IsSubTask = true,
+                IsHttpFunc = true,
+                Token = token,
+                URL = "http://api.st.maimaiba.shop/cart/api/CustomerCart/AddToBasket",
+                RequestMethod = "POST",
+                JsonContent = json
+            };
             parallel.ApiDebug();
         }
         private void HttpAsyncTest3()
         {
+            var IsLookTask = true;
+            var token = "dGl0elIjpbIkVS6YcL-i-XgXePWvSyZX0woqGcSy-j3HmXPEOFX08z9LsChSsaB8sCBbB-w8ujXKvEWBUtCz9rVbFn5GJcI5w";
             var json = @"
 {
 	'Quantity': 2,
@@ -224,7 +229,7 @@ namespace MyDAL.Test.QueryParallel
 		'IsEnable': false,
 		'Product': {
 			'VendorId': '08d5d294-6c3a-0268-1578-0b8f9972ad50',
-			'MainImageGuidsList': ['08d5d673-243b-ab47-6f5a-c29f79493328', '08d5d673-243b-ef6f-3d0c-856cb49fb61b', '08d5d673-2439-0e6c-e52d-2b2cdfcadcae', '08d5d673-314e-b46f-f835-54d420949328', '08d5d673-3150-311e-d464-ba03b437b359'],
+			'MainImageGuidsList': ['08d5d673-314e-b46f-f835-54d420949328', '08d5d673-3150-311e-d464-ba03b437b359'],
 			'Id': '08d5d673-60e3-f3de-fecf-11430cfda7aa',
 			'ProdcutName': '\'艾尔芬电热水壶    F-EKS17A \'',
 			'RootCategoryName': '981d76dd-add0-456f-ac6d-a42787f433ff',
@@ -236,17 +241,19 @@ namespace MyDAL.Test.QueryParallel
 }
                                     ";
 
-            var parallel = new XParallelTest();
-            parallel.IsLookTask = IsLookTask;
-            parallel.IsSubTask = true;
-            parallel.IsHttpFunc = true;
-            parallel.Token = token2;
-            parallel.URL = "http://api.st.maimaiba.shop/cart/api/CustomerCart/AddToBasket";
-            parallel.RequestMethod = "POST";
-            parallel.JsonContent = json;
+            var parallel = new XParallelTest
+            {
+                IsLookTask = IsLookTask,
+                IsSubTask = true,
+                IsHttpFunc = true,
+                Token = token,
+                URL = "http://api.st.maimaiba.shop/cart/api/CustomerCart/AddToBasket",
+                RequestMethod = "POST",
+                JsonContent = json
+            };
             parallel.ApiDebug();
         }
-        private None test(None none)
+        private None Test(None none)
         {
             HttpAsyncTest3();
             HttpAsyncTest2();
@@ -256,12 +263,15 @@ namespace MyDAL.Test.QueryParallel
 
         public void HttpApiTest()
         {
-            var parallel = new XParallelTest();
-            parallel.IsLookTask = IsLookTask;
-            parallel.IsSubTask = false;
-            parallel.Request = new None();
-            parallel.Response = new None();
-            parallel.TargetFunc = new HttpTest().test;
+            var IsLookTask = true;
+            var parallel = new XParallelTest
+            {
+                IsLookTask = IsLookTask,
+                IsSubTask = false,
+                Request = new None(),
+                Response = new None(),
+                TargetFunc = new HttpTest().Test
+            };
             //parallel.ApiDebug();
             //parallel.Parallel_100_10000();
             //parallel.Parallel_90_10000();
