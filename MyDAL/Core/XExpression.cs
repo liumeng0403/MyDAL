@@ -388,15 +388,94 @@ namespace MyDAL.Core
         }
         private DicParam HandConditionMemberAccess(MemberExpression memExpr)
         {
-            var cp = GetKey(memExpr, FuncEnum.None); //GetMemTuple(memExpr);
-            if (cp.ValType == typeof(bool))
-            {
-                DC.Option = OptionEnum.Compare;
-                DC.Compare = CompareEnum.Equal;
-                return DC.DPH.CompareDic(cp, (true.ToString(), string.Empty));
-            }
+            // 原
+            // query where
+            // join where
 
-            return null;
+            if (DC.IsSingleTableOption()
+                || DC.Crud == CrudEnum.None)
+            {
+                var cp = GetKey(memExpr, FuncEnum.None);
+                if (string.IsNullOrWhiteSpace(cp.Key))
+                {
+                    throw new Exception("无法解析 列名 !!!");
+                }
+                if (DC.Action == ActionEnum.Select)
+                {
+                    return DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.ColumnDic(cp) });
+                }
+                else if (DC.Action == ActionEnum.Where)
+                {
+                    if (cp.ValType == typeof(bool))
+                    {
+                        DC.Option = OptionEnum.Compare;
+                        DC.Compare = CompareEnum.Equal;
+                        return DC.DPH.CompareDic(cp, (true.ToString(), string.Empty));
+                    }
+                    return null;
+                }
+                else
+                {
+                    return DC.DPH.ColumnDic(cp);
+                }
+            }
+            else if (DC.Crud == CrudEnum.Join)
+            {
+                if (DC.Action == ActionEnum.Where)
+                {
+                    var cp = GetKey(memExpr, FuncEnum.None);
+                    if (cp.ValType == typeof(bool))
+                    {
+                        DC.Option = OptionEnum.Compare;
+                        DC.Compare = CompareEnum.Equal;
+                        return DC.DPH.CompareDic(cp, (true.ToString(), string.Empty));
+                    }
+
+                    return null;
+                }
+                else
+                {
+                    if (memExpr.Expression.NodeType == ExpressionType.Constant)
+                    {
+                        var alias = memExpr.Member.Name;
+                        return DC.DPH.TableDic(memExpr.Type.FullName, alias);
+                    }
+                    else if (memExpr.Expression.NodeType == ExpressionType.MemberAccess)
+                    {
+                        var leftStr = memExpr.ToString();
+                        if (DC.CFH.IsLengthFunc(leftStr))
+                        {
+                            var cp = GetKey(memExpr, FuncEnum.CharLength);
+                            DC.Func = FuncEnum.CharLength;
+                            DC.Compare = CompareEnum.None;
+                            return DC.DPH.CharLengthDic(cp, (null, string.Empty));
+                        }
+                        else
+                        {
+                            var exp2 = memExpr.Expression as MemberExpression;
+                            var alias = exp2.Member.Name;
+                            var field = memExpr.Member.Name;
+                            DC.Option = OptionEnum.Column;
+                            if (DC.Action == ActionEnum.Select)
+                            {
+                                return DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.JoinColumnDic(exp2.Type.FullName, field, alias, field) });
+                            }
+                            else
+                            {
+                                return DC.DPH.JoinColumnDic(exp2.Type.FullName, field, alias, field);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception($"{XConfig.EC._021} -- [[{memExpr.Expression.NodeType} - {memExpr.ToString()}]] 不能解析!!!");
+                    }
+                }
+            }
+            else
+            {
+                throw new Exception($"未知的操作 -- [[{DC.Crud}]] !!!");
+            }
         }
 
         /********************************************************************************************************************/
@@ -457,8 +536,7 @@ namespace MyDAL.Core
             }
             else if (nodeType == ExpressionType.MemberAccess)
             {
-                var memExpr = body as MemberExpression;
-                result = HandConditionMemberAccess(memExpr);
+                result = HandConditionMemberAccess(body as MemberExpression);
             }
             else if (IsBinaryExpr(nodeType))
             {
@@ -507,70 +585,8 @@ namespace MyDAL.Core
         private DicParam BodyProcess2(Expression body)
         {
             var nodeType = body.NodeType;
-            if (nodeType == ExpressionType.MemberAccess)
-            {
-                var memExpr = body as MemberExpression;
-                if (DC.IsSingleTableOption()
-                    || DC.Crud == CrudEnum.None)
-                {
-                    var cp = GetKey(memExpr, FuncEnum.None);
-                    if (string.IsNullOrWhiteSpace(cp.Key))
-                    {
-                        throw new Exception("无法解析 列名 !!!");
-                    }
-                    if (DC.Action == ActionEnum.Select)
-                    {
-                        return DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.ColumnDic(cp) });
-                    }
-                    else
-                    {
-                        return DC.DPH.ColumnDic(cp);
-                    }
-                }
-                else if (DC.Crud == CrudEnum.Join)
-                {
-                    if (memExpr.Expression.NodeType == ExpressionType.Constant)
-                    {
-                        var alias = memExpr.Member.Name;
-                        return DC.DPH.TableDic(memExpr.Type.FullName, alias);
-                    }
-                    else if (memExpr.Expression.NodeType == ExpressionType.MemberAccess)
-                    {
-                        var leftStr = memExpr.ToString();
-                        if (DC.CFH.IsLengthFunc(leftStr))
-                        {
-                            var cp = GetKey(memExpr, FuncEnum.CharLength);
-                            DC.Func = FuncEnum.CharLength;
-                            DC.Compare = CompareEnum.None;
-                            return DC.DPH.CharLengthDic(cp, (null, string.Empty));
-                        }
-                        else
-                        {
-                            var exp2 = memExpr.Expression as MemberExpression;
-                            var alias = exp2.Member.Name;
-                            var field = memExpr.Member.Name;
-                            DC.Option = OptionEnum.Column;
-                            if (DC.Action == ActionEnum.Select)
-                            {
-                                return DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.JoinColumnDic(exp2.Type.FullName, field, alias, field) });
-                            }
-                            else
-                            {
-                                return DC.DPH.JoinColumnDic(exp2.Type.FullName, field, alias, field);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        throw new Exception($"{XConfig.EC._021} -- [[{memExpr.Expression.NodeType} - {body.ToString()}]] 不能解析!!!");
-                    }
-                }
-                else
-                {
-                    throw new Exception($"未知的操作 -- [[{DC.Crud}]] !!!");
-                }
-            }
-            else if (nodeType == ExpressionType.Call)
+            if (nodeType == ExpressionType.MemberAccess
+                || nodeType == ExpressionType.Call)
             {
                 return BodyProcess(body, null);
             }
