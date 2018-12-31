@@ -42,7 +42,7 @@ namespace MyDAL.UserFacade.Join
         }
 
         /// <summary>
-        /// 请参阅: <see langword=".ListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".QueryListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<List<M>> QueryListAsync<M>()
             where M:class
@@ -50,7 +50,7 @@ namespace MyDAL.UserFacade.Join
             return await new QueryListXImpl(DC).QueryListAsync<M>();
         }
         /// <summary>
-        /// 请参阅: <see langword=".ListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".QueryListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<List<T>> QueryListAsync<T>(Expression<Func<T>> columnMapFunc)
         {
