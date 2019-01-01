@@ -8,13 +8,15 @@ using System.Threading.Tasks;
 
 namespace MyDAL.UserFacade.Query
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class WhereQ<M>
-        : Operator, IExist, IFirstOrDefault<M>, IQueryList<M>, IPagingList<M>, IPagingListO<M>, ICount<M>, ITop<M>, ISum<M>
+        : Operator, IExist, IFirstOrDefault<M>, IQueryList<M>, IPagingList<M>, ICount<M>, ITop<M>, ISum<M>
         where M : class
     {
         internal WhereQ(Context dc)
-            : base(dc)
-        { }
+            : base(dc) { }
 
         /// <summary>
         /// 查询是否存在符合条件的数据
@@ -120,29 +122,6 @@ namespace MyDAL.UserFacade.Query
         public async Task<PagingList<T>> PagingListAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
         {
             return await new PagingListImpl<M>(DC).PagingListAsync<T>(pageIndex, pageSize, columnMapFunc);
-        }
-
-        /// <summary>
-        /// 单表分页查询
-        /// </summary>
-        public async Task<PagingList<M>> PagingListAsync(PagingQueryOption option)
-        {
-            return await new PagingListOImpl<M>(DC).PagingListAsync(option);
-        }
-        /// <summary>
-        /// 单表分页查询
-        /// </summary>
-        public async Task<PagingList<VM>> PagingListAsync<VM>(PagingQueryOption option)
-            where VM : class
-        {
-            return await new PagingListOImpl<M>(DC).PagingListAsync<VM>(option);
-        }
-        /// <summary>
-        /// 单表分页查询
-        /// </summary>
-        public async Task<PagingList<T>> PagingListAsync<T>(PagingQueryOption option, Expression<Func<M, T>> columnMapFunc)
-        {
-            return await new PagingListOImpl<M>(DC).PagingListAsync<T>(option, columnMapFunc);
         }
 
         /// <summary>

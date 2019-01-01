@@ -16,23 +16,12 @@ namespace MyDAL.Test.QueryVmColumn
 
             xx = string.Empty;
 
-            var option = new AgentQueryOption();
-            option.Id = Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b");
-            option.Name = "樊士芹";
-            option.OrderBys = new List<OrderBy>
-            {
-                new OrderBy
-                {
-                    Field="Name",
-                    Desc=true
-                }
-            };
-
             // where method -- option orderby 
             var res7 = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.Name == "樊士芹")
-                .PagingListAsync(option, agent => new AgentVM
+                .OrderBy(it => it.Name, OrderByEnum.Desc)
+                .PagingListAsync(1, 10, agent => new AgentVM
                 {
                     XXXX = agent.Name,
                     YYYY = agent.PathId

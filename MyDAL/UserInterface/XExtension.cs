@@ -241,7 +241,7 @@ namespace MyDAL
         {
             return (conn.FirstOrDefaultAsync(compareFunc, columnMapFunc)).GetAwaiter().GetResult();
         }
-        
+
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
@@ -271,28 +271,28 @@ namespace MyDAL
         /// <summary>
         /// Queryer 便捷 PagingListAsync 方法
         /// </summary>
-        public static async Task<PagingList<M>> PagingListAsync<M>(this IDbConnection conn, PagingQueryOption option)
+        public static async Task<PagingList<M>> PagingListAsync<M>(this IDbConnection conn, PagingQueryOption pagingQuery)
             where M : class, new()
         {
-            return await conn.Queryer<M>().Where(option).PagingListAsync(option);
+            return await conn.Queryer<M>().Where(pagingQuery).PagingListAsync();
         }
         /// <summary>
         /// Queryer 便捷 PagingListAsync 方法
         /// </summary>
-        public static async Task<PagingList<VM>> PagingListAsync<M, VM>(this IDbConnection conn, PagingQueryOption option)
+        public static async Task<PagingList<VM>> PagingListAsync<M, VM>(this IDbConnection conn, PagingQueryOption pagingQuery)
             where M : class, new()
             where VM : class
         {
-            return await conn.Queryer<M>().Where(option).PagingListAsync<VM>(option);
+            return await conn.Queryer<M>().Where(pagingQuery).PagingListAsync<VM>();
         }
         /// <summary>
         /// Queryer 便捷 PagingListAsync 方法
         /// </summary>
-        public static async Task<PagingList<VM>> PagingListAsync<M, VM>(this IDbConnection conn, PagingQueryOption option, Expression<Func<M, VM>> columnMapFunc)
+        public static async Task<PagingList<VM>> PagingListAsync<M, VM>(this IDbConnection conn, PagingQueryOption pagingQuery, Expression<Func<M, VM>> columnMapFunc)
             where M : class, new()
             where VM : class
         {
-            return await conn.Queryer<M>().Where(option).PagingListAsync<VM>(option, columnMapFunc);
+            return await conn.Queryer<M>().Where(pagingQuery).PagingListAsync(columnMapFunc);
         }
 
         /// <summary>

@@ -6,7 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace MyDAL
 {
-    public static class CommonExtension
+    public static class ObjectEx
     {
 
         /// <summary>
@@ -31,18 +31,6 @@ namespace MyDAL
             }
             return result;
         }
-
-        /*****************************************************************************************************************************************/
-
-        /// <summary>
-        /// Is null/empty/whitespace ?
-        /// </summary>
-        public static bool IsNullStr(this string str)
-        {
-            return string.IsNullOrWhiteSpace(str);
-        }
-
-        /************************************************************************************************************************************************/
 
     }
 }

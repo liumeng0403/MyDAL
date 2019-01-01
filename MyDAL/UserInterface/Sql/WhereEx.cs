@@ -5,10 +5,12 @@ using MyDAL.UserFacade.Query;
 using MyDAL.UserFacade.Update;
 using System;
 using System.Linq.Expressions;
-using static System.Net.WebRequestMethods;
 
 namespace MyDAL
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class WhereEx
     {
 
@@ -25,17 +27,6 @@ namespace MyDAL
             return new WhereD<M>(deleter.DC);
         }
 
-        /// <summary>
-        /// 请参阅: <see langword=".Where() &amp; .And() &amp; .Or() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        public static WhereD<M> Where<M>(this Deleter<M> deleter, object mWhere)
-            where M : class
-        {
-            deleter.DC.Action = ActionEnum.Where;
-            deleter.WhereDynamicHandle<M>(mWhere);
-            return new WhereD<M>(deleter.DC);
-        }
-
         /**************************************************************************************************************/
 
         /// <summary>
@@ -46,17 +37,6 @@ namespace MyDAL
         {
             set.DC.Action = ActionEnum.Where;
             set.WhereHandle(compareFunc);
-            return new WhereU<M>(set.DC);
-        }
-
-        /// <summary>
-        /// 请参阅: <see langword=".Where() &amp; .And() &amp; .Or() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        public static WhereU<M> Where<M>(this SetU<M> set, object mWhere)
-            where M : class
-        {
-            set.DC.Action = ActionEnum.Where;
-            set.WhereDynamicHandle<M>(mWhere);
             return new WhereU<M>(set.DC);
         }
 
@@ -73,15 +53,17 @@ namespace MyDAL
             return new WhereQ<M>(selecter.DC);
         }
 
-        /// <summary>
-        /// 请参阅: <see langword=".Where() &amp; .And() &amp; .Or() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        public static WhereQ<M> Where<M>(this Queryer<M> selecter, object mWhere)
-            where M : class
+        public static WhereQO<M> Where<M>(this Queryer<M> selecter, PagingQueryOption pagingQuery)
+            where M:class
         {
             selecter.DC.Action = ActionEnum.Where;
-            selecter.WhereDynamicHandle<M>(mWhere);
-            return new WhereQ<M>(selecter.DC);
+            selecter.WhereDynamicHandle<M>(pagingQuery);
+
+            selecter.DC.PageIndex = pagingQuery.PageIndex;
+            selecter.DC.PageSize = pagingQuery.PageSize;
+            selecter.DC.OrderByOptionHandle(pagingQuery, typeof(M).FullName);
+
+            return new WhereQO<M>(selecter.DC);
         }
 
         /**************************************************************************************************************/

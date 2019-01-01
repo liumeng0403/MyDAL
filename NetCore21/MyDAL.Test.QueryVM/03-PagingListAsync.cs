@@ -35,20 +35,6 @@ namespace MyDAL.Test.QueryVM
 
             xx = string.Empty;
 
-            var option13 = new AgentQueryOption();
-            var res13 = await Conn
-                .Queryer<Agent>()
-                .Where(option13.GetCondition())
-                .PagingListAsync<AgentVM>(option13);
-            Assert.True(res13.TotalCount == 28620);
-            Assert.True(res13.Data.Count == 10);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /*************************************************************************************************************************/
-
-            xx = string.Empty;
-
         }
     }
 }

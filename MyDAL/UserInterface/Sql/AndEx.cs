@@ -8,6 +8,9 @@ using System.Linq.Expressions;
 
 namespace MyDAL
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class AndEx
     {
 

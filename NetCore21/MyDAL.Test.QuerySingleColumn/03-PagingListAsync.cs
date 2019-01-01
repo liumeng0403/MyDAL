@@ -35,13 +35,12 @@ namespace MyDAL.Test.QuerySingleColumn
                     Desc=true
                 }
             };
-
-            // where method -- option orderby 
-            var res2 = await Conn
-                .Queryer<Agent>()
-                .Where(it => it.Name.StartsWith("张"))
-                .PagingListAsync(option2, it => it.Name);
-            Assert.True(res2.Data.Count == 10);
+            
+            //var res2 = await Conn
+            //    .Queryer<Agent>()
+            //    .Where(it => it.Name.StartsWith("张"))
+            //    .PagingListAsync(option2, it => it.Name);
+            //Assert.True(res2.Data.Count == 10);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 

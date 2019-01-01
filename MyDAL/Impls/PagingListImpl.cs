@@ -54,32 +54,22 @@ namespace MyDAL.Impls
             where M : class
     {
         internal PagingListOImpl(Context dc)
-            : base(dc)
-        {
-        }
+            : base(dc) { }
 
-        public async Task<PagingList<M>> PagingListAsync(PagingQueryOption option)
+        public async Task<PagingList<M>> PagingListAsync()
         {
-            DC.PageIndex = option.PageIndex;
-            DC.PageSize = option.PageSize;
-            OrderByOptionHandle(option, typeof(M).FullName);
             return await PagingListAsyncHandle<M>(UiMethodEnum.PagingListAsync, false);
         }
 
-        public async Task<PagingList<VM>> PagingListAsync<VM>(PagingQueryOption option)
+        public async Task<PagingList<VM>> PagingListAsync<VM>()
             where VM : class
         {
-            DC.PageIndex = option.PageIndex;
-            DC.PageSize = option.PageSize;
             SelectMHandle<M, VM>();
-            OrderByOptionHandle(option, typeof(M).FullName);
             return await PagingListAsyncHandle<M, VM>(UiMethodEnum.PagingListAsync, false, null);
         }
 
-        public async Task<PagingList<T>> PagingListAsync<T>(PagingQueryOption option, Expression<Func<M, T>> columnMapFunc)
+        public async Task<PagingList<T>> PagingListAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
-            DC.PageIndex = option.PageIndex;
-            DC.PageSize = option.PageSize;
             var single = typeof(T).IsSingleColumn();
             if (single)
             {
@@ -89,8 +79,7 @@ namespace MyDAL.Impls
             {
                 SelectMHandle(columnMapFunc);
             }
-            OrderByOptionHandle(option, typeof(M).FullName);
-            return await PagingListAsyncHandle<M, T>(UiMethodEnum.PagingListAsync, single, columnMapFunc.Compile());
+            return await PagingListAsyncHandle(UiMethodEnum.PagingListAsync, single, columnMapFunc.Compile());
         }
     }
 
@@ -142,7 +131,7 @@ namespace MyDAL.Impls
             DC.PageIndex = option.PageIndex;
             DC.PageSize = option.PageSize;
             SelectMHandle<M>();
-            OrderByOptionHandle(option, typeof(M).FullName);
+            DC.OrderByOptionHandle(option, typeof(M).FullName);
             return await PagingListAsyncHandle<M>(UiMethodEnum.PagingListAsync, false);
         }
 
@@ -159,7 +148,7 @@ namespace MyDAL.Impls
             {
                 SelectMHandle(columnMapFunc);
             }
-            OrderByOptionHandle(option, string.Empty);
+            DC.OrderByOptionHandle(option, string.Empty);
             return await PagingListAsyncHandle<T>(UiMethodEnum.PagingListAsync, single);
         }
     }

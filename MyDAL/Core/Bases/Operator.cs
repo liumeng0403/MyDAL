@@ -10,6 +10,9 @@ using System.Linq.Expressions;
 
 namespace MyDAL.Core.Bases
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public abstract class Operator
     {
 
@@ -117,87 +120,46 @@ namespace MyDAL.Core.Bases
             }
             return result;
         }
-        private List<(ColumnParam cp, string param, (object val, string valStr) val, string colType, CompareEnum compare)> GetWhereKPV(object objx, Type mType)
+        private List<(ColumnParam cp, string param, (object val, string valStr) val, string colType, CompareEnum compare)> GetWhereKPV(PagingQueryOption objx, Type mType)
         {
+            var result = new List<(ColumnParam cp, string param, (object val, string valStr) val, string colType, CompareEnum compare)>();
             var list = new List<DicDynamic>();
-            var dic = default(IDictionary<string, object>);
+
             //
             var mProps = mType.GetProperties();
             var oType = objx.GetType();
-            if (objx is IQueryOption)
+            var oProps = oType.GetProperties(XConfig.ClassSelfMember);
+            foreach (var mp in mProps)
             {
-                var oProps = oType.GetProperties(XConfig.ClassSelfMember);
-                foreach (var mp in mProps)
+                foreach (var sp in oProps)
                 {
-                    foreach (var sp in oProps)
+                    var spAttr = DC.AH.GetAttribute<XQueryAttribute>(oType, sp) as XQueryAttribute;
+                    var spName = string.Empty;
+                    var compare = CompareEnum.Equal;
+                    if (spAttr != null
+                        && !string.IsNullOrWhiteSpace(spAttr.Name))
                     {
-                        var spAttr = DC.AH.GetAttribute<XQueryAttribute>(oType, sp) as XQueryAttribute;
-                        var spName = string.Empty;
-                        var compare = CompareEnum.Equal;
-                        if (spAttr != null
-                            && !string.IsNullOrWhiteSpace(spAttr.Name))
-                        {
-                            spName = spAttr.Name;
-                            compare = spAttr.Compare;
-                        }
-                        else
-                        {
-                            spName = sp.Name;
-                        }
+                        spName = spAttr.Name;
+                        compare = spAttr.Compare;
+                    }
+                    else
+                    {
+                        spName = sp.Name;
+                    }
 
-                        if (mp.Name.Equals(spName, StringComparison.OrdinalIgnoreCase))
-                        {
-                            list.Add(new DicDynamic
-                            {
-                                MField = mp.Name,
-                                VmField = sp.Name,
-                                Compare = compare
-                            });
-                        }
-                    }
-                }
-            }
-            else if (objx is ExpandoObject)
-            {
-                dic = objx as IDictionary<string, object>;
-                foreach (var mp in mProps)
-                {
-                    foreach (var sp in dic.Keys)
+                    if (mp.Name.Equals(spName, StringComparison.OrdinalIgnoreCase))
                     {
-                        if (mp.Name.Equals(sp, StringComparison.OrdinalIgnoreCase))
+                        list.Add(new DicDynamic
                         {
-                            list.Add(new DicDynamic
-                            {
-                                MField = mp.Name,
-                                VmField = mp.Name,
-                                Compare = CompareEnum.Equal
-                            });
-                        }
-                    }
-                }
-            }
-            else
-            {
-                var oProps = oType.GetProperties();
-                foreach (var mp in mProps)
-                {
-                    foreach (var sp in oProps)
-                    {
-                        if (mp.Name.Equals(sp.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            list.Add(new DicDynamic
-                            {
-                                MField = mp.Name,
-                                VmField = mp.Name,
-                                Compare = CompareEnum.Equal
-                            });
-                        }
+                            MField = mp.Name,
+                            VmField = sp.Name,
+                            Compare = compare
+                        });
                     }
                 }
             }
 
             //
-            var result = new List<(ColumnParam cp, string param, (object val, string valStr) val, string colType, CompareEnum compare)>();
             var columns = DC.XC.GetColumnInfos(DC.XC.GetModelKey(mType.FullName));
             foreach (var prop in list)
             {
@@ -209,64 +171,27 @@ namespace MyDAL.Core.Bases
                 {
                     columnType = ci.DataType;
                 }
-                if (objx is IQueryOption)
+                var mp = objx.GetType().GetProperty(prop.VmField);
+                valType = mp.PropertyType;
+                val = DC.VH.PropertyValue(mp, objx);
+                if (!CheckWhereVal(val.val, valType))
                 {
-                    var mp = objx.GetType().GetProperty(prop.VmField);
-                    valType = mp.PropertyType;
-                    val = DC.VH.PropertyValue(mp, objx);
-                    if (!CheckWhereVal(val.val, valType))
-                    {
-                        continue;
-                    }
-                    if (valType.IsList()
-                        || valType.IsArray)
-                    {
-                        var ox = DC.VH.InValue(valType, val.val);
-                        valType = ox.valType;
-                        val = (ox.val, string.Empty);
-                    }
-                    result.Add((new ColumnParam
-                    {
-                        Prop = prop.MField,
-                        Key = prop.MField,
-                        ValType = valType,
-                        ClassFullName = mType.FullName
-                    }, prop.VmField, val, columnType, prop.Compare));
+                    continue;
                 }
-                else if (objx is ExpandoObject)
+                if (valType.IsList()
+                    || valType.IsArray)
                 {
-                    var obj = dic[prop.MField];
-                    valType = obj.GetType();
-                    val = DC.VH.ExpandoObjectValue(obj);
-                    if (!CheckWhereVal(val.val, valType))
-                    {
-                        continue;
-                    }
-                    result.Add((new ColumnParam
-                    {
-                        Prop = prop.MField,
-                        Key = prop.MField,
-                        ValType = valType,
-                        ClassFullName = mType.FullName
-                    }, prop.VmField, val, columnType, prop.Compare));
+                    var ox = DC.VH.InValue(valType, val.val);
+                    valType = ox.valType;
+                    val = (ox.val, string.Empty);
                 }
-                else
+                result.Add((new ColumnParam
                 {
-                    var mp = objx.GetType().GetProperty(prop.MField);
-                    valType = mp.PropertyType;
-                    val = DC.VH.PropertyValue(mp, objx);
-                    if (!CheckWhereVal(val.val, valType))
-                    {
-                        continue;
-                    }
-                    result.Add((new ColumnParam
-                    {
-                        Prop = prop.MField,
-                        Key = prop.MField,
-                        ValType = valType,
-                        ClassFullName = mType.FullName
-                    }, prop.VmField, val, columnType, prop.Compare));
-                }
+                    Prop = prop.MField,
+                    Key = prop.MField,
+                    ValType = valType,
+                    ClassFullName = mType.FullName
+                }, prop.VmField, val, columnType, prop.Compare));
             }
             return result;
         }
@@ -323,7 +248,7 @@ namespace MyDAL.Core.Bases
             DC.DPH.AddParameter(field);
         }
 
-        internal void WhereDynamicHandle<M>(object mWhere)
+        internal void WhereDynamicHandle<M>(PagingQueryOption mWhere)
         {
             var mType = typeof(M);
             var tuples = GetWhereKPV(mWhere, mType);
@@ -417,31 +342,6 @@ namespace MyDAL.Core.Bases
             }
 
             DC.DPH.AddParameter(DC.DPH.OrderbyDic(keyDic.ClassFullName, keyDic.ColumnOne, keyDic.TableAliasOne));
-        }
-
-        internal void OrderByOptionHandle(PagingQueryOption option, string fullName)
-        {
-            if (option.OrderBys != null
-              && option.OrderBys.Any())
-            {
-                foreach (var item in option.OrderBys)
-                {
-                    if (!string.IsNullOrWhiteSpace(item.Field))
-                    {
-                        DC.Action = ActionEnum.OrderBy;
-                        if (item.Desc)
-                        {
-                            DC.Option = OptionEnum.Desc;
-                        }
-                        else
-                        {
-                            DC.Option = OptionEnum.Asc;
-                        }
-                        DC.Compare = CompareEnum.None;
-                        DC.DPH.AddParameter(DC.DPH.OrderbyDic(fullName, item.Field, string.Empty));
-                    }
-                }
-            }
         }
 
         internal void DistinctHandle()

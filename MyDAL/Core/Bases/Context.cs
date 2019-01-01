@@ -6,6 +6,7 @@ using MyDAL.DataRainbow.MySQL;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 
 namespace MyDAL.Core.Bases
 {
@@ -172,6 +173,31 @@ namespace MyDAL.Core.Bases
             XC.SetModelType(key, type);
             XC.SetModelProperys(type, this);
             (XC.SetModelColumnInfos(key, this)).GetAwaiter().GetResult();
+        }
+
+        internal void OrderByOptionHandle(PagingQueryOption option, string fullName)
+        {
+            if (option.OrderBys != null
+              && option.OrderBys.Any())
+            {
+                foreach (var item in option.OrderBys)
+                {
+                    if (!string.IsNullOrWhiteSpace(item.Field))
+                    {
+                        Action = ActionEnum.OrderBy;
+                        if (item.Desc)
+                        {
+                            Option = OptionEnum.Desc;
+                        }
+                        else
+                        {
+                            Option = OptionEnum.Asc;
+                        }
+                        Compare = CompareEnum.None;
+                        DPH.AddParameter(DPH.OrderbyDic(fullName, item.Field, string.Empty));
+                    }
+                }
+            }
         }
 
     }

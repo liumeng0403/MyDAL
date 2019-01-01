@@ -1,14 +1,12 @@
 ﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace MyDAL.Test.QueryM
 {
-    public class _03_PagingListAsync:TestBase
+    public class _03_PagingListAsync
+        :TestBase
     {
         [Fact]
         public async Task Test()

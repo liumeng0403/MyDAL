@@ -7,8 +7,6 @@
             //
             // WhereEdge
             //
-            await new WhereEdge._01_WhereObject().test();
-            await new WhereEdge._02_WhereOption().test();
             await new WhereEdge._03_WhereBoolDefault().test();
             await new WhereEdge._04_WhereMethodParam().MethodParam();
             await new WhereEdge._04_WhereMethodParam().MethodListParam();

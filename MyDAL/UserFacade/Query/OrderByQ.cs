@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Query
 {
     public sealed class OrderByQ<M>
-        : Operator, IQueryList<M>, IPagingList<M>, IPagingListO<M>,ITop<M>
+        : Operator, IQueryList<M>, IPagingList<M>,ITop<M>
             where M : class
     {
         internal OrderByQ(Context dc)
@@ -66,29 +66,6 @@ namespace MyDAL.UserFacade.Query
         public async Task<PagingList<T>> PagingListAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
         {
             return await new PagingListImpl<M>(DC).PagingListAsync<T>(pageIndex, pageSize, columnMapFunc);
-        }
-
-        /// <summary>
-        /// 单表分页查询
-        /// </summary>
-        public async Task<PagingList<M>> PagingListAsync(PagingQueryOption option)
-        {
-            return await new PagingListOImpl<M>(DC).PagingListAsync(option);
-        }
-        /// <summary>
-        /// 单表分页查询
-        /// </summary>
-        public async Task<PagingList<VM>> PagingListAsync<VM>(PagingQueryOption option)
-            where VM:class
-        {
-            return await new PagingListOImpl<M>(DC).PagingListAsync<VM>(option);
-        }
-        /// <summary>
-        /// 单表分页查询
-        /// </summary>
-        public async Task<PagingList<T>> PagingListAsync<T>(PagingQueryOption option, Expression<Func<M, T>> columnMapFunc)
-        {
-            return await new PagingListOImpl<M>(DC).PagingListAsync<T>(option, columnMapFunc);
         }
 
         /// <summary>

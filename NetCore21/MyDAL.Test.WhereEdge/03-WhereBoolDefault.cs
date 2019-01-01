@@ -1,4 +1,5 @@
 ﻿using MyDAL.Test.Entities.MyDAL_TestDB;
+using MyDAL.Test.Options;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -153,6 +154,46 @@ namespace MyDAL.Test.WhereEdge
             Assert.True(res52.Count == 3);
             Assert.True(res52.First(it => it.Id != guid52).IsDefault == false);
             Assert.True(res52.First(it => it.Id == guid52).IsDefault);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /********************************************************************************************************************************************/
+
+
+            xx = string.Empty;
+
+            /*
+             * 6 - null
+             * 61- false
+             * 62 - true
+             */
+            var option6 = new ProductQueryOption
+            {
+                VipProduct = null     
+            };
+            var res6 = await Conn
+                .Queryer<Product>()
+                .Where(option6)
+                .PagingListAsync();
+            Assert.True(res6.Data.Count == 4);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            option6.VipProduct = false;
+            var res61 = await Conn
+                .Queryer<Product>()
+                .Where(option6)
+                .PagingListAsync();
+            Assert.True(res61.Data.Count == 4);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            option6.VipProduct = true;
+            var res62 = await Conn
+                .Queryer<Product>()
+                .Where(option6)
+                .PagingListAsync();
+            Assert.True(res62.Data.Count == 0);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 

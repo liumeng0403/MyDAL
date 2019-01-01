@@ -17,10 +17,10 @@ namespace MyDAL.Interfaces
     internal interface IPagingListO<M>
         where M : class
     {
-        Task<PagingList<M>> PagingListAsync(PagingQueryOption option);
-        Task<PagingList<VM>> PagingListAsync<VM>(PagingQueryOption option)
+        Task<PagingList<M>> PagingListAsync();
+        Task<PagingList<VM>> PagingListAsync<VM>()
             where VM : class;
-        Task<PagingList<T>> PagingListAsync<T>(PagingQueryOption option, Expression<Func<M, T>> columnMapFunc);
+        Task<PagingList<T>> PagingListAsync<T>(Expression<Func<M, T>> columnMapFunc);
 
     }
 

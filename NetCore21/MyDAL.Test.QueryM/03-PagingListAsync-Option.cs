@@ -6,12 +6,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace MyDAL.Test.WhereEdge
+namespace MyDAL.Test.QueryM
 {
-    public class _02_WhereOption : TestBase
+    public class _03_PagingListAsync_Option
+        : TestBase
     {
         [Fact]
-        public async Task test()
+        public async Task Test()
         {
 
             /*****************************************************************************************************************************/
@@ -27,70 +28,66 @@ namespace MyDAL.Test.WhereEdge
             var res1 = await Conn
                 .Queryer<Agent>()
                 .Where(option1)
-                .QueryListAsync();
-            Assert.True(res1.Count == 555);
+                .PagingListAsync();
+            Assert.True(res1.TotalCount == 555);
 
-            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
-            /*****************************************************************************************************************************/
+            /*************************************************************************************************************************/
 
             xx = string.Empty;
 
             var option2 = new AgentQueryOption();
-            option2.StartTime = WhereTest.CreatedOn;
-            option2.EndTime = DateTime.Now;
-
-            //   >=   <=  
+            option2.Id = Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b");
+            option2.Name = "樊士芹";
+            // where method
             var res2 = await Conn
                 .Queryer<Agent>()
                 .Where(option2)
-                .QueryListAsync();
-            Assert.True(res2.Count == 28619);
-
-            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
-
-            /*****************************************************************************************************************************/
-
-            var xx3 = string.Empty;
-
-            var option3 = new AgentQueryOption();
-            option3.Name = "张";
-
-            //   like  
-            var res3 = await Conn
-                .Queryer<Agent>()
-                .Where(option3)
-                .QueryListAsync();
-            Assert.True(res3.Count == 2002);
-
-            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
-
-            /*****************************************************************************************************************************/
-
-            var xx4 = string.Empty;
-
-            var option4 = new AgentQueryOption();
-            option4.EnumListIn = new List<AgentLevel>
-            {
-                AgentLevel.CityAgent,
-                AgentLevel.DistiAgent
-            };
-
-            // in
-            var res4 = await Conn
-                .Queryer<Agent>()
-                .Where(option4)
-                .QueryListAsync();
-            Assert.True(res4.Count == 555);
+                .PagingListAsync();
+            Assert.True(res2.TotalCount == 1);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*****************************************************************************************************************************/
 
-            var xx5 = string.Empty;
+            xx = string.Empty;
+
+            var option3 = new AgentQueryOption();
+            option3.StartTime = WhereTest.CreatedOn;
+            option3.EndTime = DateTime.Now;
+
+            //   >=   <=  
+            var res3 = await Conn
+                .Queryer<Agent>()
+                .Where(option3)
+                .PagingListAsync();
+            Assert.True(res3.TotalCount == 28619);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*****************************************************************************************************************************/
+
+            xx = string.Empty;
+
+            var option4 = new AgentQueryOption();
+            option4.Name = "张";
+
+            //   like  
+            var res4 = await Conn
+                .Queryer<Agent>()
+                .Where(option4)
+                .PagingListAsync();
+            Assert.True(res4.TotalCount == 2002);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*****************************************************************************************************************************/
+
+            var xx4 = string.Empty;
 
             var option5 = new AgentQueryOption();
-            option5.EnumListNotIn = new List<AgentLevel>
+            option5.EnumListIn = new List<AgentLevel>
             {
                 AgentLevel.CityAgent,
                 AgentLevel.DistiAgent
@@ -100,8 +97,28 @@ namespace MyDAL.Test.WhereEdge
             var res5 = await Conn
                 .Queryer<Agent>()
                 .Where(option5)
-                .QueryListAsync();
-            Assert.True(res5.Count == 28064 || res5.Count == 28065);
+                .PagingListAsync();
+            Assert.True(res5.TotalCount == 555);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*****************************************************************************************************************************/
+
+            var xx5 = string.Empty;
+
+            var option6 = new AgentQueryOption();
+            option6.EnumListNotIn = new List<AgentLevel>
+            {
+                AgentLevel.CityAgent,
+                AgentLevel.DistiAgent
+            };
+
+            // in
+            var res6 = await Conn
+                .Queryer<Agent>()
+                .Where(option6)
+                .PagingListAsync();
+            Assert.True(res6.TotalCount == 28064 || res6.TotalCount == 28065);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
