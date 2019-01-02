@@ -19,7 +19,7 @@ namespace MyDAL.UserFacade.Query
             : base(dc) { }
 
         /// <summary>
-        /// 查询是否存在符合条件的数据
+        /// 请参阅: <see langword=".ExistAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<bool> ExistAsync()
         {

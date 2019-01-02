@@ -322,7 +322,7 @@ namespace MyDAL
         }
 
         /// <summary>
-        /// Queryer 便捷 ExistAsync 方法
+        /// 请参阅: <see langword=".ExistAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static async Task<bool> ExistAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
             where M : class, new()

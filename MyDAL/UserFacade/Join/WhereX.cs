@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Join
 {
     public sealed class WhereX
-        : Operator, IFirstOrDefaultX, IQueryListX, IPagingListX, IPagingListXO, ICountX, ITopX,IExistX
+        : Operator, IFirstOrDefaultX, IQueryListX, IPagingListX, IPagingListXO, ICountX, ITopX, IExistX
     {
 
         internal WhereX(Context dc)
@@ -29,7 +29,7 @@ namespace MyDAL.UserFacade.Join
         /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<M> FirstOrDefaultAsync<M>()
-            where M:class
+            where M : class
         {
             return await new FirstOrDefaultXImpl(DC).FirstOrDefaultAsync<M>();
         }
@@ -45,7 +45,7 @@ namespace MyDAL.UserFacade.Join
         /// 请参阅: <see langword=".QueryListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<List<M>> QueryListAsync<M>()
-            where M:class
+            where M : class
         {
             return await new QueryListXImpl(DC).QueryListAsync<M>();
         }
@@ -63,7 +63,7 @@ namespace MyDAL.UserFacade.Join
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
         public async Task<PagingList<M>> PagingListAsync<M>(int pageIndex, int pageSize)
-            where M:class
+            where M : class
         {
             return await new PagingListXImpl(DC).PagingListAsync<M>(pageIndex, pageSize);
         }
@@ -81,7 +81,7 @@ namespace MyDAL.UserFacade.Join
         /// 多表分页查询
         /// </summary>
         public async Task<PagingList<M>> PagingListAsync<M>(PagingQueryOption option)
-            where M:class
+            where M : class
         {
             return await new PagingListXOImpl(DC).PagingListAsync<M>(option);
         }
@@ -96,7 +96,7 @@ namespace MyDAL.UserFacade.Join
         /// <summary>
         /// 多表多条数据查询
         /// </summary>
-        public async Task<List<M>> TopAsync<M>(int count) 
+        public async Task<List<M>> TopAsync<M>(int count)
             where M : class
         {
             return await new TopXImpl(DC).TopAsync<M>(count);
@@ -104,11 +104,14 @@ namespace MyDAL.UserFacade.Join
         /// <summary>
         /// 多表多条数据查询
         /// </summary>
-        public async Task<List<T>> TopAsync<T>(int count, Expression<Func<T>> columnMapFunc) 
+        public async Task<List<T>> TopAsync<T>(int count, Expression<Func<T>> columnMapFunc)
         {
             return await new TopXImpl(DC).TopAsync(count, columnMapFunc);
         }
 
+        /// <summary>
+        /// 请参阅: <see langword=".ExistAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// </summary>
         public async Task<bool> ExistAsync()
         {
             return await new ExistXImpl(DC).ExistAsync();

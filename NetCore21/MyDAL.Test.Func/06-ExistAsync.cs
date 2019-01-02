@@ -28,6 +28,8 @@ namespace MyDAL.Test.Func
             xx = string.Empty;
 
             var pk2 = Guid.Parse("002c1ca9-f2df-453a-87e0-0165443dcc31");
+
+            // 判断 Agent 表 中 是否存在符合条件的数据
             var res2 = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.Id == pk2)
@@ -54,7 +56,8 @@ namespace MyDAL.Test.Func
 
             xx = string.Empty;
 
-            var res4 = await Conn
+            // 判断 Agent表 与 AgentInventoryRecord表 连接下, 是否存在符合条件数据
+            bool res4 = await Conn
                 .Queryer(out Agent agent4, out AgentInventoryRecord record4)
                 .From(() => agent4)
                     .InnerJoin(() => record4)

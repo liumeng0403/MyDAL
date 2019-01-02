@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Query
 {
     public sealed class Queryer<M>
-        : Operator, IQueryAll<M>, IPagingAll<M>, ITop<M>,IExist
+        : Operator, IQueryAll<M>, IPagingAll<M>, ITop<M>, IExist
         where M : class
     {
         internal Queryer(Context dc)
@@ -90,11 +90,14 @@ namespace MyDAL.UserFacade.Query
         /// </summary>
         /// <param name="count">top count</param>
         /// <returns>返回 top count 条数据</returns>
-        public async Task<List<T>> TopAsync<T>(int count, Expression<Func<M, T>> columnMapFunc) 
+        public async Task<List<T>> TopAsync<T>(int count, Expression<Func<M, T>> columnMapFunc)
         {
             return await new TopImpl<M>(DC).TopAsync<T>(count, columnMapFunc);
         }
 
+        /// <summary>
+        /// 请参阅: <see langword=".ExistAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// </summary>
         public async Task<bool> ExistAsync()
         {
             return await new ExistImpl<M>(DC).ExistAsync();

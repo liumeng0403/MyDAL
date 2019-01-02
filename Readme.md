@@ -8,7 +8,7 @@
 
 # Project Introduction 
 
-[![](https://img.shields.io/badge/Download-2,916-golden.svg)](https://www.nuget.org/profiles/Meng.NET)
+[![](https://img.shields.io/badge/Download-2,996-golden.svg)](https://www.nuget.org/profiles/Meng.NET)
 [![](https://img.shields.io/badge/Star-11-yellow.svg)](https://github.com/liumeng0403/MyDAL/stargazers)
 [![](https://img.shields.io/badge/Fork-3-orange.svg)](https://github.com/liumeng0403/MyDAL/network/members)
 [![](https://img.shields.io/badge/Apache-2.0-blue.svg)](https://github.com/liumeng0403/MyDAL/blob/master/License)
@@ -23,6 +23,7 @@
 * <a href="https://www.cnblogs.com/Meng-NET/p/9978336.html" target="_blank">MyDAL - .Where() & .And() & .Or() 使用</a>
 * <a href="https://www.cnblogs.com/Meng-NET/p/10113980.html" target="_blank">MyDAL - .FirstOrDefaultAsync() 使用</a>
 * <a href="https://www.cnblogs.com/Meng-NET/p/10179385.html" target="_blank">MyDAL - .QueryListAsync() 使用</a>
+* <a href="https://www.cnblogs.com/Meng-NET/p/10210668.html" target="_blank">MyDAL - .ExistAsync() 使用</a>
 
 <b>Clone && Fork:</b>
 >有帮助的同学不要忘了<b>右上角</b>给点个<b>Star(★)</b>.
