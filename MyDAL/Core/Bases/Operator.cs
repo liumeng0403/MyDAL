@@ -51,7 +51,7 @@ namespace MyDAL.Core.Bases
 
         private List<(string key, string param, ValueInfo val, Type valType, string colType, CompareEnum compare)> GetSetKPV<M>(object objx)
         {
-            var list = new List<DicDynamic>();
+            var list = new List<SetDic>();
             var dic = default(IDictionary<string, object>);
 
             //
@@ -65,7 +65,7 @@ namespace MyDAL.Core.Bases
                     {
                         if (mp.Name.Equals(sp, StringComparison.OrdinalIgnoreCase))
                         {
-                            list.Add(new DicDynamic
+                            list.Add(new SetDic
                             {
                                 MField = mp.Name,
                                 VmField = mp.Name,
@@ -84,7 +84,7 @@ namespace MyDAL.Core.Bases
                     {
                         if (mp.Name.Equals(sp.Name, StringComparison.OrdinalIgnoreCase))
                         {
-                            list.Add(new DicDynamic
+                            list.Add(new SetDic
                             {
                                 MField = mp.Name,
                                 VmField = mp.Name,
@@ -120,38 +120,38 @@ namespace MyDAL.Core.Bases
             }
             return result;
         }
-        private List<(ColumnParam cp, string param, ValueInfo val, string colType, CompareEnum compare)> GetWhereKPV(PagingQueryOption objx, Type mType)
+        private List<XQueryParam> GetWhereKPV(PagingQueryOption query, string tFullName)
         {
-            var result = new List<(ColumnParam cp, string param, ValueInfo val, string colType, CompareEnum compare)>();
-            var list = new List<DicDynamic>();
+            var result = new List<XQueryParam>();
+            var list = new List<XQueryDic>();
 
             //
-            var mProps = mType.GetProperties();
-            var oType = objx.GetType();
-            var oProps = oType.GetProperties(XConfig.ClassSelfMember);
-            foreach (var mp in mProps)
+            var tablePs = DC.XC.GetModelProperys(DC.XC.GetModelKey(tFullName)); // mType.GetProperties();
+            var qType = query.GetType();
+            var queryPs = qType.GetProperties(XConfig.ClassSelfMember);
+            foreach (var tp in tablePs)
             {
-                foreach (var sp in oProps)
+                foreach (var qp in queryPs)
                 {
-                    var spName = string.Empty;
+                    var cName = string.Empty;
                     var compare = CompareEnum.Equal;
-                    if (DC.AH.GetAttribute<XQueryAttribute>(oType, sp) is XQueryAttribute spAttr
-                        && !string.IsNullOrWhiteSpace(spAttr.Name))
+                    if (DC.AH.GetAttribute<XQueryAttribute>(qType, qp) is XQueryAttribute xqA
+                        && !string.IsNullOrWhiteSpace(xqA.Column))
                     {
-                        spName = spAttr.Name;
-                        compare = spAttr.Compare;
+                        cName = xqA.Column;
+                        compare = xqA.Compare;
                     }
                     else
                     {
-                        spName = sp.Name;
+                        cName = qp.Name;
                     }
 
-                    if (mp.Name.Equals(spName, StringComparison.OrdinalIgnoreCase))
+                    if (tp.Name.Equals(cName, StringComparison.OrdinalIgnoreCase))
                     {
-                        list.Add(new DicDynamic
+                        list.Add(new XQueryDic
                         {
-                            MField = mp.Name,
-                            VmField = sp.Name,
+                            MField = tp.Name,
+                            VmField = qp.Name,
                             Compare = compare
                         });
                     }
@@ -159,7 +159,7 @@ namespace MyDAL.Core.Bases
             }
 
             //
-            var columns = DC.XC.GetColumnInfos(DC.XC.GetModelKey(mType.FullName));
+            var columns = DC.XC.GetColumnInfos(DC.XC.GetModelKey(tFullName));
             foreach (var prop in list)
             {
                 var val = default(ValueInfo);
@@ -170,9 +170,9 @@ namespace MyDAL.Core.Bases
                 {
                     columnType = ci.DataType;
                 }
-                var mp = objx.GetType().GetProperty(prop.VmField);
+                var mp = query.GetType().GetProperty(prop.VmField);
                 valType = mp.PropertyType;
-                val = DC.VH.PropertyValue(mp, objx);
+                val = DC.VH.PropertyValue(mp, query);
                 if (!CheckWhereVal(val.Val, valType))
                 {
                     continue;
@@ -188,13 +188,20 @@ namespace MyDAL.Core.Bases
                         ValStr = string.Empty
                     };
                 }
-                result.Add((new ColumnParam
+                result.Add(new XQueryParam
                 {
-                    Prop = prop.MField,
-                    Key = prop.MField,
-                    ValType = valType,
-                    ClassFullName = mType.FullName
-                }, prop.VmField, val, columnType, prop.Compare));
+                    Cp = new ColumnParam
+                    {
+                        Prop = prop.MField,
+                        Key = prop.MField,
+                        ValType = valType,
+                        ClassFullName = tFullName
+                    },
+                    Param = prop.VmField,
+                    Val = val,
+                    ColType = columnType,
+                    Compare = prop.Compare
+                });
             }
             return result;
         }
@@ -254,7 +261,7 @@ namespace MyDAL.Core.Bases
         internal void WhereDynamicHandle<M>(PagingQueryOption mWhere)
         {
             var mType = typeof(M);
-            var tuples = GetWhereKPV(mWhere, mType);
+            var tuples = GetWhereKPV(mWhere, mType.FullName);
             var count = 0;
             foreach (var tp in tuples)
             {
@@ -269,31 +276,31 @@ namespace MyDAL.Core.Bases
                 }
 
                 //
-                if (tp.compare == CompareEnum.Like)
+                if (tp.Compare == CompareEnum.Like)
                 {
                     DC.Option = OptionEnum.Like;
                     DC.Compare = CompareEnum.None;
-                    DC.DPH.AddParameter(DC.DPH.LikeDic(tp.cp, tp.val));
+                    DC.DPH.AddParameter(DC.DPH.LikeDic(tp.Cp, tp.Val));
                 }
-                else if (tp.compare == CompareEnum.In)
+                else if (tp.Compare == CompareEnum.In)
                 {
                     DC.Option = OptionEnum.Function;
                     DC.Func = FuncEnum.In;
                     DC.Compare = CompareEnum.None;
-                    DC.DPH.AddParameter(DC.DPH.InDic(tp.cp, tp.val));
+                    DC.DPH.AddParameter(DC.DPH.InDic(tp.Cp, tp.Val));
                 }
-                else if (tp.compare == CompareEnum.NotIn)
+                else if (tp.Compare == CompareEnum.NotIn)
                 {
                     DC.Option = OptionEnum.Function;
                     DC.Func = FuncEnum.NotIn;
                     DC.Compare = CompareEnum.None;
-                    DC.DPH.AddParameter(DC.DPH.NotInDic(tp.cp, tp.val));
+                    DC.DPH.AddParameter(DC.DPH.NotInDic(tp.Cp, tp.Val));
                 }
                 else
                 {
                     DC.Option = OptionEnum.Compare;
-                    DC.Compare = tp.compare;
-                    DC.DPH.AddParameter(DC.DPH.CompareDic(tp.cp, tp.val));
+                    DC.Compare = tp.Compare;
+                    DC.DPH.AddParameter(DC.DPH.CompareDic(tp.Cp, tp.Val));
                 }
             }
         }

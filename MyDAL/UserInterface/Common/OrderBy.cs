@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
 
 namespace MyDAL
 {
@@ -7,30 +7,19 @@ namespace MyDAL
     /// </summary>
     public sealed class OrderBy
     {
-        private string _field;
+        /// <summary>
+        /// TableModel - 类型
+        /// </summary>
+        public Type Table { get; set; }
 
         /// <summary>
         ///     排序字段
         /// </summary>
-        public string Field
-        {
-            get => _field;
-            set
-            {
-                if (!string.IsNullOrEmpty(value))
-                {
-                    _field = Regex.Match(value, "(\\w+)").Groups[1].Value;
-                }
-                else
-                {
-                    _field = null;
-                }
-            }
-        }
+        public string Column { get; set; }
 
         /// <summary>
-        ///     正序还是倒序
+        ///     排序方向, 默认倒序
         /// </summary>
-        public bool Desc { get; set; }
+        public OrderByEnum Direction { get; set; } = OrderByEnum.Desc;
     }
 }

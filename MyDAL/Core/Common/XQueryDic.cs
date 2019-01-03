@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MyDAL.Core.Common
+﻿namespace MyDAL.Core.Common
 {
-    internal class DicDynamic
+    internal class XQueryDic
     {
         internal string MField { get; set; }
         internal string VmField { get; set; }

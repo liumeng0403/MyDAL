@@ -182,10 +182,10 @@ namespace MyDAL.Core.Bases
             {
                 foreach (var item in option.OrderBys)
                 {
-                    if (!string.IsNullOrWhiteSpace(item.Field))
+                    if (!string.IsNullOrWhiteSpace(item.Column))
                     {
                         Action = ActionEnum.OrderBy;
-                        if (item.Desc)
+                        if (item.Direction== OrderByEnum.Desc)
                         {
                             Option = OptionEnum.Desc;
                         }
@@ -194,7 +194,7 @@ namespace MyDAL.Core.Bases
                             Option = OptionEnum.Asc;
                         }
                         Compare = CompareEnum.None;
-                        DPH.AddParameter(DPH.OrderbyDic(fullName, item.Field, string.Empty));
+                        DPH.AddParameter(DPH.OrderbyDic(fullName, item.Column, string.Empty));
                     }
                 }
             }

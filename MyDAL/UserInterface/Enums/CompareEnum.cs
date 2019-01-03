@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace MyDAL
+﻿namespace MyDAL
 {
     public enum CompareEnum
     {
@@ -43,6 +41,8 @@ namespace MyDAL
         /// " like "
         /// </summary>
         Like,
+        Like_StartsWith,
+        Like_EndsWith,
 
         /// <summary>
         /// " in "

@@ -54,7 +54,7 @@ namespace MyDAL
         }
 
         public static WhereQO<M> Where<M>(this Queryer<M> selecter, PagingQueryOption pagingQuery)
-            where M:class
+            where M : class
         {
             selecter.DC.Action = ActionEnum.Where;
             selecter.WhereDynamicHandle<M>(pagingQuery);
@@ -78,10 +78,11 @@ namespace MyDAL
             return new WhereX(on.DC);
         }
 
-        //public static WhereX Where(this OnX on, object mWhere)
+        //public static WhereX Where(this OnX on, PagingQueryOption pagingQuery)
         //{
-        //    on.DC.OP.WhereJoinHandle(on, func, ActionEnum.Where);
-        //    return new WhereX(on.DC);
+        //    on.DC.Action = ActionEnum.Where;
+        //    on.WhereDynamicHandle(pagingQuery);
+
         //}
 
     }

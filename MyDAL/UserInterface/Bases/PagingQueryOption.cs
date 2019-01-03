@@ -18,7 +18,7 @@ namespace MyDAL
         public int PageSize { get; set; } = 10;
 
         /// <summary>
-        ///     排序字段
+        ///     排序设置
         /// </summary>
         public List<OrderBy> OrderBys { get; set; } = new List<OrderBy>();
     }

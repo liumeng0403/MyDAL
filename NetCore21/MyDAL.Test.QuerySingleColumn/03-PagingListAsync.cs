@@ -31,11 +31,11 @@ namespace MyDAL.Test.QuerySingleColumn
             {
                 new OrderBy
                 {
-                    Field="Name",
-                    Desc=true
+                    Column=nameof(Agent.Name),
+                    Direction= OrderByEnum.Desc
                 }
             };
-            
+
             //var res2 = await Conn
             //    .Queryer<Agent>()
             //    .Where(it => it.Name.StartsWith("张"))

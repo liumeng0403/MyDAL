@@ -10,7 +10,7 @@ using Xunit;
 namespace MyDAL.Test.QueryVM
 {
     public class _03_PagingListAsync_Option
-        :TestBase
+        : TestBase
     {
         [Fact]
         public async Task Test()
@@ -27,8 +27,8 @@ namespace MyDAL.Test.QueryVM
             {
                 new OrderBy
                 {
-                    Field="Name",
-                    Desc=true
+                    Column=nameof(Agent.Name),
+                    Direction= OrderByEnum.Desc
                 }
             };
             // where method -- option orderby 

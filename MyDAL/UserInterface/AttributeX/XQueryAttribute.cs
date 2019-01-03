@@ -11,16 +11,21 @@ namespace MyDAL
         /// <summary>
         /// TableModel - 类型
         /// </summary>
-        public Type Table { get; set; }
+        public Type Table { get; set; } = default(Type);
 
         /// <summary>
         /// Table - 列名
         /// </summary>
-        public string Name { get; set; }
+        public string Column { get; set; }
 
         /// <summary>
         /// Where - 比较条件
         /// </summary>
         public CompareEnum Compare { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public LogicEnum Logic { get; set; } = LogicEnum.And;
     }
 }
