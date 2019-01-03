@@ -293,7 +293,7 @@ namespace MyDAL.Core.Helper
 
         /*******************************************************************************************************/
 
-        internal DicParam CharLengthDic(ColumnParam cp, (object val, string valStr) value)
+        internal DicParam CharLengthDic(ColumnParam cp, ValueInfo v)
         {
             var dic = SetDicBase(DC);
             dic.ClassFullName = cp.ClassFullName;
@@ -302,14 +302,14 @@ namespace MyDAL.Core.Helper
             dic.TableAliasOne = cp.Alias;
             dic.Param = cp.Key;
             dic.ParamRaw = cp.Key;
-            dic.CsValue = value.val;
-            dic.CsValueStr = value.valStr;
+            dic.CsValue = v?.Val;
+            dic.CsValueStr = v?.ValStr;
             dic.CsType = cp.ValType;
 
             return dic;
         }
 
-        internal DicParam TrimDic(ColumnParam cp, (object val, string valStr) value)
+        internal DicParam TrimDic(ColumnParam cp, ValueInfo v)
         {
             var dic = SetDicBase(DC);
             dic.ClassFullName = cp.ClassFullName;
@@ -318,14 +318,14 @@ namespace MyDAL.Core.Helper
             dic.TableAliasOne = cp.Alias;
             dic.Param = cp.Key;
             dic.ParamRaw = cp.Key;
-            dic.CsValue = value.val;
-            dic.CsValueStr = value.valStr;
+            dic.CsValue = v?.Val;
+            dic.CsValueStr = v?.ValStr;
             dic.CsType = cp.ValType;
 
             return dic;
         }
 
-        internal DicParam DateFormatDic(ColumnParam cp, (object val, string valStr) value, string format)
+        internal DicParam DateFormatDic(ColumnParam cp, ValueInfo v, string format)
         {
             var dic = SetDicBase(DC);
             dic.ClassFullName = cp.ClassFullName;
@@ -335,23 +335,23 @@ namespace MyDAL.Core.Helper
             dic.TableAliasOne = cp.Alias;
             dic.Param = cp.Key;
             dic.ParamRaw = cp.Key;
-            dic.CsValue = value.val;
-            dic.CsValueStr = value.valStr;
+            dic.CsValue = v?.Val;
+            dic.CsValueStr = v?.ValStr;
             dic.CsType = cp.ValType;
             dic.Format = format;
 
             return dic;
         }
 
-        internal DicParam CompareDic(ColumnParam cp, (object val, string valStr) value)
+        internal DicParam CompareDic(ColumnParam cp, ValueInfo v)
         {
             var dic = SetDicBase(DC);
             dic.ClassFullName = cp.ClassFullName;
             dic.PropOne = cp.Prop;
             dic.ColumnOne = cp.Key;
             dic.TableAliasOne = cp.Alias;
-            dic.CsValue = value.val;
-            dic.CsValueStr = value.valStr;
+            dic.CsValue = v?.Val;
+            dic.CsValueStr = v?.ValStr;
             dic.CsType = cp.ValType;
             dic.Param = cp.Key;
             dic.ParamRaw = cp.Key;
@@ -359,46 +359,30 @@ namespace MyDAL.Core.Helper
             return dic;
         }
 
-        internal DicParam InDic(ColumnParam cp, (object val, string valStr) value)
+        internal DicParam InDic(ColumnParam cp, ValueInfo v)
         {
             var dic = SetDicBase(DC);
             dic.ClassFullName = cp.ClassFullName;
             dic.PropOne = cp.Prop;
             dic.ColumnOne = cp.Key;
             dic.TableAliasOne = cp.Alias;
-            dic.CsValue = value.val;
-            dic.CsValueStr = value.valStr;
+            dic.CsValue = v?.Val;
+            dic.CsValueStr = v?.ValStr;
             dic.CsType = cp.ValType;
             dic.Param = cp.Key;
             dic.ParamRaw = cp.Key;
 
             return dic;
         }
-        internal DicParam NotInDic(ColumnParam cp, (object val, string valStr) value)
+        internal DicParam NotInDic(ColumnParam cp, ValueInfo v)
         {
             var dic = SetDicBase(DC);
             dic.ClassFullName = cp.ClassFullName;
             dic.PropOne = cp.Prop;
             dic.ColumnOne = cp.Key;
             dic.TableAliasOne = cp.Alias;
-            dic.CsValue = value.val;
-            dic.CsValueStr = value.valStr;
-            dic.CsType = cp.ValType;
-            dic.Param = cp.Key;
-            dic.ParamRaw = cp.Key;
-
-            return dic;
-        }
-
-        internal DicParam LikeDic(ColumnParam cp, (object val, string valStr) value)
-        {
-            var dic = SetDicBase(DC);
-            dic.ClassFullName = cp.ClassFullName;
-            dic.PropOne = cp.Prop;
-            dic.ColumnOne = cp.Key;
-            dic.TableAliasOne = cp.Alias;
-            dic.CsValue = value.val;
-            dic.CsValueStr = value.valStr;
+            dic.CsValue = v?.Val;
+            dic.CsValueStr = v?.ValStr;
             dic.CsType = cp.ValType;
             dic.Param = cp.Key;
             dic.ParamRaw = cp.Key;
@@ -406,14 +390,30 @@ namespace MyDAL.Core.Helper
             return dic;
         }
 
-        internal DicParam OneEqualOneDic((object val, string valStr) value, Type valType)
+        internal DicParam LikeDic(ColumnParam cp, ValueInfo v)
+        {
+            var dic = SetDicBase(DC);
+            dic.ClassFullName = cp.ClassFullName;
+            dic.PropOne = cp.Prop;
+            dic.ColumnOne = cp.Key;
+            dic.TableAliasOne = cp.Alias;
+            dic.CsValue = v?.Val;
+            dic.CsValueStr = v?.ValStr;
+            dic.CsType = cp.ValType;
+            dic.Param = cp.Key;
+            dic.ParamRaw = cp.Key;
+
+            return dic;
+        }
+
+        internal DicParam OneEqualOneDic(ValueInfo v, Type valType)
         {
             var dic = SetDicBase(DC);
             dic.ColumnOne = "OneEqualOne";
             dic.Param = "OneEqualOne";
             dic.ParamRaw = "OneEqualOne";
-            dic.CsValue = value.val;
-            dic.CsValueStr = value.valStr;
+            dic.CsValue = v?.Val;
+            dic.CsValueStr = v?.ValStr;
             dic.CsType = valType;
 
             return dic;
@@ -499,15 +499,15 @@ namespace MyDAL.Core.Helper
 
             return dic;
         }
-        internal DicParam InsertHelperDic(string fullName, string key, (object val, string valStr) val, Type valType)
+        internal DicParam InsertHelperDic(string fullName, string key, ValueInfo v, Type valType)
         {
             var dic = SetDicBase(DC);
             dic.ClassFullName = fullName;
             dic.ColumnOne = key;
             dic.Param = key;
             dic.ParamRaw = key;
-            dic.CsValue = val.val;
-            dic.CsValueStr = val.valStr;
+            dic.CsValue = v?.Val;
+            dic.CsValueStr = v?.ValStr;
             dic.CsType = valType;
 
             return dic;
@@ -515,15 +515,15 @@ namespace MyDAL.Core.Helper
 
         /*******************************************************************************************************/
 
-        internal DicParam SetDic(string fullName, string key, string param, (object val, string valStr) val, Type valType)
+        internal DicParam SetDic(string fullName, string key, string param, ValueInfo v, Type valType)
         {
             var dic = SetDicBase(DC);
             dic.ClassFullName = fullName;
             dic.ColumnOne = key;
             dic.Param = param;
             dic.ParamRaw = param;
-            dic.CsValue = val.val;
-            dic.CsValueStr = val.valStr;
+            dic.CsValue = v?.Val;
+            dic.CsValueStr = v?.ValStr;
             dic.CsType = valType;
 
             return dic;

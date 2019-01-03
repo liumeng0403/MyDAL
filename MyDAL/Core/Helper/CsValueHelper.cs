@@ -1,8 +1,8 @@
 ﻿using MyDAL.Core.Bases;
+using MyDAL.Core.Common;
 using MyDAL.Core.Extensions;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
@@ -30,10 +30,10 @@ namespace MyDAL.Core.Helper
                 throw new Exception(" SQL 中 in() 的条件个数不能为 0 !!!");
             }
             var sb = new StringBuilder();
-            for(var i=0;i<ds.Count;i++)
+            for (var i = 0; i < ds.Count; i++)
             {
                 sb.Append(ds[i]);
-                if(i!=ds.Count-1)
+                if (i != ds.Count - 1)
                 {
                     sb.Append(',');
                 }
@@ -59,7 +59,7 @@ namespace MyDAL.Core.Helper
 
         /*******************************************************************************************************/
 
-        internal (object val, string valStr) ValueProcess(Expression expr, Type valType, string format = "")
+        internal ValueInfo ValueProcess(Expression expr, Type valType, string format = "")
         {
             var val = Expression.Lambda(expr).Compile().DynamicInvoke();
             if (expr != null
@@ -76,21 +76,33 @@ namespace MyDAL.Core.Helper
             {
                 val = InValue(val, false);
             }
-            return (val, ValueProcess(val, valType, format));
+            return new ValueInfo
+            {
+                Val = val,
+                ValStr = ValueProcess(val, valType, format)
+            };
         }
-        internal (object val, string valstr) PropertyValue(PropertyInfo prop, object obj)
+        internal ValueInfo PropertyValue(PropertyInfo prop, object obj)
         {
             var valtype = prop.PropertyType;
             var val = DC.GH.GetObjPropValue(prop, obj);
             var valstr = ValueProcess(val, valtype, string.Empty);
-            return (val, valstr);
+            return new ValueInfo
+            {
+                Val = val,
+                ValStr = valstr
+            };
         }
-        internal (object val, string valStr) ExpandoObjectValue(object obj)
+        internal ValueInfo ExpandoObjectValue(object obj)
         {
             var valType = obj.GetType();
             var val = obj;
             var valStr = ValueProcess(val, valType, string.Empty);
-            return (val, valStr);
+            return new ValueInfo
+            {
+                Val = val,
+                ValStr = valStr
+            };
         }
         internal (string val, Type valType) InValue(Type type, object vals)
         {

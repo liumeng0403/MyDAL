@@ -49,7 +49,7 @@ namespace MyDAL.Core.Bases
             return true;
         }
 
-        private List<(string key, string param, (object val, string valStr) val, Type valType, string colType, CompareEnum compare)> GetSetKPV<M>(object objx)
+        private List<(string key, string param, ValueInfo val, Type valType, string colType, CompareEnum compare)> GetSetKPV<M>(object objx)
         {
             var list = new List<DicDynamic>();
             var dic = default(IDictionary<string, object>);
@@ -96,11 +96,11 @@ namespace MyDAL.Core.Bases
             }
 
             //
-            var result = new List<(string key, string param, (object val, string valStr) val, Type valType, string colType, CompareEnum compare)>();
+            var result = new List<(string key, string param, ValueInfo val, Type valType, string colType, CompareEnum compare)>();
             var columns = DC.XC.GetColumnInfos(DC.XC.GetModelKey(typeof(M).FullName));
             foreach (var prop in list)
             {
-                var val = default((object val, string valStr));
+                var val = default(ValueInfo);
                 var valType = default(Type);
                 var columnType = columns.First(it => it.ColumnName.Equals(prop.MField, StringComparison.OrdinalIgnoreCase)).DataType;
                 if (objx is ExpandoObject)
@@ -120,9 +120,9 @@ namespace MyDAL.Core.Bases
             }
             return result;
         }
-        private List<(ColumnParam cp, string param, (object val, string valStr) val, string colType, CompareEnum compare)> GetWhereKPV(PagingQueryOption objx, Type mType)
+        private List<(ColumnParam cp, string param, ValueInfo val, string colType, CompareEnum compare)> GetWhereKPV(PagingQueryOption objx, Type mType)
         {
-            var result = new List<(ColumnParam cp, string param, (object val, string valStr) val, string colType, CompareEnum compare)>();
+            var result = new List<(ColumnParam cp, string param, ValueInfo val, string colType, CompareEnum compare)>();
             var list = new List<DicDynamic>();
 
             //
@@ -133,10 +133,9 @@ namespace MyDAL.Core.Bases
             {
                 foreach (var sp in oProps)
                 {
-                    var spAttr = DC.AH.GetAttribute<XQueryAttribute>(oType, sp) as XQueryAttribute;
                     var spName = string.Empty;
                     var compare = CompareEnum.Equal;
-                    if (spAttr != null
+                    if (DC.AH.GetAttribute<XQueryAttribute>(oType, sp) is XQueryAttribute spAttr
                         && !string.IsNullOrWhiteSpace(spAttr.Name))
                     {
                         spName = spAttr.Name;
@@ -163,7 +162,7 @@ namespace MyDAL.Core.Bases
             var columns = DC.XC.GetColumnInfos(DC.XC.GetModelKey(mType.FullName));
             foreach (var prop in list)
             {
-                var val = default((object val, string valStr));
+                var val = default(ValueInfo);
                 var valType = default(Type);
                 var columnType = string.Empty;
                 var ci = columns.FirstOrDefault(it => it.ColumnName.Equals(prop.MField, StringComparison.OrdinalIgnoreCase));
@@ -174,16 +173,20 @@ namespace MyDAL.Core.Bases
                 var mp = objx.GetType().GetProperty(prop.VmField);
                 valType = mp.PropertyType;
                 val = DC.VH.PropertyValue(mp, objx);
-                if (!CheckWhereVal(val.val, valType))
+                if (!CheckWhereVal(val.Val, valType))
                 {
                     continue;
                 }
                 if (valType.IsList()
                     || valType.IsArray)
                 {
-                    var ox = DC.VH.InValue(valType, val.val);
+                    var ox = DC.VH.InValue(valType, val.Val);
                     valType = ox.valType;
-                    val = (ox.val, string.Empty);
+                    val = new ValueInfo
+                    {
+                        Val = ox.val,
+                        ValStr = string.Empty
+                    };
                 }
                 result.Add((new ColumnParam
                 {
@@ -207,10 +210,10 @@ namespace MyDAL.Core.Bases
         {
             var keyDic = DC.EH.FuncMFExpression(propertyFunc);
             var key = keyDic.ColumnOne;
-            var val = default((object val, string valStr));
+            var val = default(ValueInfo);
             if (modVal == null)
             {
-                val = (null, string.Empty);
+                val = null;
             }
             else
             {

@@ -152,7 +152,7 @@ namespace MyDAL.Core
                     if (memType == typeof(string))
                     {
                         var cp = GetKey(memO, FuncEnum.None);
-                        var val = default((object val, string valStr));
+                        var val = default(ValueInfo);
                         var valExpr = mcExpr.Arguments[0];
                         switch (type)
                         {
@@ -160,10 +160,18 @@ namespace MyDAL.Core
                                 val = DC.VH.ValueProcess(valExpr, cp.ValType);
                                 break;
                             case StringLikeEnum.StartsWith:
-                                val = ($"{DC.VH.ValueProcess(valExpr, cp.ValType).val}%", string.Empty);
+                                val = new ValueInfo
+                                {
+                                    Val = $"{DC.VH.ValueProcess(valExpr, cp.ValType).Val}%",
+                                    ValStr = string.Empty
+                                };
                                 break;
                             case StringLikeEnum.EndsWith:
-                                val = ($"%{DC.VH.ValueProcess(valExpr, cp.ValType).val}", string.Empty);
+                                val = new ValueInfo
+                                {
+                                    Val = $"%{DC.VH.ValueProcess(valExpr, cp.ValType).Val}",
+                                    ValStr = string.Empty
+                                };
                                 break;
                         }
                         DC.Option = OptionEnum.Like;
@@ -191,13 +199,17 @@ namespace MyDAL.Core
             {
                 var naExpr = valExpr as NewArrayExpression;
                 var cp = GetKey(keyExpr, FuncEnum.In);
-                var vals = new List<(object val, string valStr)>();
+                var vals = new List<ValueInfo>();
                 foreach (var exp in naExpr.Expressions)
                 {
                     vals.Add(DC.VH.ValueProcess(exp, cp.ValType));
                 }
 
-                var val = (string.Join(",", vals.Select(it => it.val)), string.Empty);
+                var val = new ValueInfo
+                {
+                    Val = string.Join(",", vals.Select(it => it.Val)),
+                    ValStr = string.Empty
+                };
                 DC.Option = OptionEnum.Function;
                 DC.Func = FuncEnum.In;
                 DC.Compare = CompareEnum.None;
@@ -207,12 +219,16 @@ namespace MyDAL.Core
             {
                 var liExpr = valExpr as ListInitExpression;
                 var cp = GetKey(keyExpr, FuncEnum.In);
-                var vals = new List<(object val, string valStr)>();
+                var vals = new List<ValueInfo>();
                 foreach (var ini in liExpr.Initializers)
                 {
                     vals.Add(DC.VH.ValueProcess(ini.Arguments[0], cp.ValType));
                 }
-                var val = (string.Join(",", vals.Select(it => it.val)), string.Empty);
+                var val = new ValueInfo
+                {
+                    Val = string.Join(",", vals.Select(it => it.Val)),
+                    ValStr = string.Empty
+                };
                 DC.Option = OptionEnum.Function;
                 DC.Func = FuncEnum.In;
                 DC.Compare = CompareEnum.None;
@@ -244,11 +260,11 @@ namespace MyDAL.Core
             var format = DC.TSH.DateTime(cp.Format);
             if (DC.Action == ActionEnum.Select)
             {
-                return DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.DateFormatDic(cp, (null, string.Empty), format) });
+                return DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.DateFormatDic(cp, null, format) });
             }
             else
             {
-                return DC.DPH.DateFormatDic(cp, (null, string.Empty), format);
+                return DC.DPH.DateFormatDic(cp, null, format);
             }
         }
 
@@ -385,7 +401,11 @@ namespace MyDAL.Core
                     {
                         DC.Option = OptionEnum.Compare;
                         DC.Compare = CompareEnum.Equal;
-                        return DC.DPH.CompareDic(cp, (true.ToString(), string.Empty));
+                        return DC.DPH.CompareDic(cp, new ValueInfo
+                        {
+                            Val = true.ToString(),
+                            ValStr = string.Empty
+                        });
                     }
                     return null;
                 }
@@ -403,7 +423,11 @@ namespace MyDAL.Core
                     {
                         DC.Option = OptionEnum.Compare;
                         DC.Compare = CompareEnum.Equal;
-                        return DC.DPH.CompareDic(cp, (true.ToString(), string.Empty));
+                        return DC.DPH.CompareDic(cp, new ValueInfo
+                        {
+                            Val = true.ToString(),
+                            ValStr = string.Empty
+                        });
                     }
 
                     return null;
@@ -423,7 +447,7 @@ namespace MyDAL.Core
                             var cp = GetKey(memExpr, FuncEnum.CharLength);
                             DC.Func = FuncEnum.CharLength;
                             DC.Compare = CompareEnum.None;
-                            return DC.DPH.CharLengthDic(cp, (null, string.Empty));
+                            return DC.DPH.CharLengthDic(cp, null);
                         }
                         else
                         {
@@ -614,7 +638,7 @@ namespace MyDAL.Core
                 {
                     var mem = mcExpr.Object;
                     var val = DC.VH.ValueProcess(mcExpr.Arguments[0], XConfig.TC.String);
-                    return GetKey(mem, func, val.val.ToString());
+                    return GetKey(mem, func, val.Val.ToString());
                 }
                 else
                 {
