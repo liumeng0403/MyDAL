@@ -36,7 +36,7 @@ namespace MyDAL.Core.Bases
             AH = new AttributeHelper(this);
             VH = new CsValueHelper(this);
             GH = new GenericHelper(this);
-            EH = new XExpression(this);
+            XE = new XExpression(this);
             CFH = new CsFuncHelper(this);
             TSH = new ToStringHelper();
             XC = new XCache(this);
@@ -63,7 +63,7 @@ namespace MyDAL.Core.Bases
 
         /************************************************************************************************************************/
 
-        internal XExpression EH { get; private set; }
+        internal XExpression XE { get; private set; }
 
         internal CsFuncHelper CFH { get; private set; }
         internal ToStringHelper TSH { get; private set; }
@@ -96,7 +96,6 @@ namespace MyDAL.Core.Bases
         /************************************************************************************************************************/
 
         internal IDbConnection Conn { get; private set; }
-        internal IDbTransaction Tran { get; set; }
         internal ISqlProvider SqlProvider { get; set; }
         internal XCache XC { get; private set; }
         internal DataSource DS { get; private set; }
@@ -159,20 +158,12 @@ namespace MyDAL.Core.Bases
         {
             //
             var type = typeof(M);
-            var key = XC.GetModelKey(type.FullName);
             if (NeedSetSingle)
             {
                 SingleOpName = type.FullName;
                 NeedSetSingle = false;
             }
-
-            //
-            if (XC.ExistTableName(key)) return;
-            var table = SqlProvider.GetTableName<M>();
-            XC.SetTableName(key, table);
-            XC.SetModelType(key, type);
-            XC.SetModelProperys(type, this);
-            (XC.SetModelColumnInfos(key, this)).GetAwaiter().GetResult();
+            XC.GetTableModel(type);
         }
 
         internal void OrderByOptionHandle(PagingQueryOption option, string fullName)

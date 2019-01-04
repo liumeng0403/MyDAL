@@ -21,25 +21,6 @@ namespace MyDAL.Core.Helper
 
         /*************************************************************************************************************************************/
 
-        internal string GetAttributePropVal<M, A>(Expression<Func<A, string>> attrPropFunc)
-            where A : Attribute
-        {
-            var dic = DC.EH.FuncMFExpression(attrPropFunc);
-            var mType = typeof(M);
-            var key = DC.XC.GetAttrPropKey(dic.ColumnOne, typeof(A).FullName, mType.FullName);
-            if (!XCache.ModelAttributePropValCache.ContainsKey(key))
-            {
-                var attr = mType.GetCustomAttributes(typeof(A), false).FirstOrDefault();
-                var value = attr == null ? string.Empty : attrPropFunc.Compile()((A)attr);
-                if (!XCache.ModelAttributePropValCache.ContainsKey(key)
-                    && !value.IsNullStr())
-                {
-                    XCache.ModelAttributePropValCache[key] = value;
-                }
-                return value;
-            }
-            return XCache.ModelAttributePropValCache[key];
-        }
         internal Attribute GetAttribute<A>(Type mType)
         {
             try
@@ -49,7 +30,7 @@ namespace MyDAL.Core.Helper
             }
             catch (Exception ex)
             {
-                throw new Exception("方法 Attribute GetAttribute<M,A>(M m, PropertyInfo prop) 出错:" + ex.Message);
+                throw new Exception("方法 Attribute GetAttribute<A>(Type mType) 出错:" + ex.Message);
             }
         }
         internal Attribute GetAttribute<A>(Type mType, PropertyInfo prop)

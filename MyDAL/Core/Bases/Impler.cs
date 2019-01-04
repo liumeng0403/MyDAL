@@ -15,19 +15,15 @@ namespace MyDAL.Core.Bases
 
         private void SetInsertValue<M>(M m, int index)
         {
-            var key = DC.XC.GetModelKey(m.GetType().FullName);
-            var props = DC.XC.GetModelProperys(key);
-            var columns = DC.XC.GetColumnInfos(key);
-            var fullName = typeof(M).FullName;
-
+            var tbm = DC.XC.GetTableModel(m.GetType());
             var list = new List<DicParam>();
-            foreach (var prop in props)
+            foreach (var prop in tbm.TbMProps)
             {
                 var val = DC.VH.PropertyValue(prop, m);
                 DC.Compare = CompareEnum.None;
-                list.Add(DC.DPH.InsertHelperDic(fullName, prop.Name, val, prop.PropertyType));
+                list.Add(DC.DPH.InsertHelperDic(tbm.TbMFullName, prop.Name, val, prop.PropertyType));
             }
-            DC.DPH.AddParameter(DC.DPH.InsertDic(fullName, list));
+            DC.DPH.AddParameter(DC.DPH.InsertDic(tbm.TbMFullName, list));
         }
 
         /**********************************************************************************************************/
@@ -51,14 +47,14 @@ namespace MyDAL.Core.Bases
         {
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
-            var col = DC.EH.FuncMFExpression(propertyFunc);
+            var col = DC.XE.FuncMFExpression(propertyFunc);
             DC.DPH.AddParameter(col);
         }
         protected void SingleColumnHandle<T>(Expression<Func<T>> propertyFunc)
         {
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
-            var col = DC.EH.FuncTExpression(propertyFunc);
+            var col = DC.XE.FuncTExpression(propertyFunc);
             DC.DPH.AddParameter(col);
         }
 
@@ -74,7 +70,7 @@ namespace MyDAL.Core.Bases
             {
                 DC.Option = OptionEnum.Column;
                 DC.Compare = CompareEnum.None;
-                var col = DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.ColumnDic("*", dic.TableAliasOne, fullName, dic.PropOne) });
+                var col = DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.ColumnDic("*", (string)dic.TableAliasOne, fullName, (string)dic.PropOne) });
                 DC.DPH.AddParameter(col);
             }
             else if (DC.Parameters.Count == 0)
@@ -89,31 +85,29 @@ namespace MyDAL.Core.Bases
         }
         protected void SelectMHandle<M, VM>()
         {
-            var mType = typeof(M);
+            var tbm = DC.XC.GetTableModel(typeof(M));
             var vmType = typeof(VM);
-            if (mType == vmType)
+            if (tbm.TbMType == vmType)
             {
                 return;
             }
 
             //
             DC.Action = ActionEnum.Select;
-            var mFullName = mType.FullName;
-            var mProps = DC.XC.GetModelProperys(DC.XC.GetModelKey(mFullName)); //DC.GH.GetPropertyInfos(mType);
-            var tab = DC.Parameters.FirstOrDefault(it => mFullName.Equals(it.ClassFullName, StringComparison.OrdinalIgnoreCase));
+            var tab = DC.Parameters.FirstOrDefault(it => tbm.TbMFullName.Equals(it.ClassFullName, StringComparison.OrdinalIgnoreCase));
             var vmProps = DC.GH.GetPropertyInfos(vmType);
             if (tab != null)
             {
                 DC.Option = OptionEnum.Column;
                 DC.Compare = CompareEnum.None;
                 var list = new List<DicParam>();
-                foreach (var prop in mProps)
+                foreach (var prop in tbm.TbMProps)
                 {
                     foreach (var vProp in vmProps)
                     {
                         if (prop.Name.Equals(vProp.Name, StringComparison.OrdinalIgnoreCase))
                         {
-                            list.Add(DC.DPH.ColumnDic(prop.Name, tab.TableAliasOne, mFullName, prop.Name));
+                            list.Add(DC.DPH.ColumnDic(prop.Name, tab.TableAliasOne, tbm.TbMFullName, prop.Name));
                         }
                     }
                 }
@@ -126,14 +120,14 @@ namespace MyDAL.Core.Bases
             else
             {
                 var fullNames = DC.Parameters.Where(it => !string.IsNullOrWhiteSpace(it.ClassFullName)).Distinct();
-                throw new Exception($"请使用 [[Task<List<VM>> ListAsync<VM>(Expression<Func<VM>> func)]] 方法! 或者 {mType.Name} 必须为 [[{string.Join(",", fullNames.Select(it => it.ClassName))}]] 其中之一 !");
+                throw new Exception($"请使用 [[Task<List<VM>> ListAsync<VM>(Expression<Func<VM>> func)]] 方法! 或者 {tbm.TbMName} 必须为 [[{string.Join(",", fullNames.Select(it => it.ClassName))}]] 其中之一 !");
             }
         }
         protected void SelectMHandle<VM>(Expression<Func<VM>> func)
         {
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.ColumnAs;
-            var col = DC.EH.FuncTExpression(func);
+            var col = DC.XE.FuncTExpression(func);
             DC.DPH.AddParameter(col);
         }
         protected void SelectMHandle<M, VM>(Expression<Func<M, VM>> propertyFunc)
@@ -141,7 +135,7 @@ namespace MyDAL.Core.Bases
         {
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.ColumnAs;
-            var col = DC.EH.FuncMFExpression(propertyFunc);
+            var col = DC.XE.FuncMFExpression(propertyFunc);
             DC.DPH.AddParameter(col);
         }
 

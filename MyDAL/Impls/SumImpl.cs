@@ -20,11 +20,10 @@ namespace MyDAL.Impls
             where F : struct
         {
             DC.Action = ActionEnum.Select;
-            //DC.Option = OptionEnum.Sum;
             DC.Option = OptionEnum.Column;
             DC.Compare = CompareEnum.None;
             DC.Func = FuncEnum.Sum;
-            var dic = DC.EH.FuncMFExpression(propertyFunc);
+            var dic = DC.XE.FuncMFExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.SumAsync);
             return await DC.DS.ExecuteScalarAsync<F>();

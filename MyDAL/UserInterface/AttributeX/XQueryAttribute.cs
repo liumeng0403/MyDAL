@@ -2,10 +2,16 @@
 
 namespace MyDAL
 {
+    /// <summary>
+    /// 用于 Paging Query 的查询
+    /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
     public sealed class XQueryAttribute 
         : Attribute
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public XQueryAttribute() { }
 
         /// <summary>
@@ -16,16 +22,12 @@ namespace MyDAL
         /// <summary>
         /// Table - 列名
         /// </summary>
-        public string Column { get; set; }
+        public string Column { get; set; } = string.Empty;
 
         /// <summary>
         /// Where - 比较条件
         /// </summary>
-        public CompareEnum Compare { get; set; }
+        public CompareEnum Compare { get; set; } = CompareEnum.None;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        public LogicEnum Logic { get; set; } = LogicEnum.And;
     }
 }

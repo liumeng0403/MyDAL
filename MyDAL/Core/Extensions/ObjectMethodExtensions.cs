@@ -17,6 +17,22 @@ namespace MyDAL.Core.Extensions
             }
             return result;
         }
+        internal static bool ToBool(this bool? obj)
+        {
+            var result = false;
+            try
+            {
+                if (obj.HasValue)
+                {
+                    result = Convert.ToBoolean(obj);
+                }                
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"bool ToBool(this bool? obj) -- {obj?.ToString()}", ex);
+            }
+            return result;
+        }
 
         internal static byte ToByte(this object obj)
         {

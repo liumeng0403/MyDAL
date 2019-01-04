@@ -11,7 +11,7 @@ namespace MyDAL
         public static OnX On(this JoinX join, Expression<Func<bool>> compareFunc)
         {
             join.DC.Action = ActionEnum.On;
-            var field = join.DC.EH.FuncBoolExpression(compareFunc);
+            var field = join.DC.XE.FuncBoolExpression(compareFunc);
             join.DC.DPH.AddParameter(field);
             return new OnX(join.DC);
         }

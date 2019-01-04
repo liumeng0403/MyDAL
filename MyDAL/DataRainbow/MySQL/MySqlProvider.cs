@@ -468,7 +468,8 @@ namespace MyDAL.DataRainbow.MySQL
             }
             else
             {
-                TableX(DC.XC.GetTableName(DC.XC.GetModelKey(DC.SingleOpName)), X);
+                var tbm = DC.XC.GetTableModel(DC.XC.GetModelKey(DC.SingleOpName));
+                TableX(tbm.TbName, X);
             }
         }
         private void Join()
@@ -534,7 +535,7 @@ namespace MyDAL.DataRainbow.MySQL
         {
             var dic = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.From);
             var key = dic != null ? dic.Key : DC.XC.GetModelKey(DC.SingleOpName);
-            var cols = DC.XC.GetColumnInfos(key);
+            var tbm = DC.XC.GetTableModel(key);
             if (DC.Parameters.Any(it => it.Action == ActionEnum.OrderBy))
             {
                 CRLF(X); X.Append("order by"); Spacing(X); OrderByParams();
@@ -546,7 +547,7 @@ namespace MyDAL.DataRainbow.MySQL
                     return;
                 }
 
-                var col = GetIndex(cols);
+                var col = GetIndex(tbm.TbCols);
                 if (col != null)
                 {
                     CRLF(X); X.Append("order by"); Spacing(X);
@@ -639,15 +640,6 @@ namespace MyDAL.DataRainbow.MySQL
 
         /****************************************************************************************************************/
 
-        string ISqlProvider.GetTableName<M>()
-        {
-            var name = DC.AH.GetAttributePropVal<M, XTableAttribute>(a => a.Name);
-            if (name.IsNullStr())
-            {
-                throw new Exception($"类 [[{typeof(M).FullName}]] 必须是与 DB Table 对应的实体类,并且要由 [XTable] 标记指定类对应的表名!!!");
-            }
-            return name;
-        }
         async Task<List<ColumnInfo>> ISqlProvider.GetColumnsInfos(string tableName)
         {
             DC.SQL.Clear();

@@ -726,8 +726,8 @@ namespace MyDAL.Core.Helper
                 //
                 if (ui.Option != OptionEnum.OneEqualOne)
                 {
-                    var columns = DC.XC.GetColumnInfos(DC.XC.GetModelKey(ui.ClassFullName));
-                    var col = columns.FirstOrDefault(it => it.ColumnName.Equals(ui.ColumnOne, StringComparison.OrdinalIgnoreCase));
+                    var tbm = DC.XC.GetTableModel(DC.XC.GetModelKey(ui.ClassFullName));
+                    var col = tbm.TbCols.FirstOrDefault(it => it.ColumnName.Equals(ui.ColumnOne, StringComparison.OrdinalIgnoreCase));
                     if (col != null)
                     {
                         ui.ColumnType = col.DataType;

@@ -253,7 +253,7 @@ namespace MyDAL.Core
         }
         private DicParam FuncToString(MethodCallExpression mcExpr)
         {
-            var cp = DC.EH.GetKey(mcExpr, FuncEnum.DateFormat);
+            var cp = DC.XE.GetKey(mcExpr, FuncEnum.DateFormat);
             DC.Option = OptionEnum.ColumnAs;
             DC.Func = FuncEnum.DateFormat;
             DC.Compare = CompareEnum.None;
@@ -597,22 +597,12 @@ namespace MyDAL.Core
 
                 //
                 var type = prop.PropertyType;
-                var attr = DC.XC.GetXColumnAttribute(prop, DC.XC.GetAttrKey(XConfig.XColumnFullName, prop.Name, mType.FullName));
-                var field = string.Empty;
-                if (attr != null)
-                {
-                    field = attr.Name;
-                }
-                else
-                {
-                    field = prop.Name;
-                }
-
-                //
+                var tbm = DC.XC.GetTableModel(mType);
+                var attr = tbm.PCAs.FirstOrDefault(it => prop.Name.Equals(it.PropName, StringComparison.OrdinalIgnoreCase)).Attr;
                 return new ColumnParam
                 {
                     Prop = prop.Name,
-                    Key = field,
+                    Key = attr.Name,
                     Alias = alias,
                     ValType = type,
                     ClassFullName = mType.FullName,

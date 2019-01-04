@@ -55,11 +55,11 @@ namespace MyDAL.Core.Bases
             var dic = default(IDictionary<string, object>);
 
             //
-            var mProps = typeof(M).GetProperties();
+            var tbm = DC.XC.GetTableModel(DC.XC.GetModelKey(typeof(M).FullName));
             if (objx is ExpandoObject)
             {
                 dic = objx as IDictionary<string, object>;
-                foreach (var mp in mProps)
+                foreach (var mp in tbm.TbMProps)
                 {
                     foreach (var sp in dic.Keys)
                     {
@@ -78,7 +78,7 @@ namespace MyDAL.Core.Bases
             else
             {
                 var oProps = objx.GetType().GetProperties();
-                foreach (var mp in mProps)
+                foreach (var mp in tbm.TbMProps)
                 {
                     foreach (var sp in oProps)
                     {
@@ -97,12 +97,11 @@ namespace MyDAL.Core.Bases
 
             //
             var result = new List<(string key, string param, ValueInfo val, Type valType, string colType, CompareEnum compare)>();
-            var columns = DC.XC.GetColumnInfos(DC.XC.GetModelKey(typeof(M).FullName));
             foreach (var prop in list)
             {
                 var val = default(ValueInfo);
                 var valType = default(Type);
-                var columnType = columns.First(it => it.ColumnName.Equals(prop.MField, StringComparison.OrdinalIgnoreCase)).DataType;
+                var columnType = tbm.TbCols.First(it => it.ColumnName.Equals(prop.MField, StringComparison.OrdinalIgnoreCase)).DataType;
                 if (objx is ExpandoObject)
                 {
                     var obj = dic[prop.MField];
@@ -126,10 +125,10 @@ namespace MyDAL.Core.Bases
             var list = new List<XQueryDic>();
 
             //
-            var tablePs = DC.XC.GetModelProperys(DC.XC.GetModelKey(tFullName)); // mType.GetProperties();
+            var tbm = DC.XC.GetTableModel(DC.XC.GetModelKey(tFullName));
             var qType = query.GetType();
             var queryPs = qType.GetProperties(XConfig.ClassSelfMember);
-            foreach (var tp in tablePs)
+            foreach (var tp in tbm.TbMProps)
             {
                 foreach (var qp in queryPs)
                 {
@@ -159,13 +158,12 @@ namespace MyDAL.Core.Bases
             }
 
             //
-            var columns = DC.XC.GetColumnInfos(DC.XC.GetModelKey(tFullName));
             foreach (var prop in list)
             {
                 var val = default(ValueInfo);
                 var valType = default(Type);
                 var columnType = string.Empty;
-                var ci = columns.FirstOrDefault(it => it.ColumnName.Equals(prop.MField, StringComparison.OrdinalIgnoreCase));
+                var ci = tbm.TbCols.FirstOrDefault(it => it.ColumnName.Equals(prop.MField, StringComparison.OrdinalIgnoreCase));
                 if (ci != null)
                 {
                     columnType = ci.DataType;
@@ -215,7 +213,7 @@ namespace MyDAL.Core.Bases
         internal void SetChangeHandle<M, F>(Expression<Func<M, F>> propertyFunc, F modVal, OptionEnum option)
             where M : class
         {
-            var keyDic = DC.EH.FuncMFExpression(propertyFunc);
+            var keyDic = DC.XE.FuncMFExpression(propertyFunc);
             var key = keyDic.ColumnOne;
             var val = default(ValueInfo);
             if (modVal == null)
@@ -245,7 +243,7 @@ namespace MyDAL.Core.Bases
 
         internal void WhereJoinHandle(Operator op, Expression<Func<bool>> func)
         {
-            var dic = op.DC.EH.FuncBoolExpression(func);
+            var dic = op.DC.XE.FuncBoolExpression(func);
             op.DC.DPH.AddParameter(dic);
         }
 
@@ -253,7 +251,7 @@ namespace MyDAL.Core.Bases
             where M : class
         {
             DC.Action = ActionEnum.Where;
-            var field = DC.EH.FuncMBoolExpression(func);
+            var field = DC.XE.FuncMBoolExpression(func);
             field.ClassFullName = typeof(M).FullName;
             DC.DPH.AddParameter(field);
         }
@@ -309,7 +307,7 @@ namespace MyDAL.Core.Bases
             where M : class
         {
             DC.Action = ActionEnum.And;
-            var field = DC.EH.FuncMBoolExpression(func);
+            var field = DC.XE.FuncMBoolExpression(func);
             DC.DPH.AddParameter(field);
         }
 
@@ -317,14 +315,14 @@ namespace MyDAL.Core.Bases
             where M : class
         {
             DC.Action = ActionEnum.Or;
-            var field = DC.EH.FuncMBoolExpression(func);
+            var field = DC.XE.FuncMBoolExpression(func);
             DC.DPH.AddParameter(field);
         }
 
         internal void OrderByMF<M, F>(Expression<Func<M, F>> propertyFunc, OrderByEnum orderBy)
             where M : class
         {
-            var keyDic = DC.EH.FuncMFExpression(propertyFunc);
+            var keyDic = DC.XE.FuncMFExpression(propertyFunc);
             switch (orderBy)
             {
                 case OrderByEnum.Asc:
@@ -340,7 +338,7 @@ namespace MyDAL.Core.Bases
 
         internal void OrderByF<F>(Expression<Func<F>> func, OrderByEnum orderBy)
         {
-            var keyDic = DC.EH.FuncTExpression(func);
+            var keyDic = DC.XE.FuncTExpression(func);
             switch (orderBy)
             {
                 case OrderByEnum.Asc:

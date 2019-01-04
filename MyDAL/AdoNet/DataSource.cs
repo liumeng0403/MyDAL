@@ -152,8 +152,9 @@ namespace MyDAL.AdoNet
                 {
                     throw new Exception("[[ReadColumn<F>()]] - 多表连接 - 单列 - 查询 - 异常 !!!");
                 }
-                var func = DC.XC.GetHandle(SqlOne, Reader, DC.XC.GetModelType(dic.Key));
-                var prop = DC.XC.GetModelProperys(dic.Key).FirstOrDefault(it => it.Name.Equals(dic.PropOne, StringComparison.Ordinal));
+                var tbm = DC.XC.GetTableModel(dic.Key);
+                var func = DC.XC.GetHandle(SqlOne, Reader, tbm.TbMType);
+                var prop = tbm.TbMProps.FirstOrDefault(it => it.Name.Equals(dic.PropOne, StringComparison.Ordinal));
                 while (await Reader.ReadAsync(CancellationToken.None).ConfigureAwait(false))
                 {
                     var obj = func(Reader);

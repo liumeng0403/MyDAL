@@ -36,10 +36,7 @@ namespace MyDAL.Impls
             DC.Option = OptionEnum.Column;
             DC.Compare = CompareEnum.None;
             DC.Func = FuncEnum.Count;
-            var dic = DC.EH.FuncMFExpression(propertyFunc);
-            //var key = keyDic.ColumnOne;
-            //DC.Option = OptionEnum.Count;
-            //DC.DPH.AddParameter(DC.DPH.CountDic(typeof(M).FullName, key));
+            var dic = DC.XE.FuncMFExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.CountAsync);
             return await DC.DS.ExecuteScalarAsync<int>();
@@ -71,9 +68,7 @@ namespace MyDAL.Impls
             DC.Action = ActionEnum.Select;
             DC.Compare = CompareEnum.None;
             DC.Func = FuncEnum.Count;
-            var dic = DC.EH.FuncTExpression(propertyFunc);
-            //DC.Option = OptionEnum.Count;
-            //DC.DPH.AddParameter(DC.DPH.CountDic(dic.ClassFullName, dic.ColumnOne, dic.TableAliasOne));
+            var dic = DC.XE.FuncTExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.CountAsync);
             return await DC.DS.ExecuteScalarAsync<int>();
