@@ -119,58 +119,33 @@ namespace MyDAL.Core.Bases
             }
             return result;
         }
-        private List<XQueryParam> GetWhereKPV(PagingQueryOption query, string tFullName)
+        private List<XQueryParam> GetWhereKPV(PagingQueryOption query)
         {
-            var result = new List<XQueryParam>();
-            var list = new List<XQueryDic>();
-
             //
-            var tbm = DC.XC.GetTableModel(DC.XC.GetModelKey(tFullName));
-            var qType = query.GetType();
-            var queryPs = qType.GetProperties(XConfig.ClassSelfMember);
-            foreach (var tp in tbm.TbMProps)
+            var result = new List<XQueryParam>();
+            var dics = new List<XQueryDic>();
+            var queryT = query.GetType();
+            var ops = DC.XC.GetPagingOption(queryT);
+            foreach (var op in ops)
             {
-                foreach (var qp in queryPs)
+                dics.Add(new XQueryDic
                 {
-                    var cName = string.Empty;
-                    var compare = CompareEnum.Equal;
-                    if (DC.AH.GetAttribute<XQueryAttribute>(qType, qp) is XQueryAttribute xqA
-                        && !string.IsNullOrWhiteSpace(xqA.Column))
-                    {
-                        cName = xqA.Column;
-                        compare = xqA.Compare;
-                    }
-                    else
-                    {
-                        cName = qp.Name;
-                    }
-
-                    if (tp.Name.Equals(cName, StringComparison.OrdinalIgnoreCase))
-                    {
-                        list.Add(new XQueryDic
-                        {
-                            MField = tp.Name,
-                            VmField = qp.Name,
-                            Compare = compare
-                        });
-                    }
-                }
+                    MFullName = op.TbMType.FullName,
+                    MProp = op.TbMProp.Name,
+                    QCol = op.ColName,
+                    QProp = op.PropName,
+                    Compare = op.Compare
+                });
             }
 
             //
-            foreach (var prop in list)
+            foreach (var dic in dics)
             {
                 var val = default(ValueInfo);
                 var valType = default(Type);
-                var columnType = string.Empty;
-                var ci = tbm.TbCols.FirstOrDefault(it => it.ColumnName.Equals(prop.MField, StringComparison.OrdinalIgnoreCase));
-                if (ci != null)
-                {
-                    columnType = ci.DataType;
-                }
-                var mp = query.GetType().GetProperty(prop.VmField);
-                valType = mp.PropertyType;
-                val = DC.VH.PropertyValue(mp, query);
+                var qp = queryT.GetProperty(dic.QProp);
+                valType = qp.PropertyType;
+                val = DC.VH.PropertyValue(qp, query);
                 if (!CheckWhereVal(val.Val, valType))
                 {
                     continue;
@@ -190,15 +165,13 @@ namespace MyDAL.Core.Bases
                 {
                     Cp = new ColumnParam
                     {
-                        Prop = prop.MField,
-                        Key = prop.MField,
+                        Prop = dic.MProp,
+                        Key = dic.QCol,
                         ValType = valType,
-                        ClassFullName = tFullName
+                        ClassFullName = dic.MFullName
                     },
-                    Param = prop.VmField,
                     Val = val,
-                    ColType = columnType,
-                    Compare = prop.Compare
+                    Compare = dic.Compare
                 });
             }
             return result;
@@ -256,10 +229,10 @@ namespace MyDAL.Core.Bases
             DC.DPH.AddParameter(field);
         }
 
-        internal void WhereDynamicHandle<M>(PagingQueryOption mWhere)
+        internal void WhereDynamicHandle<M>(PagingQueryOption query)
         {
             var mType = typeof(M);
-            var tuples = GetWhereKPV(mWhere, mType.FullName);
+            var tuples = GetWhereKPV(query);
             var count = 0;
             foreach (var tp in tuples)
             {

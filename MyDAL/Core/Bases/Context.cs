@@ -86,7 +86,7 @@ namespace MyDAL.Core.Bases
         /************************************************************************************************************************/
 
         internal bool NeedSetSingle { get; set; } = true;
-        internal string SingleOpName { get; set; }
+        internal Type TbM1 { get; set; }
         internal int DicID { get; set; } = 1;
         internal List<DicParam> Parameters { get; set; }
         internal List<string> SQL { get; private set; } = new List<string>();
@@ -160,7 +160,7 @@ namespace MyDAL.Core.Bases
             var type = typeof(M);
             if (NeedSetSingle)
             {
-                SingleOpName = type.FullName;
+                TbM1 = type;
                 NeedSetSingle = false;
             }
             XC.GetTableModel(type);

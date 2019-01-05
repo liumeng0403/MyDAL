@@ -468,7 +468,7 @@ namespace MyDAL.DataRainbow.MySQL
             }
             else
             {
-                var tbm = DC.XC.GetTableModel(DC.XC.GetModelKey(DC.SingleOpName));
+                var tbm = DC.XC.GetTableModel(DC.XC.GetModelKey(DC.TbM1.FullName));
                 TableX(tbm.TbName, X);
             }
         }
@@ -534,7 +534,7 @@ namespace MyDAL.DataRainbow.MySQL
         private void OrderBy()
         {
             var dic = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.From);
-            var key = dic != null ? dic.Key : DC.XC.GetModelKey(DC.SingleOpName);
+            var key = dic != null ? dic.Key : DC.XC.GetModelKey(DC.TbM1.FullName);
             var tbm = DC.XC.GetTableModel(key);
             if (DC.Parameters.Any(it => it.Action == ActionEnum.OrderBy))
             {

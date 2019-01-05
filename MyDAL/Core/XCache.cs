@@ -2,7 +2,6 @@
 using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
-using MyDAL.Core.Extensions;
 using MyDAL.Core.Helper;
 using System;
 using System.Collections.Concurrent;
@@ -10,7 +9,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace MyDAL.Core
 {
@@ -146,44 +144,97 @@ namespace MyDAL.Core
         {
             return DC.AR.Invoke(key, p => TableCache[p]);
         }
-        internal List<PagingOptionCache> GetPagingOption(Type qt)
+        internal List<PagingOptionCache> GetPagingOption(Type queryT)
         {
-            var key = GetModelKey(qt.FullName);
-            if (!PagingCache.TryGetValue(key, out var op))
+            var key = GetModelKey(queryT.FullName);
+            return PagingCache.GetOrAdd(key, k =>
             {
-                var list = new List<PagingOptionCache>();
-                var ps = qt.GetProperties(XConfig.ClassSelfMember);
+                var opt = new List<PagingOptionCache>();
+                var ps = queryT.GetProperties(XConfig.ClassSelfMember);
                 foreach (var p in ps)
                 {
-                    var oc = new PagingOptionCache();
-                    var xa = DC.AH.GetAttribute<XQueryAttribute>(qt, p) as XQueryAttribute;
-                    if (DC.Crud == CrudEnum.Join
-                        && xa == null)
+                    var pc = new PagingOptionCache();
+                    if (!(DC.AH.GetAttribute<XQueryAttribute>(queryT, p) is XQueryAttribute qa))
                     {
-                        throw new Exception($"[[{qt.Name}.{p.Name}]] 必须用 [XQuery] Attribute 标记出 'Table =' 以表明该字段所属的DB表!!!");
+                        if (DC.Crud == CrudEnum.Join)
+                        {
+                            throw new Exception($"[[{queryT.Name}.{p.Name}]] 必须用 [XQuery] Attribute 标记出 'Table =' 以表明该字段所属的DB表!!!");
+                        }
+                        else
+                        {
+                            pc.Attr = new XQueryAttribute
+                            {
+                                Table = DC.TbM1
+                            };
+                            var tbm1 = DC.XC.GetTableModel(DC.TbM1);
+                            var col1 = tbm1.PCAs.FirstOrDefault(it =>
+                            {
+                                return it.ColName.Equals(p.Name, StringComparison.OrdinalIgnoreCase) || it.PropName.Equals(p.Name, StringComparison.OrdinalIgnoreCase);
+                            });
+                            if (col1 == null)
+                            {
+                                throw new Exception($"属性 [[{queryT.Name}.{p.Name}]] 必须用 [XQuery] Attribute 中 'Column =' 指明与 DB-Table 对应的列!!!");
+                            }
+                            pc.Attr.Column = col1.Col.ColumnName;
+                            pc.Attr.Compare = CompareEnum.Equal;
+                        }
                     }
-                    if (DC.Crud == CrudEnum.Join
-                        && xa?.Table == null)
+                    else
                     {
-                        throw new Exception($"[[{qt.Name}.{p.Name}]] 上的 [XQuery] Attribute 中必须指明 'Table =' , 以表明该字段所属的DB表!!!");
+                        pc.Attr = new XQueryAttribute();
+                        if (DC.Crud == CrudEnum.Join
+                            && qa.Table == null)
+                        {
+                            throw new Exception($"属性 [[{queryT.Name}.{p.Name}]] 上的 [XQuery] Attribute 中必须指明 'Table =' , 以表明该字段所属的DB表!!!");
+                        }
+                        else if (DC.Crud != CrudEnum.Join
+                                    && qa.Table == null)
+                        {
+                            pc.Attr.Table = DC.TbM1;
+                        }
+                        else
+                        {
+                            pc.Attr.Table = qa.Table;
+                        }
+                        var colName = qa.Column.IsNullStr() ? p.Name : qa.Column;
+                        var tbm2 = DC.XC.GetTableModel(pc.Attr.Table);
+                        var col2 = tbm2.PCAs.FirstOrDefault(it =>
+                        {
+                            return it.ColName.Equals(colName, StringComparison.OrdinalIgnoreCase) || it.PropName.Equals(colName, StringComparison.OrdinalIgnoreCase);
+                        });
+                        if (col2 == null)
+                        {
+                            throw new Exception($"属性 [[{queryT.Name}.{p.Name}]] 必须用 [XQuery] Attribute 中 'Column =' 指明与 DB-Table 对应的列!!!");
+                        }
+                        pc.Attr.Column = col2.Col.ColumnName;
+                        if (qa.Compare == CompareEnum.None)
+                        {
+                            pc.Attr.Compare = CompareEnum.Equal;
+                        }
+                        else
+                        {
+                            pc.Attr.Compare = qa.Compare;
+                        }
                     }
-                    oc.TbType = xa?.Table;
-                    var tbName = string.Empty;
-                    if (xa?.Table != null)
+                    pc.TbMType = pc.Attr.Table;
+                    var tbm3 = DC.XC.GetTableModel(pc.Attr.Table);
+                    var col3 = tbm3.PCAs.FirstOrDefault(it =>
                     {
-                        var tbm = DC.XC.GetTableModel(xa?.Table);
-                        tbName = tbm.TbName;
-                    }
-                    oc.TbName = tbName;
-                    oc.PropName = p.Name;
-                    if ((xa?.Column.IsNullStr()).ToBool())
+                        return it.ColName.Equals(pc.Attr.Column, StringComparison.OrdinalIgnoreCase) || it.PropName.Equals(pc.Attr.Column, StringComparison.OrdinalIgnoreCase);
+                    });
+                    if (col3 == null)
                     {
-                        xa.Column = p.Name;
+                        throw new Exception($"属性 [[{queryT.Name}.{p.Name}]] 对应的表字段 [[{tbm3.TbName}.{pc.Attr.Column}]] 在实体类 [[{pc.TbMType.Name}]] 中没有找到对应的属性!!!");
                     }
-                    oc.ColName = xa.Column; // 检查 这个 col 是 db col 还是 m prop ?
+                    pc.TbMProp = col3.Prop;
+                    pc.TbName = tbm3.TbName;
+                    pc.PropName = p.Name;
+                    pc.ColName = pc.Attr.Column;
+                    pc.Compare = pc.Attr.Compare;
+                    opt.Add(pc);
                 }
-            }
-            return op;
+                return opt;
+            });
         }
 
     }

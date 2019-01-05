@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Reflection;
 
 namespace MyDAL.Core.Common
 {
     internal class PagingOptionCache
     {
-        internal Type TbType { get; set; }
+        internal XQueryAttribute Attr { get; set; }
+        internal Type TbMType { get; set; }
+        internal PropertyInfo TbMProp { get; set; }
         internal string TbName { get; set; }
         internal string PropName { get; set; }
         internal string ColName { get; set; }
