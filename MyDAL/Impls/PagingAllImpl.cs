@@ -17,14 +17,14 @@ namespace MyDAL.Impls
         {
         }
 
-        public async Task<PagingList<M>> PagingAllAsync(int pageIndex, int pageSize)
+        public async Task<PagingResult<M>> PagingAllAsync(int pageIndex, int pageSize)
         {
             DC.PageIndex = pageIndex;
             DC.PageSize = pageSize;
             return await PagingListAsyncHandle<M>(UiMethodEnum.PagingAllAsync,false);
         }
 
-        public async Task<PagingList<VM>> PagingAllAsync<VM>(int pageIndex, int pageSize)
+        public async Task<PagingResult<VM>> PagingAllAsync<VM>(int pageIndex, int pageSize)
             where VM : class
         {
             DC.PageIndex = pageIndex;
@@ -32,7 +32,7 @@ namespace MyDAL.Impls
             return await PagingListAsyncHandle<M, VM>(UiMethodEnum.PagingAllAsync, false, null);
         }
 
-        public async Task<PagingList<T>> PagingAllAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
+        public async Task<PagingResult<T>> PagingAllAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
         {
             DC.PageIndex = pageIndex;
             DC.PageSize = pageSize;

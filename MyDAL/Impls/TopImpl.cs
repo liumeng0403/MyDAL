@@ -31,7 +31,7 @@ namespace MyDAL.Impls
         {
             DC.PageIndex = 0;
             DC.PageSize = count;
-            SelectMHandle<M, VM>();
+            SelectMQ<M, VM>();
             PreExecuteHandle(UiMethodEnum.TopAsync);
             return await DC.DS.ExecuteReaderMultiRowAsync<VM>();
         }

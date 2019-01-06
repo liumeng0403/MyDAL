@@ -271,7 +271,7 @@ namespace MyDAL
         /// <summary>
         /// Queryer 便捷 PagingListAsync 方法
         /// </summary>
-        public static async Task<PagingList<M>> PagingListAsync<M>(this IDbConnection conn, PagingQueryOption pagingQuery)
+        public static async Task<PagingResult<M>> PagingListAsync<M>(this IDbConnection conn, PagingOption pagingQuery)
             where M : class, new()
         {
             return await conn.Queryer<M>().Where(pagingQuery).PagingListAsync();
@@ -279,7 +279,7 @@ namespace MyDAL
         /// <summary>
         /// Queryer 便捷 PagingListAsync 方法
         /// </summary>
-        public static async Task<PagingList<VM>> PagingListAsync<M, VM>(this IDbConnection conn, PagingQueryOption pagingQuery)
+        public static async Task<PagingResult<VM>> PagingListAsync<M, VM>(this IDbConnection conn, PagingOption pagingQuery)
             where M : class, new()
             where VM : class
         {
@@ -288,7 +288,7 @@ namespace MyDAL
         /// <summary>
         /// Queryer 便捷 PagingListAsync 方法
         /// </summary>
-        public static async Task<PagingList<VM>> PagingListAsync<M, VM>(this IDbConnection conn, PagingQueryOption pagingQuery, Expression<Func<M, VM>> columnMapFunc)
+        public static async Task<PagingResult<VM>> PagingListAsync<M, VM>(this IDbConnection conn, PagingOption pagingQuery, Expression<Func<M, VM>> columnMapFunc)
             where M : class, new()
             where VM : class
         {

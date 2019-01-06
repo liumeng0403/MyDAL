@@ -2,8 +2,6 @@
 using MyDAL.Test.Options;
 using MyDAL.Test.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -23,18 +21,11 @@ namespace MyDAL.Test.QueryVM
             var option = new AgentQueryOption();
             option.Id = Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b");
             option.Name = "樊士芹";
-            option.OrderBys = new List<OrderBy>
-            {
-                new OrderBy
-                {
-                    Column=nameof(Agent.Name),
-                    Direction= OrderByEnum.Desc
-                }
-            };
             // where method -- option orderby 
             var res3 = await Conn
                 .Queryer<Agent>()
                 .Where(option)
+                .OrderBy(it => it.Name, OrderByEnum.Desc)
                 .PagingListAsync<AgentVM>();
             Assert.True(res3.TotalCount == 1);
 
@@ -53,6 +44,10 @@ namespace MyDAL.Test.QueryVM
             Assert.True(res13.Data.Count == 10);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*************************************************************************************************************************/
+
+            xx = string.Empty;
 
         }
     }

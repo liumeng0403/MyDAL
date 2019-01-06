@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 namespace MyDAL.Test.Options
 {
-    public class AgentQueryOption : PagingQueryOption
+    public class AgentQueryOption 
+        : PagingOption
     {
         public Guid? Id { get; set; }
 

@@ -54,7 +54,7 @@ namespace MyDAL.UserFacade.Join
         /// </summary>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
-        public async Task<PagingList<M>> PagingListAsync<M>(int pageIndex, int pageSize)
+        public async Task<PagingResult<M>> PagingListAsync<M>(int pageIndex, int pageSize)
             where M:class
         {
             return await new PagingListXImpl(DC).PagingListAsync<M>(pageIndex, pageSize);
@@ -62,7 +62,7 @@ namespace MyDAL.UserFacade.Join
         /// <summary>
         /// 多表分页查询
         /// </summary>
-        public async Task<PagingList<T>> PagingListAsync<T>(int pageIndex, int pageSize, Expression<Func<T>> columnMapFunc)
+        public async Task<PagingResult<T>> PagingListAsync<T>(int pageIndex, int pageSize, Expression<Func<T>> columnMapFunc)
         {
             return await new PagingListXImpl(DC).PagingListAsync(pageIndex, pageSize, columnMapFunc);
         }
@@ -70,7 +70,7 @@ namespace MyDAL.UserFacade.Join
         /// <summary>
         /// 多表分页查询
         /// </summary>
-        public async Task<PagingList<M>> PagingListAsync<M>(PagingQueryOption option)
+        public async Task<PagingResult<M>> PagingListAsync<M>(PagingOption option)
             where M:class
         {
             return await new PagingListXOImpl(DC).PagingListAsync<M>(option);
@@ -78,7 +78,7 @@ namespace MyDAL.UserFacade.Join
         /// <summary>
         /// 多表分页查询
         /// </summary>
-        public async Task<PagingList<T>> PagingListAsync<T>(PagingQueryOption option, Expression<Func<T>> columnMapFunc)
+        public async Task<PagingResult<T>> PagingListAsync<T>(PagingOption option, Expression<Func<T>> columnMapFunc)
         {
             return await new PagingListXOImpl(DC).PagingListAsync(option, columnMapFunc);
         }

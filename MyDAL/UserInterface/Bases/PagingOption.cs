@@ -5,7 +5,7 @@ namespace MyDAL
     /// <summary>
     ///     分页查询设置
     /// </summary>
-    public abstract class PagingQueryOption
+    public abstract class PagingOption
     {
         /// <summary>
         ///     当前页
@@ -16,11 +16,6 @@ namespace MyDAL
         ///     页面大小
         /// </summary>
         public int PageSize { get; set; } = 10;
-
-        /// <summary>
-        ///     排序设置
-        /// </summary>
-        public List<OrderBy> OrderBys { get; set; } = new List<OrderBy>();
     }
 
 }

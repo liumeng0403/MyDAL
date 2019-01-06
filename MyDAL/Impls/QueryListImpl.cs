@@ -26,7 +26,7 @@ namespace MyDAL.Impls
         public async Task<List<VM>> QueryListAsync<VM>()
             where VM : class
         {
-            SelectMHandle<M, VM>();
+            SelectMQ<M, VM>();
             PreExecuteHandle(UiMethodEnum.ListAsync);
             return await DC.DS.ExecuteReaderMultiRowAsync<VM>();
         }

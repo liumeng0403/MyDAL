@@ -10,11 +10,11 @@ namespace MyDAL.UserFacade.Query
     /// <summary>
     /// 
     /// </summary>
-    public sealed class WhereQO<M>
+    public sealed class OrderByQO<M>
         : Operator, IPagingListO<M>
         where M : class
     {
-        internal WhereQO(Context dc)
+        internal OrderByQO(Context dc)
             : base(dc) { }
 
         /// <summary>
@@ -39,6 +39,5 @@ namespace MyDAL.UserFacade.Query
         {
             return await new PagingListOImpl<M>(DC).PagingListAsync(columnMapFunc);
         }
-
     }
 }

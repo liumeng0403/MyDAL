@@ -1,6 +1,7 @@
 ﻿namespace MyDAL.Test.Options
 {
-    public class ProductQueryOption : PagingQueryOption
+    public class ProductQueryOption 
+        : PagingOption
     {
         public bool? VipProduct { get; set; }
     }

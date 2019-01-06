@@ -6,9 +6,9 @@ namespace MyDAL.Interfaces
 {
     internal interface IPagingAll<M>
     {
-        Task<PagingList<M>> PagingAllAsync(int pageIndex, int pageSize);
-        Task<PagingList<VM>> PagingAllAsync<VM>(int pageIndex, int pageSize)
+        Task<PagingResult<M>> PagingAllAsync(int pageIndex, int pageSize);
+        Task<PagingResult<VM>> PagingAllAsync<VM>(int pageIndex, int pageSize)
             where VM : class;
-        Task<PagingList<T>> PagingAllAsync<T>(int pageIndex, int pageSize,Expression<Func<M, T>> columnMapFunc);
+        Task<PagingResult<T>> PagingAllAsync<T>(int pageIndex, int pageSize,Expression<Func<M, T>> columnMapFunc);
     }
 }

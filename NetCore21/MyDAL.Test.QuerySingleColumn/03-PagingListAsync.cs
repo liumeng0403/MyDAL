@@ -25,22 +25,13 @@ namespace MyDAL.Test.QuerySingleColumn
             /*****************************************************************************************************************************/
 
             xx = string.Empty;
-
-            var option2 = new AgentQueryOption();
-            option2.OrderBys = new List<OrderBy>
-            {
-                new OrderBy
-                {
-                    Column=nameof(Agent.Name),
-                    Direction= OrderByEnum.Desc
-                }
-            };
-
-            //var res2 = await Conn
-            //    .Queryer<Agent>()
-            //    .Where(it => it.Name.StartsWith("张"))
-            //    .PagingListAsync(option2, it => it.Name);
-            //Assert.True(res2.Data.Count == 10);
+            
+            var res2 = await Conn
+                .Queryer<Agent>()
+                .Where(it => it.Name.StartsWith("张"))
+                .OrderBy(it=>it.Name, OrderByEnum.Desc)
+                .PagingListAsync(1,10, it => it.Name);
+            Assert.True(res2.Data.Count == 10);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 

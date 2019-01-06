@@ -119,7 +119,7 @@ namespace MyDAL.Core.Bases
             }
             return result;
         }
-        private List<XQueryParam> GetWhereKPV(PagingQueryOption query)
+        private List<XQueryParam> GetWhereKPV(PagingOption query)
         {
             //
             var result = new List<XQueryParam>();
@@ -229,9 +229,8 @@ namespace MyDAL.Core.Bases
             DC.DPH.AddParameter(field);
         }
 
-        internal void WhereDynamicHandle<M>(PagingQueryOption query)
+        internal void WherePagingHandle(PagingOption query)
         {
-            var mType = typeof(M);
             var tuples = GetWhereKPV(query);
             var count = 0;
             foreach (var tp in tuples)

@@ -5,7 +5,7 @@ namespace MyDAL
     /// <summary>
     ///     分页列表
     /// </summary>
-    public sealed class PagingList<T>
+    public sealed class PagingResult<T>
     {
         /// <summary>
         ///     当前页码

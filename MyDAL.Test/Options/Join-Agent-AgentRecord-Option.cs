@@ -7,7 +7,7 @@ using System.Text;
 namespace MyDAL.Test.Options
 {
     public class Join_Agent_AgentRecord_Option
-        : PagingQueryOption
+        : PagingOption
     {
         [XQuery(Table = typeof(Agent), Column = nameof(Agent.AgentLevel), Compare = CompareEnum.In)]
         public List<AgentLevel> Level { get; set; }

@@ -45,7 +45,7 @@ namespace MyDAL.UserFacade.Query
         /// </summary>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
-        public async Task<PagingList<M>> PagingListAsync(int pageIndex, int pageSize)
+        public async Task<PagingResult<M>> PagingListAsync(int pageIndex, int pageSize)
         {
             return await new PagingListImpl<M>(DC).PagingListAsync(pageIndex, pageSize);
         }
@@ -55,7 +55,7 @@ namespace MyDAL.UserFacade.Query
         /// <typeparam name="VM">ViewModel</typeparam>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
-        public async Task<PagingList<VM>> PagingListAsync<VM>(int pageIndex, int pageSize)
+        public async Task<PagingResult<VM>> PagingListAsync<VM>(int pageIndex, int pageSize)
             where VM:class
         {
             return await new PagingListImpl<M>(DC).PagingListAsync<VM>(pageIndex, pageSize);
@@ -63,7 +63,7 @@ namespace MyDAL.UserFacade.Query
         /// <summary>
         /// 单表分页查询
         /// </summary>
-        public async Task<PagingList<T>> PagingListAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
+        public async Task<PagingResult<T>> PagingListAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
         {
             return await new PagingListImpl<M>(DC).PagingListAsync<T>(pageIndex, pageSize, columnMapFunc);
         }

@@ -189,10 +189,10 @@ namespace MyDAL.AdoNet
 
         /*********************************************************************************************************************************************/
 
-        internal async Task<PagingList<T>> ExecuteReaderPagingAsync<M, T>(bool single, Func<M, T> mapFunc)
+        internal async Task<PagingResult<T>> ExecuteReaderPagingAsync<M, T>(bool single, Func<M, T> mapFunc)
             where M : class
         {
-            var result = new PagingList<T>();
+            var result = new PagingResult<T>();
             result.PageIndex = DC.PageIndex.Value;
             result.PageSize = DC.PageSize.Value;
             result.Data = new List<T>();

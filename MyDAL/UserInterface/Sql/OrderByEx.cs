@@ -27,6 +27,14 @@ namespace MyDAL
             return new ThenOrderByQ<M>(orderByQ.DC);
         }
 
+        public static OrderByQO<M> OrderBy<M, F>(this WhereQO<M> where, Expression<Func<M, F>> propertyFunc, OrderByEnum orderBy = OrderByEnum.Desc)
+            where M : class
+        {
+            where.DC.Action = ActionEnum.OrderBy;
+            where.OrderByMF(propertyFunc, orderBy);
+            return new OrderByQO<M>(where.DC);
+        }
+
         /**************************************************************************************************************/
 
         public static OrderByX OrderBy<F>(this OnX onX,Expression<Func<F>> propertyFunc,OrderByEnum orderBy= OrderByEnum.Desc)

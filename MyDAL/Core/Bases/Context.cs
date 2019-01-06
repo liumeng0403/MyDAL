@@ -165,31 +165,6 @@ namespace MyDAL.Core.Bases
             }
             XC.GetTableModel(type);
         }
-
-        internal void OrderByOptionHandle(PagingQueryOption option, string fullName)
-        {
-            if (option.OrderBys != null
-              && option.OrderBys.Any())
-            {
-                foreach (var item in option.OrderBys)
-                {
-                    if (!string.IsNullOrWhiteSpace(item.Column))
-                    {
-                        Action = ActionEnum.OrderBy;
-                        if (item.Direction== OrderByEnum.Desc)
-                        {
-                            Option = OptionEnum.Desc;
-                        }
-                        else
-                        {
-                            Option = OptionEnum.Asc;
-                        }
-                        Compare = CompareEnum.None;
-                        DPH.AddParameter(DPH.OrderbyDic(fullName, item.Column, string.Empty));
-                    }
-                }
-            }
-        }
-
+        
     }
 }

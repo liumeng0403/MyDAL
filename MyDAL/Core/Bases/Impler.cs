@@ -28,12 +28,12 @@ namespace MyDAL.Core.Bases
 
         /**********************************************************************************************************/
 
-        protected async Task<PagingList<T>> PagingListAsyncHandle<T>(UiMethodEnum sqlType, bool single)
+        protected async Task<PagingResult<T>> PagingListAsyncHandle<T>(UiMethodEnum sqlType, bool single)
         {
             PreExecuteHandle(sqlType);
             return await DC.DS.ExecuteReaderPagingAsync<None, T>(single, null);
         }
-        protected async Task<PagingList<T>> PagingListAsyncHandle<M, T>(UiMethodEnum sqlType, bool single, Func<M, T> mapFunc)
+        protected async Task<PagingResult<T>> PagingListAsyncHandle<M, T>(UiMethodEnum sqlType, bool single, Func<M, T> mapFunc)
             where M : class
         {
             PreExecuteHandle(sqlType);
@@ -83,7 +83,7 @@ namespace MyDAL.Core.Bases
                 throw new Exception($"请使用 [[Task<List<VM>> ListAsync<VM>(Expression<Func<VM>> func)]] 方法! 或者 {mType.Name} 必须为 [[{string.Join(",", fullNames.Select(it => it.ClassName))}]] 其中之一 !");
             }
         }
-        protected void SelectMHandle<M, VM>()
+        protected void SelectMQ<M, VM>()
         {
             var tbm = DC.XC.GetTableModel(typeof(M));
             var vmType = typeof(VM);
@@ -94,34 +94,21 @@ namespace MyDAL.Core.Bases
 
             //
             DC.Action = ActionEnum.Select;
-            var tab = DC.Parameters.FirstOrDefault(it => tbm.TbMFullName.Equals(it.ClassFullName, StringComparison.OrdinalIgnoreCase));
+            DC.Option = OptionEnum.Column;
+            DC.Compare = CompareEnum.None;
             var vmProps = DC.GH.GetPropertyInfos(vmType);
-            if (tab != null)
+            var list = new List<DicParam>();
+            foreach (var prop in tbm.TbMProps)
             {
-                DC.Option = OptionEnum.Column;
-                DC.Compare = CompareEnum.None;
-                var list = new List<DicParam>();
-                foreach (var prop in tbm.TbMProps)
+                foreach (var vProp in vmProps)
                 {
-                    foreach (var vProp in vmProps)
+                    if (prop.Name.Equals(vProp.Name, StringComparison.OrdinalIgnoreCase))
                     {
-                        if (prop.Name.Equals(vProp.Name, StringComparison.OrdinalIgnoreCase))
-                        {
-                            list.Add(DC.DPH.ColumnDic(prop.Name, tab.TableAliasOne, tbm.TbMFullName, prop.Name));
-                        }
+                        list.Add(DC.DPH.ColumnDic(prop.Name, string.Empty, tbm.TbMFullName, prop.Name));
                     }
                 }
-                DC.DPH.AddParameter(DC.DPH.SelectColumnDic(list));
             }
-            else if (DC.Parameters.Count == 0)
-            {
-                // important
-            }
-            else
-            {
-                var fullNames = DC.Parameters.Where(it => !string.IsNullOrWhiteSpace(it.ClassFullName)).Distinct();
-                throw new Exception($"请使用 [[Task<List<VM>> ListAsync<VM>(Expression<Func<VM>> func)]] 方法! 或者 {tbm.TbMName} 必须为 [[{string.Join(",", fullNames.Select(it => it.ClassName))}]] 其中之一 !");
-            }
+            DC.DPH.AddParameter(DC.DPH.SelectColumnDic(list));
         }
         protected void SelectMHandle<VM>(Expression<Func<VM>> func)
         {
