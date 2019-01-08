@@ -20,7 +20,7 @@ namespace MyDAL.Core.Bases
             foreach (var prop in tbm.TbMProps)
             {
                 var val = DC.VH.PropertyValue(prop, m);
-                DC.Compare = CompareEnum.None;
+                DC.Compare = CompareXEnum.None;
                 list.Add(DC.DPH.InsertHelperDic(tbm.TbMFullName, prop.Name, val, prop.PropertyType));
             }
             DC.DPH.AddParameter(DC.DPH.InsertDic(tbm.TbMFullName, list));
@@ -69,7 +69,7 @@ namespace MyDAL.Core.Bases
             if (dic != null)
             {
                 DC.Option = OptionEnum.Column;
-                DC.Compare = CompareEnum.None;
+                DC.Compare = CompareXEnum.None;
                 var col = DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.ColumnDic("*", (string)dic.TableAliasOne, fullName, (string)dic.PropOne) });
                 DC.DPH.AddParameter(col);
             }
@@ -95,7 +95,7 @@ namespace MyDAL.Core.Bases
             //
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
-            DC.Compare = CompareEnum.None;
+            DC.Compare = CompareXEnum.None;
             var vmProps = DC.GH.GetPropertyInfos(vmType);
             var list = new List<DicParam>();
             foreach (var prop in tbm.TbMProps)

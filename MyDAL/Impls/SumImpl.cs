@@ -21,7 +21,7 @@ namespace MyDAL.Impls
         {
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
-            DC.Compare = CompareEnum.None;
+            DC.Compare = CompareXEnum.None;
             DC.Func = FuncEnum.Sum;
             var dic = DC.XE.FuncMFExpression(propertyFunc);
             DC.DPH.AddParameter(dic);

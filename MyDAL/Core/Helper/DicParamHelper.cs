@@ -246,7 +246,7 @@ namespace MyDAL.Core.Helper
             DC.Parameters.Add(dic);
 
             //
-            DC.Compare = CompareEnum.None;
+            DC.Compare = CompareXEnum.None;
             DC.Func = FuncEnum.None;
         }
         internal DbParamInfo GetParameters(List<DicParam> list)

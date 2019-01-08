@@ -23,7 +23,7 @@ namespace MyDAL.Impls
             DC.Action = ActionEnum.Select;
             //DC.Option = OptionEnum.Count;
             DC.Option = OptionEnum.Column;
-            DC.Compare = CompareEnum.None;
+            DC.Compare = CompareXEnum.None;
             DC.Func = FuncEnum.Count;
             DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(typeof(M).FullName, "*") }));
             PreExecuteHandle(UiMethodEnum.CountAsync);
@@ -34,7 +34,7 @@ namespace MyDAL.Impls
         {
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
-            DC.Compare = CompareEnum.None;
+            DC.Compare = CompareXEnum.None;
             DC.Func = FuncEnum.Count;
             var dic = DC.XE.FuncMFExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
@@ -54,9 +54,8 @@ namespace MyDAL.Impls
         public async Task<int> CountAsync()
         {
             DC.Action = ActionEnum.Select;
-            //DC.Option = OptionEnum.Count;
             DC.Option = OptionEnum.Column;
-            DC.Compare = CompareEnum.None;
+            DC.Compare = CompareXEnum.None;
             DC.Func = FuncEnum.Count;
             DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(string.Empty, "*", string.Empty) }));
             PreExecuteHandle(UiMethodEnum.CountAsync);
@@ -66,7 +65,7 @@ namespace MyDAL.Impls
         public async Task<int> CountAsync<F>(Expression<Func<F>> propertyFunc)
         {
             DC.Action = ActionEnum.Select;
-            DC.Compare = CompareEnum.None;
+            DC.Compare = CompareXEnum.None;
             DC.Func = FuncEnum.Count;
             var dic = DC.XE.FuncTExpression(propertyFunc);
             DC.DPH.AddParameter(dic);

@@ -10,7 +10,7 @@ namespace MyDAL.Core.Bases
         internal CrudEnum Crud { get; set; }
         internal ActionEnum Action { get; set; }
         internal OptionEnum Option { get; set; }
-        internal CompareEnum Compare { get; set; }
+        internal CompareXEnum Compare { get; set; }
         internal FuncEnum Func { get; set; }
 
         //

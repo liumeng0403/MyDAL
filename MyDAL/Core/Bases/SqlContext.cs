@@ -22,7 +22,7 @@ namespace MyDAL.Core.Bases
         {
             if (param.Action == ActionEnum.Select
                 && param.Option == OptionEnum.ColumnOther
-                && param.Compare == CompareEnum.Distinct)
+                && param.Compare == CompareXEnum.Distinct)
             {
                 return true;
             }

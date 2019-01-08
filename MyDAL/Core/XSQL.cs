@@ -1,4 +1,5 @@
 ﻿using MyDAL.Core;
+using MyDAL.Core.Bases;
 using MyDAL.Core.Enums;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,6 @@ namespace MyDAL.Core
 {
     internal abstract class XSQL
     {
-
         protected static void Spacing(StringBuilder sb)
         {
             sb.Append(' ');
@@ -74,7 +74,7 @@ namespace MyDAL.Core
 
         /****************************************************************************************************************/
 
-        protected static void Action(ActionEnum action, StringBuilder sb)
+        protected static void Action(ActionEnum action, StringBuilder sb, Context dc)
         {
             switch (action)
             {
@@ -104,10 +104,10 @@ namespace MyDAL.Core
                     Tab(sb); Or(sb);
                     return;
                 default:
-                    throw new Exception($"{XConfig.EC._014} -- [[{action}]] 不能解析!!!");
+                    throw dc.Exception(XConfig.EC._014, action.ToString());
             }
         }
-        protected static void MultiAction(ActionEnum action, StringBuilder sb)
+        protected static void MultiAction(ActionEnum action, StringBuilder sb, Context dc)
         {
             if (action == ActionEnum.And)
             {
@@ -119,7 +119,7 @@ namespace MyDAL.Core
             }
             else
             {
-                throw new Exception($"{XConfig.EC._010} -- [[{action}]] 不能解析!!!");
+                throw dc.Exception(XConfig.EC._010, action.ToString());
             }
         }
         protected static void Option(OptionEnum option, StringBuilder sb)
@@ -161,44 +161,44 @@ namespace MyDAL.Core
                     throw new Exception($"{XConfig.EC._022} - [[{option}]] 不能解析!!!");
             }
         }
-        protected static void Compare(CompareEnum compare, StringBuilder sb)
+        protected static void Compare(CompareXEnum compare, StringBuilder sb)
         {
             switch (compare)
             {
-                case CompareEnum.None:
+                case CompareXEnum.None:
                     return;
-                case CompareEnum.Equal:
+                case CompareXEnum.Equal:
                     sb.Append("=");
                     return;
-                case CompareEnum.NotEqual:
+                case CompareXEnum.NotEqual:
                     sb.Append("<>");
                     return;
-                case CompareEnum.LessThan:
+                case CompareXEnum.LessThan:
                     sb.Append("<");
                     return;
-                case CompareEnum.LessThanOrEqual:
+                case CompareXEnum.LessThanOrEqual:
                     sb.Append("<=");
                     return;
-                case CompareEnum.GreaterThan:
+                case CompareXEnum.GreaterThan:
                     sb.Append(">");
                     return;
-                case CompareEnum.GreaterThanOrEqual:
+                case CompareXEnum.GreaterThanOrEqual:
                     sb.Append(">=");
                     return;
-                case CompareEnum.Like:
+                case CompareXEnum.Like:
                     sb.Append(" like ");
                     return;
-                case CompareEnum.In:
+                case CompareXEnum.In:
                     sb.Append(" in ");
                     return;
-                case CompareEnum.NotIn:
+                case CompareXEnum.NotIn:
                     sb.Append(" not in ");
                     return;
                 default:
                     throw new Exception($"{XConfig.EC._023} - [[{compare}]] 不能解析!!!");
             }
         }
-        protected static void Function(FuncEnum func, StringBuilder sb)
+        protected static void Function(FuncEnum func, StringBuilder sb, Context dc)
         {
             switch (func)
             {
@@ -232,7 +232,7 @@ namespace MyDAL.Core
                     sb.Append(" sum");
                     return;
                 default:
-                    throw new Exception($"{XConfig.EC._008} - [[{func}]] 不能解析!!!");
+                    throw dc.Exception(XConfig.EC._008, func.ToString());
             }
         }
 

@@ -20,6 +20,11 @@ namespace MyDAL
         public Type Table { get; set; } = default(Type);
 
         /// <summary>
+        /// 表别名 - 在连接查询时,如:自连接查询,因为 Table-Type 相同,这时需要指定别名...
+        /// </summary>
+        public string TableAlias { get; set; } = string.Empty;
+
+        /// <summary>
         /// Table - 列名
         /// </summary>
         public string Column { get; set; } = string.Empty;

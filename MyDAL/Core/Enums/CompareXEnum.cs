@@ -1,9 +1,6 @@
-﻿namespace MyDAL
+﻿namespace MyDAL.Core.Enums
 {
-    /// <summary>
-    /// 用于 Paging Option 以指定属性对应 column 的比较作用
-    /// </summary>
-    public enum CompareEnum
+    internal enum CompareXEnum
     {
         /// <summary>
         /// " "
@@ -44,14 +41,6 @@
         /// " like "
         /// </summary>
         Like,
-        /// <summary>
-        /// 
-        /// </summary>
-        Like_StartsWith,
-        /// <summary>
-        /// 
-        /// </summary>
-        Like_EndsWith,
 
         /// <summary>
         /// " in "
@@ -61,6 +50,12 @@
         /// <summary>
         /// " not in "
         /// </summary>
-        NotIn        
+        NotIn,
+
+        /// <summary>
+        /// " distinct "
+        /// </summary>
+        Distinct
+
     }
 }

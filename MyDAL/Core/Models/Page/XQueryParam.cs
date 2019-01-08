@@ -1,4 +1,7 @@
-﻿namespace MyDAL.Core.Common
+﻿using MyDAL.Core.Common;
+using MyDAL.Core.Enums;
+
+namespace MyDAL.Core.Models.Page
 {
     internal class XQueryParam
     {

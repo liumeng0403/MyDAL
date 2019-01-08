@@ -12,32 +12,32 @@ namespace MyDAL.Core
     internal sealed class XExpression
     {
 
-        private static CompareEnum GetCompareType(ExpressionType nodeType, bool isR)
+        private static CompareXEnum GetCompareType(ExpressionType nodeType, bool isR)
         {
-            var option = CompareEnum.None;
+            var option = CompareXEnum.None;
             if (nodeType == ExpressionType.Equal)
             {
-                option = !isR ? CompareEnum.Equal : CompareEnum.Equal;
+                option = !isR ? CompareXEnum.Equal : CompareXEnum.Equal;
             }
             else if (nodeType == ExpressionType.NotEqual)
             {
-                option = !isR ? CompareEnum.NotEqual : CompareEnum.NotEqual;
+                option = !isR ? CompareXEnum.NotEqual : CompareXEnum.NotEqual;
             }
             else if (nodeType == ExpressionType.LessThan)
             {
-                option = !isR ? CompareEnum.LessThan : CompareEnum.GreaterThan;
+                option = !isR ? CompareXEnum.LessThan : CompareXEnum.GreaterThan;
             }
             else if (nodeType == ExpressionType.LessThanOrEqual)
             {
-                option = !isR ? CompareEnum.LessThanOrEqual : CompareEnum.GreaterThanOrEqual;
+                option = !isR ? CompareXEnum.LessThanOrEqual : CompareXEnum.GreaterThanOrEqual;
             }
             else if (nodeType == ExpressionType.GreaterThan)
             {
-                option = !isR ? CompareEnum.GreaterThan : CompareEnum.LessThan;
+                option = !isR ? CompareXEnum.GreaterThan : CompareXEnum.LessThan;
             }
             else if (nodeType == ExpressionType.GreaterThanOrEqual)
             {
-                option = !isR ? CompareEnum.GreaterThanOrEqual : CompareEnum.LessThanOrEqual;
+                option = !isR ? CompareXEnum.GreaterThanOrEqual : CompareXEnum.LessThanOrEqual;
             }
 
             return option;
@@ -175,7 +175,7 @@ namespace MyDAL.Core
                                 break;
                         }
                         DC.Option = OptionEnum.Like;
-                        DC.Compare = CompareEnum.None;
+                        DC.Compare = CompareXEnum.None;
                         DC.Func = FuncEnum.None;
                         return DC.DPH.LikeDic(cp, val);
                     }
@@ -192,7 +192,7 @@ namespace MyDAL.Core
                 var val = DC.VH.ValueProcess(valExpr, cp.ValType);
                 DC.Option = OptionEnum.Function;
                 DC.Func = FuncEnum.In;
-                DC.Compare = CompareEnum.None;
+                DC.Compare = CompareXEnum.None;
                 return DC.DPH.InDic(cp, val);
             }
             else if (nodeType == ExpressionType.NewArrayInit)
@@ -212,7 +212,7 @@ namespace MyDAL.Core
                 };
                 DC.Option = OptionEnum.Function;
                 DC.Func = FuncEnum.In;
-                DC.Compare = CompareEnum.None;
+                DC.Compare = CompareXEnum.None;
                 return DC.DPH.InDic(cp, val);
             }
             else if (nodeType == ExpressionType.ListInit)
@@ -231,7 +231,7 @@ namespace MyDAL.Core
                 };
                 DC.Option = OptionEnum.Function;
                 DC.Func = FuncEnum.In;
-                DC.Compare = CompareEnum.None;
+                DC.Compare = CompareXEnum.None;
                 return DC.DPH.InDic(cp, val);
             }
             else if (nodeType == ExpressionType.MemberInit)
@@ -256,7 +256,7 @@ namespace MyDAL.Core
             var cp = DC.XE.GetKey(mcExpr, FuncEnum.DateFormat);
             DC.Option = OptionEnum.ColumnAs;
             DC.Func = FuncEnum.DateFormat;
-            DC.Compare = CompareEnum.None;
+            DC.Compare = CompareXEnum.None;
             var format = DC.TSH.DateTime(cp.Format);
             if (DC.Action == ActionEnum.Select)
             {
@@ -371,7 +371,7 @@ namespace MyDAL.Core
             if (cExpr.Type == typeof(bool))
             {
                 DC.Option = OptionEnum.OneEqualOne;
-                DC.Compare = CompareEnum.None;
+                DC.Compare = CompareXEnum.None;
                 return DC.DPH.OneEqualOneDic(val, valType);
             }
 
@@ -400,7 +400,7 @@ namespace MyDAL.Core
                     if (cp.ValType == typeof(bool))
                     {
                         DC.Option = OptionEnum.Compare;
-                        DC.Compare = CompareEnum.Equal;
+                        DC.Compare = CompareXEnum.Equal;
                         return DC.DPH.CompareDic(cp, new ValueInfo
                         {
                             Val = true.ToString(),
@@ -422,7 +422,7 @@ namespace MyDAL.Core
                     if (cp.ValType == typeof(bool))
                     {
                         DC.Option = OptionEnum.Compare;
-                        DC.Compare = CompareEnum.Equal;
+                        DC.Compare = CompareXEnum.Equal;
                         return DC.DPH.CompareDic(cp, new ValueInfo
                         {
                             Val = true.ToString(),
@@ -446,7 +446,7 @@ namespace MyDAL.Core
                         {
                             var cp = GetKey(memExpr, FuncEnum.CharLength);
                             DC.Func = FuncEnum.CharLength;
-                            DC.Compare = CompareEnum.None;
+                            DC.Compare = CompareXEnum.None;
                             return DC.DPH.CharLengthDic(cp, null);
                         }
                         else
@@ -586,7 +586,7 @@ namespace MyDAL.Core
                     }
                     else
                     {
-                        throw new Exception($"{XConfig.EC._005} -- [[{bodyL.ToString()}]] 不能解析!!!");
+                        throw DC.Exception(XConfig.EC._005, bodyL.ToString());
                     }
                 }
                 else
@@ -685,7 +685,7 @@ namespace MyDAL.Core
                     var cp = GetKey(args[i], FuncEnum.None);
                     var colAlias = mems[i].Name;
                     DC.Option = OptionEnum.None;
-                    DC.Compare = CompareEnum.None;
+                    DC.Compare = CompareXEnum.None;
                     list.Add(DC.DPH.SelectMemberInitDic(cp, colAlias));
                 }
                 return DC.DPH.SelectColumnDic(list);
@@ -728,7 +728,7 @@ namespace MyDAL.Core
             }
             else
             {
-                throw new Exception($"{XConfig.EC._003} -- [[{body.ToString()}]] 不能解析!!!");
+                throw DC.Exception(XConfig.EC._003, body.ToString());
             }
 
             //

@@ -38,7 +38,7 @@ namespace MyDAL.Core.Bases
             GH = new GenericHelper(this);
             XE = new XExpression(this);
             CFH = new CsFuncHelper(this);
-            TSH = new ToStringHelper();
+            TSH = new ToStringHelper(this);
             XC = new XCache(this);
             PH = new ParameterHelper(this);
             DPH = new DicParamHelper(this);
@@ -76,7 +76,7 @@ namespace MyDAL.Core.Bases
         internal CrudEnum Crud { get; set; } = CrudEnum.None;
         internal ActionEnum Action { get; set; } = ActionEnum.None;
         internal OptionEnum Option { get; set; } = OptionEnum.None;
-        internal CompareEnum Compare { get; set; } = CompareEnum.None;
+        internal CompareXEnum Compare { get; set; } = CompareXEnum.None;
         internal FuncEnum Func { get; set; } = FuncEnum.None;
 
         internal UiMethodEnum Method { get; set; } = UiMethodEnum.None;
@@ -164,6 +164,11 @@ namespace MyDAL.Core.Bases
                 NeedSetSingle = false;
             }
             XC.GetTableModel(type);
+        }
+
+        internal Exception Exception(string code,string msg)
+        {
+            return new Exception($"{code} -- [[{msg}]] 未能解析!!! 请 EMail: --> liumeng0403@163.com <--");
         }
         
     }

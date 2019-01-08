@@ -1,11 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MyDAL.Core.Bases;
+using System;
 
 namespace MyDAL.Core.Helper
 {
     internal class ToStringHelper
     {
+        private Context DC { get; set; }
+        internal ToStringHelper(Context dc)
+        {
+            DC = dc;
+        }
+
+        /******************************************************************************************************************************************/
+
         internal string DateTime(string format)
         {
             var fcs = format.Trim();
@@ -23,8 +30,8 @@ namespace MyDAL.Core.Helper
             }
             else
             {
-                throw new Exception($"{XConfig.EC._001} -- [[{fcs}]] 未能解析!!!");
-            }            
+                throw DC.Exception(XConfig.EC._001, fcs);
+            }
         }
     }
 }

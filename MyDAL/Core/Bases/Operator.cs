@@ -1,6 +1,7 @@
 ﻿using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
+using MyDAL.Core.Models.Page;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -35,18 +36,36 @@ namespace MyDAL.Core.Bases
             {
                 return false;
             }
-            //|| (valType.IsList() && (val as dynamic).Count <= 0)
             if (valType.IsList() && (val as IList).Count <= 0)
             {
                 return false;
             }
-            //|| (valType.IsArray && (val as dynamic).Length <= 0))
             if (valType.IsArray && (val as IList).Count <= 0)
             {
                 return false;
             }
 
             return true;
+        }
+        private static CompareXEnum GetCompareX(CompareEnum compare, Context dc)
+        {
+            switch (compare)
+            {
+                case CompareEnum.Equal:
+                    return CompareXEnum.Equal;
+                case CompareEnum.NotEqual:
+                    return CompareXEnum.NotEqual;
+                case CompareEnum.LessThan:
+                    return CompareXEnum.LessThan;
+                case CompareEnum.LessThanOrEqual:
+                    return CompareXEnum.LessThanOrEqual;
+                case CompareEnum.GreaterThan:
+                    return CompareXEnum.GreaterThan;
+                case CompareEnum.GreaterThanOrEqual:
+                    return CompareXEnum.GreaterThanOrEqual;
+                default:
+                    throw dc.Exception(XConfig.EC._002, compare.ToString());
+            }
         }
 
         private List<(string key, string param, ValueInfo val, Type valType, string colType, CompareEnum compare)> GetSetKPV<M>(object objx)
@@ -198,7 +217,7 @@ namespace MyDAL.Core.Bases
                 val = DC.VH.ExpandoObjectValue(modVal);
             }
             DC.Option = option;
-            DC.Compare = CompareEnum.None;
+            DC.Compare = CompareXEnum.None;
             DC.DPH.AddParameter(DC.DPH.SetDic(typeof(M).FullName, key, key, val, typeof(F)));
         }
 
@@ -209,7 +228,7 @@ namespace MyDAL.Core.Bases
             foreach (var tp in tuples)
             {
                 DC.Option = OptionEnum.Set;
-                DC.Compare = CompareEnum.None;
+                DC.Compare = CompareXEnum.None;
                 DC.DPH.AddParameter(DC.DPH.SetDic(fullName, tp.key, tp.param, tp.val, tp.valType));
             }
         }
@@ -249,28 +268,37 @@ namespace MyDAL.Core.Bases
                 if (tp.Compare == CompareEnum.Like)
                 {
                     DC.Option = OptionEnum.Like;
-                    DC.Compare = CompareEnum.None;
+                    DC.Compare = CompareXEnum.None;
                     DC.DPH.AddParameter(DC.DPH.LikeDic(tp.Cp, tp.Val));
                 }
                 else if (tp.Compare == CompareEnum.In)
                 {
                     DC.Option = OptionEnum.Function;
                     DC.Func = FuncEnum.In;
-                    DC.Compare = CompareEnum.None;
+                    DC.Compare = CompareXEnum.None;
                     DC.DPH.AddParameter(DC.DPH.InDic(tp.Cp, tp.Val));
                 }
                 else if (tp.Compare == CompareEnum.NotIn)
                 {
                     DC.Option = OptionEnum.Function;
                     DC.Func = FuncEnum.NotIn;
-                    DC.Compare = CompareEnum.None;
+                    DC.Compare = CompareXEnum.None;
                     DC.DPH.AddParameter(DC.DPH.NotInDic(tp.Cp, tp.Val));
+                }
+                else if (tp.Compare == CompareEnum.Equal
+                            || tp.Compare == CompareEnum.NotEqual
+                            || tp.Compare == CompareEnum.LessThan
+                            || tp.Compare == CompareEnum.LessThanOrEqual
+                            || tp.Compare == CompareEnum.GreaterThan
+                            || tp.Compare == CompareEnum.GreaterThanOrEqual)
+                {
+                    DC.Option = OptionEnum.Compare;
+                    DC.Compare = GetCompareX(tp.Compare, DC);
+                    DC.DPH.AddParameter(DC.DPH.CompareDic(tp.Cp, tp.Val));
                 }
                 else
                 {
-                    DC.Option = OptionEnum.Compare;
-                    DC.Compare = tp.Compare;
-                    DC.DPH.AddParameter(DC.DPH.CompareDic(tp.Cp, tp.Val));
+                    throw DC.Exception(XConfig.EC._004, tp.Compare.ToString());
                 }
             }
         }
@@ -328,7 +356,7 @@ namespace MyDAL.Core.Bases
         {
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.ColumnOther;
-            DC.Compare = CompareEnum.Distinct;
+            DC.Compare = CompareXEnum.Distinct;
             DC.Func = FuncEnum.None;
             DC.DPH.AddParameter(DC.DPH.DistinctDic());
         }

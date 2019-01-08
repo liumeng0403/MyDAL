@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using MyDAL.Core.Enums;
+using System.Linq.Expressions;
 
 namespace MyDAL.Core.Common
 {
@@ -7,6 +8,6 @@ namespace MyDAL.Core.Common
         internal Expression Left { get; set; }
         internal Expression Right { get; set; }
         internal ExpressionType Node { get; set; }
-        internal CompareEnum Compare { get; set; }
+        internal CompareXEnum Compare { get; set; }
     }
 }
