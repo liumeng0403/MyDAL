@@ -65,12 +65,12 @@ namespace MyDAL.Core.Bases
             DC.Action = ActionEnum.Select;
             var mType = typeof(M);
             var fullName = mType.FullName;
-            var dic = DC.Parameters.FirstOrDefault(it => fullName.Equals(it.ClassFullName, StringComparison.OrdinalIgnoreCase));
+            var dic = DC.Parameters.FirstOrDefault(it => fullName.Equals(it.TbMFullName, StringComparison.OrdinalIgnoreCase));
             if (dic != null)
             {
                 DC.Option = OptionEnum.Column;
                 DC.Compare = CompareXEnum.None;
-                var col = DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.ColumnDic("*", (string)dic.TableAliasOne, fullName, (string)dic.PropOne) });
+                var col = DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.ColumnDic("*", dic.TbAlias, fullName, dic.TbMProp) });
                 DC.DPH.AddParameter(col);
             }
             else if (DC.Parameters.Count == 0)
@@ -79,8 +79,8 @@ namespace MyDAL.Core.Bases
             }
             else
             {
-                var fullNames = DC.Parameters.Where(it => !string.IsNullOrWhiteSpace(it.ClassFullName)).Distinct();
-                throw new Exception($"请使用 [[Task<List<VM>> ListAsync<VM>(Expression<Func<VM>> func)]] 方法! 或者 {mType.Name} 必须为 [[{string.Join(",", fullNames.Select(it => it.ClassName))}]] 其中之一 !");
+                var fullNames = DC.Parameters.Where(it => !string.IsNullOrWhiteSpace(it.TbMFullName)).Distinct();
+                throw new Exception($"请使用 [[Task<List<VM>> ListAsync<VM>(Expression<Func<VM>> func)]] 方法! 或者 {mType.Name} 必须为 [[{string.Join(",", fullNames.Select(it => it.TbMName))}]] 其中之一 !");
             }
         }
         protected void SelectMQ<M, VM>()

@@ -45,6 +45,7 @@ namespace MyDAL.Core.Bases
             BDH = new BatchDataHelper();
             DS = new DataSource(this);
             AR = new AutoRetry();
+            TbMs = new List<TableDic>();
 
             //
             if (XConfig.DB == DbEnum.MySQL)
@@ -87,6 +88,7 @@ namespace MyDAL.Core.Bases
 
         internal bool NeedSetSingle { get; set; } = true;
         internal Type TbM1 { get; set; }
+        internal List<TableDic> TbMs { get; set; }
         internal int DicID { get; set; } = 1;
         internal List<DicParam> Parameters { get; set; }
         internal List<string> SQL { get; private set; } = new List<string>();

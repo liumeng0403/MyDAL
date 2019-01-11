@@ -37,22 +37,22 @@ namespace MyDAL.DataRainbow.MySQL
                 {
                     if (DC.Crud == CrudEnum.Join)
                     {
-                        Column(o.TableAliasOne, o.ColumnOne, X); Spacing(X); Option(o.Option, X);
+                        Column(o.TbAlias, o.TbCol, X); Spacing(X); Option(o.Option, X, DC);
                     }
                     else
                     {
-                        Column(string.Empty, o.ColumnOne, X); Spacing(X); Option(o.Option, X);
+                        Column(string.Empty, o.TbCol, X); Spacing(X); Option(o.Option, X, DC);
                     }
                 }
                 else if (o.Func == FuncEnum.CharLength)
                 {
                     if (DC.Crud == CrudEnum.Join)
                     {
-                        Function(o.Func, X, DC); LeftBracket(X); Column(o.TableAliasOne, o.ColumnOne, X); RightBracket(X); Spacing(X); Option(o.Option, X);
+                        Function(o.Func, X, DC); LeftBracket(X); Column(o.TbAlias, o.TbCol, X); RightBracket(X); Spacing(X); Option(o.Option, X, DC);
                     }
                     else
                     {
-                        Function(o.Func, X, DC); LeftBracket(X); Column(string.Empty, o.ColumnOne, X); RightBracket(X); Spacing(X); Option(o.Option, X);
+                        Function(o.Func, X, DC); LeftBracket(X); Column(string.Empty, o.TbCol, X); RightBracket(X); Spacing(X); Option(o.Option, X, DC);
                     }
                 }
                 else
@@ -110,7 +110,7 @@ namespace MyDAL.DataRainbow.MySQL
             }
             else
             {
-                throw new Exception($"{XConfig.EC._015} -- [[{dic.Action}-{dic.Option}-{value}]] 不能解析!!!");
+                throw DC.Exception(XConfig.EC._015, $"{dic.Action}-{dic.Option}-{value}");
             }
         }
 
@@ -122,14 +122,14 @@ namespace MyDAL.DataRainbow.MySQL
             Function(db.Func, X, DC); LeftBracket(X);
             if (db.Crud == CrudEnum.Join)
             {
-                Column(db.TableAliasOne, db.ColumnOne, X);
+                Column(db.TbAlias, db.TbCol, X);
             }
             else if (DC.IsSingleTableOption())
             {
-                Column(string.Empty, db.ColumnOne, X);
+                Column(string.Empty, db.TbCol, X);
             }
             RightBracket(X);
-            Compare(db.Compare, X); DbParam(db.Param, X);
+            Compare(db.Compare, X, DC); DbParam(db.Param, X);
         }
         private void DateFormatProcess(DicParam db)
         {
@@ -137,15 +137,15 @@ namespace MyDAL.DataRainbow.MySQL
             Function(db.Func, X, DC); LeftBracket(X);
             if (db.Crud == CrudEnum.Join)
             {
-                Column(db.TableAliasOne, db.ColumnOne, X);
+                Column(db.TbAlias, db.TbCol, X);
             }
             else if (DC.IsSingleTableOption())
             {
-                Column(string.Empty, db.ColumnOne, X);
+                Column(string.Empty, db.TbCol, X);
             }
 
             Comma(X); SingleQuote(X); X.Append(db.Format); SingleQuote(X);
-            RightBracket(X); Compare(db.Compare, X); DbParam(db.Param, X);
+            RightBracket(X); Compare(db.Compare, X, DC); DbParam(db.Param, X);
         }
         private void TrimProcess(DicParam db)
         {
@@ -153,25 +153,25 @@ namespace MyDAL.DataRainbow.MySQL
             Function(db.Func, X, DC); LeftBracket(X);
             if (db.Crud == CrudEnum.Join)
             {
-                Column(db.TableAliasOne, db.ColumnOne, X);
+                Column(db.TbAlias, db.TbCol, X);
             }
             else if (DC.IsSingleTableOption())
             {
-                Column(string.Empty, db.ColumnOne, X);
+                Column(string.Empty, db.TbCol, X);
             }
             RightBracket(X);
-            Compare(db.Compare, X); DbParam(db.Param, X);
+            Compare(db.Compare, X, DC); DbParam(db.Param, X);
         }
         private void InProcess(DicParam db)
         {
             Spacing(X);
             if (db.Crud == CrudEnum.Join)
             {
-                Column(db.TableAliasOne, db.ColumnOne, X);
+                Column(db.TbAlias, db.TbCol, X);
             }
             else if (DC.IsSingleTableOption())
             {
-                Column(string.Empty, db.ColumnOne, X);
+                Column(string.Empty, db.TbCol, X);
             }
             Spacing(X);
             Function(db.Func, X, DC); LeftBracket(X); InParams(db.InItems); RightBracket(X);
@@ -184,13 +184,13 @@ namespace MyDAL.DataRainbow.MySQL
             Spacing(X);
             if (db.Crud == CrudEnum.Join)
             {
-                Column(db.TableAliasOne, db.ColumnOne, X);
+                Column(db.TbAlias, db.TbCol, X);
             }
             else if (DC.IsSingleTableOption())
             {
-                Column(string.Empty, db.ColumnOne, X);
+                Column(string.Empty, db.TbCol, X);
             }
-            Compare(db.Compare, X); DbParam(db.Param, X);
+            Compare(db.Compare, X, DC); DbParam(db.Param, X);
         }
         private void FunctionProcess(DicParam db)
         {
@@ -220,13 +220,13 @@ namespace MyDAL.DataRainbow.MySQL
             Spacing(X);
             if (db.Crud == CrudEnum.Join)
             {
-                Column(db.TableAliasOne, db.ColumnOne, X);
+                Column(db.TbAlias, db.TbCol, X);
             }
             else if (DC.IsSingleTableOption())
             {
-                Column(string.Empty, db.ColumnOne, X);
+                Column(string.Empty, db.TbCol, X);
             }
-            Option(db.Option, X); LikeStrHandle(db);
+            Option(db.Option, X, DC); LikeStrHandle(db);
         }
         private void OneEqualOneProcess(DicParam db)
         {
@@ -237,13 +237,13 @@ namespace MyDAL.DataRainbow.MySQL
             Spacing(X);
             if (db.Crud == CrudEnum.Join)
             {
-                Column(db.TableAliasOne, db.ColumnOne, X);
+                Column(db.TbAlias, db.TbCol, X);
             }
             else if (DC.IsSingleTableOption())
             {
-                Column(string.Empty, db.ColumnOne, X);
+                Column(string.Empty, db.TbCol, X);
             }
-            Spacing(X); Option(db.Option, X);
+            Spacing(X); Option(db.Option, X, DC);
         }
 
         /****************************************************************************************************************/
@@ -308,7 +308,7 @@ namespace MyDAL.DataRainbow.MySQL
             if (ps != null)
             {
                 CRLF(X);
-                LeftBracket(X); ConcatWithComma(ps.Inserts.Select(it => it.ColumnOne), Backquote, Backquote); RightBracket(X);
+                LeftBracket(X); ConcatWithComma(ps.Inserts.Select(it => it.TbCol), Backquote, Backquote); RightBracket(X);
             }
         }
         private void UpdateColumn()
@@ -324,7 +324,7 @@ namespace MyDAL.DataRainbow.MySQL
             {
                 if (list.Any(it => it.ParamInfo.Value == DBNull.Value))
                 {
-                    throw new Exception($"{DC.Set} -- 字段:[[{string.Join(",", list.Where(it => it.ParamInfo.Value == DBNull.Value).Select(it => it.ColumnOne))}]]的值不能设为 Null !!!");
+                    throw new Exception($"{DC.Set} -- 字段:[[{string.Join(",", list.Where(it => it.ParamInfo.Value == DBNull.Value).Select(it => it.TbCol))}]]的值不能设为 Null !!!");
                 }
             }
             else if (DC.Set == SetEnum.IgnoreNull)
@@ -347,12 +347,12 @@ namespace MyDAL.DataRainbow.MySQL
                     || item.Option == OptionEnum.ChangeMinus)
                 {
                     if (i != 1) { CRLF(X); Tab(X); }
-                    Column(string.Empty, item.ColumnOne, X); Equal(X); Column(string.Empty, item.ColumnOne, X); Option(item.Option, X); DbParam(item.Param, X);
+                    Column(string.Empty, item.TbCol, X); Equal(X); Column(string.Empty, item.TbCol, X); Option(item.Option, X, DC); DbParam(item.Param, X);
                 }
                 else if (item.Option == OptionEnum.Set)
                 {
                     if (i != 1) { CRLF(X); Tab(X); }
-                    Column(string.Empty, item.ColumnOne, X); Option(item.Option, X); DbParam(item.Param, X);
+                    Column(string.Empty, item.TbCol, X); Option(item.Option, X, DC); DbParam(item.Param, X);
                 }
                 else
                 {
@@ -388,22 +388,22 @@ namespace MyDAL.DataRainbow.MySQL
                     {
                         if (dic.Option == OptionEnum.Column)
                         {
-                            Column(dic.TableAliasOne, dic.ColumnOne, X);
+                            Column(dic.TbAlias, dic.TbCol, X);
                         }
                         else if (dic.Option == OptionEnum.ColumnAs)
                         {
-                            Column(dic.TableAliasOne, dic.ColumnOne, X); As(X); X.Append(dic.ColumnOneAlias);
+                            Column(dic.TbAlias, dic.TbCol, X); As(X); X.Append(dic.TbColAlias);
                         }
                     }
                     else if (dic.Crud == CrudEnum.Query)
                     {
                         if (dic.Option == OptionEnum.Column)
                         {
-                            Column(string.Empty, dic.ColumnOne, X);
+                            Column(string.Empty, dic.TbCol, X);
                         }
                         else if (dic.Option == OptionEnum.ColumnAs)
                         {
-                            Column(string.Empty, dic.ColumnOne, X); As(X); X.Append(dic.ColumnOneAlias);
+                            Column(string.Empty, dic.TbCol, X); As(X); X.Append(dic.TbColAlias);
                         }
                     }
                 }
@@ -413,24 +413,24 @@ namespace MyDAL.DataRainbow.MySQL
                     {
                         if (dic.Option == OptionEnum.Column)
                         {
-                            Function(dic.Func, X, DC); LeftBracket(X); Column(dic.TableAliasOne, dic.ColumnOne, X); Comma(X); SingleQuote(X); X.Append(dic.Format); SingleQuote(X); RightBracket(X);
+                            Function(dic.Func, X, DC); LeftBracket(X); Column(dic.TbAlias, dic.TbCol, X); Comma(X); SingleQuote(X); X.Append(dic.Format); SingleQuote(X); RightBracket(X);
                         }
                         else if (dic.Option == OptionEnum.ColumnAs)
                         {
-                            Function(dic.Func, X, DC); LeftBracket(X); Column(dic.TableAliasOne, dic.ColumnOne, X); Comma(X); SingleQuote(X); X.Append(dic.Format); SingleQuote(X); RightBracket(X);
-                            As(X); X.Append(dic.ColumnOneAlias);
+                            Function(dic.Func, X, DC); LeftBracket(X); Column(dic.TbAlias, dic.TbCol, X); Comma(X); SingleQuote(X); X.Append(dic.Format); SingleQuote(X); RightBracket(X);
+                            As(X); X.Append(dic.TbColAlias);
                         }
                     }
                     else if (dic.Crud == CrudEnum.Query)
                     {
                         if (dic.Option == OptionEnum.Column)
                         {
-                            Function(dic.Func, X, DC); LeftBracket(X); Column(string.Empty, dic.ColumnOne, X); Comma(X); SingleQuote(X); X.Append(dic.Format); SingleQuote(X); RightBracket(X);
+                            Function(dic.Func, X, DC); LeftBracket(X); Column(string.Empty, dic.TbCol, X); Comma(X); SingleQuote(X); X.Append(dic.Format); SingleQuote(X); RightBracket(X);
                         }
                         else if (dic.Option == OptionEnum.ColumnAs)
                         {
-                            Function(dic.Func, X, DC); LeftBracket(X); Column(string.Empty, dic.ColumnOne, X); Comma(X); SingleQuote(X); X.Append(dic.Format); SingleQuote(X); RightBracket(X);
-                            As(X); X.Append(dic.ColumnOneAlias);
+                            Function(dic.Func, X, DC); LeftBracket(X); Column(string.Empty, dic.TbCol, X); Comma(X); SingleQuote(X); X.Append(dic.Format); SingleQuote(X); RightBracket(X);
+                            As(X); X.Append(dic.TbColAlias);
                         }
                     }
                 }
@@ -463,7 +463,7 @@ namespace MyDAL.DataRainbow.MySQL
             if (DC.Crud == CrudEnum.Join)
             {
                 var dic = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.From);
-                TableX(dic.TableOne, X); As(X); X.Append(dic.TableAliasOne);
+                TableX(dic.TbName, X); As(X); X.Append(dic.TbAlias);
                 Join();
             }
             else
@@ -484,11 +484,11 @@ namespace MyDAL.DataRainbow.MySQL
                     case ActionEnum.InnerJoin:
                     case ActionEnum.LeftJoin:
                         CRLF(X); Tab(X);
-                        Action(item.Action, X, DC); Spacing(X); TableX(item.TableOne, X); As(X); X.Append(item.TableAliasOne);
+                        Action(item.Action, X, DC); Spacing(X); TableX(item.TbName, X); As(X); X.Append(item.TbAlias);
                         break;
                     case ActionEnum.On:
                         CRLF(X); Tab(X); Tab(X);
-                        Action(item.Action, X, DC); Spacing(X); Column(item.TableAliasOne, item.ColumnOne, X); Compare(item.Compare, X); Column(item.TableAliasTwo, item.ColumnTwo, X);
+                        Action(item.Action, X, DC); Spacing(X); Column(item.TbAlias, item.TbCol, X); Compare(item.Compare, X, DC); Column(item.TableAliasTwo, item.ColumnTwo, X);
                         break;
                 }
             }
@@ -553,7 +553,7 @@ namespace MyDAL.DataRainbow.MySQL
                     CRLF(X); X.Append("order by"); Spacing(X);
                     if (DC.Crud == CrudEnum.Join)
                     {
-                        Column(dic.TableAliasOne, col.ColumnName, X); Spacing(X); X.Append("desc");
+                        Column(dic.TbAlias, col.ColumnName, X); Spacing(X); X.Append("desc");
                     }
                     else
                     {
@@ -597,24 +597,24 @@ namespace MyDAL.DataRainbow.MySQL
             {
                 if (item.Crud == CrudEnum.Query)
                 {
-                    if ("*".Equals(item.ColumnOne, StringComparison.OrdinalIgnoreCase))
+                    if ("*".Equals(item.TbCol, StringComparison.OrdinalIgnoreCase))
                     {
-                        Function(item.Func, X, DC); LeftBracket(X); X.Append(item.ColumnOne); RightBracket(X);
+                        Function(item.Func, X, DC); LeftBracket(X); X.Append(item.TbCol); RightBracket(X);
                     }
                     else
                     {
-                        Function(item.Func, X, DC); LeftBracket(X); Distinct(); Column(string.Empty, item.ColumnOne, X); RightBracket(X);
+                        Function(item.Func, X, DC); LeftBracket(X); Distinct(); Column(string.Empty, item.TbCol, X); RightBracket(X);
                     }
                 }
                 else if (item.Crud == CrudEnum.Join)
                 {
-                    if ("*".Equals(item.ColumnOne, StringComparison.OrdinalIgnoreCase))
+                    if ("*".Equals(item.TbCol, StringComparison.OrdinalIgnoreCase))
                     {
-                        Function(item.Func, X, DC); LeftBracket(X); X.Append(item.ColumnOne); RightBracket(X);
+                        Function(item.Func, X, DC); LeftBracket(X); X.Append(item.TbCol); RightBracket(X);
                     }
                     else
                     {
-                        Function(item.Func, X, DC); LeftBracket(X); Distinct(); Column(item.TableAliasOne, item.ColumnOne, X); RightBracket(X);
+                        Function(item.Func, X, DC); LeftBracket(X); Distinct(); Column(item.TbAlias, item.TbCol, X); RightBracket(X);
                     }
                 }
             }
@@ -630,11 +630,11 @@ namespace MyDAL.DataRainbow.MySQL
             var item = col.Columns.FirstOrDefault(it => it.Func == FuncEnum.Sum);
             if (item.Crud == CrudEnum.Query)
             {
-                Function(item.Func, X, DC); LeftBracket(X); Column(string.Empty, item.ColumnOne, X); RightBracket(X);
+                Function(item.Func, X, DC); LeftBracket(X); Column(string.Empty, item.TbCol, X); RightBracket(X);
             }
             else if (item.Crud == CrudEnum.Join)
             {
-                Function(item.Func, X, DC); LeftBracket(X); Column(item.TableAliasOne, item.ColumnOne, X); RightBracket(X);
+                Function(item.Func, X, DC); LeftBracket(X); Column(item.TbAlias, item.TbCol, X); RightBracket(X);
             }
         }
 

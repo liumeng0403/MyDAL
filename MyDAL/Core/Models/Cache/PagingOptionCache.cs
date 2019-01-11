@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace MyDAL.Core.Common
+namespace MyDAL.Core.Models.Cache
 {
     internal class PagingOptionCache
     {

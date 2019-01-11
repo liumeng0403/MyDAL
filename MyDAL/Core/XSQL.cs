@@ -122,7 +122,7 @@ namespace MyDAL.Core
                 throw dc.Exception(XConfig.EC._010, action.ToString());
             }
         }
-        protected static void Option(OptionEnum option, StringBuilder sb)
+        protected static void Option(OptionEnum option, StringBuilder sb, Context dc)
         {
             switch (option)
             {
@@ -158,10 +158,10 @@ namespace MyDAL.Core
                     sb.Append(" desc ");
                     return;
                 default:
-                    throw new Exception($"{XConfig.EC._022} - [[{option}]] 不能解析!!!");
+                    throw dc.Exception(XConfig.EC._022, option.ToString());
             }
         }
-        protected static void Compare(CompareXEnum compare, StringBuilder sb)
+        protected static void Compare(CompareXEnum compare, StringBuilder sb, Context dc)
         {
             switch (compare)
             {
@@ -195,7 +195,7 @@ namespace MyDAL.Core
                     sb.Append(" not in ");
                     return;
                 default:
-                    throw new Exception($"{XConfig.EC._023} - [[{compare}]] 不能解析!!!");
+                    throw dc.Exception(XConfig.EC._023, compare.ToString());
             }
         }
         protected static void Function(FuncEnum func, StringBuilder sb, Context dc)

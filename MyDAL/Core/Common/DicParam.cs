@@ -9,25 +9,25 @@ namespace MyDAL.Core.Common
         : DicBase
     {
         //
-        internal string ClassName
+        internal string TbMName
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(ClassFullName))
+                if (string.IsNullOrWhiteSpace(TbMFullName))
                 {
                     return string.Empty;
                 }
 
-                var arr = ClassFullName.Split('.');
+                var arr = TbMFullName.Split('.');
                 return arr[arr.Length - 1];
             }
         }
-        internal string ClassFullName { get; set; }
-        internal string TableOne { get; set; }
-        internal string TableAliasOne { get; set; }
-        internal string PropOne { get; set; }
-        internal string ColumnOne { get; set; }
-        internal string ColumnOneAlias { get; set; }
+        internal string TbMFullName { get; set; }
+        internal string TbMProp { get; set; }
+        internal string TbName { get; set; }
+        internal string TbAlias { get; set; }
+        internal string TbCol { get; set; }
+        internal string TbColAlias { get; set; }
         internal string TableTwo { get; set; }
         internal string TableAliasTwo { get; set; }
         internal string ColumnTwo { get; set; }

@@ -84,10 +84,10 @@ namespace MyDAL.AdoNet
                             Reader.GetInt32(
                                 Reader.GetOrdinal(
                                     dic.Option == OptionEnum.Column
-                                        ? dic.ColumnOne
+                                        ? dic.TbCol
                                         : dic.Option == OptionEnum.ColumnAs
-                                            ? dic.ColumnOneAlias
-                                            : throw new Exception($"{XConfig.EC._016} -- [[{dic.Option}]] 不能解析!!!"))), 1, 1).ToString(dic.Format)));
+                                            ? dic.TbColAlias
+                                            : throw DC.Exception(XConfig.EC._016, dic.Option.ToString()))), 1, 1).ToString(dic.Format)));
             }
         }
         private DbCommand SettingCommand(CommandInfo comm, IDbConnection cnn, Action<IDbCommand, DbParamInfo> paramReader)
@@ -154,7 +154,7 @@ namespace MyDAL.AdoNet
                 }
                 var tbm = DC.XC.GetTableModel(dic.Key);
                 var func = DC.XC.GetHandle(SqlOne, Reader, tbm.TbMType);
-                var prop = tbm.TbMProps.FirstOrDefault(it => it.Name.Equals(dic.PropOne, StringComparison.Ordinal));
+                var prop = tbm.TbMProps.FirstOrDefault(it => it.Name.Equals(dic.TbMProp, StringComparison.Ordinal));
                 while (await Reader.ReadAsync(CancellationToken.None).ConfigureAwait(false))
                 {
                     var obj = func(Reader);

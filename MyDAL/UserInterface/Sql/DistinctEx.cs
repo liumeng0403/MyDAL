@@ -1,5 +1,4 @@
-﻿using MyDAL.Core.Enums;
-using MyDAL.UserFacade.Join;
+﻿using MyDAL.UserFacade.Join;
 using MyDAL.UserFacade.Query;
 
 namespace MyDAL

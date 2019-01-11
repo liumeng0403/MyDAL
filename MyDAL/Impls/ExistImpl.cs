@@ -41,7 +41,7 @@ namespace MyDAL.Impls
             DC.Compare = CompareXEnum.None;
             DC.Func = FuncEnum.Count;
             var dic = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.From);
-            DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(dic.ClassFullName, "*") }));
+            DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(dic.TbMFullName, "*") }));
             PreExecuteHandle(UiMethodEnum.ExistAsync);
             var count = await DC.DS.ExecuteScalarAsync<long>();
             return count > 0;

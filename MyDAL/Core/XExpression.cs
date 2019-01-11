@@ -243,12 +243,12 @@ namespace MyDAL.Core
                 }
                 else
                 {
-                    throw new Exception($"{XConfig.EC._019} -- [[{nodeType}]] 不能解析!!!");
+                    throw DC.Exception(XConfig.EC._019, nodeType.ToString());
                 }
             }
             else
             {
-                throw new Exception($"{XConfig.EC._020} -- [[{nodeType}]] 不能解析!!!");
+                throw DC.Exception(XConfig.EC._020, nodeType.ToString());
             }
         }
         private DicParam FuncToString(MethodCallExpression mcExpr)
@@ -467,7 +467,7 @@ namespace MyDAL.Core
                     }
                     else
                     {
-                        throw new Exception($"{XConfig.EC._021} -- [[{memExpr.Expression.NodeType} - {memExpr.ToString()}]] 不能解析!!!");
+                        throw DC.Exception(XConfig.EC._021, $"{memExpr.Expression.NodeType} - {memExpr.ToString()}");
                     }
                 }
             }
@@ -632,12 +632,12 @@ namespace MyDAL.Core
                 }
                 else
                 {
-                    throw new Exception($"{XConfig.EC._018} -- [[{bodyL.NodeType}-{func}]] 不能解析!!!");
+                    throw DC.Exception(XConfig.EC._018, $"{bodyL.NodeType}-{func}");
                 }
             }
             else
             {
-                throw new Exception($"{XConfig.EC._017} -- [[{bodyL.NodeType}]] 不能解析!!!");
+                throw DC.Exception(XConfig.EC._017, bodyL.NodeType.ToString());
             }
         }
         private DicParam BodyProcess(Expression body, ParameterExpression firstParam)
@@ -712,7 +712,7 @@ namespace MyDAL.Core
                         || DC.Action == ActionEnum.And
                         || DC.Action == ActionEnum.Or)
                     {
-                        var pres = DC.Parameters.Select(it => it.TableAliasOne).ToList();
+                        var pres = DC.Parameters.Select(it => it.TbAlias).ToList();
                         result = HandConditionBinary(binExpr, pres);
                     }
                 }

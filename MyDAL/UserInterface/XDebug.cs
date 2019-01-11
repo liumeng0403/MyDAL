@@ -28,11 +28,11 @@ namespace MyDAL
                         || dbM.Crud == CrudEnum.Create
                         || dbM.Crud == CrudEnum.Delete)
                     {
-                        field = dbM.ColumnOne;
+                        field = dbM.TbCol;
                     }
                     else if (dbM.Crud == CrudEnum.Join)
                     {
-                        field = $"{dbM.TableAliasOne}.{dbM.ColumnOne}";
+                        field = $"{dbM.TbAlias}.{dbM.TbCol}";
                     }
 
                     //

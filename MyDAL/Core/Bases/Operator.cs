@@ -206,7 +206,7 @@ namespace MyDAL.Core.Bases
             where M : class
         {
             var keyDic = DC.XE.FuncMFExpression(propertyFunc);
-            var key = keyDic.ColumnOne;
+            var key = keyDic.TbCol;
             var val = default(ValueInfo);
             if (modVal == null)
             {
@@ -244,7 +244,7 @@ namespace MyDAL.Core.Bases
         {
             DC.Action = ActionEnum.Where;
             var field = DC.XE.FuncMBoolExpression(func);
-            field.ClassFullName = typeof(M).FullName;
+            field.TbMFullName = typeof(M).FullName;
             DC.DPH.AddParameter(field);
         }
 
@@ -333,7 +333,7 @@ namespace MyDAL.Core.Bases
                     break;
             }
 
-            DC.DPH.AddParameter(DC.DPH.OrderbyDic(keyDic.ClassFullName, keyDic.ColumnOne, keyDic.TableAliasOne));
+            DC.DPH.AddParameter(DC.DPH.OrderbyDic(keyDic.TbMFullName, keyDic.TbCol, keyDic.TbAlias));
         }
 
         internal void OrderByF<F>(Expression<Func<F>> func, OrderByEnum orderBy)
@@ -349,7 +349,7 @@ namespace MyDAL.Core.Bases
                     break;
             }
 
-            DC.DPH.AddParameter(DC.DPH.OrderbyDic(keyDic.ClassFullName, keyDic.ColumnOne, keyDic.TableAliasOne));
+            DC.DPH.AddParameter(DC.DPH.OrderbyDic(keyDic.TbMFullName, keyDic.TbCol, keyDic.TbAlias));
         }
 
         internal void DistinctHandle()
