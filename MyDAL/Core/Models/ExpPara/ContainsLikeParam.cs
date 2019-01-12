@@ -1,9 +1,6 @@
 ﻿using MyDAL.Core.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace MyDAL.Core.Common
+namespace MyDAL.Core.Models.ExpPara
 {
     internal class ContainsLikeParam
     {

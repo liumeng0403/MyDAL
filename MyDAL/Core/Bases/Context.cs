@@ -168,10 +168,22 @@ namespace MyDAL.Core.Bases
             XC.GetTableModel(type);
         }
 
-        internal Exception Exception(string code,string msg)
+        internal void SetTbMs<M>(string alias)
+        {
+            if (!TbMs.Any(it => it.Alias.Equals(alias, StringComparison.OrdinalIgnoreCase)))
+            {
+                TbMs.Add(new TableDic
+                {
+                    TbM = typeof(M),
+                    Alias = alias
+                });
+            }
+        }
+
+        internal Exception Exception(string code, string msg)
         {
             return new Exception($"{code} -- [[{msg}]] 未能解析!!! 请 EMail: --> liumeng0403@163.com <--");
         }
-        
+
     }
 }

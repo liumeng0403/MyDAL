@@ -15,6 +15,7 @@ namespace MyDAL
             from.DC.Action = ActionEnum.InnerJoin;
             var dic = from.DC.XE.FuncTExpression(modelFunc);
             from.DC.DPH.AddParameter(dic);
+            from.DC.SetTbMs<M>(dic.TbAlias);
             return new JoinX(from.DC);
         }
 
@@ -23,6 +24,7 @@ namespace MyDAL
             from.DC.Action = ActionEnum.LeftJoin;
             var dic = from.DC.XE.FuncTExpression(modelFunc);
             from.DC.DPH.AddParameter(dic);
+            from.DC.SetTbMs<M>(dic.TbAlias);
             return new JoinX(from.DC);
         }
 
@@ -33,6 +35,7 @@ namespace MyDAL
             on.DC.Action = ActionEnum.InnerJoin;
             var dic = on.DC.XE.FuncTExpression(modelFunc);
             on.DC.DPH.AddParameter(dic);
+            on.DC.SetTbMs<M>(dic.TbAlias);
             return new JoinX(on.DC);
         }
 
@@ -41,6 +44,7 @@ namespace MyDAL
             on.DC.Action = ActionEnum.LeftJoin;
             var dic = on.DC.XE.FuncTExpression(modelFunc);
             on.DC.DPH.AddParameter(dic);
+            on.DC.SetTbMs<M>(dic.TbAlias);
             return new JoinX(on.DC);
         }
 

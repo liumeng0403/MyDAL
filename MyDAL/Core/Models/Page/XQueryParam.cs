@@ -1,5 +1,5 @@
 ﻿using MyDAL.Core.Common;
-using MyDAL.Core.Enums;
+using MyDAL.Core.Models.ExpPara;
 
 namespace MyDAL.Core.Models.Page
 {

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using MyDAL.Core.Bases;
+using System;
 using System.Data;
 
 namespace MyDAL.AdoNet
 {
-    internal interface IRow { }
 
     internal class Row<M>
         :IRow

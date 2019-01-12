@@ -2,6 +2,7 @@
 using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
+using MyDAL.Core.Models.ExpPara;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -297,7 +298,7 @@ namespace MyDAL.Core.Helper
         internal DicParam CharLengthDic(ColumnParam cp, ValueInfo v)
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = cp.ClassFullName;
+            dic.TbMFullName = cp.TbMFullName;
             dic.TbMProp = cp.Prop;
             dic.TbCol = cp.Key;
             dic.TbAlias = cp.Alias;
@@ -313,7 +314,7 @@ namespace MyDAL.Core.Helper
         internal DicParam TrimDic(ColumnParam cp, ValueInfo v)
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = cp.ClassFullName;
+            dic.TbMFullName = cp.TbMFullName;
             dic.TbMProp = cp.Prop;
             dic.TbCol = cp.Key;
             dic.TbAlias = cp.Alias;
@@ -329,7 +330,7 @@ namespace MyDAL.Core.Helper
         internal DicParam DateFormatDic(ColumnParam cp, ValueInfo v, string format)
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = cp.ClassFullName;
+            dic.TbMFullName = cp.TbMFullName;
             dic.TbMProp = cp.Prop;
             dic.TbCol = cp.Key;
             dic.TbColAlias = cp.Key;
@@ -347,7 +348,7 @@ namespace MyDAL.Core.Helper
         internal DicParam CompareDic(ColumnParam cp, ValueInfo v)
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = cp.ClassFullName;
+            dic.TbMFullName = cp.TbMFullName;
             dic.TbMProp = cp.Prop;
             dic.TbCol = cp.Key;
             dic.TbAlias = cp.Alias;
@@ -363,7 +364,7 @@ namespace MyDAL.Core.Helper
         internal DicParam InDic(ColumnParam cp, ValueInfo v)
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = cp.ClassFullName;
+            dic.TbMFullName = cp.TbMFullName;
             dic.TbMProp = cp.Prop;
             dic.TbCol = cp.Key;
             dic.TbAlias = cp.Alias;
@@ -378,7 +379,7 @@ namespace MyDAL.Core.Helper
         internal DicParam NotInDic(ColumnParam cp, ValueInfo v)
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = cp.ClassFullName;
+            dic.TbMFullName = cp.TbMFullName;
             dic.TbMProp = cp.Prop;
             dic.TbCol = cp.Key;
             dic.TbAlias = cp.Alias;
@@ -394,7 +395,7 @@ namespace MyDAL.Core.Helper
         internal DicParam LikeDic(ColumnParam cp, ValueInfo v)
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = cp.ClassFullName;
+            dic.TbMFullName = cp.TbMFullName;
             dic.TbMProp = cp.Prop;
             dic.TbCol = cp.Key;
             dic.TbAlias = cp.Alias;
@@ -423,7 +424,7 @@ namespace MyDAL.Core.Helper
         internal DicParam IsNullDic(ColumnParam cp)
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = cp.ClassFullName;
+            dic.TbMFullName = cp.TbMFullName;
             dic.TbMProp = cp.Prop;
             dic.TbCol = cp.Key;
             dic.TbAlias = cp.Alias;
@@ -441,7 +442,7 @@ namespace MyDAL.Core.Helper
         internal DicParam SelectMemberInitDic(ColumnParam cp, string colAlias)
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = cp.ClassFullName;
+            dic.TbMFullName = cp.TbMFullName;
             dic.TbAlias = cp.Alias;
             dic.TbMProp = cp.Prop;
             dic.TbCol = cp.Key;
@@ -535,7 +536,7 @@ namespace MyDAL.Core.Helper
         internal DicParam OnDic(ColumnParam cp1, ColumnParam cp2)
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = cp1.ClassFullName;
+            dic.TbMFullName = cp1.TbMFullName;
             dic.TbCol = cp1.Key;
             dic.TbAlias = cp1.Alias;
             dic.ColumnTwo = cp2.Key;
@@ -557,7 +558,7 @@ namespace MyDAL.Core.Helper
         internal DicParam ColumnDic(ColumnParam cp)
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = cp.ClassFullName;
+            dic.TbMFullName = cp.TbMFullName;
             dic.TbAlias = cp.Alias;
             dic.TbCol = cp.Key;
             dic.Param = cp.Key;

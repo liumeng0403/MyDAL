@@ -18,9 +18,11 @@ namespace MyDAL.Test.QueryVM
 
             xx = string.Empty;
 
-            var option = new AgentQueryOption();
-            option.Id = Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b");
-            option.Name = "樊士芹";
+            var option = new AgentQueryOption
+            {
+                Id = Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"),
+                Name = "樊士芹"
+            };
             // where method -- option orderby 
             var res3 = await Conn
                 .Queryer<Agent>()

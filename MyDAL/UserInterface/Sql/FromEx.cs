@@ -1,6 +1,8 @@
-﻿using MyDAL.Core.Enums;
+﻿using MyDAL.Core.Common;
+using MyDAL.Core.Enums;
 using MyDAL.UserFacade.Join;
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace MyDAL
@@ -13,6 +15,7 @@ namespace MyDAL
             join.DC.Action = ActionEnum.From;
             var dic = join.DC.XE.FuncTExpression(tableModelFunc);
             join.DC.DPH.AddParameter(dic);
+            join.DC.SetTbMs<M>(dic.TbAlias);
             return new FromX(join.DC);
         }
 

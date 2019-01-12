@@ -2,6 +2,7 @@
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
+using MyDAL.Core.Models.ExpPara;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;

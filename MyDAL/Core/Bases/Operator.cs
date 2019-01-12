@@ -1,6 +1,7 @@
 ﻿using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
+using MyDAL.Core.Models.ExpPara;
 using MyDAL.Core.Models.Page;
 using System;
 using System.Collections;
@@ -68,7 +69,7 @@ namespace MyDAL.Core.Bases
             }
         }
 
-        private List<(string key, string param, ValueInfo val, Type valType, string colType, CompareEnum compare)> GetSetKPV<M>(object objx)
+        private List<SetParam> GetSetKPV<M>(object objx)
         {
             var list = new List<SetDic>();
             var dic = default(IDictionary<string, object>);
@@ -115,7 +116,7 @@ namespace MyDAL.Core.Bases
             }
 
             //
-            var result = new List<(string key, string param, ValueInfo val, Type valType, string colType, CompareEnum compare)>();
+            var result = new List<SetParam>();
             foreach (var prop in list)
             {
                 var val = default(ValueInfo);
@@ -126,14 +127,30 @@ namespace MyDAL.Core.Bases
                     var obj = dic[prop.MField];
                     valType = obj.GetType();
                     val = DC.VH.ExpandoObjectValue(obj);
-                    result.Add((prop.MField, prop.VmField, val, valType, columnType, prop.Compare));
+                    result.Add(new SetParam
+                    {
+                        Key = prop.MField,
+                        Param = prop.VmField,
+                        Val = val,
+                        ValType = valType,
+                        ColType = columnType,
+                        Compare = prop.Compare
+                    });
                 }
                 else
                 {
                     var mp = objx.GetType().GetProperty(prop.MField);
                     valType = mp.PropertyType;
                     val = DC.VH.PropertyValue(mp, objx);
-                    result.Add((prop.MField, prop.VmField, val, valType, columnType, prop.Compare));
+                    result.Add(new SetParam
+                    {
+                        Key = prop.MField,
+                        Param = prop.VmField,
+                        Val = val,
+                        ValType = valType,
+                        ColType = columnType,
+                        Compare = prop.Compare
+                    });
                 }
             }
             return result;
@@ -187,7 +204,7 @@ namespace MyDAL.Core.Bases
                         Prop = dic.MProp,
                         Key = dic.QCol,
                         ValType = valType,
-                        ClassFullName = dic.MFullName
+                        TbMFullName = dic.MFullName
                     },
                     Val = val,
                     Compare = dic.Compare
@@ -229,7 +246,7 @@ namespace MyDAL.Core.Bases
             {
                 DC.Option = OptionEnum.Set;
                 DC.Compare = CompareXEnum.None;
-                DC.DPH.AddParameter(DC.DPH.SetDic(fullName, tp.key, tp.param, tp.val, tp.valType));
+                DC.DPH.AddParameter(DC.DPH.SetDic(fullName, tp.Key, tp.Param, tp.Val, tp.ValType));
             }
         }
 

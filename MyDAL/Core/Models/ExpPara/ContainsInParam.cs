@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace MyDAL.Core.Common
+namespace MyDAL.Core.Models.ExpPara
 {
     internal class ContainsInParam
     {
