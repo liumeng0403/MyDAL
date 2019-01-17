@@ -44,7 +44,7 @@ namespace MyDAL.Core.Helper
                 Func = ui.Func,
 
                 //
-                TbMFullName = ui.TbMFullName,
+                TbMType = ui.TbMType,
                 TbAlias = ui.TbAlias,
                 TbCol = ui.TbCol,
                 TbColAlias = ui.TbColAlias,
@@ -129,13 +129,13 @@ namespace MyDAL.Core.Helper
             ui.IsDbSet = true;
 
             //
-            if (ui.TbMFullName.IsNullStr())
+            if (ui.TbMType == null)
             {
                 ui.Key = string.Empty;
             }
             else
             {
-                ui.Key = DC.XC.GetModelKey(ui.TbMFullName);
+                ui.Key = DC.XC.GetModelKey(ui.TbMType.FullName);
                 var tbm = DC.XC.GetTableModel(ui.Key);
                 ui.TbName = tbm.TbName;
             }
@@ -298,7 +298,7 @@ namespace MyDAL.Core.Helper
         internal DicParam CharLengthDic(ColumnParam cp, ValueInfo v)
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = cp.TbMFullName;
+            dic.TbMType = cp.TbMType;
             dic.TbMProp = cp.Prop;
             dic.TbCol = cp.Key;
             dic.TbAlias = cp.Alias;
@@ -314,7 +314,7 @@ namespace MyDAL.Core.Helper
         internal DicParam TrimDic(ColumnParam cp, ValueInfo v)
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = cp.TbMFullName;
+            dic.TbMType = cp.TbMType;
             dic.TbMProp = cp.Prop;
             dic.TbCol = cp.Key;
             dic.TbAlias = cp.Alias;
@@ -330,7 +330,7 @@ namespace MyDAL.Core.Helper
         internal DicParam DateFormatDic(ColumnParam cp, ValueInfo v, string format)
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = cp.TbMFullName;
+            dic.TbMType = cp.TbMType;
             dic.TbMProp = cp.Prop;
             dic.TbCol = cp.Key;
             dic.TbColAlias = cp.Key;
@@ -348,7 +348,7 @@ namespace MyDAL.Core.Helper
         internal DicParam CompareDic(ColumnParam cp, ValueInfo v)
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = cp.TbMFullName;
+            dic.TbMType = cp.TbMType;
             dic.TbMProp = cp.Prop;
             dic.TbCol = cp.Key;
             dic.TbAlias = cp.Alias;
@@ -364,7 +364,7 @@ namespace MyDAL.Core.Helper
         internal DicParam InDic(ColumnParam cp, ValueInfo v)
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = cp.TbMFullName;
+            dic.TbMType = cp.TbMType;
             dic.TbMProp = cp.Prop;
             dic.TbCol = cp.Key;
             dic.TbAlias = cp.Alias;
@@ -379,7 +379,7 @@ namespace MyDAL.Core.Helper
         internal DicParam NotInDic(ColumnParam cp, ValueInfo v)
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = cp.TbMFullName;
+            dic.TbMType = cp.TbMType;
             dic.TbMProp = cp.Prop;
             dic.TbCol = cp.Key;
             dic.TbAlias = cp.Alias;
@@ -395,7 +395,7 @@ namespace MyDAL.Core.Helper
         internal DicParam LikeDic(ColumnParam cp, ValueInfo v)
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = cp.TbMFullName;
+            dic.TbMType = cp.TbMType;
             dic.TbMProp = cp.Prop;
             dic.TbCol = cp.Key;
             dic.TbAlias = cp.Alias;
@@ -424,7 +424,7 @@ namespace MyDAL.Core.Helper
         internal DicParam IsNullDic(ColumnParam cp)
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = cp.TbMFullName;
+            dic.TbMType = cp.TbMType;
             dic.TbMProp = cp.Prop;
             dic.TbCol = cp.Key;
             dic.TbAlias = cp.Alias;
@@ -442,7 +442,7 @@ namespace MyDAL.Core.Helper
         internal DicParam SelectMemberInitDic(ColumnParam cp, string colAlias)
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = cp.TbMFullName;
+            dic.TbMType = cp.TbMType;
             dic.TbAlias = cp.Alias;
             dic.TbMProp = cp.Prop;
             dic.TbCol = cp.Key;
@@ -458,10 +458,10 @@ namespace MyDAL.Core.Helper
             return dic;
         }
 
-        internal DicParam CountDic(string fullName, string key, string alias = "")
+        internal DicParam CountDic(Type mType, string key, string alias = "")
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = fullName;
+            dic.TbMType = mType;
             dic.TbAlias = alias;
             dic.TbCol = key;
             dic.Param = key;
@@ -469,10 +469,10 @@ namespace MyDAL.Core.Helper
 
             return dic;
         }
-        internal DicParam SumDic(string fullName, string key, string alias = "")
+        internal DicParam SumDic(Type mType, string key, string alias = "")
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = fullName;
+            dic.TbMType = mType;
             dic.TbAlias = alias;
             dic.TbCol = key;
             dic.Param = key;
@@ -481,10 +481,10 @@ namespace MyDAL.Core.Helper
             return dic;
         }
 
-        internal DicParam OrderbyDic(string fullName, string key, string alias)
+        internal DicParam OrderbyDic(Type mType, string key, string alias)
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = fullName;
+            dic.TbMType = mType;
             dic.TbCol = key;
             dic.TbAlias = alias;
 
@@ -493,18 +493,18 @@ namespace MyDAL.Core.Helper
 
         /*******************************************************************************************************/
 
-        internal DicParam InsertDic(string fullName, List<DicParam> list)
+        internal DicParam InsertDic(Type mType, List<DicParam> list)
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = fullName;
+            dic.TbMType = mType;
             dic.Inserts = list;
 
             return dic;
         }
-        internal DicParam InsertHelperDic(string fullName, string key, ValueInfo v, Type valType)
+        internal DicParam InsertHelperDic(Type mType, string key, ValueInfo v, Type valType)
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = fullName;
+            dic.TbMType = mType;
             dic.TbCol = key;
             dic.Param = key;
             dic.ParamRaw = key;
@@ -517,10 +517,10 @@ namespace MyDAL.Core.Helper
 
         /*******************************************************************************************************/
 
-        internal DicParam SetDic(string fullName, string key, string param, ValueInfo v, Type valType)
+        internal DicParam SetDic(Type mType, string key, string param, ValueInfo v, Type valType)
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = fullName;
+            dic.TbMType = mType;
             dic.TbCol = key;
             dic.Param = param;
             dic.ParamRaw = param;
@@ -536,7 +536,7 @@ namespace MyDAL.Core.Helper
         internal DicParam OnDic(ColumnParam cp1, ColumnParam cp2)
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = cp1.TbMFullName;
+            dic.TbMType = cp1.TbMType;
             dic.TbCol = cp1.Key;
             dic.TbAlias = cp1.Alias;
             dic.ColumnTwo = cp2.Key;
@@ -547,10 +547,10 @@ namespace MyDAL.Core.Helper
 
         /*******************************************************************************************************/
 
-        internal DicParam TableDic(string fullName, string alias)
+        internal DicParam TableDic(Type mType, string alias)
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = fullName;
+            dic.TbMType = mType;
             dic.TbAlias = alias;
             return dic;
         }
@@ -558,7 +558,7 @@ namespace MyDAL.Core.Helper
         internal DicParam ColumnDic(ColumnParam cp)
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = cp.TbMFullName;
+            dic.TbMType = cp.TbMType;
             dic.TbAlias = cp.Alias;
             dic.TbCol = cp.Key;
             dic.Param = cp.Key;
@@ -567,10 +567,10 @@ namespace MyDAL.Core.Helper
 
             return dic;
         }
-        internal DicParam ColumnDic(string columnOne, string tableAliasOne, string fullName, string prop)
+        internal DicParam ColumnDic(string columnOne, string tableAliasOne, Type mType, string prop)
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = fullName;
+            dic.TbMType = mType;
             dic.TbMProp = prop;
             dic.TbCol = columnOne;
             dic.TbAlias = tableAliasOne;
@@ -578,10 +578,10 @@ namespace MyDAL.Core.Helper
             return dic;
         }
 
-        internal DicParam JoinColumnDic(string fullName, string key, string alias, string prop)
+        internal DicParam JoinColumnDic(Type mType, string key, string alias, string prop)
         {
             var dic = SetDicBase(DC);
-            dic.TbMFullName = fullName;
+            dic.TbMType = mType;
             dic.TbAlias = alias;
             dic.TbMProp = prop;
             dic.TbCol = key;

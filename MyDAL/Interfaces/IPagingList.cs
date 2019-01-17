@@ -33,8 +33,8 @@ namespace MyDAL.Interfaces
 
     internal interface IPagingListXO
     {
-        Task<PagingResult<M>> PagingListAsync<M>(PagingOption option)
+        Task<PagingResult<M>> PagingListAsync<M>()
             where M : class;
-        Task<PagingResult<T>> PagingListAsync<T>(PagingOption option, Expression<Func<T>> columnMapFunc);
+        Task<PagingResult<T>> PagingListAsync<T>(Expression<Func<T>> columnMapFunc);
     }
 }

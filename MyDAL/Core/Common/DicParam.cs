@@ -9,20 +9,7 @@ namespace MyDAL.Core.Common
         : DicBase
     {
         //
-        internal string TbMName
-        {
-            get
-            {
-                if (string.IsNullOrWhiteSpace(TbMFullName))
-                {
-                    return string.Empty;
-                }
-
-                var arr = TbMFullName.Split('.');
-                return arr[arr.Length - 1];
-            }
-        }
-        internal string TbMFullName { get; set; }
+        internal Type TbMType { get; set; }
         internal string TbMProp { get; set; }
         internal string TbName { get; set; }
         internal string TbAlias { get; set; }

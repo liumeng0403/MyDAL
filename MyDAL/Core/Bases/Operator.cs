@@ -157,31 +157,12 @@ namespace MyDAL.Core.Bases
         }
         private List<XQueryParam> GetWhereKPV(PagingOption query)
         {
-            //
             var result = new List<XQueryParam>();
-            var dics = new List<XQueryDic>();
-            var queryT = query.GetType();
-            var ops = DC.XC.GetPagingOption(queryT);
-            foreach (var op in ops)
+            var ops = DC.XC.GetPagingOption(query.GetType());
+            foreach (var dic in ops)
             {
-                dics.Add(new XQueryDic
-                {
-                    MFullName = op.TbMType.FullName,
-                    MProp = op.TbMProp.Name,
-                    QCol = op.ColName,
-                    QProp = op.PropName,
-                    Compare = op.Compare
-                });
-            }
-
-            //
-            foreach (var dic in dics)
-            {
-                var val = default(ValueInfo);
-                var valType = default(Type);
-                var qp = queryT.GetProperty(dic.QProp);
-                valType = qp.PropertyType;
-                val = DC.VH.PropertyValue(qp, query);
+                var valType = dic.PgProp.PropertyType;
+                var val = DC.VH.PropertyValue(dic.PgProp, query);
                 if (!CheckWhereVal(val.Val, valType))
                 {
                     continue;
@@ -199,12 +180,15 @@ namespace MyDAL.Core.Bases
                 }
                 result.Add(new XQueryParam
                 {
+                    PgType = dic.PgType,
+                    PgProp = dic.PgProp,
+                    PgAttr = dic.Attr,
                     Cp = new ColumnParam
                     {
-                        Prop = dic.MProp,
-                        Key = dic.QCol,
+                        Prop = dic.TbMProp.Name, //.MProp,
+                        Key = dic.TbCol, //.QCol,
                         ValType = valType,
-                        TbMFullName = dic.MFullName
+                        TbMType = dic.TbMType //.MFullName
                     },
                     Val = val,
                     Compare = dic.Compare
@@ -235,18 +219,17 @@ namespace MyDAL.Core.Bases
             }
             DC.Option = option;
             DC.Compare = CompareXEnum.None;
-            DC.DPH.AddParameter(DC.DPH.SetDic(typeof(M).FullName, key, key, val, typeof(F)));
+            DC.DPH.AddParameter(DC.DPH.SetDic(typeof(M), key, key, val, typeof(F)));
         }
 
         internal void SetDynamicHandle<M>(object mSet)
         {
             var tuples = GetSetKPV<M>(mSet);
-            var fullName = typeof(M).FullName;
             foreach (var tp in tuples)
             {
                 DC.Option = OptionEnum.Set;
                 DC.Compare = CompareXEnum.None;
-                DC.DPH.AddParameter(DC.DPH.SetDic(fullName, tp.Key, tp.Param, tp.Val, tp.ValType));
+                DC.DPH.AddParameter(DC.DPH.SetDic(typeof(M), tp.Key, tp.Param, tp.Val, tp.ValType));
             }
         }
 
@@ -261,7 +244,7 @@ namespace MyDAL.Core.Bases
         {
             DC.Action = ActionEnum.Where;
             var field = DC.XE.FuncMBoolExpression(func);
-            field.TbMFullName = typeof(M).FullName;
+            field.TbMType = typeof(M);
             DC.DPH.AddParameter(field);
         }
 
@@ -279,6 +262,38 @@ namespace MyDAL.Core.Bases
                 else
                 {
                     DC.Action = ActionEnum.And;
+                }
+                var alias = string.Empty;
+                if (DC.Crud == CrudEnum.Join)
+                {
+                    var mt = tp.Cp.TbMType;
+                    var mCount = DC.TbMs.Count(it => it.TbM == mt);
+                    if (mCount <= 0)
+                    {
+                        throw new Exception($"用作 Paging Option 的字段 [[{tp.PgType.Name}.{tp.PgProp.Name}]],必须是表 [[{string.Join(",", DC.TbMs.Select(it => it.TbM.Name))}]] 中对应的字段!!!");
+                    }
+                    else if (mCount == 1)
+                    {
+                        alias = DC.TbMs.First(it => it.TbM == mt).Alias;
+                    }
+                    else
+                    {
+                        if (!tp.PgAttr.TableAlias.IsNullStr())
+                        {
+                            alias = tp.PgAttr.TableAlias;
+                        }
+                        else
+                        {
+                            throw new Exception(
+                                $@"存在类似 [[多表自连接]] 的情况,
+                                        字段 [[{tp.PgType.Name}.{tp.PgProp.Name}]] 必须用 [XQuery] Attribute 标记字段对应的 'TableAlias = ' 以表明表别名,
+                                        别名必须是 [[{string.Join(",", DC.TbMs.Select(it => it.Alias))}]] 其中之一!!!");
+                        }
+                    }
+                }
+                if (!alias.IsNullStr())
+                {
+                    tp.Cp.Alias = alias;
                 }
 
                 //
@@ -350,7 +365,7 @@ namespace MyDAL.Core.Bases
                     break;
             }
 
-            DC.DPH.AddParameter(DC.DPH.OrderbyDic(keyDic.TbMFullName, keyDic.TbCol, keyDic.TbAlias));
+            DC.DPH.AddParameter(DC.DPH.OrderbyDic(keyDic.TbMType, keyDic.TbCol, keyDic.TbAlias));
         }
 
         internal void OrderByF<F>(Expression<Func<F>> func, OrderByEnum orderBy)
@@ -366,7 +381,7 @@ namespace MyDAL.Core.Bases
                     break;
             }
 
-            DC.DPH.AddParameter(DC.DPH.OrderbyDic(keyDic.TbMFullName, keyDic.TbCol, keyDic.TbAlias));
+            DC.DPH.AddParameter(DC.DPH.OrderbyDic(keyDic.TbMType, keyDic.TbCol, keyDic.TbAlias));
         }
 
         internal void DistinctHandle()

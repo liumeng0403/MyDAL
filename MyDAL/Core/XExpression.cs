@@ -438,7 +438,7 @@ namespace MyDAL.Core
                     if (memExpr.Expression.NodeType == ExpressionType.Constant)
                     {
                         var alias = memExpr.Member.Name;
-                        return DC.DPH.TableDic(memExpr.Type.FullName, alias);
+                        return DC.DPH.TableDic(memExpr.Type, alias);
                     }
                     else if (memExpr.Expression.NodeType == ExpressionType.MemberAccess)
                     {
@@ -458,11 +458,11 @@ namespace MyDAL.Core
                             DC.Option = OptionEnum.Column;
                             if (DC.Action == ActionEnum.Select)
                             {
-                                return DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.JoinColumnDic(exp2.Type.FullName, field, alias, field) });
+                                return DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.JoinColumnDic(exp2.Type, field, alias, field) });
                             }
                             else
                             {
-                                return DC.DPH.JoinColumnDic(exp2.Type.FullName, field, alias, field);
+                                return DC.DPH.JoinColumnDic(exp2.Type, field, alias, field);
                             }
                         }
                     }
@@ -606,7 +606,7 @@ namespace MyDAL.Core
                     Key = attr.Name,
                     Alias = alias,
                     ValType = type,
-                    TbMFullName = mType.FullName,
+                    TbMType = mType,
                     Format = format
                 };
             }

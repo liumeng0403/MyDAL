@@ -8,7 +8,7 @@ namespace MyDAL.Core.Models.ExpPara
         internal string Key { get; set; }
         internal string Alias { get; set; }
         internal Type ValType { get; set; }
-        internal string TbMFullName { get; set; }
+        internal Type TbMType { get; set; }
         internal string Format { get; set; }
     }
 }

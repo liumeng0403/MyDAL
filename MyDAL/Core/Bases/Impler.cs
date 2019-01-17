@@ -21,9 +21,9 @@ namespace MyDAL.Core.Bases
             {
                 var val = DC.VH.PropertyValue(prop, m);
                 DC.Compare = CompareXEnum.None;
-                list.Add(DC.DPH.InsertHelperDic(tbm.TbMFullName, prop.Name, val, prop.PropertyType));
+                list.Add(DC.DPH.InsertHelperDic(tbm.TbMType, prop.Name, val, prop.PropertyType));
             }
-            DC.DPH.AddParameter(DC.DPH.InsertDic(tbm.TbMFullName, list));
+            DC.DPH.AddParameter(DC.DPH.InsertDic(tbm.TbMType, list));
         }
 
         /**********************************************************************************************************/
@@ -65,12 +65,12 @@ namespace MyDAL.Core.Bases
             DC.Action = ActionEnum.Select;
             var mType = typeof(M);
             var fullName = mType.FullName;
-            var dic = DC.Parameters.FirstOrDefault(it => fullName.Equals(it.TbMFullName, StringComparison.OrdinalIgnoreCase));
+            var dic = DC.Parameters.FirstOrDefault(it => mType == it.TbMType);
             if (dic != null)
             {
                 DC.Option = OptionEnum.Column;
                 DC.Compare = CompareXEnum.None;
-                var col = DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.ColumnDic("*", dic.TbAlias, fullName, dic.TbMProp) });
+                var col = DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.ColumnDic("*", dic.TbAlias, mType, dic.TbMProp) });
                 DC.DPH.AddParameter(col);
             }
             else if (DC.Parameters.Count == 0)
@@ -79,8 +79,8 @@ namespace MyDAL.Core.Bases
             }
             else
             {
-                var fullNames = DC.Parameters.Where(it => !string.IsNullOrWhiteSpace(it.TbMFullName)).Distinct();
-                throw new Exception($"请使用 [[Task<List<VM>> ListAsync<VM>(Expression<Func<VM>> func)]] 方法! 或者 {mType.Name} 必须为 [[{string.Join(",", fullNames.Select(it => it.TbMName))}]] 其中之一 !");
+                var fullNames = DC.Parameters.Where(it => it.TbMType != null).Distinct();
+                throw new Exception($"请使用 [[Task<List<VM>> ListAsync<VM>(Expression<Func<VM>> func)]] 方法! 或者 {mType.Name} 必须为 [[{string.Join(",", fullNames.Select(it => it.TbMType.Name))}]] 其中之一 !");
             }
         }
         protected void SelectMQ<M, VM>()
@@ -104,7 +104,7 @@ namespace MyDAL.Core.Bases
                 {
                     if (prop.Name.Equals(vProp.Name, StringComparison.OrdinalIgnoreCase))
                     {
-                        list.Add(DC.DPH.ColumnDic(prop.Name, string.Empty, tbm.TbMFullName, prop.Name));
+                        list.Add(DC.DPH.ColumnDic(prop.Name, string.Empty, tbm.TbMType, prop.Name));
                     }
                 }
             }

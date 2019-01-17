@@ -165,7 +165,8 @@ namespace MyDAL.Core
                         {
                             pc.Attr = new XQueryAttribute
                             {
-                                Table = DC.TbM1
+                                Table = DC.TbM1,
+                                TableAlias = string.Empty
                             };
                             var tbm1 = DC.XC.GetTableModel(DC.TbM1);
                             var col1 = tbm1.PCAs.FirstOrDefault(it =>
@@ -197,6 +198,7 @@ namespace MyDAL.Core
                         {
                             pc.Attr.Table = qa.Table;
                         }
+                        pc.Attr.TableAlias = qa.TableAlias;
                         var colName = qa.Column.IsNullStr() ? p.Name : qa.Column;
                         var tbm2 = DC.XC.GetTableModel(pc.Attr.Table);
                         var col2 = tbm2.PCAs.FirstOrDefault(it =>
@@ -229,8 +231,9 @@ namespace MyDAL.Core
                     }
                     pc.TbMProp = col3.Prop;
                     pc.TbName = tbm3.TbName;
-                    pc.PropName = p.Name;
-                    pc.ColName = pc.Attr.Column;
+                    pc.PgType = queryT;
+                    pc.PgProp = p;
+                    pc.TbCol = pc.Attr.Column;
                     pc.Compare = pc.Attr.Compare;
                     opt.Add(pc);
                 }
