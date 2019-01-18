@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace MyDAL.UserFacade.Join
 {
-    public class OrderByX
-        : Operator, IFirstOrDefaultX, IQueryListX, IPagingListX, IPagingListXO,ITopX
+    public sealed class OrderByX
+        : Operator, IFirstOrDefaultX, IQueryListX, IPagingListX,ITopX
     {
         internal OrderByX(Context dc) 
             : base(dc)
@@ -65,22 +65,6 @@ namespace MyDAL.UserFacade.Join
         public async Task<PagingResult<T>> PagingListAsync<T>(int pageIndex, int pageSize, Expression<Func<T>> columnMapFunc)
         {
             return await new PagingListXImpl(DC).PagingListAsync(pageIndex, pageSize, columnMapFunc);
-        }
-
-        /// <summary>
-        /// 多表分页查询
-        /// </summary>
-        public async Task<PagingResult<M>> PagingListAsync<M>(PagingOption option)
-            where M:class
-        {
-            return await new PagingListXOImpl(DC).PagingListAsync<M>(option);
-        }
-        /// <summary>
-        /// 多表分页查询
-        /// </summary>
-        public async Task<PagingResult<T>> PagingListAsync<T>(PagingOption option, Expression<Func<T>> columnMapFunc)
-        {
-            return await new PagingListXOImpl(DC).PagingListAsync(option, columnMapFunc);
         }
 
         /// <summary>

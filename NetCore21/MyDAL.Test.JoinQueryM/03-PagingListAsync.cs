@@ -30,7 +30,7 @@ namespace MyDAL.Test.JoinQueryM
 
             /*************************************************************************************************************************/
 
-            var option6 = new AgentQueryOption();
+            var option6 = new Join_AgentQueryOption();
             option6.AgentLevel = AgentLevel.DistiAgent;
 
             xx = string.Empty;
@@ -40,8 +40,8 @@ namespace MyDAL.Test.JoinQueryM
                 .From(() => agent6)
                     .InnerJoin(() => record6)
                         .On(() => agent6.Id == record6.AgentId)
-                .Where(() => agent6.AgentLevel == AgentLevel.DistiAgent)
-                .PagingListAsync<Agent>(option6);
+                .Where(option6) // () => agent6.AgentLevel == AgentLevel.DistiAgent)
+                .PagingListAsync<Agent>();
             Assert.True(res6.TotalCount == 574);
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);

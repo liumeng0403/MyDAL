@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace MyDAL
+﻿namespace MyDAL
 {
     /// <summary>
     ///     分页查询设置

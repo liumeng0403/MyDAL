@@ -39,5 +39,11 @@ namespace MyDAL
             return new DistinctX(where.DC);
         }
 
+        public static DistinctXO Distinct(this WhereXO where)
+        {
+            where.DistinctHandle();
+            return new DistinctXO(where.DC);
+        }
+
     }
 }

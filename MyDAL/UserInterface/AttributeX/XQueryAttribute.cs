@@ -15,7 +15,7 @@ namespace MyDAL
         public XQueryAttribute() { }
 
         /// <summary>
-        /// TableModel - 类型
+        /// DB-Table 对应的 Model 类型
         /// </summary>
         public Type Table { get; set; } = default(Type);
 

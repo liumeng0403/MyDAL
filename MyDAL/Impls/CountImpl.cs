@@ -25,7 +25,7 @@ namespace MyDAL.Impls
             DC.Option = OptionEnum.Column;
             DC.Compare = CompareXEnum.None;
             DC.Func = FuncEnum.Count;
-            DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(typeof(M).FullName, "*") }));
+            DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(typeof(M), "*") }));
             PreExecuteHandle(UiMethodEnum.CountAsync);
             return await DC.DS.ExecuteScalarAsync<int>();
         }
@@ -43,13 +43,12 @@ namespace MyDAL.Impls
         }
     }
 
-    internal class CountXImpl
+    internal sealed class CountXImpl
         : Impler, ICountX
     {
         public CountXImpl(Context dc)
             : base(dc)
-        {
-        }
+        { }
 
         public async Task<int> CountAsync()
         {
@@ -57,7 +56,7 @@ namespace MyDAL.Impls
             DC.Option = OptionEnum.Column;
             DC.Compare = CompareXEnum.None;
             DC.Func = FuncEnum.Count;
-            DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(string.Empty, "*", string.Empty) }));
+            DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(default(Type), "*", string.Empty) }));
             PreExecuteHandle(UiMethodEnum.CountAsync);
             return await DC.DS.ExecuteScalarAsync<int>();
         }

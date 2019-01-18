@@ -53,14 +53,14 @@ namespace MyDAL
             return new WhereQ<M>(selecter.DC);
         }
 
-        public static WhereQO<M> Where<M>(this Queryer<M> selecter, PagingOption pagingQuery)
+        public static WhereQO<M> Where<M>(this Queryer<M> selecter, PagingOption option)
             where M : class
         {
             selecter.DC.Action = ActionEnum.Where;
-            selecter.WherePagingHandle(pagingQuery);
+            selecter.WherePagingHandle(option);
 
-            selecter.DC.PageIndex = pagingQuery.PageIndex;
-            selecter.DC.PageSize = pagingQuery.PageSize;
+            selecter.DC.PageIndex = option.PageIndex;
+            selecter.DC.PageSize = option.PageSize;
 
             return new WhereQO<M>(selecter.DC);
         }
@@ -77,15 +77,15 @@ namespace MyDAL
             return new WhereX(on.DC);
         }
 
-        public static WhereX Where(this OnX on, PagingOption pagingQuery)
+        public static WhereXO Where(this OnX on, PagingOption option)
         {
             on.DC.Action = ActionEnum.Where;
-            on.WherePagingHandle(pagingQuery);
+            on.WherePagingHandle(option);
 
-            on.DC.PageIndex = pagingQuery.PageIndex;
-            on.DC.PageSize = pagingQuery.PageSize;
+            on.DC.PageIndex = option.PageIndex;
+            on.DC.PageSize = option.PageSize;
 
-            return null;
+            return new WhereXO(on.DC);
 
         }
 

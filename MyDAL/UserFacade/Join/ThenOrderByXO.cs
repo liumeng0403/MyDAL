@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace MyDAL.UserFacade.Join
 {
-    public sealed class WhereXO
+    public sealed class ThenOrderByXO
         : Operator, IPagingListXO
     {
-        internal WhereXO(Context dc)
+        internal ThenOrderByXO(Context dc)
             : base(dc)
         { }
 

@@ -37,15 +37,15 @@ namespace MyDAL.Test.JoinQueryVmColumn
 
             xx = string.Empty;
 
-            var option10 = new AgentQueryOption();
+            var option10 = new Join_AgentQueryOption();
             option10.AgentLevel = AgentLevel.DistiAgent;
             var res10 = await Conn
                 .Queryer(out Agent agent10, out AgentInventoryRecord record10)
                 .From(() => agent10)
                     .InnerJoin(() => record10)
                         .On(() => agent10.Id == record10.AgentId)
-                .Where(() => agent10.AgentLevel == AgentLevel.DistiAgent)
-                .PagingListAsync(option10, () => new AgentVM
+                .Where(option10) //() => agent10.AgentLevel == AgentLevel.DistiAgent)
+                .PagingListAsync(() => new AgentVM
                 {
                     XXXX = agent10.Name,
                     YYYY = agent10.PathId
@@ -58,7 +58,7 @@ namespace MyDAL.Test.JoinQueryVmColumn
 
             xx = string.Empty;
 
-            var option11 = new AgentQueryOption();
+            var option11 = new Join_AgentQueryOption();
             option11.AgentLevel = AgentLevel.DistiAgent;
             option11.PageIndex = 5;
             option11.PageSize = 10;
@@ -67,8 +67,8 @@ namespace MyDAL.Test.JoinQueryVmColumn
                 .From(() => agent11)
                     .InnerJoin(() => record11)
                         .On(() => agent11.Id == record11.AgentId)
-                .Where(() => agent11.AgentLevel == AgentLevel.DistiAgent)
-                .PagingListAsync(option11, () => new AgentVM
+                .Where(option11) //() => agent11.AgentLevel == AgentLevel.DistiAgent)
+                .PagingListAsync(() => new AgentVM
                 {
                     XXXX = agent11.Name,
                     YYYY = agent11.PathId

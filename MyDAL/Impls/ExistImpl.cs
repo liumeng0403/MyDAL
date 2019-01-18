@@ -21,7 +21,7 @@ namespace MyDAL.Impls
             DC.Option = OptionEnum.Column;
             DC.Compare = CompareXEnum.None;
             DC.Func = FuncEnum.Count;
-            DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(typeof(M).FullName, "*") }));
+            DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(typeof(M), "*") }));
             PreExecuteHandle(UiMethodEnum.ExistAsync);
             var count = await DC.DS.ExecuteScalarAsync<long>();
             return count > 0;
@@ -41,7 +41,7 @@ namespace MyDAL.Impls
             DC.Compare = CompareXEnum.None;
             DC.Func = FuncEnum.Count;
             var dic = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.From);
-            DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(dic.TbMFullName, "*") }));
+            DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(dic.TbMType, "*") }));
             PreExecuteHandle(UiMethodEnum.ExistAsync);
             var count = await DC.DS.ExecuteScalarAsync<long>();
             return count > 0;

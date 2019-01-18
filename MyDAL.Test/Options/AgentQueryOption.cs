@@ -9,7 +9,7 @@ namespace MyDAL.Test.Options
     {
         public Guid? Id { get; set; }
 
-        [XQuery(Column = "Name", Compare = CompareEnum.Like)]
+        [XQuery(Compare = CompareEnum.Like)]
         public string Name { get; set; }
 
         [XQuery(Column = "CreatedOn", Compare = CompareEnum.GreaterThanOrEqual)]

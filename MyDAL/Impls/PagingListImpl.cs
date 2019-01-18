@@ -128,16 +128,12 @@ namespace MyDAL.Impls
         public async Task<PagingResult<M>> PagingListAsync<M>()
             where M : class
         {
-            DC.PageIndex = option.PageIndex;
-            DC.PageSize = option.PageSize;
             SelectMHandle<M>();
             return await PagingListAsyncHandle<M>(UiMethodEnum.PagingListAsync, false);
         }
 
         public async Task<PagingResult<T>> PagingListAsync<T>(Expression<Func<T>> columnMapFunc)
         {
-            DC.PageIndex = option.PageIndex;
-            DC.PageSize = option.PageSize;
             var single = typeof(T).IsSingleColumn();
             if (single)
             {

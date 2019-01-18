@@ -4,15 +4,14 @@ using MyDAL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MyDAL.UserFacade.Join
 {
-    public class ThenOrderByX
-        : Operator, IFirstOrDefaultX, IQueryListX, IPagingListX, IPagingListXO,ITopX
+    public sealed class ThenOrderByX
+        : Operator, IFirstOrDefaultX, IQueryListX, IPagingListX, ITopX
     {
-        internal ThenOrderByX(Context dc) 
+        internal ThenOrderByX(Context dc)
             : base(dc)
         {
         }
@@ -21,7 +20,7 @@ namespace MyDAL.UserFacade.Join
         /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<M> FirstOrDefaultAsync<M>()
-            where M:class
+            where M : class
         {
             return await new FirstOrDefaultXImpl(DC).FirstOrDefaultAsync<M>();
         }
@@ -37,7 +36,7 @@ namespace MyDAL.UserFacade.Join
         /// 请参阅: <see langword=".QueryListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<List<M>> QueryListAsync<M>()
-            where M:class
+            where M : class
         {
             return await new QueryListXImpl(DC).QueryListAsync<M>();
         }
@@ -55,7 +54,7 @@ namespace MyDAL.UserFacade.Join
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
         public async Task<PagingResult<M>> PagingListAsync<M>(int pageIndex, int pageSize)
-            where M:class
+            where M : class
         {
             return await new PagingListXImpl(DC).PagingListAsync<M>(pageIndex, pageSize);
         }
@@ -68,22 +67,6 @@ namespace MyDAL.UserFacade.Join
         public async Task<PagingResult<T>> PagingListAsync<T>(int pageIndex, int pageSize, Expression<Func<T>> columnMapFunc)
         {
             return await new PagingListXImpl(DC).PagingListAsync(pageIndex, pageSize, columnMapFunc);
-        }
-
-        /// <summary>
-        /// 多表分页查询
-        /// </summary>
-        public async Task<PagingResult<M>> PagingListAsync<M>(PagingOption option)
-            where M:class
-        {
-            return await new PagingListXOImpl(DC).PagingListAsync<M>(option);
-        }
-        /// <summary>
-        /// 多表分页查询
-        /// </summary>
-        public async Task<PagingResult<T>> PagingListAsync<T>(PagingOption option, Expression<Func<T>> columnMapFunc)
-        {
-            return await new PagingListXOImpl(DC).PagingListAsync(option, columnMapFunc);
         }
 
         /// <summary>

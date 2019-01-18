@@ -726,7 +726,7 @@ namespace MyDAL.Core.Helper
                 //
                 if (ui.Option != OptionEnum.OneEqualOne)
                 {
-                    var tbm = DC.XC.GetTableModel(DC.XC.GetModelKey(ui.TbMFullName));
+                    var tbm = DC.XC.GetTableModel(ui.TbMType);// DC.XC.GetModelKey(ui.TbMFullName));
                     var col = tbm.TbCols.FirstOrDefault(it => it.ColumnName.Equals(ui.TbCol, StringComparison.OrdinalIgnoreCase));
                     if (col != null)
                     {

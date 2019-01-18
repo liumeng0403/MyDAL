@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace MyDAL.UserFacade.Join
 {
-    public sealed class WhereXO
+    public sealed class DistinctXO
         : Operator, IPagingListXO
     {
-        internal WhereXO(Context dc)
+        internal DistinctXO(Context dc)
             : base(dc)
         { }
 
