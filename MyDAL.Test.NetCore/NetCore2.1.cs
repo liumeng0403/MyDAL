@@ -7,7 +7,7 @@
             //
             // WhereEdge
             //
-            await new WhereEdge._03_WhereBoolDefault().test();
+            await new WhereEdge._03_WhereBoolDefault().Test();
             await new WhereEdge._04_WhereMethodParam().MethodParam();
             await new WhereEdge._04_WhereMethodParam().MethodListParam();
             await new WhereEdge._05_WherePropertyVariable().Property();
@@ -26,7 +26,7 @@
             await new ShortcutAPI._03_MemoryTest().Test();
             await new ShortcutAPI._03_PagingListAsync().test();
             await new ShortcutAPI._05_QueryAllAsync().test();
-            await new ShortcutAPI._07_ExistAsync().test();
+            await new ShortcutAPI._07_ExistAsync().Test();
             await new ShortcutAPI._09_CountAsync().Test();
 
             //

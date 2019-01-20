@@ -10,7 +10,7 @@ namespace MyDAL.Test.WhereEdge
     public class _03_WhereBoolDefault : TestBase
     {
         [Fact]
-        public async Task test()
+        public async Task Test()
         {
 
             xx = string.Empty;
@@ -63,7 +63,7 @@ namespace MyDAL.Test.WhereEdge
 
             // where 1=1
             var res3 = await Conn
-                .Queryer<Agent, AgentInventoryRecord>(out var agent3, out var record3)
+                .Queryer(out Agent agent3, out AgentInventoryRecord record3)
                 .From(() => agent3)
                     .InnerJoin(() => record3)
                         .On(() => agent3.Id == record3.AgentId)
@@ -72,7 +72,7 @@ namespace MyDAL.Test.WhereEdge
             Assert.True(res3.Count == 574);
 
             var res31 = await Conn
-                .Queryer<Agent, AgentInventoryRecord>(out var agent31, out var record31)
+                .Queryer(out Agent agent31, out AgentInventoryRecord record31)
                 .From(() => agent31)
                     .InnerJoin(() => record31)
                         .On(() => agent31.Id == record31.AgentId)
@@ -87,7 +87,7 @@ namespace MyDAL.Test.WhereEdge
             xx = string.Empty;
 
             var res4 = await Conn
-                .Queryer<AddressInfo, AddressInfo>(out var address4, out var address44)
+                .Queryer(out AddressInfo address4, out AddressInfo address44)
                 .From(() => address4)
                     .InnerJoin(() => address44)
                         .On(() => address4.Id == address44.Id)
@@ -97,7 +97,7 @@ namespace MyDAL.Test.WhereEdge
             Assert.True(res4.First().IsDefault);
 
             var res41 = await Conn
-                .Queryer<AddressInfo, AddressInfo>(out var address41, out var address411)
+                .Queryer(out AddressInfo address41, out AddressInfo address411)
                 .From(() => address41)
                     .InnerJoin(() => address411)
                         .On(() => address41.Id == address411.Id)
@@ -107,7 +107,7 @@ namespace MyDAL.Test.WhereEdge
             Assert.True(res41.First().IsDefault);
 
             var res42 = await Conn
-                .Queryer<AddressInfo, AddressInfo>(out var address42, out var address421)
+                .Queryer(out AddressInfo address42, out AddressInfo address421)
                 .From(() => address42)
                     .InnerJoin(() => address421)
                         .On(() => address42.Id == address421.Id)
@@ -124,7 +124,7 @@ namespace MyDAL.Test.WhereEdge
 
             var guid5 = Guid.Parse("08d6036c-66c8-7c2c-83b0-725f93ff8137");
             var res5 = await Conn
-                .Queryer<AddressInfo, AddressInfo>(out var address5, out var address55)
+                .Queryer(out AddressInfo address5, out AddressInfo address55)
                 .From(() => address5)
                     .InnerJoin(() => address55)
                         .On(() => address5.Id == address55.Id)
@@ -134,7 +134,7 @@ namespace MyDAL.Test.WhereEdge
             Assert.True(res5.First().IsDefault);
 
             var res51 = await Conn
-                .Queryer<AddressInfo, AddressInfo>(out var address51, out var address511)
+                .Queryer(out AddressInfo address51, out AddressInfo address511)
                 .From(() => address51)
                     .InnerJoin(() => address511)
                         .On(() => address51.Id == address511.Id)
@@ -145,7 +145,7 @@ namespace MyDAL.Test.WhereEdge
 
             var guid52 = Guid.Parse("6f390324-2c07-40cf-90ca-0165569461b1");
             var res52 = await Conn
-                .Queryer<AddressInfo, AddressInfo>(out var address52, out var address521)
+                .Queryer(out AddressInfo address52, out AddressInfo address521)
                 .From(() => address52)
                     .InnerJoin(() => address521)
                         .On(() => address52.Id == address521.Id)

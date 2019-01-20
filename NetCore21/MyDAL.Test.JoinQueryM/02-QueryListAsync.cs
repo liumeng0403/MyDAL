@@ -18,7 +18,7 @@ namespace MyDAL.Test.JoinQueryM
         }
 
         [Fact]
-        public async Task test01()
+        public async Task Test01()
         {
 
             var m = await PreData01();
@@ -145,7 +145,7 @@ namespace MyDAL.Test.JoinQueryM
 
             // 
             var res8 = await Conn
-                .Queryer<Agent, AgentInventoryRecord>(out var agent8, out var record8)
+                .Queryer(out Agent agent8, out AgentInventoryRecord record8)
                 .From(() => agent8)
                     .InnerJoin(() => record8)
                         .On(() => agent8.Id == record8.AgentId)
@@ -161,7 +161,7 @@ namespace MyDAL.Test.JoinQueryM
 
             // 
             var res9 = await Conn
-                .Queryer<Agent, AgentInventoryRecord>(out var agent9, out var record9)
+                .Queryer(out Agent agent9, out AgentInventoryRecord record9)
                 .From(() => agent9)
                     .InnerJoin(() => record9)
                         .On(() => agent9.Id == record9.AgentId)
@@ -176,7 +176,7 @@ namespace MyDAL.Test.JoinQueryM
             xx = string.Empty;
 
             var res10 = await Conn
-                .Queryer<Agent, AgentInventoryRecord>(out var agent10, out var record10)
+                .Queryer(out Agent agent10, out AgentInventoryRecord record10)
                 .From(() => agent10)
                     .InnerJoin(() => record10)
                         .On(() => agent10.Id == record10.AgentId)
@@ -195,7 +195,7 @@ namespace MyDAL.Test.JoinQueryM
 
 
         [Fact]
-        public async Task test02()
+        public async Task Test02()
         {
 
             /*********************************************************************************************************************************************************/

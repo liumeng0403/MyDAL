@@ -8,7 +8,7 @@ namespace MyDAL.Test.ShortcutAPI
     public class _07_ExistAsync:TestBase
     {
         [Fact]
-        public async Task test()
+        public async Task Test()
         {
             xx = string.Empty;
 

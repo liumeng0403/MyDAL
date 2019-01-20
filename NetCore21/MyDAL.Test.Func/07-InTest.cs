@@ -372,7 +372,7 @@ namespace MyDAL.Test.Func
 
             // where in -- enum[] init
             var res23 = await Conn
-                .Queryer<Agent, AgentInventoryRecord>(out var agent, out var record)
+                .Queryer(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                 .InnerJoin(() => record)
                 .On(() => agent.Id == record.AgentId)

@@ -27,8 +27,10 @@ namespace MyDAL
         public static Creater<M> Creater<M>(this IDbConnection conn)
             where M : class, new()
         {
-            var dc = new XContext<M>(conn);
-            dc.Crud = CrudEnum.Create;
+            var dc = new XContext<M>(conn)
+            {
+                Crud = CrudEnum.Create
+            };
             return new Creater<M>(dc);
         }
         /// <summary>
@@ -38,8 +40,10 @@ namespace MyDAL
         public static Deleter<M> Deleter<M>(this IDbConnection conn)
             where M : class, new()
         {
-            var dc = new XContext<M>(conn);
-            dc.Crud = CrudEnum.Delete;
+            var dc = new XContext<M>(conn)
+            {
+                Crud = CrudEnum.Delete
+            };
             return new Deleter<M>(dc);
         }
         /// <summary>
@@ -49,8 +53,10 @@ namespace MyDAL
         public static Updater<M> Updater<M>(this IDbConnection conn)
             where M : class, new()
         {
-            var dc = new XContext<M>(conn);
-            dc.Crud = CrudEnum.Update;
+            var dc = new XContext<M>(conn)
+            {
+                Crud = CrudEnum.Update
+            };
             return new Updater<M>(dc);
         }
 
@@ -63,8 +69,10 @@ namespace MyDAL
         public static Queryer<M1> Queryer<M1>(this IDbConnection conn)
             where M1 : class, new()
         {
-            var dc = new XContext<M1>(conn);
-            dc.Crud = CrudEnum.Query;
+            var dc = new XContext<M1>(conn)
+            {
+                Crud = CrudEnum.Query
+            };
             return new Queryer<M1>(dc);
         }
         /// <summary>
@@ -76,8 +84,10 @@ namespace MyDAL
         {
             table1 = new M1();
             table2 = new M2();
-            var dc = new XContext<M1, M2>(conn);
-            dc.Crud = CrudEnum.Join;
+            var dc = new XContext<M1, M2>(conn)
+            {
+                Crud = CrudEnum.Join
+            };
             return new Queryer(dc);
         }
         /// <summary>
@@ -91,8 +101,10 @@ namespace MyDAL
             table1 = new M1();
             table2 = new M2();
             table3 = new M3();
-            var dc = new XContext<M1, M2, M3>(conn);
-            dc.Crud = CrudEnum.Join;
+            var dc = new XContext<M1, M2, M3>(conn)
+            {
+                Crud = CrudEnum.Join
+            };
             return new Queryer(dc);
         }
         /// <summary>
@@ -108,8 +120,10 @@ namespace MyDAL
             table2 = new M2();
             table3 = new M3();
             table4 = new M4();
-            var dc = new XContext<M1, M2, M3, M4>(conn);
-            dc.Crud = CrudEnum.Join;
+            var dc = new XContext<M1, M2, M3, M4>(conn)
+            {
+                Crud = CrudEnum.Join
+            };
             return new Queryer(dc);
         }
         /// <summary>
@@ -127,8 +141,10 @@ namespace MyDAL
             table3 = new M3();
             table4 = new M4();
             table5 = new M5();
-            var dc = new XContext<M1, M2, M3, M4, M5>(conn);
-            dc.Crud = CrudEnum.Join;
+            var dc = new XContext<M1, M2, M3, M4, M5>(conn)
+            {
+                Crud = CrudEnum.Join
+            };
             return new Queryer(dc);
         }
         /// <summary>
@@ -148,8 +164,10 @@ namespace MyDAL
             table4 = new M4();
             table5 = new M5();
             table6 = new M6();
-            var dc = new XContext<M1, M2, M3, M4, M5, M6>(conn);
-            dc.Crud = CrudEnum.Join;
+            var dc = new XContext<M1, M2, M3, M4, M5, M6>(conn)
+            {
+                Crud = CrudEnum.Join
+            };
             return new Queryer(dc);
         }
 

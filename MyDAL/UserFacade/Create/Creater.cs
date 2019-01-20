@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace MyDAL.UserFacade.Create
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class Creater<M> 
         : Operator, ICreate<M>, ICreateBatch<M>
         where M:class

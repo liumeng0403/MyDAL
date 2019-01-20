@@ -9,7 +9,7 @@ namespace MyDAL.Test.JoinQueryVmColumn
     public class _01_FirstOrDefaultAsync : TestBase
     {
         [Fact]
-        public async Task test()
+        public async Task Test()
         {
 
             /*************************************************************************************************************************/
@@ -18,7 +18,7 @@ namespace MyDAL.Test.JoinQueryVmColumn
 
             var guid2 = Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef");
             var res2 = await Conn
-                .Queryer<Agent, AgentInventoryRecord>(out var agent2, out var record2)
+                .Queryer(out Agent agent2, out AgentInventoryRecord record2)
                 .From(() => agent2)
                     .InnerJoin(() => record2)
                         .On(() => agent2.Id == record2.AgentId)

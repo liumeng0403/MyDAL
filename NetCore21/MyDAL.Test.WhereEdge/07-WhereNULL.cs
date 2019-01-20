@@ -102,7 +102,7 @@ namespace MyDAL.Test.WhereEdge
 
             // is not null 
             var res5 = await Conn
-                .Queryer<Agent,AgentInventoryRecord>(out var a5,out var r5)
+                .Queryer(out Agent a5,out AgentInventoryRecord r5)
                 .From(()=>a5)
                     .LeftJoin(()=>r5)
                         .On(()=>a5.Id==r5.AgentId)
@@ -118,13 +118,32 @@ namespace MyDAL.Test.WhereEdge
 
             // is not null 
             var res6 = await Conn
-                .Queryer<Agent, AgentInventoryRecord>(out var a6, out var r6)
+                .Queryer(out Agent a6, out AgentInventoryRecord r6)
                 .From(() => a6)
                     .LeftJoin(() => r6)
                         .On(() => a6.Id == r6.AgentId)
                 .Where(() => a6.ActiveOrderId != null)
                 .QueryListAsync<Agent>();
             Assert.True(res6.Count == 554);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************************/
+
+            xx = string.Empty;
+
+            var res7 = await Conn.QueryListAsync<Agent>(it => it.ActiveOrderId == null);
+            Assert.True(res7.Count == 28066);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************************/
+
+            xx = string.Empty;
+
+            // is not null 
+            var res8 = await Conn.QueryListAsync<Agent>(it => it.ActiveOrderId != null);
+            Assert.True(res8.Count == 554);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 

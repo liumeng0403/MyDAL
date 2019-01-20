@@ -8,12 +8,12 @@ namespace MyDAL.Test.JoinQuerySingleColumn
     public class _06_TopAsync : TestBase
     {
         [Fact]
-        public async Task test()
+        public async Task Test()
         {
             xx = string.Empty;
 
             var res1 = await Conn
-                .Queryer<Agent, AgentInventoryRecord>(out var agent, out var record)
+                .Queryer(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)
