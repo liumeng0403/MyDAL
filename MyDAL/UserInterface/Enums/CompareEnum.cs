@@ -6,60 +6,60 @@
     public enum CompareEnum
     {
         /// <summary>
-        /// " "
+        /// 默认
         /// </summary>
         None,
 
         /// <summary>
-        /// =
+        /// = 【等于】
         /// </summary>
         Equal,
 
         /// <summary>
-        /// !=
+        /// != 【不等于】
         /// </summary>
         NotEqual,
 
         /// <summary>
-        /// &lt;
+        /// &lt; 【小于】
         /// </summary>
         LessThan,
 
         /// <summary>
-        /// &lt;=
+        /// &lt;= 【小于等于】
         /// </summary>
         LessThanOrEqual,
 
         /// <summary>
-        /// &gt;
+        /// &gt; 【大于】
         /// </summary>
         GreaterThan,
 
         /// <summary>
-        /// &gt;=
+        /// &gt;= 【大于等于】
         /// </summary>
         GreaterThanOrEqual,
 
         /// <summary>
-        /// " like "
+        /// " like " 【SQL - 类似：like '%条件%'，若包含通配符，则按自定义字符串 like 匹配】
         /// </summary>
         Like,
         /// <summary>
-        /// 
+        /// " like " 【SQL - 类似：like '%条件'】
         /// </summary>
         Like_StartsWith,
         /// <summary>
-        /// 
+        /// " like " 【SQL - 类似：like '条件%'】
         /// </summary>
         Like_EndsWith,
 
         /// <summary>
-        /// " in "
+        /// " in " 【SQL - in(para1,para2,para3, ... ... )】
         /// </summary>
         In,
 
         /// <summary>
-        /// " not in "
+        /// " not in " 【SQL- not in(para1,para2,para3, ... ... )】
         /// </summary>
         NotIn        
     }
