@@ -10,7 +10,7 @@ namespace MyDAL.Test.WhereEdge
     {
 
         [Fact]
-        public async Task Test()
+        public async Task Test01()
         {
 
             /*
@@ -52,7 +52,36 @@ namespace MyDAL.Test.WhereEdge
 
             xx = string.Empty;
 
+            var op3 = new Single_PagingEdgeOption();
+            op3.PhoneNotEqual = "19900000218";
 
+            // Where --> OrderBy --> ThenOrderBy --> PagingListAsync
+            var res3 = await Conn
+                .Queryer<Agent>()
+                .Where(op3)
+                .OrderBy(it => it.AgentLevel)
+                .ThenOrderBy(it => it.Name, OrderByEnum.Asc)
+                .PagingListAsync();
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************************************/
+
+            xx = string.Empty;
+
+            var op4 = new Single_PagingEdgeOption();
+            op4.PhoneNotEqual = "19900000218";
+
+            // Where --> OrderBy --> ThenOrderBy --> ... ... --> PagingListAsync
+            var res4 = await Conn
+                .Queryer<Agent>()
+                .Where(op4)
+                .OrderBy(it => it.AgentLevel)
+                .ThenOrderBy(it => it.Name)
+                .ThenOrderBy(it => it.PathId)
+                .PagingListAsync();
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /************************************************************************************************************************************/
 

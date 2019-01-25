@@ -59,7 +59,7 @@ namespace MyDAL.DataRainbow.MySQL
                 {
                     throw DC.Exception(XConfig.EC._013, $"{o.Action}-{o.Option}-{o.Func}");
                 }
-                if (i != orders.Count) { Comma(X); }
+                if (i != orders.Count) { Comma(X); CRLF(X); Tab(X); }
             }
         }
         private void InParams(List<DicParam> dbs)

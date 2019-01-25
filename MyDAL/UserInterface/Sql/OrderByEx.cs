@@ -35,6 +35,22 @@ namespace MyDAL
             return new OrderByQO<M>(where.DC);
         }
 
+        public static ThenOrderByQO<M> ThenOrderBy<M, F>(this OrderByQO<M> order, Expression<Func<M, F>> propertyFunc, OrderByEnum orderBy = OrderByEnum.Desc)
+            where M : class
+        {
+            order.DC.Action = ActionEnum.OrderBy;
+            order.OrderByMF(propertyFunc, orderBy);
+            return new ThenOrderByQO<M>(order.DC);
+        }
+
+        public static ThenOrderByQO<M> ThenOrderBy<M, F>(this ThenOrderByQO<M> order, Expression<Func<M, F>> propertyFunc, OrderByEnum orderBy = OrderByEnum.Desc)
+            where M : class
+        {
+            order.DC.Action = ActionEnum.OrderBy;
+            order.OrderByMF(propertyFunc, orderBy);
+            return new ThenOrderByQO<M>(order.DC);
+        }
+
         /**************************************************************************************************************/
 
         public static OrderByX OrderBy<F>(this OnX onX, Expression<Func<F>> propertyFunc, OrderByEnum orderBy = OrderByEnum.Desc)
