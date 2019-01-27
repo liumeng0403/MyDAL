@@ -65,12 +65,6 @@ namespace MyDAL.Core
         {
             sb.Append('=');
         }
-        protected static void End(StringBuilder sb, List<string> sqls)
-        {
-            sb.Append(';');
-            sqls.Add(sb.ToString());
-            sb.Clear();
-        }
 
         /****************************************************************************************************************/
 

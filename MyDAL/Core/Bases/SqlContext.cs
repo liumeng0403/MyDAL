@@ -48,5 +48,14 @@ namespace MyDAL.Core.Bases
             }
             return false;
         }
+        protected static bool IsCountParam(DicParam param)
+        {
+            if (param.Option == OptionEnum.Column
+                && param.Func == FuncEnum.Count)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

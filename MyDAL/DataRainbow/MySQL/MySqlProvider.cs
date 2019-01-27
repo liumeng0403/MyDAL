@@ -583,44 +583,127 @@ namespace MyDAL.DataRainbow.MySQL
                 Distinct(X);
             }
         }
-        private void CountCD()
+        private void Count()
         {
             /* 
              * count(*)
+             * count(distinct *) -- CountMulti
              * count(col)
              * count(distinct col)
+             * count(cols) -- CountMulti
+             * count(distinct cols) -- CountMulti
              */
             Spacing(X);
-            var col = DC.Parameters.FirstOrDefault(it => IsSelectColumnParam(it));
-            var item = col?.Columns?.FirstOrDefault(it => it.Option == OptionEnum.Column && it.Func == FuncEnum.Count);
-            if (item != null)
+            var cols = DC.Parameters.Where(it => IsSelectColumnParam(it))?.ToList();
+            var isD = DC.Parameters.Any(it => IsDistinctParam(it));
+            if (isD)
             {
-                if (item.Crud == CrudEnum.Query)
+                if (cols == null
+                    || cols.Count <= 0)
                 {
-                    if ("*".Equals(item.TbCol, StringComparison.OrdinalIgnoreCase))
+                    throw DC.Exception(XConfig.EC._024, "不应该存在的情况!!!");
+                }
+                else if (cols.Count == 1)
+                {
+                    var count = cols.First().Columns?.FirstOrDefault(it => IsCountParam(it));
+                    if (count != null)
                     {
-                        Function(item.Func, X, DC); LeftBracket(X); X.Append(item.TbCol); RightBracket(X);
+                        if ("*".Equals(count.TbCol, StringComparison.OrdinalIgnoreCase))
+                        {
+                            Distinct(); Star(X);
+                            DC.IsMultiColCount = true;
+                        }
+                        else
+                        {
+                            Function(count.Func, X, DC); LeftBracket(X); Distinct();
+                            if (count.Crud == CrudEnum.Query)
+                            {
+                                Column(string.Empty, count.TbCol, X);
+                            }
+                            else if (count.Crud == CrudEnum.Join)
+                            {
+                                Column(count.TbAlias, count.TbCol, X);
+                            }
+                            RightBracket(X);
+                        }
                     }
                     else
                     {
-                        Function(item.Func, X, DC); LeftBracket(X); Distinct(); Column(string.Empty, item.TbCol, X); RightBracket(X);
+                        Function(FuncEnum.Count, X, DC); LeftBracket(X); Distinct();
+                        if (count.Crud == CrudEnum.Query)
+                        {
+                            Column(string.Empty, cols.First().TbCol, X);
+                        }
+                        else if (count.Crud == CrudEnum.Join)
+                        {
+                            Column(cols.First().TbAlias, cols.First().TbCol, X);
+                        }
+                        RightBracket(X);
                     }
                 }
-                else if (item.Crud == CrudEnum.Join)
+                else
                 {
-                    if ("*".Equals(item.TbCol, StringComparison.OrdinalIgnoreCase))
-                    {
-                        Function(item.Func, X, DC); LeftBracket(X); X.Append(item.TbCol); RightBracket(X);
-                    }
-                    else
-                    {
-                        Function(item.Func, X, DC); LeftBracket(X); Distinct(); Column(item.TbAlias, item.TbCol, X); RightBracket(X);
-                    }
+                    Distinct(); SelectColumn();
+                    DC.IsMultiColCount = true;
                 }
             }
             else
             {
-                X.Append("count(*)");
+                if (cols == null
+                    || cols.Count <= 0)
+                {
+                    throw DC.Exception(XConfig.EC._025, "不应该存在的情况!!!");
+                }
+                else if (cols.Count == 1)
+                {
+                    var count = cols.First().Columns?.FirstOrDefault(it => IsCountParam(it));
+                    if (count != null)
+                    {
+                        if ("*".Equals(count.TbCol, StringComparison.OrdinalIgnoreCase))
+                        {
+                            Function(count.Func, X, DC); LeftBracket(X); Star(X); RightBracket(X);
+                        }
+                        else
+                        {
+                            Function(count.Func, X, DC); LeftBracket(X);
+                            if (count.Crud == CrudEnum.Query)
+                            {
+                                Column(string.Empty, count.TbCol, X);
+                            }
+                            else if (count.Crud == CrudEnum.Join)
+                            {
+                                Column(count.TbAlias, count.TbCol, X);
+                            }
+                            RightBracket(X);
+                        }
+                    }
+                    else
+                    {
+                        Function(FuncEnum.Count, X, DC); LeftBracket(X);
+                        if (count.Crud == CrudEnum.Query)
+                        {
+                            Column(string.Empty, cols.First().TbCol, X);
+                        }
+                        else if (count.Crud == CrudEnum.Join)
+                        {
+                            Column(cols.First().TbAlias, cols.First().TbCol, X);
+                        }
+                        RightBracket(X);
+                    }
+                }
+                else
+                {
+                    SelectColumn();
+                    DC.IsMultiColCount = true;
+                }
+            }
+        }
+        private void CountMulti()
+        {
+            if (DC.IsMultiColCount)
+            {
+                X.Insert(0, "select count(*) from (");
+                X.Append(") temp");
             }
         }
         private void Sum()
@@ -636,6 +719,13 @@ namespace MyDAL.DataRainbow.MySQL
             {
                 Function(item.Func, X, DC); LeftBracket(X); Column(item.TbAlias, item.TbCol, X); RightBracket(X);
             }
+        }
+
+        private void End()
+        {
+            X.Append(';');
+            DC.SQL.Add(X.ToString());
+            X.Clear();
         }
 
         /****************************************************************************************************************/
@@ -677,31 +767,31 @@ namespace MyDAL.DataRainbow.MySQL
             {
                 case UiMethodEnum.CreateAsync:
                 case UiMethodEnum.CreateBatchAsync:
-                    InsertInto(X); Table(); InsertColumn(); Values(X); InsertValue(); End(X, DC.SQL);
+                    InsertInto(X); Table(); InsertColumn(); Values(X); InsertValue(); End();
                     break;
                 case UiMethodEnum.DeleteAsync:
-                    Delete(X); From(X); Table(); Where(); End(X, DC.SQL);
+                    Delete(X); From(X); Table(); Where(); End();
                     break;
                 case UiMethodEnum.UpdateAsync:
-                    Update(X); Table(); Set(X); UpdateColumn(); Where(); End(X, DC.SQL);
+                    Update(X); Table(); Set(X); UpdateColumn(); Where(); End();
                     break;
                 case UiMethodEnum.TopAsync:
                 case UiMethodEnum.ListAsync:
                 case UiMethodEnum.AllAsync:
                 case UiMethodEnum.FirstOrDefaultAsync:
-                    Select(X); Distinct(); SelectColumn(); From(X); Table(); Where(); OrderBy(); Limit(); End(X, DC.SQL);
+                    Select(X); Distinct(); SelectColumn(); From(X); Table(); Where(); OrderBy(); Limit(); End();
                     break;
                 case UiMethodEnum.PagingListAsync:
                 case UiMethodEnum.PagingAllAsync:
-                    Select(X); CountCD(); From(X); Table(); Where(); End(X, DC.SQL);
-                    Select(X); Distinct(); SelectColumn(); From(X); Table(); Where(); OrderBy(); Limit(); End(X, DC.SQL);
+                    Select(X); Count(); From(X); Table(); Where(); CountMulti(); End();
+                    Select(X); Distinct(); SelectColumn(); From(X); Table(); Where(); OrderBy(); Limit(); End();
                     break;
                 case UiMethodEnum.ExistAsync:
                 case UiMethodEnum.CountAsync:
-                    Select(X); CountCD(); From(X); Table(); Where(); End(X, DC.SQL);
+                    Select(X); Count(); From(X); Table(); Where(); CountMulti(); End();
                     break;
                 case UiMethodEnum.SumAsync:
-                    Select(X); Sum(); From(X); Table(); Where(); End(X, DC.SQL);
+                    Select(X); Sum(); From(X); Table(); Where(); End();
                     break;
             }
             if (XConfig.IsDebug)

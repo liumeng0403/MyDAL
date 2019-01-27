@@ -28,6 +28,8 @@
         internal string _021 { get; } = "021";
         internal string _022 { get; } = "022";
         internal string _023 { get; } = "023";
+        internal string _024 { get; } = "024";
+        internal string _025 { get; } = "025";
 
     }
 }

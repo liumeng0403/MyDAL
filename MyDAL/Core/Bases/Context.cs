@@ -94,6 +94,7 @@ namespace MyDAL.Core.Bases
         internal List<string> SQL { get; private set; } = new List<string>();
         internal int? PageIndex { get; set; } = null;
         internal int? PageSize { get; set; } = null;
+        internal bool IsMultiColCount { get; set; } = false;
 
         /************************************************************************************************************************/
 

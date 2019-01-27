@@ -30,6 +30,8 @@ namespace MyDAL.Test.WhereEdge
                 .Where(op1)
                 .PagingListAsync();
 
+            Assert.True(res1.TotalCount == 1);
+
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /************************************************************************************************************************************/
@@ -45,6 +47,8 @@ namespace MyDAL.Test.WhereEdge
                 .Where(op2)
                 .OrderBy(it => it.Name, OrderByEnum.Asc)
                 .PagingListAsync();
+
+            Assert.True(res2.TotalCount == 28619);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
@@ -63,6 +67,8 @@ namespace MyDAL.Test.WhereEdge
                 .ThenOrderBy(it => it.Name, OrderByEnum.Asc)
                 .PagingListAsync();
 
+            Assert.True(res3.TotalCount == 28619);
+
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /************************************************************************************************************************************/
@@ -80,6 +86,24 @@ namespace MyDAL.Test.WhereEdge
                 .ThenOrderBy(it => it.Name)
                 .ThenOrderBy(it => it.PathId)
                 .PagingListAsync();
+
+            Assert.True(res4.TotalCount == 28619);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************************************/
+
+            xx = string.Empty;
+
+            var op5 = new Single_PagingEdgeOption();
+            op5.PhoneNotEqual = "19900000218";
+
+            // Where --> Distinct --> PagingListAsync
+            var res5 = await Conn
+                .Queryer<Agent>()
+                .Where(op5)
+                .Distinct()
+                .PagingListAsync(it => it.AgentLevel);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 

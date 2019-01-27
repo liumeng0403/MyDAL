@@ -19,6 +19,13 @@ namespace MyDAL
             return new DistinctQ<M>(where.DC);
         }
 
+        public static DistinctQO<M> Distinct<M>(this WhereQO<M> where)
+            where M : class
+        {
+            where.DistinctHandle();
+            return new DistinctQO<M>(where.DC);
+        }
+
         public static DistinctQ<M> Distinct<M>(this OrderByQ<M> orderBy)
             where M : class
         {
