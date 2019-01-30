@@ -105,6 +105,8 @@ namespace MyDAL.Test.WhereEdge
                 .Distinct()
                 .PagingListAsync(it => it.AgentLevel);
 
+            Assert.True(res5.TotalCount == 3);
+
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /************************************************************************************************************************************/

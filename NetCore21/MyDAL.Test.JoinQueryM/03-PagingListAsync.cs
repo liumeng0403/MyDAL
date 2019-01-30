@@ -26,7 +26,10 @@ namespace MyDAL.Test.JoinQueryM
                         .On(() => agent5.Id == record5.AgentId)
                 .Where(() => agent5.AgentLevel == AgentLevel.DistiAgent)
                 .PagingListAsync<Agent>(1, 10);
+
             Assert.True(res5.TotalCount == 574);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*************************************************************************************************************************/
 

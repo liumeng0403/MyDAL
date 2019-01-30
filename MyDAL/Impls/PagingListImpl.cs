@@ -88,8 +88,7 @@ namespace MyDAL.Impls
     {
         internal PagingListXImpl(Context dc)
             : base(dc)
-        {
-        }
+        { }
 
         public async Task<PagingResult<M>> PagingListAsync<M>(int pageIndex, int pageSize)
             where M : class

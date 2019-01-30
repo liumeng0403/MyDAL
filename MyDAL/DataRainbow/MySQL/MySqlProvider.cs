@@ -583,6 +583,174 @@ namespace MyDAL.DataRainbow.MySQL
                 Distinct(X);
             }
         }
+        private void CountMulti()
+        {
+            if (DC.IsMultiColCount)
+            {
+                X.Insert(0, "select count(*) \r\nfrom (\r\n");
+                X.Append("\r\n         ) temp");
+            }
+        }
+        private void CountSetMulti(bool isD, bool isDS)
+        {
+            if (isD)
+            {
+                Distinct();
+                if (isDS)
+                {
+                    Star(X);
+                }
+                else
+                {
+                    SelectColumn();
+                }
+            }
+            else
+            {
+                SelectColumn();
+            }
+            DC.IsMultiColCount = true;
+        }
+        private void CountDistinct(List<DicParam> cols)
+        {
+            if (cols == null
+                   || cols.Count <= 0)
+            {
+                CountSetMulti(true, false);
+            }
+            else if (cols.Count == 1)
+            {
+                var count = cols.First().Columns?.FirstOrDefault(it => IsCountParam(it));
+                if (count != null)
+                {
+                    if ("*".Equals(count.TbCol, StringComparison.OrdinalIgnoreCase))
+                    {
+                        CountSetMulti(true, true);
+                    }
+                    else
+                    {
+                        Function(count.Func, X, DC); LeftBracket(X); Distinct();
+                        if (count.Crud == CrudEnum.Query)
+                        {
+                            Column(string.Empty, count.TbCol, X);
+                        }
+                        else if (count.Crud == CrudEnum.Join)
+                        {
+                            Column(count.TbAlias, count.TbCol, X);
+                        }
+                        RightBracket(X);
+                    }
+                }
+                else
+                {
+                    if (cols.First().Columns == null
+                        || cols.First().Columns.Count <= 0)
+                    {
+                        throw DC.Exception(XConfig.EC._024, "不应该出现的情况！");
+                    }
+                    else if (cols.First().Columns.Count == 1)
+                    {
+                        var col = cols.First().Columns.First();
+                        if (col.Crud == CrudEnum.Join
+                            && "*".Equals(col.TbCol, StringComparison.OrdinalIgnoreCase))
+                        {
+                            CountSetMulti(true, false);
+                        }
+                        else
+                        {
+                            Function(FuncEnum.Count, X, DC); LeftBracket(X); Distinct();
+                            if (col.Crud == CrudEnum.Query)
+                            {
+                                Column(string.Empty, col.TbCol, X);
+                            }
+                            else if (col.Crud == CrudEnum.Join)
+                            {
+                                Column(col.TbAlias, col.TbCol, X);
+                            }
+                            RightBracket(X);
+                        }
+                    }
+                    else
+                    {
+                        CountSetMulti(true, false);
+                    }
+                }
+            }
+            else
+            {
+                CountSetMulti(true, false);
+            }
+        }
+        private void CountNoneDistinct(List<DicParam> cols)
+        {
+            if (cols == null
+                    || cols.Count <= 0)
+            {
+                X.Append(" count(*) ");
+            }
+            else if (cols.Count == 1)
+            {
+                var count = cols.First().Columns?.FirstOrDefault(it => IsCountParam(it));
+                if (count != null)
+                {
+                    if ("*".Equals(count.TbCol, StringComparison.OrdinalIgnoreCase))
+                    {
+                        Function(count.Func, X, DC); LeftBracket(X); Star(X); RightBracket(X);
+                    }
+                    else
+                    {
+                        Function(count.Func, X, DC); LeftBracket(X);
+                        if (count.Crud == CrudEnum.Query)
+                        {
+                            Column(string.Empty, count.TbCol, X);
+                        }
+                        else if (count.Crud == CrudEnum.Join)
+                        {
+                            Column(count.TbAlias, count.TbCol, X);
+                        }
+                        RightBracket(X);
+                    }
+                }
+                else
+                {
+                    if (cols.First().Columns == null
+                        || cols.First().Columns.Count <= 0)
+                    {
+                        throw DC.Exception(XConfig.EC._025, "不应该出现的情况！");
+                    }
+                    else if (cols.First().Columns.Count == 1)
+                    {
+                        var col = cols.First().Columns.First();
+                        if (col.Crud == CrudEnum.Join
+                            && "*".Equals(col.TbCol, StringComparison.OrdinalIgnoreCase))
+                        {
+                            CountSetMulti(false, false);
+                        }
+                        else
+                        {
+                            Function(FuncEnum.Count, X, DC); LeftBracket(X);
+                            if (col.Crud == CrudEnum.Query)
+                            {
+                                Column(string.Empty, col.TbCol, X);
+                            }
+                            else if (col.Crud == CrudEnum.Join)
+                            {
+                                Column(col.TbAlias, col.TbCol, X);
+                            }
+                            RightBracket(X);
+                        }
+                    }
+                    else
+                    {
+                        CountSetMulti(false, false);
+                    }
+                }
+            }
+            else
+            {
+                CountSetMulti(false, false);
+            }
+        }
         private void Count()
         {
             /* 
@@ -598,112 +766,11 @@ namespace MyDAL.DataRainbow.MySQL
             var isD = DC.Parameters.Any(it => IsDistinctParam(it));
             if (isD)
             {
-                if (cols == null
-                    || cols.Count <= 0)
-                {
-                    throw DC.Exception(XConfig.EC._024, "不应该存在的情况!!!");
-                }
-                else if (cols.Count == 1)
-                {
-                    var count = cols.First().Columns?.FirstOrDefault(it => IsCountParam(it));
-                    if (count != null)
-                    {
-                        if ("*".Equals(count.TbCol, StringComparison.OrdinalIgnoreCase))
-                        {
-                            Distinct(); Star(X);
-                            DC.IsMultiColCount = true;
-                        }
-                        else
-                        {
-                            Function(count.Func, X, DC); LeftBracket(X); Distinct();
-                            if (count.Crud == CrudEnum.Query)
-                            {
-                                Column(string.Empty, count.TbCol, X);
-                            }
-                            else if (count.Crud == CrudEnum.Join)
-                            {
-                                Column(count.TbAlias, count.TbCol, X);
-                            }
-                            RightBracket(X);
-                        }
-                    }
-                    else
-                    {
-                        Function(FuncEnum.Count, X, DC); LeftBracket(X); Distinct();
-                        if (count.Crud == CrudEnum.Query)
-                        {
-                            Column(string.Empty, cols.First().TbCol, X);
-                        }
-                        else if (count.Crud == CrudEnum.Join)
-                        {
-                            Column(cols.First().TbAlias, cols.First().TbCol, X);
-                        }
-                        RightBracket(X);
-                    }
-                }
-                else
-                {
-                    Distinct(); SelectColumn();
-                    DC.IsMultiColCount = true;
-                }
+                CountDistinct(cols);
             }
             else
             {
-                if (cols == null
-                    || cols.Count <= 0)
-                {
-                    throw DC.Exception(XConfig.EC._025, "不应该存在的情况!!!");
-                }
-                else if (cols.Count == 1)
-                {
-                    var count = cols.First().Columns?.FirstOrDefault(it => IsCountParam(it));
-                    if (count != null)
-                    {
-                        if ("*".Equals(count.TbCol, StringComparison.OrdinalIgnoreCase))
-                        {
-                            Function(count.Func, X, DC); LeftBracket(X); Star(X); RightBracket(X);
-                        }
-                        else
-                        {
-                            Function(count.Func, X, DC); LeftBracket(X);
-                            if (count.Crud == CrudEnum.Query)
-                            {
-                                Column(string.Empty, count.TbCol, X);
-                            }
-                            else if (count.Crud == CrudEnum.Join)
-                            {
-                                Column(count.TbAlias, count.TbCol, X);
-                            }
-                            RightBracket(X);
-                        }
-                    }
-                    else
-                    {
-                        Function(FuncEnum.Count, X, DC); LeftBracket(X);
-                        if (count.Crud == CrudEnum.Query)
-                        {
-                            Column(string.Empty, cols.First().TbCol, X);
-                        }
-                        else if (count.Crud == CrudEnum.Join)
-                        {
-                            Column(cols.First().TbAlias, cols.First().TbCol, X);
-                        }
-                        RightBracket(X);
-                    }
-                }
-                else
-                {
-                    SelectColumn();
-                    DC.IsMultiColCount = true;
-                }
-            }
-        }
-        private void CountMulti()
-        {
-            if (DC.IsMultiColCount)
-            {
-                X.Insert(0, "select count(*) from (");
-                X.Append(") temp");
+                CountNoneDistinct(cols);
             }
         }
         private void Sum()
