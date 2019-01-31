@@ -18,7 +18,7 @@ namespace MyDAL.Test.Func
 
             var res1 = await Conn
                 .Queryer<Agent>()
-                .ExistAsync();
+                .IsExistAsync();
             Assert.True(res1);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -33,7 +33,7 @@ namespace MyDAL.Test.Func
             var res2 = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.Id == pk2)
-                .ExistAsync();
+                .IsExistAsync();
             Assert.True(res2);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -47,7 +47,7 @@ namespace MyDAL.Test.Func
                 .From(() => agent3)
                     .InnerJoin(() => record3)
                         .On(() => agent3.Id == record3.AgentId)
-                .ExistAsync();
+                .IsExistAsync();
             Assert.True(res3);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -63,7 +63,7 @@ namespace MyDAL.Test.Func
                     .InnerJoin(() => record4)
                         .On(() => agent4.Id == record4.AgentId)
                 .Where(() => agent4.Id == pk2)
-                .ExistAsync();
+                .IsExistAsync();
             Assert.True(res4);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);

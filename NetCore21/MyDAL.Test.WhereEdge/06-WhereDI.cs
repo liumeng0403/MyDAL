@@ -21,7 +21,7 @@ namespace MyDAL.Test.WhereEdge
                         .Queryer<PlatformMonthlyPerformance>()
                         .Where(it => it.Year == vm.Year)
                             .And(it => it.Month == vm.Month)
-                        .ExistAsync())
+                        .IsExistAsync())
                 {
                     Assert.True(true);
                 }

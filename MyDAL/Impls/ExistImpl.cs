@@ -15,7 +15,7 @@ namespace MyDAL.Impls
         internal ExistImpl(Context dc)
             : base(dc) { }
 
-        public async Task<bool> ExistAsync()
+        public async Task<bool> IsExistAsync()
         {
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
@@ -34,7 +34,7 @@ namespace MyDAL.Impls
         public ExistXImpl(Context dc) 
             : base(dc) {   }
 
-        public async Task<bool> ExistAsync()
+        public async Task<bool> IsExistAsync()
         {
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;

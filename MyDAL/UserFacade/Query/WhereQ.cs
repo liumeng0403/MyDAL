@@ -21,9 +21,9 @@ namespace MyDAL.UserFacade.Query
         /// <summary>
         /// 请参阅: <see langword=".ExistAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<bool> ExistAsync()
+        public async Task<bool> IsExistAsync()
         {
-            return await new ExistImpl<M>(DC).ExistAsync();
+            return await new ExistImpl<M>(DC).IsExistAsync();
         }
 
         /// <summary>

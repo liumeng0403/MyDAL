@@ -16,7 +16,7 @@ namespace MyDAL.Test.ShortcutAPI
             var id = Guid.Parse("89c9407f-7427-4570-92b7-0165590ac07e");
 
             // 判断 AlipayPaymentRecord 表中是否存在符合条件的数据
-            bool res1 = await Conn.ExistAsync<AlipayPaymentRecord>(it => it.CreatedOn == date && it.OrderId == id);
+            bool res1 = await Conn.IsExistAsync<AlipayPaymentRecord>(it => it.CreatedOn == date && it.OrderId == id);
             Assert.True(res1);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);

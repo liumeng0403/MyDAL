@@ -342,18 +342,18 @@ namespace MyDAL
         /// <summary>
         /// 请参阅: <see langword=".ExistAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public static async Task<bool> ExistAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
+        public static async Task<bool> IsExistAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
             where M : class, new()
         {
-            return await conn.Queryer<M>().Where(compareFunc).ExistAsync();
+            return await conn.Queryer<M>().Where(compareFunc).IsExistAsync();
         }
         /// <summary>
         /// Queryer 便捷-同步 ExistAsync 方法
         /// </summary>
-        public static bool Exist<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
+        public static bool IsExist<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
             where M : class, new()
         {
-            return (conn.ExistAsync(compareFunc)).GetAwaiter().GetResult();
+            return (conn.IsExistAsync(compareFunc)).GetAwaiter().GetResult();
         }
 
 

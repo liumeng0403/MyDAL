@@ -4,11 +4,11 @@ namespace MyDAL.Interfaces
 {
     internal interface IExist
     {
-        Task<bool> ExistAsync();
+        Task<bool> IsExistAsync();
     }
 
     internal interface IExistX
     {
-        Task<bool> ExistAsync();
+        Task<bool> IsExistAsync();
     }
 }
