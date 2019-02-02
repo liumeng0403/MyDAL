@@ -180,5 +180,52 @@ namespace MyDAL.Test.WhereEdge
 
         }
 
+        [Fact]
+        public async Task Test02()
+        {
+
+            /*
+             * 单表
+             */
+
+            /************************************************************************************************************************************/
+
+            xx = string.Empty;
+
+            // CompareEnum.Equal
+            var op1 = new Single_PagingEdgeOption();
+            op1.PhoneEqual = "19900000218";
+
+            var res1 = await Conn
+                .Queryer<Agent>()
+                .Where(op1)
+                .PagingListAsync();
+
+            Assert.True(res1.TotalCount == 1);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************************************/
+
+            xx = string.Empty;
+
+            // CompareEnum.NotEqual
+            var op2 = new Single_PagingEdgeOption();
+            op2.PhoneNotEqual = "19900000218";
+
+            var res2 = await Conn
+                .Queryer<Agent>()
+                .Where(op2)
+                .PagingListAsync();
+
+            Assert.True(res2.TotalCount == 28619);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************************************/
+
+            xx = string.Empty;
+
+        }
     }
 }

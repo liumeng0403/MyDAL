@@ -12,26 +12,8 @@ namespace MyDAL.Test.QueryM
         : TestBase
     {
         [Fact]
-        public async Task Test()
+        public async Task Test01()
         {
-
-            /*****************************************************************************************************************************/
-
-            xx = string.Empty;
-
-            var option1 = new AgentQueryOption();
-            option1.StartTime = WhereTest.CreatedOn;
-            option1.EndTime = DateTime.Now;
-            option1.AgentLevel = AgentLevel.DistiAgent;
-
-            //   =    >=    <=
-            var res1 = await Conn
-                .Queryer<Agent>()
-                .Where(option1)
-                .PagingListAsync();
-            Assert.True(res1.TotalCount == 555);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*************************************************************************************************************************/
 
@@ -125,6 +107,13 @@ namespace MyDAL.Test.QueryM
             /*****************************************************************************************************************************/
 
             xx = string.Empty;
+
+        }
+
+        // 
+        [Fact]
+        public async Task Test02()
+        {
 
         }
     }
