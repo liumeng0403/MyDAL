@@ -1,6 +1,7 @@
 ﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.Options;
 using MyDAL.Test.ViewModels;
+using System;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -221,6 +222,78 @@ namespace MyDAL.Test.WhereEdge
             Assert.True(res2.TotalCount == 28619);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************************************/
+
+            xx = string.Empty;
+
+            // CompareEnum.LessThan
+            var op3 = new Single_PagingEdgeOption();
+            op3.CreatedOnLessThan = DateTime.Parse("2018-08-16 19:23:07.542265");
+
+            var res3 = await Conn
+                .Queryer<Agent>()
+                .Where(op3)
+                .PagingListAsync();
+
+            Assert.True(res3.TotalCount == 9849);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************************************/
+
+            xx = string.Empty;
+
+            // CompareEnum.LessThanOrEqual
+            var op4 = new Single_PagingEdgeOption();
+            op4.CreatedOnLessThanOrEqual = DateTime.Parse("2018-08-16 19:23:07.542265");
+
+            var res4 = await Conn
+                .Queryer<Agent>()
+                .Where(op4)
+                .PagingListAsync();
+
+            Assert.True(res4.TotalCount == 9850);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************************************/
+
+            xx = string.Empty;
+
+            // CompareEnum.GreaterThan
+            var op5 = new Single_PagingEdgeOption();
+            op5.CreatedOnGreaterThan = DateTime.Parse("2018-08-16 19:23:07.542265");
+
+            var res5 = await Conn
+                .Queryer<Agent>()
+                .Where(op5)
+                .PagingListAsync();
+
+            Assert.True(res5.TotalCount == 18770);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************************************/
+
+            xx = string.Empty;
+
+            // CompareEnum.GreaterThanOrEqual
+            var op6 = new Single_PagingEdgeOption();
+            op6.CreatedOnGreaterThanOrEqual = DateTime.Parse("2018-08-16 19:23:07.542265");
+
+            var res6 = await Conn
+                .Queryer<Agent>()
+                .Where(op6)
+                .PagingListAsync();
+
+            Assert.True(res6.TotalCount == 18771);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************************************/
+
+
 
             /************************************************************************************************************************************/
 
