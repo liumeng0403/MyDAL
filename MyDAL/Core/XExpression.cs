@@ -153,28 +153,9 @@ namespace MyDAL.Core
                     if (memType == typeof(string))
                     {
                         var cp = GetKey(memO, FuncEnum.None);
-                        var val = default(ValueInfo);
                         var valExpr = mcExpr.Arguments[0];
-                        switch (type)
-                        {
-                            case StringLikeEnum.Contains:
-                                val = DC.VH.ValueProcess(valExpr, cp.ValType);
-                                break;
-                            case StringLikeEnum.StartsWith:
-                                val = new ValueInfo
-                                {
-                                    Val = $"{DC.VH.ValueProcess(valExpr, cp.ValType).Val}%",
-                                    ValStr = string.Empty
-                                };
-                                break;
-                            case StringLikeEnum.EndsWith:
-                                val = new ValueInfo
-                                {
-                                    Val = $"%{DC.VH.ValueProcess(valExpr, cp.ValType).Val}",
-                                    ValStr = string.Empty
-                                };
-                                break;
-                        }
+                        var val = DC.VH.ValueProcess(valExpr, cp.ValType);
+                        val = ValueInfo.LikeVI(val, type, DC);
                         DC.Option = OptionEnum.Like;
                         DC.Compare = CompareXEnum.None;
                         DC.Func = FuncEnum.None;

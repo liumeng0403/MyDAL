@@ -17,9 +17,17 @@ namespace MyDAL.Core
         {
             sb.Append('/');
         }
+        protected static char EscapeChar()
+        {
+            return '/';
+        }
         protected static void Percent(StringBuilder sb)
         {
             sb.Append('%');
+        }
+        protected static char Percent()
+        {
+            return '%';
         }
         protected static void Backquote(StringBuilder sb)
         {

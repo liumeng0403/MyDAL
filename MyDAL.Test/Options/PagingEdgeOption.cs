@@ -33,5 +33,13 @@ namespace MyDAL.Test.Options
         [XQuery(Column = "CreatedOn", Compare = CompareEnum.GreaterThanOrEqual)]
         public DateTime CreatedOnGreaterThanOrEqual { get; set; }
 
+        // Agent.Name Like
+        [XQuery(Column = "Name",Compare = CompareEnum.Like)]
+        public string NameLike { get; set; }
+
+        // Agent.Name Like_StartsWith
+        [XQuery(Column = "Name",Compare = CompareEnum.Like_StartsWith)]
+        public string NameLike_StartsWith { get; set; }
+
     }
 }

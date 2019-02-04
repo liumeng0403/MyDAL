@@ -95,7 +95,7 @@ namespace MyDAL.DataRainbow.MySQL
                 && !value.Contains("_"))
             {
                 X.Append("CONCAT");
-                LeftBracket(X); SingleQuote(X); Percent(X); SingleQuote(X); Comma(X); DbParam(name, X); Comma(X); SingleQuote(X); Percent(X); SingleQuote(X); RightBracket(X);
+                LeftBracket(X); StringConst(Percent().ToString(), X); Comma(X); DbParam(name, X); Comma(X); StringConst(Percent().ToString(), X); RightBracket(X);
             }
             else if ((value.Contains("%") || value.Contains("_"))
                 && !value.Contains("/%")
@@ -106,7 +106,7 @@ namespace MyDAL.DataRainbow.MySQL
             else if (value.Contains("/%")
                 || value.Contains("/_"))
             {
-                DbParam(name, X); Spacing(X); Escape(X); Spacing(X); SingleQuote(X); EscapeChar(X); SingleQuote(X);
+                DbParam(name, X); Spacing(X); Escape(X); Spacing(X); StringConst(EscapeChar().ToString(), X);
             }
             else
             {
@@ -144,7 +144,7 @@ namespace MyDAL.DataRainbow.MySQL
                 Column(string.Empty, db.TbCol, X);
             }
 
-            Comma(X); SingleQuote(X); X.Append(db.Format); SingleQuote(X);
+            Comma(X); StringConst(db.Format, X);
             RightBracket(X); Compare(db.Compare, X, DC); DbParam(db.Param, X);
         }
         private void TrimProcess(DicParam db)
@@ -413,11 +413,11 @@ namespace MyDAL.DataRainbow.MySQL
                     {
                         if (dic.Option == OptionEnum.Column)
                         {
-                            Function(dic.Func, X, DC); LeftBracket(X); Column(dic.TbAlias, dic.TbCol, X); Comma(X); SingleQuote(X); X.Append(dic.Format); SingleQuote(X); RightBracket(X);
+                            Function(dic.Func, X, DC); LeftBracket(X); Column(dic.TbAlias, dic.TbCol, X); Comma(X); StringConst(dic.Format, X); RightBracket(X);
                         }
                         else if (dic.Option == OptionEnum.ColumnAs)
                         {
-                            Function(dic.Func, X, DC); LeftBracket(X); Column(dic.TbAlias, dic.TbCol, X); Comma(X); SingleQuote(X); X.Append(dic.Format); SingleQuote(X); RightBracket(X);
+                            Function(dic.Func, X, DC); LeftBracket(X); Column(dic.TbAlias, dic.TbCol, X); Comma(X); StringConst(dic.Format, X); RightBracket(X);
                             As(X); X.Append(dic.TbColAlias);
                         }
                     }
@@ -425,11 +425,11 @@ namespace MyDAL.DataRainbow.MySQL
                     {
                         if (dic.Option == OptionEnum.Column)
                         {
-                            Function(dic.Func, X, DC); LeftBracket(X); Column(string.Empty, dic.TbCol, X); Comma(X); SingleQuote(X); X.Append(dic.Format); SingleQuote(X); RightBracket(X);
+                            Function(dic.Func, X, DC); LeftBracket(X); Column(string.Empty, dic.TbCol, X); Comma(X); StringConst(dic.Format, X); RightBracket(X);
                         }
                         else if (dic.Option == OptionEnum.ColumnAs)
                         {
-                            Function(dic.Func, X, DC); LeftBracket(X); Column(string.Empty, dic.TbCol, X); Comma(X); SingleQuote(X); X.Append(dic.Format); SingleQuote(X); RightBracket(X);
+                            Function(dic.Func, X, DC); LeftBracket(X); Column(string.Empty, dic.TbCol, X); Comma(X); StringConst(dic.Format, X); RightBracket(X);
                             As(X); X.Append(dic.TbColAlias);
                         }
                     }

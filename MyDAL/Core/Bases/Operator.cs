@@ -297,10 +297,19 @@ namespace MyDAL.Core.Bases
                 }
 
                 //
-                if (tp.Compare == CompareEnum.Like)
+                if (tp.Compare == CompareEnum.Like
+                    || tp.Compare == CompareEnum.Like_StartsWith)
                 {
                     DC.Option = OptionEnum.Like;
                     DC.Compare = CompareXEnum.None;
+                    if (tp.Compare == CompareEnum.Like)
+                    {
+                        tp.Val = ValueInfo.LikeVI(tp.Val, StringLikeEnum.Contains, DC);
+                    }
+                    else if (tp.Compare == CompareEnum.Like_StartsWith)
+                    {
+                        tp.Val = ValueInfo.LikeVI(tp.Val, StringLikeEnum.StartsWith, DC);
+                    }
                     DC.DPH.AddParameter(DC.DPH.LikeDic(tp.Cp, tp.Val));
                 }
                 else if (tp.Compare == CompareEnum.In)

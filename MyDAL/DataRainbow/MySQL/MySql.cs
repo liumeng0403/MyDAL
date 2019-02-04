@@ -14,6 +14,10 @@ namespace MyDAL.DataRainbow.MySQL
         {
             At(sb); sb.Append(param);
         }
+        internal protected static void StringConst(string conStr, StringBuilder sb)
+        {
+            SingleQuote(sb); sb.Append(conStr); SingleQuote(sb);
+        }        
         internal protected static void Column(string tbAlias, string colName, StringBuilder sb)
         {
             if (!tbAlias.IsNullStr())

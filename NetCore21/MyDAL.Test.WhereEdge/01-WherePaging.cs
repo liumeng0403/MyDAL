@@ -293,7 +293,37 @@ namespace MyDAL.Test.WhereEdge
 
             /************************************************************************************************************************************/
 
+            xx = string.Empty;
 
+            // CompareEnum.Like
+            var op7 = new Single_PagingEdgeOption();
+            op7.NameLike = "雪";
+
+            var res7 = await Conn
+                .Queryer<Agent>()
+                .Where(op7)
+                .PagingListAsync();
+
+            Assert.True(res7.TotalCount == 316);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************************************/
+
+            xx = string.Empty;
+
+            // CompareEnum.Like_StartsWith
+            var op8 = new Single_PagingEdgeOption();
+            op8.NameLike_StartsWith = "马";
+
+            var res8 = await Conn
+                .Queryer<Agent>()
+                .Where(op8)
+                .PagingListAsync();
+
+            Assert.True(res8.TotalCount == 285);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /************************************************************************************************************************************/
 

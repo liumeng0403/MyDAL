@@ -54,6 +54,19 @@
         Like_EndsWith,
 
         /// <summary>
+        /// " not like " 【SQL - 类似：not like '%条件%'，若包含通配符，则按自定义字符串 like 匹配】
+        /// </summary>
+        NotLike,
+        /// <summary>
+        /// " not like " 【SQL - 类似：not like '%条件'】
+        /// </summary>
+        NotLike_StartsWith,
+        /// <summary>
+        /// " not like " 【SQL - 类似：not like '条件%'】
+        /// </summary>
+        NotLike_EndsWith,
+
+        /// <summary>
         /// " in " 【SQL - in(para1,para2,para3, ... ... )】
         /// </summary>
         In,
