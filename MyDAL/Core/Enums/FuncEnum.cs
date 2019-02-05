@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace MyDAL.Core.Enums
+﻿namespace MyDAL.Core.Enums
 {
     internal enum FuncEnum
     {
@@ -31,17 +29,7 @@ namespace MyDAL.Core.Enums
         /// " rtrim"
         /// </summary>
         RTrim,
-
-        /// <summary>
-        /// " in "
-        /// </summary>
-        In,
-        /// <summary>
-        /// " not in "
-        /// </summary>
-        NotIn,
-        InHelper,
-
+        
         /// <summary>
         /// " count"
         /// </summary>

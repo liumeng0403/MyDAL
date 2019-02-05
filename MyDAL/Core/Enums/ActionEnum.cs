@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace MyDAL.Core.Enums
+﻿namespace MyDAL.Core.Enums
 {
     internal enum ActionEnum
     {

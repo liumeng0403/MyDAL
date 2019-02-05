@@ -54,7 +54,7 @@ namespace MyDAL.Test.Func
         }
 
         [Fact]
-        public async Task FirstOrDefaultAsyncTest()
+        public async Task Test01()
         {
 
             /************************************************************************************************************/
@@ -197,6 +197,23 @@ namespace MyDAL.Test.Func
 
             xx = string.Empty;
 
+        }
+
+        [Fact]
+        public async Task Test02()
+        {
+            xx = string.Empty;
+
+            // not like
+            var res1 = await Conn.QueryListAsync<Agent>(it => !it.Name.Contains("刘"));
+
+            Assert.True(res1.Count == 27159);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*************************************************************************************************************************************************/
+
+            xx = string.Empty;
         }
 
     }

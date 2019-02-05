@@ -110,7 +110,8 @@ namespace MyDAL.Core.Bases
             if (dic.Group == null
                 && dic.CsValue != null
                 && dic.Option == OptionEnum.Function
-                && (dic.Func == FuncEnum.In || dic.Func == FuncEnum.NotIn))
+                //&& (dic.Func == FuncEnum.In || dic.Func == FuncEnum.NotIn))
+                && (dic.Compare == CompareXEnum.In || dic.Compare == CompareXEnum.NotIn))
             {
                 return true;
             }

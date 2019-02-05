@@ -62,7 +62,7 @@ namespace MyDAL.Core.Helper
             //
             cp.CsValue = csVal;
             cp.CsValueStr = csValStr;
-            cp.Func = FuncEnum.InHelper;
+            cp.Compare = CompareXEnum.InHelper;
 
             //
             return cp;
@@ -597,12 +597,7 @@ namespace MyDAL.Core.Helper
             dic.GroupAction = action;
             return dic;
         }
-
-        internal DicParam GetNewDic()
-        {
-            return SetDicBase(DC);
-        }
-
+        
         internal DicParam SelectColumnDic(List<DicParam> cols)
         {
             var dic = SetDicBase(DC);

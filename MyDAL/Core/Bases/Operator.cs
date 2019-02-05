@@ -298,10 +298,11 @@ namespace MyDAL.Core.Bases
 
                 //
                 if (tp.Compare == CompareEnum.Like
-                    || tp.Compare == CompareEnum.Like_StartsWith)
+                    || tp.Compare == CompareEnum.Like_StartsWith
+                    || tp.Compare== CompareEnum.Like_EndsWith)
                 {
-                    DC.Option = OptionEnum.Like;
-                    DC.Compare = CompareXEnum.None;
+                    DC.Option = OptionEnum.Compare;
+                    DC.Compare = CompareXEnum.Like;
                     if (tp.Compare == CompareEnum.Like)
                     {
                         tp.Val = ValueInfo.LikeVI(tp.Val, StringLikeEnum.Contains, DC);
@@ -310,20 +311,24 @@ namespace MyDAL.Core.Bases
                     {
                         tp.Val = ValueInfo.LikeVI(tp.Val, StringLikeEnum.StartsWith, DC);
                     }
+                    else if(tp.Compare== CompareEnum.Like_EndsWith)
+                    {
+                        tp.Val = ValueInfo.LikeVI(tp.Val, StringLikeEnum.EndsWith, DC);
+                    }
                     DC.DPH.AddParameter(DC.DPH.LikeDic(tp.Cp, tp.Val));
                 }
                 else if (tp.Compare == CompareEnum.In)
                 {
-                    DC.Option = OptionEnum.Function;
-                    DC.Func = FuncEnum.In;
-                    DC.Compare = CompareXEnum.None;
+                    DC.Option = OptionEnum.Compare;
+                    DC.Func = FuncEnum.None;  // FuncEnum.In;
+                    DC.Compare = CompareXEnum.In;  // CompareXEnum.None;
                     DC.DPH.AddParameter(DC.DPH.InDic(tp.Cp, tp.Val));
                 }
                 else if (tp.Compare == CompareEnum.NotIn)
                 {
-                    DC.Option = OptionEnum.Function;
-                    DC.Func = FuncEnum.NotIn;
-                    DC.Compare = CompareXEnum.None;
+                    DC.Option = OptionEnum.Compare;
+                    DC.Func = FuncEnum.None; // FuncEnum.NotIn;
+                    DC.Compare = CompareXEnum.NotIn;  // CompareXEnum.None;
                     DC.DPH.AddParameter(DC.DPH.NotInDic(tp.Cp, tp.Val));
                 }
                 else if (tp.Compare == CompareEnum.Equal

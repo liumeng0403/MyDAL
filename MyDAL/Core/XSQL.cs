@@ -144,9 +144,9 @@ namespace MyDAL.Core
                 case OptionEnum.ChangeMinus:
                     sb.Append("-");
                     return;
-                case OptionEnum.Like:
-                    sb.Append(" like ");
-                    return;
+                //case OptionEnum.Like:
+                //    sb.Append(" like ");
+                //    return;
                 case OptionEnum.IsNull:
                     sb.Append(" is null ");
                     return;
@@ -190,6 +190,9 @@ namespace MyDAL.Core
                 case CompareXEnum.Like:
                     sb.Append(" like ");
                     return;
+                case CompareXEnum.NotLike:
+                    sb.Append(" not like ");
+                    return;
                 case CompareXEnum.In:
                     sb.Append(" in ");
                     return;
@@ -221,12 +224,12 @@ namespace MyDAL.Core
                 case FuncEnum.RTrim:
                     sb.Append(" rtrim");
                     return;
-                case FuncEnum.In:
-                    sb.Append(" in ");
-                    return;
-                case FuncEnum.NotIn:
-                    sb.Append(" not in ");
-                    return;
+                //case FuncEnum.In:
+                //    sb.Append(" in ");
+                //    return;
+                //case FuncEnum.NotIn:
+                //    sb.Append(" not in ");
+                //    return;
                 case FuncEnum.Count:
                     sb.Append(" count");
                     return;

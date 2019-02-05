@@ -174,23 +174,36 @@ namespace MyDAL.DataRainbow.MySQL
                 Column(string.Empty, db.TbCol, X);
             }
             Spacing(X);
-            Function(db.Func, X, DC); LeftBracket(X); InParams(db.InItems); RightBracket(X);
+            Compare(db.Compare, X, DC); LeftBracket(X); InParams(db.InItems); RightBracket(X);
         }
 
         /****************************************************************************************************************/
 
         private void CompareProcess(DicParam db)
         {
-            Spacing(X);
-            if (db.Crud == CrudEnum.Join)
+            if (db.Compare == CompareXEnum.In
+                || db.Compare == CompareXEnum.NotIn)
             {
-                Column(db.TbAlias, db.TbCol, X);
+                InProcess(db);
             }
-            else if (DC.IsSingleTableOption())
+            else if (db.Compare == CompareXEnum.Like
+                        || db.Compare == CompareXEnum.NotLike)
             {
-                Column(string.Empty, db.TbCol, X);
+                LikeProcess(db);
             }
-            Compare(db.Compare, X, DC); DbParam(db.Param, X);
+            else
+            {
+                Spacing(X);
+                if (db.Crud == CrudEnum.Join)
+                {
+                    Column(db.TbAlias, db.TbCol, X);
+                }
+                else if (DC.IsSingleTableOption())
+                {
+                    Column(string.Empty, db.TbCol, X);
+                }
+                Compare(db.Compare, X, DC); DbParam(db.Param, X);
+            }
         }
         private void FunctionProcess(DicParam db)
         {
@@ -205,10 +218,6 @@ namespace MyDAL.DataRainbow.MySQL
             else if (db.Func == FuncEnum.Trim || db.Func == FuncEnum.LTrim || db.Func == FuncEnum.RTrim)
             {
                 TrimProcess(db);
-            }
-            else if (db.Func == FuncEnum.In || db.Func == FuncEnum.NotIn)
-            {
-                InProcess(db);
             }
             else
             {
@@ -226,7 +235,7 @@ namespace MyDAL.DataRainbow.MySQL
             {
                 Column(string.Empty, db.TbCol, X);
             }
-            Option(db.Option, X, DC); LikeStrHandle(db);
+            Compare(db.Compare, X, DC); LikeStrHandle(db);
         }
         private void OneEqualOneProcess(DicParam db)
         {
@@ -279,10 +288,6 @@ namespace MyDAL.DataRainbow.MySQL
                 else if (db.Option == OptionEnum.Function)
                 {
                     FunctionProcess(db);
-                }
-                else if (db.Option == OptionEnum.Like)
-                {
-                    LikeProcess(db);
                 }
                 else if (db.Option == OptionEnum.OneEqualOne)
                 {

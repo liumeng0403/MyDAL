@@ -152,12 +152,12 @@ namespace MyDAL.Core
                     var memType = objExpr.Type;
                     if (memType == typeof(string))
                     {
-                        var cp = GetKey(memO, FuncEnum.None);
+                        var cp = GetKey(memO, FuncEnum.None, CompareXEnum.None);
                         var valExpr = mcExpr.Arguments[0];
                         var val = DC.VH.ValueProcess(valExpr, cp.ValType);
                         val = ValueInfo.LikeVI(val, type, DC);
-                        DC.Option = OptionEnum.Like;
-                        DC.Compare = CompareXEnum.None;
+                        DC.Option = OptionEnum.Compare;
+                        DC.Compare = CompareXEnum.Like;
                         DC.Func = FuncEnum.None;
                         return DC.DPH.LikeDic(cp, val);
                     }
@@ -170,17 +170,17 @@ namespace MyDAL.Core
         {
             if (nodeType == ExpressionType.MemberAccess)
             {
-                var cp = GetKey(keyExpr, FuncEnum.In);
+                var cp = GetKey(keyExpr, FuncEnum.None, CompareXEnum.In);
                 var val = DC.VH.ValueProcess(valExpr, cp.ValType);
-                DC.Option = OptionEnum.Function;
-                DC.Func = FuncEnum.In;
-                DC.Compare = CompareXEnum.None;
+                DC.Option = OptionEnum.Compare;
+                DC.Func = FuncEnum.None; // FuncEnum.In;
+                DC.Compare = CompareXEnum.In; // CompareXEnum.None;
                 return DC.DPH.InDic(cp, val);
             }
             else if (nodeType == ExpressionType.NewArrayInit)
             {
                 var naExpr = valExpr as NewArrayExpression;
-                var cp = GetKey(keyExpr, FuncEnum.In);
+                var cp = GetKey(keyExpr, FuncEnum.None, CompareXEnum.In);
                 var vals = new List<ValueInfo>();
                 foreach (var exp in naExpr.Expressions)
                 {
@@ -192,15 +192,15 @@ namespace MyDAL.Core
                     Val = string.Join(",", vals.Select(it => it.Val)),
                     ValStr = string.Empty
                 };
-                DC.Option = OptionEnum.Function;
-                DC.Func = FuncEnum.In;
-                DC.Compare = CompareXEnum.None;
+                DC.Option = OptionEnum.Compare;
+                DC.Func = FuncEnum.None;  // FuncEnum.In;
+                DC.Compare = CompareXEnum.In;  // CompareXEnum.None;
                 return DC.DPH.InDic(cp, val);
             }
             else if (nodeType == ExpressionType.ListInit)
             {
                 var liExpr = valExpr as ListInitExpression;
-                var cp = GetKey(keyExpr, FuncEnum.In);
+                var cp = GetKey(keyExpr, FuncEnum.None, CompareXEnum.In);
                 var vals = new List<ValueInfo>();
                 foreach (var ini in liExpr.Initializers)
                 {
@@ -211,9 +211,9 @@ namespace MyDAL.Core
                     Val = string.Join(",", vals.Select(it => it.Val)),
                     ValStr = string.Empty
                 };
-                DC.Option = OptionEnum.Function;
-                DC.Func = FuncEnum.In;
-                DC.Compare = CompareXEnum.None;
+                DC.Option = OptionEnum.Compare;
+                DC.Func = FuncEnum.None;  // FuncEnum.In;
+                DC.Compare = CompareXEnum.In;  // CompareXEnum.None;
                 return DC.DPH.InDic(cp, val);
             }
             else if (nodeType == ExpressionType.MemberInit)
@@ -235,7 +235,7 @@ namespace MyDAL.Core
         }
         private DicParam FuncToString(MethodCallExpression mcExpr)
         {
-            var cp = DC.XE.GetKey(mcExpr, FuncEnum.DateFormat);
+            var cp = DC.XE.GetKey(mcExpr, FuncEnum.DateFormat, CompareXEnum.None);
             DC.Option = OptionEnum.ColumnAs;
             DC.Func = FuncEnum.DateFormat;
             DC.Compare = CompareXEnum.None;
@@ -259,7 +259,7 @@ namespace MyDAL.Core
                 && bin.Right.NodeType == ExpressionType.Constant
                 && (bin.Right as ConstantExpression).Value == null)
             {
-                var cp = GetKey(bin.Left, FuncEnum.None);
+                var cp = GetKey(bin.Left, FuncEnum.None, CompareXEnum.None);
                 if (bin.Node == ExpressionType.Equal)
                 {
                     DC.Option = OptionEnum.IsNull;
@@ -278,7 +278,7 @@ namespace MyDAL.Core
                 var toString = tp.Flag ? false : DC.CFH.IsToStringFunc(leftStr);
                 if (length)
                 {
-                    var cp = GetKey(bin.Left, FuncEnum.CharLength);
+                    var cp = GetKey(bin.Left, FuncEnum.CharLength, CompareXEnum.None);
                     var val = DC.VH.ValueProcess(bin.Right, cp.ValType);
                     DC.Option = OptionEnum.Function;
                     DC.Func = FuncEnum.CharLength;
@@ -287,7 +287,7 @@ namespace MyDAL.Core
                 }
                 else if (tp.Flag)
                 {
-                    var cp = GetKey(bin.Left, tp.Trim);
+                    var cp = GetKey(bin.Left, tp.Trim, CompareXEnum.None);
                     var val = DC.VH.ValueProcess(bin.Right, cp.ValType);
                     DC.Option = OptionEnum.Function;
                     DC.Func = tp.Trim;
@@ -296,7 +296,7 @@ namespace MyDAL.Core
                 }
                 else if (toString)
                 {
-                    var cp = GetKey(bin.Left, FuncEnum.DateFormat);
+                    var cp = GetKey(bin.Left, FuncEnum.DateFormat, CompareXEnum.None);
                     var val = DC.VH.ValueProcess(bin.Right, cp.ValType, cp.Format);
                     DC.Option = OptionEnum.Function;
                     DC.Func = FuncEnum.DateFormat;
@@ -306,7 +306,7 @@ namespace MyDAL.Core
                 }
                 else
                 {
-                    var cp = GetKey(bin.Left, FuncEnum.None);
+                    var cp = GetKey(bin.Left, FuncEnum.None, CompareXEnum.None);
                     var val = DC.VH.ValueProcess(bin.Right, cp.ValType);
                     DC.Option = OptionEnum.Compare;
                     DC.Func = FuncEnum.None;
@@ -368,7 +368,7 @@ namespace MyDAL.Core
             if (DC.IsSingleTableOption()
                 || DC.Crud == CrudEnum.None)
             {
-                var cp = GetKey(memExpr, FuncEnum.None);
+                var cp = GetKey(memExpr, FuncEnum.None, CompareXEnum.None);
                 if (string.IsNullOrWhiteSpace(cp.Key))
                 {
                     throw new Exception("无法解析 列名 !!!");
@@ -400,7 +400,7 @@ namespace MyDAL.Core
             {
                 if (DC.Action == ActionEnum.Where)
                 {
-                    var cp = GetKey(memExpr, FuncEnum.None);
+                    var cp = GetKey(memExpr, FuncEnum.None, CompareXEnum.None);
                     if (cp.ValType == typeof(bool))
                     {
                         DC.Option = OptionEnum.Compare;
@@ -426,7 +426,7 @@ namespace MyDAL.Core
                         var leftStr = memExpr.ToString();
                         if (DC.CFH.IsLengthFunc(leftStr))
                         {
-                            var cp = GetKey(memExpr, FuncEnum.CharLength);
+                            var cp = GetKey(memExpr, FuncEnum.CharLength, CompareXEnum.None);
                             DC.Func = FuncEnum.CharLength;
                             DC.Compare = CompareXEnum.None;
                             return DC.DPH.CharLengthDic(cp, null);
@@ -477,7 +477,7 @@ namespace MyDAL.Core
                 }
                 else
                 {
-                    cp = GetKey(mbEx.Expression, FuncEnum.None);
+                    cp = GetKey(mbEx.Expression, FuncEnum.None, CompareXEnum.None);
                 }
                 var colAlias = mbEx.Member.Name;
                 result.Add(DC.DPH.SelectMemberInitDic(cp, colAlias));
@@ -490,8 +490,8 @@ namespace MyDAL.Core
 
         private DicParam HandOnBinary(BinaryExpression binExpr)
         {
-            var cp1 = GetKey(binExpr.Left, FuncEnum.None);
-            var cp2 = GetKey(binExpr.Right, FuncEnum.None);
+            var cp1 = GetKey(binExpr.Left, FuncEnum.None, CompareXEnum.None);
+            var cp2 = GetKey(binExpr.Right, FuncEnum.None, CompareXEnum.None);
             DC.Option = OptionEnum.Compare;
             DC.Compare = GetCompareType(binExpr.NodeType, false);
             return DC.DPH.OnDic(cp1, cp2);
@@ -535,13 +535,13 @@ namespace MyDAL.Core
 
             return alias;
         }
-        private ColumnParam GetKey(Expression bodyL, FuncEnum func, string format = "")
+        private ColumnParam GetKey(Expression bodyL, FuncEnum func, CompareXEnum compareX, string format = "")
         {
             if (bodyL.NodeType == ExpressionType.Convert)
             {
                 var exp = bodyL as UnaryExpression;
                 var opMem = exp.Operand;
-                return GetKey(opMem, func);
+                return GetKey(opMem, func, compareX);
             }
             else if (bodyL.NodeType == ExpressionType.MemberAccess)
             {
@@ -599,18 +599,18 @@ namespace MyDAL.Core
                     || func == FuncEnum.RTrim)
                 {
                     var mem = mcExpr.Object;
-                    return GetKey(mem, func);
+                    return GetKey(mem, func, compareX);
                 }
-                else if (func == FuncEnum.In)
+                else if (compareX == CompareXEnum.In)
                 {
                     var mem = mcExpr.Arguments[0];
-                    return GetKey(mem, func);
+                    return GetKey(mem, func, compareX);
                 }
                 else if (func == FuncEnum.DateFormat)
                 {
                     var mem = mcExpr.Object;
                     var val = DC.VH.ValueProcess(mcExpr.Arguments[0], XConfig.TC.String);
-                    return GetKey(mem, func, val.Val.ToString());
+                    return GetKey(mem, func, compareX, val.Val.ToString());
                 }
                 else
                 {
@@ -629,7 +629,20 @@ namespace MyDAL.Core
 
             //
             var nodeType = body.NodeType;
-            if (nodeType == ExpressionType.Call)
+            if (nodeType == ExpressionType.Not)
+            {
+                var ue = body as UnaryExpression;
+                result = BodyProcess(ue.Operand, firstParam);
+                if (result.Compare == CompareXEnum.Like)
+                {
+                    result.Compare = CompareXEnum.NotLike;
+                }
+                else
+                {
+                    throw DC.Exception(XConfig.EC._027, body.ToString());
+                }
+            }
+            else if (nodeType == ExpressionType.Call)
             {
                 result = HandConditionCall(body as MethodCallExpression);
             }
@@ -644,7 +657,7 @@ namespace MyDAL.Core
             }
             else if (nodeType == ExpressionType.Convert)
             {
-                var cp = GetKey(body, FuncEnum.None);
+                var cp = GetKey(body, FuncEnum.None, CompareXEnum.None);
                 if (string.IsNullOrWhiteSpace(cp.Key))
                 {
                     throw new Exception("无法解析 列名2 !!!");
@@ -664,7 +677,7 @@ namespace MyDAL.Core
                 var mems = nExpr.Members;
                 for (var i = 0; i < args.Count; i++)
                 {
-                    var cp = GetKey(args[i], FuncEnum.None);
+                    var cp = GetKey(args[i], FuncEnum.None, CompareXEnum.None);
                     var colAlias = mems[i].Name;
                     DC.Option = OptionEnum.None;
                     DC.Compare = CompareXEnum.None;

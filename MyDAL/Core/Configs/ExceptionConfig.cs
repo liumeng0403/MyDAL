@@ -31,6 +31,7 @@
         internal string _024 { get; } = "024";
         internal string _025 { get; } = "025";
         internal string _026 { get; } = "026";
+        internal string _027 { get; } = "027";
 
     }
 }

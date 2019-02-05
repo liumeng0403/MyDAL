@@ -36,16 +36,11 @@ namespace MyDAL.Core.Enums
         ColumnAs,
         ColumnOther,
 
-        /// <summary>
-        /// " like "
-        /// </summary>
-        Like,
-        
         ///// <summary>
-        ///// " distinct "
+        ///// " like "
         ///// </summary>
-        //Distinct,
-
+        //Like,
+        
         /// <summary>
         /// ""
         /// </summary>

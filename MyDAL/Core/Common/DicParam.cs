@@ -37,5 +37,6 @@ namespace MyDAL.Core.Common
         internal List<DicParam> InItems { get; set; }
         internal List<DicParam> Inserts { get; set; }
         internal List<DicParam> Columns { get; set; }
+        internal List<DicParam> Not { get; set; }
     }
 }

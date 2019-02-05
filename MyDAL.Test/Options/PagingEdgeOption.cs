@@ -41,5 +41,9 @@ namespace MyDAL.Test.Options
         [XQuery(Column = "Name",Compare = CompareEnum.Like_StartsWith)]
         public string NameLike_StartsWith { get; set; }
 
+        // Agent.Name Like_EndsWith
+        [XQuery(Column = "Name",Compare = CompareEnum.Like_EndsWith)]
+        public string NameLike_EndsWith { get; set; }
+
     }
 }

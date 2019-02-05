@@ -329,6 +329,23 @@ namespace MyDAL.Test.WhereEdge
 
             xx = string.Empty;
 
+            // CompareEnum.Like_EndsWith
+            var op9 = new Single_PagingEdgeOption();
+            op9.NameLike_EndsWith = "山";
+
+            var res9 = await Conn
+                .Queryer<Agent>()
+                .Where(op9)
+                .PagingListAsync();
+
+            Assert.True(res9.TotalCount == 40);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************************************/
+
+            xx = string.Empty;
+
         }
     }
 }
