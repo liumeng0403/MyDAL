@@ -299,21 +299,45 @@ namespace MyDAL.Core.Bases
                 //
                 if (tp.Compare == CompareEnum.Like
                     || tp.Compare == CompareEnum.Like_StartsWith
-                    || tp.Compare== CompareEnum.Like_EndsWith)
+                    || tp.Compare == CompareEnum.Like_EndsWith
+                    || tp.Compare == CompareEnum.NotLike
+                    || tp.Compare == CompareEnum.NotLike_StartsWith
+                    || tp.Compare == CompareEnum.NotLike_EndsWith)
                 {
                     DC.Option = OptionEnum.Compare;
-                    DC.Compare = CompareXEnum.Like;
                     if (tp.Compare == CompareEnum.Like)
                     {
+                        DC.Compare = CompareXEnum.Like;
                         tp.Val = ValueInfo.LikeVI(tp.Val, StringLikeEnum.Contains, DC);
                     }
                     else if (tp.Compare == CompareEnum.Like_StartsWith)
                     {
+                        DC.Compare = CompareXEnum.Like;
                         tp.Val = ValueInfo.LikeVI(tp.Val, StringLikeEnum.StartsWith, DC);
                     }
-                    else if(tp.Compare== CompareEnum.Like_EndsWith)
+                    else if (tp.Compare == CompareEnum.Like_EndsWith)
                     {
+                        DC.Compare = CompareXEnum.Like;
                         tp.Val = ValueInfo.LikeVI(tp.Val, StringLikeEnum.EndsWith, DC);
+                    }
+                    else if (tp.Compare == CompareEnum.NotLike)
+                    {
+                        DC.Compare = CompareXEnum.NotLike;
+                        tp.Val = ValueInfo.LikeVI(tp.Val, StringLikeEnum.Contains, DC);
+                    }
+                    else if (tp.Compare == CompareEnum.NotLike_StartsWith)
+                    {
+                        DC.Compare = CompareXEnum.NotLike;
+                        tp.Val = ValueInfo.LikeVI(tp.Val, StringLikeEnum.StartsWith, DC);
+                    }
+                    else if (tp.Compare == CompareEnum.NotLike_EndsWith)
+                    {
+                        DC.Compare = CompareXEnum.NotLike;
+                        tp.Val = ValueInfo.LikeVI(tp.Val, StringLikeEnum.EndsWith, DC);
+                    }
+                    else
+                    {
+                        throw DC.Exception(XConfig.EC._028, tp.Compare.ToString());
                     }
                     DC.DPH.AddParameter(DC.DPH.LikeDic(tp.Cp, tp.Val));
                 }

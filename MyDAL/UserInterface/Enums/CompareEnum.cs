@@ -52,7 +52,6 @@
         /// " like " 【SQL - 类似：like '条件%'】
         /// </summary>
         Like_EndsWith,
-
         /// <summary>
         /// " not like " 【SQL - 类似：not like '%条件%'，若包含通配符，则按自定义字符串 like 匹配】
         /// </summary>
@@ -70,10 +69,10 @@
         /// " in " 【SQL - in(para1,para2,para3, ... ... )】
         /// </summary>
         In,
-
         /// <summary>
         /// " not in " 【SQL- not in(para1,para2,para3, ... ... )】
         /// </summary>
-        NotIn        
+        NotIn
+
     }
 }

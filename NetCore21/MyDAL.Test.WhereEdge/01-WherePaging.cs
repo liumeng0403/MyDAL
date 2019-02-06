@@ -346,6 +346,57 @@ namespace MyDAL.Test.WhereEdge
 
             xx = string.Empty;
 
+            // CompareEnum.NotLike
+            var op10 = new Single_PagingEdgeOption();
+            op10.NameNotLike = "山";
+
+            var res10 = await Conn
+                .Queryer<Agent>()
+                .Where(op10)
+                .PagingListAsync();
+
+            Assert.True(res10.TotalCount == 28577);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************************************/
+
+            xx = string.Empty;
+
+            // CompareEnum.NotLike_StartsWith
+            var op11 = new Single_PagingEdgeOption();
+            op11.NameNotLike_StartsWith = "刘";
+
+            var res11 = await Conn
+                .Queryer<Agent>()
+                .Where(op11)
+                .PagingListAsync();
+
+            Assert.True(res11.TotalCount == 27163);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************************************/
+
+            xx = string.Empty;
+
+            // CompareEnum.NotLike_EndsWith
+            var op12 = new Single_PagingEdgeOption();
+            op12.NameNotLike_EndsWith = "民";
+
+            var res12 = await Conn
+                .Queryer<Agent>()
+                .Where(op12)
+                .PagingListAsync();
+
+            Assert.True(res12.TotalCount == 28549);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************************************/
+
+            xx = string.Empty;
+
         }
     }
 }

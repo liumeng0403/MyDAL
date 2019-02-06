@@ -109,7 +109,7 @@ namespace MyDAL.Core.Bases
         {
             if (dic.Group == null
                 && dic.CsValue != null
-                && dic.Option == OptionEnum.Function
+                && dic.Option == OptionEnum.Compare
                 //&& (dic.Func == FuncEnum.In || dic.Func == FuncEnum.NotIn))
                 && (dic.Compare == CompareXEnum.In || dic.Compare == CompareXEnum.NotIn))
             {
