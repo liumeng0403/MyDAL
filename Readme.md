@@ -8,7 +8,7 @@
 
 # Project Introduction 
 
-[![](https://img.shields.io/badge/Download-4,285-golden.svg)](https://www.nuget.org/profiles/Meng.NET)
+[![](https://img.shields.io/badge/Download-4,434-golden.svg)](https://www.nuget.org/profiles/Meng.NET)
 [![](https://img.shields.io/badge/Star-12-yellow.svg)](https://github.com/liumeng0403/MyDAL/stargazers)
 [![](https://img.shields.io/badge/Fork-3-orange.svg)](https://github.com/liumeng0403/MyDAL/network/members)
 [![](https://img.shields.io/badge/Apache-2.0-blue.svg)](https://github.com/liumeng0403/MyDAL/blob/master/License)
@@ -19,7 +19,9 @@
 ><a href="https://www.nuget.org/packages/MyDAL/" target="_blank">PM> Install-Package MyDAL -Version 0.6.9</a>
 
 <b>Tutorials:</b><br/>
-* <a href="https://www.cnblogs.com/Meng-NET/p/9831746.html" target="_blank">MyDAL - 简介&安装&快速使用</a>
+* <a href="http://www.cnblogs.com/Meng-NET/p/8963476.html" target="_blank">目录索引</a>
+* <a href="https://www.cnblogs.com/Meng-NET/p/10355760.html" target="_blank">MyDAL - 组件适用范围说明</a>
+* <a href="https://www.cnblogs.com/Meng-NET/p/9831746.html" target="_blank">MyDAL - 快速使用</a>
 * <a href="https://www.cnblogs.com/Meng-NET/p/9978336.html" target="_blank">MyDAL - .Where() & .And() & .Or() 使用</a>
 * <a href="https://www.cnblogs.com/Meng-NET/p/10113980.html" target="_blank">MyDAL - .FirstOrDefaultAsync() 使用</a>
 * <a href="https://www.cnblogs.com/Meng-NET/p/10179385.html" target="_blank">MyDAL - .QueryListAsync() 使用</a>
