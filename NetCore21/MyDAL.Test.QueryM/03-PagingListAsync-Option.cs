@@ -100,6 +100,7 @@ namespace MyDAL.Test.QueryM
                 .Queryer<Agent>()
                 .Where(option6)
                 .PagingListAsync();
+
             Assert.True(res6.TotalCount == 28064 || res6.TotalCount == 28065);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);

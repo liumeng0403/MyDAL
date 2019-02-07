@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MyDAL.Test.Enums;
+using System;
+using System.Collections.Generic;
 
 namespace MyDAL.Test.Options
 {
@@ -34,28 +36,36 @@ namespace MyDAL.Test.Options
         public DateTime CreatedOnGreaterThanOrEqual { get; set; }
 
         // Agent.Name Like
-        [XQuery(Column = "Name",Compare = CompareEnum.Like)]
+        [XQuery(Column = "Name", Compare = CompareEnum.Like)]
         public string NameLike { get; set; }
 
         // Agent.Name Like_StartsWith
-        [XQuery(Column = "Name",Compare = CompareEnum.Like_StartsWith)]
+        [XQuery(Column = "Name", Compare = CompareEnum.Like_StartsWith)]
         public string NameLike_StartsWith { get; set; }
 
         // Agent.Name Like_EndsWith
-        [XQuery(Column = "Name",Compare = CompareEnum.Like_EndsWith)]
+        [XQuery(Column = "Name", Compare = CompareEnum.Like_EndsWith)]
         public string NameLike_EndsWith { get; set; }
 
         // Agent.Name NotLike
-        [XQuery(Column = "Name",Compare = CompareEnum.NotLike)]
+        [XQuery(Column = "Name", Compare = CompareEnum.NotLike)]
         public string NameNotLike { get; set; }
 
         // Agent.Name NotLike_StartsWith
-        [XQuery(Column = "Name",Compare = CompareEnum.NotLike_StartsWith)]
+        [XQuery(Column = "Name", Compare = CompareEnum.NotLike_StartsWith)]
         public string NameNotLike_StartsWith { get; set; }
 
         // Agent.Name NotLike_EndsWith
-        [XQuery(Column = "Name", Compare =  CompareEnum.NotLike_EndsWith)]
+        [XQuery(Column = "Name", Compare = CompareEnum.NotLike_EndsWith)]
         public string NameNotLike_EndsWith { get; set; }
+
+        // Agent.AgentLevel In
+        [XQuery(Column = "AgentLevel", Compare = CompareEnum.In)]
+        public List<AgentLevel?> AgentLevelIn { get; set; }
+
+        // Agent.AgentLevel NotIn
+        [XQuery(Column = "AgentLevel", Compare = CompareEnum.NotIn)]
+        public List<AgentLevel?> AgentLevelNotIn { get; set; }
 
     }
 }

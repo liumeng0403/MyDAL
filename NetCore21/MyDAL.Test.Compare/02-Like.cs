@@ -3,10 +3,12 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace MyDAL.Test.Func
+namespace MyDAL.Test.Compare
 {
-    public class _08_LikeTest : TestBase
+    public class _02_Like
+        : TestBase
     {
+
         private async Task<BodyFitRecord> Pre01()
         {
             // 造数据
@@ -59,7 +61,7 @@ namespace MyDAL.Test.Func
 
             /************************************************************************************************************/
 
-            var m = await Pre01();
+            await Pre01();
 
             xx = string.Empty;
 
@@ -101,16 +103,6 @@ namespace MyDAL.Test.Func
             /************************************************************************************************************/
 
             var resx4 = await Pre02();
-
-            xx = string.Empty;
-
-            // 无通配符 -- "陈" -- "%"+"陈"+"%"
-            var res4 = await Conn.QueryListAsync<Agent>(it => it.Name.Contains(LikeTest.无通配符));
-            Assert.True(res4.Count == 1431);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            xx = string.Empty;
 
             // 百分号 -- "陈%" -- "陈%"
             var res5 = await Conn.QueryListAsync<Agent>(it => it.Name.Contains(LikeTest.百分号));
@@ -202,6 +194,29 @@ namespace MyDAL.Test.Func
         [Fact]
         public async Task Test02()
         {
+
+        }
+
+        [Fact]
+        public async Task Like_Shortcut()
+        {
+
+            xx = string.Empty;
+
+            // 无通配符 -- "陈" -- "%"+"陈"+"%"
+            var res1 = await Conn.QueryListAsync<Agent>(it => it.Name.Contains(LikeTest.无通配符));
+
+            Assert.True(res1.Count == 1431);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
+
+        }
+
+        [Fact]
+        public async Task NotLike_Shortcut()
+        {
             xx = string.Empty;
 
             // not like
@@ -211,9 +226,31 @@ namespace MyDAL.Test.Func
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
-            /*************************************************************************************************************************************************/
-
             xx = string.Empty;
+        }
+
+        [Fact]
+        public async Task Like_ST()
+        {
+
+        }
+
+        [Fact]
+        public async Task NotLike_ST()
+        {
+            
+        }
+
+        [Fact]
+        public async Task Like_MT()
+        {
+
+        }
+
+        [Fact]
+        public async Task NotLike_MT()
+        {
+
         }
 
     }

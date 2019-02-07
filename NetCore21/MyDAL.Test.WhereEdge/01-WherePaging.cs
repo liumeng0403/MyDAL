@@ -1,7 +1,9 @@
 ﻿using MyDAL.Test.Entities.MyDAL_TestDB;
+using MyDAL.Test.Enums;
 using MyDAL.Test.Options;
 using MyDAL.Test.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -12,7 +14,7 @@ namespace MyDAL.Test.WhereEdge
     {
 
         [Fact]
-        public async Task Test01()
+        public async Task TestST01()
         {
 
             /*
@@ -182,7 +184,7 @@ namespace MyDAL.Test.WhereEdge
         }
 
         [Fact]
-        public async Task Test02()
+        public async Task TestST02()
         {
 
             /*
@@ -397,6 +399,53 @@ namespace MyDAL.Test.WhereEdge
 
             xx = string.Empty;
 
+            // CompareEnum.In
+            var op13 = new Single_PagingEdgeOption();
+            op13.AgentLevelIn = new List<AgentLevel?> { AgentLevel.CityAgent, AgentLevel.DistiAgent };
+
+            var res13 = await Conn
+                .Queryer<Agent>()
+                .Where(op13)
+                .PagingListAsync();
+
+            Assert.True(res13.TotalCount == 555);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************************************/
+
+            xx = string.Empty;
+
+            // CompareEnum.NotIn
+            var op14 = new Single_PagingEdgeOption();
+            op14.AgentLevelNotIn = new List<AgentLevel?> { AgentLevel.CityAgent, AgentLevel.DistiAgent };
+
+            var res14 = await Conn
+                .Queryer<Agent>()
+                .Where(op14)
+                .PagingListAsync();
+
+            Assert.True(res14.TotalCount == 28065);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************************************/
+
+            xx = string.Empty;
+
         }
+
+        [Fact]
+        public async Task TestMT01()
+        {
+
+            /*
+             * 多表
+             */
+
+            /************************************************************************************************************************************/
+
+        }
+
     }
 }

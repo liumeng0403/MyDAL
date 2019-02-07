@@ -37,3 +37,5 @@
 /MyDAL.Test.Parallel/obj/
 /NetCore21/MyDAL.Test.QueryAPI/bin/
 /NetCore21/MyDAL.Test.QueryAPI/obj/
+/NetCore21/MyDAL.Test.Compare/bin/
+/NetCore21/MyDAL.Test.Compare/obj/

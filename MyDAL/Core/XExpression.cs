@@ -637,6 +637,10 @@ namespace MyDAL.Core
                 {
                     result.Compare = CompareXEnum.NotLike;
                 }
+                else if (result.Compare == CompareXEnum.In)
+                {
+                    result.Compare = CompareXEnum.NotIn;
+                }
                 else
                 {
                     throw DC.Exception(XConfig.EC._027, body.ToString());
