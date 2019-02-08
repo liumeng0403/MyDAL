@@ -203,12 +203,36 @@ namespace MyDAL.Test.Compare
 
             xx = string.Empty;
 
-            // 无通配符 -- "陈" -- "%"+"陈"+"%"
-            var res1 = await Conn.QueryListAsync<Agent>(it => it.Name.Contains(LikeTest.无通配符));
+            // like
+            var res1 = await Conn.QueryListAsync<Agent>(it => it.Name.Contains("陈"));
 
             Assert.True(res1.Count == 1431);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /***************************************************************************************************************************/
+
+            xx = string.Empty;
+
+            // like StartsWith
+            var res2 = await Conn.QueryListAsync<Agent>(it => it.Name.StartsWith("陈"));
+
+            Assert.True(res2.Count == 1421);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /***************************************************************************************************************************/
+
+            xx = string.Empty;
+
+            // like EndsWith
+            var res3 = await Conn.QueryListAsync<Agent>(it => it.Name.EndsWith("陈"));
+
+            Assert.True(res3.Count == 2);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /***************************************************************************************************************************/
 
             xx = string.Empty;
 
@@ -225,6 +249,8 @@ namespace MyDAL.Test.Compare
             Assert.True(res1.Count == 27159);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /***************************************************************************************************************************/
 
             xx = string.Empty;
         }
