@@ -96,7 +96,7 @@ namespace MyDAL.UserFacade.Query
         }
 
         /// <summary>
-        /// 请参阅: <see langword=".ExistAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".IsExistAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<bool> IsExistAsync()
         {
