@@ -133,6 +133,69 @@ namespace MyDAL.Core
                 };
             }
         }
+        private DicParam HandBin(BinaryExpression binExpr, List<string> pres)
+        {
+            var bin = HandBinExpr(pres, binExpr);
+            if ((bin.Node == ExpressionType.Equal || bin.Node == ExpressionType.NotEqual)
+                && bin.Right.NodeType == ExpressionType.Constant
+                && (bin.Right as ConstantExpression).Value == null)
+            {
+                var cp = GetKey(bin.Left, FuncEnum.None, CompareXEnum.None);
+                if (bin.Node == ExpressionType.Equal)
+                {
+                    DC.Option = OptionEnum.IsNull;
+                }
+                else
+                {
+                    DC.Option = OptionEnum.IsNotNull;
+                }
+                return DC.DPH.IsNullDic(cp);
+            }
+            else
+            {
+                var leftStr = bin.Left.ToString();
+                var length = DC.CFH.IsLengthFunc(leftStr);
+                var tp = length ? new TrimParam { Flag = false } : DC.CFH.IsTrimFunc(leftStr);
+                var toString = tp.Flag ? false : DC.CFH.IsToStringFunc(leftStr);
+                if (length)
+                {
+                    var cp = GetKey(bin.Left, FuncEnum.CharLength, CompareXEnum.None);
+                    var val = DC.VH.ValueProcess(bin.Right, cp.ValType);
+                    DC.Option = OptionEnum.Function;
+                    DC.Func = FuncEnum.CharLength;
+                    DC.Compare = bin.Compare;
+                    return DC.DPH.CharLengthDic(cp, val);
+                }
+                else if (tp.Flag)
+                {
+                    var cp = GetKey(bin.Left, tp.Trim, CompareXEnum.None);
+                    var val = DC.VH.ValueProcess(bin.Right, cp.ValType);
+                    DC.Option = OptionEnum.Function;
+                    DC.Func = tp.Trim;
+                    DC.Compare = bin.Compare;
+                    return DC.DPH.TrimDic(cp, val);
+                }
+                else if (toString)
+                {
+                    var cp = GetKey(bin.Left, FuncEnum.DateFormat, CompareXEnum.None);
+                    var val = DC.VH.ValueProcess(bin.Right, cp.ValType, cp.Format);
+                    DC.Option = OptionEnum.Function;
+                    DC.Func = FuncEnum.DateFormat;
+                    DC.Compare = bin.Compare;
+                    var format = DC.TSH.DateTime(cp.Format);
+                    return DC.DPH.DateFormatDic(cp, val, format);
+                }
+                else
+                {
+                    var cp = GetKey(bin.Left, FuncEnum.None, CompareXEnum.None);
+                    var val = DC.VH.ValueProcess(bin.Right, cp.ValType);
+                    DC.Option = OptionEnum.Compare;
+                    DC.Func = FuncEnum.None;
+                    DC.Compare = bin.Compare;
+                    return DC.DPH.CompareDic(cp, val);
+                }
+            }
+        }
 
         /********************************************************************************************************************/
 
@@ -252,68 +315,42 @@ namespace MyDAL.Core
 
         /********************************************************************************************************************/
 
-        private DicParam HandConditionBinary(BinaryExpression binExpr, List<string> pres)
+        private DicParam HandConditionBinary(Expression body, ParameterExpression firstParam)
         {
-            var bin = HandBinExpr(pres, binExpr);
-            if ((bin.Node == ExpressionType.Equal || bin.Node == ExpressionType.NotEqual)
-                && bin.Right.NodeType == ExpressionType.Constant
-                && (bin.Right as ConstantExpression).Value == null)
+            var result = default(DicParam);
+            if (DC.IsSingleTableOption())
             {
-                var cp = GetKey(bin.Left, FuncEnum.None, CompareXEnum.None);
-                if (bin.Node == ExpressionType.Equal)
+                var binExpr = body as BinaryExpression;
+                var pres = new List<string>
                 {
-                    DC.Option = OptionEnum.IsNull;
+                    firstParam.Name
+                };
+                result = HandBin(binExpr, pres);
+            }
+            else if (DC.Crud == CrudEnum.Join)
+            {
+                var binExpr = body as BinaryExpression;
+                if (DC.Action == ActionEnum.On)
+                {
+                    result = HandOnBinary(binExpr);
+                }
+                else if (DC.Action == ActionEnum.Where
+                    || DC.Action == ActionEnum.And
+                    || DC.Action == ActionEnum.Or)
+                {
+                    var pres = DC.Parameters.Select(it => it.TbAlias).ToList();
+                    result = HandBin(binExpr, pres);
                 }
                 else
                 {
-                    DC.Option = OptionEnum.IsNotNull;
+                    throw DC.Exception(XConfig.EC._029, DC.Action.ToString());
                 }
-                return DC.DPH.IsNullDic(cp);
             }
             else
             {
-                var leftStr = bin.Left.ToString();
-                var length = DC.CFH.IsLengthFunc(leftStr);
-                var tp = length ? new TrimParam { Flag = false } : DC.CFH.IsTrimFunc(leftStr);
-                var toString = tp.Flag ? false : DC.CFH.IsToStringFunc(leftStr);
-                if (length)
-                {
-                    var cp = GetKey(bin.Left, FuncEnum.CharLength, CompareXEnum.None);
-                    var val = DC.VH.ValueProcess(bin.Right, cp.ValType);
-                    DC.Option = OptionEnum.Function;
-                    DC.Func = FuncEnum.CharLength;
-                    DC.Compare = bin.Compare;
-                    return DC.DPH.CharLengthDic(cp, val);
-                }
-                else if (tp.Flag)
-                {
-                    var cp = GetKey(bin.Left, tp.Trim, CompareXEnum.None);
-                    var val = DC.VH.ValueProcess(bin.Right, cp.ValType);
-                    DC.Option = OptionEnum.Function;
-                    DC.Func = tp.Trim;
-                    DC.Compare = bin.Compare;
-                    return DC.DPH.TrimDic(cp, val);
-                }
-                else if (toString)
-                {
-                    var cp = GetKey(bin.Left, FuncEnum.DateFormat, CompareXEnum.None);
-                    var val = DC.VH.ValueProcess(bin.Right, cp.ValType, cp.Format);
-                    DC.Option = OptionEnum.Function;
-                    DC.Func = FuncEnum.DateFormat;
-                    DC.Compare = bin.Compare;
-                    var format = DC.TSH.DateTime(cp.Format);
-                    return DC.DPH.DateFormatDic(cp, val, format);
-                }
-                else
-                {
-                    var cp = GetKey(bin.Left, FuncEnum.None, CompareXEnum.None);
-                    var val = DC.VH.ValueProcess(bin.Right, cp.ValType);
-                    DC.Option = OptionEnum.Compare;
-                    DC.Func = FuncEnum.None;
-                    DC.Compare = bin.Compare;
-                    return DC.DPH.CompareDic(cp, val);
-                }
+                throw DC.Exception(XConfig.EC._030, DC.Crud.ToString());
             }
+            return result;
         }
         private DicParam HandConditionCall(MethodCallExpression mcExpr)
         {
@@ -457,6 +494,58 @@ namespace MyDAL.Core
             {
                 throw new Exception($"未知的操作 -- [[{DC.Crud}]] !!!");
             }
+        }
+        private DicParam HandConditionNot(Expression body, ParameterExpression firstParam)
+        {
+            var ue = body as UnaryExpression;
+            var result = BodyProcess(ue.Operand, firstParam);
+            if (result.Compare == CompareXEnum.Like)
+            {
+                result.Compare = CompareXEnum.NotLike;
+            }
+            else if (result.Compare == CompareXEnum.In)
+            {
+                result.Compare = CompareXEnum.NotIn;
+            }
+            else if(result.Compare == CompareXEnum.Equal)
+            {
+                result.Compare = CompareXEnum.NotEqual;
+            }
+            else if(result.Compare == CompareXEnum.NotEqual)
+            {
+                result.Compare = CompareXEnum.Equal;
+            }
+            else
+            {
+                throw DC.Exception(XConfig.EC._027, body.ToString());
+            }
+            return result;
+        }
+        private DicParam HandConditionMulti(Expression body, ParameterExpression firstParam, ExpressionType nodeType)
+        {
+            var result = DC.DPH.GroupDic(GetGroupAction(nodeType));
+            var binExpr = body as BinaryExpression;
+            var left = binExpr.Left;
+            result.Group.Add(BodyProcess(left, firstParam));
+            var right = binExpr.Right;
+            result.Group.Add(BodyProcess(right, firstParam));
+            return result;
+        }
+        private DicParam HandConditionNew(Expression body)
+        {
+            var list = new List<DicParam>();
+            var nExpr = body as NewExpression;
+            var args = nExpr.Arguments;
+            var mems = nExpr.Members;
+            for (var i = 0; i < args.Count; i++)
+            {
+                var cp = GetKey(args[i], FuncEnum.None, CompareXEnum.None);
+                var colAlias = mems[i].Name;
+                DC.Option = OptionEnum.None;
+                DC.Compare = CompareXEnum.None;
+                list.Add(DC.DPH.SelectMemberInitDic(cp, colAlias));
+            }
+            return DC.DPH.SelectColumnDic(list);
         }
 
         /********************************************************************************************************************/
@@ -626,25 +715,10 @@ namespace MyDAL.Core
         {
             //
             var result = default(DicParam);
-
-            //
             var nodeType = body.NodeType;
             if (nodeType == ExpressionType.Not)
             {
-                var ue = body as UnaryExpression;
-                result = BodyProcess(ue.Operand, firstParam);
-                if (result.Compare == CompareXEnum.Like)
-                {
-                    result.Compare = CompareXEnum.NotLike;
-                }
-                else if (result.Compare == CompareXEnum.In)
-                {
-                    result.Compare = CompareXEnum.NotIn;
-                }
-                else
-                {
-                    throw DC.Exception(XConfig.EC._027, body.ToString());
-                }
+                result = HandConditionNot(body, firstParam);
             }
             else if (nodeType == ExpressionType.Call)
             {
@@ -666,71 +740,29 @@ namespace MyDAL.Core
                 {
                     throw new Exception("无法解析 列名2 !!!");
                 }
-                return DC.DPH.ColumnDic(cp);
+                result = DC.DPH.ColumnDic(cp);
             }
             else if (nodeType == ExpressionType.MemberInit)
             {
                 var miExpr = body as MemberInitExpression;
-                return DC.DPH.SelectColumnDic(HandSelectMemberInit(miExpr));
+                result = DC.DPH.SelectColumnDic(HandSelectMemberInit(miExpr));
             }
             else if (nodeType == ExpressionType.New)
             {
-                var list = new List<DicParam>();
-                var nExpr = body as NewExpression;
-                var args = nExpr.Arguments;
-                var mems = nExpr.Members;
-                for (var i = 0; i < args.Count; i++)
-                {
-                    var cp = GetKey(args[i], FuncEnum.None, CompareXEnum.None);
-                    var colAlias = mems[i].Name;
-                    DC.Option = OptionEnum.None;
-                    DC.Compare = CompareXEnum.None;
-                    list.Add(DC.DPH.SelectMemberInitDic(cp, colAlias));
-                }
-                return DC.DPH.SelectColumnDic(list);
+                result = HandConditionNew(body);
             }
             else if (IsBinaryExpr(nodeType))
             {
-                if (DC.IsSingleTableOption())
-                {
-                    var binExpr = body as BinaryExpression;
-                    var pres = new List<string>
-                    {
-                        firstParam.Name
-                    };
-                    result = HandConditionBinary(binExpr, pres);
-                }
-                else if (DC.Crud == CrudEnum.Join)
-                {
-                    var binExpr = body as BinaryExpression;
-                    if (DC.Action == ActionEnum.On)
-                    {
-                        result = HandOnBinary(binExpr);
-                    }
-                    else if (DC.Action == ActionEnum.Where
-                        || DC.Action == ActionEnum.And
-                        || DC.Action == ActionEnum.Or)
-                    {
-                        var pres = DC.Parameters.Select(it => it.TbAlias).ToList();
-                        result = HandConditionBinary(binExpr, pres);
-                    }
-                }
+                result = HandConditionBinary(body, firstParam);
             }
             else if (IsMultiExpr(nodeType))
             {
-                result = DC.DPH.GroupDic(GetGroupAction(nodeType));
-                var binExpr = body as BinaryExpression;
-                var left = binExpr.Left;
-                result.Group.Add(BodyProcess(left, firstParam));
-                var right = binExpr.Right;
-                result.Group.Add(BodyProcess(right, firstParam));
+                result = HandConditionMulti(body, firstParam, nodeType);
             }
             else
             {
                 throw DC.Exception(XConfig.EC._003, body.ToString());
             }
-
-            //
             return result;
         }
 

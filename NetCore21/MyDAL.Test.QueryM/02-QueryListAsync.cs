@@ -100,18 +100,6 @@ namespace MyDAL.Test.QueryM
 
             /********************************************************************************************************************************/
 
-            var xx5 = string.Empty;
-
-            var res5 = await Conn
-                .Queryer<Agent>()
-                .Where(it => it.AgentLevel == testQ.AgentLevelXX)
-                .QueryListAsync();
-            Assert.True(res5.Count == 555);
-
-            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
-
-            /********************************************************************************************************************************/
-
             xx = string.Empty;
 
         }

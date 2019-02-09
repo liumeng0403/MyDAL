@@ -44,43 +44,7 @@ namespace MyDAL.Test.ShortcutAPI
             Assert.True(res3.Count == 29);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /****************************************************************************************/
-
-            //xx = string.Empty;
-
-            //var option4 = new AlipayPaymentQueryOption();
-            //option4.StartTime = date;
-            //var res4 = await Conn.QueryListAsync<AlipayPaymentRecord>(option4);
-            //Assert.True(res4.Count == 29);
-
-            //tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /****************************************************************************************/
-
-            //xx = string.Empty;
-
-            //var res5 = await Conn.QueryListAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(option4);
-            //Assert.True(res4.Count == 29);
-
-            //tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /****************************************************************************************/
-
-            //xx = string.Empty;
-
-            //var res6 = await Conn.QueryListAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(option4,
-            //    record => new AlipayPaymentRecordVM
-            //    {
-            //        TotalAmount = record.TotalAmount,
-            //        Description = record.Description
-            //    });
-            //Assert.True(res4.Count == 29);
-
-            //tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /****************************************************************************************/
-
+            
             xx = string.Empty;
 
             var res7 = await Conn.QueryListAsync<Agent, string>(it => it.Name.StartsWith("张"), it => it.Name);

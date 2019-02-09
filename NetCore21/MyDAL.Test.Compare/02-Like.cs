@@ -75,21 +75,6 @@ namespace MyDAL.Test.Compare
 
             xx = string.Empty;
 
-            // testH.ContainStr="~00-d-3-1-"
-            // 默认 "%"+testH.ContainStr+"%"
-            var res2 = await Conn
-                .Queryer<Agent>()
-                .Where(it => it.CreatedOn >= WhereTest.CreatedOn)
-                    .And(it => it.PathId.Contains(WhereTest.ContainStr))
-                .PagingListAsync(1, 10);
-            Assert.True(res2.TotalCount == 5680);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /************************************************************************************************************/
-
-            xx = string.Empty;
-
             // 默认 "%"+"~00-d-3-1-"+"%"
             var res3 = await Conn
                 .Queryer<Agent>()
@@ -253,18 +238,85 @@ namespace MyDAL.Test.Compare
             /***************************************************************************************************************************/
 
             xx = string.Empty;
+
+            // not like StartsWith
+            var res2 = await Conn.QueryListAsync<Agent>(it => !it.Name.StartsWith("刘"));
+
+            Assert.True(res2.Count == 27163);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /***************************************************************************************************************************/
+
+            xx = string.Empty;
+
+            // not like EndsWith
+            var res3 = await Conn.QueryListAsync<Agent>(it => !it.Name.EndsWith("刘"));
+
+            Assert.True(res3.Count == 28620);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /***************************************************************************************************************************/
+
+            xx = string.Empty;
         }
 
         [Fact]
         public async Task Like_ST()
         {
 
+            xx = string.Empty;
+
+            // like 
+            var res1 = await Conn
+                .Queryer<Agent>()
+                .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
+                    .And(it => it.PathId.Contains("~00-d-3-1-"))
+                .PagingListAsync(1, 10);
+
+            Assert.True(res1.TotalCount == 5680);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************/
+
+            xx = string.Empty;
+
+            // like StartsWith
+            var res2 = await Conn
+                .Queryer<Agent>()
+                .Where(it => it.PathId.StartsWith("~00-d-3-1-"))
+                .PagingListAsync(1, 10);
+
+            Assert.True(res2.TotalCount == 5680);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************/
+
+            xx = string.Empty;
+
+            // like EndsWith
+            var res3 = await Conn
+                .Queryer<Agent>()
+                .Where(it => it.PathId.EndsWith("~00-d-3-1-"))
+                .PagingListAsync(1, 10);
+
+            Assert.True(res3.TotalCount == 0);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************/
+
+            xx = string.Empty;
+
         }
 
         [Fact]
         public async Task NotLike_ST()
         {
-            
+
         }
 
         [Fact]

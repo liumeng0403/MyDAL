@@ -33,6 +33,8 @@
         internal string _026 { get; } = "026";
         internal string _027 { get; } = "027";
         internal string _028 { get; } = "028";
+        internal string _029 { get; } = "029";
+        internal string _030 { get; } = "030";
 
     }
 }

@@ -19,14 +19,6 @@ namespace MyDAL.Test.QueryVM
 
             /******************************************************************************************************/
 
-            var res4 = await Conn
-                .Queryer<Agent>()
-                .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
-                .OrderBy(it => it.CreatedOn)
-                .QueryListAsync<AgentVM>();
-
-            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
-
             /******************************************************************************************************/
 
             xx = string.Empty;
