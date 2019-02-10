@@ -15,19 +15,10 @@ namespace MyDAL.Test.ShortcutAPI
             /****************************************************************************************/
 
             xx = string.Empty;
-
             var date = DateTime.Parse("2018-08-20");
-            var res1 = await Conn.QueryListAsync<AlipayPaymentRecord>(it => it.CreatedOn >= date);
-            Assert.True(res1.Count == 29);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /****************************************************************************************/
-
-            xx = string.Empty;
 
             var res2 = await Conn.QueryListAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.CreatedOn >= date);
-            Assert.True(res1.Count == 29);
+            Assert.True(res2.Count == 29);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
