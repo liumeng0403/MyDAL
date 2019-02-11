@@ -1,5 +1,5 @@
-﻿using MyDAL.Core.Extensions;
-using MyDAL.Core.Helper;
+﻿using MyDAL.Core.Helper;
+using MyDAL.ModelTools;
 using System;
 using System.Collections.Generic;
 using System.Linq;

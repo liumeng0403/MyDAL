@@ -1,4 +1,4 @@
-﻿namespace MyDAL
+﻿namespace MyDAL.ModelTools
 {
     public static class StringEx
     {

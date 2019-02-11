@@ -56,7 +56,7 @@ namespace MyDAL.Test.Compare
         }
 
         [Fact]
-        public async Task Test01()
+        public async Task History()
         {
 
             /************************************************************************************************************/
@@ -87,46 +87,6 @@ namespace MyDAL.Test.Compare
 
             /************************************************************************************************************/
 
-            var resx4 = await Pre02();
-
-            // 百分号 -- "陈%" -- "陈%"
-            var res5 = await Conn.QueryListAsync<Agent>(it => it.Name.Contains(LikeTest.百分号));
-            Assert.True(res5.Count == 1421);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            xx = string.Empty;
-
-            // 下划线 -- "王_" -- "王_" 
-            var res6 = await Conn.QueryListAsync<Agent>(it => it.Name.Contains(LikeTest.下划线));
-            Assert.True(res6.Count == 498);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            xx = string.Empty;
-
-            // 百分号转义 -- "刘/%_" -- "刘/%_"
-            var res7 = await Conn
-                .Queryer<Agent>()
-                .Where(it => it.Name.Contains(LikeTest.百分号转义))
-                    .And(it => it.Id == resx4.Id)
-                    .And(it => it.Name.Contains("%华"))
-                    .And(it => it.Name.Contains("%/%%"))
-                .QueryListAsync();
-            Assert.True(res7.Count == 1);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            xx = string.Empty;
-
-            // 下划线转义 -- "何/__" -- "何/__"
-            var res8 = await Conn.QueryListAsync<Agent>(it => it.Name.Contains(LikeTest.下划线转义));
-            Assert.True(res8.Count == 1);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /************************************************************************************************************/
-
         }
 
         [Fact]
@@ -146,28 +106,6 @@ namespace MyDAL.Test.Compare
 
             xx = string.Empty;
 
-            // like StartsWith
-            var res2 = await Conn.QueryListAsync<Agent>(it => it.Name.StartsWith("陈"));
-
-            Assert.True(res2.Count == 1421);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /***************************************************************************************************************************/
-
-            xx = string.Empty;
-
-            // like EndsWith
-            var res3 = await Conn.QueryListAsync<Agent>(it => it.Name.EndsWith("陈"));
-
-            Assert.True(res3.Count == 2);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /***************************************************************************************************************************/
-
-            xx = string.Empty;
-
         }
 
         [Fact]
@@ -179,28 +117,6 @@ namespace MyDAL.Test.Compare
             var res1 = await Conn.QueryListAsync<Agent>(it => !it.Name.Contains("刘"));
 
             Assert.True(res1.Count == 27159);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /***************************************************************************************************************************/
-
-            xx = string.Empty;
-
-            // not like StartsWith
-            var res2 = await Conn.QueryListAsync<Agent>(it => !it.Name.StartsWith("刘"));
-
-            Assert.True(res2.Count == 27163);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /***************************************************************************************************************************/
-
-            xx = string.Empty;
-
-            // not like EndsWith
-            var res3 = await Conn.QueryListAsync<Agent>(it => !it.Name.EndsWith("刘"));
-
-            Assert.True(res3.Count == 28620);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
@@ -230,34 +146,6 @@ namespace MyDAL.Test.Compare
 
             xx = string.Empty;
 
-            // like StartsWith
-            var res2 = await Conn
-                .Queryer<Agent>()
-                .Where(it => it.PathId.StartsWith("~00-d-3-1-"))
-                .PagingListAsync(1, 10);
-
-            Assert.True(res2.TotalCount == 5680);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /************************************************************************************************************/
-
-            xx = string.Empty;
-
-            // like EndsWith
-            var res3 = await Conn
-                .Queryer<Agent>()
-                .Where(it => it.PathId.EndsWith("~00-d-3-1-"))
-                .PagingListAsync(1, 10);
-
-            Assert.True(res3.TotalCount == 0);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /************************************************************************************************************/
-
-            xx = string.Empty;
-
         }
 
         [Fact]
@@ -273,34 +161,6 @@ namespace MyDAL.Test.Compare
                 .PagingListAsync(1, 10);
 
             Assert.True(res1.TotalCount == 22940);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /************************************************************************************************************/
-
-            xx = string.Empty;
-
-            // not like StartsWith
-            var res2 = await Conn
-                .Queryer<Agent>()
-                .Where(it => !it.PathId.StartsWith("~00-d-3-1-"))
-                .PagingListAsync(1, 10);
-
-            Assert.True(res2.TotalCount == 22940);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /************************************************************************************************************/
-
-            xx = string.Empty;
-
-            // not like EndsWith
-            var res3 = await Conn
-                .Queryer<Agent>()
-                .Where(it => !it.PathId.EndsWith("~00-d-3-1-"))
-                .PagingListAsync(1, 10);
-
-            Assert.True(res3.TotalCount == 28620);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
@@ -333,40 +193,6 @@ namespace MyDAL.Test.Compare
 
             xx = string.Empty;
 
-            // like StartsWith
-            var res2 = await Conn
-                .Queryer(out Agent agent2, out AgentInventoryRecord record2)
-                .From(() => agent2)
-                    .InnerJoin(() => record2)
-                        .On(() => agent2.Id == record2.AgentId)
-                .Where(() => agent2.Name.StartsWith("张"))
-                .QueryListAsync<Agent>();
-
-            Assert.True(res2.Count == 45);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /************************************************************************************************************/
-
-            xx = string.Empty;
-
-            // like EndsWith
-            var res3 = await Conn
-                .Queryer(out Agent agent3, out AgentInventoryRecord record3)
-                .From(() => agent3)
-                    .InnerJoin(() => record3)
-                        .On(() => agent3.Id == record3.AgentId)
-                .Where(() => agent3.Name.EndsWith("华"))
-                .QueryListAsync<Agent>();
-
-            Assert.True(res3.Count == 22);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /************************************************************************************************************/
-
-            xx = string.Empty;
-
         }
 
         [Fact]
@@ -392,16 +218,152 @@ namespace MyDAL.Test.Compare
 
             xx = string.Empty;
 
-            // not like StartsWith
-            var res2 = await Conn
-                .Queryer(out Agent agent2, out AgentInventoryRecord record2)
-                .From(() => agent2)
-                    .InnerJoin(() => record2)
-                        .On(() => agent2.Id == record2.AgentId)
-                .Where(() => !agent2.Name.StartsWith("张"))
+        }
+
+        [Fact]
+        public async Task String_StartsWith()
+        {
+
+            xx = string.Empty;
+
+            // like StartsWith
+            var res1 = await Conn.QueryListAsync<Agent>(it => it.Name.StartsWith("陈"));
+
+            Assert.True(res1.Count == 1421);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /***************************************************************************************************************************/
+
+            xx = string.Empty;
+
+            // like StartsWith
+            var res12 = await Conn
+                .Queryer<Agent>()
+                .Where(it => it.PathId.StartsWith("~00-d-3-1-"))
+                .PagingListAsync(1, 10);
+
+            Assert.True(res12.TotalCount == 5680);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************/
+
+            xx = string.Empty;
+
+            // like StartsWith
+            var res13 = await Conn
+                .Queryer(out Agent agent13, out AgentInventoryRecord record13)
+                .From(() => agent13)
+                    .InnerJoin(() => record13)
+                        .On(() => agent13.Id == record13.AgentId)
+                .Where(() => agent13.Name.StartsWith("张"))
                 .QueryListAsync<Agent>();
 
-            Assert.True(res2.Count == 529);
+            Assert.True(res13.Count == 45);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************/
+
+            xx = string.Empty;
+
+            // not like StartsWith
+            var res2 = await Conn.QueryListAsync<Agent>(it => !it.Name.StartsWith("刘"));
+
+            Assert.True(res2.Count == 27163);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /***************************************************************************************************************************/
+
+            xx = string.Empty;
+
+            // not like StartsWith
+            var res21 = await Conn
+                .Queryer<Agent>()
+                .Where(it => !it.PathId.StartsWith("~00-d-3-1-"))
+                .PagingListAsync(1, 10);
+
+            Assert.True(res21.TotalCount == 22940);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************/
+
+            xx = string.Empty;
+
+            // not like StartsWith
+            var res22 = await Conn
+                .Queryer(out Agent agent22, out AgentInventoryRecord record22)
+                .From(() => agent22)
+                    .InnerJoin(() => record22)
+                        .On(() => agent22.Id == record22.AgentId)
+                .Where(() => !agent22.Name.StartsWith("张"))
+                .QueryListAsync<Agent>();
+
+            Assert.True(res22.Count == 529);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************/
+
+        }
+
+        [Fact]
+        public async Task String_EndsWith()
+        {
+
+            /***************************************************************************************************************************/
+
+            xx = string.Empty;
+
+            // like EndsWith
+            var res1 = await Conn.QueryListAsync<Agent>(it => it.Name.EndsWith("陈"));
+
+            Assert.True(res1.Count == 2);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************/
+
+            xx = string.Empty;
+
+            // like EndsWith
+            var res12 = await Conn
+                .Queryer<Agent>()
+                .Where(it => it.PathId.EndsWith("~00-d-3-1-"))
+                .PagingListAsync(1, 10);
+
+            Assert.True(res12.TotalCount == 0);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************/
+
+            xx = string.Empty;
+
+            // like EndsWith
+            var res13 = await Conn
+                .Queryer(out Agent agent13, out AgentInventoryRecord record13)
+                .From(() => agent13)
+                    .InnerJoin(() => record13)
+                        .On(() => agent13.Id == record13.AgentId)
+                .Where(() => agent13.Name.EndsWith("华"))
+                .QueryListAsync<Agent>();
+
+            Assert.True(res13.Count == 22);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /***************************************************************************************************************************/
+
+            xx = string.Empty;
+
+            // not like EndsWith
+            var res2 = await Conn.QueryListAsync<Agent>(it => !it.Name.EndsWith("刘"));
+
+            Assert.True(res2.Count == 28620);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
@@ -410,15 +372,12 @@ namespace MyDAL.Test.Compare
             xx = string.Empty;
 
             // not like EndsWith
-            var res3 = await Conn
-                .Queryer(out Agent agent3, out AgentInventoryRecord record3)
-                .From(() => agent3)
-                    .InnerJoin(() => record3)
-                        .On(() => agent3.Id == record3.AgentId)
-                .Where(() => !agent3.Name.EndsWith("华"))
-                .QueryListAsync<Agent>();
+            var res21 = await Conn
+                .Queryer<Agent>()
+                .Where(it => !it.PathId.EndsWith("~00-d-3-1-"))
+                .PagingListAsync(1, 10);
 
-            Assert.True(res3.Count == 552);
+            Assert.True(res21.TotalCount == 28620);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
@@ -426,23 +385,47 @@ namespace MyDAL.Test.Compare
 
             xx = string.Empty;
 
-        }
+            // not like EndsWith
+            var res22 = await Conn
+                .Queryer(out Agent agent22, out AgentInventoryRecord record22)
+                .From(() => agent22)
+                    .InnerJoin(() => record22)
+                        .On(() => agent22.Id == record22.AgentId)
+                .Where(() => !agent22.Name.EndsWith("华"))
+                .QueryListAsync<Agent>();
 
-        [Fact]
-        public async Task String_StartsWith()
-        {
+            Assert.True(res22.Count == 552);
 
-        }
-
-        [Fact]
-        public async Task String_EndsWith()
-        {
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
         }
 
         [Fact]
         public async Task MySQL_通配符()
         {
+            xx = string.Empty;
+
+            // %(百分号):  "陈%" --> "陈%"
+            var res5 = await Conn.QueryListAsync<Agent>(it => it.Name.Contains("陈%"));
+
+            Assert.True(res5.Count == 1421);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /***************************************************************************************************************************/
+
+            xx = string.Empty;
+
+            // _(下划线):  "王_" --> "王_" 
+            var res6 = await Conn.QueryListAsync<Agent>(it => it.Name.Contains("王_"));
+
+            Assert.True(res6.Count == 498);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /***************************************************************************************************************************/
+
+            xx = string.Empty;
 
         }
 
@@ -450,6 +433,39 @@ namespace MyDAL.Test.Compare
         public async Task MySQL_通配符_转义()
         {
 
+            var resx4 = await Pre02();
+
+            /************************************************************************************************************/
+
+            xx = string.Empty;
+
+            // /%(百分号转义):  "刘/%_" --> "刘/%_"
+            var res7 = await Conn
+                .Queryer<Agent>()
+                .Where(it => it.Name.Contains("刘/%_"))
+                    .And(it => it.Id == resx4.Id)
+                    .And(it => it.Name.Contains("%华"))
+                    .And(it => it.Name.Contains("%/%%"))
+                .QueryListAsync();
+
+            Assert.True(res7.Count == 1);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************/
+
+            xx = string.Empty;
+
+            // /_(下划线转义):  "何/__" --> "何/__"
+            var res8 = await Conn.QueryListAsync<Agent>(it => it.Name.Contains(LikeTest.下划线转义));
+
+            Assert.True(res8.Count == 1);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************/
+
+            xx = string.Empty;
         }
 
     }

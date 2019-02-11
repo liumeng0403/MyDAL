@@ -6,9 +6,7 @@ namespace MyDAL.Test.Entities
 {
     public class WhereTestModel
     {
-        public int Start { get; set; }
-        public int End { get; set; }
-
+        
         public DateTime CreatedOn { get; set; }
 
         public DateTime StartTime { get; set; }
@@ -26,7 +24,6 @@ namespace MyDAL.Test.Entities
 
         public List<string> In_List_String { get; set; }
         public string[] In_Array_String { get; set; }
-
-        public string Name { get; set; }
+        
     }
 }

@@ -507,21 +507,25 @@ namespace MyDAL.Core
             {
                 result.Compare = CompareXEnum.NotIn;
             }
-            else if(result.Compare == CompareXEnum.Equal)
+            else if (result.Compare == CompareXEnum.Equal)
             {
                 result.Compare = CompareXEnum.NotEqual;
             }
-            else if(result.Compare == CompareXEnum.NotEqual)
+            else if (result.Compare == CompareXEnum.NotEqual)
             {
                 result.Compare = CompareXEnum.Equal;
             }
-            else if(result.Compare == CompareXEnum.LessThan)
+            else if (result.Compare == CompareXEnum.LessThan)
             {
                 result.Compare = CompareXEnum.GreaterThanOrEqual;
             }
-            else if(result.Compare == CompareXEnum.LessThanOrEqual)
+            else if (result.Compare == CompareXEnum.LessThanOrEqual)
             {
                 result.Compare = CompareXEnum.GreaterThan;
+            }
+            else if (result.Compare == CompareXEnum.GreaterThan)
+            {
+                result.Compare = CompareXEnum.LessThanOrEqual;
             }
             else
             {

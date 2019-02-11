@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using System;
+using MyDAL.ModelTools;
 
 namespace MyDAL.DataRainbow.MySQL
 {

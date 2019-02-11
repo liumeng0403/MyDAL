@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyDAL.ModelTools;
+using System;
 
 namespace MyDAL.Core.Extensions
 {
