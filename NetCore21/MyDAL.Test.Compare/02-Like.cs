@@ -308,6 +308,8 @@ namespace MyDAL.Test.Compare
 
             /************************************************************************************************************/
 
+            xx = string.Empty;
+
         }
 
         [Fact]
@@ -398,6 +400,10 @@ namespace MyDAL.Test.Compare
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
+            /************************************************************************************************************/
+
+            xx = string.Empty;
+
         }
 
         [Fact]
@@ -457,7 +463,7 @@ namespace MyDAL.Test.Compare
             xx = string.Empty;
 
             // /_(下划线转义):  "何/__" --> "何/__"
-            var res8 = await Conn.QueryListAsync<Agent>(it => it.Name.Contains(LikeTest.下划线转义));
+            var res8 = await Conn.QueryListAsync<Agent>(it => it.Name.Contains("何/__"));
 
             Assert.True(res8.Count == 1);
 
