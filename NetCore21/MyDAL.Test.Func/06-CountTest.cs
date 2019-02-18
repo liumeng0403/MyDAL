@@ -25,7 +25,7 @@ namespace MyDAL.Test.Func
             // count(id)  like "陈%"
             var res2 = await Conn
                 .Queryer<Agent>()
-                .Where(it => it.Name.Contains(LikeTest.百分号))
+                .Where(it => it.Name.Contains("陈%"))
                 .CountAsync(it => it.Id);
             Assert.True(res2 == 1421);
 
@@ -35,7 +35,7 @@ namespace MyDAL.Test.Func
 
             var res22 = await Conn
                 .Queryer<Agent>()
-                .Where(it => it.Name.Contains(LikeTest.百分号))
+                .Where(it => it.Name.Contains("陈%"))
                 .CountAsync();
             Assert.True(res22 == 1421);
 
@@ -50,7 +50,7 @@ namespace MyDAL.Test.Func
                 .From(() => agent3)
                     .InnerJoin(() => record3)
                         .On(() => agent3.Id == record3.AgentId)
-                .Where(() => agent3.Name.Contains(LikeTest.百分号))
+                .Where(() => agent3.Name.Contains("陈%"))
                 .CountAsync();
             Assert.True(res3 == 24);
 
@@ -65,7 +65,7 @@ namespace MyDAL.Test.Func
                 .From(() => agent4)
                     .InnerJoin(() => record4)
                         .On(() => agent4.Id == record4.AgentId)
-                .Where(() => agent4.Name.Contains(LikeTest.百分号))
+                .Where(() => agent4.Name.Contains("陈%"))
                 .CountAsync(() => agent4.Id);
             Assert.True(res4 == 24);
 

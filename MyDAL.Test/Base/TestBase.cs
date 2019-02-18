@@ -1,6 +1,5 @@
 ﻿using MyDAL.Test.Entities;
 using MyDAL.Test.Enums;
-using MyDAL.Test.TestModels;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -47,21 +46,6 @@ namespace MyDAL.Test
                         "黄银凤",
                         "刘建芬"
                     }
-                };
-            }
-        }
-
-        protected LikeTestModel LikeTest
-        {
-            get
-            {
-                return new LikeTestModel
-                {
-                    //无通配符 = "陈",
-                    百分号 = "陈%",
-                    //下划线 = "王_",
-                    //百分号转义 = "刘/%_",
-                    //下划线转义 = "何/__"
                 };
             }
         }

@@ -47,6 +47,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.QueryAPI", "NetC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.Compare", "NetCore21\MyDAL.Test.Compare\MyDAL.Test.Compare.csproj", "{0B8E1B54-FF38-45B2-AA97-D3D14327C989}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{5AA2915B-8D46-40EA-9C10-993571F2C19A}"
+	ProjectSection(SolutionItems) = preProject
+		Code_of_Conduct.md = Code_of_Conduct.md
+		CONTRIBUTING.md = CONTRIBUTING.md
+		License = License
+		PULL_REQUEST_TEMPLATE.md = PULL_REQUEST_TEMPLATE.md
+		Readme.md = Readme.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

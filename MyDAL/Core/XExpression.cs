@@ -527,6 +527,10 @@ namespace MyDAL.Core
             {
                 result.Compare = CompareXEnum.LessThanOrEqual;
             }
+            else if (result.Compare == CompareXEnum.GreaterThanOrEqual)
+            {
+                result.Compare = CompareXEnum.LessThan;
+            }
             else
             {
                 throw DC.Exception(XConfig.EC._027, body.ToString());
