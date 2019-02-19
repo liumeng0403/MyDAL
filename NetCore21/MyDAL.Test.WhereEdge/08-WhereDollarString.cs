@@ -39,7 +39,7 @@ namespace MyDAL.Test.WhereEdge
 
             var res3 = await Conn
                 .Queryer<Agent>()
-                .Where(it => it.CreatedOn > DateTime.Parse($"{WhereTest.CreatedOn.AddDays(-10)}"))
+                .Where(it => it.CreatedOn > DateTime.Parse($"{Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30).AddDays(-10)}"))
                 .QueryListAsync();
             Assert.NotNull(res3);
             Assert.True(res3.Count == 28619);

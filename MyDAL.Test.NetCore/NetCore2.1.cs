@@ -12,7 +12,6 @@
             await new WhereEdge._04_WhereMethodParam().MethodListParam();
             await new WhereEdge._05_WherePropertyVariable().Property();
             await new WhereEdge._06_WhereDI().test();
-            await new WhereEdge._07_WhereNULL().WhereTestx();
             await new WhereEdge._08_WhereDollarString().test();
             await new WhereEdge._09_WhereMultiCondition().test();
             await new WhereEdge._10_WhereDateTime().test();

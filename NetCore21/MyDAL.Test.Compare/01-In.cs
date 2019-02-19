@@ -38,26 +38,14 @@ namespace MyDAL.Test.Compare
         }
 
         [Fact]
-        public async Task Test01()
+        public async Task History()
         {
-
-            /*******************************************************************************************************************/
-
-            xx = string.Empty;
 
             var enums = new List<AgentLevel?>
             {
                 AgentLevel.CityAgent,
                 AgentLevel.DistiAgent
             };
-            // where in  --  variable  List<enum>  
-            var res1 = await Conn
-                .Queryer<Agent>()
-                .Where(it => enums.Contains(it.AgentLevel))
-                .QueryListAsync();
-            Assert.True(res1.Count == 555);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*******************************************************************************************************************/
 
@@ -84,9 +72,8 @@ namespace MyDAL.Test.Compare
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
-            Assert.True(res1.Count == res2.Count);
             Assert.True(res2.Count == res3.Count);
-            Assert.True(res1.Count == 555);
+            Assert.True(res2.Count == 555);
 
             /*******************************************************************************************************************/
 
@@ -206,23 +193,11 @@ namespace MyDAL.Test.Compare
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /*******************************************************************************************************************/
-
-            xx = string.Empty;
-
             var enumArray = new AgentLevel?[]
             {
                 AgentLevel.CityAgent,
                 AgentLevel.DistiAgent
             };
-            // where in  --  variable  enum[]  
-            var res12 = await Conn
-                .Queryer<Agent>()
-                .Where(it => enumArray.Contains(it.AgentLevel))
-                .QueryListAsync();
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /*******************************************************************************************************************/
 
             xx = string.Empty;
 
@@ -247,9 +222,8 @@ namespace MyDAL.Test.Compare
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
-            Assert.True(res12.Count == res13.Count);
             Assert.True(res13.Count == res14.Count);
-            Assert.True(res12.Count == 555);
+            Assert.True(res13.Count == 555);
 
             /*******************************************************************************************************************/
 
@@ -375,8 +349,8 @@ namespace MyDAL.Test.Compare
             var res23 = await Conn
                 .Queryer(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
-                .InnerJoin(() => record)
-                .On(() => agent.Id == record.AgentId)
+                    .InnerJoin(() => record)
+                        .On(() => agent.Id == record.AgentId)
                 .Where(() => new AgentLevel?[] { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(agent.AgentLevel))
                 .QueryListAsync<Agent>();
             Assert.True(res23.Count == 574);
@@ -447,7 +421,83 @@ namespace MyDAL.Test.Compare
         }
 
         [Fact]
-        public async Task Test02()
+        public async Task In_List()
+        {
+
+            xx = string.Empty;
+
+            var enums = new List<AgentLevel?>
+            {
+                AgentLevel.CityAgent,
+                AgentLevel.DistiAgent
+            };
+
+            // in
+            var res1 = await Conn
+                .Queryer<Agent>()
+                .Where(it => enums.Contains(it.AgentLevel))
+                .QueryListAsync();
+
+            Assert.True(res1.Count == 555);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*******************************************************************************************************************/
+
+            xx = string.Empty;
+
+        }
+
+        [Fact]
+        public async Task NotIn_List()
+        {
+
+            xx = string.Empty;
+
+            // not in
+            var res1 = await Conn
+                .Queryer<Agent>()
+                .Where(it => !new List<AgentLevel?> { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel))
+                .QueryListAsync();
+
+            Assert.True(res1.Count == 28065 || res1.Count == 28064);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
+
+        }
+
+        [Fact]
+        public async Task In_Array()
+        {
+
+            xx = string.Empty;
+
+            var enumArray = new AgentLevel?[]
+            {
+                AgentLevel.CityAgent,
+                AgentLevel.DistiAgent
+            };
+
+            // in
+            var res12 = await Conn
+                .Queryer<Agent>()
+                .Where(it => enumArray.Contains(it.AgentLevel))
+                .QueryListAsync();
+
+            Assert.True(res12.Count == 555);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*******************************************************************************************************************/
+
+            xx = string.Empty;
+
+        }
+
+        [Fact]
+        public async Task NotIn_Array()
         {
 
             xx = string.Empty;
@@ -458,12 +508,13 @@ namespace MyDAL.Test.Compare
                 .Where(it => !new AgentLevel?[] { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel))
                 .QueryListAsync();
 
-            Assert.True(res1.Count == 28065);
+            Assert.True(res1.Count == 28065 || res1.Count == 28064);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             xx = string.Empty;
 
         }
+
     }
 }

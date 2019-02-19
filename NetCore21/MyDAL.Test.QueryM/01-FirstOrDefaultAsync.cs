@@ -86,7 +86,7 @@ namespace MyDAL.Test.QueryM
             // where and
             var res4 = await Conn
                 .Queryer<Agent>()
-                .Where(it => it.CreatedOn >= WhereTest.CreatedOn)
+                .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
                     .And(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
                 .FirstOrDefaultAsync();
             Assert.NotNull(res4);

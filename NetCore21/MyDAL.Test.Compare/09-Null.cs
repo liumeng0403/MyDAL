@@ -3,10 +3,12 @@ using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace MyDAL.Test.WhereEdge
+namespace MyDAL.Test.Compare
 {
-    public class _07_WhereNULL : TestBase
+    public class _09_Null
+        :TestBase
     {
+
 
         public async Task<Agent> PreData3()
         {
@@ -47,7 +49,7 @@ namespace MyDAL.Test.WhereEdge
                 .QueryListAsync();
             Assert.True(res1.Count == 28066);
 
-            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /************************************************************************************************************************/
 
@@ -60,7 +62,7 @@ namespace MyDAL.Test.WhereEdge
                 .QueryListAsync();
             Assert.True(res2.Count == 554);
 
-            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /************************************************************************************************************************/
 
@@ -77,8 +79,8 @@ namespace MyDAL.Test.WhereEdge
             }
             catch (Exception ex)
             {
-                tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
-                Assert.Equal("[[Convert(value(MyDAL.Test.WhereEdge._07_WhereNULL).WhereTest.AgentLevelNull, Nullable`1)]] 中,传入的 SQL 筛选条件为 Null !!!", ex.Message, ignoreCase: true);
+                tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+                Assert.Equal("[[Convert(value(MyDAL.Test.Compare._09_Null).WhereTest.AgentLevelNull, Nullable`1)]] 中,传入的 SQL 筛选条件为 Null !!!", ex.Message, ignoreCase: true);
             }
 
             await ClearData3(m);
@@ -102,11 +104,11 @@ namespace MyDAL.Test.WhereEdge
 
             // is not null 
             var res5 = await Conn
-                .Queryer(out Agent a5,out AgentInventoryRecord r5)
-                .From(()=>a5)
-                    .LeftJoin(()=>r5)
-                        .On(()=>a5.Id==r5.AgentId)
-                .Where(() => a5.ActiveOrderId==null)
+                .Queryer(out Agent a5, out AgentInventoryRecord r5)
+                .From(() => a5)
+                    .LeftJoin(() => r5)
+                        .On(() => a5.Id == r5.AgentId)
+                .Where(() => a5.ActiveOrderId == null)
                 .QueryListAsync<Agent>();
             Assert.True(res5.Count == 28085);
 
@@ -150,6 +152,31 @@ namespace MyDAL.Test.WhereEdge
             /************************************************************************************************************************/
 
             xx = string.Empty;
+
+        }
+
+
+        [Fact]
+        public async Task IsNull()
+        {
+
+        }
+
+        [Fact]
+        public async Task NotIsNull()
+        {
+
+        }
+
+        [Fact]
+        public async Task IsNotNull()
+        {
+
+        }
+
+        [Fact]
+        public async Task NotIsNotNull()
+        {
 
         }
 

@@ -36,7 +36,7 @@ namespace MyDAL.Test.QueryVmColumn
 
             var res8 = await Conn
                 .Queryer<Agent>()
-                .Where(it => it.CreatedOn >= WhereTest.CreatedOn)
+                .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
                 .PagingListAsync(1, 10, agent => new AgentVM
                 {
                     XXXX = agent.Name,

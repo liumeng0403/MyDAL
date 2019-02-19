@@ -20,14 +20,14 @@ namespace MyDAL.Test.QueryM
             // >= obj.DateTime
             var res1 = await Conn
                 .Queryer<BodyFitRecord>()
-                .Where(it => it.CreatedOn >= WhereTest.CreatedOn)
+                .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
                 .QueryListAsync();
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
             var resR1 = await Conn
                 .Queryer<BodyFitRecord>()
-                .Where(it => WhereTest.CreatedOn <= it.CreatedOn)
+                .Where(it => Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30) <= it.CreatedOn)
                 .QueryListAsync();
             Assert.True(res1.Count == resR1.Count);
             //Assert.True(res1.Count >0);
@@ -38,7 +38,7 @@ namespace MyDAL.Test.QueryM
 
             xx = string.Empty;
 
-            var start = WhereTest.CreatedOn.AddDays(-10);
+            var start = Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30).AddDays(-10);
             // >= variable(DateTime)
             var res2 = await Conn
                 .Queryer<BodyFitRecord>()

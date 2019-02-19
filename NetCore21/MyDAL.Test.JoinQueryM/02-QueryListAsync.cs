@@ -27,20 +27,6 @@ namespace MyDAL.Test.JoinQueryM
 
             /**************************************************************************************************************************/
 
-            xx = string.Empty;
-
-            //
-            var res1 = await Conn
-                .Queryer(out Agent agent1, out AgentInventoryRecord record1)
-                .From(() => agent1)
-                    .InnerJoin(() => record1)
-                        .On(() => agent1.Id == record1.AgentId)
-                .Where(() => agent1.CreatedOn >= WhereTest.CreatedOn.AddDays(-60))
-                .QueryListAsync<AgentInventoryRecord>();
-            Assert.True(res1.Count == 574);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
             /**************************************************************************************************************************/
 
             xx = string.Empty;
@@ -165,7 +151,7 @@ namespace MyDAL.Test.JoinQueryM
                 .From(() => agent9)
                     .InnerJoin(() => record9)
                         .On(() => agent9.Id == record9.AgentId)
-                .Where(() => agent9.CreatedOn >= WhereTest.CreatedOn)                                                              //  prop prop DateTime  >=
+                .Where(() => agent9.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))                     //  prop prop DateTime  >=
                 .QueryListAsync<AgentInventoryRecord>();
             Assert.True(res9.Count == 574);
 
@@ -181,7 +167,7 @@ namespace MyDAL.Test.JoinQueryM
                     .InnerJoin(() => record10)
                         .On(() => agent10.Id == record10.AgentId)
                 .Where(() => agent10.Id == Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef"))
-                    .And(() => record10.CreatedOn >= WhereTest.CreatedOn.AddDays(-60))
+                    .And(() => record10.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30).AddDays(-60))
                 .QueryListAsync<Agent>();
             Assert.True(res10.Count == 1);
 

@@ -36,7 +36,7 @@ namespace MyDAL.Test.QueryM
             xx = string.Empty;
 
             var option3 = new AgentQueryOption();
-            option3.StartTime = WhereTest.CreatedOn;
+            option3.StartTime = Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30);
             option3.EndTime = DateTime.Now;
 
             //   >=   <=  
