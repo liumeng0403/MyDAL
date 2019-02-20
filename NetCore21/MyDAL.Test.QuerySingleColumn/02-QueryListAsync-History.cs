@@ -4,7 +4,8 @@ using Xunit;
 
 namespace MyDAL.Test.QuerySingleColumn
 {
-    public class _05_QueryAllAsync : TestBase
+    public class _02_QueryListAsync_History
+        : TestBase
     {
         [Fact]
         public async Task test()
@@ -14,7 +15,8 @@ namespace MyDAL.Test.QuerySingleColumn
 
             var res1 = await Conn
                 .Queryer<Agent>()
-                .QueryAllAsync(it => it.Id);
+                .QueryListAsync(it => it.Id);
+
             Assert.True(res1.Count == 28620);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);

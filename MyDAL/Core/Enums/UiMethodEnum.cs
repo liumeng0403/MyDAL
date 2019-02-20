@@ -11,7 +11,7 @@
         TopAsync,
         ListAsync,
         PagingListAsync,
-        AllAsync,
+        //AllAsync,
         PagingAllAsync,
         ExistAsync,
         CountAsync,

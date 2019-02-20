@@ -5,7 +5,8 @@ using Xunit;
 
 namespace MyDAL.Test.QueryVmColumn
 {
-    public class _05_QueryAllAsync : TestBase
+    public class _02_QueryListAsync_History
+        : TestBase
     {
         [Fact]
         public async Task test()
@@ -14,7 +15,7 @@ namespace MyDAL.Test.QueryVmColumn
 
             var res1 = await Conn
                 .Queryer<Agent>()
-                .QueryAllAsync<AgentVM>(it => new AgentVM
+                .QueryListAsync<AgentVM>(it => new AgentVM
                 {
                     XXXX=it.Name,
                     YYYY=it.PathId

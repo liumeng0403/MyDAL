@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Query
 {
     public sealed class Queryer<M>
-        : Operator, IQueryAll<M>, IPagingAll<M>, ITop<M>, IExist
+        : Operator, /*IQueryAll<M>,*/ IPagingAll<M>, ITop<M>, IExist,IQueryList<M>
         where M : class
     {
         internal Queryer(Context dc)
@@ -17,26 +17,26 @@ namespace MyDAL.UserFacade.Query
         { }
 
         /// <summary>
-        /// 单表数据查询
+        /// 请参阅: <see langword=".QueryListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        /// <returns>返回全表数据</returns>
-        public async Task<List<M>> QueryAllAsync()
+        public async Task<List<M>> QueryListAsync()
         {
-            return await new QueryAllImpl<M>(DC).QueryAllAsync();
+            return await new QueryListImpl<M>(DC).QueryListAsync();
         }
         /// <summary>
-        /// 单表数据查询
+        /// 请参阅: <see langword=".QueryListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        /// <typeparam name="VM">ViewModel</typeparam>
-        /// <returns>返回全表数据</returns>
-        public async Task<List<VM>> QueryAllAsync<VM>()
+        public async Task<List<VM>> QueryListAsync<VM>()
             where VM : class
         {
-            return await new QueryAllImpl<M>(DC).QueryAllAsync<VM>();
+            return await new QueryListImpl<M>(DC).QueryListAsync<VM>();
         }
-        public async Task<List<F>> QueryAllAsync<F>(Expression<Func<M, F>> propertyFunc)
+        /// <summary>
+        /// 请参阅: <see langword=".QueryListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// </summary>
+        public async Task<List<T>> QueryListAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
-            return await new QueryAllImpl<M>(DC).QueryAllAsync<F>(propertyFunc);
+            return await new QueryListImpl<M>(DC).QueryListAsync(columnMapFunc);
         }
 
         /// <summary>

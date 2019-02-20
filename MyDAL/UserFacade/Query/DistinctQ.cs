@@ -9,35 +9,12 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Query
 {
     public sealed class DistinctQ<M>
-        : Operator, IQueryAll<M>, IPagingAll<M>, ITop<M>, IFirstOrDefault<M>, IQueryList<M>, IPagingList<M>
+        : Operator, /*IQueryAll<M>,*/ IPagingAll<M>, ITop<M>, IFirstOrDefault<M>, IQueryList<M>, IPagingList<M>
         where M : class
     {
         internal DistinctQ(Context dc) 
             : base(dc)
         {
-        }
-
-        /// <summary>
-        /// 单表数据查询
-        /// </summary>
-        /// <returns>返回全表数据</returns>
-        public async Task<List<M>> QueryAllAsync()
-        {
-            return await new QueryAllImpl<M>(DC).QueryAllAsync();
-        }
-        /// <summary>
-        /// 单表数据查询
-        /// </summary>
-        /// <typeparam name="VM">ViewModel</typeparam>
-        /// <returns>返回全表数据</returns>
-        public async Task<List<VM>> QueryAllAsync<VM>()
-            where VM : class
-        {
-            return await new QueryAllImpl<M>(DC).QueryAllAsync<VM>();
-        }
-        public async Task<List<T>> QueryAllAsync<T>(Expression<Func<M, T>> columnMapFunc)
-        {
-            return await new QueryAllImpl<M>(DC).QueryAllAsync<T>(columnMapFunc);
         }
 
         /// <summary>

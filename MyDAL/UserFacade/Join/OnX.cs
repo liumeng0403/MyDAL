@@ -9,22 +9,12 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Join
 {
     public sealed class OnX
-        : Operator, IFirstOrDefaultX, IQueryListX, IPagingListX, ITopX, IQueryAllX, IExistX
+        : Operator, IFirstOrDefaultX, IQueryListX, IPagingListX, ITopX, /*IQueryAllX,*/ IExistX
     {
 
         internal OnX(Context dc)
             : base(dc)
         { }
-
-        public async Task<List<M>> QueryAllAsync<M>()
-            where M : class
-        {
-            return await new QueryAllXImpl(DC).QueryAllAsync<M>();
-        }
-        public async Task<List<T>> QueryAllAsync<T>(Expression<Func<T>> columnMapFunc)
-        {
-            return await new QueryAllXImpl(DC).QueryAllAsync(columnMapFunc);
-        }
 
         /// <summary>
         /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>

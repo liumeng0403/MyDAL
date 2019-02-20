@@ -849,7 +849,7 @@ namespace MyDAL.DataRainbow.MySQL
                     break;
                 case UiMethodEnum.TopAsync:
                 case UiMethodEnum.ListAsync:
-                case UiMethodEnum.AllAsync:
+                //case UiMethodEnum.AllAsync:
                 case UiMethodEnum.FirstOrDefaultAsync:
                     Select(X); Distinct(); SelectColumn(); From(X); Table(); Where(); OrderBy(); Limit(); End();
                     break;
