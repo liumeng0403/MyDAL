@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace MyDAL.UserFacade.Update
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class WhereU<M>
         : Operator, IUpdate<M>
         where M:class

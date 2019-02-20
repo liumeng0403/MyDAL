@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace MyDAL.Core.Enums
+﻿namespace MyDAL.Core.Enums
 {
     internal enum OptionEnum
     {
@@ -35,11 +33,6 @@ namespace MyDAL.Core.Enums
         Column,
         ColumnAs,
         ColumnOther,
-
-        ///// <summary>
-        ///// " like "
-        ///// </summary>
-        //Like,
         
         /// <summary>
         /// ""

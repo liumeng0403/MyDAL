@@ -6,7 +6,7 @@ using Xunit;
 namespace MyDAL.Test.Compare
 {
     public class _09_Null
-        :TestBase
+        : TestBase
     {
 
 
@@ -39,21 +39,6 @@ namespace MyDAL.Test.Compare
         {
 
             /************************************************************************************************************************/
-
-            xx = string.Empty;
-
-            // is null 
-            var res1 = await Conn
-                .Queryer<Agent>()
-                .Where(it => it.ActiveOrderId == null)
-                .QueryListAsync();
-            Assert.True(res1.Count == 28066);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /************************************************************************************************************************/
-
-            xx = string.Empty;
 
             // is not null 
             var res2 = await Conn
@@ -116,24 +101,6 @@ namespace MyDAL.Test.Compare
 
             /************************************************************************************************************************/
 
-            var xx6 = string.Empty;
-
-            // is not null 
-            var res6 = await Conn
-                .Queryer(out Agent a6, out AgentInventoryRecord r6)
-                .From(() => a6)
-                    .LeftJoin(() => r6)
-                        .On(() => a6.Id == r6.AgentId)
-                .Where(() => a6.ActiveOrderId != null)
-                .QueryListAsync<Agent>();
-            Assert.True(res6.Count == 554);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /************************************************************************************************************************/
-
-            xx = string.Empty;
-
             var res7 = await Conn.QueryListAsync<Agent>(it => it.ActiveOrderId == null);
             Assert.True(res7.Count == 28066);
 
@@ -160,11 +127,43 @@ namespace MyDAL.Test.Compare
         public async Task IsNull()
         {
 
+            xx = string.Empty;
+
+            // is null 
+            var res1 = await Conn
+                .Queryer<Agent>()
+                .Where(it => it.ActiveOrderId == null)
+                .QueryListAsync();
+
+            Assert.True(res1.Count == 28066);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************************/
+
+            xx = string.Empty;
+
         }
 
         [Fact]
         public async Task NotIsNull()
         {
+
+            xx = string.Empty;
+
+            // !(is null) --> is not null 
+            var res1 = await Conn
+                .Queryer<Agent>()
+                .Where(it => !(it.ActiveOrderId == null))
+                .QueryListAsync();
+
+            Assert.True(res1.Count == 554);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************************/
+
+            xx = string.Empty;
 
         }
 
@@ -172,11 +171,49 @@ namespace MyDAL.Test.Compare
         public async Task IsNotNull()
         {
 
+            xx = string.Empty;
+
+            // is not null 
+            var res6 = await Conn
+                .Queryer(out Agent a6, out AgentInventoryRecord r6)
+                .From(() => a6)
+                    .LeftJoin(() => r6)
+                        .On(() => a6.Id == r6.AgentId)
+                .Where(() => a6.ActiveOrderId != null)
+                .QueryListAsync<Agent>();
+
+            Assert.True(res6.Count == 554);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************************/
+
+            xx = string.Empty;
+
         }
 
         [Fact]
         public async Task NotIsNotNull()
         {
+
+            xx = string.Empty;
+
+            // !(is not null) --> is null 
+            var res6 = await Conn
+                .Queryer(out Agent a6, out AgentInventoryRecord r6)
+                .From(() => a6)
+                    .LeftJoin(() => r6)
+                        .On(() => a6.Id == r6.AgentId)
+                .Where(() => !(a6.ActiveOrderId != null))
+                .QueryListAsync<Agent>();
+
+            Assert.True(res6.Count == 28085);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /************************************************************************************************************************/
+
+            xx = string.Empty;
 
         }
 

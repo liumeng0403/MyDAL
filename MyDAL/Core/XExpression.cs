@@ -531,6 +531,14 @@ namespace MyDAL.Core
             {
                 result.Compare = CompareXEnum.LessThan;
             }
+            else if (result.Option == OptionEnum.IsNull)
+            {
+                result.Option = OptionEnum.IsNotNull;
+            }
+            else if (result.Option == OptionEnum.IsNotNull)
+            {
+                result.Option = OptionEnum.IsNull;
+            }
             else
             {
                 throw DC.Exception(XConfig.EC._027, body.ToString());
