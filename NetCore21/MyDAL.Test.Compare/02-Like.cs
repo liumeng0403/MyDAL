@@ -80,7 +80,7 @@ namespace MyDAL.Test.Compare
                 .Queryer<Agent>()
                 .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
                     .And(it => it.PathId.Contains("~00-d-3-1-"))
-                .PagingListAsync(1, 10);
+                .QueryPagingAsync(1, 10);
             Assert.True(res3.TotalCount == 5680);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -136,7 +136,7 @@ namespace MyDAL.Test.Compare
                 .Queryer<Agent>()
                 .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
                     .And(it => it.PathId.Contains("~00-d-3-1-"))
-                .PagingListAsync(1, 10);
+                .QueryPagingAsync(1, 10);
 
             Assert.True(res1.TotalCount == 5680);
 
@@ -158,7 +158,7 @@ namespace MyDAL.Test.Compare
             var res1 = await Conn
                 .Queryer<Agent>()
                 .Where(it => !it.PathId.Contains("~00-d-3-1-"))
-                .PagingListAsync(1, 10);
+                .QueryPagingAsync(1, 10);
 
             Assert.True(res1.TotalCount == 22940);
 
@@ -241,7 +241,7 @@ namespace MyDAL.Test.Compare
             var res12 = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.PathId.StartsWith("~00-d-3-1-"))
-                .PagingListAsync(1, 10);
+                .QueryPagingAsync(1, 10);
 
             Assert.True(res12.TotalCount == 5680);
 
@@ -283,7 +283,7 @@ namespace MyDAL.Test.Compare
             var res21 = await Conn
                 .Queryer<Agent>()
                 .Where(it => !it.PathId.StartsWith("~00-d-3-1-"))
-                .PagingListAsync(1, 10);
+                .QueryPagingAsync(1, 10);
 
             Assert.True(res21.TotalCount == 22940);
 
@@ -335,7 +335,7 @@ namespace MyDAL.Test.Compare
             var res12 = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.PathId.EndsWith("~00-d-3-1-"))
-                .PagingListAsync(1, 10);
+                .QueryPagingAsync(1, 10);
 
             Assert.True(res12.TotalCount == 0);
 
@@ -377,7 +377,7 @@ namespace MyDAL.Test.Compare
             var res21 = await Conn
                 .Queryer<Agent>()
                 .Where(it => !it.PathId.EndsWith("~00-d-3-1-"))
-                .PagingListAsync(1, 10);
+                .QueryPagingAsync(1, 10);
 
             Assert.True(res21.TotalCount == 28620);
 

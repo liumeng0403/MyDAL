@@ -26,11 +26,6 @@ namespace MyDAL.Test
                     AgentLevelNull = null,
                     ContainStr = "~00-d-3-1-",
                     ContainStr2 = "~00-d-3-",
-                    In_List_枚举 = new List<AgentLevel?>
-                    {
-                        AgentLevel.CityAgent,
-                        AgentLevel.DistiAgent
-                    },
                     In_Array_枚举 = new AgentLevel?[]
                     {
                         AgentLevel.CityAgent,

@@ -5,7 +5,7 @@ using Xunit;
 
 namespace MyDAL.Test.QueryVM
 {
-    public class _03_PagingListAsync_History
+    public class _03_QueryPagingAsync_History
         : TestBase
     {
         [Fact]
@@ -18,7 +18,7 @@ namespace MyDAL.Test.QueryVM
 
             var res7 = await Conn
                 .Queryer<Agent>()
-                .PagingListAsync<AgentVM>(1, 10);
+                .QueryPagingAsync<AgentVM>(1, 10);
 
             Assert.True(res7.TotalCount == 28620);
 

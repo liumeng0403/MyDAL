@@ -4,7 +4,7 @@ using Xunit;
 
 namespace MyDAL.Test.QueryM
 {
-    public class _03_PagingListAsync_History 
+    public class _03_QueryPagingAsync_History
         : TestBase
     {
         [Fact]
@@ -17,7 +17,8 @@ namespace MyDAL.Test.QueryM
 
             var res3 = await Conn
                 .Queryer<Agent>()
-                .PagingListAsync(1, 10);
+                .QueryPagingAsync(1, 10);
+
             Assert.True(res3.TotalCount == 28620);
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);

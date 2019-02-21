@@ -4,14 +4,13 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Interfaces
 {
-    internal interface IPagingList<M>
+    internal interface IQueryPaging<M>
         where M : class
     {
-        Task<PagingResult<M>> PagingListAsync(int pageIndex, int pageSize);
-        Task<PagingResult<VM>> PagingListAsync<VM>(int pageIndex, int pageSize)
+        Task<PagingResult<M>> QueryPagingAsync(int pageIndex, int pageSize);
+        Task<PagingResult<VM>> QueryPagingAsync<VM>(int pageIndex, int pageSize)
             where VM : class;
-        Task<PagingResult<T>> PagingListAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc);
-
+        Task<PagingResult<T>> QueryPagingAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc);
     }
 
     internal interface IPagingListO<M>

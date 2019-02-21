@@ -34,8 +34,8 @@
             await new QueryVmColumn._01_FirstOrDefaultAsync().test();
             await new QueryVmColumn._02_QueryListAsync().test();
             await new QueryVmColumn._02_QueryListAsync_History().test();
-            await new QueryVmColumn._03_PagingListAsync().test();
-            await new QueryVmColumn._03_PagingListAsync_History().test();
+            await new QueryVmColumn._03_QueryPagingAsync().test();
+            await new QueryVmColumn._03_QueryPagingAsync_History().test();
             await new QueryVmColumn._06_TopAsync().test();
 
             // 
@@ -43,8 +43,8 @@
             //
             await new QueryVM._02_QueryListAsync().test();
             await new QueryVM._02_QueryListAsync_History().test();
-            await new QueryVM._03_PagingListAsync().test();
-            await new QueryVM._03_PagingListAsync_History().test();
+            await new QueryVM._03_QueryPagingAsync().test();
+            await new QueryVM._03_QueryPagingAsync_History().test();
             await new QueryVM._06_TopAsync().test();
 
             //
@@ -53,8 +53,8 @@
             await new QuerySingleColumn._01_FirstOrDefaultAsync().test();
             await new QuerySingleColumn._02_QueryListAsync().test();
             await new QuerySingleColumn._02_QueryListAsync_History().test();
-            await new QuerySingleColumn._03_PagingListAsync().test();
-            await new QuerySingleColumn._03_PagingListAsync_History().test();
+            await new QuerySingleColumn._03_QueryPagingAsync().test();
+            await new QuerySingleColumn._03_QueryPagingAsync_History().test();
             await new QuerySingleColumn._06_TopAsync().test();
 
             //

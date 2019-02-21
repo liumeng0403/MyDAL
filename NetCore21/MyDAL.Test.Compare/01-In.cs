@@ -51,18 +51,6 @@ namespace MyDAL.Test.Compare
 
             xx = string.Empty;
 
-            // where in -- obj.prop List<enum>
-            var res2 = await Conn
-                .Queryer<Agent>()
-                .Where(it => WhereTest.In_List_枚举.Contains(it.AgentLevel))
-                .QueryListAsync();
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /*******************************************************************************************************************/
-
-            xx = string.Empty;
-
             EnumList = enums;
             // where in -- this.prop List<enum>
             var res3 = await Conn
@@ -71,9 +59,8 @@ namespace MyDAL.Test.Compare
                 .QueryListAsync();
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            Assert.True(res2.Count == res3.Count);
-            Assert.True(res2.Count == 555);
+            
+            Assert.True(res3.Count == 555);
 
             /*******************************************************************************************************************/
 
@@ -418,6 +405,54 @@ namespace MyDAL.Test.Compare
             /*******************************************************************************************************************/
 
             xx = string.Empty;
+        }
+
+        [Fact]
+        public async Task In_Shortcut()
+        {
+
+            xx = string.Empty;
+
+            // in
+            var res2 = await Conn.QueryListAsync<Agent>(it => new List<AgentLevel?> { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel));
+
+            Assert.True(res2.Count == 555);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*******************************************************************************************************************/
+
+            xx = string.Empty;
+        }
+
+        [Fact]
+        public async Task NotIn_Shortcut()
+        {
+
+        }
+
+        [Fact]
+        public async Task In_ST()
+        {
+
+        }
+
+        [Fact]
+        public async Task NotIn_ST()
+        {
+
+        }
+
+        [Fact]
+        public async Task In_MT()
+        {
+
+        }
+
+        [Fact]
+        public async Task NotIn_MT()
+        {
+
         }
 
         [Fact]

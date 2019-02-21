@@ -12,7 +12,7 @@ namespace MyDAL.UserFacade.Query
     /// 
     /// </summary>
     public sealed class WhereQ<M>
-        : Operator, IExist, IFirstOrDefault<M>, IQueryList<M>, IPagingList<M>, ICount<M>, ITop<M>, ISum<M>
+        : Operator, IExist, IFirstOrDefault<M>, IQueryList<M>, IQueryPaging<M>, ICount<M>, ITop<M>, ISum<M>
         where M : class
     {
         internal WhereQ(Context dc)
@@ -101,9 +101,9 @@ namespace MyDAL.UserFacade.Query
         /// </summary>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
-        public async Task<PagingResult<M>> PagingListAsync(int pageIndex, int pageSize)
+        public async Task<PagingResult<M>> QueryPagingAsync(int pageIndex, int pageSize)
         {
-            return await new PagingListImpl<M>(DC).PagingListAsync(pageIndex, pageSize);
+            return await new PagingListImpl<M>(DC).QueryPagingAsync(pageIndex, pageSize);
         }
         /// <summary>
         /// 单表分页查询
@@ -111,17 +111,17 @@ namespace MyDAL.UserFacade.Query
         /// <typeparam name="VM">ViewModel</typeparam>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
-        public async Task<PagingResult<VM>> PagingListAsync<VM>(int pageIndex, int pageSize)
+        public async Task<PagingResult<VM>> QueryPagingAsync<VM>(int pageIndex, int pageSize)
             where VM : class
         {
-            return await new PagingListImpl<M>(DC).PagingListAsync<VM>(pageIndex, pageSize);
+            return await new PagingListImpl<M>(DC).QueryPagingAsync<VM>(pageIndex, pageSize);
         }
         /// <summary>
         /// 单表分页查询
         /// </summary>
-        public async Task<PagingResult<T>> PagingListAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
+        public async Task<PagingResult<T>> QueryPagingAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
         {
-            return await new PagingListImpl<M>(DC).PagingListAsync<T>(pageIndex, pageSize, columnMapFunc);
+            return await new PagingListImpl<M>(DC).QueryPagingAsync<T>(pageIndex, pageSize, columnMapFunc);
         }
 
         /// <summary>
