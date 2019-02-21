@@ -1,14 +1,12 @@
 ﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace MyDAL.Test.QueryVM
 {
-    public class _04_PagingAllAsync:TestBase
+    public class _03_PagingListAsync_History
+        : TestBase
     {
         [Fact]
         public async Task test()
@@ -20,7 +18,8 @@ namespace MyDAL.Test.QueryVM
 
             var res7 = await Conn
                 .Queryer<Agent>()
-                .PagingAllAsync<AgentVM>(1, 10);
+                .PagingListAsync<AgentVM>(1, 10);
+
             Assert.True(res7.TotalCount == 28620);
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);

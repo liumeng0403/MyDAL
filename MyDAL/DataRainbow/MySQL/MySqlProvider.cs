@@ -848,13 +848,13 @@ namespace MyDAL.DataRainbow.MySQL
                     Update(X); Table(); Set(X); UpdateColumn(); Where(); End();
                     break;
                 case UiMethodEnum.TopAsync:
-                case UiMethodEnum.ListAsync:
+                case UiMethodEnum.QueryListAsync:
                 //case UiMethodEnum.AllAsync:
                 case UiMethodEnum.FirstOrDefaultAsync:
                     Select(X); Distinct(); SelectColumn(); From(X); Table(); Where(); OrderBy(); Limit(); End();
                     break;
                 case UiMethodEnum.PagingListAsync:
-                case UiMethodEnum.PagingAllAsync:
+                //case UiMethodEnum.PagingAllAsync:
                     Select(X); Count(); From(X); Table(); Where(); CountMulti(); End();
                     Select(X); Distinct(); SelectColumn(); From(X); Table(); Where(); OrderBy(); Limit(); End();
                     break;

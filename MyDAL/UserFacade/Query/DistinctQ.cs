@@ -9,39 +9,12 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Query
 {
     public sealed class DistinctQ<M>
-        : Operator, /*IQueryAll<M>,*/ IPagingAll<M>, ITop<M>, IFirstOrDefault<M>, IQueryList<M>, IPagingList<M>
+        : Operator, /*IQueryAll<M>,*/ /*IPagingAll<M>,*/ ITop<M>, IFirstOrDefault<M>, IQueryList<M>, IPagingList<M>
         where M : class
     {
         internal DistinctQ(Context dc) 
             : base(dc)
         {
-        }
-
-        /// <summary>
-        /// 单表分页查询
-        /// </summary>
-        /// <param name="pageIndex">页码</param>
-        /// <param name="pageSize">每页条数</param>
-        /// <returns>返回全表分页数据</returns>
-        public async Task<PagingResult<M>> PagingAllAsync(int pageIndex, int pageSize)
-        {
-            return await new PagingAllImpl<M>(DC).PagingAllAsync(pageIndex, pageSize);
-        }
-        /// <summary>
-        /// 单表分页查询
-        /// </summary>
-        /// <typeparam name="VM">ViewModel</typeparam>
-        /// <param name="pageIndex">页码</param>
-        /// <param name="pageSize">每页条数</param>
-        /// <returns>返回全表分页数据</returns>
-        public async Task<PagingResult<VM>> PagingAllAsync<VM>(int pageIndex, int pageSize)
-            where VM : class
-        {
-            return await new PagingAllImpl<M>(DC).PagingAllAsync<VM>(pageIndex, pageSize);
-        }
-        public async Task<PagingResult<T>> PagingAllAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
-        {
-            return await new PagingAllImpl<M>(DC).PagingAllAsync<T>(pageIndex, pageSize, columnMapFunc);
         }
 
         /// <summary>

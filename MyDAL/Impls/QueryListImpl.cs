@@ -19,7 +19,7 @@ namespace MyDAL.Impls
 
         public async Task<List<M>> QueryListAsync()
         {
-            PreExecuteHandle(UiMethodEnum.ListAsync);
+            PreExecuteHandle(UiMethodEnum.QueryListAsync);
             return await DC.DS.ExecuteReaderMultiRowAsync<M>();
         }
 
@@ -27,7 +27,7 @@ namespace MyDAL.Impls
             where VM : class
         {
             SelectMQ<M, VM>();
-            PreExecuteHandle(UiMethodEnum.ListAsync);
+            PreExecuteHandle(UiMethodEnum.QueryListAsync);
             return await DC.DS.ExecuteReaderMultiRowAsync<VM>();
         }
 
@@ -36,13 +36,13 @@ namespace MyDAL.Impls
             if (typeof(T).IsSingleColumn())
             {
                 SingleColumnHandle(columnMapFunc);
-                PreExecuteHandle(UiMethodEnum.ListAsync);
+                PreExecuteHandle(UiMethodEnum.QueryListAsync);
                 return await DC.DS.ExecuteReaderSingleColumnAsync(columnMapFunc.Compile());
             }
             else
             {
                 SelectMHandle(columnMapFunc);
-                PreExecuteHandle(UiMethodEnum.ListAsync);
+                PreExecuteHandle(UiMethodEnum.QueryListAsync);
                 return await DC.DS.ExecuteReaderMultiRowAsync<T>();
             }
         }
@@ -58,7 +58,7 @@ namespace MyDAL.Impls
             where M : class
         {
             SelectMHandle<M>();
-            PreExecuteHandle(UiMethodEnum.ListAsync);
+            PreExecuteHandle(UiMethodEnum.QueryListAsync);
             return await DC.DS.ExecuteReaderMultiRowAsync<M>();
         }
 
@@ -67,13 +67,13 @@ namespace MyDAL.Impls
             if (typeof(T).IsSingleColumn())
             {
                 SingleColumnHandle(columnMapFunc);
-                PreExecuteHandle(UiMethodEnum.ListAsync);
+                PreExecuteHandle(UiMethodEnum.QueryListAsync);
                 return await DC.DS.ExecuteReaderSingleColumnAsync<T>();
             }
             else
             {
                 SelectMHandle(columnMapFunc);
-                PreExecuteHandle(UiMethodEnum.ListAsync);
+                PreExecuteHandle(UiMethodEnum.QueryListAsync);
                 return await DC.DS.ExecuteReaderMultiRowAsync<T>();
             }
         }

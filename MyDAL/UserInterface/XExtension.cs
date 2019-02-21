@@ -377,7 +377,7 @@ namespace MyDAL
             throw new NotImplementedException();
         }
 
-        public static async Task<T> QueryListAsync<T>(string sql)
+        public static async Task<List<T>> QueryListAsync<T>(string sql)
         {
             throw new NotImplementedException();
         }

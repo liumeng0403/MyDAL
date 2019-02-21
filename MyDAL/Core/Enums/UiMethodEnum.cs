@@ -9,10 +9,10 @@
         UpdateAsync,
         FirstOrDefaultAsync,
         TopAsync,
-        ListAsync,
+        QueryListAsync,
         PagingListAsync,
         //AllAsync,
-        PagingAllAsync,
+        //PagingAllAsync,
         ExistAsync,
         CountAsync,
         SumAsync
