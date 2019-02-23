@@ -138,7 +138,8 @@ namespace MyDAL.Test.Create
             var res61 = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.Id == Guid.Parse("ea1ad309-56f7-4e3e-af12-0165c9121e9b"))
-                .FirstOrDefaultAsync<Agent>();
+                .QueryOneAsync<Agent>();
+
             Assert.True(res61.AgentLevel == AgentLevel.DistiAgent);
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
@@ -169,7 +170,8 @@ namespace MyDAL.Test.Create
             var res71 = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.Id == Guid.Parse("08d60369-4fc1-e8e0-44dc-435f31635e6d"))
-                .FirstOrDefaultAsync<Agent>();
+                .QueryOneAsync<Agent>();
+
             Assert.True(res71.CreatedOn == Convert.ToDateTime("2018-08-16 19:34:25.116759"));
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);

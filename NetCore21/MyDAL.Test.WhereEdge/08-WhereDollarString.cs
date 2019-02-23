@@ -15,7 +15,8 @@ namespace MyDAL.Test.WhereEdge
             var res1 = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.Name == $"{"樊士芹"}")
-                .FirstOrDefaultAsync();
+                .QueryOneAsync();
+
             Assert.NotNull(res1);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -28,7 +29,8 @@ namespace MyDAL.Test.WhereEdge
             var res2 = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.Name == $"{name2}")
-                .FirstOrDefaultAsync();
+                .QueryOneAsync();
+
             Assert.NotNull(res2);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);

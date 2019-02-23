@@ -41,7 +41,8 @@ namespace MyDAL.Test.Create
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
-            var res151 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord>(it=>it.Id==pk);
+            var res151 = await Conn.QueryOneAsync<AlipayPaymentRecord>(it=>it.Id==pk);
+
             Assert.NotNull(res151);
 
             /****************************************************************************************/

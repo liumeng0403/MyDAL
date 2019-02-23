@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Interfaces
 {
-    internal interface IFirstOrDefault<M>
+    internal interface IQueryOne<M>
     {
-        Task<M> FirstOrDefaultAsync();
-        Task<VM> FirstOrDefaultAsync<VM>()
+        Task<M> QueryOneAsync();
+        Task<VM> QueryOneAsync<VM>()
             where VM : class;
-        Task<T> FirstOrDefaultAsync<T>(Expression<Func<M, T>> columnMapFunc);
+        Task<T> QueryOneAsync<T>(Expression<Func<M, T>> columnMapFunc);
     }
 
     internal interface IFirstOrDefaultX

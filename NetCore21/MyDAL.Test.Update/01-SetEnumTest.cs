@@ -10,7 +10,7 @@ namespace MyDAL.Test.Update
         [Fact]
         public async Task test()
         {
-            var agent = await Conn.FirstOrDefaultAsync<Agent>(it => it.Id == Guid.Parse("040afaad-ae07-42fc-9dd0-0165443c847d"));
+            var agent = await Conn.QueryOneAsync<Agent>(it => it.Id == Guid.Parse("040afaad-ae07-42fc-9dd0-0165443c847d"));
 
             /*****************************************************************************************************************************************************************/
 
@@ -21,7 +21,8 @@ namespace MyDAL.Test.Update
                 .Set(it => it.PathId, null)
                 .Where(it => it.Id == agent.Id)
                 .UpdateAsync();
-            var res11 = await Conn.FirstOrDefaultAsync<Agent>(it => it.Id == agent.Id);
+            var res11 = await Conn.QueryOneAsync<Agent>(it => it.Id == agent.Id);
+
             Assert.Null(res11.PathId);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -63,7 +64,8 @@ namespace MyDAL.Test.Update
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
-            var res31 = await Conn.FirstOrDefaultAsync<Agent>(it => it.Id == agent.Id);
+            var res31 = await Conn.QueryOneAsync<Agent>(it => it.Id == agent.Id);
+
             Assert.Equal("xxxxxxx", res31.PathId, ignoreCase: true);
             Assert.NotNull(res31.ActiveOrderId);
 
@@ -79,7 +81,8 @@ namespace MyDAL.Test.Update
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
-            var res41 = await Conn.FirstOrDefaultAsync<Agent>(it => it.Id == agent.Id);
+            var res41 = await Conn.QueryOneAsync<Agent>(it => it.Id == agent.Id);
+
             Assert.Null(res11.PathId);
 
             /*****************************************************************************************************************************************************************/
@@ -113,7 +116,8 @@ namespace MyDAL.Test.Update
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
-            var res61 = await Conn.FirstOrDefaultAsync<Agent>(it => it.Id == agent.Id);
+            var res61 = await Conn.QueryOneAsync<Agent>(it => it.Id == agent.Id);
+
             Assert.Equal("yyyyyyy", res61.PathId, ignoreCase: true);
             Assert.NotNull(res61.ActiveOrderId);
 

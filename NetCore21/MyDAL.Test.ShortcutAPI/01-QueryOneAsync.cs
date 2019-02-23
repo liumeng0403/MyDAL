@@ -6,7 +6,8 @@ using Xunit;
 
 namespace MyDAL.Test.ShortcutAPI
 {
-    public class _01_FirstOrDefaultAsync:TestBase
+    public class _01_QueryOneAsync 
+        : TestBase
     {
         [Fact]
         public async Task test()
@@ -19,7 +20,8 @@ namespace MyDAL.Test.ShortcutAPI
 
             var xx3 = string.Empty;
 
-            var res3 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord, Guid>(it => it.Id == pk && it.CreatedOn == date,it=>it.Id);
+            var res3 = await Conn.QueryOneAsync<AlipayPaymentRecord, Guid>(it => it.Id == pk && it.CreatedOn == date,it=>it.Id);
+
             Assert.True(res3==pk);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -28,13 +30,14 @@ namespace MyDAL.Test.ShortcutAPI
 
             var xx4 = string.Empty;
 
-            var res4 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.Id == pk && it.CreatedOn == date,
+            var res4 = await Conn.QueryOneAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.Id == pk && it.CreatedOn == date,
                 it => new AlipayPaymentRecordVM
                 {
                     Id = it.Id,
                     TotalAmount = it.TotalAmount,
                     Description = it.Description
                 });
+
             Assert.NotNull(res4);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -43,7 +46,8 @@ namespace MyDAL.Test.ShortcutAPI
 
             var xx5 = string.Empty;
 
-            var res5 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.Id == pk && it.CreatedOn == date);
+            var res5 = await Conn.QueryOneAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.Id == pk && it.CreatedOn == date);
+
             Assert.NotNull(res5);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -52,7 +56,8 @@ namespace MyDAL.Test.ShortcutAPI
 
             var xx6 = string.Empty;
 
-            var res6 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord>(it => it.Id == pk && it.CreatedOn == date);
+            var res6 = await Conn.QueryOneAsync<AlipayPaymentRecord>(it => it.Id == pk && it.CreatedOn == date);
+
             Assert.NotNull(res6);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);

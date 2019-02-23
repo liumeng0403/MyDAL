@@ -5,7 +5,8 @@ using Xunit;
 
 namespace MyDAL.Test.QueryM
 {
-    public class _01_FirstOrDefaultAsync : TestBase
+    public class _01_QueryOneAsync
+        : TestBase
     {
         [Fact]
         public async Task test()
@@ -21,7 +22,8 @@ namespace MyDAL.Test.QueryM
             var res1 = await Conn
                 .Queryer<BodyFitRecord>()
                 .Where(it => it.Id == Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"))
-                .FirstOrDefaultAsync();
+                .QueryOneAsync();
+
             Assert.NotNull(res1);
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
@@ -29,7 +31,8 @@ namespace MyDAL.Test.QueryM
             var resR1 = await Conn
                 .Queryer<BodyFitRecord>()
                 .Where(it => Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e") == it.Id)
-                .FirstOrDefaultAsync();
+                .QueryOneAsync();
+
             Assert.NotNull(resR1);
             Assert.True(res1.Id == resR1.Id);
 
@@ -43,7 +46,8 @@ namespace MyDAL.Test.QueryM
             var res2 = await Conn
                 .Queryer<BodyFitRecord>()
                 .Where(it => it.CreatedOn == Convert.ToDateTime("2018-08-23 13:36:58"))
-                .FirstOrDefaultAsync();
+                .QueryOneAsync();
+
             Assert.NotNull(res2);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -51,7 +55,8 @@ namespace MyDAL.Test.QueryM
             var resR2 = await Conn
                 .Queryer<BodyFitRecord>()
                 .Where(it => Convert.ToDateTime("2018-08-23 13:36:58") == it.CreatedOn)
-                .FirstOrDefaultAsync();
+                .QueryOneAsync();
+
             Assert.NotNull(resR2);
             Assert.True(res2.Id == resR2.Id);
 
@@ -65,7 +70,8 @@ namespace MyDAL.Test.QueryM
             var res3 = await Conn
                 .Queryer<BodyFitRecord>()
                 .Where(it => it.BodyMeasureProperty == "xxxx")
-                .FirstOrDefaultAsync();
+                .QueryOneAsync();
+
             Assert.NotNull(res3);
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
@@ -73,7 +79,8 @@ namespace MyDAL.Test.QueryM
             var resR3 = await Conn
                 .Queryer<BodyFitRecord>()
                 .Where(it => "xxxx" == it.BodyMeasureProperty)
-                .FirstOrDefaultAsync();
+                .QueryOneAsync();
+
             Assert.NotNull(resR3);
             Assert.True(res3.Id == resR3.Id);
 
@@ -88,7 +95,8 @@ namespace MyDAL.Test.QueryM
                 .Queryer<Agent>()
                 .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
                     .And(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
-                .FirstOrDefaultAsync();
+                .QueryOneAsync();
+
             Assert.NotNull(res4);
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);

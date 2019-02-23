@@ -15,7 +15,8 @@ namespace MyDAL.Test.WhereEdge
         public async Task MethodParam()
         {
             var pk = Guid.Parse("000a9465-8665-40bf-90e3-0165442d9120");
-            var res = await Conn.FirstOrDefaultAsync<Agent>(it => it.Id == pk);
+            var res = await Conn.QueryOneAsync<Agent>(it => it.Id == pk);
+
             Assert.NotNull(res);
 
             await xxx(res.Id);
@@ -27,7 +28,8 @@ namespace MyDAL.Test.WhereEdge
             xx = string.Empty;
 
             // where method parameter 
-            var res1 = await Conn.FirstOrDefaultAsync<Agent>(it => it.Id == id);
+            var res1 = await Conn.QueryOneAsync<Agent>(it => it.Id == id);
+
             Assert.NotNull(res1);
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
@@ -35,7 +37,8 @@ namespace MyDAL.Test.WhereEdge
             xx = string.Empty;
 
             // where method parameter 
-            var resR1 = await Conn.FirstOrDefaultAsync<Agent>(it => id == it.Id);
+            var resR1 = await Conn.QueryOneAsync<Agent>(it => id == it.Id);
+
             Assert.NotNull(resR1);
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);

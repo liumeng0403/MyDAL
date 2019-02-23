@@ -28,7 +28,8 @@ namespace MyDAL.Test.Update
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             // 查询一条数据: AlipayPaymentRecord
-            var res11 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord>(it=>it.Id==pk1);
+            var res11 = await Conn.QueryOneAsync<AlipayPaymentRecord>(it=>it.Id==pk1);
+
             Assert.True(res11.Description == "new desc");
 
             /****************************************************************************************/
@@ -44,7 +45,8 @@ namespace MyDAL.Test.Update
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
-            var res21 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord>(it=>it.Id==pk2);
+            var res21 = await Conn.QueryOneAsync<AlipayPaymentRecord>(it=>it.Id==pk2);
+
             Assert.True(res21.Description == "xxxxxx");
 
             /****************************************************************************************/

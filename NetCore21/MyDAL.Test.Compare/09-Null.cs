@@ -15,7 +15,7 @@ namespace MyDAL.Test.Compare
             var m = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.Id == Guid.Parse("0001c614-dbef-4335-94b4-01654433a215"))
-                .FirstOrDefaultAsync();
+                .QueryOneAsync();
 
             await Conn
                 .Updater<Agent>()

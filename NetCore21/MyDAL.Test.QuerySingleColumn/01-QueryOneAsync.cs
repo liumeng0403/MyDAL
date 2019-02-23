@@ -1,13 +1,12 @@
 ﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace MyDAL.Test.QuerySingleColumn
 {
-    public class _01_FirstOrDefaultAsync : TestBase
+    public class _01_QueryOneAsync
+        : TestBase
     {
         [Fact]
         public async Task test()
@@ -18,7 +17,7 @@ namespace MyDAL.Test.QuerySingleColumn
             var res1 = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.CreatedOn == time1)
-                .FirstOrDefaultAsync(it => it.Id);
+                .QueryOneAsync(it => it.Id);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Query
 {
     public sealed class DistinctQ<M>
-        : Operator, /*IQueryAll<M>,*/ /*IPagingAll<M>,*/ ITop<M>, IFirstOrDefault<M>, IQueryList<M>, IQueryPaging<M>
+        : Operator, /*IQueryAll<M>,*/ /*IPagingAll<M>,*/ ITop<M>, IQueryOne<M>, IQueryList<M>, IQueryPaging<M>
         where M : class
     {
         internal DistinctQ(Context dc) 
@@ -49,24 +49,24 @@ namespace MyDAL.UserFacade.Query
         /// <summary>
         /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<M> FirstOrDefaultAsync()
+        public async Task<M> QueryOneAsync()
         {
-            return await new FirstOrDefaultImpl<M>(DC).FirstOrDefaultAsync();
+            return await new FirstOrDefaultImpl<M>(DC).QueryOneAsync();
         }
         /// <summary>
         /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<VM> FirstOrDefaultAsync<VM>()
+        public async Task<VM> QueryOneAsync<VM>()
             where VM : class
         {
-            return await new FirstOrDefaultImpl<M>(DC).FirstOrDefaultAsync<VM>();
+            return await new FirstOrDefaultImpl<M>(DC).QueryOneAsync<VM>();
         }
         /// <summary>
         /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<T> FirstOrDefaultAsync<T>(Expression<Func<M, T>> columnMapFunc)
+        public async Task<T> QueryOneAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
-            return await new FirstOrDefaultImpl<M>(DC).FirstOrDefaultAsync<T>(columnMapFunc);
+            return await new FirstOrDefaultImpl<M>(DC).QueryOneAsync<T>(columnMapFunc);
         }
 
         /// <summary>

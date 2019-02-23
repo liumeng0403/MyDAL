@@ -14,7 +14,7 @@ namespace MyDAL.Test.JoinQueryM
             return await Conn
                 .Queryer<Agent>()
                 .Where(it => it.Id == Guid.Parse("0ce552c0-2f5e-4c22-b26d-01654443b30e"))
-                .FirstOrDefaultAsync();
+                .QueryOneAsync();
         }
 
         [Fact]

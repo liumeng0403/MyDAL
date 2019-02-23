@@ -21,7 +21,7 @@ namespace MyDAL.Test.Compare
             };
 
             // 清理数据
-            var resx1 = await Conn.FirstOrDefaultAsync<BodyFitRecord>(it => it.Id == m.Id);
+            var resx1 = await Conn.QueryOneAsync<BodyFitRecord>(it => it.Id == m.Id);
             if (resx1 != null)
             {
                 var resx2 = await Conn.DeleteAsync<BodyFitRecord>(it => it.Id == resx1.Id);
@@ -39,13 +39,13 @@ namespace MyDAL.Test.Compare
 
             // 造数据
             var pk1 = Guid.Parse("014c55c3-b371-433c-abc0-016544491da8");
-            var resx1 = await Conn.FirstOrDefaultAsync<Agent>(it => it.Id == pk1);
+            var resx1 = await Conn.QueryOneAsync<Agent>(it => it.Id == pk1);
             var resx2 = await Conn.UpdateAsync<Agent>(it => it.Id == resx1.Id, new
             {
                 Name = "刘%华"
             });
             var pk3 = Guid.Parse("018a1855-e238-4fb7-82d6-0165442fd654");
-            var resx3 = await Conn.FirstOrDefaultAsync<Agent>(it => it.Id == pk3);
+            var resx3 = await Conn.QueryOneAsync<Agent>(it => it.Id == pk3);
             var resx4 = await Conn.UpdateAsync<Agent>(it => it.Id == resx3.Id, new
             {
                 Name = "何_伟"
@@ -66,7 +66,7 @@ namespace MyDAL.Test.Compare
             xx = string.Empty;
 
             // 默认 "%"+"xx"+"%"
-            var res1 = await Conn.FirstOrDefaultAsync<BodyFitRecord>(it => it.BodyMeasureProperty.Contains("xx"));
+            var res1 = await Conn.QueryOneAsync<BodyFitRecord>(it => it.BodyMeasureProperty.Contains("xx"));
             Assert.NotNull(res1);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);

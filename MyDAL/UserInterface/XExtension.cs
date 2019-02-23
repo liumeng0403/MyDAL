@@ -212,27 +212,27 @@ namespace MyDAL
         /// <summary>
         /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public static async Task<M> FirstOrDefaultAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
+        public static async Task<M> QueryOneAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
             where M : class, new()
         {
-            return await conn.Queryer<M>().Where(compareFunc).FirstOrDefaultAsync();
+            return await conn.Queryer<M>().Where(compareFunc).QueryOneAsync();
         }
         /// <summary>
         /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public static async Task<VM> FirstOrDefaultAsync<M, VM>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
+        public static async Task<VM> QueryOneAsync<M, VM>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
             where M : class, new()
             where VM : class
         {
-            return await conn.Queryer<M>().Where(compareFunc).FirstOrDefaultAsync<VM>();
+            return await conn.Queryer<M>().Where(compareFunc).QueryOneAsync<VM>();
         }
         /// <summary>
         /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public static async Task<T> FirstOrDefaultAsync<M, T>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, T>> columnMapFunc)
+        public static async Task<T> QueryOneAsync<M, T>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, T>> columnMapFunc)
             where M : class, new()
         {
-            return await conn.Queryer<M>().Where(compareFunc).FirstOrDefaultAsync(columnMapFunc);
+            return await conn.Queryer<M>().Where(compareFunc).QueryOneAsync(columnMapFunc);
         }
 
         /// <summary>
@@ -241,7 +241,7 @@ namespace MyDAL
         public static M FirstOrDefault<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
             where M : class, new()
         {
-            return (conn.FirstOrDefaultAsync(compareFunc)).GetAwaiter().GetResult();
+            return (conn.QueryOneAsync(compareFunc)).GetAwaiter().GetResult();
         }
         /// <summary>
         /// Queryer 便捷-同步 FirstOrDefaultAsync 方法
@@ -250,7 +250,7 @@ namespace MyDAL
             where M : class, new()
             where VM : class
         {
-            return (conn.FirstOrDefaultAsync<M, VM>(compareFunc)).GetAwaiter().GetResult();
+            return (conn.QueryOneAsync<M, VM>(compareFunc)).GetAwaiter().GetResult();
         }
         /// <summary>
         /// Queryer 便捷-同步 FirstOrDefaultAsync 方法
@@ -258,7 +258,7 @@ namespace MyDAL
         public static T FirstOrDefault<M, T>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, T>> columnMapFunc)
             where M : class, new()
         {
-            return (conn.FirstOrDefaultAsync(compareFunc, columnMapFunc)).GetAwaiter().GetResult();
+            return (conn.QueryOneAsync(compareFunc, columnMapFunc)).GetAwaiter().GetResult();
         }
 
         /// <summary>

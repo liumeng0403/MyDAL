@@ -19,7 +19,8 @@ namespace MyDAL.Test.Delete
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
-            var res11 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord>(it=>it.Id==pk1);
+            var res11 = await Conn.QueryOneAsync<AlipayPaymentRecord>(it=>it.Id==pk1);
+
             Assert.Null(res11);
 
             /****************************************************************************************/
@@ -32,7 +33,8 @@ namespace MyDAL.Test.Delete
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
-            var res21 = await Conn.FirstOrDefaultAsync<AlipayPaymentRecord>(it=>it.Id==pk2);
+            var res21 = await Conn.QueryOneAsync<AlipayPaymentRecord>(it=>it.Id==pk2);
+
             Assert.Null(res21);
 
             /****************************************************************************************/

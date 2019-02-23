@@ -66,7 +66,8 @@ namespace MyDAL.Test.Func
                 .Queryer<Agent>()
                 .Where(it => it.Name == "刘中华")
                 .Distinct()
-                .FirstOrDefaultAsync();
+                .QueryOneAsync();
+
             Assert.NotNull(res6);
             var res61 = await Conn.QueryListAsync<Agent>(it => it.Name == "刘中华");
             Assert.True(res61.Count == 2);

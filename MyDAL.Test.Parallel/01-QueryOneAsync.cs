@@ -3,7 +3,8 @@ using MyDAL.Test.Parallels;
 
 namespace MyDAL.Test.QueryParallel
 {
-    public class FirstOrDefaultAsync : TestBase
+    public class _01_QueryOneAsync
+        : TestBase
     {
         public None test(None none)
         {
@@ -11,17 +12,18 @@ namespace MyDAL.Test.QueryParallel
                 .Queryer<Agent>()
                 .Where(it => it.Name == "刘中华")
                 .Distinct()
-                .FirstOrDefaultAsync()).GetAwaiter().GetResult();
+                .QueryOneAsync()).GetAwaiter().GetResult();
+
             return none;
         }
 
-        public void FirstOrDefaultAsyncTest()
+        public void QueryOneAsyncTest()
         {
             var parallel = new XParallelTest();
             parallel.IsLookTask = true;
             parallel.Request = new None();
             parallel.Response = new None();
-            parallel.TargetFunc = new FirstOrDefaultAsync().test;
+            parallel.TargetFunc = new _01_QueryOneAsync().test;
             parallel.ApiDebug();
             //parallel.Parallel_100_10000();
             //parallel.Parallel_90_10000();

@@ -6,7 +6,7 @@ namespace MyDAL.Test.QueryParallel
     {
         static void Main(string[] args)
         {
-            new FirstOrDefaultAsync().FirstOrDefaultAsyncTest();      //  01 
+            new _01_QueryOneAsync().QueryOneAsyncTest();      //  01 
             //new HttpTest().HttpApiTest();
 
         }

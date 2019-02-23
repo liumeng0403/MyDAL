@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace MyDAL.Impls
 {
     internal class FirstOrDefaultImpl<M>
-        : Impler, IFirstOrDefault<M>
+        : Impler, IQueryOne<M>
         where M : class
     {
         internal FirstOrDefaultImpl(Context dc)
@@ -16,18 +16,18 @@ namespace MyDAL.Impls
         {
         }
 
-        public async Task<M> FirstOrDefaultAsync()
+        public async Task<M> QueryOneAsync()
         {
             return (await new TopImpl<M>(DC).TopAsync(1)).FirstOrDefault();
         }
 
-        public async Task<VM> FirstOrDefaultAsync<VM>()
+        public async Task<VM> QueryOneAsync<VM>()
             where VM : class
         {
             return (await new TopImpl<M>(DC).TopAsync<VM>(1)).FirstOrDefault();
         }
 
-        public async Task<T> FirstOrDefaultAsync<T>(Expression<Func<M, T>> columnMapFunc)
+        public async Task<T> QueryOneAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
             return (await new TopImpl<M>(DC).TopAsync(1, columnMapFunc)).FirstOrDefault();
         }

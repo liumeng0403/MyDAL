@@ -20,7 +20,8 @@ namespace MyDAL.Test.Compare
             var res1 = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.Id == Guid.Parse("03f0a7b4-acd3-4003-b686-01654436e906"))
-                .FirstOrDefaultAsync();
+                .QueryOneAsync();
+
             var res2 = await Conn
                 .Updater<Agent>()
                 .Set(it => it.DirectorStarCount, 10)
@@ -29,7 +30,8 @@ namespace MyDAL.Test.Compare
             var res3 = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.Id == Guid.Parse("03fc18e2-4b1e-4aa2-832b-0165443388bd"))
-                .FirstOrDefaultAsync();
+                .QueryOneAsync();
+
             var res4 = await Conn
                 .Updater<Agent>()
                 .Set(it => it.DirectorStarCount, 5)
