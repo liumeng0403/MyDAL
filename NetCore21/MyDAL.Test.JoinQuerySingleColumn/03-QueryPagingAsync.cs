@@ -1,14 +1,12 @@
 ﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace MyDAL.Test.JoinQuerySingleColumn
 {
-    public class _03_PagingListAsync:TestBase
+    public class _03_QueryPagingAsync
+        : TestBase
     {
         [Fact]
         public async Task test()
@@ -21,7 +19,8 @@ namespace MyDAL.Test.JoinQuerySingleColumn
                     .InnerJoin(() => record1)
                         .On(() => agent1.Id == record1.AgentId)
                 .Where(() => agent1.AgentLevel == AgentLevel.DistiAgent)
-                .PagingListAsync(1,10,() => agent1.Id);
+                .QueryPagingAsync(1,10,() => agent1.Id);
+
             Assert.True(res1.TotalCount == 574);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);

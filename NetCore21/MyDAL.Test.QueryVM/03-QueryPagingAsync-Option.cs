@@ -7,7 +7,7 @@ using Xunit;
 
 namespace MyDAL.Test.QueryVM
 {
-    public class _03_PagingListAsync_Option
+    public class _03_QueryPagingAsync_Option
         : TestBase
     {
         [Fact]
@@ -28,7 +28,8 @@ namespace MyDAL.Test.QueryVM
                 .Queryer<Agent>()
                 .Where(option)
                 .OrderBy(it => it.Name, OrderByEnum.Desc)
-                .PagingListAsync<AgentVM>();
+                .QueryPagingAsync<AgentVM>();
+
             Assert.True(res3.TotalCount == 1);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);

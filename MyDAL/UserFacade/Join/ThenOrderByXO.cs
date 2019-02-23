@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Join
 {
     public sealed class ThenOrderByXO
-        : Operator, IPagingListXO
+        : Operator, IQueryPagingXO
     {
         internal ThenOrderByXO(Context dc)
             : base(dc)
@@ -18,17 +18,17 @@ namespace MyDAL.UserFacade.Join
         /// <summary>
         /// 多表分页查询
         /// </summary>
-        public async Task<PagingResult<M>> PagingListAsync<M>()
+        public async Task<PagingResult<M>> QueryPagingAsync<M>()
             where M : class
         {
-            return await new PagingListXOImpl(DC).PagingListAsync<M>();
+            return await new PagingListXOImpl(DC).QueryPagingAsync<M>();
         }
         /// <summary>
         /// 多表分页查询
         /// </summary>
-        public async Task<PagingResult<T>> PagingListAsync<T>(Expression<Func<T>> columnMapFunc)
+        public async Task<PagingResult<T>> QueryPagingAsync<T>(Expression<Func<T>> columnMapFunc)
         {
-            return await new PagingListXOImpl(DC).PagingListAsync(columnMapFunc);
+            return await new PagingListXOImpl(DC).QueryPagingAsync(columnMapFunc);
         }
 
     }

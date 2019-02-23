@@ -28,7 +28,7 @@ namespace MyDAL.Test.QueryAPI
             var res1 = await Conn
                 .Queryer<Agent>()
                 .Where(option1)
-                .PagingListAsync();
+                .QueryPagingAsync();
 
             Assert.True(res1.TotalCount == 555);
 
@@ -51,7 +51,7 @@ namespace MyDAL.Test.QueryAPI
             var res1 = await Conn
                 .Queryer<Agent>()
                 .Where(op1)
-                .PagingListAsync(it => it.Id);
+                .QueryPagingAsync(it => it.Id);
 
             Assert.True(res1.TotalCount == 555);
 
@@ -74,7 +74,7 @@ namespace MyDAL.Test.QueryAPI
             var res13 = await Conn
                 .Queryer<Agent>()
                 .Where(option13)
-                .PagingListAsync<AgentVM>();
+                .QueryPagingAsync<AgentVM>();
 
             Assert.True(res13.TotalCount == 28620);
             Assert.True(res13.Data.Count == 10);
@@ -99,7 +99,7 @@ namespace MyDAL.Test.QueryAPI
             var res1 = await Conn
                 .Queryer<Agent>()
                 .Where(op1)
-                .PagingListAsync(it => new AgentVM
+                .QueryPagingAsync(it => new AgentVM
                 {
                     XXXX = it.Name,
                     YYYY = it.PathId

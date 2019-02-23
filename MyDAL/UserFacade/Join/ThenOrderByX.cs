@@ -8,8 +8,11 @@ using System.Threading.Tasks;
 
 namespace MyDAL.UserFacade.Join
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class ThenOrderByX
-        : Operator, IFirstOrDefaultX, IQueryListX, IPagingListX, ITopX
+        : Operator, IFirstOrDefaultX, IQueryListX, IQueryPagingX, ITopX
     {
         internal ThenOrderByX(Context dc)
             : base(dc)
@@ -53,10 +56,10 @@ namespace MyDAL.UserFacade.Join
         /// </summary>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
-        public async Task<PagingResult<M>> PagingListAsync<M>(int pageIndex, int pageSize)
+        public async Task<PagingResult<M>> QueryPagingAsync<M>(int pageIndex, int pageSize)
             where M : class
         {
-            return await new PagingListXImpl(DC).PagingListAsync<M>(pageIndex, pageSize);
+            return await new QueryPagingXImpl(DC).QueryPagingAsync<M>(pageIndex, pageSize);
         }
         /// <summary>
         /// 多表分页查询
@@ -64,9 +67,9 @@ namespace MyDAL.UserFacade.Join
         /// <typeparam name="VM">ViewModel</typeparam>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
-        public async Task<PagingResult<T>> PagingListAsync<T>(int pageIndex, int pageSize, Expression<Func<T>> columnMapFunc)
+        public async Task<PagingResult<T>> QueryPagingAsync<T>(int pageIndex, int pageSize, Expression<Func<T>> columnMapFunc)
         {
-            return await new PagingListXImpl(DC).PagingListAsync(pageIndex, pageSize, columnMapFunc);
+            return await new QueryPagingXImpl(DC).QueryPagingAsync(pageIndex, pageSize, columnMapFunc);
         }
 
         /// <summary>

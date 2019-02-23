@@ -32,7 +32,7 @@ namespace MyDAL.Test.WhereEdge
             var res1 = await Conn
                 .Queryer<Agent>()
                 .Where(op1)
-                .PagingListAsync();
+                .QueryPagingAsync();
 
             Assert.True(res1.TotalCount == 1);
 
@@ -50,7 +50,7 @@ namespace MyDAL.Test.WhereEdge
                 .Queryer<Agent>()
                 .Where(op2)
                 .OrderBy(it => it.Name, OrderByEnum.Asc)
-                .PagingListAsync();
+                .QueryPagingAsync();
 
             Assert.True(res2.TotalCount == 28619);
 
@@ -69,7 +69,7 @@ namespace MyDAL.Test.WhereEdge
                 .Where(op3)
                 .OrderBy(it => it.AgentLevel)
                     .ThenOrderBy(it => it.Name, OrderByEnum.Asc)
-                .PagingListAsync();
+                .QueryPagingAsync();
 
             Assert.True(res3.TotalCount == 28619);
 
@@ -89,7 +89,7 @@ namespace MyDAL.Test.WhereEdge
                 .OrderBy(it => it.AgentLevel)
                     .ThenOrderBy(it => it.Name)
                     .ThenOrderBy(it => it.PathId)
-                .PagingListAsync();
+                .QueryPagingAsync();
 
             Assert.True(res4.TotalCount == 28619);
 
@@ -107,7 +107,7 @@ namespace MyDAL.Test.WhereEdge
                 .Queryer<Agent>()
                 .Where(op5)
                 .Distinct()
-                .PagingListAsync(it => it.AgentLevel);
+                .QueryPagingAsync(it => it.AgentLevel);
 
             Assert.True(res5.TotalCount == 3);
 
@@ -126,7 +126,7 @@ namespace MyDAL.Test.WhereEdge
                 .Where(op6)
                 .OrderBy(it => it.Name)
                 .Distinct()
-                .PagingListAsync();
+                .QueryPagingAsync();
 
             Assert.True(res6.TotalCount == 28619);
 
@@ -146,7 +146,7 @@ namespace MyDAL.Test.WhereEdge
                 .OrderBy(it => it.AgentLevel)
                     .ThenOrderBy(it => it.Name, OrderByEnum.Asc)
                 .Distinct()
-                .PagingListAsync<AgentVM>();
+                .QueryPagingAsync<AgentVM>();
 
             Assert.True(res7.TotalCount == 28619);
 
@@ -167,7 +167,7 @@ namespace MyDAL.Test.WhereEdge
                     .ThenOrderBy(it => it.Name)
                     .ThenOrderBy(it => it.CreatedOn)
                 .Distinct()
-                .PagingListAsync<AgentVM>(it => new AgentVM
+                .QueryPagingAsync<AgentVM>(it => new AgentVM
                 {
                     XXXX = it.Name,
                     YYYY = it.PathId
@@ -202,7 +202,7 @@ namespace MyDAL.Test.WhereEdge
             var res1 = await Conn
                 .Queryer<Agent>()
                 .Where(op1)
-                .PagingListAsync();
+                .QueryPagingAsync();
 
             Assert.True(res1.TotalCount == 1);
 
@@ -219,7 +219,7 @@ namespace MyDAL.Test.WhereEdge
             var res2 = await Conn
                 .Queryer<Agent>()
                 .Where(op2)
-                .PagingListAsync();
+                .QueryPagingAsync();
 
             Assert.True(res2.TotalCount == 28619);
 
@@ -236,7 +236,7 @@ namespace MyDAL.Test.WhereEdge
             var res3 = await Conn
                 .Queryer<Agent>()
                 .Where(op3)
-                .PagingListAsync();
+                .QueryPagingAsync();
 
             Assert.True(res3.TotalCount == 9849);
 
@@ -253,7 +253,7 @@ namespace MyDAL.Test.WhereEdge
             var res4 = await Conn
                 .Queryer<Agent>()
                 .Where(op4)
-                .PagingListAsync();
+                .QueryPagingAsync();
 
             Assert.True(res4.TotalCount == 9850);
 
@@ -270,7 +270,7 @@ namespace MyDAL.Test.WhereEdge
             var res5 = await Conn
                 .Queryer<Agent>()
                 .Where(op5)
-                .PagingListAsync();
+                .QueryPagingAsync();
 
             Assert.True(res5.TotalCount == 18770);
 
@@ -287,7 +287,7 @@ namespace MyDAL.Test.WhereEdge
             var res6 = await Conn
                 .Queryer<Agent>()
                 .Where(op6)
-                .PagingListAsync();
+                .QueryPagingAsync();
 
             Assert.True(res6.TotalCount == 18771);
 
@@ -304,7 +304,7 @@ namespace MyDAL.Test.WhereEdge
             var res7 = await Conn
                 .Queryer<Agent>()
                 .Where(op7)
-                .PagingListAsync();
+                .QueryPagingAsync();
 
             Assert.True(res7.TotalCount == 316);
 
@@ -321,7 +321,7 @@ namespace MyDAL.Test.WhereEdge
             var res8 = await Conn
                 .Queryer<Agent>()
                 .Where(op8)
-                .PagingListAsync();
+                .QueryPagingAsync();
 
             Assert.True(res8.TotalCount == 285);
 
@@ -338,7 +338,7 @@ namespace MyDAL.Test.WhereEdge
             var res9 = await Conn
                 .Queryer<Agent>()
                 .Where(op9)
-                .PagingListAsync();
+                .QueryPagingAsync();
 
             Assert.True(res9.TotalCount == 40);
 
@@ -355,7 +355,7 @@ namespace MyDAL.Test.WhereEdge
             var res10 = await Conn
                 .Queryer<Agent>()
                 .Where(op10)
-                .PagingListAsync();
+                .QueryPagingAsync();
 
             Assert.True(res10.TotalCount == 28577);
 
@@ -372,7 +372,7 @@ namespace MyDAL.Test.WhereEdge
             var res11 = await Conn
                 .Queryer<Agent>()
                 .Where(op11)
-                .PagingListAsync();
+                .QueryPagingAsync();
 
             Assert.True(res11.TotalCount == 27163);
 
@@ -389,7 +389,7 @@ namespace MyDAL.Test.WhereEdge
             var res12 = await Conn
                 .Queryer<Agent>()
                 .Where(op12)
-                .PagingListAsync();
+                .QueryPagingAsync();
 
             Assert.True(res12.TotalCount == 28549);
 
@@ -406,7 +406,7 @@ namespace MyDAL.Test.WhereEdge
             var res13 = await Conn
                 .Queryer<Agent>()
                 .Where(op13)
-                .PagingListAsync();
+                .QueryPagingAsync();
 
             Assert.True(res13.TotalCount == 555);
 
@@ -423,7 +423,7 @@ namespace MyDAL.Test.WhereEdge
             var res14 = await Conn
                 .Queryer<Agent>()
                 .Where(op14)
-                .PagingListAsync();
+                .QueryPagingAsync();
 
             Assert.True(res14.TotalCount == 28065);
 

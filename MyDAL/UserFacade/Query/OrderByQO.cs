@@ -11,7 +11,7 @@ namespace MyDAL.UserFacade.Query
     /// 
     /// </summary>
     public sealed class OrderByQO<M>
-        : Operator, IPagingListO<M>
+        : Operator, IQueryPagingO<M>
         where M : class
     {
         internal OrderByQO(Context dc)
@@ -20,24 +20,24 @@ namespace MyDAL.UserFacade.Query
         /// <summary>
         /// 单表分页查询
         /// </summary>
-        public async Task<PagingResult<M>> PagingListAsync()
+        public async Task<PagingResult<M>> QueryPagingAsync()
         {
-            return await new PagingListOImpl<M>(DC).PagingListAsync();
+            return await new QueryPagingOImpl<M>(DC).QueryPagingAsync();
         }
         /// <summary>
         /// 单表分页查询
         /// </summary>
-        public async Task<PagingResult<VM>> PagingListAsync<VM>()
+        public async Task<PagingResult<VM>> QueryPagingAsync<VM>()
             where VM : class
         {
-            return await new PagingListOImpl<M>(DC).PagingListAsync<VM>();
+            return await new QueryPagingOImpl<M>(DC).QueryPagingAsync<VM>();
         }
         /// <summary>
         /// 单表分页查询
         /// </summary>
-        public async Task<PagingResult<T>> PagingListAsync<T>(Expression<Func<M, T>> columnMapFunc)
+        public async Task<PagingResult<T>> QueryPagingAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
-            return await new PagingListOImpl<M>(DC).PagingListAsync(columnMapFunc);
+            return await new QueryPagingOImpl<M>(DC).QueryPagingAsync(columnMapFunc);
         }
     }
 }

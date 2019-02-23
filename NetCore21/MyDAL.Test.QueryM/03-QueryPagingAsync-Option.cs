@@ -8,7 +8,7 @@ using Xunit;
 
 namespace MyDAL.Test.QueryM
 {
-    public class _03_PagingListAsync_Option
+    public class _03_QueryPagingAsync_Option
         : TestBase
     {
         [Fact]
@@ -26,7 +26,8 @@ namespace MyDAL.Test.QueryM
             var res2 = await Conn
                 .Queryer<Agent>()
                 .Where(option2)
-                .PagingListAsync();
+                .QueryPagingAsync();
+
             Assert.True(res2.TotalCount == 1);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -43,7 +44,8 @@ namespace MyDAL.Test.QueryM
             var res3 = await Conn
                 .Queryer<Agent>()
                 .Where(option3)
-                .PagingListAsync();
+                .QueryPagingAsync();
+
             Assert.True(res3.TotalCount == 28619);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -59,7 +61,8 @@ namespace MyDAL.Test.QueryM
             var res4 = await Conn
                 .Queryer<Agent>()
                 .Where(option4)
-                .PagingListAsync();
+                .QueryPagingAsync();
+
             Assert.True(res4.TotalCount == 2002);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -79,7 +82,8 @@ namespace MyDAL.Test.QueryM
             var res5 = await Conn
                 .Queryer<Agent>()
                 .Where(option5)
-                .PagingListAsync();
+                .QueryPagingAsync();
+
             Assert.True(res5.TotalCount == 555);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -99,7 +103,7 @@ namespace MyDAL.Test.QueryM
             var res6 = await Conn
                 .Queryer<Agent>()
                 .Where(option6)
-                .PagingListAsync();
+                .QueryPagingAsync();
 
             Assert.True(res6.TotalCount == 28064 || res6.TotalCount == 28065);
 

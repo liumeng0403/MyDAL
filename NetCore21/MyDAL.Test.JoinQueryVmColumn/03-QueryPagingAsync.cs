@@ -2,15 +2,13 @@
 using MyDAL.Test.Enums;
 using MyDAL.Test.Options;
 using MyDAL.Test.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace MyDAL.Test.JoinQueryVmColumn
 {
-    public class _03_PagingListAsync:TestBase
+    public class _03_QueryPagingAsync 
+        : TestBase
     {
         [Fact]
         public async Task test()
@@ -24,11 +22,12 @@ namespace MyDAL.Test.JoinQueryVmColumn
                     .InnerJoin(() => record9)
                         .On(() => agent9.Id == record9.AgentId)
                 .Where(() => agent9.AgentLevel == AgentLevel.DistiAgent)
-                .PagingListAsync(1, 10, () => new AgentVM
+                .QueryPagingAsync(1, 10, () => new AgentVM
                 {
                     XXXX = agent9.Name,
                     YYYY = agent9.PathId
                 });
+
             Assert.True(res9.TotalCount == 574);
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
@@ -45,11 +44,12 @@ namespace MyDAL.Test.JoinQueryVmColumn
                     .InnerJoin(() => record10)
                         .On(() => agent10.Id == record10.AgentId)
                 .Where(option10) //() => agent10.AgentLevel == AgentLevel.DistiAgent)
-                .PagingListAsync(() => new AgentVM
+                .QueryPagingAsync(() => new AgentVM
                 {
                     XXXX = agent10.Name,
                     YYYY = agent10.PathId
                 });
+
             Assert.True(res10.TotalCount == 574);
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
@@ -68,11 +68,12 @@ namespace MyDAL.Test.JoinQueryVmColumn
                     .InnerJoin(() => record11)
                         .On(() => agent11.Id == record11.AgentId)
                 .Where(option11) //() => agent11.AgentLevel == AgentLevel.DistiAgent)
-                .PagingListAsync(() => new AgentVM
+                .QueryPagingAsync(() => new AgentVM
                 {
                     XXXX = agent11.Name,
                     YYYY = agent11.PathId
                 });
+
             Assert.True(res11.TotalCount == 574);
             Assert.True(res11.PageSize == 10);
             Assert.True(res11.PageIndex == 5);

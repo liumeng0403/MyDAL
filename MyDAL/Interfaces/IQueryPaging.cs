@@ -13,27 +13,26 @@ namespace MyDAL.Interfaces
         Task<PagingResult<T>> QueryPagingAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc);
     }
 
-    internal interface IPagingListO<M>
+    internal interface IQueryPagingO<M>
         where M : class
     {
-        Task<PagingResult<M>> PagingListAsync();
-        Task<PagingResult<VM>> PagingListAsync<VM>()
+        Task<PagingResult<M>> QueryPagingAsync();
+        Task<PagingResult<VM>> QueryPagingAsync<VM>()
             where VM : class;
-        Task<PagingResult<T>> PagingListAsync<T>(Expression<Func<M, T>> columnMapFunc);
-
+        Task<PagingResult<T>> QueryPagingAsync<T>(Expression<Func<M, T>> columnMapFunc);
     }
 
-    internal interface IPagingListX
+    internal interface IQueryPagingX
     {
-        Task<PagingResult<M>> PagingListAsync<M>(int pageIndex, int pageSize)
+        Task<PagingResult<M>> QueryPagingAsync<M>(int pageIndex, int pageSize)
             where M : class;
-        Task<PagingResult<T>> PagingListAsync<T>(int pageIndex, int pageSize, Expression<Func<T>> columnMapFunc);
+        Task<PagingResult<T>> QueryPagingAsync<T>(int pageIndex, int pageSize, Expression<Func<T>> columnMapFunc);
     }
 
-    internal interface IPagingListXO
+    internal interface IQueryPagingXO
     {
-        Task<PagingResult<M>> PagingListAsync<M>()
+        Task<PagingResult<M>> QueryPagingAsync<M>()
             where M : class;
-        Task<PagingResult<T>> PagingListAsync<T>(Expression<Func<T>> columnMapFunc);
+        Task<PagingResult<T>> QueryPagingAsync<T>(Expression<Func<T>> columnMapFunc);
     }
 }

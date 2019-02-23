@@ -174,7 +174,8 @@ namespace MyDAL.Test.WhereEdge
             var res6 = await Conn
                 .Queryer<Product>()
                 .Where(option6)
-                .PagingListAsync();
+                .QueryPagingAsync();
+
             Assert.True(res6.Data.Count == 4);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -183,7 +184,8 @@ namespace MyDAL.Test.WhereEdge
             var res61 = await Conn
                 .Queryer<Product>()
                 .Where(option6)
-                .PagingListAsync();
+                .QueryPagingAsync();
+
             Assert.True(res61.Data.Count == 4);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -192,7 +194,8 @@ namespace MyDAL.Test.WhereEdge
             var res62 = await Conn
                 .Queryer<Product>()
                 .Where(option6)
-                .PagingListAsync();
+                .QueryPagingAsync();
+
             Assert.True(res62.Data.Count == 0);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
