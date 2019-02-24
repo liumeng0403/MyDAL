@@ -6,7 +6,8 @@ using Xunit;
 
 namespace MyDAL.Test.JoinQueryVmColumn
 {
-    public class _01_FirstOrDefaultAsync : TestBase
+    public class _01_QueryOneAsync
+        : TestBase
     {
         [Fact]
         public async Task Test()
@@ -23,7 +24,7 @@ namespace MyDAL.Test.JoinQueryVmColumn
                     .InnerJoin(() => record2)
                         .On(() => agent2.Id == record2.AgentId)
                 .Where(() => agent2.Id == guid2)
-                .FirstOrDefaultAsync(() => new AgentVM
+                .QueryOneAsync(() => new AgentVM
                 {
                     nn = agent2.PathId,
                     yy = record2.Id,
@@ -31,6 +32,7 @@ namespace MyDAL.Test.JoinQueryVmColumn
                     zz = agent2.Name,
                     mm = record2.LockedCount
                 });
+
             Assert.NotNull(res2);
             Assert.Equal("夏明君", res2.zz);
 

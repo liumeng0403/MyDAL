@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Join
 {
     public sealed class WhereX
-        : Operator, IFirstOrDefaultX, IQueryListX, IQueryPagingX, ICountX, ITopX, IExistX
+        : Operator
+        , IQueryOneX, IQueryListX, IQueryPagingX
+        , IIsExistX, ICountX
+        , ITopX
     {
 
         internal WhereX(Context dc)
@@ -26,19 +29,19 @@ namespace MyDAL.UserFacade.Join
         }
 
         /// <summary>
-        /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".QueryOneAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<M> FirstOrDefaultAsync<M>()
+        public async Task<M> QueryOneAsync<M>()
             where M : class
         {
-            return await new FirstOrDefaultXImpl(DC).FirstOrDefaultAsync<M>();
+            return await new QueryOneXImpl(DC).QueryOneAsync<M>();
         }
         /// <summary>
-        /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".QueryOneAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<T> FirstOrDefaultAsync<T>(Expression<Func<T>> columnMapFunc)
+        public async Task<T> QueryOneAsync<T>(Expression<Func<T>> columnMapFunc)
         {
-            return await new FirstOrDefaultXImpl(DC).FirstOrDefaultAsync(columnMapFunc);
+            return await new QueryOneXImpl(DC).QueryOneAsync(columnMapFunc);
         }
 
         /// <summary>
@@ -98,7 +101,7 @@ namespace MyDAL.UserFacade.Join
         /// </summary>
         public async Task<bool> IsExistAsync()
         {
-            return await new ExistXImpl(DC).IsExistAsync();
+            return await new IsExistXImpl(DC).IsExistAsync();
         }
     }
 }

@@ -47,26 +47,26 @@ namespace MyDAL.UserFacade.Query
         }
 
         /// <summary>
-        /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".QueryOneAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<M> QueryOneAsync()
         {
-            return await new FirstOrDefaultImpl<M>(DC).QueryOneAsync();
+            return await new QueryOneImpl<M>(DC).QueryOneAsync();
         }
         /// <summary>
-        /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".QueryOneAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<VM> QueryOneAsync<VM>()
             where VM : class
         {
-            return await new FirstOrDefaultImpl<M>(DC).QueryOneAsync<VM>();
+            return await new QueryOneImpl<M>(DC).QueryOneAsync<VM>();
         }
         /// <summary>
-        /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".QueryOneAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<T> QueryOneAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
-            return await new FirstOrDefaultImpl<M>(DC).QueryOneAsync<T>(columnMapFunc);
+            return await new QueryOneImpl<M>(DC).QueryOneAsync<T>(columnMapFunc);
         }
 
         /// <summary>

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Query
 {
     public sealed class Queryer<M>
-        : Operator, /*IQueryAll<M>,*/ /*IPagingAll<M>,*/ ITop<M>, IExist,IQueryList<M>, IQueryPaging<M>
+        : Operator, IQueryList<M>, IQueryPaging<M>, ITop<M>, IIsExist
         where M : class
     {
         internal Queryer(Context dc)
@@ -101,7 +101,7 @@ namespace MyDAL.UserFacade.Query
         /// </summary>
         public async Task<bool> IsExistAsync()
         {
-            return await new ExistImpl<M>(DC).IsExistAsync();
+            return await new IsExistImpl<M>(DC).IsExistAsync();
         }
     }
 }

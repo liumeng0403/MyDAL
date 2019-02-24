@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Impls
 {
-    internal class ExistImpl<M>
-        : Impler, IExist
+    internal class IsExistImpl<M>
+        : Impler, IIsExist
         where M : class
     {
-        internal ExistImpl(Context dc)
+        internal IsExistImpl(Context dc)
             : base(dc) { }
 
         public async Task<bool> IsExistAsync()
@@ -28,10 +28,10 @@ namespace MyDAL.Impls
         }
     }
 
-    internal class ExistXImpl
-        : Impler, IExistX
+    internal class IsExistXImpl
+        : Impler, IIsExistX
     {
-        public ExistXImpl(Context dc) 
+        public IsExistXImpl(Context dc) 
             : base(dc) {   }
 
         public async Task<bool> IsExistAsync()

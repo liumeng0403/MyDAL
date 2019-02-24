@@ -12,7 +12,7 @@ namespace MyDAL.UserFacade.Join
     /// 
     /// </summary>
     public sealed class ThenOrderByX
-        : Operator, IFirstOrDefaultX, IQueryListX, IQueryPagingX, ITopX
+        : Operator, IQueryOneX, IQueryListX, IQueryPagingX, ITopX
     {
         internal ThenOrderByX(Context dc)
             : base(dc)
@@ -20,19 +20,19 @@ namespace MyDAL.UserFacade.Join
         }
 
         /// <summary>
-        /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".QueryOneAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<M> FirstOrDefaultAsync<M>()
+        public async Task<M> QueryOneAsync<M>()
             where M : class
         {
-            return await new FirstOrDefaultXImpl(DC).FirstOrDefaultAsync<M>();
+            return await new QueryOneXImpl(DC).QueryOneAsync<M>();
         }
         /// <summary>
-        /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".QueryOneAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<T> FirstOrDefaultAsync<T>(Expression<Func<T>> columnMapFunc)
+        public async Task<T> QueryOneAsync<T>(Expression<Func<T>> columnMapFunc)
         {
-            return await new FirstOrDefaultXImpl(DC).FirstOrDefaultAsync(columnMapFunc);
+            return await new QueryOneXImpl(DC).QueryOneAsync(columnMapFunc);
         }
 
         /// <summary>

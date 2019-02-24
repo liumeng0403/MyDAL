@@ -12,10 +12,10 @@ namespace MyDAL.Interfaces
         Task<T> QueryOneAsync<T>(Expression<Func<M, T>> columnMapFunc);
     }
 
-    internal interface IFirstOrDefaultX
+    internal interface IQueryOneX
     {
-        Task<M> FirstOrDefaultAsync<M>()
+        Task<M> QueryOneAsync<M>()
             where M : class;
-        Task<T> FirstOrDefaultAsync<T>(Expression<Func<T>> columnMapFunc);
+        Task<T> QueryOneAsync<T>(Expression<Func<T>> columnMapFunc);
     }
 }

@@ -12,7 +12,11 @@ namespace MyDAL.UserFacade.Query
     /// 
     /// </summary>
     public sealed class WhereQ<M>
-        : Operator, IExist, IQueryOne<M>, IQueryList<M>, IQueryPaging<M>, ICount<M>, ITop<M>, ISum<M>
+        : Operator
+        , IQueryOne<M>, IQueryList<M>, IQueryPaging<M>
+        , IIsExist, ICount<M>
+        , ITop<M>
+        , ISum<M>
         where M : class
     {
         internal WhereQ(Context dc)
@@ -23,7 +27,7 @@ namespace MyDAL.UserFacade.Query
         /// </summary>
         public async Task<bool> IsExistAsync()
         {
-            return await new ExistImpl<M>(DC).IsExistAsync();
+            return await new IsExistImpl<M>(DC).IsExistAsync();
         }
 
         /// <summary>
@@ -51,26 +55,26 @@ namespace MyDAL.UserFacade.Query
         }
 
         /// <summary>
-        /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".QueryOneAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<M> QueryOneAsync()
         {
-            return await new FirstOrDefaultImpl<M>(DC).QueryOneAsync();
+            return await new QueryOneImpl<M>(DC).QueryOneAsync();
         }
         /// <summary>
-        /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".QueryOneAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<VM> QueryOneAsync<VM>()
             where VM : class
         {
-            return await new FirstOrDefaultImpl<M>(DC).QueryOneAsync<VM>();
+            return await new QueryOneImpl<M>(DC).QueryOneAsync<VM>();
         }
         /// <summary>
-        /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".QueryOneAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<T> QueryOneAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
-            return await new FirstOrDefaultImpl<M>(DC).QueryOneAsync<T>(columnMapFunc);
+            return await new QueryOneImpl<M>(DC).QueryOneAsync<T>(columnMapFunc);
         }
 
         /// <summary>

@@ -5,7 +5,8 @@ using Xunit;
 
 namespace MyDAL.Test.JoinQuerySingleColumn
 {
-    public class _01_FirstOrDefaultAsync : TestBase
+    public class _01_QueryOneAsync
+        : TestBase
     {
         [Fact]
         public async Task Test()
@@ -18,7 +19,8 @@ namespace MyDAL.Test.JoinQuerySingleColumn
                     .InnerJoin(() => agentRecord)
                         .On(() => agent.Id == agentRecord.AgentId)
                 .Where(() => agent.AgentLevel == AgentLevel.DistiAgent)
-                .FirstOrDefaultAsync(() => agent.Name);
+                .QueryOneAsync(() => agent.Name);
+
             Assert.NotNull(res1);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);

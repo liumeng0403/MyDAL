@@ -210,7 +210,7 @@ namespace MyDAL
         }
 
         /// <summary>
-        /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".QueryOneAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static async Task<M> QueryOneAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
             where M : class, new()
@@ -218,7 +218,7 @@ namespace MyDAL
             return await conn.Queryer<M>().Where(compareFunc).QueryOneAsync();
         }
         /// <summary>
-        /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".QueryOneAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static async Task<VM> QueryOneAsync<M, VM>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
             where M : class, new()
@@ -227,7 +227,7 @@ namespace MyDAL
             return await conn.Queryer<M>().Where(compareFunc).QueryOneAsync<VM>();
         }
         /// <summary>
-        /// 请参阅: <see langword=".FirstOrDefaultAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".QueryOneAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static async Task<T> QueryOneAsync<M, T>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, T>> columnMapFunc)
             where M : class, new()

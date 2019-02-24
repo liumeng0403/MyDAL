@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Impls
 {
-    internal class FirstOrDefaultImpl<M>
+    internal class QueryOneImpl<M>
         : Impler, IQueryOne<M>
         where M : class
     {
-        internal FirstOrDefaultImpl(Context dc)
+        internal QueryOneImpl(Context dc)
             : base(dc)
         {
         }
@@ -33,21 +33,21 @@ namespace MyDAL.Impls
         }
     }
 
-    internal class FirstOrDefaultXImpl
-        : Impler, IFirstOrDefaultX
+    internal class QueryOneXImpl
+        : Impler, IQueryOneX
     {
-        internal FirstOrDefaultXImpl(Context dc)
+        internal QueryOneXImpl(Context dc)
             : base(dc)
         {
         }
 
-        public async Task<M> FirstOrDefaultAsync<M>()
+        public async Task<M> QueryOneAsync<M>()
             where M : class
         {
             return (await new TopXImpl(DC).TopAsync<M>(1)).FirstOrDefault();
         }
 
-        public async Task<T> FirstOrDefaultAsync<T>(Expression<Func<T>> columnMapFunc)
+        public async Task<T> QueryOneAsync<T>(Expression<Func<T>> columnMapFunc)
         {
             return (await new TopXImpl(DC).TopAsync(1, columnMapFunc)).FirstOrDefault();
         }
