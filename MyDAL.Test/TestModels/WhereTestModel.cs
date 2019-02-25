@@ -20,7 +20,7 @@ namespace MyDAL.Test.Entities
         
         public AgentLevel?[] In_Array_枚举 { get; set; }
 
-        public List<string> In_List_String { get; set; }
+        //public List<string> In_List_String { get; set; }
         public string[] In_Array_String { get; set; }
         
     }

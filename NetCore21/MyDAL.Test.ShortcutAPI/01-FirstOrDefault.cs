@@ -21,7 +21,7 @@ namespace MyDAL.Test.ShortcutAPI
 
             var xx3 = string.Empty;
 
-            var res3 = Conn.FirstOrDefault<AlipayPaymentRecord, Guid>(it => it.Id == pk && it.CreatedOn == date, it => it.Id);
+            var res3 = Conn.QueryOne<AlipayPaymentRecord, Guid>(it => it.Id == pk && it.CreatedOn == date, it => it.Id);
             Assert.True(res3 == pk);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -30,7 +30,7 @@ namespace MyDAL.Test.ShortcutAPI
 
             var xx4 = string.Empty;
 
-            var res4 = Conn.FirstOrDefault<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.Id == pk && it.CreatedOn == date,
+            var res4 = Conn.QueryOne<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.Id == pk && it.CreatedOn == date,
                 it => new AlipayPaymentRecordVM
                 {
                     Id = it.Id,
@@ -45,7 +45,7 @@ namespace MyDAL.Test.ShortcutAPI
 
             var xx5 = string.Empty;
 
-            var res5 = Conn.FirstOrDefault<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.Id == pk && it.CreatedOn == date);
+            var res5 = Conn.QueryOne<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.Id == pk && it.CreatedOn == date);
             Assert.NotNull(res5);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -54,7 +54,7 @@ namespace MyDAL.Test.ShortcutAPI
 
             var xx6 = string.Empty;
 
-            var res6 = Conn.FirstOrDefault<AlipayPaymentRecord>(it => it.Id == pk && it.CreatedOn == date);
+            var res6 = Conn.QueryOne<AlipayPaymentRecord>(it => it.Id == pk && it.CreatedOn == date);
             Assert.NotNull(res6);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);

@@ -31,11 +31,11 @@ namespace MyDAL.Test
                         AgentLevel.CityAgent,
                         AgentLevel.DistiAgent
                     },
-                    In_List_String = new List<string>
-                    {
-                        "黄银凤",
-                        "刘建芬"
-                    },
+                    //In_List_String = new List<string>
+                    //{
+                    //    "黄银凤",
+                    //    "刘建芬"
+                    //},
                     In_Array_String = new string[]
                     {
                         "黄银凤",

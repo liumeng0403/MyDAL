@@ -31,9 +31,11 @@ namespace MyDAL.Test.JoinQueryVmColumn
                     zz = agent12.Name,
                     mm = record12.LockedCount
                 });
+
             Assert.True(res12.Count == 574);
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
+
             var yy2 = res12.First().nn;
 
             /*************************************************************************************************************************/

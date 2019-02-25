@@ -209,6 +209,8 @@ namespace MyDAL
             return await conn.Updater<M>().Set(filedsObject as object).Where(compareFunc).UpdateAsync(set);
         }
 
+        /******************************************************************************************************************************/
+
         /// <summary>
         /// 请参阅: <see langword=".QueryOneAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
@@ -236,46 +238,19 @@ namespace MyDAL
         }
 
         /// <summary>
-        /// Queryer 便捷-同步 FirstOrDefaultAsync 方法
-        /// </summary>
-        public static M FirstOrDefault<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class, new()
-        {
-            return (conn.QueryOneAsync(compareFunc)).GetAwaiter().GetResult();
-        }
-        /// <summary>
-        /// Queryer 便捷-同步 FirstOrDefaultAsync 方法
-        /// </summary>
-        public static VM FirstOrDefault<M, VM>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class, new()
-            where VM : class
-        {
-            return (conn.QueryOneAsync<M, VM>(compareFunc)).GetAwaiter().GetResult();
-        }
-        /// <summary>
-        /// Queryer 便捷-同步 FirstOrDefaultAsync 方法
-        /// </summary>
-        public static T FirstOrDefault<M, T>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, T>> columnMapFunc)
-            where M : class, new()
-        {
-            return (conn.QueryOneAsync(compareFunc, columnMapFunc)).GetAwaiter().GetResult();
-        }
-
-        /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static async Task<List<M>> QueryListAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
             where M : class, new()
         {
-            return await conn.Queryer<M>().Where(compareFunc).QueryListAsync();
-        }
-        /// <summary>
-        /// Queryer 便捷 QueryAllAsync 方法
-        /// </summary>
-        public static async Task<List<M>> QueryListAsync<M>(this IDbConnection conn)
-            where M : class, new()
-        {
-            return await conn.Queryer<M>().QueryListAsync();
+            if (compareFunc == null)
+            {
+                return await conn.Queryer<M>().QueryListAsync();
+            }
+            else
+            {
+                return await conn.Queryer<M>().Where(compareFunc).QueryListAsync();
+            }
         }
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
@@ -284,16 +259,14 @@ namespace MyDAL
             where M : class, new()
             where VM : class
         {
-            return await conn.Queryer<M>().Where(compareFunc).QueryListAsync<VM>();
-        }
-        /// <summary>
-        /// Queryer 便捷 QueryAllAsync 方法
-        /// </summary>
-        public static async Task<List<VM>> QueryListAsync<M, VM>(this IDbConnection conn)
-            where M : class, new()
-            where VM : class
-        {
-            return await conn.Queryer<M>().QueryListAsync<VM>();
+            if (compareFunc == null)
+            {
+                return await conn.Queryer<M>().QueryListAsync<VM>();
+            }
+            else
+            {
+                return await conn.Queryer<M>().Where(compareFunc).QueryListAsync<VM>();
+            }
         }
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
@@ -301,42 +274,14 @@ namespace MyDAL
         public static async Task<List<T>> QueryListAsync<M, T>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, T>> columnMapFunc)
             where M : class, new()
         {
-            return await conn.Queryer<M>().Where(compareFunc).QueryListAsync(columnMapFunc);
-        }
-        /// <summary>
-        /// Queryer 便捷 QueryAllAsync 方法
-        /// </summary>
-        public static async Task<List<T>> QueryListAsync<M, T>(this IDbConnection conn, Expression<Func<M, T>> propertyFunc)
-            where M : class, new()
-        {
-            return await conn.Queryer<M>().QueryListAsync(propertyFunc);
-        }
-
-        /// <summary>
-        /// Queryer 便捷 PagingListAsync 方法
-        /// </summary>
-        public static async Task<PagingResult<M>> PagingListAsync<M>(this IDbConnection conn, PagingOption pagingQuery)
-            where M : class, new()
-        {
-            return await conn.Queryer<M>().Where(pagingQuery).QueryPagingAsync();
-        }
-        /// <summary>
-        /// Queryer 便捷 PagingListAsync 方法
-        /// </summary>
-        public static async Task<PagingResult<VM>> PagingListAsync<M, VM>(this IDbConnection conn, PagingOption pagingQuery)
-            where M : class, new()
-            where VM : class
-        {
-            return await conn.Queryer<M>().Where(pagingQuery).QueryPagingAsync<VM>();
-        }
-        /// <summary>
-        /// Queryer 便捷 PagingListAsync 方法
-        /// </summary>
-        public static async Task<PagingResult<VM>> PagingListAsync<M, VM>(this IDbConnection conn, PagingOption pagingQuery, Expression<Func<M, VM>> columnMapFunc)
-            where M : class, new()
-            where VM : class
-        {
-            return await conn.Queryer<M>().Where(pagingQuery).QueryPagingAsync(columnMapFunc);
+            if (compareFunc == null)
+            {
+                return await conn.Queryer<M>().QueryListAsync(columnMapFunc);
+            }
+            else
+            {
+                return await conn.Queryer<M>().Where(compareFunc).QueryListAsync(columnMapFunc);
+            }
         }
 
         /// <summary>
@@ -346,14 +291,6 @@ namespace MyDAL
             where M : class, new()
         {
             return await conn.Queryer<M>().Where(compareFunc).IsExistAsync();
-        }
-        /// <summary>
-        /// Queryer 便捷-同步 ExistAsync 方法
-        /// </summary>
-        public static bool IsExist<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class, new()
-        {
-            return (conn.IsExistAsync(compareFunc)).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -367,12 +304,49 @@ namespace MyDAL
 
         /******************************************************************************************************************************/
 
+        /// <summary>
+        /// Queryer 便捷-同步 QueryOneAsync 方法
+        /// </summary>
+        public static M QueryOne<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
+            where M : class, new()
+        {
+            return (conn.QueryOneAsync(compareFunc)).GetAwaiter().GetResult();
+        }
+        /// <summary>
+        /// Queryer 便捷-同步 QueryOneAsync 方法
+        /// </summary>
+        public static VM QueryOne<M, VM>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
+            where M : class, new()
+            where VM : class
+        {
+            return (conn.QueryOneAsync<M, VM>(compareFunc)).GetAwaiter().GetResult();
+        }
+        /// <summary>
+        /// Queryer 便捷-同步 QueryOneAsync 方法
+        /// </summary>
+        public static T QueryOne<M, T>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, T>> columnMapFunc)
+            where M : class, new()
+        {
+            return (conn.QueryOneAsync(compareFunc, columnMapFunc)).GetAwaiter().GetResult();
+        }
+
+        /// <summary>
+        /// Queryer 便捷-同步 IsExistAsync 方法
+        /// </summary>
+        public static bool IsExist<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
+            where M : class, new()
+        {
+            return (conn.IsExistAsync(compareFunc)).GetAwaiter().GetResult();
+        }
+
+        /******************************************************************************************************************************/
+
         public static async Task<int> ExecuteNonQueryAsync(string sql)
         {
             throw new NotImplementedException();
         }
 
-        public static async Task<T> FirstOrDefaultAsync<T>(string sql)
+        public static async Task<T> QueryOneAsync<T>(string sql)
         {
             throw new NotImplementedException();
         }
@@ -382,7 +356,7 @@ namespace MyDAL
             throw new NotImplementedException();
         }
 
-        public static async Task<PagingResult<T>> PagingListAsync<T>(string sql)
+        public static async Task<PagingResult<T>> QueryPagingAsync<T>(string totalCountSql, string pageDataSql)
         {
             throw new NotImplementedException();
         }

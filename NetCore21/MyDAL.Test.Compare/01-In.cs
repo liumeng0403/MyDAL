@@ -61,7 +61,7 @@ namespace MyDAL.Test.Compare
                 .QueryListAsync();
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-            
+
             Assert.True(res3.Count == 555);
 
             /*******************************************************************************************************************/
@@ -85,18 +85,6 @@ namespace MyDAL.Test.Compare
 
             xx = string.Empty;
 
-            // where in -- obj.prop List<string>
-            var res5 = await Conn
-                .Queryer<Agent>()
-                .Where(it => WhereTest.In_List_String.Contains(it.Name))
-                .QueryListAsync();
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /*******************************************************************************************************************/
-
-            xx = string.Empty;
-
             StringList = names;
             // where in -- this.prop List<string>
             var res6 = await Conn
@@ -106,8 +94,7 @@ namespace MyDAL.Test.Compare
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
-            Assert.True(res4.Count == res5.Count);
-            Assert.True(res5.Count == res6.Count);
+            Assert.True(res4.Count == res6.Count);
             Assert.True(res4.Count == 2);
 
             /*******************************************************************************************************************/
@@ -430,19 +417,59 @@ namespace MyDAL.Test.Compare
         [Fact]
         public async Task NotIn_Shortcut()
         {
+            xx = string.Empty;
 
+            // in
+            var res2 = await Conn.QueryListAsync<Agent>(it => !new List<AgentLevel?> { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel));
+
+            Assert.True(res2.Count == 28065);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*******************************************************************************************************************/
+
+            xx = string.Empty;
         }
 
         [Fact]
         public async Task In_ST()
         {
 
+            xx = string.Empty;
+
+            // in
+            var res5 = await Conn
+                .Queryer<Agent>()
+                .Where(it => new List<string> { "黄银凤", "刘建芬" }.Contains(it.Name))
+                .QueryListAsync();
+
+            Assert.True(res5.Count == 2);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*******************************************************************************************************************/
+
+            xx = string.Empty;
         }
 
         [Fact]
         public async Task NotIn_ST()
         {
+            xx = string.Empty;
 
+            // in
+            var res5 = await Conn
+                .Queryer<Agent>()
+                .Where(it => !new List<string> { "黄银凤", "刘建芬" }.Contains(it.Name))
+                .QueryListAsync();
+
+            Assert.True(res5.Count == 28618);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*******************************************************************************************************************/
+
+            xx = string.Empty;
         }
 
         [Fact]

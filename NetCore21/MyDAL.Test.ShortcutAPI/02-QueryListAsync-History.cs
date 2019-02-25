@@ -14,7 +14,7 @@ namespace MyDAL.Test.ShortcutAPI
         {
             xx = string.Empty;
 
-            var res1 = await Conn.QueryListAsync<Agent>();
+            var res1 = await Conn.QueryListAsync<Agent>(null);
             Assert.True(res1.Count == 28620);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -23,7 +23,7 @@ namespace MyDAL.Test.ShortcutAPI
 
             xx = string.Empty;
 
-            var res2 = await Conn.QueryListAsync<Agent, AgentVM>();
+            var res2 = await Conn.QueryListAsync<Agent, AgentVM>(null);
             Assert.True(res2.Count == 28620);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -32,7 +32,7 @@ namespace MyDAL.Test.ShortcutAPI
 
             var xx3 = string.Empty;
 
-            var res3 = await Conn.QueryListAsync<Agent, Guid>(it => it.Id);
+            var res3 = await Conn.QueryListAsync<Agent, Guid>(null, it => it.Id);
             Assert.True(res3.Count == 28620);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -41,7 +41,7 @@ namespace MyDAL.Test.ShortcutAPI
 
             var xx4 = string.Empty;
 
-            var res4 = await Conn.QueryListAsync<Agent, AgentVM>(it => new AgentVM
+            var res4 = await Conn.QueryListAsync<Agent, AgentVM>(null, it => new AgentVM
             {
                 XXXX = it.Name,
                 YYYY = it.PathId
