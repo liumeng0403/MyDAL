@@ -341,22 +341,27 @@ namespace MyDAL
 
         /******************************************************************************************************************************/
 
-        public static async Task<int> ExecuteNonQueryAsync(string sql)
+        public static async Task<int> ExecuteNonQueryAsync(this IDbConnection conn, string sql,List<ParamInfo> dbParas)
+        {
+            var dc = new XContext(conn)
+            {
+                Crud = CrudEnum.SQL
+            };
+            //dc.
+            throw new NotImplementedException();
+        }
+
+        public static async Task<T> QueryOneAsync<T>(this IDbConnection conn, string sql, List<ParamInfo> dbParas)
         {
             throw new NotImplementedException();
         }
 
-        public static async Task<T> QueryOneAsync<T>(string sql)
+        public static async Task<List<T>> QueryListAsync<T>(this IDbConnection conn, string sql, List<ParamInfo> dbParas)
         {
             throw new NotImplementedException();
         }
 
-        public static async Task<List<T>> QueryListAsync<T>(string sql)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static async Task<PagingResult<T>> QueryPagingAsync<T>(string totalCountSql, string pageDataSql)
+        public static async Task<PagingResult<T>> QueryPagingAsync<T>(this IDbConnection conn, int pageIndex, int pageSize, string totalCountSql, string pageDataSql, List<ParamInfo> dbParas)
         {
             throw new NotImplementedException();
         }

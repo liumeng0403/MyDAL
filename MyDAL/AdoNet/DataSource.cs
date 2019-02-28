@@ -188,6 +188,18 @@ namespace MyDAL.AdoNet
         }
 
         /*********************************************************************************************************************************************/
+        
+        internal void ParseSQL(params string[] paras)
+        {
+            DC.SQL.Clear();
+            DC.SQL.AddRange(paras);
+        }
+        internal void ParseParam(List<ParamInfo> paras)
+        {
+
+        }
+
+        /*********************************************************************************************************************************************/
 
         internal async Task<PagingResult<T>> ExecuteReaderPagingAsync<M, T>(bool single, Func<M, T> mapFunc)
             where M : class

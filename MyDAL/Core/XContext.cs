@@ -3,7 +3,8 @@ using System.Data;
 
 namespace MyDAL.Core
 {
-    internal class XContext : Context
+    internal class XContext
+        : Context
     {
         internal XContext(IDbConnection conn)
         {
@@ -11,7 +12,9 @@ namespace MyDAL.Core
         }
     }
 
-    internal class XContext<M1>:Context
+    internal class XContext<M1>
+        : Context
+        where M1 : class
     {
         internal XContext(IDbConnection conn)
         {
@@ -20,7 +23,10 @@ namespace MyDAL.Core
         }
     }
 
-    internal class XContext<M1,M2> : Context
+    internal class XContext<M1, M2>
+        : Context
+        where M1 : class
+        where M2 : class
     {
         internal XContext(IDbConnection conn)
         {
@@ -30,7 +36,11 @@ namespace MyDAL.Core
         }
     }
 
-    internal class XContext<M1, M2,M3> : Context
+    internal class XContext<M1, M2, M3>
+        : Context
+        where M1 : class
+        where M2 : class
+        where M3 : class
     {
         internal XContext(IDbConnection conn)
         {
@@ -41,7 +51,12 @@ namespace MyDAL.Core
         }
     }
 
-    internal class XContext<M1, M2, M3,M4> : Context
+    internal class XContext<M1, M2, M3, M4>
+        : Context
+        where M1 : class
+        where M2 : class
+        where M3 : class
+        where M4 : class
     {
         internal XContext(IDbConnection conn)
         {
@@ -53,7 +68,13 @@ namespace MyDAL.Core
         }
     }
 
-    internal class XContext<M1, M2, M3, M4,M5> : Context
+    internal class XContext<M1, M2, M3, M4, M5>
+        : Context
+        where M1 : class
+        where M2 : class
+        where M3 : class
+        where M4 : class
+        where M5 : class
     {
         internal XContext(IDbConnection conn)
         {
@@ -66,7 +87,14 @@ namespace MyDAL.Core
         }
     }
 
-    internal class XContext<M1, M2, M3, M4, M5,M6> : Context
+    internal class XContext<M1, M2, M3, M4, M5, M6>
+        : Context
+        where M1 : class
+        where M2 : class
+        where M3 : class
+        where M4 : class
+        where M5 : class
+        where M6 : class
     {
         internal XContext(IDbConnection conn)
         {

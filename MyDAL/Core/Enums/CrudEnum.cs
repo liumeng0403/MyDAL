@@ -8,7 +8,8 @@
         Delete,
         Update,
         Query,
-        Join
+        Join,
+        SQL
 
     }
 }

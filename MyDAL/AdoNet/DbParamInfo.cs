@@ -7,21 +7,7 @@ namespace MyDAL.AdoNet
     internal class DbParamInfo
     {
         private Dictionary<string, ParamInfo> Params { get; } = new Dictionary<string, ParamInfo>();
-
-        internal Action<IDbCommand, DbParamInfo> ParamReader { get; } = (cmd, paras) => paras.AddParameters(cmd);
-
-        internal void Add(ParamInfo para)
-        {
-            Params[para.Name] = para;
-        }
-        internal void Add(DbParamInfo paras)
-        {
-            foreach (var p in paras.Params)
-            {
-                Params.Add(p.Key, p.Value);
-            }
-        }
-        internal void AddParameters(IDbCommand cmd)
+        private void AddParameters(IDbCommand cmd)
         {
             foreach (var param in Params.Values)
             {
@@ -60,6 +46,20 @@ namespace MyDAL.AdoNet
                 {
                     cmd.Parameters.Add(dbPara);
                 }
+            }
+        }
+
+        internal Action<IDbCommand, DbParamInfo> ParamReader { get; } = (cmd, paras) => paras.AddParameters(cmd);
+
+        internal void Add(ParamInfo para)
+        {
+            Params[para.Name] = para;
+        }
+        internal void Add(DbParamInfo paras)
+        {
+            foreach (var p in paras.Params)
+            {
+                Params.Add(p.Key, p.Value);
             }
         }
 
