@@ -341,27 +341,28 @@ namespace MyDAL
 
         /******************************************************************************************************************************/
 
-        public static async Task<int> ExecuteNonQueryAsync(this IDbConnection conn, string sql,List<ParamInfo> dbParas)
+        public static async Task<int> ExecuteNonQueryAsync(this IDbConnection conn, string sql,List<XParam> dbParas)
         {
             var dc = new XContext(conn)
             {
                 Crud = CrudEnum.SQL
             };
-            //dc.
-            throw new NotImplementedException();
+            dc.DS.ParseSQL(sql);
+            dc.DS.ParseParam(dbParas);
+            return await dc.DS.ExecuteNonQueryAsync();
         }
 
-        public static async Task<T> QueryOneAsync<T>(this IDbConnection conn, string sql, List<ParamInfo> dbParas)
+        public static async Task<T> QueryOneAsync<T>(this IDbConnection conn, string sql, List<XParam> dbParas)
         {
             throw new NotImplementedException();
         }
 
-        public static async Task<List<T>> QueryListAsync<T>(this IDbConnection conn, string sql, List<ParamInfo> dbParas)
+        public static async Task<List<T>> QueryListAsync<T>(this IDbConnection conn, string sql, List<XParam> dbParas)
         {
             throw new NotImplementedException();
         }
 
-        public static async Task<PagingResult<T>> QueryPagingAsync<T>(this IDbConnection conn, int pageIndex, int pageSize, string totalCountSql, string pageDataSql, List<ParamInfo> dbParas)
+        public static async Task<PagingResult<T>> QueryPagingAsync<T>(this IDbConnection conn, int pageIndex, int pageSize, string totalCountSql, string pageDataSql, List<XParam> dbParas)
         {
             throw new NotImplementedException();
         }

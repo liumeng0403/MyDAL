@@ -1,45 +1,45 @@
 ﻿using System.Data;
 
-namespace MyDAL
+namespace MyDAL.AdoNet
 {
     /// <summary>
     /// SQL 参数
     /// </summary>
-    public sealed class ParamInfo
+    internal sealed class ParamInfo
     {
         /// <summary>
         /// 参数 -- 名称
         /// </summary>
-        public string Name { get; set; }
+        internal string Name { get; set; }
 
         /// <summary>
         /// 参数 -- 值
         /// </summary>
-        public object Value { get; set; }
+        internal object Value { get; set; }
 
         /// <summary>
         /// 参数 -- 方向(in or out)
         /// </summary>
-        public ParameterDirection ParameterDirection { get; set; }
+        internal ParameterDirection ParameterDirection { get; set; }
 
         /// <summary>
         /// 参数 -- 类型
         /// </summary>
-        public DbType Type { get; set; }
+        internal DbType Type { get; set; }
 
         /// <summary>
         /// 参数 -- 大小(单位字节)
         /// </summary>
-        public int? Size { get; set; }
+        internal int? Size { get; set; }
 
         /// <summary>
         /// 参数 -- 精度(最大位数)
         /// </summary>
-        public byte? Precision { get; set; }
+        internal byte? Precision { get; set; }
 
         /// <summary>
         /// 参数 -- 小数位数
         /// </summary>
-        public byte? Scale { get; set; }
+        internal byte? Scale { get; set; }
     }
 }

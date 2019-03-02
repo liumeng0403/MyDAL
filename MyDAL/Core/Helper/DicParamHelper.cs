@@ -86,7 +86,7 @@ namespace MyDAL.Core.Helper
             DC.DicID++;
             if (!dic.ParamRaw.IsNullStr())
             {
-                dic.Param = $"{dic.ParamRaw}__{dic.ID}";
+                dic.Param = $"{dic.ParamRaw}_{dic.ID}";
             }
 
             //
@@ -226,7 +226,8 @@ namespace MyDAL.Core.Helper
 
         internal void ResetParameter()
         {
-            DC.Parameters = new List<DicParam>();
+            DC.Parameters.Clear();
+            DC.DicID = 1;
         }
         internal void SetParameter()
         {

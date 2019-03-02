@@ -7,6 +7,8 @@
         /// </summary>
         None,
 
+        SQL,
+
         /// <summary>
         /// ""
         /// </summary>

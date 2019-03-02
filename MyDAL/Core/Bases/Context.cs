@@ -125,6 +125,7 @@ namespace MyDAL.Core.Bases
                 case ActionEnum.Where:
                 case ActionEnum.And:
                 case ActionEnum.Or:
+                case ActionEnum.SQL:
                     return true;
             }
             return false;

@@ -194,9 +194,24 @@ namespace MyDAL.AdoNet
             DC.SQL.Clear();
             DC.SQL.AddRange(paras);
         }
-        internal void ParseParam(List<ParamInfo> paras)
+        internal void ParseParam(List<XParam> paras)
         {
+            DC.DPH.ResetParameter();
+            foreach(var p in paras)
+            {
+                p.Name.Replace("@", "");
+                DC.DPH.AddParameter(new DicParam
+                {
 
+                });
+                //DC.Parameters.Add(new DicParam
+                //{
+                //    ID = DC.DicID,
+                //    Action = ActionEnum.SQL,
+                //    ParamInfo = p
+                //});
+            }
+            DC.DPH.SetParameter();
         }
 
         /*********************************************************************************************************************************************/

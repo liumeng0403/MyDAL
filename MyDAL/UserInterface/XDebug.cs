@@ -60,7 +60,16 @@ namespace MyDAL
                     //
                     var dbVal = string.Empty;
                     dbVal = dbM.ParamInfo.Value == DBNull.Value ? "DbNull" : dbM.ParamInfo.Value.ToString();
-                    return $"字段:【{field}】-->【{csVal}】;参数:【{dbM.Param}】-->【{dbVal}】.";
+
+                    //
+                    if (dbM.Action == ActionEnum.SQL)
+                    {
+                        return $"参数:【{dbM.ParamInfo.Name}】-->【{dbVal}】.";
+                    }
+                    else
+                    {
+                        return $"字段:【{field}】-->【{csVal}】;参数:【{dbM.Param}】-->【{dbVal}】.";
+                    }
                 })
                 .ToList();
             SqlWithParams = new List<string>();
@@ -80,11 +89,25 @@ namespace MyDAL
                         || par.ParamInfo.Type == DbType.UInt32
                         || par.ParamInfo.Type == DbType.UInt64)
                     {
-                        sqlStr = sqlStr.Replace($"@{par.Param}", par.ParamInfo.Value == DBNull.Value ? "null" : par.ParamInfo.Value.ToString());
+                        if (par.Action == ActionEnum.SQL)
+                        {
+                            sqlStr = sqlStr.Replace($"@{par.ParamInfo.Name}", par.ParamInfo.Value == DBNull.Value ? "null" : par.ParamInfo.Value.ToString());
+                        }
+                        else
+                        {
+                            sqlStr = sqlStr.Replace($"@{par.Param}", par.ParamInfo.Value == DBNull.Value ? "null" : par.ParamInfo.Value.ToString());
+                        }
                     }
                     else
                     {
-                        sqlStr = sqlStr.Replace($"@{par.Param}", par.ParamInfo.Value == DBNull.Value ? "null" : $"'{par.ParamInfo.Value.ToString()}'");
+                        if (par.Action == ActionEnum.SQL)
+                        {
+                            sqlStr = sqlStr.Replace($"@{par.ParamInfo.Name}", par.ParamInfo.Value == DBNull.Value ? "null" : $"'{par.ParamInfo.Value.ToString()}'");
+                        }
+                        else
+                        {
+                            sqlStr = sqlStr.Replace($"@{par.Param}", par.ParamInfo.Value == DBNull.Value ? "null" : $"'{par.ParamInfo.Value.ToString()}'");
+                        }
                     }
                 }
                 SqlWithParams.Add(sqlStr);
