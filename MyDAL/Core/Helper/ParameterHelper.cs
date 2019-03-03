@@ -30,15 +30,11 @@ namespace MyDAL.Core.Helper
 
         /**********************************************************************************************************/
 
-        private static DbType GetType(string colType, Type realType)
+        private static DbType GetType(ParamTypeEnum colType, Type realType, Context dc)
         {
             if (realType == XConfig.TC.Int)
             {
-                if (colType.IsNullStr())
-                {
-                    return DbType.Int32;
-                }
-                else if (colType.Equals("int", StringComparison.OrdinalIgnoreCase))
+                if (colType == ParamTypeEnum.MySQL_Int)//.Equals("int", StringComparison.OrdinalIgnoreCase))
                 {
                     return DbType.Int32;
                 }
@@ -49,11 +45,7 @@ namespace MyDAL.Core.Helper
             }
             else if (realType == XConfig.TC.Long)
             {
-                if (colType.IsNullStr())
-                {
-                    return DbType.Int64;
-                }
-                else if (colType.Equals("bigint", StringComparison.OrdinalIgnoreCase))
+                if (colType == ParamTypeEnum.MySQL_BigInt)//.Equals("bigint", StringComparison.OrdinalIgnoreCase))
                 {
                     return DbType.Int64;
                 }
@@ -64,11 +56,7 @@ namespace MyDAL.Core.Helper
             }
             else if (realType == XConfig.TC.Decimal)
             {
-                if (colType.IsNullStr())
-                {
-                    return DbType.Decimal;
-                }
-                else if (colType.Equals("decimal", StringComparison.OrdinalIgnoreCase))
+                if (colType == ParamTypeEnum.MySQL_Decimal)//.Equals("decimal", StringComparison.OrdinalIgnoreCase))
                 {
                     return DbType.Decimal;
                 }
@@ -79,11 +67,7 @@ namespace MyDAL.Core.Helper
             }
             else if (realType == XConfig.TC.Bool)
             {
-                if (colType.IsNullStr())
-                {
-                    return DbType.UInt16;
-                }
-                else if (colType.Equals("bit", StringComparison.OrdinalIgnoreCase))
+                if (colType == ParamTypeEnum.MySQL_Bit)//.Equals("bit", StringComparison.OrdinalIgnoreCase))
                 {
                     return DbType.UInt16;
                 }
@@ -94,11 +78,7 @@ namespace MyDAL.Core.Helper
             }
             else if (realType == XConfig.TC.String)
             {
-                if (colType.IsNullStr())
-                {
-                    return DbType.String;
-                }
-                else if (colType.Equals("longtext", StringComparison.OrdinalIgnoreCase))
+                if (colType == ParamTypeEnum.MySQL_LongText)//.Equals("longtext", StringComparison.OrdinalIgnoreCase))
                 {
                     return DbType.String;
                 }
@@ -109,11 +89,7 @@ namespace MyDAL.Core.Helper
             }
             else if (realType == XConfig.TC.DateTime)
             {
-                if (colType.IsNullStr())
-                {
-                    return DbType.AnsiString;
-                }
-                else if (colType.Equals("datetime", StringComparison.OrdinalIgnoreCase))
+                if (colType == ParamTypeEnum.MySQL_DateTime)//.Equals("datetime", StringComparison.OrdinalIgnoreCase))
                 {
                     return DbType.AnsiString;
                 }
@@ -124,11 +100,7 @@ namespace MyDAL.Core.Helper
             }
             else if (realType == XConfig.TC.Guid)
             {
-                if (colType.IsNullStr())
-                {
-                    return DbType.AnsiStringFixedLength;
-                }
-                else if (colType.Equals("char", StringComparison.OrdinalIgnoreCase))
+                if (colType == ParamTypeEnum.MySQL_Char)//.Equals("char", StringComparison.OrdinalIgnoreCase))
                 {
                     return DbType.AnsiStringFixedLength;
                 }
@@ -137,17 +109,17 @@ namespace MyDAL.Core.Helper
                     return DbType.Guid;
                 }
             }
+            else if (realType == null)
+            {
+                return DbType.AnsiString;
+            }
             else if (realType.IsEnum)
             {
-                return GetType(colType, Enum.GetUnderlyingType(realType));
+                return GetType(colType, Enum.GetUnderlyingType(realType), dc);
             }
             else if (realType == XConfig.TC.Byte)
             {
-                if (colType.IsNullStr())
-                {
-                    return DbType.Byte;
-                }
-                else if (colType.Equals("tinyint", StringComparison.OrdinalIgnoreCase))
+                if (colType == ParamTypeEnum.MySQL_TinyInt)//.Equals("tinyint", StringComparison.OrdinalIgnoreCase))
                 {
                     return DbType.Byte;
                 }
@@ -162,11 +134,7 @@ namespace MyDAL.Core.Helper
             }
             else if (realType == XConfig.TC.Char)
             {
-                if (colType.IsNullStr())
-                {
-                    return DbType.AnsiString;
-                }
-                else if (colType.Equals("varchar", StringComparison.OrdinalIgnoreCase))
+                if (colType == ParamTypeEnum.MySQL_VarChar)//.Equals("varchar", StringComparison.OrdinalIgnoreCase))
                 {
                     return DbType.AnsiString;
                 }
@@ -177,11 +145,7 @@ namespace MyDAL.Core.Helper
             }
             else if (realType == XConfig.TC.Double)
             {
-                if (colType.IsNullStr())
-                {
-                    return DbType.Double;
-                }
-                else if (colType.Equals("double", StringComparison.OrdinalIgnoreCase))
+                if (colType == ParamTypeEnum.MySQL_Double)//.Equals("double", StringComparison.OrdinalIgnoreCase))
                 {
                     return DbType.Double;
                 }
@@ -192,11 +156,7 @@ namespace MyDAL.Core.Helper
             }
             else if (realType == XConfig.TC.Float)
             {
-                if (colType.IsNullStr())
-                {
-                    return DbType.Single;
-                }
-                else if (colType.Equals("float", StringComparison.OrdinalIgnoreCase))
+                if (colType == ParamTypeEnum.MySQL_Float)//.Equals("float", StringComparison.OrdinalIgnoreCase))
                 {
                     return DbType.Single;
                 }
@@ -207,11 +167,7 @@ namespace MyDAL.Core.Helper
             }
             else if (realType == XConfig.TC.Sbyte)
             {
-                if (colType.IsNullStr())
-                {
-                    return DbType.Int16;
-                }
-                else if (colType.Equals("tinyint", StringComparison.OrdinalIgnoreCase))
+                if (colType == ParamTypeEnum.MySQL_TinyInt)//.Equals("tinyint", StringComparison.OrdinalIgnoreCase))
                 {
                     return DbType.Int16;
                 }
@@ -222,11 +178,7 @@ namespace MyDAL.Core.Helper
             }
             else if (realType == XConfig.TC.Short)
             {
-                if (colType.IsNullStr())
-                {
-                    return DbType.Int16;
-                }
-                else if (colType.Equals("smallint", StringComparison.OrdinalIgnoreCase))
+                if (colType == ParamTypeEnum.MySQL_SmallInt)//.Equals("smallint", StringComparison.OrdinalIgnoreCase))
                 {
                     return DbType.Int16;
                 }
@@ -237,11 +189,7 @@ namespace MyDAL.Core.Helper
             }
             else if (realType == XConfig.TC.Uint)
             {
-                if (colType.IsNullStr())
-                {
-                    return DbType.UInt32;
-                }
-                else if (colType.Equals("int", StringComparison.OrdinalIgnoreCase))
+                if (colType == ParamTypeEnum.MySQL_Int)//.Equals("int", StringComparison.OrdinalIgnoreCase))
                 {
                     return DbType.UInt32;
                 }
@@ -252,11 +200,7 @@ namespace MyDAL.Core.Helper
             }
             else if (realType == XConfig.TC.Ulong)
             {
-                if (colType.IsNullStr())
-                {
-                    return DbType.UInt64;
-                }
-                else if (colType.Equals("bigint", StringComparison.OrdinalIgnoreCase))
+                if (colType == ParamTypeEnum.MySQL_BigInt)//.Equals("bigint", StringComparison.OrdinalIgnoreCase))
                 {
                     return DbType.UInt64;
                 }
@@ -267,11 +211,7 @@ namespace MyDAL.Core.Helper
             }
             else if (realType == XConfig.TC.Ushort)
             {
-                if (colType.IsNullStr())
-                {
-                    return DbType.UInt16;
-                }
-                else if (colType.Equals("smallint", StringComparison.OrdinalIgnoreCase))
+                if (colType == ParamTypeEnum.MySQL_SmallInt)//.Equals("smallint", StringComparison.OrdinalIgnoreCase))
                 {
                     return DbType.UInt16;
                 }
@@ -282,11 +222,7 @@ namespace MyDAL.Core.Helper
             }
             else if (realType == XConfig.TC.TimeSpan)
             {
-                if (colType.IsNullStr())
-                {
-                    return DbType.Time;
-                }
-                else if (colType.Equals("time", StringComparison.OrdinalIgnoreCase))
+                if (colType == ParamTypeEnum.MySQL_Time)//.Equals("time", StringComparison.OrdinalIgnoreCase))
                 {
                     return DbType.Time;
                 }
@@ -313,12 +249,76 @@ namespace MyDAL.Core.Helper
             }
             else
             {
-                throw new Exception($"[[DbType GetType(ui.ColumnTypeType realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw dc.Exception(XConfig.EC._032, $"不支持的字段参数类型:[[{realType}]]!");
             }
         }
-        private static ParamInfo BoolParam(DicParam ui, Type realType)
+        private static ParamTypeEnum GetColType(string colType, Context dc)
         {
-            var type = GetType(ui.ColumnType, realType);
+            switch (colType.ToLower())
+            {
+                case "tinyint":
+                    return ParamTypeEnum.MySQL_TinyInt;
+                case "smallint":
+                    return ParamTypeEnum.MySQL_SmallInt;
+                case "mediumint":
+                    return ParamTypeEnum.MySQL_MediumInt;
+                case "int":
+                    return ParamTypeEnum.MySQL_Int;
+                case "bigint":
+                    return ParamTypeEnum.MySQL_BigInt;
+                case "float":
+                    return ParamTypeEnum.MySQL_Float;
+                case "double":
+                    return ParamTypeEnum.MySQL_Double;
+                case "decimal":
+                    return ParamTypeEnum.MySQL_Decimal;
+                case "year":
+                    return ParamTypeEnum.MySQL_Year;
+                case "time":
+                    return ParamTypeEnum.MySQL_Time;
+                case "date":
+                    return ParamTypeEnum.MySQL_Date;
+                case "datetime":
+                    return ParamTypeEnum.MySQL_DateTime;
+                case "timestamp":
+                    return ParamTypeEnum.MySQL_TimeStamp;
+                case "char":
+                    return ParamTypeEnum.MySQL_Char;
+                case "varchar":
+                    return ParamTypeEnum.MySQL_VarChar;
+                case "tinytext":
+                    return ParamTypeEnum.MySQL_TinyText;
+                case "text":
+                    return ParamTypeEnum.MySQL_Text;
+                case "mediumtext":
+                    return ParamTypeEnum.MySQL_MediumText;
+                case "longtext":
+                    return ParamTypeEnum.MySQL_LongText;
+                case "enum":
+                    return ParamTypeEnum.MySQL_Enum;
+                case "set":
+                    return ParamTypeEnum.MySQL_Set;
+                case "bit":
+                    return ParamTypeEnum.MySQL_Bit;
+                case "binary":
+                    return ParamTypeEnum.MySQL_Binary;
+                case "varbinary":
+                    return ParamTypeEnum.MySQL_VarBinary;
+                case "tinyblob":
+                    return ParamTypeEnum.MySQL_TinyBlob;
+                case "blob":
+                    return ParamTypeEnum.MySQL_Blob;
+                case "mediumblob":
+                    return ParamTypeEnum.MySQL_MediumBlob;
+                case "longblob":
+                    return ParamTypeEnum.MySQL_LongBlob;
+                default:
+                    throw dc.Exception(XConfig.EC._031, colType);
+            }
+        }
+        private static ParamInfo BoolParam(DicParam ui, Type realType, Context dc)
+        {
+            var type = GetType(ui.ColumnType, realType, dc);
             var val = default(object);
 
             //
@@ -345,9 +345,9 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private static ParamInfo ByteParam(DicParam ui, Type realType)
+        private static ParamInfo ByteParam(DicParam ui, Type realType, Context dc)
         {
-            var type = GetType(ui.ColumnType, realType);
+            var type = GetType(ui.ColumnType, realType, dc);
             var val = default(object);
 
             //
@@ -363,9 +363,9 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private static ParamInfo CharParam(DicParam ui, Type realType)
+        private static ParamInfo CharParam(DicParam ui, Type realType, Context dc)
         {
-            var type = GetType(ui.ColumnType, realType);
+            var type = GetType(ui.ColumnType, realType, dc);
             var val = default(object);
 
             //
@@ -381,9 +381,9 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private static ParamInfo DecimalParam(DicParam ui, Type realType)
+        private static ParamInfo DecimalParam(DicParam ui, Type realType, Context dc)
         {
-            var type = GetType(ui.ColumnType, realType);
+            var type = GetType(ui.ColumnType, realType, dc);
             var val = default(object);
 
             //
@@ -399,9 +399,9 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private static ParamInfo DoubleParam(DicParam ui, Type realType)
+        private static ParamInfo DoubleParam(DicParam ui, Type realType, Context dc)
         {
-            var type = GetType(ui.ColumnType, realType);
+            var type = GetType(ui.ColumnType, realType, dc);
             var val = default(object);
 
             //
@@ -417,9 +417,9 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private static ParamInfo FloatParam(DicParam ui, Type realType)
+        private static ParamInfo FloatParam(DicParam ui, Type realType, Context dc)
         {
-            var type = GetType(ui.ColumnType, realType);
+            var type = GetType(ui.ColumnType, realType, dc);
             var val = default(object);
 
             //
@@ -435,9 +435,9 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private static ParamInfo IntParam(DicParam ui, Type realType)
+        private static ParamInfo IntParam(DicParam ui, Type realType, Context dc)
         {
-            var type = GetType(ui.ColumnType, realType);
+            var type = GetType(ui.ColumnType, realType, dc);
             var val = default(object);
 
             //
@@ -453,9 +453,9 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private static ParamInfo LongParam(DicParam ui, Type realType)
+        private static ParamInfo LongParam(DicParam ui, Type realType, Context dc)
         {
-            var type = GetType(ui.ColumnType, realType);
+            var type = GetType(ui.ColumnType, realType, dc);
             var val = default(object);
 
             //
@@ -471,9 +471,9 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private static ParamInfo SbyteParam(DicParam ui, Type realType)
+        private static ParamInfo SbyteParam(DicParam ui, Type realType, Context dc)
         {
-            var type = GetType(ui.ColumnType, realType);
+            var type = GetType(ui.ColumnType, realType, dc);
             var val = default(object);
 
             //
@@ -493,9 +493,9 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private static ParamInfo ShortParam(DicParam ui, Type realType)
+        private static ParamInfo ShortParam(DicParam ui, Type realType, Context dc)
         {
-            var type = GetType(ui.ColumnType, realType);
+            var type = GetType(ui.ColumnType, realType, dc);
             var val = default(object);
 
             //
@@ -511,9 +511,9 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private static ParamInfo UintParam(DicParam ui, Type realType)
+        private static ParamInfo UintParam(DicParam ui, Type realType, Context dc)
         {
-            var type = GetType(ui.ColumnType, realType);
+            var type = GetType(ui.ColumnType, realType, dc);
             var val = default(object);
 
             //
@@ -529,9 +529,9 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private static ParamInfo UlongParam(DicParam ui, Type realType)
+        private static ParamInfo UlongParam(DicParam ui, Type realType, Context dc)
         {
-            var type = GetType(ui.ColumnType, realType);
+            var type = GetType(ui.ColumnType, realType, dc);
             var val = default(object);
 
             //
@@ -547,9 +547,9 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private static ParamInfo UshortParam(DicParam ui, Type realType)
+        private static ParamInfo UshortParam(DicParam ui, Type realType, Context dc)
         {
-            var type = GetType(ui.ColumnType, realType);
+            var type = GetType(ui.ColumnType, realType, dc);
             var val = default(object);
 
             //
@@ -565,9 +565,9 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private static ParamInfo StringParam(DicParam ui, Type realType)
+        private static ParamInfo StringParam(DicParam ui, Type realType, Context dc)
         {
-            var type = GetType(ui.ColumnType, realType);
+            var type = GetType(ui.ColumnType, realType, dc);
             var val = default(object);
 
             //
@@ -587,9 +587,9 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private static ParamInfo DateTimeParam(DicParam ui, Type realType)
+        private static ParamInfo DateTimeParam(DicParam ui, Type realType, Context dc)
         {
-            var type = GetType(ui.ColumnType, realType);
+            var type = GetType(ui.ColumnType, realType, dc);
             var val = default(object);
 
             //
@@ -624,9 +624,9 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private static ParamInfo TimeSpanParam(DicParam ui, Type realType)
+        private static ParamInfo TimeSpanParam(DicParam ui, Type realType, Context dc)
         {
-            var type = GetType(ui.ColumnType, realType);
+            var type = GetType(ui.ColumnType, realType, dc);
             var val = default(object);
 
             //
@@ -642,9 +642,9 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private static ParamInfo GuidParam(DicParam ui, Type realType)
+        private static ParamInfo GuidParam(DicParam ui, Type realType, Context dc)
         {
-            var type = GetType(ui.ColumnType, realType);
+            var type = GetType(ui.ColumnType, realType, dc);
             var val = default(object);
 
             //
@@ -664,9 +664,9 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private static ParamInfo EnumParam(DicParam ui, Type realType)
+        private static ParamInfo EnumParam(DicParam ui, Type realType, Context dc)
         {
-            var type = GetType(ui.ColumnType, realType);
+            var type = GetType(ui.ColumnType, realType, dc);
             var val = default(object);
 
             //
@@ -697,9 +697,9 @@ namespace MyDAL.Core.Helper
             //
             return GetDefault(ui.Param, val, type);
         }
-        private static ParamInfo NullParam(DicParam ui, Type realType)
+        private static ParamInfo NullParam(DicParam ui, Type realType, Context dc)
         {
-            var type = GetType(ui.ColumnType, realType);
+            var type = GetType(ui.ColumnType, realType, dc);
             return GetDefault(ui.Param, null, type);
         }
 
@@ -725,13 +725,19 @@ namespace MyDAL.Core.Helper
             if (DC.IsParameter(ui.Action))
             {
                 //
-                if (ui.Option != OptionEnum.OneEqualOne)
+                if (ui.Option == OptionEnum.OneEqualOne)
+                { }
+                else if (ui.Action == ActionEnum.SQL)
+                {
+                    ui.ColumnType = ui.ParamUI.Type;
+                }
+                else
                 {
                     var tbm = DC.XC.GetTableModel(ui.TbMType);
                     var col = tbm.TbCols.FirstOrDefault(it => it.ColumnName.Equals(ui.TbCol, StringComparison.OrdinalIgnoreCase));
                     if (col != null)
                     {
-                        ui.ColumnType = col.DataType;
+                        ui.ColumnType = GetColType(col.DataType, DC);
                     }
                 }
 
@@ -739,42 +745,47 @@ namespace MyDAL.Core.Helper
                 var para = default(ParamInfo);
                 if (realType == XConfig.TC.Int)
                 {
-                    para = IntParam(ui, realType);
+                    para = IntParam(ui, realType, DC);
                 }
                 else if (realType == XConfig.TC.Long)
                 {
-                    para = LongParam(ui, realType);
+                    para = LongParam(ui, realType, DC);
                 }
                 else if (realType == XConfig.TC.Decimal)
                 {
-                    para = DecimalParam(ui, realType);
+                    para = DecimalParam(ui, realType, DC);
                 }
                 else if (realType == XConfig.TC.Bool)
                 {
-                    para = BoolParam(ui, realType);
+                    para = BoolParam(ui, realType, DC);
                 }
                 else if (realType == XConfig.TC.String)
                 {
-                    para = StringParam(ui, realType);
+                    para = StringParam(ui, realType, DC);
                 }
                 else if (realType == XConfig.TC.DateTime)
                 {
-                    para = DateTimeParam(ui, realType);
+                    para = DateTimeParam(ui, realType, DC);
                 }
                 else if (realType == XConfig.TC.Guid)
                 {
-                    para = GuidParam(ui, realType);
+                    para = GuidParam(ui, realType, DC);
+                }
+                else if (realType == null
+                    && ui.Action == ActionEnum.SQL)
+                {
+                    para = NullParam(ui, realType, DC);
                 }
                 else if (realType.IsEnum)
                 {
-                    para = EnumParam(ui, realType);
+                    para = EnumParam(ui, realType, DC);
                 }
                 else if (realType.IsNullable())
                 {
                     var type = Nullable.GetUnderlyingType(realType);
                     if (ui.CsValue == null)
                     {
-                        para = NullParam(ui, type);
+                        para = NullParam(ui, type, DC);
                     }
                     else
                     {
@@ -784,47 +795,47 @@ namespace MyDAL.Core.Helper
                 }
                 else if (realType == XConfig.TC.Byte)
                 {
-                    para = ByteParam(ui, realType);
+                    para = ByteParam(ui, realType, DC);
                 }
                 else if (realType == XConfig.TC.Char)
                 {
-                    para = CharParam(ui, realType);
+                    para = CharParam(ui, realType, DC);
                 }
                 else if (realType == XConfig.TC.Double)
                 {
-                    para = DoubleParam(ui, realType);
+                    para = DoubleParam(ui, realType, DC);
                 }
                 else if (realType == XConfig.TC.Float)
                 {
-                    para = FloatParam(ui, realType);
+                    para = FloatParam(ui, realType, DC);
                 }
                 else if (realType == XConfig.TC.Sbyte)
                 {
-                    para = SbyteParam(ui, realType);
+                    para = SbyteParam(ui, realType, DC);
                 }
                 else if (realType == XConfig.TC.Short)
                 {
-                    para = ShortParam(ui, realType);
+                    para = ShortParam(ui, realType, DC);
                 }
                 else if (realType == XConfig.TC.Uint)
                 {
-                    para = UintParam(ui, realType);
+                    para = UintParam(ui, realType, DC);
                 }
                 else if (realType == XConfig.TC.Ulong)
                 {
-                    para = UlongParam(ui, realType);
+                    para = UlongParam(ui, realType, DC);
                 }
                 else if (realType == XConfig.TC.Ushort)
                 {
-                    para = UshortParam(ui, realType);
+                    para = UshortParam(ui, realType, DC);
                 }
                 else if (realType == XConfig.TC.TimeSpan)
                 {
-                    para = TimeSpanParam(ui, realType);
+                    para = TimeSpanParam(ui, realType, DC);
                 }
                 else
                 {
-                    throw new Exception($"不支持的字段参数类型:[[{realType}]]!");
+                    throw DC.Exception(XConfig.EC._033, $"不支持的字段参数类型:[[{realType}]]!");
                 }
 
                 //

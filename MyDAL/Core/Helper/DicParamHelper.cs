@@ -130,6 +130,11 @@ namespace MyDAL.Core.Helper
             ui.IsDbSet = true;
 
             //
+            if(ui.Crud== CrudEnum.SQL)
+            {
+                DC.PH.GetDbVal(ui, ui.CsType);
+                return;
+            }
             if (ui.TbMType == null)
             {
                 ui.Key = string.Empty;
@@ -241,16 +246,23 @@ namespace MyDAL.Core.Helper
         }
         internal void AddParameter(DicParam dic)
         {
-            if (DC.IsInParameter(dic))
+            if (dic.Crud == CrudEnum.SQL)
             {
-                dic.InItems = new List<DicParam>();
+                DC.Parameters.Add(dic);
             }
-            Unique(dic);
-            DC.Parameters.Add(dic);
+            else
+            {
+                if (DC.IsInParameter(dic))
+                {
+                    dic.InItems = new List<DicParam>();
+                }
+                Unique(dic);
+                DC.Parameters.Add(dic);
 
-            //
-            DC.Compare = CompareXEnum.None;
-            DC.Func = FuncEnum.None;
+                //
+                DC.Compare = CompareXEnum.None;
+                DC.Func = FuncEnum.None;
+            }
         }
         internal DbParamInfo GetParameters(List<DicParam> list)
         {

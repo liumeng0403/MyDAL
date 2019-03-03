@@ -44,7 +44,7 @@ namespace MyDAL.Core.Helper
         {
             return val.ToDateTimeStr(format);
         }
-        private string ValueProcess(object val, Type valType, string format)
+        internal string ValueProcess(object val, Type valType, string format)
         {
             if (valType == XConfig.TC.DateTime)
             {

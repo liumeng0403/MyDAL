@@ -6,12 +6,12 @@ namespace MyDAL.Core.Common
 {
     internal class ColumnInfo
     {
-        public string TableName { get; set; }
-        public string ColumnName { get; set; }
-        public string DataType { get; set; }
-        public string ColumnDefault { get; set; }
-        public string IsNullable { get; set; }
-        public string ColumnComment { get; set; }
-        public string KeyType { get; set; }
+        internal string TableName { get; set; }
+        internal string ColumnName { get; set; }
+        internal string DataType { get; set; }
+        internal string ColumnDefault { get; set; }
+        internal string IsNullable { get; set; }
+        internal string ColumnComment { get; set; }
+        internal string KeyType { get; set; }
     }
 }

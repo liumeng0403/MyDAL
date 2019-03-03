@@ -29,8 +29,9 @@ namespace MyDAL.Core.Common
 
         //
         internal string Key { get; set; }
-        internal string ColumnType { get; set; }
+        internal ParamTypeEnum ColumnType { get; set; }
         internal ParamInfo ParamInfo { get; set; }
+        internal XParam ParamUI { get; set; }
 
         //
         internal List<DicParam> Group { get; set; }
