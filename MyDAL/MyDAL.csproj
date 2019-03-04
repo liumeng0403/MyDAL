@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>0.7.2</Version>
+    <Version>0.7.3</Version>
     <Authors>Meng.NET</Authors>
     <Company></Company>
-    <Product>MyDAL(EasyDAL.Exchange 0.2.3 version 后 更名为 MyDAL)</Product>
+    <Product>MyDAL</Product>
     <Description>The fastest and best ORM lite on .NET Core for MySQL ! 
         -- 友好, 轻量, 极致性能, 无任何第三方依赖, 持续演进~~</Description>
     <Copyright>2018 Meng.NET</Copyright>
