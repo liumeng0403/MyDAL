@@ -319,24 +319,6 @@ namespace MyDAL.Test.Compare
 
             /*******************************************************************************************************************/
 
-            var xx23 = string.Empty;
-
-            // where in -- enum[] init
-            var res23 = await Conn
-                .Queryer(out Agent agent, out AgentInventoryRecord record)
-                .From(() => agent)
-                    .InnerJoin(() => record)
-                        .On(() => agent.Id == record.AgentId)
-                .Where(() => new AgentLevel?[] { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(agent.AgentLevel))
-                .QueryListAsync<Agent>();
-            Assert.True(res23.Count == 574);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /*******************************************************************************************************************/
-
-            var xx24 = string.Empty;
-
             var guid241 = Guid.Parse("0048793b-ca61-457e-a2b4-0165442f3684");
             var guid242 = Guid.Parse("004f4290-9576-43b9-903f-01654434da0f");
             // where in -- string[] init
@@ -476,11 +458,49 @@ namespace MyDAL.Test.Compare
         public async Task In_MT()
         {
 
+            xx = string.Empty;
+
+            // in
+            var res1 = await Conn
+                .Queryer(out Agent agent, out AgentInventoryRecord record)
+                .From(() => agent)
+                    .InnerJoin(() => record)
+                        .On(() => agent.Id == record.AgentId)
+                .Where(() => new AgentLevel?[] { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(agent.AgentLevel))
+                .QueryListAsync<Agent>();
+
+            Assert.True(res1.Count == 574);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*******************************************************************************************************************/
+
+            xx = string.Empty;
+
         }
 
         [Fact]
         public async Task NotIn_MT()
         {
+
+            xx = string.Empty;
+
+            // not in
+            var res1 = await Conn
+                .Queryer(out Agent agent, out AgentInventoryRecord record)
+                .From(() => agent)
+                    .InnerJoin(() => record)
+                        .On(() => agent.Id == record.AgentId)
+                .Where(() => !new AgentLevel?[] { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(agent.AgentLevel))
+                .QueryListAsync<Agent>();
+
+            Assert.True(res1.Count == 0);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*******************************************************************************************************************/
+
+            xx = string.Empty;
 
         }
 
