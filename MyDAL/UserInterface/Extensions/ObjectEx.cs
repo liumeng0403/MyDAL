@@ -6,6 +6,9 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace MyDAL.ModelTools
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class ObjectEx
     {
 
@@ -27,7 +30,7 @@ namespace MyDAL.ModelTools
             }
             catch (Exception ex)
             {
-                throw new Exception("方法:T DeepClone<T>(this T obj)出错.", ex);
+                throw new Exception($"不支持类型【{typeof(T).FullName}】的深度复制!!!", ex);
             }
             return result;
         }

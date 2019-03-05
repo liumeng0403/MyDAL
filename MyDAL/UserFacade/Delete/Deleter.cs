@@ -2,6 +2,9 @@
 
 namespace MyDAL.UserFacade.Delete
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class Deleter<M> 
         : Operator
     {

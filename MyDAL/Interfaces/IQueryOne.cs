@@ -18,4 +18,9 @@ namespace MyDAL.Interfaces
             where M : class;
         Task<T> QueryOneAsync<T>(Expression<Func<T>> columnMapFunc);
     }
+
+    internal interface IQueryOneSQL
+    {
+        Task<T> QueryOneAsync<T>();
+    }
 }

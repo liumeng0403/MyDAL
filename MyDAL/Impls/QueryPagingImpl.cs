@@ -20,7 +20,7 @@ namespace MyDAL.Impls
         {
             DC.PageIndex = pageIndex;
             DC.PageSize = pageSize;
-            return await PagingListAsyncHandle<M>(UiMethodEnum.PagingListAsync, false);
+            return await PagingListAsyncHandle<M>(UiMethodEnum.QueryPagingAsync, false);
         }
 
         public async Task<PagingResult<VM>> QueryPagingAsync<VM>(int pageIndex, int pageSize)
@@ -28,7 +28,7 @@ namespace MyDAL.Impls
         {
             DC.PageIndex = pageIndex;
             DC.PageSize = pageSize;
-            return await PagingListAsyncHandle<M, VM>(UiMethodEnum.PagingListAsync, false, null);
+            return await PagingListAsyncHandle<M, VM>(UiMethodEnum.QueryPagingAsync, false, null);
         }
 
         public async Task<PagingResult<T>> QueryPagingAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
@@ -44,7 +44,7 @@ namespace MyDAL.Impls
             {
                 SelectMHandle(columnMapFunc);
             }
-            return await PagingListAsyncHandle<M, T>(UiMethodEnum.PagingListAsync, single, columnMapFunc.Compile());
+            return await PagingListAsyncHandle<M, T>(UiMethodEnum.QueryPagingAsync, single, columnMapFunc.Compile());
         }
     }
 
@@ -57,14 +57,14 @@ namespace MyDAL.Impls
 
         public async Task<PagingResult<M>> QueryPagingAsync()
         {
-            return await PagingListAsyncHandle<M>(UiMethodEnum.PagingListAsync, false);
+            return await PagingListAsyncHandle<M>(UiMethodEnum.QueryPagingAsync, false);
         }
 
         public async Task<PagingResult<VM>> QueryPagingAsync<VM>()
             where VM : class
         {
             SelectMQ<M, VM>();
-            return await PagingListAsyncHandle<M, VM>(UiMethodEnum.PagingListAsync, false, null);
+            return await PagingListAsyncHandle<M, VM>(UiMethodEnum.QueryPagingAsync, false, null);
         }
 
         public async Task<PagingResult<T>> QueryPagingAsync<T>(Expression<Func<M, T>> columnMapFunc)
@@ -78,7 +78,7 @@ namespace MyDAL.Impls
             {
                 SelectMHandle(columnMapFunc);
             }
-            return await PagingListAsyncHandle(UiMethodEnum.PagingListAsync, single, columnMapFunc.Compile());
+            return await PagingListAsyncHandle(UiMethodEnum.QueryPagingAsync, single, columnMapFunc.Compile());
         }
     }
 
@@ -95,7 +95,7 @@ namespace MyDAL.Impls
             DC.PageIndex = pageIndex;
             DC.PageSize = pageSize;
             SelectMHandle<M>();
-            return await PagingListAsyncHandle<M>(UiMethodEnum.PagingListAsync, false);
+            return await PagingListAsyncHandle<M>(UiMethodEnum.QueryPagingAsync, false);
         }
 
         public async Task<PagingResult<T>> QueryPagingAsync<T>(int pageIndex, int pageSize, Expression<Func<T>> columnMapFunc)
@@ -111,7 +111,7 @@ namespace MyDAL.Impls
             {
                 SelectMHandle(columnMapFunc);
             }
-            return await PagingListAsyncHandle<T>(UiMethodEnum.PagingListAsync, single);
+            return await PagingListAsyncHandle<T>(UiMethodEnum.QueryPagingAsync, single);
         }
     }
 
@@ -127,7 +127,7 @@ namespace MyDAL.Impls
             where M : class
         {
             SelectMHandle<M>();
-            return await PagingListAsyncHandle<M>(UiMethodEnum.PagingListAsync, false);
+            return await PagingListAsyncHandle<M>(UiMethodEnum.QueryPagingAsync, false);
         }
 
         public async Task<PagingResult<T>> QueryPagingAsync<T>(Expression<Func<T>> columnMapFunc)
@@ -141,7 +141,7 @@ namespace MyDAL.Impls
             {
                 SelectMHandle(columnMapFunc);
             }
-            return await PagingListAsyncHandle<T>(UiMethodEnum.PagingListAsync, single);
+            return await PagingListAsyncHandle<T>(UiMethodEnum.QueryPagingAsync, single);
         }
     }
 }

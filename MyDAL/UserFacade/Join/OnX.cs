@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace MyDAL.UserFacade.Join
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class OnX
         : Operator
         , IQueryOneX, IQueryListX, IQueryPagingX

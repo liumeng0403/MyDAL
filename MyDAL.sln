@@ -56,6 +56,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{5AA2915B-8
 		Readme.md = Readme.md
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.Tools", "NetCore21\MyDAL.Test.Tools\MyDAL.Test.Tools.csproj", "{06D7652A-29A3-4651-8511-A6542FFAF8BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -142,6 +144,10 @@ Global
 		{0B8E1B54-FF38-45B2-AA97-D3D14327C989}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B8E1B54-FF38-45B2-AA97-D3D14327C989}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B8E1B54-FF38-45B2-AA97-D3D14327C989}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06D7652A-29A3-4651-8511-A6542FFAF8BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06D7652A-29A3-4651-8511-A6542FFAF8BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06D7652A-29A3-4651-8511-A6542FFAF8BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06D7652A-29A3-4651-8511-A6542FFAF8BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -162,6 +168,7 @@ Global
 		{B3CCC64B-606E-45A0-8B54-7FD3103882DC} = {01469E72-6B01-413A-832F-9777EA94EB8D}
 		{1E8F11BE-CB4E-4F18-AF49-F5427FF8A3E6} = {01469E72-6B01-413A-832F-9777EA94EB8D}
 		{0B8E1B54-FF38-45B2-AA97-D3D14327C989} = {01469E72-6B01-413A-832F-9777EA94EB8D}
+		{06D7652A-29A3-4651-8511-A6542FFAF8BB} = {01469E72-6B01-413A-832F-9777EA94EB8D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {928A4226-96F3-409A-8A83-9E7444488710}

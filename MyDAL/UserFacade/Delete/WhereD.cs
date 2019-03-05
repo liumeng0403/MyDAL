@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace MyDAL.UserFacade.Delete
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class WhereD<M> 
         : Operator, IDelete
         where M:class

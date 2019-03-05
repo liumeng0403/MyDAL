@@ -52,4 +52,17 @@ namespace MyDAL.Impls
             return (await new TopXImpl(DC).TopAsync(1, columnMapFunc)).FirstOrDefault();
         }
     }
+
+    internal class QueryOneSQLImpl
+        : Impler, IQueryOneSQL
+    {
+        public QueryOneSQLImpl(Context dc)
+            : base(dc)
+        { }
+
+        public Task<T> QueryOneAsync<T>()
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

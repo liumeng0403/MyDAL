@@ -354,6 +354,12 @@ namespace MyDAL
 
         public static async Task<T> QueryOneAsync<T>(this IDbConnection conn, string sql, List<XParam> dbParas)
         {
+            var dc = new XContext(conn)
+            {
+                Crud = CrudEnum.SQL
+            };
+            dc.DS.ParseSQL(sql);
+            dc.DS.ParseParam(dbParas);
             throw new NotImplementedException();
         }
 

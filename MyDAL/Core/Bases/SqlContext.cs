@@ -8,7 +8,7 @@ namespace MyDAL.Core.Bases
     {
         protected static bool IsPaging(Context dc)
         {
-            if (dc.Method == UiMethodEnum.PagingListAsync)
+            if (dc.Method == UiMethodEnum.QueryPagingAsync)
             {
                 return true;
             }
