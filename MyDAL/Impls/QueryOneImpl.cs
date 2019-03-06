@@ -1,4 +1,6 @@
 ﻿using MyDAL.Core.Bases;
+using MyDAL.Core.Enums;
+using MyDAL.Core.Extensions;
 using MyDAL.Interfaces;
 using System;
 using System.Linq;
@@ -60,9 +62,17 @@ namespace MyDAL.Impls
             : base(dc)
         { }
 
-        public Task<T> QueryOneAsync<T>()
+        public async Task<T> QueryOneAsync<T>()
         {
-            throw new NotImplementedException();
+            DC.Method = UiMethodEnum.QueryOneAsync;
+            if (typeof(T).IsSingleColumn())
+            {
+                return (await DC.DS.ExecuteReaderSingleColumnAsync<T>()).FirstOrDefault();
+            }
+            else
+            {
+                return (await DC.DS.ExecuteReaderMultiRowAsync<T>()).FirstOrDefault();
+            }
         }
     }
 }

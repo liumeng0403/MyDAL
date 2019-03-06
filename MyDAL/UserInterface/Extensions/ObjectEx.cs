@@ -16,6 +16,7 @@ namespace MyDAL.ModelTools
         /// 深度复制 [[只要你能点出来这个方法,就可以对该对象进行深度复制~~]]
         /// </summary>
         public static T DeepClone<T>(this T obj)
+            where T : class
         {
             var result = default(T);
             try

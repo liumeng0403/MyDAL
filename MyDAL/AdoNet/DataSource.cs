@@ -189,42 +189,6 @@ namespace MyDAL.AdoNet
 
         /*********************************************************************************************************************************************/
 
-        internal void ParseSQL(params string[] paras)
-        {
-            DC.SQL.Clear();
-            DC.SQL.AddRange(paras);
-        }
-        internal void ParseParam(List<XParam> paras)
-        {
-            DC.DPH.ResetParameter();
-            foreach (var p in paras)
-            {
-                p.Name.Replace("@", "");
-                if (p.Type == ParamTypeEnum.None)
-                {
-                    p.Type = ParamTypeEnum.MySQL_VarChar;
-                }
-                if (p.Direction == ParamDirectionEnum.None)
-                {
-                    p.Direction = ParamDirectionEnum.Input;
-                }
-                DC.DPH.AddParameter(new DicParam
-                {
-                    Crud = CrudEnum.SQL,
-                    Action = ActionEnum.SQL,
-                    Param = p.Name,
-                    ParamRaw = p.Name,
-                    CsValue = p.Value,
-                    CsValueStr = p.Value == null ? string.Empty : DC.VH.ValueProcess(p.Value, p.Value.GetType(), string.Empty),
-                    CsType = p.Value == null ? default(Type) : p.Value.GetType(),
-                    ParamUI = p
-                });
-            }
-            DC.DPH.SetParameter();
-        }
-
-        /*********************************************************************************************************************************************/
-
         internal async Task<PagingResult<T>> ExecuteReaderPagingAsync<M, T>(bool single, Func<M, T> mapFunc)
             where M : class
         {

@@ -109,7 +109,7 @@ namespace MyDAL.Core.Bases
         {
             if (dic.Group == null
                 && dic.CsValue != null
-                && dic.Option == OptionEnum.Compare                
+                && dic.Option == OptionEnum.Compare
                 && (dic.Compare == CompareXEnum.In || dic.Compare == CompareXEnum.NotIn))
             {
                 return true;
@@ -144,6 +144,42 @@ namespace MyDAL.Core.Bases
         }
 
         /************************************************************************************************************************/
+
+        internal void ParseSQL(params string[] paras)
+        {
+            SQL.Clear();
+            SQL.AddRange(paras);
+        }
+        internal void ParseParam(List<XParam> paras)
+        {
+            DPH.ResetParameter();
+            foreach (var p in paras)
+            {
+                p.Name.Replace("@", "");
+                if (p.Type == ParamTypeEnum.None)
+                {
+                    p.Type = ParamTypeEnum.MySQL_VarChar;
+                }
+                if (p.Direction == ParamDirectionEnum.None)
+                {
+                    p.Direction = ParamDirectionEnum.Input;
+                }
+                DPH.AddParameter(new DicParam
+                {
+                    Crud = CrudEnum.SQL,
+                    Action = ActionEnum.SQL,
+                    Param = p.Name,
+                    ParamRaw = p.Name,
+                    CsValue = p.Value,
+                    CsValueStr = p.Value == null ? string.Empty : VH.ValueProcess(p.Value, p.Value.GetType(), string.Empty),
+                    CsType = p.Value == null ? default(Type) : p.Value.GetType(),
+                    ParamUI = p
+                });
+            }
+            DPH.SetParameter();
+        }
+
+        /*********************************************************************************************************************************************/
 
         internal OptionEnum GetChangeOption(ChangeEnum change)
         {

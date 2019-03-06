@@ -1,6 +1,7 @@
 ﻿using MyDAL.AdoNet;
 using MyDAL.Core;
 using MyDAL.Core.Enums;
+using MyDAL.Impls;
 using MyDAL.UserFacade.Create;
 using MyDAL.UserFacade.Delete;
 using MyDAL.UserFacade.Join;
@@ -347,8 +348,8 @@ namespace MyDAL
             {
                 Crud = CrudEnum.SQL
             };
-            dc.DS.ParseSQL(sql);
-            dc.DS.ParseParam(dbParas);
+            dc.ParseSQL(sql);
+            dc.ParseParam(dbParas);
             return await dc.DS.ExecuteNonQueryAsync();
         }
 
@@ -358,9 +359,9 @@ namespace MyDAL
             {
                 Crud = CrudEnum.SQL
             };
-            dc.DS.ParseSQL(sql);
-            dc.DS.ParseParam(dbParas);
-            throw new NotImplementedException();
+            dc.ParseSQL(sql);
+            dc.ParseParam(dbParas);
+            return await new QueryOneSQLImpl(dc).QueryOneAsync<T>();
         }
 
         public static async Task<List<T>> QueryListAsync<T>(this IDbConnection conn, string sql, List<XParam> dbParas)
