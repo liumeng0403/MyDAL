@@ -152,6 +152,13 @@ namespace MyDAL.Core.Bases
         }
         internal void ParseParam(List<XParam> paras)
         {
+            //
+            if (paras == null)
+            {
+                paras = new List<XParam>();
+            }
+
+            //
             DPH.ResetParameter();
             foreach (var p in paras)
             {

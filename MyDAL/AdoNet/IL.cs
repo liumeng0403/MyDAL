@@ -305,7 +305,7 @@ namespace MyDAL.AdoNet
 
             //
             var members = names.Select(n => typeMap.GetMember(n)).ToList();
-            bool first = true;
+            //bool first = true;
             var allDone = il.DefineLabel();
             int enumDeclareLocal = -1;
             int valueCopyLocal = il.DeclareLocal(typeof(object)).LocalIndex;    // 定义 loc_object 变量, 然后返回此本地变量的index值, 其实就是截止目前, 定义了本地变量的个数            
@@ -413,7 +413,7 @@ namespace MyDAL.AdoNet
                     il.Emit(OpCodes.Pop); // stack is now [target]
                     il.MarkLabel(finishLabel);
                 }
-                first = false;
+                //first = false;
                 index++;
             }
 
@@ -469,7 +469,7 @@ namespace MyDAL.AdoNet
 
             //
             var members = names.Select(n => typeMap.GetMember(n)).ToList();
-            bool first = true;
+            //bool first = true;
             var allDone = il.DefineLabel();
             int enumDeclareLocal = -1;
             int valueCopyLocal = il.DeclareLocal(typeof(object)).LocalIndex;    // 定义 loc_object 变量, 然后返回此本地变量的index值, 其实就是截止目前, 定义了本地变量的个数            
@@ -577,7 +577,7 @@ namespace MyDAL.AdoNet
                     il.Emit(OpCodes.Pop); // stack is now [target]
                     il.MarkLabel(finishLabel);
                 }
-                first = false;
+                //first = false;
                 index++;
             }
 

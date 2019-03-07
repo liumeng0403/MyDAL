@@ -20,7 +20,6 @@
             // ShortcutAPI
             //
             new ShortcutAPI._01_FirstOrDefault().Test();
-            await new ShortcutAPI._01_QueryOneAsync().test();
             await new ShortcutAPI._02_QueryListAsync().test();
             await new ShortcutAPI._02_QueryListAsync_History().test();
             await new ShortcutAPI._03_MemoryTest().Test();
@@ -50,7 +49,6 @@
             //
             // QuerySingleColumn
             //
-            await new QuerySingleColumn._01_QueryOneAsync().test();
             await new QuerySingleColumn._02_QueryListAsync().test();
             await new QuerySingleColumn._02_QueryListAsync_History().test();
             await new QuerySingleColumn._03_QueryPagingAsync().test();

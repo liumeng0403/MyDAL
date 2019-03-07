@@ -77,7 +77,6 @@ namespace MyDAL.UserFacade.Join
         /// <summary>
         /// 多表分页查询
         /// </summary>
-        /// <typeparam name="VM">ViewModel</typeparam>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
         public async Task<PagingResult<T>> QueryPagingAsync<T>(int pageIndex, int pageSize, Expression<Func<T>> columnMapFunc)

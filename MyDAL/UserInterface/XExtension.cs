@@ -342,7 +342,7 @@ namespace MyDAL
 
         /******************************************************************************************************************************/
 
-        public static async Task<int> ExecuteNonQueryAsync(this IDbConnection conn, string sql,List<XParam> dbParas)
+        public static async Task<int> ExecuteNonQueryAsync(this IDbConnection conn, string sql, List<XParam> dbParas = null)
         {
             var dc = new XContext(conn)
             {
@@ -353,7 +353,7 @@ namespace MyDAL
             return await dc.DS.ExecuteNonQueryAsync();
         }
 
-        public static async Task<T> QueryOneAsync<T>(this IDbConnection conn, string sql, List<XParam> dbParas)
+        public static async Task<T> QueryOneAsync<T>(this IDbConnection conn, string sql, List<XParam> dbParas = null)
         {
             var dc = new XContext(conn)
             {
@@ -364,12 +364,12 @@ namespace MyDAL
             return await new QueryOneSQLImpl(dc).QueryOneAsync<T>();
         }
 
-        public static async Task<List<T>> QueryListAsync<T>(this IDbConnection conn, string sql, List<XParam> dbParas)
+        public static async Task<List<T>> QueryListAsync<T>(this IDbConnection conn, string sql, List<XParam> dbParas = null)
         {
             throw new NotImplementedException();
         }
 
-        public static async Task<PagingResult<T>> QueryPagingAsync<T>(this IDbConnection conn, int pageIndex, int pageSize, string totalCountSql, string pageDataSql, List<XParam> dbParas)
+        public static async Task<PagingResult<T>> QueryPagingAsync<T>(this IDbConnection conn, int pageIndex, int pageSize, string totalCountSql, string pageDataSql, List<XParam> dbParas = null)
         {
             throw new NotImplementedException();
         }
