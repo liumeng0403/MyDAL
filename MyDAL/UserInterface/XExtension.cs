@@ -350,7 +350,7 @@ namespace MyDAL
             };
             dc.ParseSQL(sql);
             dc.ParseParam(dbParas);
-            return await dc.DS.ExecuteNonQueryAsync();
+            return await new ExecuteNonQuerySQLImpl(dc).ExecuteNonQueryAsync();
         }
 
         public static async Task<T> QueryOneAsync<T>(this IDbConnection conn, string sql, List<XParam> dbParas = null)
@@ -369,7 +369,8 @@ namespace MyDAL
             throw new NotImplementedException();
         }
 
-        public static async Task<PagingResult<T>> QueryPagingAsync<T>(this IDbConnection conn, int pageIndex, int pageSize, string totalCountSql, string pageDataSql, List<XParam> dbParas = null)
+        public static async Task<PagingResult<T>> QueryPagingAsync<T>
+            (this IDbConnection conn, int pageIndex, int pageSize, string totalCountSql, string pageDataSql, List<XParam> dbParas = null)
         {
             throw new NotImplementedException();
         }

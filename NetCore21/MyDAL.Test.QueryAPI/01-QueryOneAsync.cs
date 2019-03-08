@@ -1,6 +1,8 @@
 ﻿using MyDAL.Test.Entities.MyDAL_TestDB;
+using MyDAL.Test.Enums;
 using MyDAL.Test.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -113,12 +115,6 @@ namespace MyDAL.Test.QueryAPI
         }
 
         [Fact]
-        public async Task History_02()
-        {
-
-        }
-
-        [Fact]
         public async Task QuerySingleColumn_Shortcut()
         {
             xx = string.Empty;
@@ -208,7 +204,7 @@ namespace MyDAL.Test.QueryAPI
         public async Task QuerySingleColumn_ST()
         {
             xx = string.Empty;
-            
+
             var res1 = await Conn
                 .Queryer<Agent>()
                 .Where(it => it.CreatedOn == DateTime.Parse("2018-08-16 19:22:01.716307"))
@@ -248,42 +244,209 @@ namespace MyDAL.Test.QueryAPI
         public async Task QueryVM_ST()
         {
 
+            xx = string.Empty;
+
+            /****************************************************************************************************************************************/
+
+            var res1 = await Conn
+                .Queryer<Agent>()
+                .Where(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
+                .QueryOneAsync<AgentVM>();
+
+            Assert.NotNull(res1);
+            Assert.Null(res1.XXXX);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /****************************************************************************************************************************************/
+
+            xx = string.Empty;
+
         }
 
         [Fact]
         public async Task QueryVMColumn_ST()
         {
 
+            xx = string.Empty;
+
+            var res1 = await Conn
+                .Queryer<Agent>()
+                .Where(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
+                .QueryOneAsync(it => new AgentVM
+                {
+                    XXXX = it.Name,
+                    YYYY = it.PathId
+                });
+
+            Assert.Equal("樊士芹", res1.XXXX);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /********************************************************************************************************************************/
+
+            xx = string.Empty;
+
         }
 
         [Fact]
         public async Task QuerySingleColumn_MT()
         {
+            xx = string.Empty;
 
+            var res1 = await Conn
+                .Queryer(out Agent agent, out AgentInventoryRecord agentRecord)
+                .From(() => agent)
+                    .InnerJoin(() => agentRecord)
+                        .On(() => agent.Id == agentRecord.AgentId)
+                .Where(() => agent.AgentLevel == AgentLevel.DistiAgent)
+                .QueryOneAsync(() => agent.Name);
+
+            Assert.NotNull(res1);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
         }
 
         [Fact]
         public async Task QueryM_MT()
         {
+            xx = string.Empty;
 
+            var res1 = await Conn
+                .Queryer(out Agent agent, out AgentInventoryRecord record)
+                .From(() => agent)
+                    .InnerJoin(() => record)
+                        .On(() => agent.Id == record.AgentId)
+                .Where(() => agent.Id == Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef"))
+                .QueryOneAsync<Agent>();
+
+            Assert.NotNull(res1);
+            Assert.Equal("夏明君", res1.Name);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /****************************************************************************************************************************************/
+
+            xx = string.Empty;
         }
 
         [Fact]
         public async Task QueryVMColumn_MT()
         {
+            xx = string.Empty;
 
+            var res1 = await Conn
+                .Queryer(out Agent agent, out AgentInventoryRecord record)
+                .From(() => agent)
+                    .InnerJoin(() => record)
+                        .On(() => agent.Id == record.AgentId)
+                .Where(() => agent.Id == Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef"))
+                .QueryOneAsync(() => new AgentVM
+                {
+                    nn = agent.PathId,
+                    yy = record.Id,
+                    xx = agent.Id,
+                    zz = agent.Name,
+                    mm = record.LockedCount
+                });
+
+            Assert.NotNull(res1);
+            Assert.Equal("夏明君", res1.zz);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
         }
 
         [Fact]
         public async Task QuerySingleColumn_SQL()
         {
+            xx = string.Empty;
 
+            var sql = @"
+                                    select agent.`Name`
+                                    from `agent` as agent 
+	                                    inner join `agentinventoryrecord` as agentRecord
+		                                    on agent.`Id`=agentRecord.`AgentId`
+                                    where  agent.`AgentLevel`=@AgentLevel
+                                    limit 0,1;
+                                ";
+
+            var paras = new List<XParam>
+            {
+                new XParam{Name="AgentLevel",Value=AgentLevel.DistiAgent}
+            };
+
+            var res1 = await Conn.QueryOneAsync<string>(sql, paras);
+
+            Assert.True(res1.Length > 1);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
         }
 
         [Fact]
         public async Task QueryVM_SQL()
         {
+            xx = string.Empty;
 
+            var sql = @"
+                                    select 	agent.`PathId` as nn,
+	                                    record.`Id` as yy,
+	                                    agent.`Id` as xx,
+	                                    agent.`Name` as zz,
+	                                    record.`LockedCount` as mm
+                                    from `agent` as agent 
+	                                    inner join `agentinventoryrecord` as record
+		                                    on agent.`Id`=record.`AgentId`
+                                    where  agent.`Id`=@Id
+                                    limit 0,1;
+                                ";
+
+            var paras = new List<XParam>
+            {
+                new XParam{Name="Id",Value=Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef")}
+            };
+
+            var res1 = await Conn.QueryOneAsync<AgentVM>(sql, paras);
+
+            Assert.NotNull(res1);
+            Assert.Equal("夏明君", res1.zz);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
+        }
+
+        [Fact]
+        public async Task QueryVM_SQL_NoneParam()
+        {
+            xx = string.Empty;
+
+            var sql = @"
+                                    select 	agent.`PathId` as nn,
+	                                    record.`Id` as yy,
+	                                    agent.`Id` as xx,
+	                                    agent.`Name` as zz,
+	                                    record.`LockedCount` as mm
+                                    from `agent` as agent 
+	                                    inner join `agentinventoryrecord` as record
+		                                    on agent.`Id`=record.`AgentId`
+                                    where  agent.`Id`='544b9053-322e-4857-89a0-0165443dcbef'
+                                    limit 0,1;
+                                ";
+            
+            var res1 = await Conn.QueryOneAsync<AgentVM>(sql);
+
+            Assert.NotNull(res1);
+            Assert.Equal("夏明君", res1.zz);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
         }
 
     }

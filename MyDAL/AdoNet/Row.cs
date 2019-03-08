@@ -6,13 +6,13 @@ namespace MyDAL.AdoNet
 {
 
     internal class Row<M>
-        :IRow
+        : IRow
     {
         internal Func<IDataReader, M> Handle { get; set; }
     }
 
     internal class Row
-        :IRow
+        : IRow
     {
         internal Func<IDataReader, object> Handle { get; set; }
     }

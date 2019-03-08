@@ -76,20 +76,12 @@ namespace MyDAL.Core
         internal Func<IDataReader, M> GetHandle<M>(string sql, IDataReader reader)
         {
             var key = GetHandleKey(sql.GetHashCode(), GetColumnHash(reader), typeof(M).FullName);
-            if (!ModelRowCache.TryGetValue(key, out var row))
-            {
-                ModelRowCache[key] = row = IL<M>.Row(reader);
-            }
-            return ((Row<M>)row).Handle;
+            return ((Row<M>)ModelRowCache.GetOrAdd(key, k => IL<M>.Row(reader))).Handle;
         }
         internal Func<IDataReader, object> GetHandle(string sql, IDataReader reader, Type mType)
         {
             var key = GetHandleKey(sql.GetHashCode(), GetColumnHash(reader), mType.FullName);
-            if (!ModelRowCache.TryGetValue(key, out var row))
-            {
-                ModelRowCache[key] = row = IL.Row(reader, mType);
-            }
-            return ((Row)row).Handle;
+            return ((Row)ModelRowCache.GetOrAdd(key, k => IL.Row(reader, mType))).Handle;
         }
 
         internal TableModelCache GetTableModel(Type t)

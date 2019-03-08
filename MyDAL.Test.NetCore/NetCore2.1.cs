@@ -30,7 +30,6 @@
             //
             // QueryVmColumn
             //
-            await new QueryVmColumn._01_QueryOneAsync().test();
             await new QueryVmColumn._02_QueryListAsync().test();
             await new QueryVmColumn._02_QueryListAsync_History().test();
             await new QueryVmColumn._03_QueryPagingAsync().test();

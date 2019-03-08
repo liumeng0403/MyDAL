@@ -144,6 +144,13 @@ namespace MyDAL.AdoNet
             {
                 ProcessDateTimeYearColumn(result, dic);
             }
+            else if (DC.Crud == CrudEnum.SQL)
+            {
+                while (await Reader.ReadAsync(CancellationToken.None).ConfigureAwait(false))
+                {
+                    result.Add(DC.GH.ConvertT<F>(Reader.GetValue(0)));
+                }
+            }
             else
             {
                 var col = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.Select && it.Columns != null);
