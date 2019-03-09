@@ -7,13 +7,12 @@ using System.Runtime.Serialization.Formatters.Binary;
 namespace MyDAL.ModelTools
 {
     /// <summary>
-    /// 
+    /// 请参阅: <see langword="目录索引 https://www.cnblogs.com/Meng-NET/"/>
     /// </summary>
     public static class ObjectEx
     {
-
         /// <summary>
-        /// 深度复制 [[只要你能点出来这个方法,就可以对该对象进行深度复制~~]]
+        /// 请参阅: <see langword="引用类型对象 .DeepClone() 深度克隆[深度复制] 工具 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static T DeepClone<T>(this T obj)
             where T : class

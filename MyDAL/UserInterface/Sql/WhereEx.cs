@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 namespace MyDAL
 {
     /// <summary>
-    /// 
+    /// 请参阅: <see langword="目录索引 https://www.cnblogs.com/Meng-NET/"/>
     /// </summary>
     public static class WhereEx
     {
@@ -17,7 +17,7 @@ namespace MyDAL
         /**************************************************************************************************************/
 
         /// <summary>
-        /// 请参阅: <see langword=".Where() &amp; .And() &amp; .Or() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".Where() &amp; .And() &amp; .Or() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static WhereD<M> Where<M>(this Deleter<M> deleter, Expression<Func<M, bool>> compareFunc)
             where M : class
@@ -30,7 +30,7 @@ namespace MyDAL
         /**************************************************************************************************************/
 
         /// <summary>
-        /// 请参阅: <see langword=".Where() &amp; .And() &amp; .Or() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".Where() &amp; .And() &amp; .Or() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static WhereU<M> Where<M>(this SetU<M> set, Expression<Func<M, bool>> compareFunc)
             where M : class
@@ -43,7 +43,7 @@ namespace MyDAL
         /**************************************************************************************************************/
 
         /// <summary>
-        /// 请参阅: <see langword=".Where() &amp; .And() &amp; .Or() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".Where() &amp; .And() &amp; .Or() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static WhereQ<M> Where<M>(this Queryer<M> selecter, Expression<Func<M, bool>> compareFunc)
             where M : class
@@ -68,7 +68,7 @@ namespace MyDAL
         /**************************************************************************************************************/
 
         /// <summary>
-        /// 请参阅: <see langword=".Where() &amp; .And() &amp; .Or() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".Where() &amp; .And() &amp; .Or() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static WhereX Where(this OnX on, Expression<Func<bool>> compareFunc)
         {

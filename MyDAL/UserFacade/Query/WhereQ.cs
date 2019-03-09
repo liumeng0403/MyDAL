@@ -23,7 +23,7 @@ namespace MyDAL.UserFacade.Query
             : base(dc) { }
 
         /// <summary>
-        /// 请参阅: <see langword=".IsExistAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".IsExistAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<bool> IsExistAsync()
         {
@@ -55,14 +55,14 @@ namespace MyDAL.UserFacade.Query
         }
 
         /// <summary>
-        /// 请参阅: <see langword=".QueryOneAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<M> QueryOneAsync()
         {
             return await new QueryOneImpl<M>(DC).QueryOneAsync();
         }
         /// <summary>
-        /// 请参阅: <see langword=".QueryOneAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<VM> QueryOneAsync<VM>()
             where VM : class
@@ -70,7 +70,7 @@ namespace MyDAL.UserFacade.Query
             return await new QueryOneImpl<M>(DC).QueryOneAsync<VM>();
         }
         /// <summary>
-        /// 请参阅: <see langword=".QueryOneAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<T> QueryOneAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
@@ -78,14 +78,14 @@ namespace MyDAL.UserFacade.Query
         }
 
         /// <summary>
-        /// 请参阅: <see langword=".QueryListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<List<M>> QueryListAsync()
         {
             return await new QueryListImpl<M>(DC).QueryListAsync();
         }
         /// <summary>
-        /// 请参阅: <see langword=".QueryListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<List<VM>> QueryListAsync<VM>()
             where VM : class
@@ -93,7 +93,7 @@ namespace MyDAL.UserFacade.Query
             return await new QueryListImpl<M>(DC).QueryListAsync<VM>();
         }
         /// <summary>
-        /// 请参阅: <see langword=".QueryListAsync() 使用 " cref="https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<List<T>> QueryListAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {

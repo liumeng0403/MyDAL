@@ -1,12 +1,13 @@
-﻿using MyDAL.Core.Common;
-using MyDAL.Core.Enums;
+﻿using MyDAL.Core.Enums;
 using MyDAL.UserFacade.Join;
 using System;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace MyDAL
 {
+    /// <summary>
+    /// 请参阅: <see langword="目录索引 https://www.cnblogs.com/Meng-NET/"/>
+    /// </summary>
     public static class FromEx
     {
 
