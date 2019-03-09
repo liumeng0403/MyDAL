@@ -23,7 +23,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\MyDAL.xml</DocumentationFile>
     <OutputPath>bin\Debug\</OutputPath>
-    <!--<NoWarn>1702;1584</NoWarn>-->
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <WarningLevel>0</WarningLevel>
@@ -33,9 +32,6 @@
   <ItemGroup>
     <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.3.0" />
   </ItemGroup>
-  <!--<ItemGroup>
-    <PackageReference Update="SourceLink.Create.GitHub" Version="2.8.3" />
-  </ItemGroup>-->
   <ItemGroup>
     <Folder Include="DataRainbow\Oracle\" />
     <Folder Include="DataRainbow\PostgreSQL\" />

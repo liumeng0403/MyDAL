@@ -78,4 +78,25 @@ namespace MyDAL.Impls
             }
         }
     }
+
+    internal class QueryListSQLImpl
+        : Impler, IQueryListSQL
+    {
+        public QueryListSQLImpl(Context dc)
+            : base(dc)
+        { }
+
+        public async Task<List<T>> QueryListAsync<T>()
+        {
+            DC.Method = UiMethodEnum.QueryListAsync;
+            if (typeof(T).IsSingleColumn())
+            {
+                return await DC.DS.ExecuteReaderSingleColumnAsync<T>();
+            }
+            else
+            {
+                return await DC.DS.ExecuteReaderMultiRowAsync<T>();
+            }
+        }
+    }
 }

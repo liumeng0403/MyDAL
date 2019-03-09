@@ -107,16 +107,16 @@ namespace MyDAL.Test.Create
                             ";
             var paras = new List<XParam>
             {
-                new XParam{ Name="Id",Value=m.Id},
-                new XParam{Name="CreatedOn",Value=m.CreatedOn},
-                new XParam{Name="PaymentRecordId",Value=m.PaymentRecordId},
-                new XParam{Name="OrderId",Value=m.OrderId},
-                new XParam{Name="TotalAmount",Value=m.TotalAmount},
-                new XParam{ Name="Description",Value=m.Description},
-                new XParam{Name="PaymentSN",Value=m.PaymentSN},
-                new XParam{Name="PayedOn",Value=m.PayedOn},
-                new XParam{Name="CanceledOn",Value=m.CanceledOn},
-                new XParam{Name="PaymentUrl",Value=m.PaymentUrl}
+                new XParam{ ParamName="Id",ParamValue=m.Id},
+                new XParam{ParamName="CreatedOn",ParamValue=m.CreatedOn},
+                new XParam{ParamName="PaymentRecordId",ParamValue=m.PaymentRecordId},
+                new XParam{ParamName="OrderId",ParamValue=m.OrderId},
+                new XParam{ParamName="TotalAmount",ParamValue=m.TotalAmount},
+                new XParam{ ParamName="Description",ParamValue=m.Description},
+                new XParam{ParamName="PaymentSN",ParamValue=m.PaymentSN},
+                new XParam{ParamName="PayedOn",ParamValue=m.PayedOn},
+                new XParam{ParamName="CanceledOn",ParamValue=m.CanceledOn},
+                new XParam{ParamName="PaymentUrl",ParamValue=m.PaymentUrl}
             };
 
             // 新增一条数据: AlipayPaymentRecord

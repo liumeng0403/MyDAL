@@ -162,24 +162,24 @@ namespace MyDAL.Core.Bases
             DPH.ResetParameter();
             foreach (var p in paras)
             {
-                p.Name.Replace("@", "");
-                if (p.Type == ParamTypeEnum.None)
+                p.ParamName.Replace("@", "");
+                if (p.ParamType == ParamTypeEnum.None)
                 {
-                    p.Type = ParamTypeEnum.MySQL_VarChar;
+                    p.ParamType = ParamTypeEnum.MySQL_VarChar;
                 }
-                if (p.Direction == ParamDirectionEnum.None)
+                if (p.ParamDirection == ParamDirectionEnum.None)
                 {
-                    p.Direction = ParamDirectionEnum.Input;
+                    p.ParamDirection = ParamDirectionEnum.Input;
                 }
                 DPH.AddParameter(new DicParam
                 {
                     Crud = CrudEnum.SQL,
                     Action = ActionEnum.SQL,
-                    Param = p.Name,
-                    ParamRaw = p.Name,
-                    CsValue = p.Value,
-                    CsValueStr = p.Value == null ? string.Empty : VH.ValueProcess(p.Value, p.Value.GetType(), string.Empty),
-                    CsType = p.Value == null ? default(Type) : p.Value.GetType(),
+                    Param = p.ParamName,
+                    ParamRaw = p.ParamName,
+                    CsValue = p.ParamValue,
+                    CsValueStr = p.ParamValue == null ? string.Empty : VH.ValueProcess(p.ParamValue, p.ParamValue.GetType(), string.Empty),
+                    CsType = p.ParamValue == null ? default(Type) : p.ParamValue.GetType(),
                     ParamUI = p
                 });
             }

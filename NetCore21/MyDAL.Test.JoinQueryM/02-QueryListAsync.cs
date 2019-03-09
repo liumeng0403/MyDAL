@@ -45,7 +45,7 @@ namespace MyDAL.Test.JoinQueryM
 
             /**************************************************************************************************************************/
 
-            var xx3 = string.Empty;
+            xx = string.Empty;
 
             // 
             var res3 = await Conn
@@ -62,7 +62,7 @@ namespace MyDAL.Test.JoinQueryM
 
             /**************************************************************************************************************************/
 
-            var xx4 = string.Empty;
+            xx = string.Empty;
 
             // 
             var res4 = await Conn
@@ -78,7 +78,7 @@ namespace MyDAL.Test.JoinQueryM
 
             /**************************************************************************************************************************/
 
-            var xx5 = string.Empty;
+            xx = string.Empty;
 
             // 
             var res5 = await Conn
@@ -94,7 +94,7 @@ namespace MyDAL.Test.JoinQueryM
 
             /**************************************************************************************************************************/
 
-            var xx6 = string.Empty;
+            xx = string.Empty;
 
             // 
             var res6 = await Conn
@@ -111,7 +111,7 @@ namespace MyDAL.Test.JoinQueryM
 
             /**************************************************************************************************************************/
 
-            var xx7 = string.Empty;
+            xx = string.Empty;
 
             // 
             var res7 = await Conn

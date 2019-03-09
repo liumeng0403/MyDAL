@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MyDAL.Core.Configs
 {
-    internal class TypeConfig
+    internal class CsTypeConfig
     {
 
         /************************************************************************************************************/

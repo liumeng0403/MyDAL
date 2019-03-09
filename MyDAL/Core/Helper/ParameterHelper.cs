@@ -32,212 +32,17 @@ namespace MyDAL.Core.Helper
 
         private static DbType GetType(ParamTypeEnum colType, Type realType, Context dc)
         {
-            if (realType == XConfig.TC.Int)
-            {
-                if (colType == ParamTypeEnum.MySQL_Int)//.Equals("int", StringComparison.OrdinalIgnoreCase))
-                {
-                    return DbType.Int32;
-                }
-                else
-                {
-                    return DbType.Int32;
-                }
-            }
-            else if (realType == XConfig.TC.Long)
-            {
-                if (colType == ParamTypeEnum.MySQL_BigInt)//.Equals("bigint", StringComparison.OrdinalIgnoreCase))
-                {
-                    return DbType.Int64;
-                }
-                else
-                {
-                    return DbType.Int64;
-                }
-            }
-            else if (realType == XConfig.TC.Decimal)
-            {
-                if (colType == ParamTypeEnum.MySQL_Decimal)//.Equals("decimal", StringComparison.OrdinalIgnoreCase))
-                {
-                    return DbType.Decimal;
-                }
-                else
-                {
-                    return DbType.Decimal;
-                }
-            }
-            else if (realType == XConfig.TC.Bool)
-            {
-                if (colType == ParamTypeEnum.MySQL_Bit)//.Equals("bit", StringComparison.OrdinalIgnoreCase))
-                {
-                    return DbType.UInt16;
-                }
-                else
-                {
-                    return DbType.Boolean;
-                }
-            }
-            else if (realType == XConfig.TC.String)
-            {
-                if (colType == ParamTypeEnum.MySQL_LongText)//.Equals("longtext", StringComparison.OrdinalIgnoreCase))
-                {
-                    return DbType.String;
-                }
-                else
-                {
-                    return DbType.AnsiString;
-                }
-            }
-            else if (realType == XConfig.TC.DateTime)
-            {
-                if (colType == ParamTypeEnum.MySQL_DateTime)//.Equals("datetime", StringComparison.OrdinalIgnoreCase))
-                {
-                    return DbType.AnsiString;
-                }
-                else
-                {
-                    return DbType.DateTime2;
-                }
-            }
-            else if (realType == XConfig.TC.Guid)
-            {
-                if (colType == ParamTypeEnum.MySQL_Char)//.Equals("char", StringComparison.OrdinalIgnoreCase))
-                {
-                    return DbType.AnsiStringFixedLength;
-                }
-                else
-                {
-                    return DbType.Guid;
-                }
-            }
-            else if (realType == null)
+            if (realType == null)
             {
                 return DbType.AnsiString;
+            }
+            else if (XConfig.TypeFuncs.TryGetValue(realType, out var func))
+            {
+                return func(dc, colType);
             }
             else if (realType.IsEnum)
             {
                 return GetType(colType, Enum.GetUnderlyingType(realType), dc);
-            }
-            else if (realType == XConfig.TC.Byte)
-            {
-                if (colType == ParamTypeEnum.MySQL_TinyInt)//.Equals("tinyint", StringComparison.OrdinalIgnoreCase))
-                {
-                    return DbType.Byte;
-                }
-                else
-                {
-                    return DbType.Byte;
-                }
-            }
-            else if (realType == XConfig.TC.ByteArray)
-            {
-                return DbType.Binary;
-            }
-            else if (realType == XConfig.TC.Char)
-            {
-                if (colType == ParamTypeEnum.MySQL_VarChar)//.Equals("varchar", StringComparison.OrdinalIgnoreCase))
-                {
-                    return DbType.AnsiString;
-                }
-                else
-                {
-                    return DbType.AnsiString;
-                }
-            }
-            else if (realType == XConfig.TC.Double)
-            {
-                if (colType == ParamTypeEnum.MySQL_Double)//.Equals("double", StringComparison.OrdinalIgnoreCase))
-                {
-                    return DbType.Double;
-                }
-                else
-                {
-                    return DbType.Double;
-                }
-            }
-            else if (realType == XConfig.TC.Float)
-            {
-                if (colType == ParamTypeEnum.MySQL_Float)//.Equals("float", StringComparison.OrdinalIgnoreCase))
-                {
-                    return DbType.Single;
-                }
-                else
-                {
-                    return DbType.Single;
-                }
-            }
-            else if (realType == XConfig.TC.Sbyte)
-            {
-                if (colType == ParamTypeEnum.MySQL_TinyInt)//.Equals("tinyint", StringComparison.OrdinalIgnoreCase))
-                {
-                    return DbType.Int16;
-                }
-                else
-                {
-                    return DbType.SByte;
-                }
-            }
-            else if (realType == XConfig.TC.Short)
-            {
-                if (colType == ParamTypeEnum.MySQL_SmallInt)//.Equals("smallint", StringComparison.OrdinalIgnoreCase))
-                {
-                    return DbType.Int16;
-                }
-                else
-                {
-                    return DbType.Int16;
-                }
-            }
-            else if (realType == XConfig.TC.Uint)
-            {
-                if (colType == ParamTypeEnum.MySQL_Int)//.Equals("int", StringComparison.OrdinalIgnoreCase))
-                {
-                    return DbType.UInt32;
-                }
-                else
-                {
-                    return DbType.UInt32;
-                }
-            }
-            else if (realType == XConfig.TC.Ulong)
-            {
-                if (colType == ParamTypeEnum.MySQL_BigInt)//.Equals("bigint", StringComparison.OrdinalIgnoreCase))
-                {
-                    return DbType.UInt64;
-                }
-                else
-                {
-                    return DbType.UInt64;
-                }
-            }
-            else if (realType == XConfig.TC.Ushort)
-            {
-                if (colType == ParamTypeEnum.MySQL_SmallInt)//.Equals("smallint", StringComparison.OrdinalIgnoreCase))
-                {
-                    return DbType.UInt16;
-                }
-                else
-                {
-                    return DbType.UInt16;
-                }
-            }
-            else if (realType == XConfig.TC.TimeSpan)
-            {
-                if (colType == ParamTypeEnum.MySQL_Time)//.Equals("time", StringComparison.OrdinalIgnoreCase))
-                {
-                    return DbType.Time;
-                }
-                else
-                {
-                    return DbType.Time;
-                }
-            }
-            else if (realType == XConfig.TC.DateTimeOffset)
-            {
-                return DbType.DateTimeOffset;
-            }
-            else if (realType == XConfig.TC.Object)
-            {
-                return DbType.Object;
             }
             else if (realType.FullName == XConfig.TC.LinqBinary)
             {
@@ -254,67 +59,11 @@ namespace MyDAL.Core.Helper
         }
         private static ParamTypeEnum GetColType(string colType, Context dc)
         {
-            switch (colType.ToLower())
+            if (!XConfig.MySQLTypes.TryGetValue(colType.ToLower(), out var type))
             {
-                case "tinyint":
-                    return ParamTypeEnum.MySQL_TinyInt;
-                case "smallint":
-                    return ParamTypeEnum.MySQL_SmallInt;
-                case "mediumint":
-                    return ParamTypeEnum.MySQL_MediumInt;
-                case "int":
-                    return ParamTypeEnum.MySQL_Int;
-                case "bigint":
-                    return ParamTypeEnum.MySQL_BigInt;
-                case "float":
-                    return ParamTypeEnum.MySQL_Float;
-                case "double":
-                    return ParamTypeEnum.MySQL_Double;
-                case "decimal":
-                    return ParamTypeEnum.MySQL_Decimal;
-                case "year":
-                    return ParamTypeEnum.MySQL_Year;
-                case "time":
-                    return ParamTypeEnum.MySQL_Time;
-                case "date":
-                    return ParamTypeEnum.MySQL_Date;
-                case "datetime":
-                    return ParamTypeEnum.MySQL_DateTime;
-                case "timestamp":
-                    return ParamTypeEnum.MySQL_TimeStamp;
-                case "char":
-                    return ParamTypeEnum.MySQL_Char;
-                case "varchar":
-                    return ParamTypeEnum.MySQL_VarChar;
-                case "tinytext":
-                    return ParamTypeEnum.MySQL_TinyText;
-                case "text":
-                    return ParamTypeEnum.MySQL_Text;
-                case "mediumtext":
-                    return ParamTypeEnum.MySQL_MediumText;
-                case "longtext":
-                    return ParamTypeEnum.MySQL_LongText;
-                case "enum":
-                    return ParamTypeEnum.MySQL_Enum;
-                case "set":
-                    return ParamTypeEnum.MySQL_Set;
-                case "bit":
-                    return ParamTypeEnum.MySQL_Bit;
-                case "binary":
-                    return ParamTypeEnum.MySQL_Binary;
-                case "varbinary":
-                    return ParamTypeEnum.MySQL_VarBinary;
-                case "tinyblob":
-                    return ParamTypeEnum.MySQL_TinyBlob;
-                case "blob":
-                    return ParamTypeEnum.MySQL_Blob;
-                case "mediumblob":
-                    return ParamTypeEnum.MySQL_MediumBlob;
-                case "longblob":
-                    return ParamTypeEnum.MySQL_LongBlob;
-                default:
-                    throw dc.Exception(XConfig.EC._031, colType);
+                throw dc.Exception(XConfig.EC._031, colType);
             }
+            return type;
         }
         private static ParamInfo BoolParam(DicParam ui, Type realType, Context dc)
         {
@@ -339,7 +88,7 @@ namespace MyDAL.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo BoolParamHandle(ui.ColumnTypeDicModelUI item, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw dc.Exception(XConfig.EC._034, $"不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
@@ -357,7 +106,7 @@ namespace MyDAL.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo ByteParam(DicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw dc.Exception(XConfig.EC._035, $"不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
@@ -375,7 +124,7 @@ namespace MyDAL.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo CharParam(DicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw dc.Exception(XConfig.EC._036, $"不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
@@ -393,7 +142,7 @@ namespace MyDAL.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo DecimalParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw dc.Exception(XConfig.EC._037, $"不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
@@ -411,7 +160,7 @@ namespace MyDAL.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo DoubleParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw dc.Exception(XConfig.EC._038, $"不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
@@ -429,7 +178,7 @@ namespace MyDAL.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo FloatParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw dc.Exception(XConfig.EC._039, $"不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
@@ -447,7 +196,7 @@ namespace MyDAL.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo IntParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw dc.Exception(XConfig.EC._040, $"不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
@@ -465,7 +214,7 @@ namespace MyDAL.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo LongParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw dc.Exception(XConfig.EC._041, $"不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
@@ -487,7 +236,7 @@ namespace MyDAL.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo SbyteParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw dc.Exception(XConfig.EC._042, $"不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
@@ -505,7 +254,7 @@ namespace MyDAL.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo ShortParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw dc.Exception(XConfig.EC._043, $"不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
@@ -523,7 +272,7 @@ namespace MyDAL.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo UintParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw dc.Exception(XConfig.EC._044, $"不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
@@ -541,7 +290,7 @@ namespace MyDAL.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo UlongParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw dc.Exception(XConfig.EC._045, $"不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
@@ -559,7 +308,7 @@ namespace MyDAL.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo UshortParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw dc.Exception(XConfig.EC._046, $"不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
@@ -581,7 +330,7 @@ namespace MyDAL.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo StringParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw dc.Exception(XConfig.EC._047, $"不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
@@ -618,7 +367,7 @@ namespace MyDAL.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo DateTimeParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw dc.Exception(XConfig.EC._048, $"不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
@@ -636,7 +385,7 @@ namespace MyDAL.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo TimeSpanParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw dc.Exception(XConfig.EC._049, $"不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
@@ -658,7 +407,7 @@ namespace MyDAL.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo GuidParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw dc.Exception(XConfig.EC._050, $"不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
@@ -691,7 +440,7 @@ namespace MyDAL.Core.Helper
             }
             else
             {
-                throw new Exception($"[[ParamInfo EnumParam(ui.ColumnTypeDicModelUI ui, Type realType)]]不支持的字段参数类型:[[{realType}]]!");
+                throw dc.Exception(XConfig.EC._051, $"不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
@@ -729,7 +478,7 @@ namespace MyDAL.Core.Helper
                 { }
                 else if (ui.Action == ActionEnum.SQL)
                 {
-                    ui.ColumnType = ui.ParamUI.Type;
+                    ui.ColumnType = ui.ParamUI.ParamType;
                 }
                 else
                 {

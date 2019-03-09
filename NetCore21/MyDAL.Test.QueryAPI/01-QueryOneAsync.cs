@@ -376,7 +376,7 @@ namespace MyDAL.Test.QueryAPI
 
             var paras = new List<XParam>
             {
-                new XParam{Name="AgentLevel",Value=AgentLevel.DistiAgent}
+                new XParam{ParamName="AgentLevel",ParamValue=AgentLevel.DistiAgent}
             };
 
             var res1 = await Conn.QueryOneAsync<string>(sql, paras);
@@ -408,7 +408,7 @@ namespace MyDAL.Test.QueryAPI
 
             var paras = new List<XParam>
             {
-                new XParam{Name="Id",Value=Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef")}
+                new XParam{ParamName="Id",ParamValue=Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef")}
             };
 
             var res1 = await Conn.QueryOneAsync<AgentVM>(sql, paras);

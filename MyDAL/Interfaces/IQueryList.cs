@@ -20,4 +20,9 @@ namespace MyDAL.Interfaces
             where M : class;
         Task<List<T>> QueryListAsync<T>(Expression<Func<T>> columnMapFunc);
     }
+
+    internal interface IQueryListSQL
+    {
+        Task<List<T>> QueryListAsync<T>();
+    }
 }

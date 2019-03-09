@@ -11,7 +11,7 @@ namespace MyDAL.Test.Tools
     {
 
         [Fact]
-        public async Task DeepOne()
+        public void DeepOne()
         {
             xx = string.Empty;
 
@@ -41,7 +41,7 @@ namespace MyDAL.Test.Tools
         }
 
         [Fact]
-        public async Task DeepTwo()
+        public void DeepTwo()
         {
             xx = string.Empty;
 
@@ -85,7 +85,7 @@ namespace MyDAL.Test.Tools
         }
 
         [Fact]
-        public async Task DeepThree()
+        public void DeepThree()
         {
             xx = string.Empty;
 

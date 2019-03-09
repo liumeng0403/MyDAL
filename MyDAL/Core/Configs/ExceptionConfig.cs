@@ -38,6 +38,24 @@
         internal string _031 { get; } = "031";
         internal string _032 { get; } = "032";
         internal string _033 { get; } = "033";
+        internal string _034 { get; } = "034";
+        internal string _035 { get; } = "035";
+        internal string _036 { get; } = "036";
+        internal string _037 { get; } = "037";
+        internal string _038 { get; } = "038";
+        internal string _039 { get; } = "039";
+        internal string _040 { get; } = "040";
+        internal string _041 { get; } = "041";
+        internal string _042 { get; } = "042";
+        internal string _043 { get; } = "043";
+        internal string _044 { get; } = "044";
+        internal string _045 { get; } = "045";
+        internal string _046 { get; } = "046";
+        internal string _047 { get; } = "047";
+        internal string _048 { get; } = "048";
+        internal string _049 { get; } = "049";
+        internal string _050 { get; } = "050";
+        internal string _051 { get; } = "051";
 
     }
 }

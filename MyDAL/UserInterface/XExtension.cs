@@ -366,7 +366,13 @@ namespace MyDAL
 
         public static async Task<List<T>> QueryListAsync<T>(this IDbConnection conn, string sql, List<XParam> dbParas = null)
         {
-            throw new NotImplementedException();
+            var dc = new XContext(conn)
+            {
+                Crud = CrudEnum.SQL
+            };
+            dc.ParseSQL(sql);
+            dc.ParseParam(dbParas);
+            return await new QueryListSQLImpl(dc).QueryListAsync<T>();
         }
 
         public static async Task<PagingResult<T>> QueryPagingAsync<T>
