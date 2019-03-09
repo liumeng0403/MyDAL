@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace MyDAL.UserFacade.Join
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class DistinctXO
         : Operator, IQueryPagingXO
     {

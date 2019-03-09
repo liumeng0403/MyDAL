@@ -2,6 +2,9 @@
 
 namespace MyDAL.UserFacade.Join
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public sealed class FromX 
         : Operator
     {
