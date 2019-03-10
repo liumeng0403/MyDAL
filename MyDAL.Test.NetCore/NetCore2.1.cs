@@ -28,8 +28,6 @@
             //
             // QueryVmColumn
             //
-            await new QueryVmColumn._02_QueryListAsync().test();
-            await new QueryVmColumn._02_QueryListAsync_History().test();
             await new QueryVmColumn._03_QueryPagingAsync().test();
             await new QueryVmColumn._03_QueryPagingAsync_History().test();
             await new QueryVmColumn._06_TopAsync().test();
@@ -37,8 +35,6 @@
             // 
             // QueryVM
             //
-            await new QueryVM._02_QueryListAsync().test();
-            await new QueryVM._02_QueryListAsync_History().test();
             await new QueryVM._03_QueryPagingAsync().test();
             await new QueryVM._03_QueryPagingAsync_History().test();
             await new QueryVM._06_TopAsync().test();

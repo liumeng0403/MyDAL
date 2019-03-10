@@ -132,7 +132,7 @@ namespace MyDAL.Core.Helper
             //
             if(ui.Crud== CrudEnum.SQL)
             {
-                DC.PH.GetDbVal(ui, ui.CsType);
+                DC.PH.GetParamInfo(ui, ui.CsType);
                 return;
             }
             if (ui.TbMType == null)
@@ -149,11 +149,11 @@ namespace MyDAL.Core.Helper
             {
                 if (DC.IsInParameter(ui))
                 {
-                    ui.ParamInfo = ParameterHelper.GetDefault(ui.Param, ui.CsValue, DbType.String);
+                    ui.ParamInfo = DC.PH.GetDefault(ui.Param, ui.CsValue, DbType.String);
                 }
                 else
                 {
-                    DC.PH.GetDbVal(ui, ui.CsType);
+                    DC.PH.GetParamInfo(ui, ui.CsType);
                 }
             }
             if (ui.Group != null)
