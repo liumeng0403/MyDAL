@@ -8,7 +8,7 @@ using Xunit;
 
 namespace MyDAL.Test.QueryAPI
 {
-    public class _03_PagingListAsync
+    public class _03_QueryPagingAsync
         : TestBase
     {
         [Fact]

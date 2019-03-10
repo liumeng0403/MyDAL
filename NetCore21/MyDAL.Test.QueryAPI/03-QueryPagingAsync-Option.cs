@@ -7,21 +7,15 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace MyDAL.Test.WhereEdge
+namespace MyDAL.Test.QueryAPI
 {
-    public class _01_WherePaging
+    public class _03_QueryPagingAsync_Option
         : TestBase
     {
 
         [Fact]
-        public async Task TestST01()
+        public async Task Option_Paging_ST()
         {
-
-            /*
-             * 单表
-             */
-
-            /************************************************************************************************************************************/
 
             xx = string.Empty;
 
@@ -40,6 +34,12 @@ namespace MyDAL.Test.WhereEdge
 
             /************************************************************************************************************************************/
 
+        }
+
+        [Fact]
+        public async Task Option_OrderBy_Paging_ST()
+        {
+
             xx = string.Empty;
 
             var op2 = new Single_PagingEdgeOption();
@@ -57,6 +57,12 @@ namespace MyDAL.Test.WhereEdge
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /************************************************************************************************************************************/
+
+        }
+
+        [Fact]
+        public async Task Option_OrderBy_ThenOrderBy_Paging_ST()
+        {
 
             xx = string.Empty;
 
@@ -97,6 +103,12 @@ namespace MyDAL.Test.WhereEdge
 
             /************************************************************************************************************************************/
 
+        }
+
+        [Fact]
+        public async Task Option_Distinct_Paging_ST()
+        {
+
             xx = string.Empty;
 
             var op5 = new Single_PagingEdgeOption();
@@ -115,17 +127,23 @@ namespace MyDAL.Test.WhereEdge
 
             /************************************************************************************************************************************/
 
+        }
+
+        [Fact]
+        public async Task Option_Distinct_OrderBy_Paging_ST()
+        {
+
             xx = string.Empty;
 
             var op6 = new Single_PagingEdgeOption();
             op6.PhoneNotEqual = "19900000218";
 
-            // Where --> OrderBy --> Distinct --> PagingListAsync
+            // Where --> Distinct --> OrderBy --> PagingListAsync
             var res6 = await Conn
                 .Queryer<Agent>()
                 .Where(op6)
-                .OrderBy(it => it.Name)
                 .Distinct()
+                .OrderBy(it => it.Name)
                 .QueryPagingAsync();
 
             Assert.True(res6.TotalCount == 28619);
@@ -134,18 +152,24 @@ namespace MyDAL.Test.WhereEdge
 
             /************************************************************************************************************************************/
 
+        }
+
+        [Fact]
+        public async Task Option_Distinct_OrderBy_ThenOrderBy_ST()
+        {
+
             xx = string.Empty;
 
             var op7 = new Single_PagingEdgeOption();
             op7.PhoneNotEqual = "19900000218";
 
-            // Where --> OrderBy --> ThenOrderBy --> Distinct --> PagingListAsync
+            // Where -->  Distinct --> OrderBy --> ThenOrderBy -->PagingListAsync
             var res7 = await Conn
                 .Queryer<Agent>()
                 .Where(op7)
+                .Distinct()
                 .OrderBy(it => it.AgentLevel)
                     .ThenOrderBy(it => it.Name, OrderByEnum.Asc)
-                .Distinct()
                 .QueryPagingAsync<AgentVM>();
 
             Assert.True(res7.TotalCount == 28619);
@@ -159,15 +183,15 @@ namespace MyDAL.Test.WhereEdge
             var op8 = new Single_PagingEdgeOption();
             op8.PhoneNotEqual = "19900000218";
 
-            // Where --> OrderBy --> ThenOrderBy --> ... ... --> Distinct --> PagingListAsync
+            // Where --> Distinct --> OrderBy --> ThenOrderBy --> ... ... --> PagingListAsync
             var res8 = await Conn
                 .Queryer<Agent>()
                 .Where(op8)
+                .Distinct()
                 .OrderBy(it => it.PathId)
                     .ThenOrderBy(it => it.Name)
                     .ThenOrderBy(it => it.CreatedOn)
-                .Distinct()
-                .QueryPagingAsync<AgentVM>(it => new AgentVM
+                .QueryPagingAsync(it => new AgentVM
                 {
                     XXXX = it.Name,
                     YYYY = it.PathId
