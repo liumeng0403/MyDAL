@@ -2,6 +2,7 @@
 using MyDAL.Test.Enums;
 using MyDAL.Test.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -21,113 +22,12 @@ namespace MyDAL.Test.QueryAPI
         }
 
         [Fact]
-        public async Task History_01()
-        {
-
-            xx = string.Empty;
-
-            var res1 = await Conn
-                .Queryer<Agent>()
-                .QueryListAsync(it => it.Id);
-
-            Assert.True(res1.Count == 28620);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /***************************************************************************************************************************/
-
-            xx = string.Empty;
-
-        }
-
-        [Fact]
-        public async Task History_02()
-        {
-
-            /********************************************************************************************************/
-
-            xx = string.Empty;
-
-            var res1 = await Conn
-                .Queryer<Agent>()
-                .QueryListAsync();
-
-            Assert.True(res1.Count == 28620);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /********************************************************************************************************/
-
-            xx = string.Empty;
-
-        }
-
-        [Fact]
-        public async Task History_03()
-        {
-            xx = string.Empty;
-
-            var res2 = await Conn
-                .Queryer<Agent>()
-                .QueryListAsync<AgentVM>();
-
-            Assert.True(res2.Count == 28620);
-            Assert.NotNull(res2.First().Name);
-            Assert.Null(res2.First().XXXX);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /********************************************************************************************************/
-
-            xx = string.Empty;
-        }
-
-        [Fact]
-        public async Task History_04()
-        {
-            xx = string.Empty;
-
-            var res1 = await Conn
-                .Queryer<Agent>()
-                .QueryListAsync<AgentVM>(it => new AgentVM
-                {
-                    XXXX = it.Name,
-                    YYYY = it.PathId
-                });
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            xx = string.Empty;
-        }
-
-        [Fact]
-        public async Task History_05()
-        {
-            xx = string.Empty;
-
-            var res1 = await Conn
-                .Queryer(out Agent agent1, out AgentInventoryRecord record1)
-                .From(() => agent1)
-                    .InnerJoin(() => record1)
-                        .On(() => agent1.Id == record1.AgentId)
-                .QueryListAsync(() => agent1.Id);
-
-            Assert.True(res1.Count == 574);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            xx = string.Empty;
-        }
-
-        [Fact]
         public async Task History_06()
         {
 
             var m = await PreData01();
             var name = "辛文丽";
             var level = 128;
-
-            /**************************************************************************************************************************/
 
             /**************************************************************************************************************************/
 
@@ -141,6 +41,7 @@ namespace MyDAL.Test.QueryAPI
                         .On(() => agent2.Id == record2.AgentId)
                 .Where(() => agent2.CreatedOn >= Convert.ToDateTime("2018-08-16 19:20:28.118853"))                      //  const  method  DateTime  >=
                 .QueryListAsync<AgentInventoryRecord>();
+
             Assert.True(res2.Count == 523);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -157,6 +58,7 @@ namespace MyDAL.Test.QueryAPI
                         .On(() => agent3.Id == record3.AgentId)
                 .Where(() => record3.AgentId == Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef"))                  //  const  method  Guid  ==
                 .QueryListAsync<AgentInventoryRecord>();
+
             Assert.True(res3.Count == 1);
             Assert.Equal(res3.First().Id, Guid.Parse("02dbc81c-5c9a-4cdf-8bf0-016551f756c4"));
 
@@ -174,6 +76,7 @@ namespace MyDAL.Test.QueryAPI
                         .On(() => agent4.Id == record4.AgentId)
                 .Where(() => agent4.Name == "辛文丽")                                                                                                            //  const  string  ==
                 .QueryListAsync<AgentInventoryRecord>();
+
             Assert.True(res4.Count == 1);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -309,24 +212,6 @@ namespace MyDAL.Test.QueryAPI
 
             xx = string.Empty;
 
-            // order by id  -- 手动查看
-            var res2 = await Conn
-                .Queryer(out AspnetUsers user2, out AspnetUserRoles userRole2, out AspnetRoles role2)
-                .From(() => user2)
-                    .InnerJoin(() => userRole2)
-                        .On(() => user2.Id == userRole2.UserId)
-                    .InnerJoin(() => role2)
-                        .On(() => userRole2.RoleId == role2.Id)
-                .QueryListAsync<AspnetUsers>();
-
-            Assert.True(res2.Count == 29180);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /*********************************************************************************************************************************************************/
-
-            xx = string.Empty;
-
             var res4 = await Conn
                 .Queryer(out AspnetUsers user4, out AspnetUserRoles userRole4, out AspnetRoles role4)
                 .From(() => user4)
@@ -368,7 +253,23 @@ namespace MyDAL.Test.QueryAPI
         }
 
         [Fact]
-        public async Task Mock_QueryAllData()
+        public async Task Mock_QueryAllData_QuerySingleColumn_Shortcut()
+        {
+            var xx3 = string.Empty;
+
+            var res3 = await Conn.QueryListAsync<Agent, Guid>(null, it => it.Id);
+
+            Assert.True(res3.Count == 28620);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /***************************************************************************************************************************/
+
+
+        }
+
+        [Fact]
+        public async Task Mock_QueryAllData_QueryM_Shortcut()
         {
             xx = string.Empty;
 
@@ -380,6 +281,12 @@ namespace MyDAL.Test.QueryAPI
 
             /***************************************************************************************************************************/
 
+
+        }
+
+        [Fact]
+        public async Task Mock_QueryAllData_QueryVM_Shortcut()
+        {
             xx = string.Empty;
 
             var res2 = await Conn.QueryListAsync<Agent, AgentVM>(null);
@@ -390,16 +297,12 @@ namespace MyDAL.Test.QueryAPI
 
             /***************************************************************************************************************************/
 
-            var xx3 = string.Empty;
 
-            var res3 = await Conn.QueryListAsync<Agent, Guid>(null, it => it.Id);
+        }
 
-            Assert.True(res3.Count == 28620);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /***************************************************************************************************************************/
-
+        [Fact]
+        public async Task Mock_QueryAllData_QueryVMColumn_Shortcut()
+        {
             var xx4 = string.Empty;
 
             var res4 = await Conn.QueryListAsync<Agent, AgentVM>(null, it => new AgentVM
@@ -486,6 +389,86 @@ namespace MyDAL.Test.QueryAPI
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
+        }
+
+        [Fact]
+        public async Task Mock_QueryAllData_QuerySingleColumn_ST()
+        {
+
+            xx = string.Empty;
+
+            var res1 = await Conn
+                .Queryer<Agent>()
+                .QueryListAsync(it => it.Id);
+
+            Assert.True(res1.Count == 28620);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /***************************************************************************************************************************/
+
+            xx = string.Empty;
+
+        }
+
+        [Fact]
+        public async Task Mock_QueryAllData_QueryM_ST()
+        {
+
+            /********************************************************************************************************/
+
+            xx = string.Empty;
+
+            var res1 = await Conn
+                .Queryer<Agent>()
+                .QueryListAsync();
+
+            Assert.True(res1.Count == 28620);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /********************************************************************************************************/
+
+            xx = string.Empty;
+
+        }
+
+        [Fact]
+        public async Task Mock_QueryAllData_QueryVM_ST()
+        {
+            xx = string.Empty;
+
+            var res1 = await Conn
+                .Queryer<Agent>()
+                .QueryListAsync<AgentVM>();
+
+            Assert.True(res1.Count == 28620);
+            Assert.NotNull(res1.First().Name);
+            Assert.Null(res1.First().XXXX);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /********************************************************************************************************/
+
+            xx = string.Empty;
+        }
+
+        [Fact]
+        public async Task Mock_QueryAllData_QueryVMColumn_ST()
+        {
+            xx = string.Empty;
+
+            var res1 = await Conn
+                .Queryer<Agent>()
+                .QueryListAsync(it => new AgentVM
+                {
+                    XXXX = it.Name,
+                    YYYY = it.PathId
+                });
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
         }
 
         [Fact]
@@ -577,6 +560,72 @@ namespace MyDAL.Test.QueryAPI
         }
 
         [Fact]
+        public async Task Mock_QueryAllData_QuerySingleColumn_MT()
+        {
+            xx = string.Empty;
+
+            var res1 = await Conn
+                .Queryer(out Agent agent1, out AgentInventoryRecord record1)
+                .From(() => agent1)
+                    .InnerJoin(() => record1)
+                        .On(() => agent1.Id == record1.AgentId)
+                .QueryListAsync(() => agent1.Id);
+
+            Assert.True(res1.Count == 574);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
+        }
+
+        [Fact]
+        public async Task Mock_QueryAllData_QueryM_MT()
+        {
+
+            xx = string.Empty;
+
+            // 
+            var res1 = await Conn
+                .Queryer(out AspnetUsers user, out AspnetUserRoles userRole, out AspnetRoles role)
+                .From(() => user)
+                    .InnerJoin(() => userRole)
+                        .On(() => user.Id == userRole.UserId)
+                    .InnerJoin(() => role)
+                        .On(() => userRole.RoleId == role.Id)
+                .QueryListAsync<AspnetUsers>();
+
+            Assert.True(res1.Count == 29180);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*********************************************************************************************************************************************************/
+
+        }
+
+        [Fact]
+        public async Task Mock_QueryAllData_QueryVMColumn_MT()
+        {
+            xx = string.Empty;
+
+            var res1 = await Conn
+                .Queryer(out Agent agent, out AgentInventoryRecord record)
+                .From(() => agent)
+                    .InnerJoin(() => record)
+                        .On(() => agent.Id == record.AgentId)
+                .QueryListAsync(()=>new AgentVM
+                {
+                    XXXX=agent.Name,
+                    YYYY=agent.PathId
+                });
+
+            Assert.True(res1.Count == 574);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
+        }
+
+        [Fact]
         public async Task QuerySingleColumn_MT()
         {
             xx = string.Empty;
@@ -623,12 +672,58 @@ namespace MyDAL.Test.QueryAPI
         [Fact]
         public async Task QueryVMColumn_MT()
         {
+            xx = string.Empty;
 
+            var res12 = await Conn
+                .Queryer(out Agent agent12, out AgentInventoryRecord record12)
+                .From(() => agent12)
+                    .InnerJoin(() => record12)
+                        .On(() => agent12.Id == record12.AgentId)
+                .Where(() => record12.CreatedOn >= WhereTest.CreatedOn)
+                .QueryListAsync(() => new AgentVM
+                {
+                    nn = agent12.PathId,
+                    yy = record12.Id,
+                    xx = agent12.Id,
+                    zz = agent12.Name,
+                    mm = record12.LockedCount
+                });
+
+            Assert.True(res12.Count == 574);
+            Assert.True("~00-d-3-2-1-c-2-1a-1" == res12.First().nn);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
+            /*************************************************************************************************************************/
+
+            xx = string.Empty;
         }
 
         [Fact]
         public async Task QuerySingleColumn_SQL()
         {
+            xx = string.Empty;
+
+            var sql = @"
+                                    select agent1.`CreatedOn`
+                                    from `agent` as agent1 
+	                                    inner join `agentinventoryrecord` as record1
+		                                    on agent1.`Id`=record1.`AgentId`
+                                    where  agent1.`AgentLevel`=@AgentLevel;
+                                ";
+
+            var paras = new List<XParam>
+            {
+                new XParam{ParamName="AgentLevel",ParamValue=AgentLevel.DistiAgent,ParamType= ParamTypeEnum.MySQL_Int}
+            };
+
+            var res1 = await Conn.QueryListAsync<DateTime>(sql, paras);
+
+            Assert.True(res1.Count == 574);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
 
         }
 
