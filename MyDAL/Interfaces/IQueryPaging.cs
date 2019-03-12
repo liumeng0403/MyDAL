@@ -35,4 +35,9 @@ namespace MyDAL.Interfaces
             where M : class;
         Task<PagingResult<T>> QueryPagingAsync<T>(Expression<Func<T>> columnMapFunc);
     }
+
+    internal interface IQueryPagingSQL
+    {
+        Task<PagingResult<T>> QueryPagingAsync<T>();
+    }
 }

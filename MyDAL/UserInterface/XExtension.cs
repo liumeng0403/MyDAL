@@ -378,7 +378,15 @@ namespace MyDAL
         public static async Task<PagingResult<T>> QueryPagingAsync<T>
             (this IDbConnection conn, int pageIndex, int pageSize, string totalCountSql, string pageDataSql, List<XParam> dbParas = null)
         {
-            throw new NotImplementedException();
+            var dc = new XContext(conn)
+            {
+                Crud = CrudEnum.SQL
+            };
+            dc.PageIndex = pageIndex;
+            dc.PageSize = pageSize;
+            dc.ParseSQL(totalCountSql, pageDataSql);
+            dc.ParseParam(dbParas);
+            return await new QueryPagingSQLImpl(dc).QueryPagingAsync<T>();
         }
 
         /******************************************************************************************************************************/

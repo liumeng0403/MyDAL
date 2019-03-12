@@ -144,4 +144,18 @@ namespace MyDAL.Impls
             return await PagingListAsyncHandle<T>(UiMethodEnum.QueryPagingAsync, single);
         }
     }
+
+    internal class QueryPagingSQLImpl
+        : Impler, IQueryPagingSQL
+    {
+        public QueryPagingSQLImpl(Context dc)
+            : base(dc)
+        { }
+
+        public async Task<PagingResult<T>> QueryPagingAsync<T>()
+        {
+            DC.Method = UiMethodEnum.QueryPagingAsync;
+            return await DC.DS.ExecuteReaderPagingAsync<None, T>(typeof(T).IsSingleColumn(), null);
+        }
+    }
 }

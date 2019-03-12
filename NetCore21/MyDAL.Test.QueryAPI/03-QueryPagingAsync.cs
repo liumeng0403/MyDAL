@@ -12,22 +12,26 @@ namespace MyDAL.Test.QueryAPI
         : TestBase
     {
         [Fact]
-        public async Task ST_QueryM_PagingOption()
+        public async Task QueryM_Option_ST()
         {
 
             /*****************************************************************************************************************************/
 
             xx = string.Empty;
 
-            var option1 = new AgentQueryOption();
-            option1.StartTime = WhereTest.CreatedOn;
-            option1.EndTime = DateTime.Now;
-            option1.AgentLevel = AgentLevel.DistiAgent;
+            var option = new AgentQueryOption();
 
-            //   =    >=    <=
+            option.PageIndex = 1;
+            option.PageSize = 10;
+
+            option.StartTime = Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30);
+            option.EndTime = DateTime.Now;
+            option.AgentLevel = AgentLevel.DistiAgent;
+
+            // 
             var res1 = await Conn
                 .Queryer<Agent>()
-                .Where(option1)
+                .Where(option)
                 .QueryPagingAsync();
 
             Assert.True(res1.TotalCount == 555);

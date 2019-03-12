@@ -13,6 +13,8 @@ namespace MyDAL.Test.QueryAPI
         : TestBase
     {
 
+        /*********************************************************************************************************************************/
+
         [Fact]
         public async Task Option_Paging_ST()
         {
@@ -155,7 +157,7 @@ namespace MyDAL.Test.QueryAPI
         }
 
         [Fact]
-        public async Task Option_Distinct_OrderBy_ThenOrderBy_ST()
+        public async Task Option_Distinct_OrderBy_ThenOrderBy_Paging_ST()
         {
 
             xx = string.Empty;
@@ -207,15 +209,11 @@ namespace MyDAL.Test.QueryAPI
 
         }
 
+        /*********************************************************************************************************************************/
+
         [Fact]
-        public async Task TestST02()
+        public async Task XQuery_Equal_ST()
         {
-
-            /*
-             * 单表
-             */
-
-            /************************************************************************************************************************************/
 
             xx = string.Empty;
 
@@ -234,6 +232,12 @@ namespace MyDAL.Test.QueryAPI
 
             /************************************************************************************************************************************/
 
+        }
+
+        [Fact]
+        public async Task XQuery_NotEqual_ST()
+        {
+
             xx = string.Empty;
 
             // CompareEnum.NotEqual
@@ -250,6 +254,12 @@ namespace MyDAL.Test.QueryAPI
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /************************************************************************************************************************************/
+
+        }
+
+        [Fact]
+        public async Task XQuery_LessThan_ST()
+        {
 
             xx = string.Empty;
 
@@ -268,6 +278,12 @@ namespace MyDAL.Test.QueryAPI
 
             /************************************************************************************************************************************/
 
+        }
+
+        [Fact]
+        public async Task XQuery_LessThanOrEqual_ST()
+        {
+
             xx = string.Empty;
 
             // CompareEnum.LessThanOrEqual
@@ -284,6 +300,12 @@ namespace MyDAL.Test.QueryAPI
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /************************************************************************************************************************************/
+
+        }
+
+        [Fact]
+        public async Task XQuery_GreaterThan_ST()
+        {
 
             xx = string.Empty;
 
@@ -302,6 +324,12 @@ namespace MyDAL.Test.QueryAPI
 
             /************************************************************************************************************************************/
 
+        }
+
+        [Fact]
+        public async Task XQuery_GreaterThanOrEqual_ST()
+        {
+
             xx = string.Empty;
 
             // CompareEnum.GreaterThanOrEqual
@@ -318,6 +346,12 @@ namespace MyDAL.Test.QueryAPI
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /************************************************************************************************************************************/
+
+        }
+
+        [Fact]
+        public async Task XQuery_Like_ST()
+        {
 
             xx = string.Empty;
 
@@ -336,6 +370,12 @@ namespace MyDAL.Test.QueryAPI
 
             /************************************************************************************************************************************/
 
+        }
+
+        [Fact]
+        public async Task XQuery_Like_StartsWith_ST()
+        {
+
             xx = string.Empty;
 
             // CompareEnum.Like_StartsWith
@@ -352,6 +392,12 @@ namespace MyDAL.Test.QueryAPI
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /************************************************************************************************************************************/
+
+        }
+
+        [Fact]
+        public async Task XQuery_Like_EndsWith_ST()
+        {
 
             xx = string.Empty;
 
@@ -370,6 +416,12 @@ namespace MyDAL.Test.QueryAPI
 
             /************************************************************************************************************************************/
 
+        }
+
+        [Fact]
+        public async Task XQuery_NotLike_ST()
+        {
+
             xx = string.Empty;
 
             // CompareEnum.NotLike
@@ -386,6 +438,12 @@ namespace MyDAL.Test.QueryAPI
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /************************************************************************************************************************************/
+
+        }
+
+        [Fact]
+        public async Task XQuery_NotLike_StartsWith_ST()
+        {
 
             xx = string.Empty;
 
@@ -404,6 +462,12 @@ namespace MyDAL.Test.QueryAPI
 
             /************************************************************************************************************************************/
 
+        }
+
+        [Fact]
+        public async Task XQuery_NotLike_EndsWith_ST()
+        {
+
             xx = string.Empty;
 
             // CompareEnum.NotLike_EndsWith
@@ -421,6 +485,12 @@ namespace MyDAL.Test.QueryAPI
 
             /************************************************************************************************************************************/
 
+        }
+
+        [Fact]
+        public async Task XQuery_In_ST()
+        {
+
             xx = string.Empty;
 
             // CompareEnum.In
@@ -437,6 +507,12 @@ namespace MyDAL.Test.QueryAPI
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             /************************************************************************************************************************************/
+
+        }
+
+        [Fact]
+        public async Task XQuery_NotIn_ST()
+        {
 
             xx = string.Empty;
 
@@ -458,6 +534,8 @@ namespace MyDAL.Test.QueryAPI
             xx = string.Empty;
 
         }
+
+        /*********************************************************************************************************************************/
 
         [Fact]
         public async Task TestMT01()
