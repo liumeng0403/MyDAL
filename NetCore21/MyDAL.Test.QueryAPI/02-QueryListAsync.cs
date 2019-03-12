@@ -679,7 +679,7 @@ namespace MyDAL.Test.QueryAPI
                 .From(() => agent12)
                     .InnerJoin(() => record12)
                         .On(() => agent12.Id == record12.AgentId)
-                .Where(() => record12.CreatedOn >= WhereTest.CreatedOn)
+                .Where(() => record12.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
                 .QueryListAsync(() => new AgentVM
                 {
                     nn = agent12.PathId,
@@ -730,7 +730,33 @@ namespace MyDAL.Test.QueryAPI
         [Fact]
         public async Task QueryVM_SQL()
         {
+            xx = string.Empty;
 
+            var sql = @"
+                                    select 	agent12.`PathId` as nn,
+	                                    record12.`Id` as yy,
+	                                    agent12.`Id` as xx,
+	                                    agent12.`Name` as zz,
+	                                    record12.`LockedCount` as mm
+                                    from `agent` as agent12 
+	                                    inner join `agentinventoryrecord` as record12
+		                                    on agent12.`Id`=record12.`AgentId`
+                                    where  record12.`CreatedOn`>=@CreatedOn;
+                                ";
+
+            var param = new List<XParam>
+            {
+                new XParam{ParamName="@CreatedOn",ParamValue=Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30),ParamType= ParamTypeEnum.MySQL_DateTime}
+            };
+
+            var res1 = await Conn.QueryListAsync<AgentVM>(sql, param);
+
+            Assert.True(res1.Count == 574);
+            Assert.True("~00-d-3-2-1-c-2-1a-1" == res1.First().nn);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
         }
 
     }

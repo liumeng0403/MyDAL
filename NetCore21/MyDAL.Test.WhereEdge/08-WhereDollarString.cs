@@ -5,7 +5,8 @@ using Xunit;
 
 namespace MyDAL.Test.WhereEdge
 {
-    public class _08_WhereDollarString : TestBase
+    public class _08_WhereDollarString 
+        : TestBase
     {
         [Fact]
         public async Task test()

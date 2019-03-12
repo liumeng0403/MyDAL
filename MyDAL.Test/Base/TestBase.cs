@@ -22,20 +22,13 @@ namespace MyDAL.Test
                     CreatedOn = Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30),
                     StartTime = Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30),
                     EndTime = DateTime.Now,
-                    AgentLevelXX = AgentLevel.DistiAgent,
                     AgentLevelNull = null,
-                    ContainStr = "~00-d-3-1-",
                     ContainStr2 = "~00-d-3-",
                     In_Array_枚举 = new AgentLevel?[]
                     {
                         AgentLevel.CityAgent,
                         AgentLevel.DistiAgent
                     },
-                    //In_List_String = new List<string>
-                    //{
-                    //    "黄银凤",
-                    //    "刘建芬"
-                    //},
                     In_Array_String = new string[]
                     {
                         "黄银凤",
