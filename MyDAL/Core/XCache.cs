@@ -56,7 +56,7 @@ namespace MyDAL.Core
         }
         internal string GetHandleKey(int sqlHash, int colHash, string mFullName)
         {
-            return $"{sqlHash}:{colHash}:{GetModelKey(mFullName)}";
+            return $"{DC.Conn.GetType().FullName}:{sqlHash}:{colHash}:{GetModelKey(mFullName)}";
         }
 
         /*****************************************************************************************************************************************************/

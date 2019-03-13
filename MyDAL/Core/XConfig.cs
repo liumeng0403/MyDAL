@@ -3,6 +3,7 @@ using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Configs;
 using MyDAL.Core.Enums;
+using MyDAL.DataRainbow.MySQL;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace MyDAL.Core
         /************************************************************************************************************/
 
         internal static string MySQL { get; } = "MySql.Data.MySqlClient.MySqlConnection";
-        internal static DbEnum DB { get; set; } = DbEnum.None;
+        internal static string SqlServer { get; } = "System.Data.SqlClient.SqlConnection";
 
         internal static int CommandTimeout { get; set; } = 30;  // s 
 
@@ -143,6 +144,22 @@ namespace MyDAL.Core
                     new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(TC.Ushort,PIC.UshortParam),
                     new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(TC.TimeSpan,PIC.TimeSpanParam)
                 });
+
+        internal static ConcurrentDictionary<string, DbEnum> DbConns { get; }
+            = new ConcurrentDictionary<string, DbEnum>(
+               new List<KeyValuePair<string, DbEnum>>
+               {
+                   new KeyValuePair<string, DbEnum>("MySql.Data.MySqlClient.MySqlConnection",DbEnum.MySQL),
+                   new KeyValuePair<string, DbEnum>("System.Data.SqlClient.SqlConnection",DbEnum.SQLServer)
+               });
+
+        internal static ConcurrentDictionary<DbEnum, Func<Context, ISqlProvider>> DbProviders { get; }
+            = new ConcurrentDictionary<DbEnum, Func<Context, ISqlProvider>>(
+               new List<KeyValuePair<DbEnum,Func< Context, ISqlProvider>>>
+               {
+                   new KeyValuePair<DbEnum, Func<Context, ISqlProvider>>(DbEnum.MySQL,dc=>new MySqlProvider(dc))//,
+                   //new KeyValuePair<DbEnum, Func<Context, ISqlProvider>>(DbEnum.SQLServer,dc=>)
+               });
 
     }
 }

@@ -11,10 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetCore21", "NetCore21", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Net461", "Net461", "{B620FBF7-97BF-4502-9E7B-27C827D51147}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.NetCore", "MyDAL.Test.NetCore\MyDAL.Test.NetCore.csproj", "{1348EF0E-E7D4-453A-A7A7-AFAAB2138F6C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDAL.Test.NetFramework", "MyDAL.Test.NetFramework\MyDAL.Test.NetFramework.csproj", "{EBF2A805-C7A5-4A09-9157-8A2AB8E3A120}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.Create", "NetCore21\MyDAL.Test.Create\MyDAL.Test.Create.csproj", "{5829C0AC-E4EC-48F1-8533-408A8B72B304}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.Delete", "NetCore21\MyDAL.Test.Delete\MyDAL.Test.Delete.csproj", "{A74BB1A4-934F-4694-9DA8-50901BA15315}"
@@ -58,6 +54,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{5AA2915B-8
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.Tools", "NetCore21\MyDAL.Test.Tools\MyDAL.Test.Tools.csproj", "{06D7652A-29A3-4651-8511-A6542FFAF8BB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDAL.Test.DataRecovery", "MyDAL.Test.DataRecovery\MyDAL.Test.DataRecovery.csproj", "{D86E2D4B-8619-4D15-9F3A-1D148894B5DE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,14 +70,6 @@ Global
 		{06C72481-97EA-45A9-BE4D-9ED33DACC9D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06C72481-97EA-45A9-BE4D-9ED33DACC9D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06C72481-97EA-45A9-BE4D-9ED33DACC9D5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1348EF0E-E7D4-453A-A7A7-AFAAB2138F6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1348EF0E-E7D4-453A-A7A7-AFAAB2138F6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1348EF0E-E7D4-453A-A7A7-AFAAB2138F6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1348EF0E-E7D4-453A-A7A7-AFAAB2138F6C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EBF2A805-C7A5-4A09-9157-8A2AB8E3A120}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EBF2A805-C7A5-4A09-9157-8A2AB8E3A120}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EBF2A805-C7A5-4A09-9157-8A2AB8E3A120}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EBF2A805-C7A5-4A09-9157-8A2AB8E3A120}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5829C0AC-E4EC-48F1-8533-408A8B72B304}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5829C0AC-E4EC-48F1-8533-408A8B72B304}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5829C0AC-E4EC-48F1-8533-408A8B72B304}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -148,6 +138,10 @@ Global
 		{06D7652A-29A3-4651-8511-A6542FFAF8BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06D7652A-29A3-4651-8511-A6542FFAF8BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06D7652A-29A3-4651-8511-A6542FFAF8BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D86E2D4B-8619-4D15-9F3A-1D148894B5DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D86E2D4B-8619-4D15-9F3A-1D148894B5DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D86E2D4B-8619-4D15-9F3A-1D148894B5DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D86E2D4B-8619-4D15-9F3A-1D148894B5DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

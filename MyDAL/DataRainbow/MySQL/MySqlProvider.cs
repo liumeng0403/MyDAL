@@ -14,9 +14,6 @@ namespace MyDAL.DataRainbow.MySQL
     internal sealed class MySqlProvider
         : MySql, ISqlProvider
     {
-        private Context DC { get; set; }
-        private StringBuilder X { get; set; } = new StringBuilder();
-
         private MySqlProvider() { }
         internal MySqlProvider(Context dc)
         {

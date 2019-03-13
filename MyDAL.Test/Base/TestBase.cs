@@ -38,12 +38,25 @@ namespace MyDAL.Test
             }
         }
 
+        /// <summary>
+        /// MySQL
+        /// </summary>
         protected IDbConnection Conn
         {
             get
             {
-                return GetMySQLConnection();  // MySql
-                //return GetTSQLConnection();  // SQL Server
+                return GetMySQLConnection(); 
+            }
+        }
+
+        /// <summary>
+        /// SqlServer
+        /// </summary>
+        protected IDbConnection Conn2
+        {
+            get
+            {
+                return GetTSQLConnection();
             }
         }
 

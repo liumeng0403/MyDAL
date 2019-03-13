@@ -18,16 +18,13 @@ namespace MyDAL.Core.Bases
         internal void Init(IDbConnection conn)
         {
             //
-            if (XConfig.DB == DbEnum.None)
+            if (XConfig.DbConns.TryGetValue(conn.GetType().FullName, out var db))
             {
-                if (XConfig.MySQL.Equals(conn.GetType().FullName, StringComparison.OrdinalIgnoreCase))
-                {
-                    XConfig.DB = DbEnum.MySQL;
-                }
-                else
-                {
-                    throw new Exception("MyDAL 目前只支持 【MySQL】,后续将会支持【Oracle/SQLServer/PostgreSQL/DB2/Access/SQLite/Teradata/MariaDB】.");
-                }
+                DB = db;
+            }
+            else
+            {
+                throw new Exception("MyDAL 目前只支持 【MySQL/SQLServer】,后续将会支持【Oracle/PostgreSQL/DB2/Access/SQLite/Teradata/MariaDB】.");
             }
 
             //
@@ -48,9 +45,9 @@ namespace MyDAL.Core.Bases
             TbMs = new List<TableDic>();
 
             //
-            if (XConfig.DB == DbEnum.MySQL)
+            if (XConfig.DbProviders.TryGetValue(DB, out var func))
             {
-                SqlProvider = new MySqlProvider(this);
+                SqlProvider = func(this);
             }
         }
 
@@ -73,6 +70,9 @@ namespace MyDAL.Core.Bases
         internal DicParamHelper DPH { get; private set; }
 
         /************************************************************************************************************************/
+
+        internal DbEnum DB { get; set; } = DbEnum.None;
+
 
         internal CrudEnum Crud { get; set; } = CrudEnum.None;
         internal ActionEnum Action { get; set; } = ActionEnum.None;

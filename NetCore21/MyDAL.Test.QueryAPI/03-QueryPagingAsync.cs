@@ -11,6 +11,27 @@ namespace MyDAL.Test.QueryAPI
     public class _03_QueryPagingAsync
         : TestBase
     {
+
+        [Fact]
+        public async Task QuerySingleColumn_Option_ST()
+        {
+            xx = string.Empty;
+
+            var op1 = new AgentQueryOption();
+            op1.AgentLevel = AgentLevel.DistiAgent;
+
+            var res1 = await Conn
+                .Queryer<Agent>()
+                .Where(op1)
+                .QueryPagingAsync(it => it.Id);
+
+            Assert.True(res1.TotalCount == 555);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
+        }
+
         [Fact]
         public async Task QueryM_Option_ST()
         {
@@ -45,27 +66,7 @@ namespace MyDAL.Test.QueryAPI
         }
 
         [Fact]
-        public async Task ST_QuerySingleColumn_PagingOption()
-        {
-            xx = string.Empty;
-
-            var op1 = new AgentQueryOption();
-            op1.AgentLevel = AgentLevel.DistiAgent;
-
-            var res1 = await Conn
-                .Queryer<Agent>()
-                .Where(op1)
-                .QueryPagingAsync(it => it.Id);
-
-            Assert.True(res1.TotalCount == 555);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            xx = string.Empty;
-        }
-
-        [Fact]
-        public async Task ST_QueryVM_PagingOption()
+        public async Task QueryVM_Option_ST()
         {
 
             /*************************************************************************************************************************/
@@ -93,7 +94,7 @@ namespace MyDAL.Test.QueryAPI
         }
 
         [Fact]
-        public async Task ST_QueryVmColumn_PagingOption()
+        public async Task QueryVmColumn_Option_ST()
         {
             xx = string.Empty;
 
@@ -115,5 +116,68 @@ namespace MyDAL.Test.QueryAPI
 
             xx = string.Empty;
         }
+
+        [Fact]
+        public async Task QuerySingleColumn_ST()
+        {
+
+        }
+
+        [Fact]
+        public async Task QueryM_ST()
+        {
+
+        }
+
+        [Fact]
+        public async Task QueryVM_ST()
+        {
+
+        }
+
+        [Fact]
+        public async Task QueryVmColumn_ST()
+        {
+
+        }
+
+        [Fact]
+        public async Task QuerySingleColumn_MT()
+        {
+
+        }
+
+        [Fact]
+        public async Task QueryM_MT()
+        {
+
+        }
+
+        [Fact]
+        public async Task QueryVM_MT()
+        {
+
+        }
+
+        [Fact]
+        public async Task QueryVmColumn_MT()
+        {
+
+        }
+
+
+        [Fact]
+        public async Task QuerySingleColumn_SQL()
+        {
+
+        }
+
+        [Fact]
+        public async Task QueryVM_SQL()
+        {
+
+        }
+
+
     }
 }

@@ -1,11 +1,18 @@
 ﻿using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
+using System.Text;
 
 namespace MyDAL.Core.Bases
 {
     internal abstract class SqlContext
         : XSQL
     {
+        
+        protected Context DC { get; set; }
+        protected StringBuilder X { get; set; } = new StringBuilder();
+        
+        /****************************************************************************************************************************/
+
         protected static bool IsPaging(Context dc)
         {
             if (dc.Method == UiMethodEnum.QueryPagingAsync)
@@ -56,5 +63,10 @@ namespace MyDAL.Core.Bases
             }
             return false;
         }
+
+        /****************************************************************************************************************************/
+
+
+
     }
 }

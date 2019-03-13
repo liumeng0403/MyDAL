@@ -198,7 +198,14 @@ namespace MyDAL
         public static async Task<int> DeleteAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
             where M : class, new()
         {
-            return await conn.Deleter<M>().Where(compareFunc).DeleteAsync();
+            if (compareFunc == null)
+            {
+                throw new NotImplementedException();//return await conn.Deleter<M>
+            }
+            else
+            {
+                return await conn.Deleter<M>().Where(compareFunc).DeleteAsync();
+            }
         }
 
         /// <summary>
