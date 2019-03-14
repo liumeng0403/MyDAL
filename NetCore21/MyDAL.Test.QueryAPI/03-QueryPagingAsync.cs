@@ -13,6 +13,28 @@ namespace MyDAL.Test.QueryAPI
     {
 
         [Fact]
+        public async Task History_01()
+        {
+            xx = string.Empty;
+
+            var res2 = await Conn
+                .Queryer<Agent>()
+                .Where(it => it.Name.StartsWith("张"))
+                .OrderBy(it => it.Name, OrderByEnum.Desc)
+                .QueryPagingAsync(1, 10, it => it.Name);
+
+            Assert.True(res2.Data.Count == 10);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*****************************************************************************************************************************/
+
+            xx = string.Empty;
+        }
+
+        /*********************************************************************************************************************************************************/
+
+        [Fact]
         public async Task QuerySingleColumn_Option_ST()
         {
             xx = string.Empty;
@@ -117,9 +139,61 @@ namespace MyDAL.Test.QueryAPI
             xx = string.Empty;
         }
 
+        /*********************************************************************************************************************************************************/
+
+        [Fact]
+        public async Task Mock_QueryAllPaging_QuerySingleColumn_ST()
+        {
+            xx = string.Empty;
+
+            var res1 = await Conn
+                .Queryer<Agent>()
+                .QueryPagingAsync(1, 10, it => it.Id);
+
+            Assert.True(res1.Data.Count == 10);
+            Assert.True(res1.TotalCount == 28620);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
+        }
+
+        [Fact]
+        public async Task Mock_QueryAllPaging_QueryM_ST()
+        {
+
+        }
+
+        [Fact]
+        public async Task Mock_QueryAllPaging_QueryVM_ST()
+        {
+
+        }
+
+        [Fact]
+        public async Task Mock_QueryAllPaging_QueryVmColumn_ST()
+        {
+
+        }
+
+        /*********************************************************************************************************************************************************/
+
         [Fact]
         public async Task QuerySingleColumn_ST()
         {
+
+            xx = string.Empty;
+
+            var res1 = await Conn
+                .Queryer<Agent>()
+                .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
+                .QueryPagingAsync(1, 10, it => it.Name);
+
+            Assert.True(res1.Data.Count == 10);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*****************************************************************************************************************************/
 
         }
 
@@ -140,6 +214,8 @@ namespace MyDAL.Test.QueryAPI
         {
 
         }
+
+        /*********************************************************************************************************************************************************/
 
         [Fact]
         public async Task QuerySingleColumn_MT()

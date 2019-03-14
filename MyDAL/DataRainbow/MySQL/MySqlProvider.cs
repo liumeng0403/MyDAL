@@ -824,7 +824,7 @@ namespace MyDAL.DataRainbow.MySQL
                                                                         or TABLE_NAME = '{tableName.Trim().ToLower()}' 
                                                                         or TABLE_NAME = '{tableName.Trim()}' 
                                                                         or TABLE_NAME = '{tableName}' 
-                                                                        )
+                                                                      )
                                             ;
                                   ");
             return await DC.DS.ExecuteReaderMultiRowAsync<ColumnInfo>();
