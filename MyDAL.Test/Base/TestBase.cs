@@ -11,7 +11,7 @@ namespace MyDAL.Test
     public abstract class TestBase
     {
         protected string xx { get; set; }
-        protected (List<string>,List<string>,List<string>) tuple { get; set; }
+        protected (List<string>, List<string>, List<string>) tuple { get; set; }
 
         protected WhereTestModel WhereTest
         {
@@ -45,18 +45,29 @@ namespace MyDAL.Test
         {
             get
             {
-                return GetMySQLConnection(); 
+                return GetMySQLConnection();
             }
         }
 
         /// <summary>
-        /// SqlServer
+        /// SqlServer 2012+
         /// </summary>
         protected IDbConnection Conn2
         {
             get
             {
-                return GetTSQLConnection();
+                return GetTSQLConnection_2012Plus();
+            }
+        }
+
+        /// <summary>
+        /// SqlServer 2008R2
+        /// </summary>
+        protected IDbConnection Conn3
+        {
+            get
+            {
+                return GetTSQLConnection_2008R2();
             }
         }
 
@@ -73,10 +84,10 @@ namespace MyDAL.Test
             return
                 new MySqlConnection("Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;allowPublicKeyRetrieval=true;")
                 .OpenDebug()  // 全局 debug 配置, 生产环境不要开启 
-                //.OpenAsync()  // 建议 每次新实例并打开,以获得更好的性能体验, 但是 用完要注意手动释放, 防止 连接池 资源耗尽!!!
+                              //.OpenAsync()  // 建议 每次新实例并打开,以获得更好的性能体验, 但是 用完要注意手动释放, 防止 连接池 资源耗尽!!!
                 ;
         }
-        private static IDbConnection GetTSQLConnection()
+        private static IDbConnection GetTSQLConnection_2012Plus()
         {
             //
             // Nuget : Package : System.Data.SqlClient
@@ -84,7 +95,18 @@ namespace MyDAL.Test
             return
                 new SqlConnection("Data Source=.\\SQLEXPRESS;Initial Catalog=MyDAL_TestDB;User Id=sa;Password=1010;")
                 .OpenDebug()  // 全局 debug 配置, 生产环境不要开启 
-                //.OpenAsync()  // 建议 每次新实例并打开,以获得更好的性能体验, 但是 用完要注意手动释放, 防止 连接池 资源耗尽!!!
+                              //.OpenAsync()  // 建议 每次新实例并打开,以获得更好的性能体验, 但是 用完要注意手动释放, 防止 连接池 资源耗尽!!!
+                ;
+        }
+        private static IDbConnection GetTSQLConnection_2008R2()
+        {
+            //
+            // Nuget : Package : System.Data.SqlClient
+            //
+            return
+                new SqlConnection("Data Source=127.0.0.1;Initial Catalog=MyDAL_TestDB;User Id=sa;Password=1010;")
+                .OpenDebug()  // 全局 debug 配置, 生产环境不要开启 
+                              //.OpenAsync()  // 建议 每次新实例并打开,以获得更好的性能体验, 但是 用完要注意手动释放, 防止 连接池 资源耗尽!!!
                 ;
         }
 

@@ -66,7 +66,9 @@ namespace MyDAL.Core.Bases
 
         /****************************************************************************************************************************/
 
-
-
+        internal protected static void DbParam(string param, StringBuilder sb)
+        {
+            At(sb); sb.Append(param);
+        }
     }
 }

@@ -45,11 +45,11 @@ namespace MyDAL.DataRainbow.MySQL
                 {
                     if (DC.Crud == CrudEnum.Join)
                     {
-                        Function(o.Func, X, DC); LeftBracket(X); Column(o.TbAlias, o.TbCol, X); RightBracket(X); Spacing(X); Option(o.Option, X, DC);
+                        Function(o.Func, X, DC); LeftRoundBracket(X); Column(o.TbAlias, o.TbCol, X); RightRoundBracket(X); Spacing(X); Option(o.Option, X, DC);
                     }
                     else
                     {
-                        Function(o.Func, X, DC); LeftBracket(X); Column(string.Empty, o.TbCol, X); RightBracket(X); Spacing(X); Option(o.Option, X, DC);
+                        Function(o.Func, X, DC); LeftRoundBracket(X); Column(string.Empty, o.TbCol, X); RightRoundBracket(X); Spacing(X); Option(o.Option, X, DC);
                     }
                 }
                 else
@@ -459,7 +459,7 @@ namespace MyDAL.DataRainbow.MySQL
             }
         }
 
-        private void Table()
+        internal void Table()
         {
             Spacing(X);
             if (DC.Crud == CrudEnum.Join)
@@ -474,6 +474,7 @@ namespace MyDAL.DataRainbow.MySQL
                 TableX(tbm.TbName, X);
             }
         }
+
         private void Join()
         {
             Spacing(X);

@@ -11,10 +11,13 @@ namespace MyDAL.DataRainbow.MySQL
     internal abstract class MySql
         : SqlContext
     {
-        internal protected static void DbParam(string param, StringBuilder sb)
+        protected static void Backquote(StringBuilder sb)
         {
-            At(sb); sb.Append(param);
+            sb.Append('`');
         }
+
+        /*************************************************************************************************************************************************************/
+
         internal protected static void StringConst(string conStr, StringBuilder sb)
         {
             SingleQuote(sb); sb.Append(conStr); SingleQuote(sb);

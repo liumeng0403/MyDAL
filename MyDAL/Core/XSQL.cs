@@ -29,10 +29,6 @@ namespace MyDAL.Core
         {
             return '%';
         }
-        protected static void Backquote(StringBuilder sb)
-        {
-            sb.Append('`');
-        }
         protected static void SingleQuote(StringBuilder sb)
         {
             sb.Append('\'');
@@ -61,11 +57,11 @@ namespace MyDAL.Core
         {
             sb.Append("\t");
         }
-        protected static void LeftBracket(StringBuilder sb)
+        protected static void LeftRoundBracket(StringBuilder sb)
         {
             sb.Append('(');
         }
-        protected static void RightBracket(StringBuilder sb)
+        protected static void RightRoundBracket(StringBuilder sb)
         {
             sb.Append(')');
         }
