@@ -1,5 +1,9 @@
 ﻿using MyDAL.Core.Bases;
+using MyDAL.Core.Common;
 using MyDAL.ModelTools;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace MyDAL.DataRainbow.SQLServer
@@ -12,7 +16,6 @@ namespace MyDAL.DataRainbow.SQLServer
         {
             sb.Append('[');
         }
-
         protected static void RightSquareBracket(StringBuilder sb)
         {
             sb.Append(']');
@@ -20,7 +23,7 @@ namespace MyDAL.DataRainbow.SQLServer
 
         /*************************************************************************************************************************************************************/
 
-        internal protected static void Column(string tbAlias, string colName, StringBuilder sb)
+        internal protected void Column(string tbAlias, string colName, StringBuilder sb)
         {
             if (!tbAlias.IsNullStr())
             {
@@ -28,5 +31,23 @@ namespace MyDAL.DataRainbow.SQLServer
             }
             LeftSquareBracket(sb); sb.Append(colName); RightSquareBracket(sb);
         }
+        internal protected void TableX(string table, StringBuilder sb)
+        {
+            LeftSquareBracket(sb); sb.Append(table); RightSquareBracket(sb);
+        }
+
+        /*************************************************************************************************************************************************************/
+
+        internal protected ColumnInfo GetIndex(List<ColumnInfo> cols)
+        {
+            return
+                cols.FirstOrDefault(it => "PRI".Equals(it.KeyType, StringComparison.OrdinalIgnoreCase)) ??
+                cols.FirstOrDefault(it => "UNI".Equals(it.KeyType, StringComparison.OrdinalIgnoreCase)) ??
+                cols.FirstOrDefault(it => "MUL".Equals(it.KeyType, StringComparison.OrdinalIgnoreCase)) ??
+                cols.FirstOrDefault(it => "NO".Equals(it.IsNullable, StringComparison.OrdinalIgnoreCase)) ??
+                cols.FirstOrDefault();
+        }
+
     }
+
 }

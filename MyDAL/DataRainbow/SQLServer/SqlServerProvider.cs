@@ -45,11 +45,11 @@ namespace MyDAL.DataRainbow.SQLServer
                 {
                     if (DC.Crud == CrudEnum.Join)
                     {
-                        Function(o.Func, X, DC); LeftBracket(X); Column(o.TbAlias, o.TbCol, X); RightBracket(X); Spacing(X); Option(o.Option, X, DC);
+                        Function(o.Func, X, DC); LeftRoundBracket(X); Column(o.TbAlias, o.TbCol, X); RightRoundBracket(X); Spacing(X); Option(o.Option, X, DC);
                     }
                     else
                     {
-                        Function(o.Func, X, DC); LeftBracket(X); Column(string.Empty, o.TbCol, X); RightBracket(X); Spacing(X); Option(o.Option, X, DC);
+                        Function(o.Func, X, DC); LeftRoundBracket(X); Column(string.Empty, o.TbCol, X); RightRoundBracket(X); Spacing(X); Option(o.Option, X, DC);
                     }
                 }
                 else
@@ -92,7 +92,7 @@ namespace MyDAL.DataRainbow.SQLServer
                 && !value.Contains("_"))
             {
                 X.Append("CONCAT");
-                LeftBracket(X); StringConst(Percent().ToString(), X); Comma(X); DbParam(name, X); Comma(X); StringConst(Percent().ToString(), X); RightBracket(X);
+                LeftRoundBracket(X); StringConst(Percent().ToString(), X); Comma(X); DbParam(name, X); Comma(X); StringConst(Percent().ToString(), X); RightRoundBracket(X);
             }
             else if ((value.Contains("%") || value.Contains("_"))
                 && !value.Contains("/%")
@@ -116,7 +116,7 @@ namespace MyDAL.DataRainbow.SQLServer
         private void CharLengthProcess(DicParam db)
         {
             Spacing(X);
-            Function(db.Func, X, DC); LeftBracket(X);
+            Function(db.Func, X, DC); LeftRoundBracket(X);
             if (db.Crud == CrudEnum.Join)
             {
                 Column(db.TbAlias, db.TbCol, X);
@@ -125,13 +125,13 @@ namespace MyDAL.DataRainbow.SQLServer
             {
                 Column(string.Empty, db.TbCol, X);
             }
-            RightBracket(X);
+            RightRoundBracket(X);
             Compare(db.Compare, X, DC); DbParam(db.Param, X);
         }
         private void DateFormatProcess(DicParam db)
         {
             Spacing(X);
-            Function(db.Func, X, DC); LeftBracket(X);
+            Function(db.Func, X, DC); LeftRoundBracket(X);
             if (db.Crud == CrudEnum.Join)
             {
                 Column(db.TbAlias, db.TbCol, X);
@@ -142,12 +142,12 @@ namespace MyDAL.DataRainbow.SQLServer
             }
 
             Comma(X); StringConst(db.Format, X);
-            RightBracket(X); Compare(db.Compare, X, DC); DbParam(db.Param, X);
+            RightRoundBracket(X); Compare(db.Compare, X, DC); DbParam(db.Param, X);
         }
         private void TrimProcess(DicParam db)
         {
             Spacing(X);
-            Function(db.Func, X, DC); LeftBracket(X);
+            Function(db.Func, X, DC); LeftRoundBracket(X);
             if (db.Crud == CrudEnum.Join)
             {
                 Column(db.TbAlias, db.TbCol, X);
@@ -156,7 +156,7 @@ namespace MyDAL.DataRainbow.SQLServer
             {
                 Column(string.Empty, db.TbCol, X);
             }
-            RightBracket(X);
+            RightRoundBracket(X);
             Compare(db.Compare, X, DC); DbParam(db.Param, X);
         }
         private void InProcess(DicParam db)
@@ -171,7 +171,7 @@ namespace MyDAL.DataRainbow.SQLServer
                 Column(string.Empty, db.TbCol, X);
             }
             Spacing(X);
-            Compare(db.Compare, X, DC); LeftBracket(X); InParams(db.InItems); RightBracket(X);
+            Compare(db.Compare, X, DC); LeftRoundBracket(X); InParams(db.InItems); RightRoundBracket(X);
         }
 
         /****************************************************************************************************************/
@@ -264,7 +264,7 @@ namespace MyDAL.DataRainbow.SQLServer
                     i++;
                     if (item.Group != null)
                     {
-                        LeftBracket(X); MultiCondition(item); RightBracket(X);
+                        LeftRoundBracket(X); MultiCondition(item); RightRoundBracket(X);
                     }
                     else
                     {
@@ -415,11 +415,11 @@ namespace MyDAL.DataRainbow.SQLServer
                     {
                         if (dic.Option == OptionEnum.Column)
                         {
-                            Function(dic.Func, X, DC); LeftBracket(X); Column(dic.TbAlias, dic.TbCol, X); Comma(X); StringConst(dic.Format, X); RightBracket(X);
+                            Function(dic.Func, X, DC); LeftRoundBracket(X); Column(dic.TbAlias, dic.TbCol, X); Comma(X); StringConst(dic.Format, X); RightRoundBracket(X);
                         }
                         else if (dic.Option == OptionEnum.ColumnAs)
                         {
-                            Function(dic.Func, X, DC); LeftBracket(X); Column(dic.TbAlias, dic.TbCol, X); Comma(X); StringConst(dic.Format, X); RightBracket(X);
+                            Function(dic.Func, X, DC); LeftRoundBracket(X); Column(dic.TbAlias, dic.TbCol, X); Comma(X); StringConst(dic.Format, X); RightRoundBracket(X);
                             As(X); X.Append(dic.TbColAlias);
                         }
                     }
@@ -427,11 +427,11 @@ namespace MyDAL.DataRainbow.SQLServer
                     {
                         if (dic.Option == OptionEnum.Column)
                         {
-                            Function(dic.Func, X, DC); LeftBracket(X); Column(string.Empty, dic.TbCol, X); Comma(X); StringConst(dic.Format, X); RightBracket(X);
+                            Function(dic.Func, X, DC); LeftRoundBracket(X); Column(string.Empty, dic.TbCol, X); Comma(X); StringConst(dic.Format, X); RightRoundBracket(X);
                         }
                         else if (dic.Option == OptionEnum.ColumnAs)
                         {
-                            Function(dic.Func, X, DC); LeftBracket(X); Column(string.Empty, dic.TbCol, X); Comma(X); StringConst(dic.Format, X); RightBracket(X);
+                            Function(dic.Func, X, DC); LeftRoundBracket(X); Column(string.Empty, dic.TbCol, X); Comma(X); StringConst(dic.Format, X); RightRoundBracket(X);
                             As(X); X.Append(dic.TbColAlias);
                         }
                     }
@@ -451,7 +451,7 @@ namespace MyDAL.DataRainbow.SQLServer
             foreach (var dic in items)
             {
                 i++;
-                CRLF(X); LeftBracket(X); ConcatWithComma(dic.Inserts.Select(it => it.Param), At, null); RightBracket(X);
+                CRLF(X); LeftRoundBracket(X); ConcatWithComma(dic.Inserts.Select(it => it.Param), At, null); RightRoundBracket(X);
                 if (i != items.Count)
                 {
                     Comma(X);
@@ -459,43 +459,6 @@ namespace MyDAL.DataRainbow.SQLServer
             }
         }
 
-        internal void Table()
-        {
-            Spacing(X);
-            if (DC.Crud == CrudEnum.Join)
-            {
-                var dic = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.From);
-                TableX(dic.TbName, X); As(X); X.Append(dic.TbAlias);
-                Join();
-            }
-            else
-            {
-                var tbm = DC.XC.GetTableModel(DC.XC.GetModelKey(DC.TbM1.FullName));
-                TableX(tbm.TbName, X);
-            }
-        }
-
-        private void Join()
-        {
-            Spacing(X);
-            foreach (var item in DC.Parameters)
-            {
-                if (item.Crud != CrudEnum.Join) { continue; }
-                switch (item.Action)
-                {
-                    case ActionEnum.From: break;    // 已处理 
-                    case ActionEnum.InnerJoin:
-                    case ActionEnum.LeftJoin:
-                        CRLF(X); Tab(X);
-                        Action(item.Action, X, DC); Spacing(X); TableX(item.TbName, X); As(X); X.Append(item.TbAlias);
-                        break;
-                    case ActionEnum.On:
-                        CRLF(X); Tab(X); Tab(X);
-                        Action(item.Action, X, DC); Spacing(X); Column(item.TbAlias, item.TbCol, X); Compare(item.Compare, X, DC); Column(item.TableAliasTwo, item.ColumnTwo, X);
-                        break;
-                }
-            }
-        }
         private void Where()
         {
             var cons = DC.Parameters.Where(it => it.Action == ActionEnum.Where || it.Action == ActionEnum.And || it.Action == ActionEnum.Or)?.ToList();
@@ -530,41 +493,11 @@ namespace MyDAL.DataRainbow.SQLServer
                 }
                 else
                 {
-                    LeftBracket(X); MultiCondition(db); RightBracket(X);
+                    LeftRoundBracket(X); MultiCondition(db); RightRoundBracket(X);
                 }
             }
         }
-        private void OrderBy()
-        {
-            var dic = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.From);
-            var key = dic != null ? dic.Key : DC.XC.GetModelKey(DC.TbM1.FullName);
-            var tbm = DC.XC.GetTableModel(key);
-            if (DC.Parameters.Any(it => it.Action == ActionEnum.OrderBy))
-            {
-                CRLF(X); X.Append("order by"); Spacing(X); OrderByParams();
-            }
-            else
-            {
-                if (!IsPaging(DC))
-                {
-                    return;
-                }
 
-                var col = GetIndex(tbm.TbCols);
-                if (col != null)
-                {
-                    CRLF(X); X.Append("order by"); Spacing(X);
-                    if (DC.Crud == CrudEnum.Join)
-                    {
-                        Column(dic.TbAlias, col.ColumnName, X); Spacing(X); X.Append("desc");
-                    }
-                    else
-                    {
-                        Column(string.Empty, col.ColumnName, X); Spacing(X); X.Append("desc");
-                    }
-                }
-            }
-        }
         private void Limit()
         {
             if (DC.PageIndex.HasValue
@@ -632,7 +565,7 @@ namespace MyDAL.DataRainbow.SQLServer
                     }
                     else
                     {
-                        Function(count.Func, X, DC); LeftBracket(X); Distinct();
+                        Function(count.Func, X, DC); LeftRoundBracket(X); Distinct();
                         if (count.Crud == CrudEnum.Query)
                         {
                             Column(string.Empty, count.TbCol, X);
@@ -641,7 +574,7 @@ namespace MyDAL.DataRainbow.SQLServer
                         {
                             Column(count.TbAlias, count.TbCol, X);
                         }
-                        RightBracket(X);
+                        RightRoundBracket(X);
                     }
                 }
                 else
@@ -661,7 +594,7 @@ namespace MyDAL.DataRainbow.SQLServer
                         }
                         else
                         {
-                            Function(FuncEnum.Count, X, DC); LeftBracket(X); Distinct();
+                            Function(FuncEnum.Count, X, DC); LeftRoundBracket(X); Distinct();
                             if (col.Crud == CrudEnum.Query)
                             {
                                 Column(string.Empty, col.TbCol, X);
@@ -670,7 +603,7 @@ namespace MyDAL.DataRainbow.SQLServer
                             {
                                 Column(col.TbAlias, col.TbCol, X);
                             }
-                            RightBracket(X);
+                            RightRoundBracket(X);
                         }
                     }
                     else
@@ -698,11 +631,11 @@ namespace MyDAL.DataRainbow.SQLServer
                 {
                     if ("*".Equals(count.TbCol, StringComparison.OrdinalIgnoreCase))
                     {
-                        Function(count.Func, X, DC); LeftBracket(X); Star(X); RightBracket(X);
+                        Function(count.Func, X, DC); LeftRoundBracket(X); Star(X); RightRoundBracket(X);
                     }
                     else
                     {
-                        Function(count.Func, X, DC); LeftBracket(X);
+                        Function(count.Func, X, DC); LeftRoundBracket(X);
                         if (count.Crud == CrudEnum.Query)
                         {
                             Column(string.Empty, count.TbCol, X);
@@ -711,7 +644,7 @@ namespace MyDAL.DataRainbow.SQLServer
                         {
                             Column(count.TbAlias, count.TbCol, X);
                         }
-                        RightBracket(X);
+                        RightRoundBracket(X);
                     }
                 }
                 else
@@ -731,7 +664,7 @@ namespace MyDAL.DataRainbow.SQLServer
                         }
                         else
                         {
-                            Function(FuncEnum.Count, X, DC); LeftBracket(X);
+                            Function(FuncEnum.Count, X, DC); LeftRoundBracket(X);
                             if (col.Crud == CrudEnum.Query)
                             {
                                 Column(string.Empty, col.TbCol, X);
@@ -740,7 +673,7 @@ namespace MyDAL.DataRainbow.SQLServer
                             {
                                 Column(col.TbAlias, col.TbCol, X);
                             }
-                            RightBracket(X);
+                            RightRoundBracket(X);
                         }
                     }
                     else
@@ -783,11 +716,11 @@ namespace MyDAL.DataRainbow.SQLServer
             var item = col.Columns.FirstOrDefault(it => it.Func == FuncEnum.Sum);
             if (item.Crud == CrudEnum.Query)
             {
-                Function(item.Func, X, DC); LeftBracket(X); Column(string.Empty, item.TbCol, X); RightBracket(X);
+                Function(item.Func, X, DC); LeftRoundBracket(X); Column(string.Empty, item.TbCol, X); RightRoundBracket(X);
             }
             else if (item.Crud == CrudEnum.Join)
             {
-                Function(item.Func, X, DC); LeftBracket(X); Column(item.TbAlias, item.TbCol, X); RightBracket(X);
+                Function(item.Func, X, DC); LeftRoundBracket(X); Column(item.TbAlias, item.TbCol, X); RightRoundBracket(X);
             }
         }
 
@@ -860,29 +793,29 @@ namespace MyDAL.DataRainbow.SQLServer
             {
                 case UiMethodEnum.CreateAsync:
                 case UiMethodEnum.CreateBatchAsync:
-                    InsertInto(X); Table(); InsertColumn(); Values(X); InsertValue(); End();
+                    InsertInto(X); Table(TableX,Column); InsertColumn(); Values(X); InsertValue(); End();
                     break;
                 case UiMethodEnum.DeleteAsync:
-                    Delete(X); From(X); Table(); Where(); End();
+                    Delete(X); From(X); Table(TableX,Column); Where(); End();
                     break;
                 case UiMethodEnum.UpdateAsync:
-                    Update(X); Table(); Set(X); UpdateColumn(); Where(); End();
+                    Update(X); Table(TableX,Column); Set(X); UpdateColumn(); Where(); End();
                     break;
                 case UiMethodEnum.TopAsync:
                 case UiMethodEnum.QueryOneAsync:
                 case UiMethodEnum.QueryListAsync:
-                    Select(X); Distinct(); SelectColumn(); From(X); Table(); Where(); OrderBy(); Limit(); End();
+                    Select(X); Distinct(); SelectColumn(); From(X); Table(TableX,Column); Where(); OrderBy(GetIndex,Column,OrderByParams); Limit(); End();
                     break;
                 case UiMethodEnum.QueryPagingAsync:
-                    Select(X); Count(); From(X); Table(); Where(); CountMulti(); End();
-                    Select(X); Distinct(); SelectColumn(); From(X); Table(); Where(); OrderBy(); Limit(); End();
+                    Select(X); Count(); From(X); Table(TableX,Column); Where(); CountMulti(); End();
+                    Select(X); Distinct(); SelectColumn(); From(X); Table(TableX,Column); Where(); OrderBy(GetIndex,Column,OrderByParams); Limit(); End();
                     break;
                 case UiMethodEnum.ExistAsync:
                 case UiMethodEnum.CountAsync:
-                    Select(X); Count(); From(X); Table(); Where(); CountMulti(); End();
+                    Select(X); Count(); From(X); Table(TableX,Column); Where(); CountMulti(); End();
                     break;
                 case UiMethodEnum.SumAsync:
-                    Select(X); Sum(); From(X); Table(); Where(); End();
+                    Select(X); Sum(); From(X); Table(TableX,Column); Where(); End();
                     break;
             }
             if (XConfig.IsDebug)

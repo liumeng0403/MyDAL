@@ -17,12 +17,8 @@ namespace MyDAL.DataRainbow.MySQL
         }
 
         /*************************************************************************************************************************************************************/
-
-        internal protected static void StringConst(string conStr, StringBuilder sb)
-        {
-            SingleQuote(sb); sb.Append(conStr); SingleQuote(sb);
-        }        
-        internal protected static void Column(string tbAlias, string colName, StringBuilder sb)
+   
+        internal protected void Column(string tbAlias, string colName, StringBuilder sb)
         {
             if (!tbAlias.IsNullStr())
             {
@@ -30,14 +26,14 @@ namespace MyDAL.DataRainbow.MySQL
             }
             Backquote(sb); sb.Append(colName); Backquote(sb);
         }
-        internal protected static void TableX(string table, StringBuilder sb)
+        internal protected void TableX(string table, StringBuilder sb)
         {
             Backquote(sb); sb.Append(table); Backquote(sb);
         }
 
         /*************************************************************************************************************************************************************/
 
-        internal protected static ColumnInfo GetIndex(List<ColumnInfo> cols)
+        internal protected ColumnInfo GetIndex(List<ColumnInfo> cols)
         {
             return
                 cols.FirstOrDefault(it => "PRI".Equals(it.KeyType, StringComparison.OrdinalIgnoreCase)) ??
