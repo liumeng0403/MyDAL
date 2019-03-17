@@ -13,6 +13,136 @@ namespace MyDAL.Test.QueryAPI
         : TestBase
     {
 
+        [Fact]
+        public async Task History_01()
+        {
+
+            /*************************************************************************************************************************/
+
+            xx = string.Empty;
+
+            var option2 = new AgentQueryOption();
+            option2.Id = Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b");
+            option2.Name = "樊士芹";
+            // where method
+            var res2 = await Conn
+                .Queryer<Agent>()
+                .Where(option2)
+                .QueryPagingAsync();
+
+            Assert.True(res2.TotalCount == 1);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*****************************************************************************************************************************/
+
+            xx = string.Empty;
+
+            var option3 = new AgentQueryOption();
+            option3.StartTime = Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30);
+            option3.EndTime = DateTime.Now;
+
+            //   >=   <=  
+            var res3 = await Conn
+                .Queryer<Agent>()
+                .Where(option3)
+                .QueryPagingAsync();
+
+            Assert.True(res3.TotalCount == 28619);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*****************************************************************************************************************************/
+
+            xx = string.Empty;
+
+            var option4 = new AgentQueryOption();
+            option4.Name = "张";
+
+            //   like  
+            var res4 = await Conn
+                .Queryer<Agent>()
+                .Where(option4)
+                .QueryPagingAsync();
+
+            Assert.True(res4.TotalCount == 2002);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*****************************************************************************************************************************/
+
+            xx = string.Empty;
+
+            var option5 = new AgentQueryOption();
+            option5.EnumListIn = new List<AgentLevel>
+            {
+                AgentLevel.CityAgent,
+                AgentLevel.DistiAgent
+            };
+
+            // in
+            var res5 = await Conn
+                .Queryer<Agent>()
+                .Where(option5)
+                .QueryPagingAsync();
+
+            Assert.True(res5.TotalCount == 555);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*****************************************************************************************************************************/
+
+            xx = string.Empty;
+
+            var option6 = new AgentQueryOption();
+            option6.EnumListNotIn = new List<AgentLevel>
+            {
+                AgentLevel.CityAgent,
+                AgentLevel.DistiAgent
+            };
+
+            // in
+            var res6 = await Conn
+                .Queryer<Agent>()
+                .Where(option6)
+                .QueryPagingAsync();
+
+            Assert.True(res6.TotalCount == 28064 || res6.TotalCount == 28065);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*****************************************************************************************************************************/
+
+            xx = string.Empty;
+
+        }
+
+        [Fact]
+        public async Task History_02()
+        {
+
+            /*************************************************************************************************************************/
+
+            xx = string.Empty;
+
+            var option = new AgentQueryOption
+            {
+                Id = Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"),
+                Name = "樊士芹"
+            };
+            // where method -- option orderby 
+            var res3 = await Conn
+                .Queryer<Agent>()
+                .Where(option)
+                .OrderBy(it => it.Name, OrderByEnum.Desc)
+                .QueryPagingAsync<AgentVM>();
+
+            Assert.True(res3.TotalCount == 1);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+        }
+
         /*********************************************************************************************************************************/
 
         [Fact]

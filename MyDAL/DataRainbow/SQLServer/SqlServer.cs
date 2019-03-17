@@ -1,5 +1,6 @@
-﻿using MyDAL.Core.Bases;
-using MyDAL.Core.Common;
+﻿using MyDAL.Core.Common;
+using MyDAL.DataRainbow.XCommon.Bases;
+using MyDAL.DataRainbow.XCommon.Interfaces;
 using MyDAL.ModelTools;
 using System;
 using System.Collections.Generic;
@@ -8,37 +9,37 @@ using System.Text;
 
 namespace MyDAL.DataRainbow.SQLServer
 {
-    internal abstract class SqlServer
-        : SqlContext
+    internal sealed class SqlServer
+        : ISql
     {
 
-        protected static void LeftSquareBracket(StringBuilder sb)
+        internal static void LeftSquareBracket(StringBuilder sb)
         {
             sb.Append('[');
         }
-        protected static void RightSquareBracket(StringBuilder sb)
+        internal static void RightSquareBracket(StringBuilder sb)
         {
             sb.Append(']');
         }
 
         /*************************************************************************************************************************************************************/
 
-        internal protected void Column(string tbAlias, string colName, StringBuilder sb)
+        void ISql.Column(string tbAlias, string colName, StringBuilder sb)
         {
             if (!tbAlias.IsNullStr())
             {
-                sb.Append(tbAlias); Dot(sb);
+                sb.Append(tbAlias); XSQL.Dot(sb);
             }
             LeftSquareBracket(sb); sb.Append(colName); RightSquareBracket(sb);
         }
-        internal protected void TableX(string table, StringBuilder sb)
+        void ISql.TableX(string table, StringBuilder sb)
         {
             LeftSquareBracket(sb); sb.Append(table); RightSquareBracket(sb);
         }
 
         /*************************************************************************************************************************************************************/
 
-        internal protected ColumnInfo GetIndex(List<ColumnInfo> cols)
+        ColumnInfo ISql.GetIndex(List<ColumnInfo> cols)
         {
             return
                 cols.FirstOrDefault(it => "PRI".Equals(it.KeyType, StringComparison.OrdinalIgnoreCase)) ??

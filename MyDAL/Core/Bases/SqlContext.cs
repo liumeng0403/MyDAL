@@ -1,5 +1,7 @@
 ﻿using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
+using MyDAL.DataRainbow.XCommon.Bases;
+using MyDAL.DataRainbow.XCommon.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,7 @@ namespace MyDAL.Core.Bases
     {
 
         protected Context DC { get; set; }
+        protected ISql DbSql { get; set; }
         protected StringBuilder X { get; set; } = new StringBuilder();
 
         /****************************************************************************************************************************/

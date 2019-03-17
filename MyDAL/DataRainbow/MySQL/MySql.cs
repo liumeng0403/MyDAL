@@ -1,39 +1,40 @@
-﻿using MyDAL.Core.Bases;
-using MyDAL.Core.Common;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-using System;
+﻿using MyDAL.Core.Common;
+using MyDAL.DataRainbow.XCommon.Bases;
+using MyDAL.DataRainbow.XCommon.Interfaces;
 using MyDAL.ModelTools;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace MyDAL.DataRainbow.MySQL
 {
-    internal abstract class MySql
-        : SqlContext
+    internal sealed class MySql
+        : ISql
     {
-        protected static void Backquote(StringBuilder sb)
+        internal static void Backquote(StringBuilder sb)
         {
             sb.Append('`');
         }
 
         /*************************************************************************************************************************************************************/
    
-        internal protected void Column(string tbAlias, string colName, StringBuilder sb)
+        void ISql.Column(string tbAlias, string colName, StringBuilder sb)
         {
             if (!tbAlias.IsNullStr())
             {
-                sb.Append(tbAlias); Dot(sb);
+                sb.Append(tbAlias); XSQL.Dot(sb);
             }
             Backquote(sb); sb.Append(colName); Backquote(sb);
         }
-        internal protected void TableX(string table, StringBuilder sb)
+        void ISql.TableX(string table, StringBuilder sb)
         {
             Backquote(sb); sb.Append(table); Backquote(sb);
         }
 
         /*************************************************************************************************************************************************************/
 
-        internal protected ColumnInfo GetIndex(List<ColumnInfo> cols)
+        ColumnInfo ISql.GetIndex(List<ColumnInfo> cols)
         {
             return
                 cols.FirstOrDefault(it => "PRI".Equals(it.KeyType, StringComparison.OrdinalIgnoreCase)) ??
@@ -42,5 +43,6 @@ namespace MyDAL.DataRainbow.MySQL
                 cols.FirstOrDefault(it => "NO".Equals(it.IsNullable, StringComparison.OrdinalIgnoreCase)) ??
                 cols.FirstOrDefault();
         }
+
     }
 }
