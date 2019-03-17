@@ -91,6 +91,65 @@ namespace MyDAL.Test.QueryAPI
 
         }
 
+        [Fact]
+        public async Task History_03()
+        {
+
+            xx = string.Empty;
+
+            // where method -- option orderby 
+            var res7 = await Conn
+                .Queryer<Agent>()
+                .Where(it => it.Name == "樊士芹")
+                .OrderBy(it => it.Name, OrderByEnum.Desc)
+                .QueryPagingAsync(1, 10, agent => new AgentVM
+                {
+                    XXXX = agent.Name,
+                    YYYY = agent.PathId
+                });
+
+            Assert.True(res7.Data.Count == 1);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*************************************************************************************************************************/
+
+            xx = string.Empty;
+
+        }
+
+        [Fact]
+        public async Task History_04()
+        {
+
+            xx = string.Empty;
+
+            var option11 = new Join_AgentQueryOption();
+            option11.AgentLevel = AgentLevel.DistiAgent;
+            option11.PageIndex = 5;
+            option11.PageSize = 10;
+
+            var res11 = await Conn
+                .Queryer(out Agent agent11, out AgentInventoryRecord record11)
+                .From(() => agent11)
+                    .InnerJoin(() => record11)
+                        .On(() => agent11.Id == record11.AgentId)
+                .Where(option11)
+                .QueryPagingAsync(() => new AgentVM
+                {
+                    XXXX = agent11.Name,
+                    YYYY = agent11.PathId
+                });
+
+            Assert.True(res11.TotalCount == 574);
+            Assert.True(res11.PageSize == 10);
+            Assert.True(res11.PageIndex == 5);
+            Assert.True(res11.Data.Count == 10);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+        }
+
         /*********************************************************************************************************************************************************/
 
         [Fact]
@@ -260,7 +319,22 @@ namespace MyDAL.Test.QueryAPI
         [Fact]
         public async Task Mock_QueryAllPaging_QueryVmColumn_ST()
         {
+            xx = string.Empty;
 
+            var res1 = await Conn
+                .Queryer<Agent>()
+                .QueryPagingAsync(1, 10, it => new AgentVM
+                {
+                    XXXX = it.Name,
+                    YYYY = it.PathId
+                });
+
+            Assert.True(res1.Data.Count == 10);
+            Assert.True(res1.TotalCount == 28620);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
         }
 
         /*********************************************************************************************************************************************************/
@@ -338,6 +412,107 @@ namespace MyDAL.Test.QueryAPI
         public async Task QueryVmColumn_ST()
         {
 
+            xx = string.Empty;
+
+            var res8 = await Conn
+                .Queryer<Agent>()
+                .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
+                .QueryPagingAsync(1, 10, agent => new AgentVM
+                {
+                    XXXX = agent.Name,
+                    YYYY = agent.PathId
+                });
+
+            Assert.True(res8.TotalCount == 28619);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*************************************************************************************************************************/
+
+        }
+
+        /*********************************************************************************************************************************************************/
+
+        [Fact]
+        public async Task QuerySingleColumn_Option_MT()
+        {
+
+        }
+
+        [Fact]
+        public async Task QueryM_Option_MT()
+        {
+            xx = string.Empty;
+
+            /*************************************************************************************************************************/
+
+            var option6 = new Join_AgentQueryOption();
+            option6.AgentLevel = AgentLevel.DistiAgent;
+
+            xx = string.Empty;
+
+            var res6 = await Conn
+                .Queryer(out Agent agent6, out AgentInventoryRecord record6)
+                .From(() => agent6)
+                    .InnerJoin(() => record6)
+                        .On(() => agent6.Id == record6.AgentId)
+                .Where(option6)
+                .QueryPagingAsync<Agent>();
+
+            Assert.True(res6.TotalCount == 574);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*************************************************************************************************************************/
+
+            xx = string.Empty;
+        }
+
+        [Fact]
+        public async Task QueryVmColumn_Option_MT()
+        {
+
+            xx = string.Empty;
+
+            var option10 = new Join_AgentQueryOption();
+            option10.AgentLevel = AgentLevel.DistiAgent;
+
+            var res10 = await Conn
+                .Queryer(out Agent agent10, out AgentInventoryRecord record10)
+                .From(() => agent10)
+                    .InnerJoin(() => record10)
+                        .On(() => agent10.Id == record10.AgentId)
+                .Where(option10) //
+                .QueryPagingAsync(() => new AgentVM
+                {
+                    XXXX = agent10.Name,
+                    YYYY = agent10.PathId
+                });
+
+            Assert.True(res10.TotalCount == 574);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+        }
+
+        /*********************************************************************************************************************************************************/
+
+        [Fact]
+        public async Task Mock_QueryAllPaging_QuerySingleColumn_MT()
+        {
+
+        }
+
+        [Fact]
+        public async Task Mock_QueryAllPaging_QueryM_MT()
+        {
+
+        }
+
+        [Fact]
+        public async Task Mock_QueryAllPaging_QueryVmColumn_MT()
+        {
+
         }
 
         /*********************************************************************************************************************************************************/
@@ -346,17 +521,43 @@ namespace MyDAL.Test.QueryAPI
         public async Task QuerySingleColumn_MT()
         {
 
+            xx = string.Empty;
+
+            var res1 = await Conn
+                .Queryer(out Agent agent1, out AgentInventoryRecord record1)
+                .From(() => agent1)
+                    .InnerJoin(() => record1)
+                        .On(() => agent1.Id == record1.AgentId)
+                .Where(() => agent1.AgentLevel == AgentLevel.DistiAgent)
+                .QueryPagingAsync(1, 10, () => agent1.Id);
+
+            Assert.True(res1.TotalCount == 574);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
+
         }
 
         [Fact]
         public async Task QueryM_MT()
         {
 
-        }
+            xx = string.Empty;
 
-        [Fact]
-        public async Task QueryVM_MT()
-        {
+            var res5 = await Conn
+                .Queryer(out Agent agent5, out AgentInventoryRecord record5)
+                .From(() => agent5)
+                    .InnerJoin(() => record5)
+                        .On(() => agent5.Id == record5.AgentId)
+                .Where(() => agent5.AgentLevel == AgentLevel.DistiAgent)
+                .QueryPagingAsync<Agent>(1, 10);
+
+            Assert.True(res5.TotalCount == 574);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /*************************************************************************************************************************/
 
         }
 
@@ -364,8 +565,27 @@ namespace MyDAL.Test.QueryAPI
         public async Task QueryVmColumn_MT()
         {
 
+            xx = string.Empty;
+
+            var res9 = await Conn
+                .Queryer(out Agent agent9, out AgentInventoryRecord record9)
+                .From(() => agent9)
+                    .InnerJoin(() => record9)
+                        .On(() => agent9.Id == record9.AgentId)
+                .Where(() => agent9.AgentLevel == AgentLevel.DistiAgent)
+                .QueryPagingAsync(1, 10, () => new AgentVM
+                {
+                    XXXX = agent9.Name,
+                    YYYY = agent9.PathId
+                });
+
+            Assert.True(res9.TotalCount == 574);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
         }
 
+        /*********************************************************************************************************************************************************/
 
         [Fact]
         public async Task QuerySingleColumn_SQL()
