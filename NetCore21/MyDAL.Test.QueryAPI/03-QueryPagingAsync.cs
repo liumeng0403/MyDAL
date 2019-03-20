@@ -3,6 +3,7 @@ using MyDAL.Test.Enums;
 using MyDAL.Test.Options;
 using MyDAL.Test.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -437,6 +438,25 @@ namespace MyDAL.Test.QueryAPI
         public async Task QuerySingleColumn_Option_MT()
         {
 
+            xx = string.Empty;
+
+            var option = new Join_AgentQueryOption();
+            option.AgentLevel = AgentLevel.DistiAgent;
+
+            var res10 = await Conn
+                .Queryer(out Agent agent, out AgentInventoryRecord record)
+                .From(() => agent)
+                    .InnerJoin(() => record)
+                        .On(() => agent.Id == record.AgentId)
+                .Where(option)
+                .QueryPagingAsync(() => agent.Name);
+
+            Assert.True(res10.TotalCount == 574);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
+
         }
 
         [Fact]
@@ -498,21 +518,67 @@ namespace MyDAL.Test.QueryAPI
         /*********************************************************************************************************************************************************/
 
         [Fact]
-        public async Task Mock_QueryAllPaging_QuerySingleColumn_MT()
+        public async Task Mock_NoneCondition_QuerySingleColumn_MT()
         {
+            xx = string.Empty;
+
+            var res1 = await Conn
+                .Queryer(out Agent agent, out AgentInventoryRecord record)
+                .From(() => agent)
+                    .InnerJoin(() => record)
+                        .On(() => agent.Id == record.AgentId)
+                .QueryPagingAsync(1, 10, () => agent.Name);
+
+            Assert.True(res1.TotalCount == 574);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
 
         }
 
         [Fact]
-        public async Task Mock_QueryAllPaging_QueryM_MT()
+        public async Task Mock_NoneCondition_QueryM_MT()
         {
+
+            xx = string.Empty;
+
+            var res1 = await Conn
+                .Queryer(out Agent agent, out AgentInventoryRecord record)
+                .From(() => agent)
+                    .InnerJoin(() => record)
+                        .On(() => agent.Id == record.AgentId)
+                .QueryPagingAsync<Agent>(1, 10);
+
+            Assert.True(res1.TotalCount == 574);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
 
         }
 
         [Fact]
-        public async Task Mock_QueryAllPaging_QueryVmColumn_MT()
+        public async Task Mock_NoneCondition_QueryVmColumn_MT()
         {
+            xx = string.Empty;
 
+            var res1 = await Conn
+                .Queryer(out Agent agent, out AgentInventoryRecord record)
+                .From(() => agent)
+                    .InnerJoin(() => record)
+                        .On(() => agent.Id == record.AgentId)
+                .QueryPagingAsync(1, 10, () => new AgentVM
+                {
+                    XXXX = agent.Name,
+                    YYYY = agent.PathId
+                });
+
+            Assert.True(res1.TotalCount == 574);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
         }
 
         /*********************************************************************************************************************************************************/
@@ -583,6 +649,8 @@ namespace MyDAL.Test.QueryAPI
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
+            xx = string.Empty;
+
         }
 
         /*********************************************************************************************************************************************************/
@@ -591,11 +659,81 @@ namespace MyDAL.Test.QueryAPI
         public async Task QuerySingleColumn_SQL()
         {
 
+            xx = string.Empty;
+
+            var totalSql = @"
+                                            select  count(agent1.`Id`)
+                                            from `agent` as agent1 
+	                                            inner join `agentinventoryrecord` as record1
+		                                            on agent1.`Id`=record1.`AgentId`
+                                            where  agent1.`AgentLevel`=@AgentLevel;
+                                        ";
+
+            var dataSql = @"
+                                            select agent1.`Id`
+                                            from `agent` as agent1 
+	                                            inner join `agentinventoryrecord` as record1
+		                                            on agent1.`Id`=record1.`AgentId`
+                                            where  agent1.`AgentLevel`=@AgentLevel
+                                            order by agent1.`Id` desc
+                                            limit 0,10;
+                                        ";
+
+            var paras = new List<XParam>
+            {
+                new XParam{ParamName="AgentLevel",ParamValue=AgentLevel.DistiAgent,ParamType= ParamTypeEnum.MySQL_Int}
+            };
+
+            var res1 = await Conn.QueryPagingAsync<Guid>(1, 10, totalSql, dataSql, paras);
+
+            Assert.True(res1.TotalPage == 58);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
+
         }
 
         [Fact]
         public async Task QueryVM_SQL()
         {
+            xx = string.Empty;
+
+            var totalSql = @"
+                                            select count(*) 
+                                            from (
+                                            select  	agent9.`Name` as XXXX,
+	                                            agent9.`PathId` as YYYY
+                                            from `agent` as agent9 
+	                                            inner join `agentinventoryrecord` as record9
+		                                            on agent9.`Id`=record9.`AgentId`
+                                            where  agent9.`AgentLevel`=@AgentLevel
+                                                     ) temp;
+                                        ";
+
+            var dataSql = @"
+                                            select 	agent9.`Name` as XXXX,
+	                                            agent9.`PathId` as YYYY
+                                            from `agent` as agent9 
+	                                            inner join `agentinventoryrecord` as record9
+		                                            on agent9.`Id`=record9.`AgentId`
+                                            where  agent9.`AgentLevel`=@AgentLevel
+                                            order by agent9.`Id` desc
+                                            limit 0,10;
+                                        ";
+
+            var paras = new List<XParam>
+            {
+                new XParam{ParamName="AgentLevel",ParamValue=AgentLevel.DistiAgent,ParamType= ParamTypeEnum.MySQL_Int}
+            };
+
+            var res1 = await Conn.QueryPagingAsync<AgentVM>(1, 10, totalSql, dataSql, paras);
+
+            Assert.True(res1.Data.Count == 10);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
 
         }
 
