@@ -684,9 +684,13 @@ namespace MyDAL.Test.QueryAPI
                 new XParam{ParamName="AgentLevel",ParamValue=AgentLevel.DistiAgent,ParamType= ParamTypeEnum.MySQL_Int}
             };
 
-            var res1 = await Conn.QueryPagingAsync<Guid>(1, 10, totalSql, dataSql, paras);
+            var paging = new PagingResult<Guid>();
+            paging.PageIndex = 1;
+            paging.PageSize = 10;
 
-            Assert.True(res1.TotalPage == 58);
+            paging = await Conn.QueryPagingAsync<Guid>(paging, totalSql, dataSql, paras);
+
+            Assert.True(paging.TotalPage == 58);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
@@ -727,9 +731,13 @@ namespace MyDAL.Test.QueryAPI
                 new XParam{ParamName="AgentLevel",ParamValue=AgentLevel.DistiAgent,ParamType= ParamTypeEnum.MySQL_Int}
             };
 
-            var res1 = await Conn.QueryPagingAsync<AgentVM>(1, 10, totalSql, dataSql, paras);
+            var paging = new PagingResult<AgentVM>();
+            paging.PageIndex = 1;
+            paging.PageSize = 10;
 
-            Assert.True(res1.Data.Count == 10);
+            paging = await Conn.QueryPagingAsync<AgentVM>(paging, totalSql, dataSql, paras);
+
+            Assert.True(paging.Data.Count == 10);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 

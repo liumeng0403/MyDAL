@@ -23,9 +23,7 @@ namespace MyDAL.Test.Create
 
             xx = string.Empty;
 
-            var res1 = await Conn
-                .Creater<AddressInfo>()
-                .CreateBatchAsync(list1);
+            var res1 = await Conn.CreateBatchAsync(list1);
 
             Assert.True(res1 == 10);
 
@@ -41,16 +39,16 @@ namespace MyDAL.Test.Create
                 item.CreatedOn = DateTime.Now;
             }
 
-            var xx4 = string.Empty;
+            xx = string.Empty;
 
             Assert.True(!list.Any(it => it.RootUser));
             Assert.True(!list.Any(it => it.InvitedCount > 0));
             Assert.True(!list.Any(it => !string.IsNullOrWhiteSpace(it.ArrangePathId)));
             Assert.True(!list.Any(it => it.IsVIP));
             Assert.True(!list.Any(it => it.IsActived));
-            var res4 = await Conn
-                .Creater<UserInfo>()
-                .CreateBatchAsync(list);
+
+            var res4 = await Conn.CreateBatchAsync(list);
+
             Assert.True(res4 == list.Count);
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);

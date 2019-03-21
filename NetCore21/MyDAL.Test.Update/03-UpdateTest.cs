@@ -28,9 +28,7 @@ namespace MyDAL.Test.Update
                 .DeleteAsync();
 
             // 建
-            var res2 = await Conn
-                .Creater<BodyFitRecord>()
-                .CreateAsync(m);
+            var res2 = await Conn.CreateAsync(m);
 
             return m;
 

@@ -19,9 +19,7 @@ namespace MyDAL.Test2.Create
 
             xx = string.Empty;
 
-            var res1 = await Conn2
-                .Creater<AddressInfo>()
-                .CreateBatchAsync(list);
+            var res1 = await Conn2.CreateBatchAsync(list);
 
             Assert.IsTrue(res1 == 10);
 

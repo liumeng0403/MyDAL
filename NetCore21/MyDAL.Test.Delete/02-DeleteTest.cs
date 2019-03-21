@@ -26,9 +26,7 @@ namespace MyDAL.Test.Delete
                 .Where(it => it.Id == m.Id)
                 .DeleteAsync();
 
-            var res0 = await Conn
-                .Creater<BodyFitRecord>()
-                .CreateAsync(m);
+            var res0 = await Conn.CreateAsync(m);
 
             return m;
         }

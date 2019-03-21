@@ -21,11 +21,7 @@ namespace MyDAL
     public static class XExtension
     {
 
-        /// <summary>
-        /// 新建数据 方法簇
-        /// </summary>
-        /// <typeparam name="M">M:与DB Table 一 一对应</typeparam>
-        public static Creater<M> Creater<M>(this IDbConnection conn)
+        internal static Creater<M> Creater<M>(this IDbConnection conn)
             where M : class, new()
         {
             var dc = new XContext<M>(conn)
@@ -34,6 +30,9 @@ namespace MyDAL
             };
             return new Creater<M>(dc);
         }
+
+        /******************************************************************************************************************************/
+
         /// <summary>
         /// 删除数据 方法簇
         /// </summary>
@@ -383,17 +382,20 @@ namespace MyDAL
         }
 
         public static async Task<PagingResult<T>> QueryPagingAsync<T>
-            (this IDbConnection conn, int pageIndex, int pageSize, string totalCountSql, string pageDataSql, List<XParam> dbParas = null)
+            (this IDbConnection conn, PagingResult<T> paging, string totalCountSql, string pageDataSql, List<XParam> dbParas = null)
         {
             var dc = new XContext(conn)
             {
                 Crud = CrudEnum.SQL
             };
-            dc.PageIndex = pageIndex;
-            dc.PageSize = pageSize;
+            dc.PageIndex = paging.PageIndex;
+            dc.PageSize = paging.PageSize;
             dc.ParseSQL(totalCountSql, pageDataSql);
             dc.ParseParam(dbParas);
-            return await new QueryPagingSQLImpl(dc).QueryPagingAsync<T>();
+            var result = await new QueryPagingSQLImpl(dc).QueryPagingAsync<T>();
+            paging.TotalCount = result.TotalCount;
+            paging.Data = result.Data;
+            return paging;
         }
 
         /******************************************************************************************************************************/
