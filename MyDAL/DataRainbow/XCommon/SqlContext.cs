@@ -1,4 +1,5 @@
-﻿using MyDAL.Core.Common;
+﻿using MyDAL.Core.Bases;
+using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.DataRainbow.XCommon.Bases;
 using MyDAL.DataRainbow.XCommon.Interfaces;
@@ -7,10 +8,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MyDAL.Core.Bases
+namespace MyDAL.DataRainbow.XCommon
 {
     internal abstract class SqlContext
-        : XSQL
+           : XSQL
     {
 
         protected Context DC { get; set; }

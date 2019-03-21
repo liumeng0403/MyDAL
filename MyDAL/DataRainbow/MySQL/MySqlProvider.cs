@@ -3,6 +3,7 @@ using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
+using MyDAL.DataRainbow.XCommon;
 using System;
 using System.Collections.Generic;
 using System.Linq;

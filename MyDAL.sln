@@ -42,6 +42,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.Tools", "NetCore
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDAL.Test.DataRecovery", "MyDAL.Test.DataRecovery\MyDAL.Test.DataRecovery.csproj", "{D86E2D4B-8619-4D15-9F3A-1D148894B5DE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDAL.Test2.Create", "MyDAL.Test2.Create\MyDAL.Test2.Create.csproj", "{A438DD59-BC69-486E-8E1A-BFDD7B2731E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -100,6 +102,10 @@ Global
 		{D86E2D4B-8619-4D15-9F3A-1D148894B5DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D86E2D4B-8619-4D15-9F3A-1D148894B5DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D86E2D4B-8619-4D15-9F3A-1D148894B5DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A438DD59-BC69-486E-8E1A-BFDD7B2731E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A438DD59-BC69-486E-8E1A-BFDD7B2731E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A438DD59-BC69-486E-8E1A-BFDD7B2731E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A438DD59-BC69-486E-8E1A-BFDD7B2731E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -114,6 +120,7 @@ Global
 		{1E8F11BE-CB4E-4F18-AF49-F5427FF8A3E6} = {01469E72-6B01-413A-832F-9777EA94EB8D}
 		{0B8E1B54-FF38-45B2-AA97-D3D14327C989} = {01469E72-6B01-413A-832F-9777EA94EB8D}
 		{06D7652A-29A3-4651-8511-A6542FFAF8BB} = {01469E72-6B01-413A-832F-9777EA94EB8D}
+		{A438DD59-BC69-486E-8E1A-BFDD7B2731E2} = {B620FBF7-97BF-4502-9E7B-27C827D51147}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {928A4226-96F3-409A-8A83-9E7444488710}

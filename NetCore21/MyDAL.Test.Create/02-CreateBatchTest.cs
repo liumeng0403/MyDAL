@@ -1,4 +1,5 @@
 ﻿using MyDAL.Test.Entities.MyDAL_TestDB;
+using MyDAL.Test.TestData;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,63 +10,24 @@ using Xunit;
 
 namespace MyDAL.Test.Create
 {
-    public class _02_CreateBatchTest : TestBase
+    public class _02_CreateBatchTest 
+        : TestBase
     {
-        private async Task<List<AddressInfo>> PreCreateBatch()
-        {
-            var res1 = await Conn
-                .Deleter<AddressInfo>()
-                .Where(a => true)
-                .DeleteAsync();
-
-            var list = new List<AddressInfo>();
-            for (var i = 0; i < 10; i++)
-            {
-                if (i % 2 == 0)
-                {
-                    list.Add(new AddressInfo
-                    {
-                        Id = Guid.NewGuid(),
-                        CreatedOn = DateTime.Now,
-                        ContactName = "Name_" + i.ToString(),
-                        ContactPhone = "1800000000" + i.ToString(),
-                        DetailAddress = "Address_" + i.ToString(),
-                        IsDefault = true,   // f:bool c:bit(1)
-                        UserId = Guid.NewGuid()
-                    });
-                }
-                else
-                {
-                    list.Add(new AddressInfo
-                    {
-                        Id = Guid.NewGuid(),
-                        CreatedOn = DateTime.Now,
-                        ContactName = "Name_" + i.ToString(),
-                        ContactPhone = "1800000000" + i.ToString(),
-                        DetailAddress = "Address_" + i.ToString(),
-                        IsDefault = false,   // f:bool c:bit(1)
-                        UserId = Guid.NewGuid()
-                    });
-                }
-            }
-            return list;
-        }
-
-
         [Fact]
         public async Task Test()
         {
 
             /********************************************************************************************************************************/
 
-            var list3 = await PreCreateBatch();
+            var list1 = await new CreateData().PreCreateBatch(Conn);
 
-            var xx3 = string.Empty;
+            xx = string.Empty;
 
-            var res3 = await Conn
+            var res1 = await Conn
                 .Creater<AddressInfo>()
-                .CreateBatchAsync(list3);
-            Assert.True(res3 == 10);
+                .CreateBatchAsync(list1);
+
+            Assert.True(res1 == 10);
 
             tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
 
