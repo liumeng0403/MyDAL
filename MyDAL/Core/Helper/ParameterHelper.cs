@@ -36,7 +36,7 @@ namespace MyDAL.Core.Helper
             {
                 return DbType.AnsiString;
             }
-            else if (XConfig.TypeFuncs.TryGetValue(realType, out var func))
+            else if (XConfig.DbTypeFuncs.TryGetValue(realType, out var func))
             {
                 return func(dc, colType);
             }

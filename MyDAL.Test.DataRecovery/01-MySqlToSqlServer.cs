@@ -5,7 +5,8 @@ namespace MyDAL.Test.DataRecovery
     public class _01_MySqlToSqlServer
         :TestBase
     {
-        public void MySqlToSqlServer2012Plus()
+
+        public void MySqlToSqlServer2008R2Plus()
         {
             /*
              * AddressInfo
@@ -14,10 +15,6 @@ namespace MyDAL.Test.DataRecovery
             var addressInfos = Conn.QueryListAsync<AddressInfo>(null).GetAwaiter().GetResult();
             var res1 = Conn2.CreateBatchAsync(addressInfos).GetAwaiter().GetResult();
         }
-
-        public void MySqlToSqlServer2008R2()
-        {
-
-        }
+        
     }
 }

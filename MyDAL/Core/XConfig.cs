@@ -4,6 +4,8 @@ using MyDAL.Core.Common;
 using MyDAL.Core.Configs;
 using MyDAL.Core.Enums;
 using MyDAL.DataRainbow.MySQL;
+using MyDAL.DataRainbow.SQLServer;
+using MyDAL.DataRainbow.XCommon.Interfaces;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -51,7 +53,7 @@ namespace MyDAL.Core
 
         /************************************************************************************************************/
 
-        internal static DbTypeConfig DTC { get; } = new DbTypeConfig();
+        internal static IDbTypeConfig DTC { get; } = new DbTypeConfig();
         internal static ParamInfoConfig PIC { get; } = new ParamInfoConfig();
         internal static ExceptionConfig EC { get; } = new ExceptionConfig();
         internal static CsTypeConfig TC { get; } = new CsTypeConfig();
@@ -96,7 +98,7 @@ namespace MyDAL.Core
                     new KeyValuePair<string, ParamTypeEnum>( "longblob",ParamTypeEnum.MySQL_LongBlob)
                 });
 
-        internal static ConcurrentDictionary<Type, Func<Context, ParamTypeEnum, DbType>> TypeFuncs { get; }
+        internal static ConcurrentDictionary<Type, Func<Context, ParamTypeEnum, DbType>> DbTypeFuncs { get; }
             = new ConcurrentDictionary<Type, Func<Context, ParamTypeEnum, DbType>>(
                 new List<KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>>
                 {
@@ -155,10 +157,10 @@ namespace MyDAL.Core
 
         internal static ConcurrentDictionary<DbEnum, Func<Context, ISqlProvider>> DbProviders { get; }
             = new ConcurrentDictionary<DbEnum, Func<Context, ISqlProvider>>(
-               new List<KeyValuePair<DbEnum,Func< Context, ISqlProvider>>>
+               new List<KeyValuePair<DbEnum, Func<Context, ISqlProvider>>>
                {
-                   new KeyValuePair<DbEnum, Func<Context, ISqlProvider>>(DbEnum.MySQL,dc=>new MySqlProvider(dc))//,
-                   //new KeyValuePair<DbEnum, Func<Context, ISqlProvider>>(DbEnum.SQLServer,dc=>)
+                   new KeyValuePair<DbEnum, Func<Context, ISqlProvider>>(DbEnum.MySQL,dc=>new MySqlProvider(dc)),
+                   new KeyValuePair<DbEnum, Func<Context, ISqlProvider>>(DbEnum.SQLServer,dc=>new SqlServerProvider(dc))
                });
 
     }

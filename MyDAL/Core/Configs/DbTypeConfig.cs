@@ -1,210 +1,257 @@
 ﻿using MyDAL.Core.Bases;
+using MyDAL.Core.Enums;
+using MyDAL.DataRainbow.MySQL;
+using MyDAL.DataRainbow.SQLServer;
+using MyDAL.DataRainbow.XCommon.Interfaces;
 using System.Data;
 
 namespace MyDAL.Core.Configs
 {
-    internal class DbTypeConfig
+    internal sealed class DbTypeConfig
+        : IDbTypeConfig
     {
+        private static IDbTypeConfig MySql { get; } = new MySqlTypeConfig();
+        private static IDbTypeConfig SqlServer { get; } = new SqlServerTypeConfig();
 
-        internal DbType IntProc(Context dc, ParamTypeEnum colType)
+        DbType IDbTypeConfig.IntProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_Int)
+            switch (dc.DB)
             {
-                return DbType.Int32;
-            }
-            else
-            {
-                return DbType.Int32;
+                case DbEnum.MySQL:
+                    return MySql.IntProc(dc, colType);
+                case DbEnum.SQLServer:
+                    return SqlServer.IntProc(dc, colType);
+                default:
+                    return DbType.Int32;
             }
         }
-        internal DbType LongProc(Context dc, ParamTypeEnum colType)
+        DbType IDbTypeConfig.LongProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_BigInt)
+            switch (dc.DB)
             {
-                return DbType.Int64;
-            }
-            else
-            {
-                return DbType.Int64;
+                case DbEnum.MySQL:
+                    return MySql.LongProc(dc, colType);
+                case DbEnum.SQLServer:
+                    return SqlServer.LongProc(dc, colType);
+                default:
+                    return DbType.Int64;
             }
         }
-        internal DbType DecimalProc(Context dc, ParamTypeEnum colType)
+        DbType IDbTypeConfig.DecimalProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_Decimal)
+            switch (dc.DB)
             {
-                return DbType.Decimal;
-            }
-            else
-            {
-                return DbType.Decimal;
+                case DbEnum.MySQL:
+                    return MySql.DecimalProc(dc, colType);
+                case DbEnum.SQLServer:
+                    return SqlServer.DecimalProc(dc, colType);
+                default:
+                    return DbType.Decimal;
             }
         }
-        internal DbType BoolProc(Context dc, ParamTypeEnum colType)
+        DbType IDbTypeConfig.BoolProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_Bit)
+            switch (dc.DB)
             {
-                return DbType.UInt16;
-            }
-            else
-            {
-                return DbType.Boolean;
+                case DbEnum.MySQL:
+                    return MySql.BoolProc(dc, colType);
+                case DbEnum.SQLServer:
+                    return SqlServer.BoolProc(dc, colType);
+                default:
+                    return DbType.Boolean;
             }
         }
-        internal DbType StringProc(Context dc, ParamTypeEnum colType)
+        DbType IDbTypeConfig.StringProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_LongText)
+            switch (dc.DB)
             {
-                return DbType.String;
-            }
-            else
-            {
-                return DbType.AnsiString;
+                case DbEnum.MySQL:
+                    return MySql.StringProc(dc, colType);
+                case DbEnum.SQLServer:
+                    return SqlServer.StringProc(dc, colType);
+                default:
+                    return DbType.AnsiString;
             }
         }
-        internal DbType DateTimeProc(Context dc, ParamTypeEnum colType)
+        DbType IDbTypeConfig.DateTimeProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_DateTime)
+            switch (dc.DB)
             {
-                return DbType.AnsiString;
-            }
-            else
-            {
-                return DbType.DateTime2;
+                case DbEnum.MySQL:
+                    return MySql.DateTimeProc(dc, colType);
+                case DbEnum.SQLServer:
+                    return SqlServer.DateTimeProc(dc, colType);
+                default:
+                    return DbType.DateTime2;
             }
         }
-        internal DbType GuidProc(Context dc, ParamTypeEnum colType)
+        DbType IDbTypeConfig.GuidProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_Char)
+            switch (dc.DB)
             {
-                return DbType.AnsiStringFixedLength;
-            }
-            else
-            {
-                return DbType.Guid;
+                case DbEnum.MySQL:
+                    return MySql.GuidProc(dc, colType);
+                case DbEnum.SQLServer:
+                    return SqlServer.GuidProc(dc, colType);
+                default:
+                    return DbType.Guid;
             }
         }
-        internal DbType ByteProc(Context dc, ParamTypeEnum colType)
+        DbType IDbTypeConfig.ByteProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_TinyInt)
+            switch (dc.DB)
             {
-                return DbType.Byte;
-            }
-            else
-            {
-                return DbType.Byte;
+                case DbEnum.MySQL:
+                    return MySql.ByteProc(dc, colType);
+                case DbEnum.SQLServer:
+                    return SqlServer.ByteProc(dc, colType);
+                default:
+                    return DbType.Byte;
             }
         }
-        internal DbType ByteArrayProc(Context dc, ParamTypeEnum colType)
+        DbType IDbTypeConfig.ByteArrayProc(Context dc, ParamTypeEnum colType)
         {
-            return DbType.Binary;
-        }
-        internal DbType CharProc(Context dc, ParamTypeEnum colType)
-        {
-            if (colType == ParamTypeEnum.MySQL_VarChar)
+            switch (dc.DB)
             {
-                return DbType.AnsiString;
-            }
-            else
-            {
-                return DbType.AnsiString;
+                case DbEnum.MySQL:
+                    return MySql.ByteArrayProc(dc, colType);
+                case DbEnum.SQLServer:
+                    return SqlServer.ByteArrayProc(dc, colType);
+                default:
+                    return DbType.Binary;
             }
         }
-        internal DbType DoubleProc(Context dc, ParamTypeEnum colType)
+        DbType IDbTypeConfig.CharProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_Double)
+            switch (dc.DB)
             {
-                return DbType.Double;
-            }
-            else
-            {
-                return DbType.Double;
+                case DbEnum.MySQL:
+                    return MySql.CharProc(dc, colType);
+                case DbEnum.SQLServer:
+                    return SqlServer.CharProc(dc, colType);
+                default:
+                    return DbType.AnsiString;
             }
         }
-        internal DbType FloatProc(Context dc, ParamTypeEnum colType)
+        DbType IDbTypeConfig.DoubleProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_Float)
+            switch (dc.DB)
             {
-                return DbType.Single;
-            }
-            else
-            {
-                return DbType.Single;
+                case DbEnum.MySQL:
+                    return MySql.DoubleProc(dc, colType);
+                case DbEnum.SQLServer:
+                    return SqlServer.DoubleProc(dc, colType);
+                default:
+                    return DbType.Double;
             }
         }
-        internal DbType SbyteProc(Context dc, ParamTypeEnum colType)
+        DbType IDbTypeConfig.FloatProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_TinyInt)
+            switch (dc.DB)
             {
-                return DbType.Int16;
-            }
-            else
-            {
-                return DbType.SByte;
+                case DbEnum.MySQL:
+                    return MySql.FloatProc(dc, colType);
+                case DbEnum.SQLServer:
+                    return SqlServer.FloatProc(dc, colType);
+                default:
+                    return DbType.Single;
             }
         }
-        internal DbType ShortProc(Context dc, ParamTypeEnum colType)
+        DbType IDbTypeConfig.SbyteProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_SmallInt)
+            switch (dc.DB)
             {
-                return DbType.Int16;
-            }
-            else
-            {
-                return DbType.Int16;
+                case DbEnum.MySQL:
+                    return MySql.SbyteProc(dc, colType);
+                case DbEnum.SQLServer:
+                    return SqlServer.SbyteProc(dc, colType);
+                default:
+                    return DbType.SByte;
             }
         }
-        internal DbType UintProc(Context dc, ParamTypeEnum colType)
+        DbType IDbTypeConfig.ShortProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_Int)
+            switch (dc.DB)
             {
-                return DbType.UInt32;
-            }
-            else
-            {
-                return DbType.UInt32;
+                case DbEnum.MySQL:
+                    return MySql.ShortProc(dc, colType);
+                case DbEnum.SQLServer:
+                    return SqlServer.ShortProc(dc, colType);
+                default:
+                    return DbType.Int16;
             }
         }
-        internal DbType UlongProc(Context dc, ParamTypeEnum colType)
+        DbType IDbTypeConfig.UintProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_BigInt)
+            switch (dc.DB)
             {
-                return DbType.UInt64;
-            }
-            else
-            {
-                return DbType.UInt64;
+                case DbEnum.MySQL:
+                    return MySql.UintProc(dc, colType);
+                case DbEnum.SQLServer:
+                    return SqlServer.UintProc(dc, colType);
+                default:
+                    return DbType.UInt32;
             }
         }
-        internal DbType UshortProc(Context dc, ParamTypeEnum colType)
+        DbType IDbTypeConfig.UlongProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_SmallInt)
+            switch (dc.DB)
             {
-                return DbType.UInt16;
-            }
-            else
-            {
-                return DbType.UInt16;
-            }
-        }
-        internal DbType TimeSpanProc(Context dc, ParamTypeEnum colType)
-        {
-            if (colType == ParamTypeEnum.MySQL_Time)
-            {
-                return DbType.Time;
-            }
-            else
-            {
-                return DbType.Time;
+                case DbEnum.MySQL:
+                    return MySql.UlongProc(dc, colType);
+                case DbEnum.SQLServer:
+                    return SqlServer.UlongProc(dc, colType);
+                default:
+                    return DbType.UInt64;
             }
         }
-        internal DbType DateTimeOffsetProc(Context dc, ParamTypeEnum colType)
+        DbType IDbTypeConfig.UshortProc(Context dc, ParamTypeEnum colType)
         {
-            return DbType.DateTimeOffset;
+            switch (dc.DB)
+            {
+                case DbEnum.MySQL:
+                    return MySql.UshortProc(dc, colType);
+                case DbEnum.SQLServer:
+                    return SqlServer.UshortProc(dc, colType);
+                default:
+                    return DbType.UInt16;
+            }
         }
-        internal DbType ObjectProc(Context dc, ParamTypeEnum colType)
+        DbType IDbTypeConfig.TimeSpanProc(Context dc, ParamTypeEnum colType)
         {
-            return DbType.Object;
+            switch (dc.DB)
+            {
+                case DbEnum.MySQL:
+                    return MySql.TimeSpanProc(dc, colType);
+                case DbEnum.SQLServer:
+                    return SqlServer.TimeSpanProc(dc, colType);
+                default:
+                    return DbType.Time;
+            }
         }
-
+        DbType IDbTypeConfig.DateTimeOffsetProc(Context dc, ParamTypeEnum colType)
+        {
+            switch (dc.DB)
+            {
+                case DbEnum.MySQL:
+                    return MySql.DateTimeOffsetProc(dc, colType);
+                case DbEnum.SQLServer:
+                    return SqlServer.DateTimeOffsetProc(dc, colType);
+                default:
+                    return DbType.DateTimeOffset;
+            }
+        }
+        DbType IDbTypeConfig.ObjectProc(Context dc, ParamTypeEnum colType)
+        {
+            switch (dc.DB)
+            {
+                case DbEnum.MySQL:
+                    return MySql.ObjectProc(dc, colType);
+                case DbEnum.SQLServer:
+                    return SqlServer.ObjectProc(dc, colType);
+                default:
+                    return DbType.Object;
+            }
+        }
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace MyDAL.Core.Bases
+namespace MyDAL.DataRainbow.XCommon.Interfaces
 {
     internal interface ISqlProvider
     {

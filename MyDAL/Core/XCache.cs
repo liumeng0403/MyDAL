@@ -52,7 +52,7 @@ namespace MyDAL.Core
         }
         internal string GetModelKey(string mFullName)
         {
-            return $"{mFullName}:{DC.Conn.Database}";
+            return $"{mFullName}:{DC.Conn.Database}:{DC.DB.ToString()}";
         }
         internal string GetHandleKey(int sqlHash, int colHash, string mFullName)
         {
