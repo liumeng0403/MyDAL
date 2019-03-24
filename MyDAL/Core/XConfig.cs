@@ -64,38 +64,46 @@ namespace MyDAL.Core
 
         /************************************************************************************************************/
 
-        internal static ConcurrentDictionary<string, ParamTypeEnum> MySQLTypes { get; }
+        internal static ConcurrentDictionary<string, DbEnum> ConnTypes { get; }
+            = new ConcurrentDictionary<string, DbEnum>(
+               new List<KeyValuePair<string, DbEnum>>
+               {
+                   new KeyValuePair<string, DbEnum>("MySql.Data.MySqlClient.MySqlConnection",DbEnum.MySQL),
+                   new KeyValuePair<string, DbEnum>("System.Data.SqlClient.SqlConnection",DbEnum.SQLServer)
+               });
+
+        internal static ConcurrentDictionary<string, ParamTypeEnum> ColTypes { get; }
             = new ConcurrentDictionary<string, ParamTypeEnum>(
                 new List<KeyValuePair<string, ParamTypeEnum>>
                 {
-                    new KeyValuePair<string, ParamTypeEnum>( "tinyint",ParamTypeEnum.MySQL_TinyInt),
-                    new KeyValuePair<string, ParamTypeEnum>( "smallint",ParamTypeEnum.MySQL_SmallInt),
-                    new KeyValuePair<string, ParamTypeEnum>( "mediumint",ParamTypeEnum.MySQL_MediumInt),
-                    new KeyValuePair<string, ParamTypeEnum>( "int",ParamTypeEnum.MySQL_Int),
                     new KeyValuePair<string, ParamTypeEnum>( "bigint",ParamTypeEnum.MySQL_BigInt),
-                    new KeyValuePair<string, ParamTypeEnum>( "float",ParamTypeEnum.MySQL_Float),
-                    new KeyValuePair<string, ParamTypeEnum>( "double",ParamTypeEnum.MySQL_Double),
-                    new KeyValuePair<string, ParamTypeEnum>( "decimal",ParamTypeEnum.MySQL_Decimal),
-                    new KeyValuePair<string, ParamTypeEnum>( "year",ParamTypeEnum.MySQL_Year),
-                    new KeyValuePair<string, ParamTypeEnum>( "time",ParamTypeEnum.MySQL_Time),
+                    new KeyValuePair<string, ParamTypeEnum>( "binary",ParamTypeEnum.MySQL_Binary),
+                    new KeyValuePair<string, ParamTypeEnum>( "bit",ParamTypeEnum.MySQL_Bit),
+                    new KeyValuePair<string, ParamTypeEnum>( "blob",ParamTypeEnum.MySQL_Blob),
+                    new KeyValuePair<string, ParamTypeEnum>( "char",ParamTypeEnum.MySQL_Char),
                     new KeyValuePair<string, ParamTypeEnum>( "date",ParamTypeEnum.MySQL_Date),
                     new KeyValuePair<string, ParamTypeEnum>( "datetime",ParamTypeEnum.MySQL_DateTime),
-                    new KeyValuePair<string, ParamTypeEnum>( "timestamp",ParamTypeEnum.MySQL_TimeStamp),
-                    new KeyValuePair<string, ParamTypeEnum>( "char",ParamTypeEnum.MySQL_Char),
-                    new KeyValuePair<string, ParamTypeEnum>( "varchar",ParamTypeEnum.MySQL_VarChar),
-                    new KeyValuePair<string, ParamTypeEnum>( "tinytext",ParamTypeEnum.MySQL_TinyText),
-                    new KeyValuePair<string, ParamTypeEnum>( "text",ParamTypeEnum.MySQL_Text),
-                    new KeyValuePair<string, ParamTypeEnum>( "mediumtext",ParamTypeEnum.MySQL_MediumText),
-                    new KeyValuePair<string, ParamTypeEnum>( "longtext",ParamTypeEnum.MySQL_LongText),
+                    new KeyValuePair<string, ParamTypeEnum>( "decimal",ParamTypeEnum.MySQL_Decimal),
+                    new KeyValuePair<string, ParamTypeEnum>( "double",ParamTypeEnum.MySQL_Double),
                     new KeyValuePair<string, ParamTypeEnum>( "enum",ParamTypeEnum.MySQL_Enum),
-                    new KeyValuePair<string, ParamTypeEnum>( "set",ParamTypeEnum.MySQL_Set),
-                    new KeyValuePair<string, ParamTypeEnum>( "bit",ParamTypeEnum.MySQL_Bit),
-                    new KeyValuePair<string, ParamTypeEnum>( "binary",ParamTypeEnum.MySQL_Binary),
-                    new KeyValuePair<string, ParamTypeEnum>( "varbinary",ParamTypeEnum.MySQL_VarBinary),
-                    new KeyValuePair<string, ParamTypeEnum>( "tinyblob",ParamTypeEnum.MySQL_TinyBlob),
-                    new KeyValuePair<string, ParamTypeEnum>( "blob",ParamTypeEnum.MySQL_Blob),
+                    new KeyValuePair<string, ParamTypeEnum>( "float",ParamTypeEnum.MySQL_Float),
+                    new KeyValuePair<string, ParamTypeEnum>( "int",ParamTypeEnum.MySQL_Int),
+                    new KeyValuePair<string, ParamTypeEnum>( "longblob",ParamTypeEnum.MySQL_LongBlob),
+                    new KeyValuePair<string, ParamTypeEnum>( "longtext",ParamTypeEnum.MySQL_LongText),
                     new KeyValuePair<string, ParamTypeEnum>( "mediumblob",ParamTypeEnum.MySQL_MediumBlob),
-                    new KeyValuePair<string, ParamTypeEnum>( "longblob",ParamTypeEnum.MySQL_LongBlob)
+                    new KeyValuePair<string, ParamTypeEnum>( "mediumint",ParamTypeEnum.MySQL_MediumInt),
+                    new KeyValuePair<string, ParamTypeEnum>( "mediumtext",ParamTypeEnum.MySQL_MediumText),
+                    new KeyValuePair<string, ParamTypeEnum>( "set",ParamTypeEnum.MySQL_Set),
+                    new KeyValuePair<string, ParamTypeEnum>( "smallint",ParamTypeEnum.MySQL_SmallInt),
+                    new KeyValuePair<string, ParamTypeEnum>( "text",ParamTypeEnum.MySQL_Text),
+                    new KeyValuePair<string, ParamTypeEnum>( "time",ParamTypeEnum.MySQL_Time),
+                    new KeyValuePair<string, ParamTypeEnum>( "timestamp",ParamTypeEnum.MySQL_TimeStamp),
+                    new KeyValuePair<string, ParamTypeEnum>( "tinyblob",ParamTypeEnum.MySQL_TinyBlob),
+                    new KeyValuePair<string, ParamTypeEnum>( "tinyint",ParamTypeEnum.MySQL_TinyInt),
+                    new KeyValuePair<string, ParamTypeEnum>( "tinytext",ParamTypeEnum.MySQL_TinyText),
+                    new KeyValuePair<string, ParamTypeEnum>( "varbinary",ParamTypeEnum.MySQL_VarBinary),
+                    new KeyValuePair<string, ParamTypeEnum>( "varchar",ParamTypeEnum.MySQL_VarChar),
+                    new KeyValuePair<string, ParamTypeEnum>( "year",ParamTypeEnum.MySQL_Year)
                 });
 
         internal static ConcurrentDictionary<Type, Func<Context, ParamTypeEnum, DbType>> DbTypeFuncs { get; }
@@ -146,14 +154,6 @@ namespace MyDAL.Core
                     new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(TC.Ushort,PIC.UshortParam),
                     new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(TC.TimeSpan,PIC.TimeSpanParam)
                 });
-
-        internal static ConcurrentDictionary<string, DbEnum> DbConns { get; }
-            = new ConcurrentDictionary<string, DbEnum>(
-               new List<KeyValuePair<string, DbEnum>>
-               {
-                   new KeyValuePair<string, DbEnum>("MySql.Data.MySqlClient.MySqlConnection",DbEnum.MySQL),
-                   new KeyValuePair<string, DbEnum>("System.Data.SqlClient.SqlConnection",DbEnum.SQLServer)
-               });
 
         internal static ConcurrentDictionary<DbEnum, Func<Context, ISqlProvider>> DbProviders { get; }
             = new ConcurrentDictionary<DbEnum, Func<Context, ISqlProvider>>(

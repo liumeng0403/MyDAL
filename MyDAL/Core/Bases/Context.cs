@@ -19,7 +19,7 @@ namespace MyDAL.Core.Bases
         internal void Init(IDbConnection conn)
         {
             //
-            if (XConfig.DbConns.TryGetValue(conn.GetType().FullName, out var db))
+            if (XConfig.ConnTypes.TryGetValue(conn.GetType().FullName, out var db))
             {
                 DB = db;
             }

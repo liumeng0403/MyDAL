@@ -13,7 +13,6 @@ namespace MyDAL.Core.Helper
     internal class ParameterHelper
     {
 
-        private Context DC { get; set; }
         private static object DbNull(object value)
         {
             if (value == null)
@@ -23,6 +22,10 @@ namespace MyDAL.Core.Helper
 
             return value;
         }
+
+        /**********************************************************************************************************/
+
+        private Context DC { get; set; }
         internal ParameterHelper(Context dc)
         {
             DC = dc;
@@ -59,7 +62,7 @@ namespace MyDAL.Core.Helper
         }
         private static ParamTypeEnum GetColType(string colType, Context dc)
         {
-            if (!XConfig.MySQLTypes.TryGetValue(colType.ToLower(), out var type))
+            if (!XConfig.ColTypes.TryGetValue(colType.ToLower(), out var type))
             {
                 throw dc.Exception(XConfig.EC._031, colType);
             }
