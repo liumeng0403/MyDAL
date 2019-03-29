@@ -178,7 +178,11 @@ namespace MyDAL.Test.Delete
              * 方法描述： async Task<int> ExecuteNonQueryAsync(this IDbConnection conn, string sql, List<XParam> dbParas = null)
              */
 
-            await None();
+            try
+            {
+                await None();
+            }
+            catch { }
         }
 
         [Fact]
@@ -191,7 +195,11 @@ namespace MyDAL.Test.Delete
              * 方法描述： async Task<int> ExecuteNonQueryAsync(this IDbConnection conn, string sql, List<XParam> dbParas = null)
              */
 
-            await None();
+            try
+            {
+                await None();
+            }
+            catch { }
         }
     }
 }
