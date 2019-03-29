@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 namespace MyDAL.Test
 {
@@ -86,6 +87,11 @@ namespace MyDAL.Test
                 .OpenDebug()  // 全局 debug 配置, 生产环境不要开启 
                               //.OpenAsync()  // 建议 每次新实例并打开,以获得更好的性能体验, 但是 用完要注意手动释放, 防止 连接池 资源耗尽!!!
                 ;
+        }
+
+        protected Task None()
+        {
+            return default(Task);
         }
 
     }

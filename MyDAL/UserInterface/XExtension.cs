@@ -199,7 +199,7 @@ namespace MyDAL
         {
             if (compareFunc == null)
             {
-                throw new NotImplementedException();//return await conn.Deleter<M>
+                return await conn.Deleter<M>().DeleteAsync();
             }
             else
             {
