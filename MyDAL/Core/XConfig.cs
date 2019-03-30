@@ -116,7 +116,7 @@ namespace MyDAL.Core
                     new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "smalldatetime",CTC.SmallDateTime),
                     new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "datetimeoffset",CTC.DateTimeOffset),
                     new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "sql_variant",CTC.Sql_Variant),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "uniqueIdentifier",CTC.UniqueIdentifier),
+                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "uniqueidentifier",CTC.UniqueIdentifier),
                     new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "xml",CTC.Xml),
                     new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "cursor",CTC.Cursor),
                     new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "table",CTC.Table)

@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MyDAL.Test;
-using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.TestData;
 using System.Threading.Tasks;
 
@@ -12,7 +11,7 @@ namespace MyDAL.Test2.Create
     {
         
         [TestMethod]
-        public async Task CreateMulti()
+        public async Task Create_Batch_Shortcut()
         {
 
             var list = await new CreateData().PreCreateBatch(Conn2);

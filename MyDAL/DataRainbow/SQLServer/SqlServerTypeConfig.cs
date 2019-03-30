@@ -30,7 +30,18 @@ namespace MyDAL.DataRainbow.SQLServer
         }
         DbType IDbTypeConfig.DateTimeProc(Context dc, ParamTypeEnum colType)
         {
-            return DbType.DateTime;
+            if (colType == ParamTypeEnum.SqlServer_DateTime2)
+            {
+                return DbType.DateTime2;
+            }
+            else if(colType== ParamTypeEnum.SqlServer_DateTime)
+            {
+                return DbType.DateTime;
+            }
+            else
+            {
+                return DbType.DateTime;
+            }
         }
         DbType IDbTypeConfig.GuidProc(Context dc, ParamTypeEnum colType)
         {

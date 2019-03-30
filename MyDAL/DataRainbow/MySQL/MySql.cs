@@ -10,7 +10,7 @@ using System.Text;
 namespace MyDAL.DataRainbow.MySQL
 {
     internal sealed class MySql
-        : ISql
+        :XSQL, ISql
     {
         internal static void Backquote(StringBuilder sb)
         {
@@ -31,9 +31,10 @@ namespace MyDAL.DataRainbow.MySQL
         {
             Backquote(sb); sb.Append(table); Backquote(sb);
         }
-
-        /*************************************************************************************************************************************************************/
-
+        void ISql.OneEqualOneProcess(DicParam p, StringBuilder sb)
+        {
+            Spacing(sb); DbParam(p.Param, sb);
+        }
         ColumnInfo ISql.GetIndex(List<ColumnInfo> cols)
         {
             return
@@ -43,6 +44,7 @@ namespace MyDAL.DataRainbow.MySQL
                 cols.FirstOrDefault(it => "NO".Equals(it.IsNullable, StringComparison.OrdinalIgnoreCase)) ??
                 cols.FirstOrDefault();
         }
+
 
     }
 }

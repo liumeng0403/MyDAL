@@ -25,7 +25,7 @@ namespace MyDAL.Core.Bases
             }
             else
             {
-                throw new Exception("MyDAL 目前只支持 【MySQL/SQLServer】,后续将会支持【Oracle/PostgreSQL/DB2/Access/SQLite/Teradata/MariaDB】.");
+                throw new Exception("MyDAL 目前只支持【MySQL/SQLServer】,后续将会支持【Oracle/PostgreSQL/DB2/Access/SQLite/Teradata/MariaDB】.");
             }
 
             //
@@ -228,7 +228,7 @@ namespace MyDAL.Core.Bases
 
         internal Exception Exception(string code, string msg)
         {
-            return new Exception($"{code} -- [[{msg}]] 未能解析!!! 请 EMail: --> liumeng0403@163.com <--");
+            return new Exception($"{code} -- [[{msg}]] 未能解析!!! (注 - sql server 尚未完成 !!!)，请 EMail: --> liumeng0403@163.com <--");
         }
 
     }

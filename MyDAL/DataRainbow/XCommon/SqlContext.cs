@@ -1,4 +1,5 @@
-﻿using MyDAL.Core.Bases;
+﻿using MyDAL.Core;
+using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.DataRainbow.XCommon.Bases;
@@ -14,9 +15,9 @@ namespace MyDAL.DataRainbow.XCommon
            : XSQL
     {
 
-        protected Context DC { get; set; }
-        protected ISql DbSql { get; set; }
-        protected StringBuilder X { get; set; } = new StringBuilder();
+        internal protected Context DC { get; set; }
+        internal protected ISql DbSql { get; set; }
+        internal protected StringBuilder X { get; set; } = new StringBuilder();
 
         /****************************************************************************************************************************/
 
@@ -27,9 +28,19 @@ namespace MyDAL.DataRainbow.XCommon
 
         /****************************************************************************************************************************/
 
-        protected static bool IsPaging(Context dc)
+        private static bool IsPaging(Context dc)
         {
             if (dc.Method == UiMethodEnum.QueryPagingAsync)
+            {
+                return true;
+            }
+            return false;
+        }
+        private static bool IsWhere(DicParam p)
+        {
+            if (p.Action == ActionEnum.Where
+                || p.Action == ActionEnum.And
+                || p.Action == ActionEnum.Or)
             {
                 return true;
             }
@@ -38,7 +49,7 @@ namespace MyDAL.DataRainbow.XCommon
 
         /****************************************************************************************************************************/
 
-        protected static bool IsDistinctParam(DicParam param)
+        internal protected static bool IsDistinctParam(DicParam param)
         {
             if (param.Action == ActionEnum.Select
                 && param.Option == OptionEnum.ColumnOther
@@ -48,7 +59,7 @@ namespace MyDAL.DataRainbow.XCommon
             }
             return false;
         }
-        protected static bool IsSelectColumnParam(DicParam param)
+        internal protected static bool IsSelectColumnParam(DicParam param)
         {
             if (param.Action == ActionEnum.Select
                 && (param.Option == OptionEnum.Column || param.Option == OptionEnum.ColumnAs)
@@ -58,7 +69,7 @@ namespace MyDAL.DataRainbow.XCommon
             }
             return false;
         }
-        protected static bool IsOrderByParam(DicParam param)
+        internal protected static bool IsOrderByParam(DicParam param)
         {
             if (param.Action == ActionEnum.OrderBy
                 && (param.Func == FuncEnum.None
@@ -68,7 +79,7 @@ namespace MyDAL.DataRainbow.XCommon
             }
             return false;
         }
-        protected static bool IsCountParam(DicParam param)
+        internal protected static bool IsCountParam(DicParam param)
         {
             if (param.Option == OptionEnum.Column
                 && param.Func == FuncEnum.Count)
@@ -79,15 +90,185 @@ namespace MyDAL.DataRainbow.XCommon
         }
 
         /****************************************************************************************************************************/
-
-        internal protected static void DbParam(string param, StringBuilder sb)
+        
+        private void LikeStrHandle(DicParam dic)
         {
-            At(sb); sb.Append(param);
+            Spacing(X);
+            var name = dic.Param;
+            var value = dic.ParamInfo.Value.ToString();
+            if (!value.Contains("%")
+                && !value.Contains("_"))
+            {
+                X.Append("CONCAT");
+                LeftRoundBracket(X); StringConst(Percent().ToString(), X); Comma(X); DbParam(name, X); Comma(X); StringConst(Percent().ToString(), X); RightRoundBracket(X);
+            }
+            else if ((value.Contains("%") || value.Contains("_"))
+                && !value.Contains("/%")
+                && !value.Contains("/_"))
+            {
+                DbParam(name, X);
+            }
+            else if (value.Contains("/%")
+                || value.Contains("/_"))
+            {
+                DbParam(name, X); Spacing(X); Escape(X); Spacing(X); StringConst(EscapeChar().ToString(), X);
+            }
+            else
+            {
+                throw DC.Exception(XConfig.EC._015, $"{dic.Action}-{dic.Option}-{value}");
+            }
+        }
+        private void InParams(List<DicParam> dbs)
+        {
+            var i = 0;
+            foreach (var it in dbs)
+            {
+                i++;
+                DbParam(it.Param, X);
+                if (i != dbs.Count) { Comma(X); }
+            }
         }
 
         /****************************************************************************************************************************/
 
-        private void JoinX(Action<string, StringBuilder> tableXAction, Action<string, string, StringBuilder> columnAction)
+        private void CharLengthProcess(DicParam db)
+        {
+            Spacing(X);
+            Function(db.Func, X, DC); LeftRoundBracket(X);
+            if (db.Crud == CrudEnum.Join)
+            {
+                DbSql.Column(db.TbAlias, db.TbCol, X);
+            }
+            else if (DC.IsSingleTableOption())
+            {
+                DbSql.Column(string.Empty, db.TbCol, X);
+            }
+            RightRoundBracket(X);
+            Compare(db.Compare, X, DC); DbParam(db.Param, X);
+        }
+        private void DateFormatProcess(DicParam db)
+        {
+            Spacing(X);
+            Function(db.Func, X, DC); LeftRoundBracket(X);
+            if (db.Crud == CrudEnum.Join)
+            {
+                DbSql.Column(db.TbAlias, db.TbCol, X);
+            }
+            else if (DC.IsSingleTableOption())
+            {
+                DbSql.Column(string.Empty, db.TbCol, X);
+            }
+
+            Comma(X); StringConst(db.Format, X);
+            RightRoundBracket(X); Compare(db.Compare, X, DC); DbParam(db.Param, X);
+        }
+        private void TrimProcess(DicParam db)
+        {
+            Spacing(X);
+            Function(db.Func, X, DC); LeftRoundBracket(X);
+            if (db.Crud == CrudEnum.Join)
+            {
+                DbSql.Column(db.TbAlias, db.TbCol, X);
+            }
+            else if (DC.IsSingleTableOption())
+            {
+                DbSql.Column(string.Empty, db.TbCol, X);
+            }
+            RightRoundBracket(X);
+            Compare(db.Compare, X, DC); DbParam(db.Param, X);
+        }
+        private void InProcess(DicParam db)
+        {
+            Spacing(X);
+            if (db.Crud == CrudEnum.Join)
+            {
+                DbSql.Column(db.TbAlias, db.TbCol, X);
+            }
+            else if (DC.IsSingleTableOption())
+            {
+                DbSql.Column(string.Empty, db.TbCol, X);
+            }
+            Spacing(X);
+            Compare(db.Compare, X, DC); LeftRoundBracket(X); InParams(db.InItems); RightRoundBracket(X);
+        }
+        private void LikeProcess(DicParam db)
+        {
+            Spacing(X);
+            if (db.Crud == CrudEnum.Join)
+            {
+                DbSql.Column(db.TbAlias, db.TbCol, X);
+            }
+            else if (DC.IsSingleTableOption())
+            {
+                DbSql.Column(string.Empty, db.TbCol, X);
+            }
+            Compare(db.Compare, X, DC); LikeStrHandle(db);
+        }
+
+        /****************************************************************************************************************************/
+
+        private void CompareProcess(DicParam db)
+        {
+            if (db.Compare == CompareXEnum.In
+                || db.Compare == CompareXEnum.NotIn)
+            {
+                InProcess(db);
+            }
+            else if (db.Compare == CompareXEnum.Like
+                        || db.Compare == CompareXEnum.NotLike)
+            {
+                LikeProcess(db);
+            }
+            else
+            {
+                Spacing(X);
+                if (db.Crud == CrudEnum.Join)
+                {
+                    DbSql.Column(db.TbAlias, db.TbCol, X);
+                }
+                else if (DC.IsSingleTableOption())
+                {
+                    DbSql.Column(string.Empty, db.TbCol, X);
+                }
+                Compare(db.Compare, X, DC); DbParam(db.Param, X);
+            }
+        }
+        private void FunctionProcess(DicParam db)
+        {
+            if (db.Func == FuncEnum.CharLength)
+            {
+                CharLengthProcess(db);
+            }
+            else if (db.Func == FuncEnum.DateFormat)
+            {
+                DateFormatProcess(db);
+            }
+            else if (db.Func == FuncEnum.Trim || db.Func == FuncEnum.LTrim || db.Func == FuncEnum.RTrim)
+            {
+                TrimProcess(db);
+            }
+            else
+            {
+                throw DC.Exception(XConfig.EC._006, db.Func.ToString());
+            }
+        }
+        private void IsNullProcess(DicParam db)
+        {
+            Spacing(X);
+            if (db.Crud == CrudEnum.Join)
+            {
+                DbSql.Column(db.TbAlias, db.TbCol, X);
+            }
+            else if (DC.IsSingleTableOption())
+            {
+                DbSql.Column(string.Empty, db.TbCol, X);
+            }
+            Spacing(X); Option(db.Option, X, DC);
+        }
+
+        /****************************************************************************************************************************/
+
+        private void JoinX()
         {
             Spacing(X);
             foreach (var item in DC.Parameters)
@@ -99,29 +280,120 @@ namespace MyDAL.DataRainbow.XCommon
                     case ActionEnum.InnerJoin:
                     case ActionEnum.LeftJoin:
                         CRLF(X); Tab(X);
-                        Action(item.Action, X, DC); Spacing(X); tableXAction(item.TbName, X); As(X); X.Append(item.TbAlias);
+                        Action(item.Action, X, DC); Spacing(X); DbSql.TableX(item.TbName, X); As(X); X.Append(item.TbAlias);
                         break;
                     case ActionEnum.On:
                         CRLF(X); Tab(X); Tab(X);
-                        Action(item.Action, X, DC); Spacing(X); columnAction(item.TbAlias, item.TbCol, X); Compare(item.Compare, X, DC); columnAction(item.TableAliasTwo, item.ColumnTwo, X);
+                        Action(item.Action, X, DC); Spacing(X); DbSql.Column(item.TbAlias, item.TbCol, X); Compare(item.Compare, X, DC); DbSql.Column(item.TableAliasTwo, item.ColumnTwo, X);
                         break;
                 }
             }
         }
+        private void MultiCondition(DicParam db)
+        {
+            if (db.Group != null)
+            {
+                var i = 0;
+                foreach (var item in db.Group)
+                {
+                    i++;
+                    if (item.Group != null)
+                    {
+                        LeftRoundBracket(X);
+                        MultiCondition(item);
+                        RightRoundBracket(X);
+                    }
+                    else
+                    {
+                        MultiCondition(item);
+                    }
+                    if (i != db.Group.Count)
+                    {
+                        MultiAction(db.GroupAction, X, DC);
+                    }
+                }
+            }
+            else
+            {
+                if (db.Option == OptionEnum.Compare)
+                {
+                    CompareProcess(db);
+                }
+                else if (db.Option == OptionEnum.Function)
+                {
+                    FunctionProcess(db);
+                }
+                else if (db.Option == OptionEnum.OneEqualOne)
+                {
+                    DbSql.OneEqualOneProcess(db, X);
+                }
+                else if (db.Option == OptionEnum.IsNull || db.Option == OptionEnum.IsNotNull)
+                {
+                    IsNullProcess(db);
+                }
+                else
+                {
+                    throw DC.Exception(XConfig.EC._011, $"{db.Action}-{db.Option}");
+                }
+            }
+        }
 
-        internal protected void Table(Action<string, StringBuilder> tableXAction, Action<string, string, StringBuilder> columnAction)
+        /****************************************************************************************************************************/
+
+        internal protected void Table()
         {
             Spacing(X);
             if (DC.Crud == CrudEnum.Join)
             {
                 var dic = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.From);
-                tableXAction(dic.TbName, X); As(X); X.Append(dic.TbAlias);
-                JoinX(tableXAction, columnAction);
+                DbSql.TableX(dic.TbName, X); As(X); X.Append(dic.TbAlias);
+                JoinX();
             }
             else
             {
                 var tbm = DC.XC.GetTableModel(DC.XC.GetModelKey(DC.TbM1.FullName));
-                tableXAction(tbm.TbName, X);
+                DbSql.TableX(tbm.TbName, X);
+            }
+        }
+
+        internal protected void Where()
+        {
+            var cons = DC.Parameters.Where(it => IsWhere(it))?.ToList();
+            if (cons == null)
+            {
+                return;
+            }
+            var where = cons.FirstOrDefault(it => it.Action == ActionEnum.Where);
+            var and = cons.FirstOrDefault(it => it.Action == ActionEnum.And);
+            var or = cons.FirstOrDefault(it => it.Action == ActionEnum.Or);
+            if (where == null
+                && (and != null || or != null))
+            {
+                var aId = and == null ? -1 : and.ID;
+                var oId = or == null ? -1 : or.ID;
+                if (aId < oId
+                    || oId == -1)
+                {
+                    Action(ActionEnum.Where, X, DC); Spacing(X); X.Append("true"); Spacing(X);
+                }
+                else
+                {
+                    Action(ActionEnum.Where, X, DC); Spacing(X); X.Append("false"); Spacing(X);
+                }
+            }
+            foreach (var db in cons)
+            {
+                CRLF(X); Action(db.Action, X, DC); Spacing(X);
+                if (db.Group == null)
+                {
+                    MultiCondition(db);
+                }
+                else
+                {
+                    LeftRoundBracket(X);
+                    MultiCondition(db);
+                    RightRoundBracket(X);
+                }
             }
         }
 

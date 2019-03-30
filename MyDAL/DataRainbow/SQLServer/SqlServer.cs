@@ -10,7 +10,7 @@ using System.Text;
 namespace MyDAL.DataRainbow.SQLServer
 {
     internal sealed class SqlServer
-        : ISql
+        : XSQL, ISql
     {
 
         internal static void LeftSquareBracket(StringBuilder sb)
@@ -36,9 +36,10 @@ namespace MyDAL.DataRainbow.SQLServer
         {
             LeftSquareBracket(sb); sb.Append(table); RightSquareBracket(sb);
         }
-
-        /*************************************************************************************************************************************************************/
-
+        void ISql.OneEqualOneProcess(DicParam p, StringBuilder sb)
+        {
+            Spacing(sb); sb.Append("1=1");
+        }
         ColumnInfo ISql.GetIndex(List<ColumnInfo> cols)
         {
             return
@@ -48,6 +49,7 @@ namespace MyDAL.DataRainbow.SQLServer
                 cols.FirstOrDefault(it => "NO".Equals(it.IsNullable, StringComparison.OrdinalIgnoreCase)) ??
                 cols.FirstOrDefault();
         }
+
 
     }
 

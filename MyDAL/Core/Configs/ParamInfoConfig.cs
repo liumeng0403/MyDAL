@@ -285,37 +285,36 @@ namespace MyDAL.Core.Configs
         {
             var type = dc.PH.GetType(ui.ColumnType, realType, dc);
             var val = default(object);
-
-            //
             var flag = ((!ui.CsValueStr.IsNullStr()) && ui.Format.IsNullStr());
-            if (type == DbType.AnsiString)
-            {
-                if (flag)
-                {
-                    val = ui.CsValueStr;
-                }
-                else
-                {
-                    val = ui.CsValue;
-                }
-            }
-            else if (type == DbType.DateTime2)
-            {
-                if (flag)
-                {
-                    val = ui.CsValueStr.ToDateTime();
-                }
-                else
-                {
-                    val = ui.CsValue.ToDateTime();
-                }
-            }
-            else
-            {
-                throw dc.Exception(XConfig.EC._048, $"不支持的字段参数类型:[[{realType}]]!");
-            }
 
             //
+            switch (type)
+            {
+                case DbType.AnsiString:
+                    if (flag)
+                    {
+                        val = ui.CsValueStr;
+                    }
+                    else
+                    {
+                        val = ui.CsValue;
+                    }
+                    break;
+                case DbType.DateTime:
+                case DbType.DateTime2:
+                    if (flag)
+                    {
+                        val = ui.CsValueStr.ToDateTime();
+                    }
+                    else
+                    {
+                        val = ui.CsValue.ToDateTime();
+                    }
+                    break;
+                default:
+                    throw dc.Exception(XConfig.EC._048, $"不支持的字段参数类型:[[{realType}]]!");
+            }
+
             return dc.PH.GetDefault(ui.Param, val, type);
         }
         internal ParamInfo TimeSpanParam(DicParam ui, Type realType, Context dc)

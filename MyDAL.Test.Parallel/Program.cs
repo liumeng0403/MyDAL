@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyDAL.Test.Parallel;
+using System;
 
 namespace MyDAL.Test.QueryParallel
 {
@@ -8,7 +9,7 @@ namespace MyDAL.Test.QueryParallel
         {
             //new _01_QueryOneAsync().QueryOneAsyncTest();      //  01 
             //new HttpTest().HttpApiTest();
-
+            new _03_XmlTest().TestXmlLoad();
         }
     }
 }

@@ -1,12 +1,11 @@
-﻿using MyDAL.Core.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace MyDAL.Core.Helper
 {
-    internal class BatchDataHelper 
+    internal sealed class BatchDataHelper 
     {
         
         internal async Task<int> StepProcess<M>(IEnumerable<M> modelList, int stepNum, Func<IEnumerable<M>,Task<int>> func)

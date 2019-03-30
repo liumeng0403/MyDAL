@@ -8,6 +8,7 @@ namespace MyDAL.DataRainbow.XCommon.Interfaces
     {
         void Column(string tbAlias, string colName, StringBuilder sb);
         void TableX(string table, StringBuilder sb);
+        void OneEqualOneProcess(DicParam p, StringBuilder sb);
         ColumnInfo GetIndex(List<ColumnInfo> cols);
     }
 }

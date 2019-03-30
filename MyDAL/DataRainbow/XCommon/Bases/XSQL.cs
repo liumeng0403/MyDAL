@@ -7,31 +7,31 @@ namespace MyDAL.DataRainbow.XCommon.Bases
 {
     internal abstract class XSQL
     {
-        protected static void Spacing(StringBuilder sb)
+        internal protected static void Spacing(StringBuilder sb)
         {
             sb.Append(' ');
         }
-        protected static void EscapeChar(StringBuilder sb)
+        internal protected static void EscapeChar(StringBuilder sb)
         {
             sb.Append('/');
         }
-        protected static char EscapeChar()
+        internal protected static char EscapeChar()
         {
             return '/';
         }
-        protected static void Percent(StringBuilder sb)
+        internal protected static void Percent(StringBuilder sb)
         {
             sb.Append('%');
         }
-        protected static char Percent()
+        internal protected static char Percent()
         {
             return '%';
         }
-        protected static void SingleQuote(StringBuilder sb)
+        internal protected static void SingleQuote(StringBuilder sb)
         {
             sb.Append('\'');
         }
-        protected static void At(StringBuilder sb)
+        internal protected static void At(StringBuilder sb)
         {
             sb.Append('@');
         }
@@ -39,38 +39,38 @@ namespace MyDAL.DataRainbow.XCommon.Bases
         {
             sb.Append('.');
         }
-        protected static void Star(StringBuilder sb)
+        internal protected static void Star(StringBuilder sb)
         {
             sb.Append('*');
         }
-        protected static void Comma(StringBuilder sb)
+        internal protected static void Comma(StringBuilder sb)
         {
             sb.Append(',');
         }
-        protected static void CRLF(StringBuilder sb)
+        internal protected static void CRLF(StringBuilder sb)
         {
             sb.Append("\r\n");
         }
-        protected static void Tab(StringBuilder sb)
+        internal protected static void Tab(StringBuilder sb)
         {
             sb.Append("\t");
         }
-        protected static void LeftRoundBracket(StringBuilder sb)
+        internal protected static void LeftRoundBracket(StringBuilder sb)
         {
             sb.Append('(');
         }
-        protected static void RightRoundBracket(StringBuilder sb)
+        internal protected static void RightRoundBracket(StringBuilder sb)
         {
             sb.Append(')');
         }
-        protected static void Equal(StringBuilder sb)
+        internal protected static void Equal(StringBuilder sb)
         {
             sb.Append('=');
         }
 
         /****************************************************************************************************************/
 
-        protected static void Action(ActionEnum action, StringBuilder sb, Context dc)
+        internal protected static void Action(ActionEnum action, StringBuilder sb, Context dc)
         {
             switch (action)
             {
@@ -103,7 +103,7 @@ namespace MyDAL.DataRainbow.XCommon.Bases
                     throw dc.Exception(XConfig.EC._014, action.ToString());
             }
         }
-        protected static void MultiAction(ActionEnum action, StringBuilder sb, Context dc)
+        internal protected static void MultiAction(ActionEnum action, StringBuilder sb, Context dc)
         {
             if (action == ActionEnum.And)
             {
@@ -118,7 +118,7 @@ namespace MyDAL.DataRainbow.XCommon.Bases
                 throw dc.Exception(XConfig.EC._010, action.ToString());
             }
         }
-        protected static void Option(OptionEnum option, StringBuilder sb, Context dc)
+        internal protected static void Option(OptionEnum option, StringBuilder sb, Context dc)
         {
             switch (option)
             {
@@ -154,7 +154,7 @@ namespace MyDAL.DataRainbow.XCommon.Bases
                     throw dc.Exception(XConfig.EC._022, option.ToString());
             }
         }
-        protected static void Compare(CompareXEnum compare, StringBuilder sb, Context dc)
+        internal protected static void Compare(CompareXEnum compare, StringBuilder sb, Context dc)
         {
             switch (compare)
             {
@@ -194,7 +194,7 @@ namespace MyDAL.DataRainbow.XCommon.Bases
                     throw dc.Exception(XConfig.EC._023, compare.ToString());
             }
         }
-        protected static void Function(FuncEnum func, StringBuilder sb, Context dc)
+        internal protected static void Function(FuncEnum func, StringBuilder sb, Context dc)
         {
             switch (func)
             {
@@ -228,79 +228,83 @@ namespace MyDAL.DataRainbow.XCommon.Bases
 
         /****************************************************************************************************************/
 
-        protected static void InsertInto(StringBuilder sb)
+        internal protected static void InsertInto(StringBuilder sb)
         {
             CRLF(sb);
             sb.Append("insert into");
         }
-        protected static void Delete(StringBuilder sb)
+        internal protected static void Delete(StringBuilder sb)
         {
             sb.Append("delete");
         }
-        protected static void Update(StringBuilder sb)
+        internal protected static void Update(StringBuilder sb)
         {
             sb.Append("update");
         }
-        protected static void Select(StringBuilder sb)
+        internal protected static void Select(StringBuilder sb)
         {
             sb.Append("select");
         }
 
-        protected static void From(StringBuilder sb)
+        internal protected static void From(StringBuilder sb)
         {
             CRLF(sb);
             sb.Append("from");
         }
-        protected static void Inner(StringBuilder sb)
+        internal protected static void Inner(StringBuilder sb)
         {
             sb.Append("inner");
         }
-        protected static void Left(StringBuilder sb)
+        internal protected static void Left(StringBuilder sb)
         {
             sb.Append("left");
         }
-        protected static void Join(StringBuilder sb)
+        internal protected static void Join(StringBuilder sb)
         {
             sb.Append("join");
         }
-        protected static void On(StringBuilder sb)
+        internal protected static void On(StringBuilder sb)
         {
             sb.Append("on");
         }
 
-        protected static void Where(StringBuilder sb)
+        internal protected static void Where(StringBuilder sb)
         {
             sb.Append("where");
         }
-        protected static void And(StringBuilder sb)
+        internal protected static void And(StringBuilder sb)
         {
             sb.Append("and");
         }
-        protected static void Or(StringBuilder sb)
+        internal protected static void Or(StringBuilder sb)
         {
             sb.Append("or");
         }
 
-        protected static void Values(StringBuilder sb)
+        internal protected static void Values(StringBuilder sb)
         {
             CRLF(sb);
             sb.Append("values");
         }
-        protected static void Set(StringBuilder sb)
+        internal protected static void Set(StringBuilder sb)
         {
             CRLF(sb);
             sb.Append("set");
         }
 
-        protected static void Distinct(StringBuilder sb)
+        internal protected static void DbParam(string param, StringBuilder sb)
+        {
+            At(sb); sb.Append(param);
+        }
+        internal protected static void Distinct(StringBuilder sb)
         {
             Spacing(sb); sb.Append("distinct"); Spacing(sb);
         }
-        protected static void As(StringBuilder sb)
+        internal protected static void As(StringBuilder sb)
         {
             Spacing(sb); sb.Append("as"); Spacing(sb);
         }
-        protected static void Escape(StringBuilder sb)
+        internal protected static void Escape(StringBuilder sb)
         {
             sb.Append("escape");
         }
