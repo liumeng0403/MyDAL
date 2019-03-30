@@ -225,7 +225,7 @@
         /// </summary>
         SqlServer_DateTime,
         /// <summary>
-        /// 从 1753 年 1 月 1 日 到 9999 年 12 月 31 日，精度为 100 纳秒。
+        /// 从 1753 年 1 月 1 日 到 9999 年 12 月 31 日，精度为 100 纳秒。DateTime2(N)表示了秒钟的精度，N=0到7，表示精确到秒钟后的几位数。
         /// </summary>
         SqlServer_DateTime2,
         /// <summary>
