@@ -11,69 +11,12 @@ namespace MyDAL.Test.Update
     public class _03_UpdateTest : TestBase
     {
 
-        private async Task<BodyFitRecord> CreateDbData()
-        {
-            var m = new BodyFitRecord
-            {
-                Id = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"),
-                CreatedOn = DateTime.Now,
-                UserId = Guid.NewGuid(),
-                BodyMeasureProperty = "{xxx:yyy,mmm:nnn}"
-            };
-
-            // 删
-            var res1 = await Conn
-                .Deleter<BodyFitRecord>()
-                .Where(it => it.Id == m.Id)
-                .DeleteAsync();
-
-            // 建
-            var res2 = await Conn.CreateAsync(m);
-
-            return m;
-
-        }
+ 
 
         // 修改一个已有对象
         [Fact]
         public async Task UpdateAsyncTest()
         {
-            xx = string.Empty;
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            var m = await CreateDbData();
-            var Id = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e");
-            var m2 = 10;
-            var id2 = Guid.Parse("0ce552c0-2f5e-4c22-b26d-01654443b30e");
-
-            /***************************************************************************************************************************/
-
-            xx = string.Empty;
-
-            // DB data
-            var m1 = new BodyFitRecord
-            {
-                Id = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"),
-                CreatedOn = DateTime.Now,   // new value
-                UserId = Guid.NewGuid(),
-                BodyMeasureProperty = "{xxx:yyy,mmm:nnn,zzz:aaa}"   // new value
-            };
-
-            // 修改
-
-            // set field 1
-            var pk1 = Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e");
-            var res1 = await Conn
-                .Updater<BodyFitRecord>()
-                .Set(it => it.CreatedOn, DateTime.Now)
-                .Set(it => it.BodyMeasureProperty, "{xxx:yyy,mmm:nnn,zzz:aaa}")
-                .Where(it => it.Id == pk1)
-                .UpdateAsync();
-            Assert.True(res1 == 1);
-
-            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
-
-            /***************************************************************************************************************************/
 
             xx = string.Empty;
 
@@ -81,7 +24,7 @@ namespace MyDAL.Test.Update
             var res2 = await Conn
                 .Updater<AgentInventoryRecord>()
                 .Set(it => it.LockedCount, 100)
-                .Where(it => it.AgentId == id2)
+                .Where(it => it.AgentId == Guid.Parse("0ce552c0-2f5e-4c22-b26d-01654443b30e"))
                 .Or(it => it.CreatedOn == Convert.ToDateTime("2018-08-19 11:34:42.577074"))
                 .UpdateAsync();
             Assert.True(res2 == 2);
@@ -130,8 +73,8 @@ namespace MyDAL.Test.Update
             // where change
             var res5 = await Conn
                 .Updater<AgentInventoryRecord>()
-                .Change(it => it.LockedCount, m2, ChangeEnum.Add)
-                .Where(it => it.AgentId == id2)
+                .Change(it => it.LockedCount, 10, ChangeEnum.Add)
+                .Where(it => it.AgentId == Guid.Parse("0ce552c0-2f5e-4c22-b26d-01654443b30e"))
                 .And(it => it.ProductId == Guid.Parse("85ce17c1-10d9-4784-b054-016551e5e109"))
                 .UpdateAsync();
             Assert.True(res5 == 1);
