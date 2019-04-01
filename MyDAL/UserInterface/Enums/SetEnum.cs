@@ -1,5 +1,8 @@
 ﻿namespace MyDAL
 {
+    /// <summary>
+    /// 数据表-字段-更新模式
+    /// </summary>
     public enum SetEnum
     {
         /// <summary>
