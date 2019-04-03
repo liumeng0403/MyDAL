@@ -8,9 +8,8 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Query
 {
     /// <summary>
-    /// 
+    /// 请参阅: <see langword="目录索引 https://www.cnblogs.com/Meng-NET/"/>
     /// </summary>
-    /// <typeparam name="M"></typeparam>
     public sealed class ThenOrderByQO<M>
         : Operator, IQueryPagingO<M>
         where M : class

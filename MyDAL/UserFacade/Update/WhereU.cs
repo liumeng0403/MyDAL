@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Update
 {
     /// <summary>
-    /// 
+    /// 请参阅: <see langword="目录索引 https://www.cnblogs.com/Meng-NET/"/>
     /// </summary>
     public sealed class WhereU<M>
         : Operator, IUpdate<M>
-        where M:class
+        where M : class
     {
         internal WhereU(Context dc)
             : base(dc)

@@ -160,6 +160,29 @@ namespace MyDAL.Test.Update
         }
 
         [Fact]
+        public async Task Mock_UpdateAll_Shortcut()
+        {
+            xx = string.Empty;
+
+            var model = new AgentInventoryRecord();
+            model.LockedCount = 0;
+
+            var res1 = await Conn.UpdateAsync<AgentInventoryRecord>(null, new
+            {
+                model.LockedCount
+            });
+
+            Assert.True(res1 == 574);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            var res11 = await Conn.QueryListAsync<AgentInventoryRecord>(it => it.LockedCount != 0);
+            Assert.True(res11.Count == 0);
+
+            xx = string.Empty;
+        }
+
+        [Fact]
         public async Task Update_Shortcut()
         {
 
@@ -271,6 +294,26 @@ namespace MyDAL.Test.Update
         }
 
         [Fact]
+        public async Task Mock_UpdateAll_SetField_ST()
+        {
+            xx = string.Empty;
+
+            var res1 = await Conn
+                .Updater<AgentInventoryRecord>()
+                .Set(it => it.LockedCount, 0)
+                .UpdateAsync();
+
+            Assert.True(res1 == 574);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            var res11 = await Conn.QueryListAsync<AgentInventoryRecord>(it => it.LockedCount != 0);
+            Assert.True(res11.Count == 0);
+
+            xx = string.Empty;
+        }
+
+        [Fact]
         public async Task Update_SetField_ST()
         {
             xx = string.Empty;
@@ -297,7 +340,7 @@ namespace MyDAL.Test.Update
         [Fact]
         public async Task Update_SetField_AllowedNull_ST()
         {
-            
+
             xx = string.Empty;
 
             var agent = await Conn.QueryOneAsync<Agent>(it => it.Id == Guid.Parse("040afaad-ae07-42fc-9dd0-0165443c847d"));

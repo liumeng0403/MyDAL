@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace MyDAL.UserFacade.Delete
 {
     /// <summary>
-    /// 
+    /// 请参阅: <see langword="目录索引 https://www.cnblogs.com/Meng-NET/"/>
     /// </summary>
     public sealed class WhereD<M> 
         : Operator, IDelete

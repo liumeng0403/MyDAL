@@ -36,6 +36,7 @@ namespace MyDAL
         /// set 多个字段数据
         /// </summary>
         public static SetU<M> Set<M>(this Updater<M> updater, dynamic filedsObject)
+            where M : class
         {
             updater.DC.Action = ActionEnum.Update;
             updater.SetDynamicHandle<M>(filedsObject as object);

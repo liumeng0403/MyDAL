@@ -213,7 +213,14 @@ namespace MyDAL
         public static async Task<int> UpdateAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, dynamic filedsObject, SetEnum set = SetEnum.AllowedNull)
             where M : class, new()
         {
-            return await conn.Updater<M>().Set(filedsObject as object).Where(compareFunc).UpdateAsync(set);
+            if (compareFunc == null)
+            {
+                return await conn.Updater<M>().Set(filedsObject as object).UpdateAsync(set);
+            }
+            else
+            {
+                return await conn.Updater<M>().Set(filedsObject as object).Where(compareFunc).UpdateAsync(set);
+            }
         }
 
         /******************************************************************************************************************************/
