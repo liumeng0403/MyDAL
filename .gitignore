@@ -46,3 +46,7 @@
 /MyDAL.Test2.Create/bin/
 /MyDAL.Test2.Create/obj/
 /packages/
+/MyDAL.Test2.Delete/bin/
+/MyDAL.Test2.Delete/obj/
+/MyDAL.Test2.Update/obj/
+/MyDAL.Test2.Update/bin/
