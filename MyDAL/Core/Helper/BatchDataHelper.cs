@@ -47,5 +47,43 @@ namespace MyDAL.Core.Helper
             return result;
         }
 
+        internal int StepProcessSync<M>(IEnumerable<M> modelList, int stepNum, Func<IEnumerable<M>, int> func)
+        {
+            //
+            var result = 0;
+            var total = modelList.Count();
+            var limit = default(int);
+            if (stepNum <= 0)
+            {
+                limit = 100;
+            }
+            else
+            {
+                limit = stepNum;
+            }
+            var start = 0;
+
+            //
+            do
+            {
+                var models = modelList.Skip(start).Take(limit);
+                if (func != null)
+                {
+                    result += func(models);
+                }
+                if (start < (total - limit))
+                {
+                    start = start + limit;
+                }
+                else
+                {
+                    start = total;
+                }
+            }
+            while (start < total);
+
+            //
+            return result;
+        }
     }
 }

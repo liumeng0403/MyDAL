@@ -12,7 +12,11 @@ namespace MyDAL.UserFacade.Query
     /// 请参阅: <see langword="目录索引 https://www.cnblogs.com/Meng-NET/"/>
     /// </summary>
     public sealed class Queryer<M>
-        : Operator, IQueryList<M>, IQueryPaging<M>, ITop<M>, IIsExist
+        : Operator
+        , IQueryList<M>, IQueryListSync<M>
+        , IQueryPaging<M>, IQueryPagingSync<M>
+        , ITop<M>, ITopSync<M>
+        , IIsExist, IIsExistSync
         where M : class
     {
         internal Queryer(Context dc)
@@ -43,6 +47,29 @@ namespace MyDAL.UserFacade.Query
         }
 
         /// <summary>
+        /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// </summary>
+        public List<M> QueryList()
+        {
+            return new QueryListImpl<M>(DC).QueryList();
+        }
+        /// <summary>
+        /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// </summary>
+        public List<VM> QueryList<VM>()
+            where VM : class
+        {
+            return new QueryListImpl<M>(DC).QueryList<VM>();
+        }
+        /// <summary>
+        /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// </summary>
+        public List<T> QueryList<T>(Expression<Func<M, T>> columnMapFunc)
+        {
+            return new QueryListImpl<M>(DC).QueryList(columnMapFunc);
+        }
+
+        /// <summary>
         /// 单表分页查询
         /// </summary>
         /// <param name="pageIndex">页码</param>
@@ -68,6 +95,34 @@ namespace MyDAL.UserFacade.Query
         public async Task<PagingResult<T>> QueryPagingAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
         {
             return await new QueryPagingImpl<M>(DC).QueryPagingAsync<T>(pageIndex, pageSize, columnMapFunc);
+        }
+
+        /// <summary>
+        /// 单表分页查询
+        /// </summary>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">每页条数</param>
+        public PagingResult<M> QueryPaging(int pageIndex, int pageSize)
+        {
+            return new QueryPagingImpl<M>(DC).QueryPaging(pageIndex, pageSize);
+        }
+        /// <summary>
+        /// 单表分页查询
+        /// </summary>
+        /// <typeparam name="VM">ViewModel</typeparam>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">每页条数</param>
+        public PagingResult<VM> QueryPaging<VM>(int pageIndex, int pageSize)
+            where VM : class
+        {
+            return new QueryPagingImpl<M>(DC).QueryPaging<VM>(pageIndex, pageSize);
+        }
+        /// <summary>
+        /// 单表分页查询
+        /// </summary>
+        public PagingResult<T> QueryPaging<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
+        {
+            return new QueryPagingImpl<M>(DC).QueryPaging<T>(pageIndex, pageSize, columnMapFunc);
         }
 
         /// <summary>
@@ -100,11 +155,50 @@ namespace MyDAL.UserFacade.Query
         }
 
         /// <summary>
+        /// 单表数据查询
+        /// </summary>
+        /// <param name="count">top count</param>
+        /// <returns>返回 top count 条数据</returns>
+        public List<M> Top(int count)
+        {
+            return new TopImpl<M>(DC).Top(count);
+        }
+        /// <summary>
+        /// 单表数据查询
+        /// </summary>
+        /// <param name="count">top count</param>
+        /// <returns>返回 top count 条数据</returns>
+        public List<VM> Top<VM>(int count)
+            where VM : class
+        {
+            return new TopImpl<M>(DC).Top<VM>(count);
+        }
+        /// <summary>
+        /// 单表数据查询
+        /// </summary>
+        /// <param name="count">top count</param>
+        /// <returns>返回 top count 条数据</returns>
+        public List<T> Top<T>(int count, Expression<Func<M, T>> columnMapFunc)
+        {
+            return new TopImpl<M>(DC).Top<T>(count, columnMapFunc);
+        }
+
+        /// <summary>
         /// 请参阅: <see langword=".IsExistAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<bool> IsExistAsync()
         {
             return await new IsExistImpl<M>(DC).IsExistAsync();
         }
+
+        /// <summary>
+        /// 请参阅: <see langword=".IsExistAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// </summary>
+        public bool IsExist()
+        {
+            return new IsExistImpl<M>(DC).IsExist();
+        }
+
+
     }
 }

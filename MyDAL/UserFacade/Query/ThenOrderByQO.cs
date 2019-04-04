@@ -11,7 +11,8 @@ namespace MyDAL.UserFacade.Query
     /// 请参阅: <see langword="目录索引 https://www.cnblogs.com/Meng-NET/"/>
     /// </summary>
     public sealed class ThenOrderByQO<M>
-        : Operator, IQueryPagingO<M>
+        : Operator
+        , IQueryPagingO<M>, IQueryPagingOSync<M>
         where M : class
     {
         internal ThenOrderByQO(Context dc)
@@ -40,6 +41,29 @@ namespace MyDAL.UserFacade.Query
         public async Task<PagingResult<T>> QueryPagingAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
             return await new QueryPagingOImpl<M>(DC).QueryPagingAsync(columnMapFunc);
+        }
+
+        /// <summary>
+        /// 单表分页查询
+        /// </summary>
+        public PagingResult<M> QueryPaging()
+        {
+            return new QueryPagingOImpl<M>(DC).QueryPaging();
+        }
+        /// <summary>
+        /// 单表分页查询
+        /// </summary>
+        public PagingResult<VM> QueryPaging<VM>()
+            where VM : class
+        {
+            return new QueryPagingOImpl<M>(DC).QueryPaging<VM>();
+        }
+        /// <summary>
+        /// 单表分页查询
+        /// </summary>
+        public PagingResult<T> QueryPaging<T>(Expression<Func<M, T>> columnMapFunc)
+        {
+            return new QueryPagingOImpl<M>(DC).QueryPaging(columnMapFunc);
         }
     }
 }

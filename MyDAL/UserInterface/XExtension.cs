@@ -324,7 +324,7 @@ namespace MyDAL
         public static M QueryOne<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
             where M : class, new()
         {
-            return (conn.QueryOneAsync(compareFunc)).GetAwaiter().GetResult();
+            return conn.Queryer<M>().Where(compareFunc).QueryOne();
         }
         /// <summary>
         /// Queryer 便捷-同步 QueryOneAsync 方法
@@ -333,7 +333,7 @@ namespace MyDAL
             where M : class, new()
             where VM : class
         {
-            return (conn.QueryOneAsync<M, VM>(compareFunc)).GetAwaiter().GetResult();
+            return conn.Queryer<M>().Where(compareFunc).QueryOne<VM>();
         }
         /// <summary>
         /// Queryer 便捷-同步 QueryOneAsync 方法
@@ -341,7 +341,7 @@ namespace MyDAL
         public static T QueryOne<M, T>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, T>> columnMapFunc)
             where M : class, new()
         {
-            return (conn.QueryOneAsync(compareFunc, columnMapFunc)).GetAwaiter().GetResult();
+            return conn.Queryer<M>().Where(compareFunc).QueryOne(columnMapFunc);
         }
 
         /// <summary>
@@ -350,7 +350,7 @@ namespace MyDAL
         public static bool IsExist<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
             where M : class, new()
         {
-            return (conn.IsExistAsync(compareFunc)).GetAwaiter().GetResult();
+            return conn.Queryer<M>().Where(compareFunc).IsExist();
         }
 
         /******************************************************************************************************************************/
@@ -365,7 +365,6 @@ namespace MyDAL
             dc.ParseParam(dbParas);
             return await new ExecuteNonQuerySQLImpl(dc).ExecuteNonQueryAsync();
         }
-
         public static async Task<T> QueryOneAsync<T>(this IDbConnection conn, string sql, List<XParam> dbParas = null)
         {
             var dc = new XContext(conn)
@@ -376,7 +375,6 @@ namespace MyDAL
             dc.ParseParam(dbParas);
             return await new QueryOneSQLImpl(dc).QueryOneAsync<T>();
         }
-
         public static async Task<List<T>> QueryListAsync<T>(this IDbConnection conn, string sql, List<XParam> dbParas = null)
         {
             var dc = new XContext(conn)
@@ -387,7 +385,6 @@ namespace MyDAL
             dc.ParseParam(dbParas);
             return await new QueryListSQLImpl(dc).QueryListAsync<T>();
         }
-
         public static async Task<PagingResult<T>> QueryPagingAsync<T>
             (this IDbConnection conn, PagingResult<T> paging, string totalCountSql, string pageDataSql, List<XParam> dbParas = null)
         {
@@ -400,6 +397,53 @@ namespace MyDAL
             dc.ParseSQL(totalCountSql, pageDataSql);
             dc.ParseParam(dbParas);
             var result = await new QueryPagingSQLImpl(dc).QueryPagingAsync<T>();
+            paging.TotalCount = result.TotalCount;
+            paging.Data = result.Data;
+            return paging;
+        }
+
+        public static int ExecuteNonQuery(this IDbConnection conn, string sql, List<XParam> dbParas = null)
+        {
+            var dc = new XContext(conn)
+            {
+                Crud = CrudEnum.SQL
+            };
+            dc.ParseSQL(sql);
+            dc.ParseParam(dbParas);
+            return new ExecuteNonQuerySQLImpl(dc).ExecuteNonQuery();
+        }
+        public static T QueryOne<T>(this IDbConnection conn, string sql, List<XParam> dbParas = null)
+        {
+            var dc = new XContext(conn)
+            {
+                Crud = CrudEnum.SQL
+            };
+            dc.ParseSQL(sql);
+            dc.ParseParam(dbParas);
+            return new QueryOneSQLImpl(dc).QueryOne<T>();
+        }
+        public static List<T> QueryList<T>(this IDbConnection conn, string sql, List<XParam> dbParas = null)
+        {
+            var dc = new XContext(conn)
+            {
+                Crud = CrudEnum.SQL
+            };
+            dc.ParseSQL(sql);
+            dc.ParseParam(dbParas);
+            return new QueryListSQLImpl(dc).QueryList<T>();
+        }
+        public static PagingResult<T> QueryPaging<T>
+            (this IDbConnection conn, PagingResult<T> paging, string totalCountSql, string pageDataSql, List<XParam> dbParas = null)
+        {
+            var dc = new XContext(conn)
+            {
+                Crud = CrudEnum.SQL
+            };
+            dc.PageIndex = paging.PageIndex;
+            dc.PageSize = paging.PageSize;
+            dc.ParseSQL(totalCountSql, pageDataSql);
+            dc.ParseParam(dbParas);
+            var result = new QueryPagingSQLImpl(dc).QueryPaging<T>();
             paging.TotalCount = result.TotalCount;
             paging.Data = result.Data;
             return paging;

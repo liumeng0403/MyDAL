@@ -10,10 +10,21 @@ namespace MyDAL.Interfaces
         Task<int> CountAsync();
         Task<int> CountAsync<F>(Expression<Func<M, F>> func);
     }
+    internal interface ICountSync<M>
+        where M : class
+    {
+        int Count();
+        int Count<F>(Expression<Func<M, F>> func);
+    }
 
     internal interface ICountX
     {
         Task<int> CountAsync();
         Task<int> CountAsync<F>(Expression<Func<F>> func);
+    }
+    internal interface ICountXSync
+    {
+        int Count();
+        int Count<F>(Expression<Func<F>> func);
     }
 }

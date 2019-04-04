@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 namespace MyDAL.Impls
 {
     internal class ExecuteNonQuerySQLImpl
-        : Impler, IExecuteNonQuerySQL
+        : Impler
+        , IExecuteNonQuerySQL, IExecuteNonQuerySQLSync
     {
         public ExecuteNonQuerySQLImpl(Context dc) 
             : base(dc)
@@ -14,6 +15,11 @@ namespace MyDAL.Impls
         public async Task<int> ExecuteNonQueryAsync()
         {
             return await DC.DS.ExecuteNonQueryAsync();
+        }
+
+        public int ExecuteNonQuery()
+        {
+            return DC.DS.ExecuteNonQuery();
         }
     }
 }

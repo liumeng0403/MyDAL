@@ -13,6 +13,14 @@ namespace MyDAL.Interfaces
             where VM : class;
         Task<List<T>> QueryListAsync<T>(Expression<Func<M, T>> columnMapFunc);
     }
+    internal interface IQueryListSync<M>
+        where M : class
+    {
+        List<M> QueryList();
+        List<VM> QueryList<VM>()
+            where VM : class;
+        List<T> QueryList<T>(Expression<Func<M, T>> columnMapFunc);
+    }
 
     internal interface IQueryListX
     {
@@ -20,9 +28,19 @@ namespace MyDAL.Interfaces
             where M : class;
         Task<List<T>> QueryListAsync<T>(Expression<Func<T>> columnMapFunc);
     }
+    internal interface IQueryListXSync
+    {
+        List<M> QueryList<M>()
+            where M : class;
+        List<T> QueryList<T>(Expression<Func<T>> columnMapFunc);
+    }
 
     internal interface IQueryListSQL
     {
         Task<List<T>> QueryListAsync<T>();
+    }
+    internal interface IQueryListSQLSync
+    {
+        List<T> QueryList<T>();
     }
 }

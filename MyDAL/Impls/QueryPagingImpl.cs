@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 namespace MyDAL.Impls
 {
     internal class QueryPagingImpl<M>
-        : Impler, IQueryPaging<M>
+        : Impler
+        , IQueryPaging<M>, IQueryPagingSync<M>
             where M : class
     {
         internal QueryPagingImpl(Context dc)
@@ -22,7 +23,6 @@ namespace MyDAL.Impls
             DC.PageSize = pageSize;
             return await PagingListAsyncHandle<M>(UiMethodEnum.QueryPagingAsync, false);
         }
-
         public async Task<PagingResult<VM>> QueryPagingAsync<VM>(int pageIndex, int pageSize)
             where VM : class
         {
@@ -30,7 +30,6 @@ namespace MyDAL.Impls
             DC.PageSize = pageSize;
             return await PagingListAsyncHandle<M, VM>(UiMethodEnum.QueryPagingAsync, false, null);
         }
-
         public async Task<PagingResult<T>> QueryPagingAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
         {
             DC.PageIndex = pageIndex;
@@ -46,10 +45,40 @@ namespace MyDAL.Impls
             }
             return await PagingListAsyncHandle<M, T>(UiMethodEnum.QueryPagingAsync, single, columnMapFunc.Compile());
         }
+
+        public PagingResult<M> QueryPaging(int pageIndex, int pageSize)
+        {
+            DC.PageIndex = pageIndex;
+            DC.PageSize = pageSize;
+            return PagingListAsyncHandleSync<M>(UiMethodEnum.QueryPagingAsync, false);
+        }
+        public PagingResult<VM> QueryPaging<VM>(int pageIndex, int pageSize)
+            where VM : class
+        {
+            DC.PageIndex = pageIndex;
+            DC.PageSize = pageSize;
+            return PagingListAsyncHandleSync<M, VM>(UiMethodEnum.QueryPagingAsync, false, null);
+        }
+        public PagingResult<T> QueryPaging<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
+        {
+            DC.PageIndex = pageIndex;
+            DC.PageSize = pageSize;
+            var single = typeof(T).IsSingleColumn();
+            if (single)
+            {
+                SingleColumnHandle(columnMapFunc);
+            }
+            else
+            {
+                SelectMHandle(columnMapFunc);
+            }
+            return PagingListAsyncHandleSync<M, T>(UiMethodEnum.QueryPagingAsync, single, columnMapFunc.Compile());
+        }
     }
 
     internal class QueryPagingOImpl<M>
-        : Impler, IQueryPagingO<M>
+        : Impler
+        , IQueryPagingO<M>, IQueryPagingOSync<M>
             where M : class
     {
         internal QueryPagingOImpl(Context dc)
@@ -59,14 +88,12 @@ namespace MyDAL.Impls
         {
             return await PagingListAsyncHandle<M>(UiMethodEnum.QueryPagingAsync, false);
         }
-
         public async Task<PagingResult<VM>> QueryPagingAsync<VM>()
             where VM : class
         {
             SelectMQ<M, VM>();
             return await PagingListAsyncHandle<M, VM>(UiMethodEnum.QueryPagingAsync, false, null);
         }
-
         public async Task<PagingResult<T>> QueryPagingAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
             var single = typeof(T).IsSingleColumn();
@@ -80,10 +107,35 @@ namespace MyDAL.Impls
             }
             return await PagingListAsyncHandle(UiMethodEnum.QueryPagingAsync, single, columnMapFunc.Compile());
         }
+
+        public PagingResult<M> QueryPaging()
+        {
+            return PagingListAsyncHandleSync<M>(UiMethodEnum.QueryPagingAsync, false);
+        }
+        public PagingResult<VM> QueryPaging<VM>()
+            where VM : class
+        {
+            SelectMQ<M, VM>();
+            return PagingListAsyncHandleSync<M, VM>(UiMethodEnum.QueryPagingAsync, false, null);
+        }
+        public PagingResult<T> QueryPaging<T>(Expression<Func<M, T>> columnMapFunc)
+        {
+            var single = typeof(T).IsSingleColumn();
+            if (single)
+            {
+                SingleColumnHandle(columnMapFunc);
+            }
+            else
+            {
+                SelectMHandle(columnMapFunc);
+            }
+            return PagingListAsyncHandleSync(UiMethodEnum.QueryPagingAsync, single, columnMapFunc.Compile());
+        }
     }
 
     internal class QueryPagingXImpl
-        : Impler, IQueryPagingX
+        : Impler
+        , IQueryPagingX, IQueryPagingXSync
     {
         internal QueryPagingXImpl(Context dc)
             : base(dc)
@@ -97,7 +149,6 @@ namespace MyDAL.Impls
             SelectMHandle<M>();
             return await PagingListAsyncHandle<M>(UiMethodEnum.QueryPagingAsync, false);
         }
-
         public async Task<PagingResult<T>> QueryPagingAsync<T>(int pageIndex, int pageSize, Expression<Func<T>> columnMapFunc)
         {
             DC.PageIndex = pageIndex;
@@ -113,10 +164,35 @@ namespace MyDAL.Impls
             }
             return await PagingListAsyncHandle<T>(UiMethodEnum.QueryPagingAsync, single);
         }
+
+        public PagingResult<M> QueryPaging<M>(int pageIndex, int pageSize)
+            where M : class
+        {
+            DC.PageIndex = pageIndex;
+            DC.PageSize = pageSize;
+            SelectMHandle<M>();
+            return PagingListAsyncHandleSync<M>(UiMethodEnum.QueryPagingAsync, false);
+        }
+        public PagingResult<T> QueryPaging<T>(int pageIndex, int pageSize, Expression<Func<T>> columnMapFunc)
+        {
+            DC.PageIndex = pageIndex;
+            DC.PageSize = pageSize;
+            var single = typeof(T).IsSingleColumn();
+            if (single)
+            {
+                SingleColumnHandle(columnMapFunc);
+            }
+            else
+            {
+                SelectMHandle(columnMapFunc);
+            }
+            return PagingListAsyncHandleSync<T>(UiMethodEnum.QueryPagingAsync, single);
+        }
     }
 
     internal class PagingListXOImpl
-        : Impler, IQueryPagingXO
+        : Impler
+        , IQueryPagingXO,IQueryPagingXOSync
     {
         internal PagingListXOImpl(Context dc)
             : base(dc)
@@ -129,7 +205,6 @@ namespace MyDAL.Impls
             SelectMHandle<M>();
             return await PagingListAsyncHandle<M>(UiMethodEnum.QueryPagingAsync, false);
         }
-
         public async Task<PagingResult<T>> QueryPagingAsync<T>(Expression<Func<T>> columnMapFunc)
         {
             var single = typeof(T).IsSingleColumn();
@@ -143,10 +218,31 @@ namespace MyDAL.Impls
             }
             return await PagingListAsyncHandle<T>(UiMethodEnum.QueryPagingAsync, single);
         }
+
+        public PagingResult<M> QueryPaging<M>()
+            where M : class
+        {
+            SelectMHandle<M>();
+            return PagingListAsyncHandleSync<M>(UiMethodEnum.QueryPagingAsync, false);
+        }
+        public PagingResult<T> QueryPaging<T>(Expression<Func<T>> columnMapFunc)
+        {
+            var single = typeof(T).IsSingleColumn();
+            if (single)
+            {
+                SingleColumnHandle(columnMapFunc);
+            }
+            else
+            {
+                SelectMHandle(columnMapFunc);
+            }
+            return PagingListAsyncHandleSync<T>(UiMethodEnum.QueryPagingAsync, single);
+        }
     }
 
     internal class QueryPagingSQLImpl
-        : Impler, IQueryPagingSQL
+        : Impler
+        , IQueryPagingSQL, IQueryPagingSQLSync
     {
         public QueryPagingSQLImpl(Context dc)
             : base(dc)
@@ -156,6 +252,12 @@ namespace MyDAL.Impls
         {
             DC.Method = UiMethodEnum.QueryPagingAsync;
             return await DC.DS.ExecuteReaderPagingAsync<None, T>(typeof(T).IsSingleColumn(), null);
+        }
+
+        public PagingResult<T> QueryPaging<T>()
+        {
+            DC.Method = UiMethodEnum.QueryPagingAsync;
+            return DC.DS.ExecuteReaderPaging<None, T>(typeof(T).IsSingleColumn(), null);
         }
     }
 }

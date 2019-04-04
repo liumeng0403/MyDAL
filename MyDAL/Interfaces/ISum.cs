@@ -10,4 +10,10 @@ namespace MyDAL.Interfaces
         Task<F> SumAsync<F>(Expression<Func<M, F>> propertyFunc)
             where F : struct;
     }
+    internal interface ISumSync<M>
+        where M : class
+    {
+        F Sum<F>(Expression<Func<M, F>> propertyFunc)
+            where F : struct;
+    }
 }
