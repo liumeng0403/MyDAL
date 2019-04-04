@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace MyDAL.Impls
 {
     internal class CreateBatchImpl<M>
-        : Impler, ICreateBatch<M>
+        : Impler
+        , ICreateBatch<M>, ICreateBatchSync<M>
         where M : class
     {
         internal CreateBatchImpl(Context dc)
@@ -24,6 +25,18 @@ namespace MyDAL.Impls
                 CreateMHandle(list);
                 PreExecuteHandle(UiMethodEnum.CreateBatchAsync);
                 return await DC.DS.ExecuteNonQueryAsync();
+            });
+        }
+
+        public int CreateBatch(IEnumerable<M> mList)
+        {
+            DC.Action = ActionEnum.Insert;
+            return DC.BDH.StepProcessSync(mList, 100, list =>
+            {
+                DC.DPH.ResetParameter();
+                CreateMHandle(list);
+                PreExecuteHandle(UiMethodEnum.CreateBatchAsync);
+                return DC.DS.ExecuteNonQuery();
             });
         }
     }

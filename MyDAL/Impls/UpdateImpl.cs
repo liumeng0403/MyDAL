@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 namespace MyDAL.Impls
 {
     internal class UpdateImpl<M>
-        : Impler, IUpdate<M>
+        : Impler
+        , IUpdate<M>, IUpdateSync<M>
         where M : class
     {
         internal UpdateImpl(Context dc)
@@ -19,6 +20,13 @@ namespace MyDAL.Impls
             DC.Set = set;
             PreExecuteHandle(UiMethodEnum.UpdateAsync);
             return await DC.DS.ExecuteNonQueryAsync();
+        }
+
+        public int Update(SetEnum set = SetEnum.AllowedNull)
+        {
+            DC.Set = set;
+            PreExecuteHandle(UiMethodEnum.UpdateAsync);
+            return DC.DS.ExecuteNonQuery();
         }
     }
 }

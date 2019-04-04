@@ -674,23 +674,23 @@ namespace MyDAL.Test.QueryAPI
         {
             xx = string.Empty;
 
-            var res12 = await Conn
-                .Queryer(out Agent agent12, out AgentInventoryRecord record12)
-                .From(() => agent12)
-                    .InnerJoin(() => record12)
-                        .On(() => agent12.Id == record12.AgentId)
-                .Where(() => record12.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
+            var res1 = await Conn
+                .Queryer(out Agent agent, out AgentInventoryRecord record)
+                .From(() => agent)
+                    .InnerJoin(() => record)
+                        .On(() => agent.Id == record.AgentId)
+                .Where(() => record.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
                 .QueryListAsync(() => new AgentVM
                 {
-                    nn = agent12.PathId,
-                    yy = record12.Id,
-                    xx = agent12.Id,
-                    zz = agent12.Name,
-                    mm = record12.LockedCount
+                    nn = agent.PathId,
+                    yy = record.Id,
+                    xx = agent.Id,
+                    zz = agent.Name,
+                    mm = record.LockedCount
                 });
 
-            Assert.True(res12.Count == 574);
-            Assert.True("~00-d-3-2-1-c-2-1a-1" == res12.First().nn);
+            Assert.True(res1.Count == 574);
+            Assert.True("~00-d-3-2-1-c-2-1a-1" == res1.First().nn);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
             

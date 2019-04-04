@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 namespace MyDAL.Impls
 {
     internal class IsExistImpl<M>
-        : Impler, IIsExist
+        : Impler
+        , IIsExist, IIsExistSync
         where M : class
     {
         internal IsExistImpl(Context dc)
@@ -26,10 +27,23 @@ namespace MyDAL.Impls
             var count = await DC.DS.ExecuteScalarAsync<long>();
             return count > 0;
         }
+
+        public bool IsExist()
+        {
+            DC.Action = ActionEnum.Select;
+            DC.Option = OptionEnum.Column;
+            DC.Compare = CompareXEnum.None;
+            DC.Func = FuncEnum.Count;
+            DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(typeof(M), "*") }));
+            PreExecuteHandle(UiMethodEnum.ExistAsync);
+            var count = DC.DS.ExecuteScalar<long>();
+            return count > 0;
+        }
     }
 
     internal class IsExistXImpl
-        : Impler, IIsExistX
+        : Impler
+        , IIsExistX, IIsExistXSync
     {
         public IsExistXImpl(Context dc) 
             : base(dc) {   }
@@ -44,6 +58,19 @@ namespace MyDAL.Impls
             DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(dic.TbMType, "*") }));
             PreExecuteHandle(UiMethodEnum.ExistAsync);
             var count = await DC.DS.ExecuteScalarAsync<long>();
+            return count > 0;
+        }
+
+        public bool IsExist()
+        {
+            DC.Action = ActionEnum.Select;
+            DC.Option = OptionEnum.Column;
+            DC.Compare = CompareXEnum.None;
+            DC.Func = FuncEnum.Count;
+            var dic = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.From);
+            DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(dic.TbMType, "*") }));
+            PreExecuteHandle(UiMethodEnum.ExistAsync);
+            var count = DC.DS.ExecuteScalar<long>();
             return count > 0;
         }
     }

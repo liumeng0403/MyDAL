@@ -7,4 +7,9 @@ namespace MyDAL.Interfaces
     {
         Task<int> CreateAsync(M m);
     }
+    internal interface ICreateSync<M>
+        where M : class
+    {
+        int Create(M m);
+    }
 }

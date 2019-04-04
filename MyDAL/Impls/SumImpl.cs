@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 namespace MyDAL.Impls
 {
     internal class SumImpl<M>
-        : Impler, ISum<M>
+        : Impler
+        , ISum<M>, ISumSync<M>
         where M : class
     {
         public SumImpl(Context dc)
@@ -27,6 +28,19 @@ namespace MyDAL.Impls
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.SumAsync);
             return await DC.DS.ExecuteScalarAsync<F>();
+        }
+
+        public F Sum<F>(Expression<Func<M, F>> propertyFunc)
+            where F : struct
+        {
+            DC.Action = ActionEnum.Select;
+            DC.Option = OptionEnum.Column;
+            DC.Compare = CompareXEnum.None;
+            DC.Func = FuncEnum.Sum;
+            var dic = DC.XE.FuncMFExpression(propertyFunc);
+            DC.DPH.AddParameter(dic);
+            PreExecuteHandle(UiMethodEnum.SumAsync);
+            return DC.DS.ExecuteScalar<F>();
         }
     }
 }

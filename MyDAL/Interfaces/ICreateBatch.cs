@@ -8,4 +8,9 @@ namespace MyDAL.Interfaces
     {
         Task<int> CreateBatchAsync(IEnumerable<M> mList);
     }
+    internal interface ICreateBatchSync<M>
+    where M : class
+    {
+        int CreateBatch(IEnumerable<M> mList);
+    }
 }

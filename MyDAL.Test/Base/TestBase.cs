@@ -93,6 +93,10 @@ namespace MyDAL.Test
         {
             return default(Task);
         }
+        protected void PrintLog(string msg)
+        {
+            Console.WriteLine(msg);
+        }
 
     }
 

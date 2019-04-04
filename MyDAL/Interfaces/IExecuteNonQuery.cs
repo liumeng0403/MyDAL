@@ -6,4 +6,8 @@ namespace MyDAL.Interfaces
     {
         Task<int> ExecuteNonQueryAsync();
     }
+    internal interface IExecuteNonQuerySQLSync
+    {
+        int ExecuteNonQuery();
+    }
 }

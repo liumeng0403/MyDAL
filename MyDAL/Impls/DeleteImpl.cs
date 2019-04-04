@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 namespace MyDAL.Impls
 {
     internal class DeleteImpl<M>
-        : Impler, IDelete
+        : Impler
+        , IDelete, IDeleteSync
         where M:class
     {
         internal DeleteImpl(Context dc) 
@@ -19,5 +20,12 @@ namespace MyDAL.Impls
             PreExecuteHandle(UiMethodEnum.DeleteAsync);
             return await DC.DS.ExecuteNonQueryAsync();
         }
+
+        public int Delete()
+        {
+            PreExecuteHandle(UiMethodEnum.DeleteAsync);
+            return DC.DS.ExecuteNonQuery();
+        }
+
     }
 }

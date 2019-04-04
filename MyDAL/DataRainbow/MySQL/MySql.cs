@@ -1,4 +1,6 @@
-﻿using MyDAL.Core.Common;
+﻿using MyDAL.Core.Bases;
+using MyDAL.Core.Common;
+using MyDAL.Core.Extensions;
 using MyDAL.DataRainbow.XCommon.Bases;
 using MyDAL.DataRainbow.XCommon.Interfaces;
 using MyDAL.ModelTools;
@@ -18,7 +20,20 @@ namespace MyDAL.DataRainbow.MySQL
         }
 
         /*************************************************************************************************************************************************************/
-   
+
+        void ISql.Top(Context dc, StringBuilder sb)
+        {
+            if (dc.PageIndex.HasValue
+                && dc.PageSize.HasValue)
+            {
+                var start = default(int);
+                if (dc.PageIndex > 0)
+                {
+                    start = ((dc.PageIndex - 1) * dc.PageSize).ToInt();
+                }
+                CRLF(sb); sb.Append("limit"); Spacing(sb); sb.Append(start); Comma(sb); sb.Append(dc.PageSize);
+            }
+        }
         void ISql.Column(string tbAlias, string colName, StringBuilder sb)
         {
             if (!tbAlias.IsNullStr())

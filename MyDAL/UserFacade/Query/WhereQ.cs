@@ -13,46 +13,17 @@ namespace MyDAL.UserFacade.Query
     /// </summary>
     public sealed class WhereQ<M>
         : Operator
-        , IQueryOne<M>, IQueryList<M>, IQueryPaging<M>
-        , IIsExist, ICount<M>
-        , ITop<M>
-        , ISum<M>
+        , IQueryOne<M>, IQueryOneSync<M>
+        , IQueryList<M>, IQueryListSync<M>
+        , IQueryPaging<M>, IQueryPagingSync<M>
+        , ITop<M>, ITopSync<M>
+        , IIsExist, IIsExistSync
+        , ICount<M>, ICountSync<M>
+        , ISum<M>, ISumSync<M>
         where M : class
     {
         internal WhereQ(Context dc)
             : base(dc) { }
-
-        /// <summary>
-        /// 请参阅: <see langword=".IsExistAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        public async Task<bool> IsExistAsync()
-        {
-            return await new IsExistImpl<M>(DC).IsExistAsync();
-        }
-
-        /// <summary>
-        /// 查询符合条件数据条目数
-        /// </summary>
-        public async Task<int> CountAsync()
-        {
-            return await new CountImpl<M>(DC).CountAsync();
-        }
-        /// <summary>
-        /// 查询符合条件数据条目数
-        /// </summary>
-        public async Task<int> CountAsync<F>(Expression<Func<M, F>> propertyFunc)
-        {
-            return await new CountImpl<M>(DC).CountAsync(propertyFunc);
-        }
-
-        /// <summary>
-        /// 列求和 -- select sum(col) from ...
-        /// </summary>
-        public async Task<F> SumAsync<F>(Expression<Func<M, F>> propertyFunc)
-            where F : struct
-        {
-            return await new SumImpl<M>(DC).SumAsync(propertyFunc);
-        }
 
         /// <summary>
         /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
@@ -78,6 +49,29 @@ namespace MyDAL.UserFacade.Query
         }
 
         /// <summary>
+        /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// </summary>
+        public M QueryOne()
+        {
+            return new QueryOneImpl<M>(DC).QueryOne();
+        }
+        /// <summary>
+        /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// </summary>
+        public VM QueryOne<VM>()
+            where VM : class
+        {
+            return new QueryOneImpl<M>(DC).QueryOne<VM>();
+        }
+        /// <summary>
+        /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// </summary>
+        public T QueryOne<T>(Expression<Func<M, T>> columnMapFunc)
+        {
+            return new QueryOneImpl<M>(DC).QueryOne<T>(columnMapFunc);
+        }
+
+        /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<List<M>> QueryListAsync()
@@ -98,6 +92,29 @@ namespace MyDAL.UserFacade.Query
         public async Task<List<T>> QueryListAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
             return await new QueryListImpl<M>(DC).QueryListAsync(columnMapFunc);
+        }
+
+        /// <summary>
+        /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// </summary>
+        public List<M> QueryList()
+        {
+            return new QueryListImpl<M>(DC).QueryList();
+        }
+        /// <summary>
+        /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// </summary>
+        public List<VM> QueryList<VM>()
+            where VM : class
+        {
+            return new QueryListImpl<M>(DC).QueryList<VM>();
+        }
+        /// <summary>
+        /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// </summary>
+        public List<T> QueryList<T>(Expression<Func<M, T>> columnMapFunc)
+        {
+            return new QueryListImpl<M>(DC).QueryList(columnMapFunc);
         }
 
         /// <summary>
@@ -129,6 +146,34 @@ namespace MyDAL.UserFacade.Query
         }
 
         /// <summary>
+        /// 单表分页查询
+        /// </summary>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">每页条数</param>
+        public PagingResult<M> QueryPaging(int pageIndex, int pageSize)
+        {
+            return new QueryPagingImpl<M>(DC).QueryPaging(pageIndex, pageSize);
+        }
+        /// <summary>
+        /// 单表分页查询
+        /// </summary>
+        /// <typeparam name="VM">ViewModel</typeparam>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">每页条数</param>
+        public PagingResult<VM> QueryPaging<VM>(int pageIndex, int pageSize)
+            where VM : class
+        {
+            return new QueryPagingImpl<M>(DC).QueryPaging<VM>(pageIndex, pageSize);
+        }
+        /// <summary>
+        /// 单表分页查询
+        /// </summary>
+        public PagingResult<T> QueryPaging<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
+        {
+            return new QueryPagingImpl<M>(DC).QueryPaging<T>(pageIndex, pageSize, columnMapFunc);
+        }
+
+        /// <summary>
         /// 单表数据查询
         /// </summary>
         /// <param name="count">top count</param>
@@ -157,6 +202,98 @@ namespace MyDAL.UserFacade.Query
             return await new TopImpl<M>(DC).TopAsync<T>(count, columnMapFunc);
         }
 
+        /// <summary>
+        /// 单表数据查询
+        /// </summary>
+        /// <param name="count">top count</param>
+        /// <returns>返回 top count 条数据</returns>
+        public List<M> Top(int count)
+        {
+            return new TopImpl<M>(DC).Top(count);
+        }
+        /// <summary>
+        /// 单表数据查询
+        /// </summary>
+        /// <param name="count">top count</param>
+        /// <returns>返回 top count 条数据</returns>
+        public List<VM> Top<VM>(int count)
+            where VM : class
+        {
+            return new TopImpl<M>(DC).Top<VM>(count);
+        }
+        /// <summary>
+        /// 单表数据查询
+        /// </summary>
+        /// <param name="count">top count</param>
+        /// <returns>返回 top count 条数据</returns>
+        public List<T> Top<T>(int count, Expression<Func<M, T>> columnMapFunc)
+        {
+            return new TopImpl<M>(DC).Top<T>(count, columnMapFunc);
+        }
+
+        /// <summary>
+        /// 查询符合条件数据条目数
+        /// </summary>
+        public async Task<int> CountAsync()
+        {
+            return await new CountImpl<M>(DC).CountAsync();
+        }
+        /// <summary>
+        /// 查询符合条件数据条目数
+        /// </summary>
+        public async Task<int> CountAsync<F>(Expression<Func<M, F>> propertyFunc)
+        {
+            return await new CountImpl<M>(DC).CountAsync(propertyFunc);
+        }
+
+        /// <summary>
+        /// 查询符合条件数据条目数
+        /// </summary>
+        public int Count()
+        {
+            return new CountImpl<M>(DC).Count();
+        }
+        /// <summary>
+        /// 查询符合条件数据条目数
+        /// </summary>
+        public int Count<F>(Expression<Func<M, F>> propertyFunc)
+        {
+            return new CountImpl<M>(DC).Count(propertyFunc);
+        }
+
+        /// <summary>
+        /// 列求和 -- select sum(col) from ...
+        /// </summary>
+        public async Task<F> SumAsync<F>(Expression<Func<M, F>> propertyFunc)
+            where F : struct
+        {
+            return await new SumImpl<M>(DC).SumAsync(propertyFunc);
+        }
+
+        /// <summary>
+        /// 列求和 -- select sum(col) from ...
+        /// </summary>
+        public F Sum<F>(Expression<Func<M, F>> propertyFunc)
+            where F : struct
+        {
+            return new SumImpl<M>(DC).Sum(propertyFunc);
+        }
+
+        /// <summary>
+        /// 请参阅: <see langword=".IsExistAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// </summary>
+        public async Task<bool> IsExistAsync()
+        {
+            return await new IsExistImpl<M>(DC).IsExistAsync();
+        }
+
+        /// <summary>
+        /// 请参阅: <see langword=".IsExistAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// </summary>
+        public bool IsExist()
+        {
+            return new IsExistImpl<M>(DC).IsExist();
+        }
 
     }
 }
