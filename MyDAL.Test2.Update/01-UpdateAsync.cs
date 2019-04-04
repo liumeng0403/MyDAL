@@ -2,9 +2,6 @@
 using MyDAL.Test;
 using MyDAL.Test.Entities.MyDAL_TestDB;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MyDAL.Test2.Update
@@ -28,13 +25,13 @@ namespace MyDAL.Test2.Update
                 PaymentUrl = "new url"    //  修改 AlipayPaymentRecord 字段 PaymentUrl 的值为: "new url"
             });
 
-            //Assert.True(res1 == 1);
+            Assert.IsTrue(res1 == 1);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
             // 查询一条数据: AlipayPaymentRecord
             var res11 = await Conn2.QueryOneAsync<AlipayPaymentRecord>(it => it.Id == pk1);
-            //Assert.True(res11.Description == "new desc");
+            Assert.IsTrue(res11.Description == "new desc");
 
             /****************************************************************************************/
 
