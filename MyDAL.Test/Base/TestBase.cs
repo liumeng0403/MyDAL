@@ -51,13 +51,13 @@ namespace MyDAL.Test
         }
 
         /// <summary>
-        /// SqlServer 2008R2+
+        /// SqlServer 2012SP1+
         /// </summary>
         protected IDbConnection Conn2
         {
             get
             {
-                return GetTSQLConnection_2008R2Plus();
+                return GetTSQLConnection_2012SP1Plus();
             }
         }
         
@@ -77,7 +77,7 @@ namespace MyDAL.Test
                               //.OpenAsync()  // 建议 每次新实例并打开,以获得更好的性能体验, 但是 用完要注意手动释放, 防止 连接池 资源耗尽!!!
                 ;
         }
-        private static IDbConnection GetTSQLConnection_2008R2Plus()
+        private static IDbConnection GetTSQLConnection_2012SP1Plus()
         {
             //
             // Nuget : Package : System.Data.SqlClient

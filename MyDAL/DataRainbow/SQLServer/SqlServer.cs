@@ -15,11 +15,19 @@ namespace MyDAL.DataRainbow.SQLServer
         : XSQL, ISql
     {
 
-        internal static void LeftSquareBracket(StringBuilder sb)
+        private ISql DbSql { get; set; }
+        internal SqlServer()
+        {
+            DbSql = this;
+        }
+
+        /*************************************************************************************************************************************************************/
+
+        void ISql.ObjLeftSymbol(StringBuilder sb)
         {
             sb.Append('[');
         }
-        internal static void RightSquareBracket(StringBuilder sb)
+        void ISql.ObjRightSymbol(StringBuilder sb)
         {
             sb.Append(']');
         }
@@ -40,11 +48,11 @@ namespace MyDAL.DataRainbow.SQLServer
             {
                 sb.Append(tbAlias); XSQL.Dot(sb);
             }
-            LeftSquareBracket(sb); sb.Append(colName); RightSquareBracket(sb);
+            DbSql.ObjLeftSymbol(sb); sb.Append(colName); DbSql.ObjRightSymbol(sb);
         }
         void ISql.TableX(string table, StringBuilder sb)
         {
-            LeftSquareBracket(sb); sb.Append(table); RightSquareBracket(sb);
+            DbSql.ObjLeftSymbol(sb); sb.Append(table); DbSql.ObjRightSymbol(sb);
         }
         void ISql.OneEqualOneProcess(DicParam p, StringBuilder sb)
         {
@@ -59,7 +67,19 @@ namespace MyDAL.DataRainbow.SQLServer
                 cols.FirstOrDefault(it => "NO".Equals(it.IsNullable, StringComparison.OrdinalIgnoreCase)) ??
                 cols.FirstOrDefault();
         }
-
+        void ISql.Pager(Context dc, StringBuilder sb)
+        {
+            if (dc.PageIndex.HasValue
+                && dc.PageSize.HasValue)
+            {
+                var start = default(int);
+                if (dc.PageIndex > 0)
+                {
+                    start = ((dc.PageIndex - 1) * dc.PageSize).ToInt();
+                }
+                CRLF(sb); sb.Append("limit"); Spacing(sb); sb.Append(start); Comma(sb); sb.Append(dc.PageSize);
+            }
+        }
 
     }
 

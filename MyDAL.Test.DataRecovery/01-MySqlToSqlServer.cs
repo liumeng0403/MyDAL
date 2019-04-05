@@ -7,7 +7,7 @@ namespace MyDAL.Test.DataRecovery
         :TestBase
     {
         
-        public void MySqlToSqlServer2008R2Plus()
+        public void MySqlToSqlServer2012SP1Plus()
         {
 
             PrintLog("--------------------------------------------------------------------------------------开始");

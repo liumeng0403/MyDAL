@@ -97,7 +97,7 @@ namespace MyDAL.Core
                      throw new Exception($"类 [[{t.FullName}]] 必须是与 DB Table 对应的实体类,并且要由 [XTable] 标记指定类对应的表名!!!");
                  }
                  tm.TbMProps = DC.GH.GetPropertyInfos(t);
-                 tm.TbCols = DC.SqlProvider.GetColumnsInfos(ta.Name).GetAwaiter().GetResult();
+                 tm.TbCols = DC.SqlProvider.GetColumnsInfos(ta.Name);
                  if (tm.TbCols == null
                     || tm.TbCols.Count <= 0)
                  {
