@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Impls
 {
-    internal class ExecuteNonQuerySQLImpl
+    internal sealed class ExecuteNonQuerySQLImpl
         : Impler
         , IExecuteNonQuerySQL, IExecuteNonQuerySQLSync
     {

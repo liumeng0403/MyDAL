@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Impls
 {
-    internal class CreateBatchImpl<M>
+    internal sealed class CreateBatchImpl<M>
         : Impler
         , ICreateBatch<M>, ICreateBatchSync<M>
         where M : class

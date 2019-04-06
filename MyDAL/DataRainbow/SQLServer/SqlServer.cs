@@ -61,10 +61,8 @@ namespace MyDAL.DataRainbow.SQLServer
         ColumnInfo ISql.GetIndex(List<ColumnInfo> cols)
         {
             return
-                cols.FirstOrDefault(it => "PRI".Equals(it.KeyType, StringComparison.OrdinalIgnoreCase)) ??
-                cols.FirstOrDefault(it => "UNI".Equals(it.KeyType, StringComparison.OrdinalIgnoreCase)) ??
-                cols.FirstOrDefault(it => "MUL".Equals(it.KeyType, StringComparison.OrdinalIgnoreCase)) ??
-                cols.FirstOrDefault(it => "NO".Equals(it.IsNullable, StringComparison.OrdinalIgnoreCase)) ??
+                cols.FirstOrDefault(it => "PK".Equals(it.KeyType, StringComparison.OrdinalIgnoreCase)) ??
+                cols.FirstOrDefault(it => "No".Equals(it.IsNullable, StringComparison.OrdinalIgnoreCase)) ??
                 cols.FirstOrDefault();
         }
         void ISql.Pager(Context dc, StringBuilder sb)
@@ -77,7 +75,9 @@ namespace MyDAL.DataRainbow.SQLServer
                 {
                     start = ((dc.PageIndex - 1) * dc.PageSize).ToInt();
                 }
-                CRLF(sb); sb.Append("limit"); Spacing(sb); sb.Append(start); Comma(sb); sb.Append(dc.PageSize);
+                CRLF(sb);
+                sb.Append("offset"); Spacing(sb); sb.Append(start); Spacing(sb);
+                sb.Append("rows fetch next");Spacing(sb); sb.Append(dc.PageSize);Spacing(sb);sb.Append("rows only");                
             }
         }
 

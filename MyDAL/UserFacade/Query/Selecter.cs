@@ -13,6 +13,7 @@ namespace MyDAL.UserFacade.Query
     /// </summary>
     public sealed class Queryer<M>
         : Operator
+        , IWhereQ<M>
         , IQueryList<M>, IQueryListSync<M>
         , IQueryPaging<M>, IQueryPagingSync<M>
         , ITop<M>, ITopSync<M>
@@ -23,9 +24,18 @@ namespace MyDAL.UserFacade.Query
             : base(dc)
         { }
 
+        public WhereQ<M> WHERE
+        {
+            get
+            {
+                return new WhereQ<M>(DC);
+            }
+        }
+
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
+        [Obsolete("警告：此 API 会查询表中所有数据！！！", false)]
         public async Task<List<M>> QueryListAsync()
         {
             return await new QueryListImpl<M>(DC).QueryListAsync();
@@ -33,6 +43,7 @@ namespace MyDAL.UserFacade.Query
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
+        [Obsolete("警告：此 API 会查询表中所有数据！！！", false)]
         public async Task<List<VM>> QueryListAsync<VM>()
             where VM : class
         {
@@ -41,6 +52,7 @@ namespace MyDAL.UserFacade.Query
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
+        [Obsolete("警告：此 API 会查询表中所有数据！！！", false)]
         public async Task<List<T>> QueryListAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
             return await new QueryListImpl<M>(DC).QueryListAsync(columnMapFunc);
@@ -49,6 +61,7 @@ namespace MyDAL.UserFacade.Query
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
+        [Obsolete("警告：此 API 会查询表中所有数据！！！", false)]
         public List<M> QueryList()
         {
             return new QueryListImpl<M>(DC).QueryList();
@@ -56,6 +69,7 @@ namespace MyDAL.UserFacade.Query
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
+        [Obsolete("警告：此 API 会查询表中所有数据！！！", false)]
         public List<VM> QueryList<VM>()
             where VM : class
         {
@@ -64,6 +78,7 @@ namespace MyDAL.UserFacade.Query
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
+        [Obsolete("警告：此 API 会查询表中所有数据！！！", false)]
         public List<T> QueryList<T>(Expression<Func<M, T>> columnMapFunc)
         {
             return new QueryListImpl<M>(DC).QueryList(columnMapFunc);

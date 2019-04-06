@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Impls
 {
-    internal class QueryListImpl<M>
+    internal sealed class QueryListImpl<M>
         : Impler
         , IQueryList<M>, IQueryListSync<M>
         where M : class
@@ -75,7 +75,7 @@ namespace MyDAL.Impls
         }
     }
 
-    internal class QueryListXImpl
+    internal sealed class QueryListXImpl
         : Impler
         , IQueryListX, IQueryListXSync
     {
@@ -129,7 +129,7 @@ namespace MyDAL.Impls
         }
     }
 
-    internal class QueryListSQLImpl
+    internal sealed class QueryListSQLImpl
         : Impler
         , IQueryListSQL, IQueryListSQLSync
     {

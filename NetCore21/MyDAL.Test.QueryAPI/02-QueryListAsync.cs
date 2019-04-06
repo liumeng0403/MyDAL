@@ -497,7 +497,7 @@ namespace MyDAL.Test.QueryAPI
             xx = string.Empty;
 
             var res4 = await Conn
-                .Queryer<Agent>()
+                .Queryer<Agent>()                
                 .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
                 .QueryListAsync();
 

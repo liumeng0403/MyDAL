@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Impls
 {
-    internal class UpdateImpl<M>
+    internal sealed class UpdateImpl<M>
         : Impler
         , IUpdate<M>, IUpdateSync<M>
         where M : class

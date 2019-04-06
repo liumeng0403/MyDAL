@@ -633,19 +633,19 @@ namespace MyDAL.Test.QueryAPI
 
             xx = string.Empty;
 
-            var res9 = await Conn
-                .Queryer(out Agent agent9, out AgentInventoryRecord record9)
-                .From(() => agent9)
-                    .InnerJoin(() => record9)
-                        .On(() => agent9.Id == record9.AgentId)
-                .Where(() => agent9.AgentLevel == AgentLevel.DistiAgent)
+            var res1 = await Conn
+                .Queryer(out Agent agent, out AgentInventoryRecord record)
+                .From(() => agent)
+                    .InnerJoin(() => record)
+                        .On(() => agent.Id == record.AgentId)
+                .Where(() => agent.AgentLevel == AgentLevel.DistiAgent)
                 .QueryPagingAsync(1, 10, () => new AgentVM
                 {
-                    XXXX = agent9.Name,
-                    YYYY = agent9.PathId
+                    XXXX = agent.Name,
+                    YYYY = agent.PathId
                 });
 
-            Assert.True(res9.TotalCount == 574);
+            Assert.True(res1.TotalCount == 574);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 

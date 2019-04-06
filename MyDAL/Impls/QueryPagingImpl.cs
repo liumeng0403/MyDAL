@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Impls
 {
-    internal class QueryPagingImpl<M>
+    internal sealed class QueryPagingImpl<M>
         : Impler
         , IQueryPaging<M>, IQueryPagingSync<M>
             where M : class
@@ -76,7 +76,7 @@ namespace MyDAL.Impls
         }
     }
 
-    internal class QueryPagingOImpl<M>
+    internal sealed class QueryPagingOImpl<M>
         : Impler
         , IQueryPagingO<M>, IQueryPagingOSync<M>
             where M : class
@@ -133,7 +133,7 @@ namespace MyDAL.Impls
         }
     }
 
-    internal class QueryPagingXImpl
+    internal sealed class QueryPagingXImpl
         : Impler
         , IQueryPagingX, IQueryPagingXSync
     {
@@ -190,7 +190,7 @@ namespace MyDAL.Impls
         }
     }
 
-    internal class PagingListXOImpl
+    internal sealed class PagingListXOImpl
         : Impler
         , IQueryPagingXO,IQueryPagingXOSync
     {
@@ -240,7 +240,7 @@ namespace MyDAL.Impls
         }
     }
 
-    internal class QueryPagingSQLImpl
+    internal sealed class QueryPagingSQLImpl
         : Impler
         , IQueryPagingSQL, IQueryPagingSQLSync
     {

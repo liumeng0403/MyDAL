@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Impls
 {
-    internal class CreateImpl<M>
+    internal sealed class CreateImpl<M>
         : Impler
         , ICreate<M>, ICreateSync<M>
         where M : class

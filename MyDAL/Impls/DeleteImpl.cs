@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Impls
 {
-    internal class DeleteImpl<M>
+    internal sealed class DeleteImpl<M>
         : Impler
         , IDelete, IDeleteSync
         where M:class

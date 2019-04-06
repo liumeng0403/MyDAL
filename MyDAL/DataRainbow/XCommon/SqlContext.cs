@@ -757,11 +757,11 @@ namespace MyDAL.DataRainbow.XCommon
                 if (aId < oId
                     || oId == -1)
                 {
-                    Action(ActionEnum.Where, X, DC); Spacing(X); X.Append("true"); Spacing(X);
+                    Spacing(X); Action(ActionEnum.Where, X, DC); Spacing(X); X.Append("true"); Spacing(X);
                 }
                 else
                 {
-                    Action(ActionEnum.Where, X, DC); Spacing(X); X.Append("false"); Spacing(X);
+                    Spacing(X); Action(ActionEnum.Where, X, DC); Spacing(X); X.Append("false"); Spacing(X);
                 }
             }
             foreach (var db in cons)
