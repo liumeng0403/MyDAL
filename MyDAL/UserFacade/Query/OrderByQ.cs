@@ -33,7 +33,7 @@ namespace MyDAL.UserFacade.Query
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<List<VM>> QueryListAsync<VM>()
-            where VM:class
+            where VM : class
         {
             return await new QueryListImpl<M>(DC).QueryListAsync<VM>();
         }
@@ -84,7 +84,7 @@ namespace MyDAL.UserFacade.Query
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
         public async Task<PagingResult<VM>> QueryPagingAsync<VM>(int pageIndex, int pageSize)
-            where VM:class
+            where VM : class
         {
             return await new QueryPagingImpl<M>(DC).QueryPagingAsync<VM>(pageIndex, pageSize);
         }

@@ -1,6 +1,7 @@
 ﻿using MyDAL.Core.Bases;
 using MyDAL.Impls;
 using MyDAL.Interfaces;
+using MyDAL.Interfaces.Segments;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -24,7 +25,7 @@ namespace MyDAL.UserFacade.Query
             : base(dc)
         { }
 
-        public WhereQ<M> WHERE
+        public WhereQ<M> WhereSegment
         {
             get
             {
