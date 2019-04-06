@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MyDAL.Core.Bases;
 using MyDAL.Impls;
 using MyDAL.Interfaces;
+using MyDAL.Interfaces.Segments;
 
 namespace MyDAL.UserFacade.Update
 {
@@ -20,7 +21,7 @@ namespace MyDAL.UserFacade.Update
             : base(dc)
         { }
 
-        public WhereU<M> WHERE
+        public WhereU<M> WhereSegment
         {
             get
             {

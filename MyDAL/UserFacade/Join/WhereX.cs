@@ -1,6 +1,7 @@
 ﻿using MyDAL.Core.Bases;
 using MyDAL.Impls;
 using MyDAL.Interfaces;
+using MyDAL.Interfaces.Segments;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -13,6 +14,7 @@ namespace MyDAL.UserFacade.Join
     /// </summary>
     public sealed class WhereX
         : Operator
+        , IOrderByX
         , IQueryOneX, IQueryOneXSync
         , IQueryListX, IQueryListXSync
         , IQueryPagingX, IQueryPagingXSync
@@ -24,6 +26,14 @@ namespace MyDAL.UserFacade.Join
         internal WhereX(Context dc)
             : base(dc)
         { }
+
+        public OrderByX OrderBySegment
+        {
+            get
+            {
+                return new OrderByX(DC);
+            }
+        }
 
         /// <summary>
         /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>

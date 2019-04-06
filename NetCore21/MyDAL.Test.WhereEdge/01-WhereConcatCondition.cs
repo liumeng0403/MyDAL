@@ -14,7 +14,7 @@ namespace MyDAL.Test.WhereEdge
         {
             xx = string.Empty;
 
-            var where = Conn.Queryer<Agent>().WHERE;
+            var where = Conn.Queryer<Agent>().WhereSegment;
 
             var res1 = await where.TopAsync(1);
 
@@ -34,7 +34,7 @@ namespace MyDAL.Test.WhereEdge
             var userId = "08d6036b-0a7e-b07d-b9bd-af03841b3baa";
             var firstName = "伏";
 
-            var where = Conn.Queryer<Agent>().WHERE;
+            var where = Conn.Queryer<Agent>().WhereSegment;
 
             // 条件1
             if(!userId.IsNullStr())

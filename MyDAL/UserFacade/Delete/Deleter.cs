@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MyDAL.Core.Bases;
 using MyDAL.Impls;
 using MyDAL.Interfaces;
+using MyDAL.Interfaces.Segments;
 
 namespace MyDAL.UserFacade.Delete
 {
@@ -19,7 +20,7 @@ namespace MyDAL.UserFacade.Delete
             : base(dc)
         { }
 
-        public WhereD<M> WHERE
+        public WhereD<M> WhereSegment
         {
             get
             {

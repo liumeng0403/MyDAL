@@ -3,28 +3,28 @@ using MyDAL.UserFacade.Join;
 using MyDAL.UserFacade.Query;
 using MyDAL.UserFacade.Update;
 
-namespace MyDAL.Interfaces
+namespace MyDAL.Interfaces.Segments
 {
     internal interface IWhereD<M>
         where M : class
     {
-        WhereD<M> WHERE { get; }
+        WhereD<M> WhereSegment { get; }
     }
 
     internal interface IWhereU<M>
         where M : class
     {
-        WhereU<M> WHERE { get;  }
+        WhereU<M> WhereSegment { get; }
     }
 
     internal interface IWhereQ<M>
         where M : class
     {
-        WhereQ<M> WHERE { get; }
+        WhereQ<M> WhereSegment { get; }
     }
 
     internal interface IWhereX
     {
-        WhereX WHERE { get; }
+        WhereX WhereSegment { get; }
     }
 }
