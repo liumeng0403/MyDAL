@@ -11,6 +11,7 @@ namespace MyDAL.UserFacade.Update
     /// </summary>
     public sealed class SetU<M>
         : Operator
+        , IWhereU<M>
         , IUpdate<M>, IUpdateSync<M>
         where M : class
     {
@@ -18,6 +19,14 @@ namespace MyDAL.UserFacade.Update
         internal SetU(Context dc)
             : base(dc)
         { }
+
+        public WhereU<M> WHERE
+        {
+            get
+            {
+                return new WhereU<M>(DC);
+            }
+        }
 
         /// <summary>
         /// 单表数据更新

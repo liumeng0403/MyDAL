@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Impls
 {
-    internal class SumImpl<M>
+    internal sealed class SumImpl<M>
         : Impler
         , ISum<M>, ISumSync<M>
         where M : class

@@ -11,12 +11,21 @@ namespace MyDAL.UserFacade.Delete
     /// </summary>
     public sealed class Deleter<M> 
         : Operator
+        , IWhereD<M>
         , IDelete, IDeleteSync
         where M : class
     {
         internal Deleter(Context dc)
             : base(dc)
         { }
+
+        public WhereD<M> WHERE
+        {
+            get
+            {
+                return new WhereD<M>(DC);
+            }
+        }
 
         /// <summary>
         /// 单表数据删除

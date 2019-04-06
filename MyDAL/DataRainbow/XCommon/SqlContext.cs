@@ -28,6 +28,23 @@ namespace MyDAL.DataRainbow.XCommon
 
         /****************************************************************************************************************************/
 
+        internal protected void ConcatWithComma(IEnumerable<string> ss, Action<StringBuilder> preSymbol, Action<StringBuilder> afterSymbol)
+        {
+            var n = ss.Count();
+            var i = 0;
+            foreach (var s in ss)
+            {
+                i++;
+                preSymbol?.Invoke(X); X.Append(s); afterSymbol?.Invoke(X);
+                if (i != n)
+                {
+                    Comma(X);
+                }
+            }
+        }
+
+        /****************************************************************************************************************************/
+
         private static bool IsPaging(Context dc)
         {
             if (dc.Method == UiMethodEnum.QueryPagingAsync)
@@ -90,7 +107,7 @@ namespace MyDAL.DataRainbow.XCommon
         }
 
         /****************************************************************************************************************************/
-        
+
         private void LikeStrHandle(DicParam dic)
         {
             Spacing(X);
@@ -340,6 +357,70 @@ namespace MyDAL.DataRainbow.XCommon
 
         /****************************************************************************************************************************/
 
+        internal protected void InsertColumn()
+        {
+            Spacing(X);
+            var ps = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.Insert && it.Option == OptionEnum.Insert);
+            if (ps != null)
+            {
+                CRLF(X);
+                LeftRoundBracket(X);
+                ConcatWithComma(ps.Inserts.Select(it => it.TbCol), DbSql.ObjLeftSymbol, DbSql.ObjRightSymbol);
+                RightRoundBracket(X);
+            }
+        }
+
+        internal protected void UpdateColumn()
+        {
+            //
+            var list = DC.Parameters.Where(it => it.Action == ActionEnum.Update)?.ToList();
+            if (list == null || list.Count == 0) { throw new Exception("没有设置任何要更新的字段!"); }
+
+            //
+            if (DC.Set == SetEnum.AllowedNull)
+            { }
+            else if (DC.Set == SetEnum.NotAllowedNull)
+            {
+                if (list.Any(it => it.ParamInfo.Value == DBNull.Value))
+                {
+                    throw new Exception($"{DC.Set} -- 字段:[[{string.Join(",", list.Where(it => it.ParamInfo.Value == DBNull.Value).Select(it => it.TbCol))}]]的值不能设为 Null !!!");
+                }
+            }
+            else if (DC.Set == SetEnum.IgnoreNull)
+            {
+                list = list.Where(it => it.ParamInfo.Value != DBNull.Value)?.ToList();
+                if (list == null || list.Count == 0) { throw new Exception("没有设置任何要更新的字段!"); }
+            }
+            else
+            {
+                throw DC.Exception(XConfig.EC._012, DC.Set.ToString());
+            }
+
+            //
+            Spacing(X);
+            var i = 0;
+            foreach (var item in list)
+            {
+                i++;
+                if (item.Option == OptionEnum.ChangeAdd
+                    || item.Option == OptionEnum.ChangeMinus)
+                {
+                    if (i != 1) { CRLF(X); Tab(X); }
+                    DbSql.Column(string.Empty, item.TbCol, X); Equal(X); DbSql.Column(string.Empty, item.TbCol, X); Option(item.Option, X, DC); DbParam(item.Param, X);
+                }
+                else if (item.Option == OptionEnum.Set)
+                {
+                    if (i != 1) { CRLF(X); Tab(X); }
+                    DbSql.Column(string.Empty, item.TbCol, X); Option(item.Option, X, DC); DbParam(item.Param, X);
+                }
+                else
+                {
+                    throw DC.Exception(XConfig.EC._009, $"{item.Action}-{item.Option}");
+                }
+                if (i != list.Count) { Comma(X); }
+            }
+        }
+
         internal protected void SelectColumn()
         {
             Spacing(X);
@@ -420,6 +501,219 @@ namespace MyDAL.DataRainbow.XCommon
                 if (i != items.Count) { Comma(X); }
             }
         }
+        internal protected void Sum()
+        {
+            Spacing(X);
+            var col = DC.Parameters.FirstOrDefault(it => IsSelectColumnParam(it));
+            var item = col.Columns.FirstOrDefault(it => it.Func == FuncEnum.Sum);
+            if (item.Crud == CrudEnum.Query)
+            {
+                Function(item.Func, X, DC); LeftRoundBracket(X); DbSql.Column(string.Empty, item.TbCol, X); RightRoundBracket(X);
+            }
+            else if (item.Crud == CrudEnum.Join)
+            {
+                Function(item.Func, X, DC); LeftRoundBracket(X); DbSql.Column(item.TbAlias, item.TbCol, X); RightRoundBracket(X);
+            }
+        }
+
+        internal protected void CountSetMulti(bool isD, bool isDS)
+        {
+            if (isD)
+            {
+                DistinctX();
+                if (isDS)
+                {
+                    Star(X);
+                }
+                else
+                {
+                    SelectColumn();
+                }
+            }
+            else
+            {
+                SelectColumn();
+            }
+            DC.IsMultiColCount = true;
+        }
+        internal protected void CountDistinct(List<DicParam> cols)
+        {
+            if (cols == null
+                   || cols.Count <= 0)
+            {
+                CountSetMulti(true, false);
+            }
+            else if (cols.Count == 1)
+            {
+                var count = cols.First().Columns?.FirstOrDefault(it => IsCountParam(it));
+                if (count != null)
+                {
+                    if ("*".Equals(count.TbCol, StringComparison.OrdinalIgnoreCase))
+                    {
+                        CountSetMulti(true, true);
+                    }
+                    else
+                    {
+                        Function(count.Func, X, DC); LeftRoundBracket(X); DistinctX();
+                        if (count.Crud == CrudEnum.Query)
+                        {
+                            DbSql.Column(string.Empty, count.TbCol, X);
+                        }
+                        else if (count.Crud == CrudEnum.Join)
+                        {
+                            DbSql.Column(count.TbAlias, count.TbCol, X);
+                        }
+                        RightRoundBracket(X);
+                    }
+                }
+                else
+                {
+                    if (cols.First().Columns == null
+                        || cols.First().Columns.Count <= 0)
+                    {
+                        throw DC.Exception(XConfig.EC._024, "不应该出现的情况！");
+                    }
+                    else if (cols.First().Columns.Count == 1)
+                    {
+                        var col = cols.First().Columns.First();
+                        if (col.Crud == CrudEnum.Join
+                            && "*".Equals(col.TbCol, StringComparison.OrdinalIgnoreCase))
+                        {
+                            CountSetMulti(true, false);
+                        }
+                        else
+                        {
+                            Function(FuncEnum.Count, X, DC); LeftRoundBracket(X); DistinctX();
+                            if (col.Crud == CrudEnum.Query)
+                            {
+                                DbSql.Column(string.Empty, col.TbCol, X);
+                            }
+                            else if (col.Crud == CrudEnum.Join)
+                            {
+                                DbSql.Column(col.TbAlias, col.TbCol, X);
+                            }
+                            RightRoundBracket(X);
+                        }
+                    }
+                    else
+                    {
+                        CountSetMulti(true, false);
+                    }
+                }
+            }
+            else
+            {
+                CountSetMulti(true, false);
+            }
+        }
+        internal protected void CountNoneDistinct(List<DicParam> cols)
+        {
+            if (cols == null
+                    || cols.Count <= 0)
+            {
+                X.Append(" count(*) ");
+            }
+            else if (cols.Count == 1)
+            {
+                var count = cols.First().Columns?.FirstOrDefault(it => IsCountParam(it));
+                if (count != null)
+                {
+                    if ("*".Equals(count.TbCol, StringComparison.OrdinalIgnoreCase))
+                    {
+                        Function(count.Func, X, DC); LeftRoundBracket(X); Star(X); RightRoundBracket(X);
+                    }
+                    else
+                    {
+                        Function(count.Func, X, DC); LeftRoundBracket(X);
+                        if (count.Crud == CrudEnum.Query)
+                        {
+                            DbSql.Column(string.Empty, count.TbCol, X);
+                        }
+                        else if (count.Crud == CrudEnum.Join)
+                        {
+                            DbSql.Column(count.TbAlias, count.TbCol, X);
+                        }
+                        RightRoundBracket(X);
+                    }
+                }
+                else
+                {
+                    if (cols.First().Columns == null
+                        || cols.First().Columns.Count <= 0)
+                    {
+                        throw DC.Exception(XConfig.EC._025, "不应该出现的情况！");
+                    }
+                    else if (cols.First().Columns.Count == 1)
+                    {
+                        var col = cols.First().Columns.First();
+                        if (col.Crud == CrudEnum.Join
+                            && "*".Equals(col.TbCol, StringComparison.OrdinalIgnoreCase))
+                        {
+                            CountSetMulti(false, false);
+                        }
+                        else
+                        {
+                            Function(FuncEnum.Count, X, DC); LeftRoundBracket(X);
+                            if (col.Crud == CrudEnum.Query)
+                            {
+                                DbSql.Column(string.Empty, col.TbCol, X);
+                            }
+                            else if (col.Crud == CrudEnum.Join)
+                            {
+                                DbSql.Column(col.TbAlias, col.TbCol, X);
+                            }
+                            RightRoundBracket(X);
+                        }
+                    }
+                    else
+                    {
+                        CountSetMulti(false, false);
+                    }
+                }
+            }
+            else
+            {
+                CountSetMulti(false, false);
+            }
+        }
+        internal protected void Count()
+        {
+            /* 
+             * count(*)
+             * count(distinct *) -- CountMulti
+             * count(col)
+             * count(distinct col)
+             * count(cols) -- CountMulti
+             * count(distinct cols) -- CountMulti
+             */
+            Spacing(X);
+            var cols = DC.Parameters.Where(it => IsSelectColumnParam(it))?.ToList();
+            var isD = DC.Parameters.Any(it => IsDistinctParam(it));
+            if (isD)
+            {
+                CountDistinct(cols);
+            }
+            else
+            {
+                CountNoneDistinct(cols);
+            }
+        }
+
+        internal protected void InsertValue()
+        {
+            Spacing(X);
+            var items = DC.Parameters.Where(it => it.Action == ActionEnum.Insert && it.Option == OptionEnum.Insert)?.ToList();
+            var i = 0;
+            foreach (var dic in items)
+            {
+                i++;
+                CRLF(X); LeftRoundBracket(X); ConcatWithComma(dic.Inserts.Select(it => it.Param), At, null); RightRoundBracket(X);
+                if (i != items.Count)
+                {
+                    Comma(X);
+                }
+            }
+        }
 
         internal protected void DistinctX()
         {
@@ -463,11 +757,11 @@ namespace MyDAL.DataRainbow.XCommon
                 if (aId < oId
                     || oId == -1)
                 {
-                    Action(ActionEnum.Where, X, DC); Spacing(X); X.Append("true"); Spacing(X);
+                    Spacing(X); Action(ActionEnum.Where, X, DC); Spacing(X); X.Append("true"); Spacing(X);
                 }
                 else
                 {
-                    Action(ActionEnum.Where, X, DC); Spacing(X); X.Append("false"); Spacing(X);
+                    Spacing(X); Action(ActionEnum.Where, X, DC); Spacing(X); X.Append("false"); Spacing(X);
                 }
             }
             foreach (var db in cons)
@@ -486,17 +780,50 @@ namespace MyDAL.DataRainbow.XCommon
             }
         }
 
-        internal protected void OrderBy(
-            Func<List<ColumnInfo>, ColumnInfo> getIndexFunc,
-            Action<string, string, StringBuilder> columnAction,
-            Action orderByParamsAction)
+        internal protected void OrderByParams()
+        {
+            var orders = DC.Parameters.Where(it => IsOrderByParam(it)).ToList();
+            var i = 0;
+            foreach (var o in orders)
+            {
+                i++;
+                if (o.Func == FuncEnum.None)
+                {
+                    if (DC.Crud == CrudEnum.Join)
+                    {
+                        DbSql.Column(o.TbAlias, o.TbCol, X); Spacing(X); Option(o.Option, X, DC);
+                    }
+                    else
+                    {
+                        DbSql.Column(string.Empty, o.TbCol, X); Spacing(X); Option(o.Option, X, DC);
+                    }
+                }
+                else if (o.Func == FuncEnum.CharLength)
+                {
+                    if (DC.Crud == CrudEnum.Join)
+                    {
+                        Function(o.Func, X, DC); LeftRoundBracket(X); DbSql.Column(o.TbAlias, o.TbCol, X); RightRoundBracket(X); Spacing(X); Option(o.Option, X, DC);
+                    }
+                    else
+                    {
+                        Function(o.Func, X, DC); LeftRoundBracket(X); DbSql.Column(string.Empty, o.TbCol, X); RightRoundBracket(X); Spacing(X); Option(o.Option, X, DC);
+                    }
+                }
+                else
+                {
+                    throw DC.Exception(XConfig.EC._013, $"{o.Action}-{o.Option}-{o.Func}");
+                }
+                if (i != orders.Count) { Comma(X); CRLF(X); Tab(X); }
+            }
+        }
+        internal protected void OrderBy()
         {
             var dic = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.From);
             var key = dic != null ? dic.Key : DC.XC.GetModelKey(DC.TbM1.FullName);
             var tbm = DC.XC.GetTableModel(key);
             if (DC.Parameters.Any(it => it.Action == ActionEnum.OrderBy))
             {
-                CRLF(X); X.Append("order by"); Spacing(X); orderByParamsAction();
+                CRLF(X); X.Append("order by"); Spacing(X); OrderByParams();
             }
             else
             {
@@ -505,26 +832,39 @@ namespace MyDAL.DataRainbow.XCommon
                     return;
                 }
 
-                var col = getIndexFunc(tbm.TbCols);
+                var col = DbSql.GetIndex(tbm.TbCols);
                 if (col != null)
                 {
                     CRLF(X); X.Append("order by"); Spacing(X);
                     if (DC.Crud == CrudEnum.Join)
                     {
-                        columnAction(dic.TbAlias, col.ColumnName, X); Spacing(X); X.Append("desc");
+                        DbSql.Column(dic.TbAlias, col.ColumnName, X); Spacing(X); X.Append("desc");
                     }
                     else
                     {
-                        columnAction(string.Empty, col.ColumnName, X); Spacing(X); X.Append("desc");
+                        DbSql.Column(string.Empty, col.ColumnName, X); Spacing(X); X.Append("desc");
                     }
                 }
             }
         }
 
+        internal protected void CountMulti()
+        {
+            if (DC.IsMultiColCount)
+            {
+                X.Insert(0, "select count(*) \r\nfrom (\r\n");
+                X.Append("\r\n         ) temp");
+            }
+        }
+
+        internal protected void End()
+        {
+            X.Append(';');
+            DC.SQL.Add(X.ToString());
+            X.Clear();
+        }
 
         /****************************************************************************************************************************/
-
-
 
     }
 }

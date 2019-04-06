@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Impls
 {
-    internal class CountImpl<M>
+    internal sealed class CountImpl<M>
         : Impler
         , ICount<M>, ICountSync<M>
         where M : class

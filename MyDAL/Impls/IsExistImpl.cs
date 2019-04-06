@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Impls
 {
-    internal class IsExistImpl<M>
+    internal sealed class IsExistImpl<M>
         : Impler
         , IIsExist, IIsExistSync
         where M : class
@@ -41,7 +41,7 @@ namespace MyDAL.Impls
         }
     }
 
-    internal class IsExistXImpl
+    internal sealed class IsExistXImpl
         : Impler
         , IIsExistX, IIsExistXSync
     {

@@ -12,9 +12,22 @@ using System.Text;
 namespace MyDAL.DataRainbow.MySQL
 {
     internal sealed class MySql
-        :XSQL, ISql
+        : XSQL, ISql
     {
-        internal static void Backquote(StringBuilder sb)
+
+        private ISql DbSql { get; set; }
+        internal MySql()
+        {
+            DbSql = this;
+        }
+
+        /*************************************************************************************************************************************************************/
+
+        void ISql.ObjLeftSymbol(StringBuilder sb)
+        {
+            sb.Append('`');
+        }
+        void ISql.ObjRightSymbol(StringBuilder sb)
         {
             sb.Append('`');
         }
@@ -40,11 +53,11 @@ namespace MyDAL.DataRainbow.MySQL
             {
                 sb.Append(tbAlias); XSQL.Dot(sb);
             }
-            Backquote(sb); sb.Append(colName); Backquote(sb);
+            DbSql.ObjLeftSymbol(sb); sb.Append(colName); DbSql.ObjRightSymbol(sb);
         }
         void ISql.TableX(string table, StringBuilder sb)
         {
-            Backquote(sb); sb.Append(table); Backquote(sb);
+            DbSql.ObjLeftSymbol(sb); sb.Append(table); DbSql.ObjRightSymbol(sb);
         }
         void ISql.OneEqualOneProcess(DicParam p, StringBuilder sb)
         {
@@ -59,7 +72,18 @@ namespace MyDAL.DataRainbow.MySQL
                 cols.FirstOrDefault(it => "NO".Equals(it.IsNullable, StringComparison.OrdinalIgnoreCase)) ??
                 cols.FirstOrDefault();
         }
-
-
+        void ISql.Pager(Context dc, StringBuilder sb)
+        {
+            if (dc.PageIndex.HasValue
+                && dc.PageSize.HasValue)
+            {
+                var start = default(int);
+                if (dc.PageIndex > 0)
+                {
+                    start = ((dc.PageIndex - 1) * dc.PageSize).ToInt();
+                }
+                CRLF(sb); sb.Append("limit"); Spacing(sb); sb.Append(start); Comma(sb); sb.Append(dc.PageSize);
+            }
+        }
     }
 }

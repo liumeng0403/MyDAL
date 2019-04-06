@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Impls
 {
-    internal class QueryOneImpl<M>
+    internal sealed class QueryOneImpl<M>
         : Impler
         , IQueryOne<M>, IQueryOneSync<M>
         where M : class
@@ -48,7 +48,7 @@ namespace MyDAL.Impls
         }
     }
 
-    internal class QueryOneXImpl
+    internal sealed class QueryOneXImpl
         : Impler
         , IQueryOneX, IQueryOneXSync
     {
@@ -78,7 +78,7 @@ namespace MyDAL.Impls
         }
     }
 
-    internal class QueryOneSQLImpl
+    internal sealed class QueryOneSQLImpl
         : Impler
         , IQueryOneSQL, IQueryOneSQLSync
     {

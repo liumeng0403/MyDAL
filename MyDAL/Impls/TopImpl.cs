@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Impls
 {
-    internal class TopImpl<M>
+    internal sealed class TopImpl<M>
         : Impler
         , ITop<M>, ITopSync<M>
         where M : class
@@ -89,7 +89,7 @@ namespace MyDAL.Impls
 
     }
 
-    internal class TopXImpl
+    internal sealed class TopXImpl
         : Impler
         , ITopX, ITopXSync
     {

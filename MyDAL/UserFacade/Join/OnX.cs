@@ -13,6 +13,7 @@ namespace MyDAL.UserFacade.Join
     /// </summary>
     public sealed class OnX
         : Operator
+        , IWhereX
         , IQueryOneX, IQueryOneXSync
         , IQueryListX, IQueryListXSync
         , IQueryPagingX, IQueryPagingXSync
@@ -23,6 +24,14 @@ namespace MyDAL.UserFacade.Join
         internal OnX(Context dc)
             : base(dc)
         { }
+
+        public WhereX WHERE
+        {
+            get
+            {
+                return new WhereX(DC);
+            }
+        }
 
         /// <summary>
         /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
@@ -58,7 +67,7 @@ namespace MyDAL.UserFacade.Join
 
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
+        /// </summary>        
         public async Task<List<M>> QueryListAsync<M>()
             where M : class
         {
@@ -66,7 +75,7 @@ namespace MyDAL.UserFacade.Join
         }
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
+        /// </summary>        
         public async Task<List<T>> QueryListAsync<T>(Expression<Func<T>> columnMapFunc)
         {
             return await new QueryListXImpl(DC).QueryListAsync(columnMapFunc);
@@ -74,7 +83,7 @@ namespace MyDAL.UserFacade.Join
 
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
+        /// </summary>        
         public List<M> QueryList<M>()
             where M : class
         {
@@ -82,7 +91,7 @@ namespace MyDAL.UserFacade.Join
         }
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
+        /// </summary>        
         public List<T> QueryList<T>(Expression<Func<T>> columnMapFunc)
         {
             return new QueryListXImpl(DC).QueryList(columnMapFunc);
