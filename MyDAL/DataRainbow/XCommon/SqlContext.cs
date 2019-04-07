@@ -501,18 +501,23 @@ namespace MyDAL.DataRainbow.XCommon
                 if (i != items.Count) { Comma(X); }
             }
         }
+
         internal protected void Sum()
         {
             Spacing(X);
             var col = DC.Parameters.FirstOrDefault(it => IsSelectColumnParam(it));
-            var item = col.Columns.FirstOrDefault(it => it.Func == FuncEnum.Sum);
-            if (item.Crud == CrudEnum.Query)
+            var sum = col.Columns.FirstOrDefault(it => it.Func == FuncEnum.Sum)
+                              ?? col.Columns.FirstOrDefault(it => it.Func == FuncEnum.SumNullable);
+            if (sum != null)
             {
-                Function(item.Func, X, DC); LeftRoundBracket(X); DbSql.Column(string.Empty, item.TbCol, X); RightRoundBracket(X);
-            }
-            else if (item.Crud == CrudEnum.Join)
-            {
-                Function(item.Func, X, DC); LeftRoundBracket(X); DbSql.Column(item.TbAlias, item.TbCol, X); RightRoundBracket(X);
+                var tbAlias = sum.Crud == CrudEnum.Query
+                                      ? string.Empty
+                                      : sum.Crud == CrudEnum.Join
+                                        ? sum.TbAlias
+                                        : string.Empty;
+                Function(sum.Func, X, DC); LeftRoundBracket(X);
+                DbSql.Column(tbAlias, sum.TbCol, X);
+                RightRoundBracket(X);
             }
         }
 
