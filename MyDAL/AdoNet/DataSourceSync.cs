@@ -52,7 +52,23 @@ namespace MyDAL.AdoNet
                 }
             }
         }
-        private List<F> ReadColumnSync<F>()
+        private void ProcessDateTimeYearColumn<F>(List<F> result, DicParam dic)
+        {
+            while (Reader.Read())
+            {
+                result.Add(
+                    DC.GH.ConvertT<F>(
+                        new DateTime(
+                            Reader.GetInt32(
+                                Reader.GetOrdinal(
+                                    dic.Option == OptionEnum.Column
+                                        ? dic.TbCol
+                                        : dic.Option == OptionEnum.ColumnAs
+                                            ? dic.TbColAlias
+                                            : throw DC.Exception(XConfig.EC._016, dic.Option.ToString()))), 1, 1).ToString(dic.Format)));
+            }
+        }
+        private List<F> ReadColumn<F>()
         {
             var result = new List<F>();
             if (IsDateTimeYearColumn(out var dic))
@@ -85,7 +101,7 @@ namespace MyDAL.AdoNet
             }
             return result;
         }
-        private List<F> ReadColumnSync<M, F>(Func<M, F> propertyFunc)
+        private List<F> ReadColumn<M, F>(Func<M, F> propertyFunc)
             where M : class
         {
             var result = new List<F>();
@@ -103,23 +119,7 @@ namespace MyDAL.AdoNet
             }
             return result;
         }
-        private void ProcessDateTimeYearColumn<F>(List<F> result, DicParam dic)
-        {
-            while (Reader.Read())
-            {
-                result.Add(
-                    DC.GH.ConvertT<F>(
-                        new DateTime(
-                            Reader.GetInt32(
-                                Reader.GetOrdinal(
-                                    dic.Option == OptionEnum.Column
-                                        ? dic.TbCol
-                                        : dic.Option == OptionEnum.ColumnAs
-                                            ? dic.TbColAlias
-                                            : throw DC.Exception(XConfig.EC._016, dic.Option.ToString()))), 1, 1).ToString(dic.Format)));
-            }
-        }
-        private List<M> ReadRowSync<M>()
+        private List<M> ReadRow<M>()
         {
             var result = new List<M>();
             if (Reader.FieldCount == 0)
@@ -162,16 +162,16 @@ namespace MyDAL.AdoNet
                         {
                             if (mapFunc == null)
                             {
-                                result.Data = ReadColumnSync<T>();
+                                result.Data = ReadColumn<T>();
                             }
                             else
                             {
-                                result.Data = ReadColumnSync(mapFunc);
+                                result.Data = ReadColumn(mapFunc);
                             }
                         }
                         else
                         {
-                            result.Data = ReadRowSync<T>();
+                            result.Data = ReadRow<T>();
                         }
                     }
                 }
@@ -194,7 +194,7 @@ namespace MyDAL.AdoNet
                 {
                     using (Reader = ExecuteReaderWithRetry(cmd, XConfig.MultiRow))
                     {
-                        result = ReadRowSync<M>();
+                        result = ReadRow<M>();
                     }
                 }
             }
@@ -217,7 +217,7 @@ namespace MyDAL.AdoNet
                 {
                     using (Reader = ExecuteReaderWithRetry(cmd, XConfig.MultiRow))
                     {
-                        result = ReadColumnSync(propertyFunc);
+                        result = ReadColumn(propertyFunc);
                     }
                 }
             }
@@ -239,7 +239,7 @@ namespace MyDAL.AdoNet
                 {
                     using (Reader = ExecuteReaderWithRetry(cmd, XConfig.MultiRow))
                     {
-                        result = ReadColumnSync<F>();
+                        result = ReadColumn<F>();
                     }
                 }
             }
