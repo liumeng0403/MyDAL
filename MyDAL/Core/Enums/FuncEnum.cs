@@ -38,7 +38,8 @@
         /// <summary>
         /// " sum"
         /// </summary>
-        Sum
+        Sum,
+        SumNullable
 
     }
 }

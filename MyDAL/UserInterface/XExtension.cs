@@ -345,6 +345,53 @@ namespace MyDAL
         }
 
         /// <summary>
+        /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// </summary>
+        public static List<M> QueryList<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
+            where M : class, new()
+        {
+            if (compareFunc == null)
+            {
+                return conn.Queryer<M>().QueryList();
+            }
+            else
+            {
+                return conn.Queryer<M>().Where(compareFunc).QueryList();
+            }
+        }
+        /// <summary>
+        /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// </summary>
+        public static List<VM> QueryList<M, VM>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
+            where M : class, new()
+            where VM : class
+        {
+            if (compareFunc == null)
+            {
+                return conn.Queryer<M>().QueryList<VM>();
+            }
+            else
+            {
+                return conn.Queryer<M>().Where(compareFunc).QueryList<VM>();
+            }
+        }
+        /// <summary>
+        /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// </summary>
+        public static List<T> QueryList<M, T>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, T>> columnMapFunc)
+            where M : class, new()
+        {
+            if (compareFunc == null)
+            {
+                return conn.Queryer<M>().QueryList(columnMapFunc);
+            }
+            else
+            {
+                return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            }
+        }
+
+        /// <summary>
         /// Queryer 便捷-同步 IsExistAsync 方法
         /// </summary>
         public static bool IsExist<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
