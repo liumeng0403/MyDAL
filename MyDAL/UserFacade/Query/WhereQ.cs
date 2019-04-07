@@ -15,13 +15,13 @@ namespace MyDAL.UserFacade.Query
     public sealed class WhereQ<M>
         : Operator
         , IOrderByQ<M>
-        , IQueryOne<M>, IQueryOneSync<M>
-        , IQueryList<M>, IQueryListSync<M>
-        , IQueryPaging<M>, IQueryPagingSync<M>
-        , ITop<M>, ITopSync<M>
-        , IIsExist, IIsExistSync
-        , ICount<M>, ICountSync<M>
-        , ISum<M>, ISumSync<M>
+        , IQueryOneAsync<M>, IQueryOne<M>
+        , IQueryListAsync<M>, IQueryList<M>
+        , IQueryPagingAsync<M>, IQueryPaging<M>
+        , ITopAsync<M>, ITop<M>
+        , IIsExistAsync, IIsExist
+        , ICountAsync<M>, ICount<M>
+        , ISumAsync<M>, ISum<M>
         where M : class
     {
         internal WhereQ(Context dc)

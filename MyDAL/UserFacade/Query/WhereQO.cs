@@ -12,7 +12,7 @@ namespace MyDAL.UserFacade.Query
     /// </summary>
     public sealed class WhereQO<M>
         : Operator
-        , IQueryPagingO<M>, IQueryPagingOSync<M>
+        , IQueryPagingOAsync<M>, IQueryPagingO<M>
         where M : class
     {
         internal WhereQO(Context dc)

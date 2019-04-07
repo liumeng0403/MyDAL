@@ -13,10 +13,10 @@ namespace MyDAL.UserFacade.Join
     /// </summary>
     public sealed class DistinctX
         : Operator
-        , IQueryOneX, IQueryOneXSync
-        , IQueryListX, IQueryListXSync
-        , IQueryPagingX, IQueryPagingXSync
-        , ITopX, ITopXSync
+        , IQueryOneXAsync, IQueryOneX
+        , IQueryListXAsync, IQueryListX
+        , IQueryPagingXAsync, IQueryPagingX
+        , ITopXAsync, ITopX
     {
         internal DistinctX(Context dc)
             : base(dc)

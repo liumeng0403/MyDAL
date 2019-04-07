@@ -10,7 +10,7 @@ namespace MyDAL.Impls
 {
     internal sealed class QueryPagingImpl<M>
         : Impler
-        , IQueryPaging<M>, IQueryPagingSync<M>
+        , IQueryPagingAsync<M>, IQueryPaging<M>
             where M : class
     {
         internal QueryPagingImpl(Context dc)
@@ -78,7 +78,7 @@ namespace MyDAL.Impls
 
     internal sealed class QueryPagingOImpl<M>
         : Impler
-        , IQueryPagingO<M>, IQueryPagingOSync<M>
+        , IQueryPagingOAsync<M>, IQueryPagingO<M>
             where M : class
     {
         internal QueryPagingOImpl(Context dc)
@@ -135,7 +135,7 @@ namespace MyDAL.Impls
 
     internal sealed class QueryPagingXImpl
         : Impler
-        , IQueryPagingX, IQueryPagingXSync
+        , IQueryPagingXAsync, IQueryPagingX
     {
         internal QueryPagingXImpl(Context dc)
             : base(dc)
@@ -192,7 +192,7 @@ namespace MyDAL.Impls
 
     internal sealed class PagingListXOImpl
         : Impler
-        , IQueryPagingXO,IQueryPagingXOSync
+        , IQueryPagingXOAsync, IQueryPagingXO
     {
         internal PagingListXOImpl(Context dc)
             : base(dc)
@@ -242,7 +242,7 @@ namespace MyDAL.Impls
 
     internal sealed class QueryPagingSQLImpl
         : Impler
-        , IQueryPagingSQL, IQueryPagingSQLSync
+        , IQueryPagingSQLAsync, IQueryPagingSQL
     {
         public QueryPagingSQLImpl(Context dc)
             : base(dc)
@@ -251,13 +251,13 @@ namespace MyDAL.Impls
         public async Task<PagingResult<T>> QueryPagingAsync<T>()
         {
             DC.Method = UiMethodEnum.QueryPagingAsync;
-            return await DC.DS.ExecuteReaderPagingAsync<None, T>(typeof(T).IsSingleColumn(), null);
+            return await DC.DSA.ExecuteReaderPagingAsync<None, T>(typeof(T).IsSingleColumn(), null);
         }
 
         public PagingResult<T> QueryPaging<T>()
         {
             DC.Method = UiMethodEnum.QueryPagingAsync;
-            return DC.DS.ExecuteReaderPaging<None, T>(typeof(T).IsSingleColumn(), null);
+            return DC.DSS.ExecuteReaderPaging<None, T>(typeof(T).IsSingleColumn(), null);
         }
     }
 }

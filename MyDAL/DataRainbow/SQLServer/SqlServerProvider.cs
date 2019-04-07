@@ -71,7 +71,7 @@ namespace MyDAL.DataRainbow.SQLServer
                                                 ORDER BY col.colorder 
                                                 ;
                                     ");
-            return DC.DS.ExecuteReaderMultiRow<ColumnInfo>();
+            return DC.DSS.ExecuteReaderMultiRow<ColumnInfo>();
         }
 
         void ISqlProvider.GetSQL()

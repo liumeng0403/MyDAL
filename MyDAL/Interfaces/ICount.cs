@@ -4,25 +4,25 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Interfaces
 {
-    internal interface ICount<M>
+    internal interface ICountAsync<M>
         where M:class
     {
         Task<int> CountAsync();
         Task<int> CountAsync<F>(Expression<Func<M, F>> func);
     }
-    internal interface ICountSync<M>
+    internal interface ICount<M>
         where M : class
     {
         int Count();
         int Count<F>(Expression<Func<M, F>> func);
     }
 
-    internal interface ICountX
+    internal interface ICountXAsync
     {
         Task<int> CountAsync();
         Task<int> CountAsync<F>(Expression<Func<F>> func);
     }
-    internal interface ICountXSync
+    internal interface ICountX
     {
         int Count();
         int Count<F>(Expression<Func<F>> func);

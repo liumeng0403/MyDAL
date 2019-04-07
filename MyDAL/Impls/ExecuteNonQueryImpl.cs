@@ -6,7 +6,7 @@ namespace MyDAL.Impls
 {
     internal sealed class ExecuteNonQuerySQLImpl
         : Impler
-        , IExecuteNonQuerySQL, IExecuteNonQuerySQLSync
+        , IExecuteNonQuerySQLAsync, IExecuteNonQuerySQL
     {
         public ExecuteNonQuerySQLImpl(Context dc) 
             : base(dc)
@@ -14,12 +14,12 @@ namespace MyDAL.Impls
 
         public async Task<int> ExecuteNonQueryAsync()
         {
-            return await DC.DS.ExecuteNonQueryAsync();
+            return await DC.DSA.ExecuteNonQueryAsync();
         }
 
         public int ExecuteNonQuery()
         {
-            return DC.DS.ExecuteNonQuery();
+            return DC.DSS.ExecuteNonQuery();
         }
     }
 }

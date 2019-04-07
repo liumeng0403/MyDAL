@@ -1,4 +1,5 @@
 ﻿using MyDAL.AdoNet;
+using MyDAL.AdoNet.Bases;
 using MyDAL.Core;
 using MyDAL.Core.Enums;
 using MyDAL.Impls;
@@ -316,6 +317,19 @@ namespace MyDAL
             return await conn.Queryer<M>().Where(compareFunc).CountAsync();
         }
 
+        public static async Task<F> SumAsync<M, F>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, F>> propertyFunc)
+            where M : class, new()
+            where F : struct
+        {
+            return await conn.Queryer<M>().Where(compareFunc).SumAsync(propertyFunc);
+        }
+        public static async Task<Nullable<F>> SumAsync<M, F>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, Nullable<F>>> propertyFunc)
+            where M : class, new()
+            where F : struct
+        {
+            return await conn.Queryer<M>().Where(compareFunc).SumAsync(propertyFunc);
+        }
+
         /******************************************************************************************************************************/
 
         /// <summary>
@@ -400,6 +414,28 @@ namespace MyDAL
             return conn.Queryer<M>().Where(compareFunc).IsExist();
         }
 
+        /// <summary>
+        /// Queryer 便捷 CountAsync 方法
+        /// </summary>
+        public static int Count<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
+            where M : class, new()
+        {
+            return conn.Queryer<M>().Where(compareFunc).Count();
+        }
+
+        public static F Sum<M, F>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, F>> propertyFunc)
+            where M : class, new()
+            where F : struct
+        {
+            return conn.Queryer<M>().Where(compareFunc).Sum(propertyFunc);
+        }
+        public static Nullable<F> Sum<M, F>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, Nullable<F>>> propertyFunc)
+            where M : class, new()
+            where F : struct
+        {
+            return conn.Queryer<M>().Where(compareFunc).Sum(propertyFunc);
+        }
+
         /******************************************************************************************************************************/
 
         public static async Task<int> ExecuteNonQueryAsync(this IDbConnection conn, string sql, List<XParam> dbParas = null)
@@ -448,6 +484,8 @@ namespace MyDAL
             paging.Data = result.Data;
             return paging;
         }
+
+        /******************************************************************************************************************************/
 
         public static int ExecuteNonQuery(this IDbConnection conn, string sql, List<XParam> dbParas = null)
         {
@@ -505,7 +543,7 @@ namespace MyDAL
         {
             if (conn.State == ConnectionState.Closed)
             {
-                new DataSource().OpenAsync(conn).GetAwaiter().GetResult();
+                new DataSourceAsync().OpenAsync(conn).GetAwaiter().GetResult();
             }
             return conn;
         }

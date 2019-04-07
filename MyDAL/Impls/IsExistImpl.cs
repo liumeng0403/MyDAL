@@ -10,7 +10,7 @@ namespace MyDAL.Impls
 {
     internal sealed class IsExistImpl<M>
         : Impler
-        , IIsExist, IIsExistSync
+        , IIsExistAsync, IIsExist
         where M : class
     {
         internal IsExistImpl(Context dc)
@@ -24,7 +24,7 @@ namespace MyDAL.Impls
             DC.Func = FuncEnum.Count;
             DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(typeof(M), "*") }));
             PreExecuteHandle(UiMethodEnum.ExistAsync);
-            var count = await DC.DS.ExecuteScalarAsync<long>();
+            var count = await DC.DSA.ExecuteScalarAsync<long>();
             return count > 0;
         }
 
@@ -36,14 +36,14 @@ namespace MyDAL.Impls
             DC.Func = FuncEnum.Count;
             DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(typeof(M), "*") }));
             PreExecuteHandle(UiMethodEnum.ExistAsync);
-            var count = DC.DS.ExecuteScalar<long>();
+            var count = DC.DSS.ExecuteScalar<long>();
             return count > 0;
         }
     }
 
     internal sealed class IsExistXImpl
         : Impler
-        , IIsExistX, IIsExistXSync
+        , IIsExistXAsync, IIsExistX
     {
         public IsExistXImpl(Context dc) 
             : base(dc) {   }
@@ -57,7 +57,7 @@ namespace MyDAL.Impls
             var dic = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.From);
             DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(dic.TbMType, "*") }));
             PreExecuteHandle(UiMethodEnum.ExistAsync);
-            var count = await DC.DS.ExecuteScalarAsync<long>();
+            var count = await DC.DSA.ExecuteScalarAsync<long>();
             return count > 0;
         }
 
@@ -70,7 +70,7 @@ namespace MyDAL.Impls
             var dic = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.From);
             DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(dic.TbMType, "*") }));
             PreExecuteHandle(UiMethodEnum.ExistAsync);
-            var count = DC.DS.ExecuteScalar<long>();
+            var count = DC.DSS.ExecuteScalar<long>();
             return count > 0;
         }
     }

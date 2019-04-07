@@ -2,11 +2,11 @@
 
 namespace MyDAL.Interfaces
 {
-    internal interface IDelete
+    internal interface IDeleteAsync
     {
         Task<int> DeleteAsync();
     }
-    internal interface IDeleteSync
+    internal interface IDelete
     {
         int Delete();
     }

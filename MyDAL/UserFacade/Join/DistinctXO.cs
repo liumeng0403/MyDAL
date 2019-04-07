@@ -12,7 +12,7 @@ namespace MyDAL.UserFacade.Join
     /// </summary>
     public sealed class DistinctXO
         : Operator
-        , IQueryPagingXO, IQueryPagingXOSync
+        , IQueryPagingXOAsync, IQueryPagingXO
     {
         internal DistinctXO(Context dc)
             : base(dc)

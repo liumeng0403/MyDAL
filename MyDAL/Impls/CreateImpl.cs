@@ -8,7 +8,7 @@ namespace MyDAL.Impls
 {
     internal sealed class CreateImpl<M>
         : Impler
-        , ICreate<M>, ICreateSync<M>
+        , ICreateAsync<M>, ICreate<M>
         where M : class
     {
         public CreateImpl(Context dc)
@@ -21,7 +21,7 @@ namespace MyDAL.Impls
             DC.Action = ActionEnum.Insert;
             CreateMHandle(new List<M> { m });
             PreExecuteHandle(UiMethodEnum.CreateAsync);
-            return await DC.DS.ExecuteNonQueryAsync();
+            return await DC.DSA.ExecuteNonQueryAsync();
         }
 
         public int Create(M m)
@@ -29,7 +29,7 @@ namespace MyDAL.Impls
             DC.Action = ActionEnum.Insert;
             CreateMHandle(new List<M> { m });
             PreExecuteHandle(UiMethodEnum.CreateAsync);
-            return DC.DS.ExecuteNonQuery();
+            return DC.DSS.ExecuteNonQuery();
         }
     }
 }

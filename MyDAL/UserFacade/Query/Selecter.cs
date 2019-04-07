@@ -15,10 +15,10 @@ namespace MyDAL.UserFacade.Query
     public sealed class Queryer<M>
         : Operator
         , IWhereQ<M>
-        , IQueryList<M>, IQueryListSync<M>
-        , IQueryPaging<M>, IQueryPagingSync<M>
-        , ITop<M>, ITopSync<M>
-        , IIsExist, IIsExistSync
+        , IQueryListAsync<M>, IQueryList<M>
+        , IQueryPagingAsync<M>, IQueryPaging<M>
+        , ITopAsync<M>, ITop<M>
+        , IIsExistAsync, IIsExist
         where M : class
     {
         internal Queryer(Context dc)

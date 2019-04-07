@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Interfaces
 {
-    internal interface IQueryList<M>
+    internal interface IQueryListAsync<M>
         where M : class
     {
         Task<List<M>> QueryListAsync();
@@ -13,7 +13,7 @@ namespace MyDAL.Interfaces
             where VM : class;
         Task<List<T>> QueryListAsync<T>(Expression<Func<M, T>> columnMapFunc);
     }
-    internal interface IQueryListSync<M>
+    internal interface IQueryList<M>
         where M : class
     {
         List<M> QueryList();
@@ -22,24 +22,24 @@ namespace MyDAL.Interfaces
         List<T> QueryList<T>(Expression<Func<M, T>> columnMapFunc);
     }
 
-    internal interface IQueryListX
+    internal interface IQueryListXAsync
     {
         Task<List<M>> QueryListAsync<M>()
             where M : class;
         Task<List<T>> QueryListAsync<T>(Expression<Func<T>> columnMapFunc);
     }
-    internal interface IQueryListXSync
+    internal interface IQueryListX
     {
         List<M> QueryList<M>()
             where M : class;
         List<T> QueryList<T>(Expression<Func<T>> columnMapFunc);
     }
 
-    internal interface IQueryListSQL
+    internal interface IQueryListSQLAsync
     {
         Task<List<T>> QueryListAsync<T>();
     }
-    internal interface IQueryListSQLSync
+    internal interface IQueryListSQL
     {
         List<T> QueryList<T>();
     }

@@ -10,7 +10,7 @@ namespace MyDAL.UserFacade.Update
     /// </summary>
     public sealed class WhereU<M>
         : Operator
-        , IUpdate<M>, IUpdateSync<M>
+        , IUpdateAsync<M>, IUpdate<M>
         where M : class
     {
         internal WhereU(Context dc)

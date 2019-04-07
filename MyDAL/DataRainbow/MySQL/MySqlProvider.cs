@@ -49,7 +49,7 @@ namespace MyDAL.DataRainbow.MySQL
                                                                       )
                                             ;
                                   ");
-            return DC.DS.ExecuteReaderMultiRow<ColumnInfo>();
+            return DC.DSS.ExecuteReaderMultiRow<ColumnInfo>();
         }
         void ISqlProvider.GetSQL()
         {

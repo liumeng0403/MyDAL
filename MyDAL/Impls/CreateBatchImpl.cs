@@ -8,7 +8,7 @@ namespace MyDAL.Impls
 {
     internal sealed class CreateBatchImpl<M>
         : Impler
-        , ICreateBatch<M>, ICreateBatchSync<M>
+        , ICreateBatchAsync<M>, ICreateBatch<M>
         where M : class
     {
         internal CreateBatchImpl(Context dc)
@@ -24,7 +24,7 @@ namespace MyDAL.Impls
                 DC.DPH.ResetParameter();
                 CreateMHandle(list);
                 PreExecuteHandle(UiMethodEnum.CreateBatchAsync);
-                return await DC.DS.ExecuteNonQueryAsync();
+                return await DC.DSA.ExecuteNonQueryAsync();
             });
         }
 
@@ -36,7 +36,7 @@ namespace MyDAL.Impls
                 DC.DPH.ResetParameter();
                 CreateMHandle(list);
                 PreExecuteHandle(UiMethodEnum.CreateBatchAsync);
-                return DC.DS.ExecuteNonQuery();
+                return DC.DSS.ExecuteNonQuery();
             });
         }
     }
