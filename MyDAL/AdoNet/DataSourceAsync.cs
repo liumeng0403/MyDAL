@@ -36,28 +36,16 @@ namespace MyDAL.AdoNet
                 throw new InvalidOperationException("请使用一个继承自 DbConnection 对象的实例!!!");
             }
         }
-        private async Task<DbDataReader> ExecuteReaderWithRetryAsync(DbCommand cmd, CommandBehavior behavior)
+        private Task<DbDataReader> ExecuteReaderWithRetryAsync(DbCommand cmd, CommandBehavior behavior)
         {
-            return await cmd
-                .ExecuteReaderAsync(behavior)
-                .ContinueWith(it =>
-                {
-                    it.Exception.Handle(ex =>
-                    {
-                        return true;
-                    });
-                    return cmd.ExecuteReaderAsync(behavior);
-                }, TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.LongRunning)
-                .ContinueWith(it =>
-                {
-                    it.Exception.Handle(ex =>
-                    {
-                        return true;
-                    });
-                    return default(DbDataReader);
-                }, TaskContinuationOptions.OnlyOnFaulted);
+            var reader = cmd.ExecuteReaderAsync(behavior);
+            if (reader.Status == TaskStatus.Faulted)
+            {
+                return cmd.ExecuteReaderAsync(behavior);
+            }
+            return reader;
         }
-        private async Task ProcessDateTimeYearColumn<F>(List<F> result, DicParam dic)
+        private async Task ProcessDateTimeYearColumnAsync<F>(List<F> result, DicParam dic)
         {
             while (await Reader.ReadAsync())
             {
@@ -73,12 +61,12 @@ namespace MyDAL.AdoNet
                                             : throw DC.Exception(XConfig.EC._016, dic.Option.ToString()))), 1, 1).ToString(dic.Format)));
             }
         }
-        private async Task<List<F>> ReadColumn<F>()
+        private async Task<List<F>> ReadColumnAsync<F>()
         {
             var result = new List<F>();
             if (IsDateTimeYearColumn(out var dic))
             {
-                await ProcessDateTimeYearColumn(result, dic);
+                await ProcessDateTimeYearColumnAsync(result, dic);
             }
             else if (DC.Crud == CrudEnum.SQL)
             {
@@ -106,13 +94,13 @@ namespace MyDAL.AdoNet
             }
             return result;
         }
-        private async Task<List<F>> ReadColumn<M, F>(Func<M, F> propertyFunc)
+        private async Task<List<F>> ReadColumnAsync<M, F>(Func<M, F> propertyFunc)
             where M : class
         {
             var result = new List<F>();
             if (IsDateTimeYearColumn(out var dic))
             {
-                await ProcessDateTimeYearColumn(result, dic);
+                await ProcessDateTimeYearColumnAsync(result, dic);
             }
             else
             {
@@ -124,7 +112,7 @@ namespace MyDAL.AdoNet
             }
             return result;
         }
-        private async Task<List<M>> ReadRow<M>()
+        private async Task<List<M>> ReadRowAsync<M>()
         {
             var result = new List<M>();
             if (Reader.FieldCount == 0)
@@ -167,16 +155,16 @@ namespace MyDAL.AdoNet
                         {
                             if (mapFunc == null)
                             {
-                                result.Data = await ReadColumn<T>();
+                                result.Data = await ReadColumnAsync<T>();
                             }
                             else
                             {
-                                result.Data = await ReadColumn(mapFunc);
+                                result.Data = await ReadColumnAsync(mapFunc);
                             }
                         }
                         else
                         {
-                            result.Data = await ReadRow<T>();
+                            result.Data = await ReadRowAsync<T>();
                         }
                     }
                 }
@@ -199,7 +187,7 @@ namespace MyDAL.AdoNet
                 {
                     using (Reader = await ExecuteReaderWithRetryAsync(cmd, XConfig.MultiRow))
                     {
-                        result = await ReadRow<M>();
+                        result = await ReadRowAsync<M>();
                     }
                 }
             }
@@ -222,7 +210,7 @@ namespace MyDAL.AdoNet
                 {
                     using (Reader = await ExecuteReaderWithRetryAsync(cmd, XConfig.MultiRow))
                     {
-                        result = await ReadColumn(propertyFunc);
+                        result = await ReadColumnAsync(propertyFunc);
                     }
                 }
             }
@@ -244,7 +232,7 @@ namespace MyDAL.AdoNet
                 {
                     using (Reader = await ExecuteReaderWithRetryAsync(cmd, XConfig.MultiRow))
                     {
-                        result = await ReadColumn<F>();
+                        result = await ReadColumnAsync<F>();
                     }
                 }
             }
