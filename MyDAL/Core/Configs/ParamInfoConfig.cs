@@ -16,7 +16,12 @@ namespace MyDAL.Core.Configs
             var val = default(object);
 
             //
-            if (type == DbType.UInt16)
+            if (type == DbType.UInt16
+                || type == DbType.UInt32
+                || type == DbType.UInt64
+                || type == DbType.Int16
+                || type == DbType.Int32
+                || type == DbType.Int64)
             {
                 if (ui.CsValue.ToBool())
                 {
@@ -33,7 +38,7 @@ namespace MyDAL.Core.Configs
             }
             else
             {
-                throw dc.Exception(XConfig.EC._034, $"不支持的字段参数类型:[[{realType}]]!");
+                val = ui.CsValue;
             }
 
             //
@@ -51,7 +56,7 @@ namespace MyDAL.Core.Configs
             }
             else
             {
-                throw dc.Exception(XConfig.EC._035, $"不支持的字段参数类型:[[{realType}]]!");
+                val = ui.CsValue;
             }
 
             //
@@ -69,7 +74,7 @@ namespace MyDAL.Core.Configs
             }
             else
             {
-                throw dc.Exception(XConfig.EC._036, $"不支持的字段参数类型:[[{realType}]]!");
+                val = ui.CsValue;
             }
 
             //
@@ -87,7 +92,7 @@ namespace MyDAL.Core.Configs
             }
             else
             {
-                throw dc.Exception(XConfig.EC._037, $"不支持的字段参数类型:[[{realType}]]!");
+                val = ui.CsValue;
             }
 
             //
@@ -105,7 +110,7 @@ namespace MyDAL.Core.Configs
             }
             else
             {
-                throw dc.Exception(XConfig.EC._038, $"不支持的字段参数类型:[[{realType}]]!");
+                val = ui.CsValue;
             }
 
             //
@@ -123,7 +128,7 @@ namespace MyDAL.Core.Configs
             }
             else
             {
-                throw dc.Exception(XConfig.EC._039, $"不支持的字段参数类型:[[{realType}]]!");
+                val = ui.CsValue;
             }
 
             //
@@ -141,7 +146,7 @@ namespace MyDAL.Core.Configs
             }
             else
             {
-                throw dc.Exception(XConfig.EC._040, $"不支持的字段参数类型:[[{realType}]]!");
+                val = ui.CsValue;
             }
 
             //
@@ -159,7 +164,7 @@ namespace MyDAL.Core.Configs
             }
             else
             {
-                throw dc.Exception(XConfig.EC._041, $"不支持的字段参数类型:[[{realType}]]!");
+                val = ui.CsValue;
             }
 
             //
@@ -181,7 +186,7 @@ namespace MyDAL.Core.Configs
             }
             else
             {
-                throw dc.Exception(XConfig.EC._042, $"不支持的字段参数类型:[[{realType}]]!");
+                val = ui.CsValue;
             }
 
             //
@@ -199,7 +204,7 @@ namespace MyDAL.Core.Configs
             }
             else
             {
-                throw dc.Exception(XConfig.EC._043, $"不支持的字段参数类型:[[{realType}]]!");
+                val = ui.CsValue;
             }
 
             //
@@ -217,7 +222,7 @@ namespace MyDAL.Core.Configs
             }
             else
             {
-                throw dc.Exception(XConfig.EC._044, $"不支持的字段参数类型:[[{realType}]]!");
+                val = ui.CsValue;
             }
 
             //
@@ -235,7 +240,7 @@ namespace MyDAL.Core.Configs
             }
             else
             {
-                throw dc.Exception(XConfig.EC._045, $"不支持的字段参数类型:[[{realType}]]!");
+                val = ui.CsValue;
             }
 
             //
@@ -253,7 +258,7 @@ namespace MyDAL.Core.Configs
             }
             else
             {
-                throw dc.Exception(XConfig.EC._046, $"不支持的字段参数类型:[[{realType}]]!");
+                val = ui.CsValue;
             }
 
             //
@@ -265,17 +270,14 @@ namespace MyDAL.Core.Configs
             var val = default(object);
 
             //
-            if (type == DbType.String)
-            {
-                val = ui.CsValue?.ToString();
-            }
-            else if (type == DbType.AnsiString)
+            if (type == DbType.String
+                || type == DbType.AnsiString)
             {
                 val = ui.CsValue?.ToString();
             }
             else
             {
-                throw dc.Exception(XConfig.EC._047, $"不支持的字段参数类型:[[{realType}]]!");
+                val = ui.CsValue;
             }
 
             //
@@ -312,7 +314,8 @@ namespace MyDAL.Core.Configs
                     }
                     break;
                 default:
-                    throw dc.Exception(XConfig.EC._048, $"不支持的字段参数类型:[[{realType}]]!");
+                    val = ui.CsValue;
+                    break;
             }
 
             return dc.PH.GetDefault(ui.Param, val, type);
@@ -329,7 +332,7 @@ namespace MyDAL.Core.Configs
             }
             else
             {
-                throw dc.Exception(XConfig.EC._049, $"不支持的字段参数类型:[[{realType}]]!");
+                val = ui.CsValue;
             }
 
             //
@@ -351,7 +354,7 @@ namespace MyDAL.Core.Configs
             }
             else
             {
-                throw dc.Exception(XConfig.EC._050, $"不支持的字段参数类型:[[{realType}]]!");
+                val = ui.CsValue;
             }
 
             //
