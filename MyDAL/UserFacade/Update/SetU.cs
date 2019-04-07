@@ -13,7 +13,7 @@ namespace MyDAL.UserFacade.Update
     public sealed class SetU<M>
         : Operator
         , IWhereU<M>
-        , IUpdate<M>, IUpdateSync<M>
+        , IUpdateAsync<M>, IUpdate<M>
         where M : class
     {
 

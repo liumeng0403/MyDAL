@@ -7,7 +7,7 @@ namespace MyDAL.Impls
 {
     internal sealed class DeleteImpl<M>
         : Impler
-        , IDelete, IDeleteSync
+        , IDeleteAsync, IDelete
         where M:class
     {
         internal DeleteImpl(Context dc) 
@@ -18,13 +18,13 @@ namespace MyDAL.Impls
         public async Task<int> DeleteAsync()
         {
             PreExecuteHandle(UiMethodEnum.DeleteAsync);
-            return await DC.DS.ExecuteNonQueryAsync();
+            return await DC.DSA.ExecuteNonQueryAsync();
         }
 
         public int Delete()
         {
             PreExecuteHandle(UiMethodEnum.DeleteAsync);
-            return DC.DS.ExecuteNonQuery();
+            return DC.DSS.ExecuteNonQuery();
         }
 
     }

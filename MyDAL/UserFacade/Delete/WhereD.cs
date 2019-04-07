@@ -10,7 +10,7 @@ namespace MyDAL.UserFacade.Delete
     /// </summary>
     public sealed class WhereD<M>
         : Operator
-        , IDelete, IDeleteSync
+        , IDeleteAsync, IDelete
         where M : class
     {
         internal WhereD(Context dc)

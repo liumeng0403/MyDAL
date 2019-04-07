@@ -11,7 +11,7 @@ namespace MyDAL.Impls
 {
     internal sealed class TopImpl<M>
         : Impler
-        , ITop<M>, ITopSync<M>
+        , ITopAsync<M>, ITop<M>
         where M : class
     {
         internal TopImpl(Context dc)
@@ -24,7 +24,7 @@ namespace MyDAL.Impls
             DC.PageIndex = 0;
             DC.PageSize = count;
             PreExecuteHandle(UiMethodEnum.TopAsync);
-            return await DC.DS.ExecuteReaderMultiRowAsync<M>();
+            return await DC.DSA.ExecuteReaderMultiRowAsync<M>();
         }
         public async Task<List<VM>> TopAsync<VM>(int count)
             where VM : class
@@ -33,7 +33,7 @@ namespace MyDAL.Impls
             DC.PageSize = count;
             SelectMQ<M, VM>();
             PreExecuteHandle(UiMethodEnum.TopAsync);
-            return await DC.DS.ExecuteReaderMultiRowAsync<VM>();
+            return await DC.DSA.ExecuteReaderMultiRowAsync<VM>();
         }
         public async Task<List<T>> TopAsync<T>(int count, Expression<Func<M, T>> columnMapFunc)
         {
@@ -43,13 +43,13 @@ namespace MyDAL.Impls
             {
                 SingleColumnHandle(columnMapFunc);
                 PreExecuteHandle(UiMethodEnum.TopAsync);
-                return await DC.DS.ExecuteReaderSingleColumnAsync(columnMapFunc.Compile());
+                return await DC.DSA.ExecuteReaderSingleColumnAsync(columnMapFunc.Compile());
             }
             else
             {
                 SelectMHandle(columnMapFunc);
                 PreExecuteHandle(UiMethodEnum.TopAsync);
-                return await DC.DS.ExecuteReaderMultiRowAsync<T>();
+                return await DC.DSA.ExecuteReaderMultiRowAsync<T>();
             }
         }
 
@@ -58,7 +58,7 @@ namespace MyDAL.Impls
             DC.PageIndex = 0;
             DC.PageSize = count;
             PreExecuteHandle(UiMethodEnum.TopAsync);
-            return DC.DS.ExecuteReaderMultiRow<M>();
+            return DC.DSS.ExecuteReaderMultiRow<M>();
         }
         public List<VM> Top<VM>(int count) 
             where VM : class
@@ -67,7 +67,7 @@ namespace MyDAL.Impls
             DC.PageSize = count;
             SelectMQ<M, VM>();
             PreExecuteHandle(UiMethodEnum.TopAsync);
-            return DC.DS.ExecuteReaderMultiRow<VM>();
+            return DC.DSS.ExecuteReaderMultiRow<VM>();
         }
         public List<T> Top<T>(int count, Expression<Func<M, T>> columnMapFunc)
         {
@@ -77,13 +77,13 @@ namespace MyDAL.Impls
             {
                 SingleColumnHandle(columnMapFunc);
                 PreExecuteHandle(UiMethodEnum.TopAsync);
-                return DC.DS.ExecuteReaderSingleColumn(columnMapFunc.Compile());
+                return DC.DSS.ExecuteReaderSingleColumn(columnMapFunc.Compile());
             }
             else
             {
                 SelectMHandle(columnMapFunc);
                 PreExecuteHandle(UiMethodEnum.TopAsync);
-                return DC.DS.ExecuteReaderMultiRow<T>();
+                return DC.DSS.ExecuteReaderMultiRow<T>();
             }
         }
 
@@ -91,7 +91,7 @@ namespace MyDAL.Impls
 
     internal sealed class TopXImpl
         : Impler
-        , ITopX, ITopXSync
+        , ITopXAsync, ITopX
     {
         public TopXImpl(Context dc)
             : base(dc)
@@ -105,7 +105,7 @@ namespace MyDAL.Impls
             DC.PageIndex = 0;
             DC.PageSize = count;
             PreExecuteHandle(UiMethodEnum.TopAsync);
-            return await DC.DS.ExecuteReaderMultiRowAsync<M>();
+            return await DC.DSA.ExecuteReaderMultiRowAsync<M>();
         }
         public async Task<List<T>> TopAsync<T>(int count, Expression<Func<T>> columnMapFunc)
         {
@@ -115,13 +115,13 @@ namespace MyDAL.Impls
             {
                 SingleColumnHandle(columnMapFunc);
                 PreExecuteHandle(UiMethodEnum.TopAsync);
-                return await DC.DS.ExecuteReaderSingleColumnAsync<T>();
+                return await DC.DSA.ExecuteReaderSingleColumnAsync<T>();
             }
             else
             {
                 SelectMHandle(columnMapFunc);
                 PreExecuteHandle(UiMethodEnum.TopAsync);
-                return await DC.DS.ExecuteReaderMultiRowAsync<T>();
+                return await DC.DSA.ExecuteReaderMultiRowAsync<T>();
             }
         }
 
@@ -132,7 +132,7 @@ namespace MyDAL.Impls
             DC.PageIndex = 0;
             DC.PageSize = count;
             PreExecuteHandle(UiMethodEnum.TopAsync);
-            return DC.DS.ExecuteReaderMultiRow<M>();
+            return DC.DSS.ExecuteReaderMultiRow<M>();
         }
         public List<T> Top<T>(int count, Expression<Func<T>> columnMapFunc)
         {
@@ -142,13 +142,13 @@ namespace MyDAL.Impls
             {
                 SingleColumnHandle(columnMapFunc);
                 PreExecuteHandle(UiMethodEnum.TopAsync);
-                return DC.DS.ExecuteReaderSingleColumn<T>();
+                return DC.DSS.ExecuteReaderSingleColumn<T>();
             }
             else
             {
                 SelectMHandle(columnMapFunc);
                 PreExecuteHandle(UiMethodEnum.TopAsync);
-                return DC.DS.ExecuteReaderMultiRow<T>();
+                return DC.DSS.ExecuteReaderMultiRow<T>();
             }
         }
     }

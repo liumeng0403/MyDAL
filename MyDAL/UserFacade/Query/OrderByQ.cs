@@ -13,9 +13,9 @@ namespace MyDAL.UserFacade.Query
     /// </summary>
     public sealed class OrderByQ<M>
         : Operator
-        , IQueryList<M>, IQueryListSync<M>
-        , IQueryPaging<M>, IQueryPagingSync<M>
-        , ITop<M>, ITopSync<M>
+        , IQueryListAsync<M>, IQueryList<M>
+        , IQueryPagingAsync<M>, IQueryPaging<M>
+        , ITopAsync<M>, ITop<M>
             where M : class
     {
         internal OrderByQ(Context dc)

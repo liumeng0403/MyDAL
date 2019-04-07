@@ -11,8 +11,8 @@ namespace MyDAL.UserFacade.Create
     /// </summary>
     public sealed class Creater<M> 
         : Operator
-        , ICreate<M>, ICreateSync<M>
-        , ICreateBatch<M>, ICreateBatchSync<M>
+        , ICreateAsync<M>, ICreate<M>
+        , ICreateBatchAsync<M>, ICreateBatch<M>
         where M:class
     {
         internal Creater(Context dc) 

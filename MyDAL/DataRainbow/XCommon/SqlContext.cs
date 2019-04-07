@@ -515,8 +515,16 @@ namespace MyDAL.DataRainbow.XCommon
                                       : sum.Crud == CrudEnum.Join
                                         ? sum.TbAlias
                                         : string.Empty;
-                Function(sum.Func, X, DC); LeftRoundBracket(X);
-                DbSql.Column(tbAlias, sum.TbCol, X);
+                Function(sum.Func, X, DC);
+                LeftRoundBracket(X);
+                if (sum.Func == FuncEnum.Sum)
+                {
+                    DbSql.Column(tbAlias, sum.TbCol, X);
+                }
+                else if (sum.Func == FuncEnum.SumNullable)
+                {
+                    DbSql.ColumnReplaceNullValueForSum(tbAlias, sum.TbCol, X);
+                }
                 RightRoundBracket(X);
             }
         }

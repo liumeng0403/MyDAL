@@ -12,7 +12,7 @@ namespace MyDAL.UserFacade.Join
     /// </summary>
     public sealed class WhereXO
         : Operator
-        , IQueryPagingXO, IQueryPagingXOSync
+        , IQueryPagingXOAsync, IQueryPagingXO
     {
         internal WhereXO(Context dc)
             : base(dc)

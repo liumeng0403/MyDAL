@@ -15,12 +15,12 @@ namespace MyDAL.UserFacade.Join
     public sealed class WhereX
         : Operator
         , IOrderByX
-        , IQueryOneX, IQueryOneXSync
-        , IQueryListX, IQueryListXSync
-        , IQueryPagingX, IQueryPagingXSync
-        , ITopX, ITopXSync
-        , IIsExistX, IIsExistXSync
-        , ICountX, ICountXSync
+        , IQueryOneXAsync, IQueryOneX
+        , IQueryListXAsync, IQueryListX
+        , IQueryPagingXAsync, IQueryPagingX
+        , ITopXAsync, ITopX
+        , IIsExistXAsync, IIsExistX
+        , ICountXAsync, ICountX
     {
 
         internal WhereX(Context dc)

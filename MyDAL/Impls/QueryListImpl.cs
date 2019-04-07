@@ -12,7 +12,7 @@ namespace MyDAL.Impls
 {
     internal sealed class QueryListImpl<M>
         : Impler
-        , IQueryList<M>, IQueryListSync<M>
+        , IQueryListAsync<M>, IQueryList<M>
         where M : class
     {
         internal QueryListImpl(Context dc)
@@ -21,14 +21,14 @@ namespace MyDAL.Impls
         public async Task<List<M>> QueryListAsync()
         {
             PreExecuteHandle(UiMethodEnum.QueryListAsync);
-            return await DC.DS.ExecuteReaderMultiRowAsync<M>();
+            return await DC.DSA.ExecuteReaderMultiRowAsync<M>();
         }
         public async Task<List<VM>> QueryListAsync<VM>()
             where VM : class
         {
             SelectMQ<M, VM>();
             PreExecuteHandle(UiMethodEnum.QueryListAsync);
-            return await DC.DS.ExecuteReaderMultiRowAsync<VM>();
+            return await DC.DSA.ExecuteReaderMultiRowAsync<VM>();
         }
         public async Task<List<T>> QueryListAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
@@ -36,27 +36,27 @@ namespace MyDAL.Impls
             {
                 SingleColumnHandle(columnMapFunc);
                 PreExecuteHandle(UiMethodEnum.QueryListAsync);
-                return await DC.DS.ExecuteReaderSingleColumnAsync(columnMapFunc.Compile());
+                return await DC.DSA.ExecuteReaderSingleColumnAsync(columnMapFunc.Compile());
             }
             else
             {
                 SelectMHandle(columnMapFunc);
                 PreExecuteHandle(UiMethodEnum.QueryListAsync);
-                return await DC.DS.ExecuteReaderMultiRowAsync<T>();
+                return await DC.DSA.ExecuteReaderMultiRowAsync<T>();
             }
         }
 
         public List<M> QueryList()
         {
             PreExecuteHandle(UiMethodEnum.QueryListAsync);
-            return DC.DS.ExecuteReaderMultiRow<M>();
+            return DC.DSS.ExecuteReaderMultiRow<M>();
         }
         public List<VM> QueryList<VM>()
             where VM : class
         {
             SelectMQ<M, VM>();
             PreExecuteHandle(UiMethodEnum.QueryListAsync);
-            return DC.DS.ExecuteReaderMultiRow<VM>();
+            return DC.DSS.ExecuteReaderMultiRow<VM>();
         }
         public List<T> QueryList<T>(Expression<Func<M, T>> columnMapFunc)
         {
@@ -64,20 +64,20 @@ namespace MyDAL.Impls
             {
                 SingleColumnHandle(columnMapFunc);
                 PreExecuteHandle(UiMethodEnum.QueryListAsync);
-                return DC.DS.ExecuteReaderSingleColumn(columnMapFunc.Compile());
+                return DC.DSS.ExecuteReaderSingleColumn(columnMapFunc.Compile());
             }
             else
             {
                 SelectMHandle(columnMapFunc);
                 PreExecuteHandle(UiMethodEnum.QueryListAsync);
-                return DC.DS.ExecuteReaderMultiRow<T>();
+                return DC.DSS.ExecuteReaderMultiRow<T>();
             }
         }
     }
 
     internal sealed class QueryListXImpl
         : Impler
-        , IQueryListX, IQueryListXSync
+        , IQueryListXAsync, IQueryListX
     {
         internal QueryListXImpl(Context dc)
             : base(dc) { }
@@ -87,7 +87,7 @@ namespace MyDAL.Impls
         {
             SelectMHandle<M>();
             PreExecuteHandle(UiMethodEnum.QueryListAsync);
-            return await DC.DS.ExecuteReaderMultiRowAsync<M>();
+            return await DC.DSA.ExecuteReaderMultiRowAsync<M>();
         }
         public async Task<List<T>> QueryListAsync<T>(Expression<Func<T>> columnMapFunc)
         {
@@ -95,13 +95,13 @@ namespace MyDAL.Impls
             {
                 SingleColumnHandle(columnMapFunc);
                 PreExecuteHandle(UiMethodEnum.QueryListAsync);
-                return await DC.DS.ExecuteReaderSingleColumnAsync<T>();
+                return await DC.DSA.ExecuteReaderSingleColumnAsync<T>();
             }
             else
             {
                 SelectMHandle(columnMapFunc);
                 PreExecuteHandle(UiMethodEnum.QueryListAsync);
-                return await DC.DS.ExecuteReaderMultiRowAsync<T>();
+                return await DC.DSA.ExecuteReaderMultiRowAsync<T>();
             }
         }
 
@@ -110,7 +110,7 @@ namespace MyDAL.Impls
         {
             SelectMHandle<M>();
             PreExecuteHandle(UiMethodEnum.QueryListAsync);
-            return DC.DS.ExecuteReaderMultiRow<M>();
+            return DC.DSS.ExecuteReaderMultiRow<M>();
         }
         public List<T> QueryList<T>(Expression<Func<T>> columnMapFunc)
         {
@@ -118,20 +118,20 @@ namespace MyDAL.Impls
             {
                 SingleColumnHandle(columnMapFunc);
                 PreExecuteHandle(UiMethodEnum.QueryListAsync);
-                return DC.DS.ExecuteReaderSingleColumn<T>();
+                return DC.DSS.ExecuteReaderSingleColumn<T>();
             }
             else
             {
                 SelectMHandle(columnMapFunc);
                 PreExecuteHandle(UiMethodEnum.QueryListAsync);
-                return DC.DS.ExecuteReaderMultiRow<T>();
+                return DC.DSS.ExecuteReaderMultiRow<T>();
             }
         }
     }
 
     internal sealed class QueryListSQLImpl
         : Impler
-        , IQueryListSQL, IQueryListSQLSync
+        , IQueryListSQLAsync, IQueryListSQL
     {
         public QueryListSQLImpl(Context dc)
             : base(dc)
@@ -142,11 +142,11 @@ namespace MyDAL.Impls
             DC.Method = UiMethodEnum.QueryListAsync;
             if (typeof(T).IsSingleColumn())
             {
-                return await DC.DS.ExecuteReaderSingleColumnAsync<T>();
+                return await DC.DSA.ExecuteReaderSingleColumnAsync<T>();
             }
             else
             {
-                return await DC.DS.ExecuteReaderMultiRowAsync<T>();
+                return await DC.DSA.ExecuteReaderMultiRowAsync<T>();
             }
         }
 
@@ -155,11 +155,11 @@ namespace MyDAL.Impls
             DC.Method = UiMethodEnum.QueryListAsync;
             if (typeof(T).IsSingleColumn())
             {
-                return DC.DS.ExecuteReaderSingleColumn<T>();
+                return DC.DSS.ExecuteReaderSingleColumn<T>();
             }
             else
             {
-                return DC.DS.ExecuteReaderMultiRow<T>();
+                return DC.DSS.ExecuteReaderMultiRow<T>();
             }
         }
     }

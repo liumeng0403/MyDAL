@@ -12,7 +12,7 @@ namespace MyDAL.UserFacade.Join
     /// </summary>
     public sealed class OrderByXO
         : Operator
-        , IQueryPagingXO, IQueryPagingXOSync
+        , IQueryPagingXOAsync, IQueryPagingXO
     {
         internal OrderByXO(Context dc)
             : base(dc)

@@ -15,11 +15,11 @@ namespace MyDAL.UserFacade.Join
     public sealed class OnX
         : Operator
         , IWhereX
-        , IQueryOneX, IQueryOneXSync
-        , IQueryListX, IQueryListXSync
-        , IQueryPagingX, IQueryPagingXSync
-        , ITopX, ITopXSync
-        , IIsExistX, IIsExistXSync
+        , IQueryOneXAsync, IQueryOneX
+        , IQueryListXAsync, IQueryListX
+        , IQueryPagingXAsync, IQueryPagingX
+        , ITopXAsync, ITopX
+        , IIsExistXAsync, IIsExistX
     {
 
         internal OnX(Context dc)

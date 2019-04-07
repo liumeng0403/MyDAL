@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Interfaces
 {
-    internal interface ITop<M>
+    internal interface ITopAsync<M>
         where M : class
     {
         Task<List<M>> TopAsync(int count);
@@ -13,7 +13,7 @@ namespace MyDAL.Interfaces
             where VM : class;
         Task<List<T>> TopAsync<T>(int count, Expression<Func<M, T>> columnMapFunc);
     }
-    internal interface ITopSync<M>
+    internal interface ITop<M>
         where M : class
     {
         List<M> Top(int count);
@@ -22,13 +22,13 @@ namespace MyDAL.Interfaces
         List<T> Top<T>(int count, Expression<Func<M, T>> columnMapFunc);
     }
 
-    internal interface ITopX
+    internal interface ITopXAsync
     {
         Task<List<M>> TopAsync<M>(int count)
             where M : class;
         Task<List<T>> TopAsync<T>(int count, Expression<Func<T>> columnMapFunc);
     }
-    internal interface ITopXSync
+    internal interface ITopX
     {
         List<M> Top<M>(int count)
             where M : class;

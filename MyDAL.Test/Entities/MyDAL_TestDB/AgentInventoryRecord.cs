@@ -13,7 +13,7 @@ namespace MyDAL.Test.Entities.MyDAL_TestDB
      * `StockingCount` int(11) NOT NULL,
      * `TotalStockingCount` int(11) NOT NULL,
      * `UnconfirmedStockingCount` int(11) NOT NULL,
-     * `TotalSaleCount` int(11) NOT NULL,
+     * `TotalSaleCount` int(11) NULL,
      * `UnconfirmedSaleCount` int(11) NOT NULL,
      * `LockedCount` int(11) NOT NULL,
      * PRIMARY KEY (`Id`)
@@ -37,7 +37,7 @@ namespace MyDAL.Test.Entities.MyDAL_TestDB
         
         public int UnconfirmedStockingCount { get; set; }
         
-        public int TotalSaleCount { get; set; }
+        public int? TotalSaleCount { get; set; }
         
         public int UnconfirmedSaleCount { get; set; }
         

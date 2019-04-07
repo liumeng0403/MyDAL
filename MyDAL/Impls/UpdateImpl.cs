@@ -7,7 +7,7 @@ namespace MyDAL.Impls
 {
     internal sealed class UpdateImpl<M>
         : Impler
-        , IUpdate<M>, IUpdateSync<M>
+        , IUpdateAsync<M>, IUpdate<M>
         where M : class
     {
         internal UpdateImpl(Context dc)
@@ -19,14 +19,14 @@ namespace MyDAL.Impls
         {
             DC.Set = set;
             PreExecuteHandle(UiMethodEnum.UpdateAsync);
-            return await DC.DS.ExecuteNonQueryAsync();
+            return await DC.DSA.ExecuteNonQueryAsync();
         }
 
         public int Update(SetEnum set = SetEnum.AllowedNull)
         {
             DC.Set = set;
             PreExecuteHandle(UiMethodEnum.UpdateAsync);
-            return DC.DS.ExecuteNonQuery();
+            return DC.DSS.ExecuteNonQuery();
         }
     }
 }

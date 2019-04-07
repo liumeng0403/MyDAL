@@ -11,7 +11,7 @@ namespace MyDAL.Impls
 {
     internal sealed class QueryOneImpl<M>
         : Impler
-        , IQueryOne<M>, IQueryOneSync<M>
+        , IQueryOneAsync<M>, IQueryOne<M>
         where M : class
     {
         internal QueryOneImpl(Context dc)
@@ -50,7 +50,7 @@ namespace MyDAL.Impls
 
     internal sealed class QueryOneXImpl
         : Impler
-        , IQueryOneX, IQueryOneXSync
+        , IQueryOneXAsync, IQueryOneX
     {
         internal QueryOneXImpl(Context dc)
             : base(dc)
@@ -80,7 +80,7 @@ namespace MyDAL.Impls
 
     internal sealed class QueryOneSQLImpl
         : Impler
-        , IQueryOneSQL, IQueryOneSQLSync
+        , IQueryOneSQLAsync, IQueryOneSQL
     {
         public QueryOneSQLImpl(Context dc)
             : base(dc)
@@ -91,11 +91,11 @@ namespace MyDAL.Impls
             DC.Method = UiMethodEnum.QueryOneAsync;
             if (typeof(T).IsSingleColumn())
             {
-                return (await DC.DS.ExecuteReaderSingleColumnAsync<T>()).FirstOrDefault();
+                return (await DC.DSA.ExecuteReaderSingleColumnAsync<T>()).FirstOrDefault();
             }
             else
             {
-                return (await DC.DS.ExecuteReaderMultiRowAsync<T>()).FirstOrDefault();
+                return (await DC.DSA.ExecuteReaderMultiRowAsync<T>()).FirstOrDefault();
             }
         }
 
@@ -104,11 +104,11 @@ namespace MyDAL.Impls
             DC.Method = UiMethodEnum.QueryOneAsync;
             if (typeof(T).IsSingleColumn())
             {
-                return DC.DS.ExecuteReaderSingleColumn<T>().FirstOrDefault();
+                return DC.DSS.ExecuteReaderSingleColumn<T>().FirstOrDefault();
             }
             else
             {
-                return DC.DS.ExecuteReaderMultiRow<T>().FirstOrDefault();
+                return DC.DSS.ExecuteReaderMultiRow<T>().FirstOrDefault();
             }
         }
     }

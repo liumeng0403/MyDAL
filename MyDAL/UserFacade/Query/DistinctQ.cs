@@ -13,10 +13,10 @@ namespace MyDAL.UserFacade.Query
     /// </summary>
     public sealed class DistinctQ<M>
         : Operator
-        , IQueryOne<M>, IQueryOneSync<M>
-        , IQueryList<M>, IQueryListSync<M>
-        , IQueryPaging<M>, IQueryPagingSync<M>
-        , ITop<M>, ITopSync<M>
+        , IQueryOneAsync<M>, IQueryOne<M>
+        , IQueryListAsync<M>, IQueryList<M>
+        , IQueryPagingAsync<M>, IQueryPaging<M>
+        , ITopAsync<M>, ITop<M>
         where M : class
     {
         internal DistinctQ(Context dc)

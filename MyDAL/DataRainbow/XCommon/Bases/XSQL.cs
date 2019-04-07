@@ -201,25 +201,26 @@ namespace MyDAL.DataRainbow.XCommon.Bases
                 case FuncEnum.None:
                     return;
                 case FuncEnum.CharLength:
-                    sb.Append(" char_length");
+                    Spacing(sb); sb.Append("char_length");
                     return;
                 case FuncEnum.DateFormat:
-                    sb.Append(" date_format");
+                    Spacing(sb); sb.Append("date_format");
                     return;
                 case FuncEnum.Trim:
-                    sb.Append(" trim");
+                    Spacing(sb); sb.Append("trim");
                     return;
                 case FuncEnum.LTrim:
-                    sb.Append(" ltrim");
+                    Spacing(sb); sb.Append("ltrim");
                     return;
                 case FuncEnum.RTrim:
-                    sb.Append(" rtrim");
+                    Spacing(sb); sb.Append("rtrim");
                     return;
                 case FuncEnum.Count:
-                    sb.Append(" count");
+                    Spacing(sb); sb.Append("count");
                     return;
                 case FuncEnum.Sum:
-                    sb.Append(" sum");
+                case FuncEnum.SumNullable:
+                    Spacing(sb); sb.Append("sum");
                     return;
                 default:
                     throw dc.Exception(XConfig.EC._008, func.ToString());

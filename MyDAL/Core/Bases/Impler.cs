@@ -31,24 +31,24 @@ namespace MyDAL.Core.Bases
         protected async Task<PagingResult<T>> PagingListAsyncHandle<T>(UiMethodEnum sqlType, bool single)
         {
             PreExecuteHandle(sqlType);
-            return await DC.DS.ExecuteReaderPagingAsync<None, T>(single, null);
+            return await DC.DSA.ExecuteReaderPagingAsync<None, T>(single, null);
         }
         protected PagingResult<T> PagingListAsyncHandleSync<T>(UiMethodEnum sqlType, bool single)
         {
             PreExecuteHandle(sqlType);
-            return DC.DS.ExecuteReaderPaging<None, T>(single, null);
+            return DC.DSS.ExecuteReaderPaging<None, T>(single, null);
         }
         protected async Task<PagingResult<T>> PagingListAsyncHandle<M, T>(UiMethodEnum sqlType, bool single, Func<M, T> mapFunc)
             where M : class
         {
             PreExecuteHandle(sqlType);
-            return await DC.DS.ExecuteReaderPagingAsync(single, mapFunc);
+            return await DC.DSA.ExecuteReaderPagingAsync(single, mapFunc);
         }
         protected PagingResult<T> PagingListAsyncHandleSync<M, T>(UiMethodEnum sqlType, bool single, Func<M, T> mapFunc)
            where M : class
         {
             PreExecuteHandle(sqlType);
-            return DC.DS.ExecuteReaderPaging(single, mapFunc);
+            return DC.DSS.ExecuteReaderPaging(single, mapFunc);
         }
 
         /**********************************************************************************************************/
@@ -163,7 +163,6 @@ namespace MyDAL.Core.Bases
 
         protected Impler(Context dc)
             : base(dc)
-        {
-        }
+        { }
     }
 }

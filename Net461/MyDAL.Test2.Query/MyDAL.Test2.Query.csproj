@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="02-QueryListAsync.cs" />
     <Compile Include="03-QueryPagingAsync.cs" />
+    <Compile Include="07-SumAsync.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

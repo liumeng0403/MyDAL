@@ -15,13 +15,13 @@ namespace MyDAL.UserFacade.Query
     public sealed class WhereQ<M>
         : Operator
         , IOrderByQ<M>
-        , IQueryOne<M>, IQueryOneSync<M>
-        , IQueryList<M>, IQueryListSync<M>
-        , IQueryPaging<M>, IQueryPagingSync<M>
-        , ITop<M>, ITopSync<M>
-        , IIsExist, IIsExistSync
-        , ICount<M>, ICountSync<M>
-        , ISum<M>, ISumSync<M>
+        , IQueryOneAsync<M>, IQueryOne<M>
+        , IQueryListAsync<M>, IQueryList<M>
+        , IQueryPagingAsync<M>, IQueryPaging<M>
+        , ITopAsync<M>, ITop<M>
+        , IIsExistAsync, IIsExist
+        , ICountAsync<M>, ICount<M>
+        , ISumAsync<M>, ISum<M>
         where M : class
     {
         internal WhereQ(Context dc)
@@ -279,11 +279,27 @@ namespace MyDAL.UserFacade.Query
         {
             return await new SumImpl<M>(DC).SumAsync(propertyFunc);
         }
+        /// <summary>
+        /// 列求和 -- select sum(col) from ...
+        /// </summary>
+        public async Task<Nullable<F>> SumAsync<F>(Expression<Func<M, Nullable<F>>> propertyFunc)
+            where F : struct
+        {
+            return await new SumImpl<M>(DC).SumAsync(propertyFunc);
+        }
 
         /// <summary>
         /// 列求和 -- select sum(col) from ...
         /// </summary>
         public F Sum<F>(Expression<Func<M, F>> propertyFunc)
+            where F : struct
+        {
+            return new SumImpl<M>(DC).Sum(propertyFunc);
+        }
+        /// <summary>
+        /// 列求和 -- select sum(col) from ...
+        /// </summary>
+        public Nullable<F> Sum<F>(Expression<Func<M, Nullable<F>>> propertyFunc)
             where F : struct
         {
             return new SumImpl<M>(DC).Sum(propertyFunc);

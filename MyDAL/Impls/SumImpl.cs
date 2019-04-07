@@ -9,7 +9,7 @@ namespace MyDAL.Impls
 {
     internal sealed class SumImpl<M>
         : Impler
-        , ISum<M>, ISumSync<M>
+        , ISumAsync<M>, ISum<M>
         where M : class
     {
         public SumImpl(Context dc)
@@ -27,7 +27,7 @@ namespace MyDAL.Impls
             var dic = DC.XE.FuncMFExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.SumAsync);
-            return await DC.DS.ExecuteScalarAsync<F>();
+            return await DC.DSA.ExecuteScalarAsync<F>();
         }
         public async Task<Nullable<F>> SumAsync<F>(Expression<Func<M, Nullable<F>>> propertyFunc)
             where F : struct
@@ -39,7 +39,7 @@ namespace MyDAL.Impls
             var dic = DC.XE.FuncMFExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.SumAsync);
-            return await DC.DS.ExecuteScalarAsync<F>();
+            return await DC.DSA.ExecuteScalarAsync<F>();
         }
 
         public F Sum<F>(Expression<Func<M, F>> propertyFunc)
@@ -52,7 +52,7 @@ namespace MyDAL.Impls
             var dic = DC.XE.FuncMFExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.SumAsync);
-            return DC.DS.ExecuteScalar<F>();
+            return DC.DSS.ExecuteScalar<F>();
         }
         public Nullable<F> Sum<F>(Expression<Func<M, Nullable<F>>> propertyFunc)
             where F : struct
@@ -64,7 +64,7 @@ namespace MyDAL.Impls
             var dic = DC.XE.FuncMFExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.SumAsync);
-            return DC.DS.ExecuteScalar<F>();
+            return DC.DSS.ExecuteScalar<F>();
         }
     }
 }
