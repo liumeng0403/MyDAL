@@ -46,8 +46,13 @@ namespace MyDAL.Test.DataRecovery
             PrintLog($"清理 sql server Agent 表：{sqlDelete03}");
             var dataList03 = Conn.QueryListAsync<Agent>(null).GetAwaiter().GetResult();
             PrintLog($"查询 my sql Agent 表：{dataList03.Count}");
-            var sqlCreate03 = Conn2.CreateBatchAsync(dataList03).GetAwaiter().GetResult();
-            PrintLog($"恢复 sql server Agent 表：{sqlCreate03}");
+            var total03 = StepProcess<Agent>(dataList03, 1000, list =>
+            {
+                var num = Conn2.CreateBatchAsync(list).GetAwaiter().GetResult();
+                PrintLog($"恢复 sql server Agent 表：{num}");
+                return num;
+            });
+            PrintLog($"恢复 sql server Agent 表：{total03}");
 
             PrintLog("--------------------------------------------------------------------------------------");
 

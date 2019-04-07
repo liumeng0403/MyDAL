@@ -50,6 +50,13 @@ namespace MyDAL.DataRainbow.SQLServer
             }
             DbSql.ObjLeftSymbol(sb); sb.Append(colName); DbSql.ObjRightSymbol(sb);
         }
+        void ISql.ColumnReplaceNullValueForSum(string tbAlias, string colName, StringBuilder sb)
+        {
+            sb.Append("isnull");
+            LeftRoundBracket(sb);
+            DbSql.Column(tbAlias, colName, sb); Comma(sb); sb.Append('0');
+            RightRoundBracket(sb);
+        }
         void ISql.TableX(string table, StringBuilder sb)
         {
             DbSql.ObjLeftSymbol(sb); sb.Append(table); DbSql.ObjRightSymbol(sb);

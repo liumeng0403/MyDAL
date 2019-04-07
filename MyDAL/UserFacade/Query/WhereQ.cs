@@ -279,11 +279,27 @@ namespace MyDAL.UserFacade.Query
         {
             return await new SumImpl<M>(DC).SumAsync(propertyFunc);
         }
+        /// <summary>
+        /// 列求和 -- select sum(col) from ...
+        /// </summary>
+        public async Task<Nullable<F>> SumAsync<F>(Expression<Func<M, Nullable<F>>> propertyFunc)
+            where F : struct
+        {
+            return await new SumImpl<M>(DC).SumAsync(propertyFunc);
+        }
 
         /// <summary>
         /// 列求和 -- select sum(col) from ...
         /// </summary>
         public F Sum<F>(Expression<Func<M, F>> propertyFunc)
+            where F : struct
+        {
+            return new SumImpl<M>(DC).Sum(propertyFunc);
+        }
+        /// <summary>
+        /// 列求和 -- select sum(col) from ...
+        /// </summary>
+        public Nullable<F> Sum<F>(Expression<Func<M, Nullable<F>>> propertyFunc)
             where F : struct
         {
             return new SumImpl<M>(DC).Sum(propertyFunc);
