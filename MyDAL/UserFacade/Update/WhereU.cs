@@ -23,7 +23,7 @@ namespace MyDAL.UserFacade.Update
         /// <returns>更新条目数</returns>
         public async Task<int> UpdateAsync(SetEnum set = SetEnum.AllowedNull)
         {
-            return await new UpdateImpl<M>(DC).UpdateAsync(set);
+            return await new UpdateAsyncImpl<M>(DC).UpdateAsync(set);
         }
 
         /// <summary>

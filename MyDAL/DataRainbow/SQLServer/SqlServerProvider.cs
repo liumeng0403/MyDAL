@@ -1,4 +1,5 @@
-﻿using MyDAL.Core;
+﻿using MyDAL.AdoNet;
+using MyDAL.Core;
 using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
@@ -71,7 +72,7 @@ namespace MyDAL.DataRainbow.SQLServer
                                                 ORDER BY col.colorder 
                                                 ;
                                     ");
-            return DC.DSS.ExecuteReaderMultiRow<ColumnInfo>();
+            return new DataSourceSync(DC).ExecuteReaderMultiRow<ColumnInfo>();
         }
 
         void ISqlProvider.GetSQL()
@@ -96,7 +97,7 @@ namespace MyDAL.DataRainbow.SQLServer
                     break;
                 case UiMethodEnum.QueryPagingAsync:
                     Select(X); Count(); From(X); Table(); Where(); CountMulti(); End();
-                    Select(X); DistinctX(); SelectColumn(); From(X); Table(); Where(); OrderBy(); DbSql.Pager(DC,X); End();
+                    Select(X); DistinctX(); SelectColumn(); From(X); Table(); Where(); OrderBy(); DbSql.Pager(DC, X); End();
                     break;
                 case UiMethodEnum.ExistAsync:
                 case UiMethodEnum.CountAsync:

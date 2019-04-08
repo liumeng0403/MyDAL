@@ -23,7 +23,7 @@ namespace MyDAL.UserFacade.Delete
         /// <returns>删除条目数</returns>
         public async Task<int> DeleteAsync()
         {
-            return await new DeleteImpl<M>(DC).DeleteAsync();
+            return await new DeleteAsyncImpl<M>(DC).DeleteAsync();
         }
 
         /// <summary>

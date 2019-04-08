@@ -1,5 +1,6 @@
 ﻿using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
+using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
 using MyDAL.DataRainbow.XCommon.Bases;
 using MyDAL.DataRainbow.XCommon.Interfaces;
@@ -64,6 +65,17 @@ namespace MyDAL.DataRainbow.SQLServer
         void ISql.OneEqualOneProcess(DicParam p, StringBuilder sb)
         {
             Spacing(sb); sb.Append("1=1");
+        }
+        void ISql.WhereTrueOrFalse(Context dc, bool flag, StringBuilder sb)
+        {
+            if (flag)
+            {
+                Action(ActionEnum.Where, sb, dc); Spacing(sb); sb.Append("1=1");
+            }
+            else
+            {
+                Action(ActionEnum.Where, sb, dc); Spacing(sb); sb.Append("1<>1");
+            }
         }
         ColumnInfo ISql.GetIndex(List<ColumnInfo> cols)
         {

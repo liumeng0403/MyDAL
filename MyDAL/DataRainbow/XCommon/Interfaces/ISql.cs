@@ -17,6 +17,7 @@ namespace MyDAL.DataRainbow.XCommon.Interfaces
         void ColumnReplaceNullValueForSum(string tbAlias, string colName, StringBuilder sb);
         void TableX(string table, StringBuilder sb);
         void OneEqualOneProcess(DicParam p, StringBuilder sb);
+        void WhereTrueOrFalse(Context dc, bool flag, StringBuilder sb);
         ColumnInfo GetIndex(List<ColumnInfo> cols);
         void Pager(Context dc, StringBuilder sb);
     }

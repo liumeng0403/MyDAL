@@ -28,31 +28,6 @@ namespace MyDAL.Core.Bases
 
         /**********************************************************************************************************/
 
-        protected async Task<PagingResult<T>> PagingListAsyncHandle<T>(UiMethodEnum sqlType, bool single)
-        {
-            PreExecuteHandle(sqlType);
-            return await DC.DSA.ExecuteReaderPagingAsync<None, T>(single, null);
-        }
-        protected PagingResult<T> PagingListAsyncHandleSync<T>(UiMethodEnum sqlType, bool single)
-        {
-            PreExecuteHandle(sqlType);
-            return DC.DSS.ExecuteReaderPaging<None, T>(single, null);
-        }
-        protected async Task<PagingResult<T>> PagingListAsyncHandle<M, T>(UiMethodEnum sqlType, bool single, Func<M, T> mapFunc)
-            where M : class
-        {
-            PreExecuteHandle(sqlType);
-            return await DC.DSA.ExecuteReaderPagingAsync(single, mapFunc);
-        }
-        protected PagingResult<T> PagingListAsyncHandleSync<M, T>(UiMethodEnum sqlType, bool single, Func<M, T> mapFunc)
-           where M : class
-        {
-            PreExecuteHandle(sqlType);
-            return DC.DSS.ExecuteReaderPaging(single, mapFunc);
-        }
-
-        /**********************************************************************************************************/
-
         protected void SingleColumnHandle<M, T>(Expression<Func<M, T>> propertyFunc)
             where M : class
         {
@@ -164,5 +139,6 @@ namespace MyDAL.Core.Bases
         protected Impler(Context dc)
             : base(dc)
         { }
+
     }
 }

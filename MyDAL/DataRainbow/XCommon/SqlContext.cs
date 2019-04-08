@@ -767,15 +767,8 @@ namespace MyDAL.DataRainbow.XCommon
             {
                 var aId = and == null ? -1 : and.ID;
                 var oId = or == null ? -1 : or.ID;
-                if (aId < oId
-                    || oId == -1)
-                {
-                    Spacing(X); Action(ActionEnum.Where, X, DC); Spacing(X); X.Append("true"); Spacing(X);
-                }
-                else
-                {
-                    Spacing(X); Action(ActionEnum.Where, X, DC); Spacing(X); X.Append("false"); Spacing(X);
-                }
+                var flag = aId < oId || oId == -1;
+                Spacing(X); DbSql.WhereTrueOrFalse(DC, flag, X); Spacing(X);
             }
             foreach (var db in cons)
             {

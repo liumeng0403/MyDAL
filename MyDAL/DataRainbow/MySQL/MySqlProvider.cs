@@ -1,4 +1,5 @@
-﻿using MyDAL.Core;
+﻿using MyDAL.AdoNet;
+using MyDAL.Core;
 using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
@@ -9,7 +10,7 @@ using System.Collections.Generic;
 namespace MyDAL.DataRainbow.MySQL
 {
     internal sealed class MySqlProvider
-        : SqlContext,ISqlProvider
+        : SqlContext, ISqlProvider
     {
         private MySqlProvider() { }
         internal MySqlProvider(Context dc)
@@ -49,7 +50,7 @@ namespace MyDAL.DataRainbow.MySQL
                                                                       )
                                             ;
                                   ");
-            return DC.DSS.ExecuteReaderMultiRow<ColumnInfo>();
+            return new DataSourceSync(DC).ExecuteReaderMultiRow<ColumnInfo>();
         }
         void ISqlProvider.GetSQL()
         {
@@ -69,11 +70,11 @@ namespace MyDAL.DataRainbow.MySQL
                 case UiMethodEnum.TopAsync:
                 case UiMethodEnum.QueryOneAsync:
                 case UiMethodEnum.QueryListAsync:
-                    Select(X); DistinctX(); SelectColumn(); From(X); Table(); Where(); OrderBy(); DbSql.Top(DC,X); End();
+                    Select(X); DistinctX(); SelectColumn(); From(X); Table(); Where(); OrderBy(); DbSql.Top(DC, X); End();
                     break;
                 case UiMethodEnum.QueryPagingAsync:
                     Select(X); Count(); From(X); Table(); Where(); CountMulti(); End();
-                    Select(X); DistinctX(); SelectColumn(); From(X); Table(); Where(); OrderBy(); DbSql.Pager(DC,X); End();
+                    Select(X); DistinctX(); SelectColumn(); From(X); Table(); Where(); OrderBy(); DbSql.Pager(DC, X); End();
                     break;
                 case UiMethodEnum.ExistAsync:
                 case UiMethodEnum.CountAsync:

@@ -23,7 +23,7 @@ namespace MyDAL.UserFacade.Query
         /// </summary>
         public async Task<PagingResult<M>> QueryPagingAsync()
         {
-            return await new QueryPagingOImpl<M>(DC).QueryPagingAsync();
+            return await new QueryPagingOAsyncImpl<M>(DC).QueryPagingAsync();
         }
         /// <summary>
         /// 单表分页查询
@@ -31,14 +31,14 @@ namespace MyDAL.UserFacade.Query
         public async Task<PagingResult<VM>> QueryPagingAsync<VM>()
             where VM : class
         {
-            return await new QueryPagingOImpl<M>(DC).QueryPagingAsync<VM>();
+            return await new QueryPagingOAsyncImpl<M>(DC).QueryPagingAsync<VM>();
         }
         /// <summary>
         /// 单表分页查询
         /// </summary>
         public async Task<PagingResult<T>> QueryPagingAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
-            return await new QueryPagingOImpl<M>(DC).QueryPagingAsync(columnMapFunc);
+            return await new QueryPagingOAsyncImpl<M>(DC).QueryPagingAsync(columnMapFunc);
         }
 
         /// <summary>

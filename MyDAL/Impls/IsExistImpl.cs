@@ -1,6 +1,7 @@
 ﻿using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
+using MyDAL.Impls.Base;
 using MyDAL.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Impls
 {
-    internal sealed class IsExistImpl<M>
-        : Impler
-        , IIsExistAsync, IIsExist
-        where M : class
+    internal sealed class IsExistAsyncImpl<M>
+    : ImplerAsync
+    , IIsExistAsync 
+    where M : class
     {
-        internal IsExistImpl(Context dc)
+        internal IsExistAsyncImpl(Context dc)
             : base(dc) { }
 
         public async Task<bool> IsExistAsync()
@@ -24,10 +25,19 @@ namespace MyDAL.Impls
             DC.Func = FuncEnum.Count;
             DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(typeof(M), "*") }));
             PreExecuteHandle(UiMethodEnum.ExistAsync);
-            var count = await DC.DSA.ExecuteScalarAsync<long>();
+            var count = await DSA.ExecuteScalarAsync<long>();
             return count > 0;
         }
-
+ 
+    }
+    internal sealed class IsExistImpl<M>
+        : ImplerSync
+        , IIsExist
+        where M : class
+    {
+        internal IsExistImpl(Context dc)
+            : base(dc) { }
+          
         public bool IsExist()
         {
             DC.Action = ActionEnum.Select;
@@ -36,17 +46,17 @@ namespace MyDAL.Impls
             DC.Func = FuncEnum.Count;
             DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(typeof(M), "*") }));
             PreExecuteHandle(UiMethodEnum.ExistAsync);
-            var count = DC.DSS.ExecuteScalar<long>();
+            var count = DSS.ExecuteScalar<long>();
             return count > 0;
         }
     }
 
-    internal sealed class IsExistXImpl
-        : Impler
-        , IIsExistXAsync, IIsExistX
+    internal sealed class IsExistXAsyncImpl
+    : ImplerAsync
+    , IIsExistXAsync 
     {
-        public IsExistXImpl(Context dc) 
-            : base(dc) {   }
+        public IsExistXAsyncImpl(Context dc)
+            : base(dc) { }
 
         public async Task<bool> IsExistAsync()
         {
@@ -57,10 +67,18 @@ namespace MyDAL.Impls
             var dic = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.From);
             DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(dic.TbMType, "*") }));
             PreExecuteHandle(UiMethodEnum.ExistAsync);
-            var count = await DC.DSA.ExecuteScalarAsync<long>();
+            var count = await DSA.ExecuteScalarAsync<long>();
             return count > 0;
         }
-
+ 
+    }
+    internal sealed class IsExistXImpl
+        : ImplerSync
+        , IIsExistX
+    {
+        public IsExistXImpl(Context dc) 
+            : base(dc) {   }
+         
         public bool IsExist()
         {
             DC.Action = ActionEnum.Select;
@@ -70,7 +88,7 @@ namespace MyDAL.Impls
             var dic = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.From);
             DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(dic.TbMType, "*") }));
             PreExecuteHandle(UiMethodEnum.ExistAsync);
-            var count = DC.DSS.ExecuteScalar<long>();
+            var count = DSS.ExecuteScalar<long>();
             return count > 0;
         }
     }

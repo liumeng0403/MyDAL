@@ -25,7 +25,7 @@ namespace MyDAL.UserFacade.Create
         /// <returns>插入条目数</returns>
         public async Task<int> CreateAsync(M m)
         {
-            return await new CreateImpl<M>(DC).CreateAsync(m);
+            return await new CreateAsyncImpl<M>(DC).CreateAsync(m);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace MyDAL.UserFacade.Create
         /// <returns>插入条目数</returns>
         public async Task<int> CreateBatchAsync(IEnumerable<M> mList)
         {
-            return await new CreateBatchImpl<M>(DC).CreateBatchAsync(mList);
+            return await new CreateBatchAsyncImpl<M>(DC).CreateBatchAsync(mList);
         }
 
         /// <summary>

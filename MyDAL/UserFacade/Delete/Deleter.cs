@@ -34,7 +34,7 @@ namespace MyDAL.UserFacade.Delete
         [Obsolete("警告：此 API 会删除表中所有数据！！！",false)]
         public async Task<int> DeleteAsync()
         {
-            return await new DeleteImpl<M>(DC).DeleteAsync();
+            return await new DeleteAsyncImpl<M>(DC).DeleteAsync();
         }
 
         /// <summary>
