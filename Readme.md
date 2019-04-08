@@ -1,7 +1,7 @@
 <p align="center">
   <img src="https://github.com/liumeng0403/MyDAL/blob/master/MyDAL/Others/MyDAL.png">
   <p align="center">
-    The fastest and best ORM lite on .NET Core for MySQL ! <br/>
+    The fastest and best ORM lite on .NET Core for MySQL/SqlServer ! <br/>
        -- 友好, 轻量, 极致性能, 无任何第三方依赖, 持续演进~~
   </p>
 </p>
@@ -13,6 +13,7 @@
 [![](https://img.shields.io/badge/Fork-3-orange.svg)](https://github.com/liumeng0403/MyDAL/network/members)
 [![](https://img.shields.io/badge/Apache-2.0-blue.svg)](https://github.com/liumeng0403/MyDAL/blob/master/License)
 [![](https://img.shields.io/badge/MySQL-5.7.21+-purple.svg)](https://www.cnblogs.com/Meng-NET/p/9831746.html)
+[![](https://img.shields.io/badge/SqlServer-2012SP1+-purple.svg)](https://www.cnblogs.com/Meng-NET/p/9831746.html)
 [![](https://img.shields.io/badge/Nuget-0.8.0.5-green.svg)](https://www.nuget.org/packages/MyDAL/)
 
 <b>Nuget:</b>
