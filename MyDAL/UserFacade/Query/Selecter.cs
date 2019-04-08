@@ -1,13 +1,13 @@
-﻿using MyDAL.Core.Bases;
-using MyDAL.Impls;
-using MyDAL.Interfaces;
-using MyDAL.Interfaces.Segments;
+﻿using HPC.DAL.Core.Bases;
+using HPC.DAL.Impls;
+using HPC.DAL.Interfaces;
+using HPC.DAL.Interfaces.Segments;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace MyDAL.UserFacade.Query
+namespace HPC.DAL.UserFacade.Query
 {
     /// <summary>
     /// 请参阅: <see langword="目录索引 https://www.cnblogs.com/Meng-NET/"/>

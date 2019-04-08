@@ -1,4 +1,5 @@
-﻿using MyDAL.Test.Entities.MyDAL_TestDB;
+﻿using HPC.DAL;
+using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.Enums;
 using System;
 using System.Threading.Tasks;
@@ -174,7 +175,7 @@ namespace MyDAL.Test.Delete
             /*
              * 多表连接方式删除表数据，自己写 SQL
              * 然后使用方法： IDbConnection.ExecuteNonQueryAsync(string sql, List<XParam> dbParas = null)
-             * 方法命名空间：using MyDAL;
+             * 方法命名空间：using HPC.DAL;
              * 方法描述： async Task<int> ExecuteNonQueryAsync(this IDbConnection conn, string sql, List<XParam> dbParas = null)
              */
 
@@ -191,7 +192,7 @@ namespace MyDAL.Test.Delete
             /*
              * 多表连接方式删除表数据，自己写 SQL
              * 然后使用方法： IDbConnection.ExecuteNonQueryAsync(string sql, List<XParam> dbParas = null)
-             * 方法命名空间：using MyDAL;
+             * 方法命名空间：using HPC.DAL;
              * 方法描述： async Task<int> ExecuteNonQueryAsync(this IDbConnection conn, string sql, List<XParam> dbParas = null)
              */
 

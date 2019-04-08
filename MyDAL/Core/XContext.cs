@@ -1,7 +1,7 @@
-﻿using MyDAL.Core.Bases;
+﻿using HPC.DAL.Core.Bases;
 using System.Data;
 
-namespace MyDAL.Core
+namespace HPC.DAL.Core
 {
     internal class XContext
         : Context

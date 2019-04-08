@@ -1,13 +1,13 @@
-﻿using MyDAL.AdoNet;
-using MyDAL.Core;
-using MyDAL.Core.Bases;
-using MyDAL.Core.Common;
-using MyDAL.Core.Enums;
-using MyDAL.DataRainbow.XCommon;
-using MyDAL.DataRainbow.XCommon.Interfaces;
+﻿using HPC.DAL.AdoNet;
+using HPC.DAL.Core;
+using HPC.DAL.Core.Bases;
+using HPC.DAL.Core.Common;
+using HPC.DAL.Core.Enums;
+using HPC.DAL.DataRainbow.XCommon;
+using HPC.DAL.DataRainbow.XCommon.Interfaces;
 using System.Collections.Generic;
 
-namespace MyDAL.DataRainbow.MySQL
+namespace HPC.DAL.DataRainbow.MySQL
 {
     internal sealed class MySqlProvider
         : SqlContext, ISqlProvider

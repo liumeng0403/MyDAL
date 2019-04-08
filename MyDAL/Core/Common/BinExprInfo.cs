@@ -1,7 +1,7 @@
-﻿using MyDAL.Core.Enums;
+﻿using HPC.DAL.Core.Enums;
 using System.Linq.Expressions;
 
-namespace MyDAL.Core.Common
+namespace HPC.DAL.Core.Common
 {
     internal class BinExprInfo
     {

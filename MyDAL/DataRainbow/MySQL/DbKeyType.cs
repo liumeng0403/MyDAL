@@ -1,4 +1,4 @@
-﻿namespace MyDAL.DataRainbow.MySQL
+﻿namespace HPC.DAL.DataRainbow.MySQL
 {
     internal enum DbKeyType
     {

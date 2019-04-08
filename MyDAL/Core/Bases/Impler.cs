@@ -1,12 +1,12 @@
-﻿using MyDAL.Core.Common;
-using MyDAL.Core.Enums;
+﻿using HPC.DAL.Core.Common;
+using HPC.DAL.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace MyDAL.Core.Bases
+namespace HPC.DAL.Core.Bases
 {
     internal abstract class Impler
         : Operator

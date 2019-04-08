@@ -1,7 +1,7 @@
-﻿using MyDAL.Core.Bases;
+﻿using HPC.DAL.Core.Bases;
 using System.Data;
 
-namespace MyDAL.DataRainbow.XCommon.Interfaces
+namespace HPC.DAL.DataRainbow.XCommon.Interfaces
 {
     internal interface IDbTypeConfig
     {

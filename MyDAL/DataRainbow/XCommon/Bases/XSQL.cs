@@ -1,9 +1,9 @@
-﻿using MyDAL.Core;
-using MyDAL.Core.Bases;
-using MyDAL.Core.Enums;
+﻿using HPC.DAL.Core;
+using HPC.DAL.Core.Bases;
+using HPC.DAL.Core.Enums;
 using System.Text;
 
-namespace MyDAL.DataRainbow.XCommon.Bases
+namespace HPC.DAL.DataRainbow.XCommon.Bases
 {
     internal abstract class XSQL
     {

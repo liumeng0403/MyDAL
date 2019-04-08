@@ -1,14 +1,14 @@
-﻿using MyDAL.Core.Bases;
-using MyDAL.Core.Common;
-using MyDAL.Core.Enums;
-using MyDAL.Core.Models.ExpPara;
+﻿using HPC.DAL.Core.Bases;
+using HPC.DAL.Core.Common;
+using HPC.DAL.Core.Enums;
+using HPC.DAL.Core.Models.ExpPara;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace MyDAL.Core
+namespace HPC.DAL.Core
 {
     internal sealed class XExpression
     {

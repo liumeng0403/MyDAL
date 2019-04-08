@@ -1,16 +1,16 @@
-﻿using MyDAL.Core.Bases;
-using MyDAL.Core.Common;
-using MyDAL.Core.Enums;
-using MyDAL.Core.Extensions;
-using MyDAL.DataRainbow.XCommon.Bases;
-using MyDAL.DataRainbow.XCommon.Interfaces;
-using MyDAL.ModelTools;
+﻿using HPC.DAL.Core.Bases;
+using HPC.DAL.Core.Common;
+using HPC.DAL.Core.Enums;
+using HPC.DAL.Core.Extensions;
+using HPC.DAL.DataRainbow.XCommon.Bases;
+using HPC.DAL.DataRainbow.XCommon.Interfaces;
+using HPC.DAL.ModelTools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MyDAL.DataRainbow.SQLServer
+namespace HPC.DAL.DataRainbow.SQLServer
 {
     internal sealed class SqlServer
         : XSQL, ISql

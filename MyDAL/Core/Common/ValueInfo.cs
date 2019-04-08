@@ -1,7 +1,7 @@
-﻿using MyDAL.Core.Bases;
-using MyDAL.Core.Enums;
+﻿using HPC.DAL.Core.Bases;
+using HPC.DAL.Core.Enums;
 
-namespace MyDAL.Core.Common
+namespace HPC.DAL.Core.Common
 {
     internal class ValueInfo
     {

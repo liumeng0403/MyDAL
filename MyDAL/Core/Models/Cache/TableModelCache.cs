@@ -1,9 +1,9 @@
-﻿using MyDAL.Core.Common;
+﻿using HPC.DAL.Core.Common;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace MyDAL.Core.Models.Cache
+namespace HPC.DAL.Core.Models.Cache
 {
     internal class TableModelCache
     {

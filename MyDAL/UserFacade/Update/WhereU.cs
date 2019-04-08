@@ -1,9 +1,9 @@
-﻿using MyDAL.Core.Bases;
-using MyDAL.Impls;
-using MyDAL.Interfaces;
+﻿using HPC.DAL.Core.Bases;
+using HPC.DAL.Impls;
+using HPC.DAL.Interfaces;
 using System.Threading.Tasks;
 
-namespace MyDAL.UserFacade.Update
+namespace HPC.DAL.UserFacade.Update
 {
     /// <summary>
     /// 请参阅: <see langword="目录索引 https://www.cnblogs.com/Meng-NET/"/>

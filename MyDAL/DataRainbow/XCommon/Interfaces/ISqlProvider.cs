@@ -1,7 +1,7 @@
-﻿using MyDAL.Core.Common;
+﻿using HPC.DAL.Core.Common;
 using System.Collections.Generic;
 
-namespace MyDAL.DataRainbow.XCommon.Interfaces
+namespace HPC.DAL.DataRainbow.XCommon.Interfaces
 {
     internal interface ISqlProvider
     {

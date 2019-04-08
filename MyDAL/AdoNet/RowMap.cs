@@ -1,11 +1,11 @@
-﻿using MyDAL.Core.Helper;
-using MyDAL.ModelTools;
+﻿using HPC.DAL.Core.Helper;
+using HPC.DAL.ModelTools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace MyDAL.AdoNet
+namespace HPC.DAL.AdoNet
 {
     internal sealed class RowMap
     {

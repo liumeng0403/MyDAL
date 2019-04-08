@@ -1,13 +1,13 @@
-﻿using MyDAL.Core.Bases;
-using MyDAL.Core.Common;
-using MyDAL.Core.Extensions;
+﻿using HPC.DAL.Core.Bases;
+using HPC.DAL.Core.Common;
+using HPC.DAL.Core.Extensions;
 using System;
 using System.Collections;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 
-namespace MyDAL.Core.Helper
+namespace HPC.DAL.Core.Helper
 {
     internal class CsValueHelper
     {

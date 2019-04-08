@@ -1,12 +1,12 @@
-﻿using MyDAL.Core.Enums;
-using MyDAL.UserFacade.Delete;
-using MyDAL.UserFacade.Join;
-using MyDAL.UserFacade.Query;
-using MyDAL.UserFacade.Update;
+﻿using HPC.DAL.Core.Enums;
+using HPC.DAL.UserFacade.Delete;
+using HPC.DAL.UserFacade.Join;
+using HPC.DAL.UserFacade.Query;
+using HPC.DAL.UserFacade.Update;
 using System;
 using System.Linq.Expressions;
 
-namespace MyDAL
+namespace HPC.DAL
 {
     /// <summary>
     /// 请参阅: <see langword="目录索引 https://www.cnblogs.com/Meng-NET/"/>

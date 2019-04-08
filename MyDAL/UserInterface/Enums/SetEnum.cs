@@ -1,4 +1,4 @@
-﻿namespace MyDAL
+﻿namespace HPC.DAL
 {
     /// <summary>
     /// 数据表-字段-更新模式

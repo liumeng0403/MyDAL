@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using HPC.DAL;
+using Microsoft.AspNetCore.Identity;
 using MyDAL.Test.Enums;
 using System;
 

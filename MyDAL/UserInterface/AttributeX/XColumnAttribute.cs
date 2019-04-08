@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyDAL
+namespace HPC.DAL
 {
     /// <summary>
     /// 用于标记 DB-Table 的 M 或 VM 的属性, 以指示属性对应的 DB-Column

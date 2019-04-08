@@ -1,6 +1,6 @@
-﻿using MyDAL.Core.Bases;
+﻿using HPC.DAL.Core.Bases;
 
-namespace MyDAL.UserFacade.Update
+namespace HPC.DAL.UserFacade.Update
 {
     /// <summary>
     /// 请参阅: <see langword="目录索引 https://www.cnblogs.com/Meng-NET/"/>

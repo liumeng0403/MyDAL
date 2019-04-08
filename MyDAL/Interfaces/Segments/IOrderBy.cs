@@ -1,7 +1,7 @@
-﻿using MyDAL.UserFacade.Join;
-using MyDAL.UserFacade.Query;
+﻿using HPC.DAL.UserFacade.Join;
+using HPC.DAL.UserFacade.Query;
 
-namespace MyDAL.Interfaces.Segments
+namespace HPC.DAL.Interfaces.Segments
 {
     internal interface IOrderByQ<M>
         where M : class

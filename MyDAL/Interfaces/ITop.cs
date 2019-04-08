@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace MyDAL.Interfaces
+namespace HPC.DAL.Interfaces
 {
     internal interface ITopAsync<M>
         where M : class

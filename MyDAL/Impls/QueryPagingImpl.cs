@@ -1,13 +1,13 @@
-﻿using MyDAL.Core.Bases;
-using MyDAL.Core.Enums;
-using MyDAL.Core.Extensions;
-using MyDAL.Impls.Base;
-using MyDAL.Interfaces;
+﻿using HPC.DAL.Core.Bases;
+using HPC.DAL.Core.Enums;
+using HPC.DAL.Core.Extensions;
+using HPC.DAL.Impls.Base;
+using HPC.DAL.Interfaces;
 using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace MyDAL.Impls
+namespace HPC.DAL.Impls
 {
     internal sealed class QueryPagingAsyncImpl<M>
     : ImplerAsync

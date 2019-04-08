@@ -1,4 +1,4 @@
-﻿namespace MyDAL.Core.Enums
+﻿namespace HPC.DAL.Core.Enums
 {
     internal enum OptionEnum
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyDAL
+namespace HPC.DAL
 {
     /// <summary>
     /// 用于 Paging Query 的查询

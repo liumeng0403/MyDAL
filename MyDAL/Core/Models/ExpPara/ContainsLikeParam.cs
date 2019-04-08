@@ -1,6 +1,6 @@
-﻿using MyDAL.Core.Enums;
+﻿using HPC.DAL.Core.Enums;
 
-namespace MyDAL.Core.Models.ExpPara
+namespace HPC.DAL.Core.Models.ExpPara
 {
     internal class ContainsLikeParam
     {

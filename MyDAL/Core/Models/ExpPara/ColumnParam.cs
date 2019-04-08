@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyDAL.Core.Models.ExpPara
+namespace HPC.DAL.Core.Models.ExpPara
 {
     internal class ColumnParam
     {

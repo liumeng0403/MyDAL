@@ -1,4 +1,4 @@
-﻿namespace MyDAL
+﻿namespace HPC.DAL
 {
     /// <summary>
     /// 排序方式

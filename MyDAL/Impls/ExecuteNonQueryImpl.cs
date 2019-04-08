@@ -1,9 +1,9 @@
-﻿using MyDAL.Core.Bases;
-using MyDAL.Impls.Base;
-using MyDAL.Interfaces;
+﻿using HPC.DAL.Core.Bases;
+using HPC.DAL.Impls.Base;
+using HPC.DAL.Interfaces;
 using System.Threading.Tasks;
 
-namespace MyDAL.Impls
+namespace HPC.DAL.Impls
 {
     internal sealed class ExecuteNonQuerySQLAsyncImpl
     : ImplerAsync

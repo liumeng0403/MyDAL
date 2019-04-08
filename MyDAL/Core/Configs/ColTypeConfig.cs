@@ -1,6 +1,6 @@
-﻿using MyDAL.Core.Enums;
+﻿using HPC.DAL.Core.Enums;
 
-namespace MyDAL.Core.Configs
+namespace HPC.DAL.Core.Configs
 {
     internal class ColTypeConfig
     {

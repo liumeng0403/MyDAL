@@ -1,7 +1,7 @@
-﻿using MyDAL.Core.Enums;
+﻿using HPC.DAL.Core.Enums;
 using System;
 
-namespace MyDAL.DataRainbow.MySQL
+namespace HPC.DAL.DataRainbow.MySQL
 {
     /*
      * CREATE TABLE `MySqlCloumnType` (

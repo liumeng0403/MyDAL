@@ -1,4 +1,4 @@
-﻿namespace MyDAL
+﻿namespace HPC.DAL
 {
     public enum ParamDirectionEnum
     {

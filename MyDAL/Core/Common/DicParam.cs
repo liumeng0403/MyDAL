@@ -1,9 +1,9 @@
-﻿using MyDAL.AdoNet;
-using MyDAL.Core.Bases;
+﻿using HPC.DAL.AdoNet;
+using HPC.DAL.Core.Bases;
 using System;
 using System.Collections.Generic;
 
-namespace MyDAL.Core.Common
+namespace HPC.DAL.Core.Common
 {
     internal class DicParam
         : DicBase

@@ -1,8 +1,8 @@
-﻿using MyDAL.Core.Bases;
-using MyDAL.DataRainbow.XCommon.Interfaces;
+﻿using HPC.DAL.Core.Bases;
+using HPC.DAL.DataRainbow.XCommon.Interfaces;
 using System.Data;
 
-namespace MyDAL.DataRainbow.MySQL
+namespace HPC.DAL.DataRainbow.MySQL
 {
     internal sealed class MySqlTypeConfig
         : IDbTypeConfig

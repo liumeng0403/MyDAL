@@ -1,4 +1,5 @@
-﻿using MyDAL.Test.Entities.MyDAL_TestDB;
+﻿using HPC.DAL;
+using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.Enums;
 using MyDAL.Test.TestData;
 using Newtonsoft.Json;
@@ -276,7 +277,7 @@ namespace MyDAL.Test.Create
         {
             /*
              * 可以使用便捷方法： IDbConnection.CreateAsync<M>(M m)
-             * 方法命名空间：using MyDAL;
+             * 方法命名空间：using HPC.DAL;
              * 方法描述： async Task<int> CreateAsync<M>(this IDbConnection conn, M m)
              */
 
@@ -292,7 +293,7 @@ namespace MyDAL.Test.Create
         {
             /*
              * 可以使用便捷方法： IDbConnection.CreateBatchAsync<M>(IEnumerable<M> mList)
-             * 方法命名空间：using MyDAL;
+             * 方法命名空间：using HPC.DAL;
              * 方法描述： async Task<int> CreateBatchAsync<M>(this IDbConnection conn, IEnumerable<M> mList)
              */
 
@@ -309,7 +310,7 @@ namespace MyDAL.Test.Create
             /*
              * 多表连接方式插入表数据，自己写 SQL
              * 然后使用方法： IDbConnection.ExecuteNonQueryAsync(string sql, List<XParam> dbParas = null)
-             * 方法命名空间：using MyDAL;
+             * 方法命名空间：using HPC.DAL;
              * 方法描述： async Task<int> ExecuteNonQueryAsync(this IDbConnection conn, string sql, List<XParam> dbParas = null)
              */
 
@@ -326,7 +327,7 @@ namespace MyDAL.Test.Create
             /*
              * 多表连接方式插入表数据，自己写 SQL
              * 然后使用方法： IDbConnection.ExecuteNonQueryAsync(string sql, List<XParam> dbParas = null)
-             * 方法命名空间：using MyDAL;
+             * 方法命名空间：using HPC.DAL;
              * 方法描述： async Task<int> ExecuteNonQueryAsync(this IDbConnection conn, string sql, List<XParam> dbParas = null)
              */
 

@@ -1,4 +1,5 @@
-﻿using MyDAL.Test.Entities.MyDAL_TestDB;
+﻿using HPC.DAL;
+using MyDAL.Test.Entities.MyDAL_TestDB;
 using System;
 using Xunit;
 

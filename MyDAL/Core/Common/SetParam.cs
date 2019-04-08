@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyDAL.Core.Common
+namespace HPC.DAL.Core.Common
 {
     internal class SetParam
     {

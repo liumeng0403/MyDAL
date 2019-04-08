@@ -1,9 +1,9 @@
-﻿using MyDAL.UserFacade.Delete;
-using MyDAL.UserFacade.Join;
-using MyDAL.UserFacade.Query;
-using MyDAL.UserFacade.Update;
+﻿using HPC.DAL.UserFacade.Delete;
+using HPC.DAL.UserFacade.Join;
+using HPC.DAL.UserFacade.Query;
+using HPC.DAL.UserFacade.Update;
 
-namespace MyDAL.Interfaces.Segments
+namespace HPC.DAL.Interfaces.Segments
 {
     internal interface IWhereD<M>
         where M : class

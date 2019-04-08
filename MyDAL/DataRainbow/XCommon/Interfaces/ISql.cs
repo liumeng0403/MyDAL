@@ -1,9 +1,9 @@
-﻿using MyDAL.Core.Bases;
-using MyDAL.Core.Common;
+﻿using HPC.DAL.Core.Bases;
+using HPC.DAL.Core.Common;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyDAL.DataRainbow.XCommon.Interfaces
+namespace HPC.DAL.DataRainbow.XCommon.Interfaces
 {
     internal interface ISql
     {

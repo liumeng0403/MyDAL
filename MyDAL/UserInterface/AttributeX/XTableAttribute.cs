@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyDAL
+namespace HPC.DAL
 {
     /// <summary>
     /// 用于标记与 DB Table 对应的实体类

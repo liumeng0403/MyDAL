@@ -1,4 +1,5 @@
 ﻿
+using HPC.DAL;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 

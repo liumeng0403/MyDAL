@@ -1,7 +1,7 @@
-﻿using MyDAL.ModelTools;
+﻿using HPC.DAL.ModelTools;
 using System;
 
-namespace MyDAL.Core.Extensions
+namespace HPC.DAL.Core.Extensions
 {
     internal static class ObjectMethodExtensions
     {

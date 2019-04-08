@@ -1,7 +1,7 @@
-﻿using MyDAL.Core.Bases;
+﻿using HPC.DAL.Core.Bases;
 using System;
 
-namespace MyDAL.Core.Helper
+namespace HPC.DAL.Core.Helper
 {
     internal class ToStringHelper
     {

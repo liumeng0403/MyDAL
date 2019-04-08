@@ -1,4 +1,4 @@
-﻿namespace MyDAL.Core.Common
+﻿namespace HPC.DAL.Core.Common
 {
     internal class SetDic
     {

@@ -1,4 +1,4 @@
-﻿namespace MyDAL
+﻿namespace HPC.DAL
 {
     /// <summary>
     /// Model-Property 对应的 Table-Column 类型

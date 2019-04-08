@@ -1,9 +1,9 @@
-﻿using MyDAL.Core.Common;
-using MyDAL.Core.Enums;
-using MyDAL.Core.Extensions;
-using MyDAL.Core.Models.ExpPara;
-using MyDAL.Core.Models.Page;
-using MyDAL.ModelTools;
+﻿using HPC.DAL.Core.Common;
+using HPC.DAL.Core.Enums;
+using HPC.DAL.Core.Extensions;
+using HPC.DAL.Core.Models.ExpPara;
+using HPC.DAL.Core.Models.Page;
+using HPC.DAL.ModelTools;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace MyDAL.Core.Bases
+namespace HPC.DAL.Core.Bases
 {
     /// <summary>
     /// 

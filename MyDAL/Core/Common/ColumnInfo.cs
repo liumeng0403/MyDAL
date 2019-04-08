@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyDAL.Core.Common
+namespace HPC.DAL.Core.Common
 {
     internal class ColumnInfo
     {

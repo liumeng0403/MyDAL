@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MyDAL
+namespace HPC.DAL
 {
     /// <summary>
     ///     分页列表

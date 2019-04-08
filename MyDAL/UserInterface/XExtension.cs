@@ -1,20 +1,20 @@
-﻿using MyDAL.AdoNet;
-using MyDAL.AdoNet.Bases;
-using MyDAL.Core;
-using MyDAL.Core.Enums;
-using MyDAL.Impls;
-using MyDAL.UserFacade.Create;
-using MyDAL.UserFacade.Delete;
-using MyDAL.UserFacade.Join;
-using MyDAL.UserFacade.Query;
-using MyDAL.UserFacade.Update;
+﻿using HPC.DAL.AdoNet;
+using HPC.DAL.AdoNet.Bases;
+using HPC.DAL.Core;
+using HPC.DAL.Core.Enums;
+using HPC.DAL.Impls;
+using HPC.DAL.UserFacade.Create;
+using HPC.DAL.UserFacade.Delete;
+using HPC.DAL.UserFacade.Join;
+using HPC.DAL.UserFacade.Query;
+using HPC.DAL.UserFacade.Update;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace MyDAL
+namespace HPC.DAL
 {
     /// <summary>
     /// 请参阅: <see langword="目录索引 https://www.cnblogs.com/Meng-NET/"/>

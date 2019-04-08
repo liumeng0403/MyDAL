@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace MyDAL.AdoNet
+namespace HPC.DAL.AdoNet
 {
     /// <summary>
     /// SQL 参数

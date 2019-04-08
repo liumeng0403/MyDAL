@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace MyDAL.AdoNet
+namespace HPC.DAL.AdoNet
 {
     internal sealed class MapType
     {

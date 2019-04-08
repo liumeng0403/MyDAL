@@ -1,4 +1,4 @@
-﻿namespace MyDAL
+﻿namespace HPC.DAL
 {
     /// <summary>
     ///     分页查询设置

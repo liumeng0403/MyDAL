@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace MyDAL.Core.Common
+namespace HPC.DAL.Core.Common
 {
     internal class AutoRetry
     {

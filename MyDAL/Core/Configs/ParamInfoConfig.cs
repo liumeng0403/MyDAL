@@ -1,12 +1,12 @@
-﻿using MyDAL.AdoNet;
-using MyDAL.Core.Bases;
-using MyDAL.Core.Common;
-using MyDAL.Core.Extensions;
-using MyDAL.ModelTools;
+﻿using HPC.DAL.AdoNet;
+using HPC.DAL.Core.Bases;
+using HPC.DAL.Core.Common;
+using HPC.DAL.Core.Extensions;
+using HPC.DAL.ModelTools;
 using System;
 using System.Data;
 
-namespace MyDAL.Core.Configs
+namespace HPC.DAL.Core.Configs
 {
     internal class ParamInfoConfig
     {

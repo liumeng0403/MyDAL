@@ -1,11 +1,11 @@
-﻿using MyDAL.Core.Bases;
-using MyDAL.Core.Enums;
-using MyDAL.DataRainbow.MySQL;
-using MyDAL.DataRainbow.SQLServer;
-using MyDAL.DataRainbow.XCommon.Interfaces;
+﻿using HPC.DAL.Core.Bases;
+using HPC.DAL.Core.Enums;
+using HPC.DAL.DataRainbow.MySQL;
+using HPC.DAL.DataRainbow.SQLServer;
+using HPC.DAL.DataRainbow.XCommon.Interfaces;
 using System.Data;
 
-namespace MyDAL.Core.Configs
+namespace HPC.DAL.Core.Configs
 {
     internal sealed class DbTypeConfig
         : IDbTypeConfig

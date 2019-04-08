@@ -1,4 +1,5 @@
-﻿using MyDAL.Test.Enums;
+﻿using HPC.DAL;
+using MyDAL.Test.Enums;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 

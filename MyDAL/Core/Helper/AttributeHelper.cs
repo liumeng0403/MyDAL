@@ -1,10 +1,10 @@
-﻿using MyDAL.Core.Bases;
+﻿using HPC.DAL.Core.Bases;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace MyDAL.Core.Helper
+namespace HPC.DAL.Core.Helper
 {
     internal class AttributeHelper
     {

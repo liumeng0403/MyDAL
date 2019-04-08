@@ -1,15 +1,15 @@
-﻿using MyDAL.AdoNet;
-using MyDAL.Core.Bases;
-using MyDAL.Core.Common;
-using MyDAL.Core.Enums;
-using MyDAL.Core.Models.ExpPara;
-using MyDAL.ModelTools;
+﻿using HPC.DAL.AdoNet;
+using HPC.DAL.Core.Bases;
+using HPC.DAL.Core.Common;
+using HPC.DAL.Core.Enums;
+using HPC.DAL.Core.Models.ExpPara;
+using HPC.DAL.ModelTools;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-namespace MyDAL.Core.Helper
+namespace HPC.DAL.Core.Helper
 {
     internal class DicParamHelper
     {

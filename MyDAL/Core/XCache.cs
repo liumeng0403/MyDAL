@@ -1,10 +1,10 @@
-﻿using MyDAL.AdoNet;
-using MyDAL.Core.Bases;
-using MyDAL.Core.Common;
-using MyDAL.Core.Enums;
-using MyDAL.Core.Helper;
-using MyDAL.Core.Models.Cache;
-using MyDAL.ModelTools;
+﻿using HPC.DAL.AdoNet;
+using HPC.DAL.Core.Bases;
+using HPC.DAL.Core.Common;
+using HPC.DAL.Core.Enums;
+using HPC.DAL.Core.Helper;
+using HPC.DAL.Core.Models.Cache;
+using HPC.DAL.ModelTools;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 
-namespace MyDAL.Core
+namespace HPC.DAL.Core
 {
     internal class XCache
     {

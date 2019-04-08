@@ -1,6 +1,6 @@
-﻿using MyDAL.Core.Enums;
+﻿using HPC.DAL.Core.Enums;
 
-namespace MyDAL.Core.Bases
+namespace HPC.DAL.Core.Bases
 {
     internal class DicBase
     {

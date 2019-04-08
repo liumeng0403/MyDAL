@@ -1,13 +1,13 @@
-﻿using MyDAL.Core;
-using MyDAL.Core.Common;
-using MyDAL.Core.Enums;
-using MyDAL.Core.Extensions;
+﻿using HPC.DAL.Core;
+using HPC.DAL.Core.Common;
+using HPC.DAL.Core.Enums;
+using HPC.DAL.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-namespace MyDAL
+namespace HPC.DAL
 {
     /// <summary>
     /// 只适用于 单线程 调试 代码时 查看 MyDAL 生成的 sql 与 param .

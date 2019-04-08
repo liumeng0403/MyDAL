@@ -1,4 +1,4 @@
-﻿namespace MyDAL
+﻿namespace HPC.DAL
 {
     /// <summary>
     /// 用于 Paging Option 以指定属性对应 column 的比较作用

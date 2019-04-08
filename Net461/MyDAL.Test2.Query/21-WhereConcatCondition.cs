@@ -3,7 +3,8 @@ using MyDAL.Test;
 using MyDAL.Test.Entities.MyDAL_TestDB;
 using System;
 using System.Threading.Tasks;
-using MyDAL.ModelTools;
+using HPC.DAL.ModelTools;
+using HPC.DAL;
 
 namespace MyDAL.Test2.Query
 {

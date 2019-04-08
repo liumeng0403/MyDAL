@@ -1,12 +1,12 @@
-﻿using MyDAL.AdoNet;
-using MyDAL.Core.Bases;
-using MyDAL.Core.Enums;
+﻿using HPC.DAL.AdoNet;
+using HPC.DAL.Core.Bases;
+using HPC.DAL.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyDAL.Impls.Base
+namespace HPC.DAL.Impls.Base
 {
     internal abstract class ImplerAsync
         : Impler

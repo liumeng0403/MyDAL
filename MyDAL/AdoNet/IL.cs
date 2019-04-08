@@ -1,4 +1,4 @@
-﻿using MyDAL.Core;
+﻿using HPC.DAL.Core;
 using System;
 using System.Data;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
 
-namespace MyDAL.AdoNet
+namespace HPC.DAL.AdoNet
 {
     internal class CommonIL
     {

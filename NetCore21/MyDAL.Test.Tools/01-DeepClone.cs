@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Xunit;
-using MyDAL.ModelTools;
+using HPC.DAL.ModelTools;
 using MyDAL.Test.ModelTools;
 using System;
 

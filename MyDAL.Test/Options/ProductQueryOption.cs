@@ -1,4 +1,6 @@
-﻿namespace MyDAL.Test.Options
+﻿using HPC.DAL;
+
+namespace MyDAL.Test.Options
 {
     public class ProductQueryOption 
         : PagingOption

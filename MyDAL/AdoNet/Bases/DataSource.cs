@@ -1,13 +1,13 @@
-﻿using MyDAL.Core;
-using MyDAL.Core.Bases;
-using MyDAL.Core.Common;
-using MyDAL.Core.Enums;
+﻿using HPC.DAL.Core;
+using HPC.DAL.Core.Bases;
+using HPC.DAL.Core.Common;
+using HPC.DAL.Core.Enums;
 using System;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
 
-namespace MyDAL.AdoNet.Bases
+namespace HPC.DAL.AdoNet.Bases
 {
     internal abstract class DataSource
     {

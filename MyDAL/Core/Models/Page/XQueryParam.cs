@@ -1,9 +1,9 @@
-﻿using MyDAL.Core.Common;
-using MyDAL.Core.Models.ExpPara;
+﻿using HPC.DAL.Core.Common;
+using HPC.DAL.Core.Models.ExpPara;
 using System;
 using System.Reflection;
 
-namespace MyDAL.Core.Models.Page
+namespace HPC.DAL.Core.Models.Page
 {
     internal class XQueryParam
     {

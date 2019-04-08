@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyDAL.Core.Extensions
+namespace HPC.DAL.Core.Extensions
 {
     internal static class TypeExtensions
     {

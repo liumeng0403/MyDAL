@@ -1,11 +1,11 @@
-﻿using MyDAL.Core.Bases;
+﻿using HPC.DAL.Core.Bases;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
-namespace MyDAL.Core.Helper
+namespace HPC.DAL.Core.Helper
 {
     internal class GenericHelper
     {

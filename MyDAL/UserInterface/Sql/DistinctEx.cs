@@ -1,7 +1,7 @@
-﻿using MyDAL.UserFacade.Join;
-using MyDAL.UserFacade.Query;
+﻿using HPC.DAL.UserFacade.Join;
+using HPC.DAL.UserFacade.Query;
 
-namespace MyDAL
+namespace HPC.DAL
 {
     /// <summary>
     /// 请参阅: <see langword="目录索引 https://www.cnblogs.com/Meng-NET/"/>

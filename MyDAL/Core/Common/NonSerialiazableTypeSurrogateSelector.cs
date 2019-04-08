@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Runtime.Serialization;
 
-namespace MyDAL.Core.Common
+namespace HPC.DAL.Core.Common
 {
     /// <summary>
     /// 深度复制 / Surrogate

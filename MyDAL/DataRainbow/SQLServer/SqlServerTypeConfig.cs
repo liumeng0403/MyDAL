@@ -1,8 +1,8 @@
-﻿using MyDAL.Core.Bases;
-using MyDAL.DataRainbow.XCommon.Interfaces;
+﻿using HPC.DAL.Core.Bases;
+using HPC.DAL.DataRainbow.XCommon.Interfaces;
 using System.Data;
 
-namespace MyDAL.DataRainbow.SQLServer
+namespace HPC.DAL.DataRainbow.SQLServer
 {
     internal sealed class SqlServerTypeConfig
         : IDbTypeConfig

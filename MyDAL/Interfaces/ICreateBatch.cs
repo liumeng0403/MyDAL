@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace MyDAL.Interfaces
+namespace HPC.DAL.Interfaces
 {
     internal interface ICreateBatchAsync<M>
         where M:class

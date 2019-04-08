@@ -1,10 +1,10 @@
-﻿using MyDAL.Core.Common;
+﻿using HPC.DAL.Core.Common;
 using System;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace MyDAL.ModelTools
+namespace HPC.DAL.ModelTools
 {
     /// <summary>
     /// 请参阅: <see langword="目录索引 https://www.cnblogs.com/Meng-NET/"/>

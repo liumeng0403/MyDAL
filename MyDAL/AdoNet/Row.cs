@@ -1,8 +1,8 @@
-﻿using MyDAL.Core.Bases;
+﻿using HPC.DAL.Core.Bases;
 using System;
 using System.Data;
 
-namespace MyDAL.AdoNet
+namespace HPC.DAL.AdoNet
 {
 
     internal class Row<M>

@@ -1,4 +1,4 @@
-﻿namespace MyDAL.Core.Configs
+﻿namespace HPC.DAL.Core.Configs
 {
     internal class ExceptionConfig
     {

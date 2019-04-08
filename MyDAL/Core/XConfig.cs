@@ -1,11 +1,11 @@
-﻿using MyDAL.AdoNet;
-using MyDAL.Core.Bases;
-using MyDAL.Core.Common;
-using MyDAL.Core.Configs;
-using MyDAL.Core.Enums;
-using MyDAL.DataRainbow.MySQL;
-using MyDAL.DataRainbow.SQLServer;
-using MyDAL.DataRainbow.XCommon.Interfaces;
+﻿using HPC.DAL.AdoNet;
+using HPC.DAL.Core.Bases;
+using HPC.DAL.Core.Common;
+using HPC.DAL.Core.Configs;
+using HPC.DAL.Core.Enums;
+using HPC.DAL.DataRainbow.MySQL;
+using HPC.DAL.DataRainbow.SQLServer;
+using HPC.DAL.DataRainbow.XCommon.Interfaces;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 
-namespace MyDAL.Core
+namespace HPC.DAL.Core
 {
     internal class XConfig
     {

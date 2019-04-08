@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using HPC.DAL;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MyDAL.Test;
 using MyDAL.Test.Entities.MyDAL_TestDB;
 using System;

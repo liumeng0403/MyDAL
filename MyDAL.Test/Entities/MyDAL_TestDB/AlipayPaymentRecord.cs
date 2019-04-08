@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HPC.DAL;
+using System;
 
 namespace MyDAL.Test.Entities.MyDAL_TestDB
 {

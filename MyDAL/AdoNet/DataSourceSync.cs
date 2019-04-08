@@ -1,15 +1,15 @@
-﻿using MyDAL.AdoNet.Bases;
-using MyDAL.Core;
-using MyDAL.Core.Bases;
-using MyDAL.Core.Common;
-using MyDAL.Core.Enums;
+﻿using HPC.DAL.AdoNet.Bases;
+using HPC.DAL.Core;
+using HPC.DAL.Core.Bases;
+using HPC.DAL.Core.Common;
+using HPC.DAL.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
 
-namespace MyDAL.AdoNet
+namespace HPC.DAL.AdoNet
 {
     internal sealed class DataSourceSync
         : DataSource

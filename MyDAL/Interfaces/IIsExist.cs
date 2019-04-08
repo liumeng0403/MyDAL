@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace MyDAL.Interfaces
+namespace HPC.DAL.Interfaces
 {
     internal interface IIsExistAsync
     {

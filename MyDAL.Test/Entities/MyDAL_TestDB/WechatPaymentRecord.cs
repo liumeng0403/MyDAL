@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HPC.DAL;
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyDAL.Test.Entities.MyDAL_TestDB

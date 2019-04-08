@@ -1,4 +1,5 @@
-﻿using MyDAL.Test.Entities;
+﻿using HPC.DAL;
+using MyDAL.Test.Entities;
 using MyDAL.Test.Enums;
 using MySql.Data.MySqlClient;
 using System;

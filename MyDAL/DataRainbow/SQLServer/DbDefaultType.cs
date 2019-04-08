@@ -1,7 +1,7 @@
-﻿using MyDAL.Core.Enums;
+﻿using HPC.DAL.Core.Enums;
 using System;
 
-namespace MyDAL.DataRainbow.SQLServer
+namespace HPC.DAL.DataRainbow.SQLServer
 {
 
     /*

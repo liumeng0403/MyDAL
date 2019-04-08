@@ -1,15 +1,15 @@
-﻿using MyDAL.AdoNet;
-using MyDAL.AdoNet.Bases;
-using MyDAL.Core.Common;
-using MyDAL.Core.Enums;
-using MyDAL.Core.Helper;
-using MyDAL.DataRainbow.XCommon.Interfaces;
+﻿using HPC.DAL.AdoNet;
+using HPC.DAL.AdoNet.Bases;
+using HPC.DAL.Core.Common;
+using HPC.DAL.Core.Enums;
+using HPC.DAL.Core.Helper;
+using HPC.DAL.DataRainbow.XCommon.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-namespace MyDAL.Core.Bases
+namespace HPC.DAL.Core.Bases
 {
     internal abstract class Context
     {
