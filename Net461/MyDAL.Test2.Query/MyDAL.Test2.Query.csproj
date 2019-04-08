@@ -53,9 +53,9 @@
       <Project>{49257e37-9a65-4922-b1cf-d87bca69f8b3}</Project>
       <Name>MyDAL.Test</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\MyDAL\MyDAL.csproj">
+    <ProjectReference Include="..\..\MyDAL\HPC.DAL.csproj">
       <Project>{06c72481-97ea-45a9-be4d-9ed33dacc9d5}</Project>
-      <Name>MyDAL</Name>
+      <Name>HPC.DAL</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
