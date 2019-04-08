@@ -36,7 +36,7 @@ namespace MyDAL.UserFacade.Update
         [Obsolete("警告：此 API 会更新表中所有数据！！！", false)]
         public async Task<int> UpdateAsync(SetEnum set = SetEnum.AllowedNull)
         {
-            return await new UpdateImpl<M>(DC).UpdateAsync(set);
+            return await new UpdateAsyncImpl<M>(DC).UpdateAsync(set);
         }
 
         /// <summary>

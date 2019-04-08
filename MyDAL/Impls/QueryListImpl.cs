@@ -1,6 +1,7 @@
 ﻿using MyDAL.Core.Bases;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
+using MyDAL.Impls.Base;
 using MyDAL.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,25 +11,25 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Impls
 {
-    internal sealed class QueryListImpl<M>
-        : Impler
-        , IQueryListAsync<M>, IQueryList<M>
-        where M : class
+    internal sealed class QueryListAsyncImpl<M>
+    : ImplerAsync
+    , IQueryListAsync<M>
+    where M : class
     {
-        internal QueryListImpl(Context dc)
+        internal QueryListAsyncImpl(Context dc)
             : base(dc) { }
 
         public async Task<List<M>> QueryListAsync()
         {
             PreExecuteHandle(UiMethodEnum.QueryListAsync);
-            return await DC.DSA.ExecuteReaderMultiRowAsync<M>();
+            return await DSA.ExecuteReaderMultiRowAsync<M>();
         }
         public async Task<List<VM>> QueryListAsync<VM>()
             where VM : class
         {
             SelectMQ<M, VM>();
             PreExecuteHandle(UiMethodEnum.QueryListAsync);
-            return await DC.DSA.ExecuteReaderMultiRowAsync<VM>();
+            return await DSA.ExecuteReaderMultiRowAsync<VM>();
         }
         public async Task<List<T>> QueryListAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
@@ -36,27 +37,36 @@ namespace MyDAL.Impls
             {
                 SingleColumnHandle(columnMapFunc);
                 PreExecuteHandle(UiMethodEnum.QueryListAsync);
-                return await DC.DSA.ExecuteReaderSingleColumnAsync(columnMapFunc.Compile());
+                return await DSA.ExecuteReaderSingleColumnAsync(columnMapFunc.Compile());
             }
             else
             {
                 SelectMHandle(columnMapFunc);
                 PreExecuteHandle(UiMethodEnum.QueryListAsync);
-                return await DC.DSA.ExecuteReaderMultiRowAsync<T>();
+                return await DSA.ExecuteReaderMultiRowAsync<T>();
             }
         }
-
+ 
+    }
+    internal sealed class QueryListImpl<M>
+        : ImplerSync
+        , IQueryList<M>
+        where M : class
+    {
+        internal QueryListImpl(Context dc)
+            : base(dc) { }
+         
         public List<M> QueryList()
         {
             PreExecuteHandle(UiMethodEnum.QueryListAsync);
-            return DC.DSS.ExecuteReaderMultiRow<M>();
+            return DSS.ExecuteReaderMultiRow<M>();
         }
         public List<VM> QueryList<VM>()
             where VM : class
         {
             SelectMQ<M, VM>();
             PreExecuteHandle(UiMethodEnum.QueryListAsync);
-            return DC.DSS.ExecuteReaderMultiRow<VM>();
+            return DSS.ExecuteReaderMultiRow<VM>();
         }
         public List<T> QueryList<T>(Expression<Func<M, T>> columnMapFunc)
         {
@@ -64,22 +74,22 @@ namespace MyDAL.Impls
             {
                 SingleColumnHandle(columnMapFunc);
                 PreExecuteHandle(UiMethodEnum.QueryListAsync);
-                return DC.DSS.ExecuteReaderSingleColumn(columnMapFunc.Compile());
+                return DSS.ExecuteReaderSingleColumn(columnMapFunc.Compile());
             }
             else
             {
                 SelectMHandle(columnMapFunc);
                 PreExecuteHandle(UiMethodEnum.QueryListAsync);
-                return DC.DSS.ExecuteReaderMultiRow<T>();
+                return DSS.ExecuteReaderMultiRow<T>();
             }
         }
     }
 
-    internal sealed class QueryListXImpl
-        : Impler
-        , IQueryListXAsync, IQueryListX
+    internal sealed class QueryListXAsyncImpl
+    : ImplerAsync
+    , IQueryListXAsync 
     {
-        internal QueryListXImpl(Context dc)
+        internal QueryListXAsyncImpl(Context dc)
             : base(dc) { }
 
         public async Task<List<M>> QueryListAsync<M>()
@@ -87,7 +97,7 @@ namespace MyDAL.Impls
         {
             SelectMHandle<M>();
             PreExecuteHandle(UiMethodEnum.QueryListAsync);
-            return await DC.DSA.ExecuteReaderMultiRowAsync<M>();
+            return await DSA.ExecuteReaderMultiRowAsync<M>();
         }
         public async Task<List<T>> QueryListAsync<T>(Expression<Func<T>> columnMapFunc)
         {
@@ -95,22 +105,30 @@ namespace MyDAL.Impls
             {
                 SingleColumnHandle(columnMapFunc);
                 PreExecuteHandle(UiMethodEnum.QueryListAsync);
-                return await DC.DSA.ExecuteReaderSingleColumnAsync<T>();
+                return await DSA.ExecuteReaderSingleColumnAsync<T>();
             }
             else
             {
                 SelectMHandle(columnMapFunc);
                 PreExecuteHandle(UiMethodEnum.QueryListAsync);
-                return await DC.DSA.ExecuteReaderMultiRowAsync<T>();
+                return await DSA.ExecuteReaderMultiRowAsync<T>();
             }
         }
-
+ 
+    }
+    internal sealed class QueryListXImpl
+        : ImplerSync
+        , IQueryListX
+    {
+        internal QueryListXImpl(Context dc)
+            : base(dc) { }
+         
         public List<M> QueryList<M>()
             where M : class
         {
             SelectMHandle<M>();
             PreExecuteHandle(UiMethodEnum.QueryListAsync);
-            return DC.DSS.ExecuteReaderMultiRow<M>();
+            return DSS.ExecuteReaderMultiRow<M>();
         }
         public List<T> QueryList<T>(Expression<Func<T>> columnMapFunc)
         {
@@ -118,22 +136,22 @@ namespace MyDAL.Impls
             {
                 SingleColumnHandle(columnMapFunc);
                 PreExecuteHandle(UiMethodEnum.QueryListAsync);
-                return DC.DSS.ExecuteReaderSingleColumn<T>();
+                return DSS.ExecuteReaderSingleColumn<T>();
             }
             else
             {
                 SelectMHandle(columnMapFunc);
                 PreExecuteHandle(UiMethodEnum.QueryListAsync);
-                return DC.DSS.ExecuteReaderMultiRow<T>();
+                return DSS.ExecuteReaderMultiRow<T>();
             }
         }
     }
 
-    internal sealed class QueryListSQLImpl
-        : Impler
-        , IQueryListSQLAsync, IQueryListSQL
+    internal sealed class QueryListSQLAsyncImpl
+    : ImplerAsync
+    , IQueryListSQLAsync 
     {
-        public QueryListSQLImpl(Context dc)
+        public QueryListSQLAsyncImpl(Context dc)
             : base(dc)
         { }
 
@@ -142,24 +160,33 @@ namespace MyDAL.Impls
             DC.Method = UiMethodEnum.QueryListAsync;
             if (typeof(T).IsSingleColumn())
             {
-                return await DC.DSA.ExecuteReaderSingleColumnAsync<T>();
+                return await DSA.ExecuteReaderSingleColumnAsync<T>();
             }
             else
             {
-                return await DC.DSA.ExecuteReaderMultiRowAsync<T>();
+                return await DSA.ExecuteReaderMultiRowAsync<T>();
             }
         }
 
+    }
+    internal sealed class QueryListSQLImpl
+        : ImplerSync
+        , IQueryListSQL
+    {
+        public QueryListSQLImpl(Context dc)
+            : base(dc)
+        { }
+         
         public List<T> QueryList<T>()
         {
             DC.Method = UiMethodEnum.QueryListAsync;
             if (typeof(T).IsSingleColumn())
             {
-                return DC.DSS.ExecuteReaderSingleColumn<T>();
+                return DSS.ExecuteReaderSingleColumn<T>();
             }
             else
             {
-                return DC.DSS.ExecuteReaderMultiRow<T>();
+                return DSS.ExecuteReaderMultiRow<T>();
             }
         }
     }

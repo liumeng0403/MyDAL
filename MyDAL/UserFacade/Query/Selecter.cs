@@ -39,7 +39,7 @@ namespace MyDAL.UserFacade.Query
         [Obsolete("警告：此 API 会查询表中所有数据！！！", false)]
         public async Task<List<M>> QueryListAsync()
         {
-            return await new QueryListImpl<M>(DC).QueryListAsync();
+            return await new QueryListAsyncImpl<M>(DC).QueryListAsync();
         }
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
@@ -48,7 +48,7 @@ namespace MyDAL.UserFacade.Query
         public async Task<List<VM>> QueryListAsync<VM>()
             where VM : class
         {
-            return await new QueryListImpl<M>(DC).QueryListAsync<VM>();
+            return await new QueryListAsyncImpl<M>(DC).QueryListAsync<VM>();
         }
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
@@ -56,7 +56,7 @@ namespace MyDAL.UserFacade.Query
         [Obsolete("警告：此 API 会查询表中所有数据！！！", false)]
         public async Task<List<T>> QueryListAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
-            return await new QueryListImpl<M>(DC).QueryListAsync(columnMapFunc);
+            return await new QueryListAsyncImpl<M>(DC).QueryListAsync(columnMapFunc);
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace MyDAL.UserFacade.Query
         /// <param name="pageSize">每页条数</param>
         public async Task<PagingResult<M>> QueryPagingAsync(int pageIndex, int pageSize)
         {
-            return await new QueryPagingImpl<M>(DC).QueryPagingAsync(pageIndex, pageSize);
+            return await new QueryPagingAsyncImpl<M>(DC).QueryPagingAsync(pageIndex, pageSize);
         }
         /// <summary>
         /// 单表分页查询
@@ -103,14 +103,14 @@ namespace MyDAL.UserFacade.Query
         public async Task<PagingResult<VM>> QueryPagingAsync<VM>(int pageIndex, int pageSize)
             where VM : class
         {
-            return await new QueryPagingImpl<M>(DC).QueryPagingAsync<VM>(pageIndex, pageSize);
+            return await new QueryPagingAsyncImpl<M>(DC).QueryPagingAsync<VM>(pageIndex, pageSize);
         }
         /// <summary>
         /// 单表分页查询
         /// </summary>
         public async Task<PagingResult<T>> QueryPagingAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
         {
-            return await new QueryPagingImpl<M>(DC).QueryPagingAsync<T>(pageIndex, pageSize, columnMapFunc);
+            return await new QueryPagingAsyncImpl<M>(DC).QueryPagingAsync<T>(pageIndex, pageSize, columnMapFunc);
         }
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace MyDAL.UserFacade.Query
         /// <returns>返回 top count 条数据</returns>
         public async Task<List<M>> TopAsync(int count)
         {
-            return await new TopImpl<M>(DC).TopAsync(count);
+            return await new TopAsyncImpl<M>(DC).TopAsync(count);
         }
         /// <summary>
         /// 单表数据查询
@@ -158,7 +158,7 @@ namespace MyDAL.UserFacade.Query
         public async Task<List<VM>> TopAsync<VM>(int count)
             where VM : class
         {
-            return await new TopImpl<M>(DC).TopAsync<VM>(count);
+            return await new TopAsyncImpl<M>(DC).TopAsync<VM>(count);
         }
         /// <summary>
         /// 单表数据查询
@@ -167,7 +167,7 @@ namespace MyDAL.UserFacade.Query
         /// <returns>返回 top count 条数据</returns>
         public async Task<List<T>> TopAsync<T>(int count, Expression<Func<M, T>> columnMapFunc)
         {
-            return await new TopImpl<M>(DC).TopAsync<T>(count, columnMapFunc);
+            return await new TopAsyncImpl<M>(DC).TopAsync<T>(count, columnMapFunc);
         }
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace MyDAL.UserFacade.Query
         /// </summary>
         public async Task<bool> IsExistAsync()
         {
-            return await new IsExistImpl<M>(DC).IsExistAsync();
+            return await new IsExistAsyncImpl<M>(DC).IsExistAsync();
         }
 
         /// <summary>

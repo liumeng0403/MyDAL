@@ -1,17 +1,18 @@
 ﻿using MyDAL.Core.Bases;
 using MyDAL.Core.Enums;
+using MyDAL.Impls.Base;
 using MyDAL.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MyDAL.Impls
 {
-    internal sealed class CreateBatchImpl<M>
-        : Impler
-        , ICreateBatchAsync<M>, ICreateBatch<M>
-        where M : class
+    internal sealed class CreateBatchAsyncImpl<M>
+    : ImplerAsync
+    , ICreateBatchAsync<M> 
+    where M : class
     {
-        internal CreateBatchImpl(Context dc)
+        internal CreateBatchAsyncImpl(Context dc)
             : base(dc)
         {
         }
@@ -24,10 +25,21 @@ namespace MyDAL.Impls
                 DC.DPH.ResetParameter();
                 CreateMHandle(list);
                 PreExecuteHandle(UiMethodEnum.CreateBatchAsync);
-                return await DC.DSA.ExecuteNonQueryAsync();
+                return await DSA.ExecuteNonQueryAsync();
             });
         }
-
+ 
+    }
+    internal sealed class CreateBatchImpl<M>
+        : ImplerSync
+        , ICreateBatch<M>
+        where M : class
+    {
+        internal CreateBatchImpl(Context dc)
+            : base(dc)
+        {
+        }
+         
         public int CreateBatch(IEnumerable<M> mList)
         {
             DC.Action = ActionEnum.Insert;
@@ -36,7 +48,7 @@ namespace MyDAL.Impls
                 DC.DPH.ResetParameter();
                 CreateMHandle(list);
                 PreExecuteHandle(UiMethodEnum.CreateBatchAsync);
-                return DC.DSS.ExecuteNonQuery();
+                return DSS.ExecuteNonQuery();
             });
         }
     }

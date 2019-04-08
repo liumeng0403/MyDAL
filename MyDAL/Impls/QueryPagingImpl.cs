@@ -1,6 +1,7 @@
 ﻿using MyDAL.Core.Bases;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
+using MyDAL.Impls.Base;
 using MyDAL.Interfaces;
 using System;
 using System.Linq.Expressions;
@@ -8,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Impls
 {
-    internal sealed class QueryPagingImpl<M>
-        : Impler
-        , IQueryPagingAsync<M>, IQueryPaging<M>
-            where M : class
+    internal sealed class QueryPagingAsyncImpl<M>
+    : ImplerAsync
+    , IQueryPagingAsync<M>
+        where M : class
     {
-        internal QueryPagingImpl(Context dc)
+        internal QueryPagingAsyncImpl(Context dc)
             : base(dc)
         { }
 
@@ -46,6 +47,16 @@ namespace MyDAL.Impls
             return await PagingListAsyncHandle<M, T>(UiMethodEnum.QueryPagingAsync, single, columnMapFunc.Compile());
         }
 
+    }
+    internal sealed class QueryPagingImpl<M>
+        : ImplerSync
+        , IQueryPaging<M>
+            where M : class
+    {
+        internal QueryPagingImpl(Context dc)
+            : base(dc)
+        { }
+
         public PagingResult<M> QueryPaging(int pageIndex, int pageSize)
         {
             DC.PageIndex = pageIndex;
@@ -76,12 +87,12 @@ namespace MyDAL.Impls
         }
     }
 
-    internal sealed class QueryPagingOImpl<M>
-        : Impler
-        , IQueryPagingOAsync<M>, IQueryPagingO<M>
-            where M : class
+    internal sealed class QueryPagingOAsyncImpl<M>
+    : ImplerAsync
+    , IQueryPagingOAsync<M>
+        where M : class
     {
-        internal QueryPagingOImpl(Context dc)
+        internal QueryPagingOAsyncImpl(Context dc)
             : base(dc) { }
 
         public async Task<PagingResult<M>> QueryPagingAsync()
@@ -108,6 +119,15 @@ namespace MyDAL.Impls
             return await PagingListAsyncHandle(UiMethodEnum.QueryPagingAsync, single, columnMapFunc.Compile());
         }
 
+    }
+    internal sealed class QueryPagingOImpl<M>
+        : ImplerSync
+        , IQueryPagingO<M>
+            where M : class
+    {
+        internal QueryPagingOImpl(Context dc)
+            : base(dc) { }
+
         public PagingResult<M> QueryPaging()
         {
             return PagingListAsyncHandleSync<M>(UiMethodEnum.QueryPagingAsync, false);
@@ -133,11 +153,11 @@ namespace MyDAL.Impls
         }
     }
 
-    internal sealed class QueryPagingXImpl
-        : Impler
-        , IQueryPagingXAsync, IQueryPagingX
+    internal sealed class QueryPagingXAsyncImpl
+    : ImplerAsync
+    , IQueryPagingXAsync
     {
-        internal QueryPagingXImpl(Context dc)
+        internal QueryPagingXAsyncImpl(Context dc)
             : base(dc)
         { }
 
@@ -165,6 +185,15 @@ namespace MyDAL.Impls
             return await PagingListAsyncHandle<T>(UiMethodEnum.QueryPagingAsync, single);
         }
 
+    }
+    internal sealed class QueryPagingXImpl
+        : ImplerSync
+        , IQueryPagingX
+    {
+        internal QueryPagingXImpl(Context dc)
+            : base(dc)
+        { }
+
         public PagingResult<M> QueryPaging<M>(int pageIndex, int pageSize)
             where M : class
         {
@@ -190,14 +219,13 @@ namespace MyDAL.Impls
         }
     }
 
-    internal sealed class PagingListXOImpl
-        : Impler
-        , IQueryPagingXOAsync, IQueryPagingXO
+    internal sealed class PagingListXOAsyncImpl
+    : ImplerAsync
+    , IQueryPagingXOAsync
     {
-        internal PagingListXOImpl(Context dc)
+        internal PagingListXOAsyncImpl(Context dc)
             : base(dc)
-        {
-        }
+        { }
 
         public async Task<PagingResult<M>> QueryPagingAsync<M>()
             where M : class
@@ -217,6 +245,16 @@ namespace MyDAL.Impls
                 SelectMHandle(columnMapFunc);
             }
             return await PagingListAsyncHandle<T>(UiMethodEnum.QueryPagingAsync, single);
+        }
+
+    }
+    internal sealed class PagingListXOImpl
+        : ImplerSync
+        , IQueryPagingXO
+    {
+        internal PagingListXOImpl(Context dc)
+            : base(dc)
+        {
         }
 
         public PagingResult<M> QueryPaging<M>()
@@ -240,24 +278,33 @@ namespace MyDAL.Impls
         }
     }
 
-    internal sealed class QueryPagingSQLImpl
-        : Impler
-        , IQueryPagingSQLAsync, IQueryPagingSQL
+    internal sealed class QueryPagingSQLAsyncImpl
+    : ImplerAsync
+    , IQueryPagingSQLAsync
     {
-        public QueryPagingSQLImpl(Context dc)
+        public QueryPagingSQLAsyncImpl(Context dc)
             : base(dc)
         { }
 
         public async Task<PagingResult<T>> QueryPagingAsync<T>()
         {
             DC.Method = UiMethodEnum.QueryPagingAsync;
-            return await DC.DSA.ExecuteReaderPagingAsync<None, T>(typeof(T).IsSingleColumn(), null);
+            return await DSA.ExecuteReaderPagingAsync<None, T>(typeof(T).IsSingleColumn(), null);
         }
+
+    }
+    internal sealed class QueryPagingSQLImpl
+        : ImplerSync
+        , IQueryPagingSQL
+    {
+        public QueryPagingSQLImpl(Context dc)
+            : base(dc)
+        { }
 
         public PagingResult<T> QueryPaging<T>()
         {
             DC.Method = UiMethodEnum.QueryPagingAsync;
-            return DC.DSS.ExecuteReaderPaging<None, T>(typeof(T).IsSingleColumn(), null);
+            return DSS.ExecuteReaderPaging<None, T>(typeof(T).IsSingleColumn(), null);
         }
     }
 }

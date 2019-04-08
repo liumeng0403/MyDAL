@@ -25,14 +25,14 @@ namespace MyDAL.UserFacade.Join
         public async Task<PagingResult<M>> QueryPagingAsync<M>()
             where M : class
         {
-            return await new PagingListXOImpl(DC).QueryPagingAsync<M>();
+            return await new PagingListXOAsyncImpl(DC).QueryPagingAsync<M>();
         }
         /// <summary>
         /// 多表分页查询
         /// </summary>
         public async Task<PagingResult<T>> QueryPagingAsync<T>(Expression<Func<T>> columnMapFunc)
         {
-            return await new PagingListXOImpl(DC).QueryPagingAsync(columnMapFunc);
+            return await new PagingListXOAsyncImpl(DC).QueryPagingAsync(columnMapFunc);
         }
 
         /// <summary>

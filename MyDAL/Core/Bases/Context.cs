@@ -41,9 +41,6 @@ namespace MyDAL.Core.Bases
             PH = new ParameterHelper(this);
             DPH = new DicParamHelper(this);
             BDH = new BatchDataHelper();
-            //DS = new DataSource(this);
-            DSA = new DataSourceAsync(this);
-            DSS = new DataSourceSync(this);
             AR = new AutoRetry();
             TbMs = new List<TableDic>();
 
@@ -104,9 +101,6 @@ namespace MyDAL.Core.Bases
         internal IDbConnection Conn { get; private set; }
         internal ISqlProvider SqlProvider { get; set; }
         internal XCache XC { get; private set; }
-        //internal DataSource DS { get; private set; }
-        internal DataSourceSync DSS { get; private set; }
-        internal DataSourceAsync DSA { get; private set; }
 
         /************************************************************************************************************************/
 

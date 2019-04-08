@@ -446,7 +446,7 @@ namespace MyDAL
             };
             dc.ParseSQL(sql);
             dc.ParseParam(dbParas);
-            return await new ExecuteNonQuerySQLImpl(dc).ExecuteNonQueryAsync();
+            return await new ExecuteNonQuerySQLAsyncImpl(dc).ExecuteNonQueryAsync();
         }
         public static async Task<T> QueryOneAsync<T>(this IDbConnection conn, string sql, List<XParam> dbParas = null)
         {
@@ -456,7 +456,7 @@ namespace MyDAL
             };
             dc.ParseSQL(sql);
             dc.ParseParam(dbParas);
-            return await new QueryOneSQLImpl(dc).QueryOneAsync<T>();
+            return await new QueryOneSQLAsyncImpl(dc).QueryOneAsync<T>();
         }
         public static async Task<List<T>> QueryListAsync<T>(this IDbConnection conn, string sql, List<XParam> dbParas = null)
         {
@@ -466,7 +466,7 @@ namespace MyDAL
             };
             dc.ParseSQL(sql);
             dc.ParseParam(dbParas);
-            return await new QueryListSQLImpl(dc).QueryListAsync<T>();
+            return await new QueryListSQLAsyncImpl(dc).QueryListAsync<T>();
         }
         public static async Task<PagingResult<T>> QueryPagingAsync<T>
             (this IDbConnection conn, PagingResult<T> paging, string totalCountSql, string pageDataSql, List<XParam> dbParas = null)
@@ -479,7 +479,7 @@ namespace MyDAL
             dc.PageSize = paging.PageSize;
             dc.ParseSQL(totalCountSql, pageDataSql);
             dc.ParseParam(dbParas);
-            var result = await new QueryPagingSQLImpl(dc).QueryPagingAsync<T>();
+            var result = await new QueryPagingSQLAsyncImpl(dc).QueryPagingAsync<T>();
             paging.TotalCount = result.TotalCount;
             paging.Data = result.Data;
             return paging;
