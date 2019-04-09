@@ -6,15 +6,16 @@ namespace MyDAL.Test.Entities.MyDAL_TestDB
 {
     /*
      * CREATE TABLE `product` (
-     * `Id` char(36) NOT NULL,
-     * `CreatedOn` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-     * `Title` longtext NOT NULL,
-     * `Specification` longtext NOT NULL,
-     * `Description` longtext NOT NULL,
-     * `IsPublished` bit(1) NOT NULL,
-     * `SnapshotId` char(36) NOT NULL,
-     * PRIMARY KEY (`Id`)
-     * ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+     *   `Id` char(36) NOT NULL,
+     *   `CreatedOn` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+     *   `Title` longtext NOT NULL,
+     *   `Specification` longtext NOT NULL,
+     *   `Description` longtext NOT NULL,
+     *   `ProductDetails` longtext NOT NULL,
+     *   `UnitPrice` decimal(65,30) NOT NULL,
+     *   `VipProduct` bit(1) NULL,
+     *   PRIMARY KEY (`Id`)
+     * ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
      */
     [XTable(Name ="Product")]
     public class Product 
@@ -32,6 +33,6 @@ namespace MyDAL.Test.Entities.MyDAL_TestDB
         
         public decimal UnitPrice { get; set; }
         
-        public bool VipProduct { get; set; }
+        public bool? VipProduct { get; set; }
     }
 }
