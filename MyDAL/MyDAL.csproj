@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>0.8.0.5</Version>
+    <Version>0.8.1</Version>
     <Authors>Meng.NET</Authors>
     <Company></Company>
     <Product>MyDAL</Product>
@@ -12,7 +12,7 @@
     <PackageProjectUrl>https://www.cnblogs.com/Meng-NET/p/8963476.html</PackageProjectUrl>
     <RepositoryUrl>https://github.com/liumeng0403/MyDAL</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>MySQL,MyDAL,EasyDAL.Exchange,Yunyong.DataExchange,Meng,Meng-NET,Meng.NET</PackageTags>
+    <PackageTags>MyDAL,MySQL,SqlServer,HPC.DAL,Yunyong.DataExchange,EasyDAL.Exchange,Meng,Meng-NET,Meng.NET</PackageTags>
     <PackageReleaseNotes>由一个开发项目中的 idea 产生,实现与演变 !
        -- https://www.cnblogs.com/Meng-NET/p/8963476.html</PackageReleaseNotes>
     <ApplicationIcon>Others\MyDAL.ico</ApplicationIcon>
