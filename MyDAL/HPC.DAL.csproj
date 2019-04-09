@@ -1,23 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>0.7.7</Version>
+    <Version>1.0.0</Version>
     <Authors>Meng.NET</Authors>
-    <Company></Company>
+    <Company>HPC</Company>
     <Product>MyDAL</Product>
-    <Description>The fastest and best ORM lite on .NET Core for MySQL ! 
+    <Description>The fastest and best ORM lite on .NET Core for MySQL/SqlServer ! 
         -- 友好, 轻量, 极致性能, 无任何第三方依赖, 持续演进~~</Description>
-    <Copyright>2018 Meng.NET</Copyright>
+    <Copyright>2019 HPC</Copyright>
     <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
     <PackageProjectUrl>https://www.cnblogs.com/Meng-NET/p/8963476.html</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/liumeng0403/MyDAL</RepositoryUrl>
+    <RepositoryUrl>https://github.com/hpc-dal/HPC.DAL</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>MySQL,MyDAL,EasyDAL.Exchange,Yunyong.DataExchange,Meng,Meng-NET,Meng.NET</PackageTags>
+    <PackageTags>HPC.DAL</PackageTags>
     <PackageReleaseNotes>由一个开发项目中的 idea 产生,实现与演变 !
        -- https://www.cnblogs.com/Meng-NET/p/8963476.html</PackageReleaseNotes>
     <ApplicationIcon>Others\MyDAL.ico</ApplicationIcon>
     <Win32Resource />
-    <PackageId>MyDAL</PackageId>
+    <PackageId>HPC.DAL</PackageId>
     <PackageIconUrl>http://images.cnblogs.com/cnblogs_com/Meng-NET/1310410/o_MyDAL.png</PackageIconUrl>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
