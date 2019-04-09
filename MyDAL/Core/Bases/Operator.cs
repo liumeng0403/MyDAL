@@ -1,9 +1,6 @@
 ﻿using HPC.DAL.Core.Common;
 using HPC.DAL.Core.Enums;
 using HPC.DAL.Core.Extensions;
-using HPC.DAL.Core.Models.ExpPara;
-using HPC.DAL.Core.Models.Page;
-using HPC.DAL.ModelTools;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -156,48 +153,7 @@ namespace HPC.DAL.Core.Bases
             }
             return result;
         }
-        private List<XQueryParam> GetWhereKPV(PagingOption query)
-        {
-            var result = new List<XQueryParam>();
-            var ops = DC.XC.GetPagingOption(query.GetType());
-            foreach (var dic in ops)
-            {
-                var valType = dic.PgProp.PropertyType;
-                var val = DC.VH.PropertyValue(dic.PgProp, query);
-                if (!CheckWhereVal(val.Val, valType))
-                {
-                    continue;
-                }
-                if (valType.IsList()
-                    || valType.IsArray)
-                {
-                    var ox = DC.VH.InValue(valType, val.Val);
-                    valType = ox.valType;
-                    val = new ValueInfo
-                    {
-                        Val = ox.val,
-                        ValStr = string.Empty
-                    };
-                }
-                result.Add(new XQueryParam
-                {
-                    PgType = dic.PgType,
-                    PgProp = dic.PgProp,
-                    PgAttr = dic.Attr,
-                    Cp = new ColumnParam
-                    {
-                        Prop = dic.TbMProp.Name, //.MProp,
-                        Key = dic.TbCol, //.QCol,
-                        ValType = valType,
-                        TbMType = dic.TbMType //.MFullName
-                    },
-                    Val = val,
-                    Compare = dic.Compare
-                });
-            }
-            return result;
-        }
-
+        
         /****************************************************************************************************************************************/
 
         internal Context DC { get; set; }
@@ -247,131 +203,6 @@ namespace HPC.DAL.Core.Bases
             var field = DC.XE.FuncMBoolExpression(func);
             field.TbMType = typeof(M);
             DC.DPH.AddParameter(field);
-        }
-
-        internal void WherePagingHandle(PagingOption query)
-        {
-            var tuples = GetWhereKPV(query);
-            var count = 0;
-            foreach (var tp in tuples)
-            {
-                count++;
-                if (count == 1)
-                {
-                    DC.Action = ActionEnum.Where;
-                }
-                else
-                {
-                    DC.Action = ActionEnum.And;
-                }
-                var alias = string.Empty;
-                if (DC.Crud == CrudEnum.Join)
-                {
-                    var mt = tp.Cp.TbMType;
-                    var mCount = DC.TbMs.Count(it => it.TbM == mt);
-                    if (mCount <= 0)
-                    {
-                        throw new Exception($"用作 Paging Option 的字段 [[{tp.PgType.Name}.{tp.PgProp.Name}]],必须是表 [[{string.Join(",", DC.TbMs.Select(it => it.TbM.Name))}]] 中对应的字段!!!");
-                    }
-                    else if (mCount == 1)
-                    {
-                        alias = DC.TbMs.First(it => it.TbM == mt).Alias;
-                    }
-                    else
-                    {
-                        if (!tp.PgAttr.TableAlias.IsNullStr())
-                        {
-                            alias = tp.PgAttr.TableAlias;
-                        }
-                        else
-                        {
-                            throw new Exception(
-                                $@"存在类似 [[多表自连接]] 的情况,
-                                        字段 [[{tp.PgType.Name}.{tp.PgProp.Name}]] 必须用 [XQuery] Attribute 标记字段对应的 'TableAlias = ' 以表明表别名,
-                                        别名必须是 [[{string.Join(",", DC.TbMs.Select(it => it.Alias))}]] 其中之一!!!");
-                        }
-                    }
-                }
-                if (!alias.IsNullStr())
-                {
-                    tp.Cp.Alias = alias;
-                }
-
-                //
-                if (tp.Compare == CompareEnum.Like
-                    || tp.Compare == CompareEnum.Like_StartsWith
-                    || tp.Compare == CompareEnum.Like_EndsWith
-                    || tp.Compare == CompareEnum.NotLike
-                    || tp.Compare == CompareEnum.NotLike_StartsWith
-                    || tp.Compare == CompareEnum.NotLike_EndsWith)
-                {
-                    DC.Option = OptionEnum.Compare;
-                    if (tp.Compare == CompareEnum.Like)
-                    {
-                        DC.Compare = CompareXEnum.Like;
-                        tp.Val = ValueInfo.LikeVI(tp.Val, StringLikeEnum.Contains, DC);
-                    }
-                    else if (tp.Compare == CompareEnum.Like_StartsWith)
-                    {
-                        DC.Compare = CompareXEnum.Like;
-                        tp.Val = ValueInfo.LikeVI(tp.Val, StringLikeEnum.StartsWith, DC);
-                    }
-                    else if (tp.Compare == CompareEnum.Like_EndsWith)
-                    {
-                        DC.Compare = CompareXEnum.Like;
-                        tp.Val = ValueInfo.LikeVI(tp.Val, StringLikeEnum.EndsWith, DC);
-                    }
-                    else if (tp.Compare == CompareEnum.NotLike)
-                    {
-                        DC.Compare = CompareXEnum.NotLike;
-                        tp.Val = ValueInfo.LikeVI(tp.Val, StringLikeEnum.Contains, DC);
-                    }
-                    else if (tp.Compare == CompareEnum.NotLike_StartsWith)
-                    {
-                        DC.Compare = CompareXEnum.NotLike;
-                        tp.Val = ValueInfo.LikeVI(tp.Val, StringLikeEnum.StartsWith, DC);
-                    }
-                    else if (tp.Compare == CompareEnum.NotLike_EndsWith)
-                    {
-                        DC.Compare = CompareXEnum.NotLike;
-                        tp.Val = ValueInfo.LikeVI(tp.Val, StringLikeEnum.EndsWith, DC);
-                    }
-                    else
-                    {
-                        throw DC.Exception(XConfig.EC._028, tp.Compare.ToString());
-                    }
-                    DC.DPH.AddParameter(DC.DPH.LikeDic(tp.Cp, tp.Val));
-                }
-                else if (tp.Compare == CompareEnum.In)
-                {
-                    DC.Option = OptionEnum.Compare;
-                    DC.Func = FuncEnum.None;  // FuncEnum.In;
-                    DC.Compare = CompareXEnum.In;  // CompareXEnum.None;
-                    DC.DPH.AddParameter(DC.DPH.InDic(tp.Cp, tp.Val));
-                }
-                else if (tp.Compare == CompareEnum.NotIn)
-                {
-                    DC.Option = OptionEnum.Compare;
-                    DC.Func = FuncEnum.None; // FuncEnum.NotIn;
-                    DC.Compare = CompareXEnum.NotIn;  // CompareXEnum.None;
-                    DC.DPH.AddParameter(DC.DPH.NotInDic(tp.Cp, tp.Val));
-                }
-                else if (tp.Compare == CompareEnum.Equal
-                            || tp.Compare == CompareEnum.NotEqual
-                            || tp.Compare == CompareEnum.LessThan
-                            || tp.Compare == CompareEnum.LessThanOrEqual
-                            || tp.Compare == CompareEnum.GreaterThan
-                            || tp.Compare == CompareEnum.GreaterThanOrEqual)
-                {
-                    DC.Option = OptionEnum.Compare;
-                    DC.Compare = GetCompareX(tp.Compare, DC);
-                    DC.DPH.AddParameter(DC.DPH.CompareDic(tp.Cp, tp.Val));
-                }
-                else
-                {
-                    throw DC.Exception(XConfig.EC._004, tp.Compare.ToString());
-                }
-            }
         }
 
         internal void AndHandle<M>(Expression<Func<M, bool>> func)

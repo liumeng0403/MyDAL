@@ -21,23 +21,6 @@ namespace HPC.DAL.Interfaces
         PagingResult<T> QueryPaging<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc);
     }
 
-    internal interface IQueryPagingOAsync<M>
-        where M : class
-    {
-        Task<PagingResult<M>> QueryPagingAsync();
-        Task<PagingResult<VM>> QueryPagingAsync<VM>()
-            where VM : class;
-        Task<PagingResult<T>> QueryPagingAsync<T>(Expression<Func<M, T>> columnMapFunc);
-    }
-    internal interface IQueryPagingO<M>
-    where M : class
-    {
-        PagingResult<M> QueryPaging();
-        PagingResult<VM> QueryPaging<VM>()
-            where VM : class;
-        PagingResult<T> QueryPaging<T>(Expression<Func<M, T>> columnMapFunc);
-    }
-
     internal interface IQueryPagingXAsync
     {
         Task<PagingResult<M>> QueryPagingAsync<M>(int pageIndex, int pageSize)
@@ -49,19 +32,6 @@ namespace HPC.DAL.Interfaces
         PagingResult<M> QueryPaging<M>(int pageIndex, int pageSize)
             where M : class;
         PagingResult<T> QueryPaging<T>(int pageIndex, int pageSize, Expression<Func<T>> columnMapFunc);
-    }
-
-    internal interface IQueryPagingXOAsync
-    {
-        Task<PagingResult<M>> QueryPagingAsync<M>()
-            where M : class;
-        Task<PagingResult<T>> QueryPagingAsync<T>(Expression<Func<T>> columnMapFunc);
-    }
-    internal interface IQueryPagingXO
-    {
-        PagingResult<M> QueryPaging<M>()
-            where M : class;
-        PagingResult<T> QueryPaging<T>(Expression<Func<T>> columnMapFunc);
     }
 
     internal interface IQueryPagingSQLAsync

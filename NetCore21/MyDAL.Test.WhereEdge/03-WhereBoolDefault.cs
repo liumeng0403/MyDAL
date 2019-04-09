@@ -1,6 +1,5 @@
 ﻿using HPC.DAL;
 using MyDAL.Test.Entities.MyDAL_TestDB;
-using MyDAL.Test.Options;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -168,34 +167,28 @@ namespace MyDAL.Test.WhereEdge
              * 61- false
              * 62 - true
              */
-            var option6 = new ProductQueryOption
-            {
-                VipProduct = null     
-            };
             var res6 = await Conn
                 .Queryer<Product>()
-                .Where(option6)
-                .QueryPagingAsync();
+                .Where(it=>it.VipProduct==null)
+                .QueryPagingAsync(1,10);
 
             Assert.True(res6.Data.Count == 4);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
-            option6.VipProduct = false;
             var res61 = await Conn
                 .Queryer<Product>()
-                .Where(option6)
-                .QueryPagingAsync();
+                .Where(it=>it.VipProduct==false)
+                .QueryPagingAsync(1,10);
 
             Assert.True(res61.Data.Count == 4);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
-            option6.VipProduct = true;
             var res62 = await Conn
                 .Queryer<Product>()
-                .Where(option6)
-                .QueryPagingAsync();
+                .Where(it=>it.VipProduct==true)
+                .QueryPagingAsync(1,10);
 
             Assert.True(res62.Data.Count == 0);
 

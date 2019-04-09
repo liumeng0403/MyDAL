@@ -12,8 +12,6 @@ namespace HPC.DAL
     public static class OrderByEx
     {
 
-        /**************************************************************************************************************/
-
         public static OrderByQ<M> OrderBy<M, F>(this WhereQ<M> where, Expression<Func<M, F>> propertyFunc, OrderByEnum orderBy = OrderByEnum.Desc)
             where M : class
         {
@@ -28,30 +26,6 @@ namespace HPC.DAL
             order.DC.Action = ActionEnum.OrderBy;
             order.OrderByMF(propertyFunc, orderBy);
             return new OrderByQ<M>(order.DC);
-        }
-
-        public static OrderByQO<M> OrderBy<M, F>(this DistinctQO<M> distinct, Expression<Func<M, F>> propertyFunc, OrderByEnum orderBy = OrderByEnum.Desc)
-            where M : class
-        {
-            distinct.DC.Action = ActionEnum.OrderBy;
-            distinct.OrderByMF(propertyFunc, orderBy);
-            return new OrderByQO<M>(distinct.DC);
-        }
-
-        public static OrderByQO<M> OrderBy<M, F>(this WhereQO<M> where, Expression<Func<M, F>> propertyFunc, OrderByEnum orderBy = OrderByEnum.Desc)
-            where M : class
-        {
-            where.DC.Action = ActionEnum.OrderBy;
-            where.OrderByMF(propertyFunc, orderBy);
-            return new OrderByQO<M>(where.DC);
-        }
-
-        public static OrderByQO<M> ThenOrderBy<M, F>(this OrderByQO<M> order, Expression<Func<M, F>> propertyFunc, OrderByEnum orderBy = OrderByEnum.Desc)
-            where M : class
-        {
-            order.DC.Action = ActionEnum.OrderBy;
-            order.OrderByMF(propertyFunc, orderBy);
-            return new OrderByQO<M>(order.DC);
         }
 
         /**************************************************************************************************************/
@@ -75,20 +49,6 @@ namespace HPC.DAL
             order.DC.Action = ActionEnum.OrderBy;
             order.OrderByF(propertyFunc, orderBy);
             return new OrderByX(order.DC);
-        }
-
-        public static OrderByXO OrderBy<F>(this WhereXO where, Expression<Func<F>> propertyFunc, OrderByEnum orderBy = OrderByEnum.Desc)
-        {
-            where.DC.Action = ActionEnum.OrderBy;
-            where.OrderByF(propertyFunc, orderBy);
-            return new OrderByXO(where.DC);
-        }
-
-        public static OrderByXO ThenOrderBy<F>(this OrderByXO order, Expression<Func<F>> propertyFunc, OrderByEnum orderBy = OrderByEnum.Desc)
-        {
-            order.DC.Action = ActionEnum.OrderBy;
-            order.OrderByF(propertyFunc, orderBy);
-            return new OrderByXO(order.DC);
         }
 
     }

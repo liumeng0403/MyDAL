@@ -22,23 +22,10 @@ namespace HPC.DAL
             return new DistinctQ<M>(where.DC);
         }
 
-        public static DistinctQO<M> Distinct<M>(this WhereQO<M> where)
-            where M : class
-        {
-            where.DistinctHandle();
-            return new DistinctQO<M>(where.DC);
-        }
-
         public static DistinctX Distinct(this WhereX where)
         {
             where.DistinctHandle();
             return new DistinctX(where.DC);
-        }
-
-        public static DistinctXO Distinct(this WhereXO where)
-        {
-            where.DistinctHandle();
-            return new DistinctXO(where.DC);
         }
 
     }

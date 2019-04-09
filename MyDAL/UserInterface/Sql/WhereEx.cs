@@ -53,18 +53,6 @@ namespace HPC.DAL
             return new WhereQ<M>(selecter.DC);
         }
 
-        public static WhereQO<M> Where<M>(this Queryer<M> selecter, PagingOption option)
-            where M : class
-        {
-            selecter.DC.Action = ActionEnum.Where;
-            selecter.WherePagingHandle(option);
-
-            selecter.DC.PageIndex = option.PageIndex;
-            selecter.DC.PageSize = option.PageSize;
-
-            return new WhereQO<M>(selecter.DC);
-        }
-
         /**************************************************************************************************************/
 
         /// <summary>
@@ -75,18 +63,6 @@ namespace HPC.DAL
             on.DC.Action = ActionEnum.Where;
             on.WhereJoinHandle(on, compareFunc);
             return new WhereX(on.DC);
-        }
-
-        public static WhereXO Where(this OnX on, PagingOption option)
-        {
-            on.DC.Action = ActionEnum.Where;
-            on.WherePagingHandle(option);
-
-            on.DC.PageIndex = option.PageIndex;
-            on.DC.PageSize = option.PageSize;
-
-            return new WhereXO(on.DC);
-
         }
 
     }
