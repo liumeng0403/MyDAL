@@ -171,7 +171,7 @@ namespace MyDAL.Test.WhereEdge
                 .Where(it=>it.VipProduct==null)
                 .QueryPagingAsync(1,10);
 
-            Assert.True(res6.Data.Count == 4);
+            Assert.True(res6.Data.Count == 0);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
