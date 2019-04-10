@@ -1,4 +1,5 @@
 ﻿using HPC.DAL;
+using HPC.DAL.ModelTools;
 using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.Enums;
 using System;
@@ -522,6 +523,45 @@ namespace MyDAL.Test.Update
 
             xx = string.Empty;
 
+        }
+
+        [Fact]
+        public async Task Update_SetField_Segment_ST()
+        {
+            xx = string.Empty;
+
+            var m = await CreateDbData();
+
+            // set fields
+            var time = DateTime.Now.ToString();
+            var propertyVal = "{xxx:yyy,mmm:nnn,zzz:aaa}";
+
+            var set = Conn.Updater<BodyFitRecord>().SetSegment;
+
+            //
+            if (!time.IsNullStr())
+            {
+                set = set.Set(it => it.CreatedOn, DateTime.Parse(time));
+            }
+
+            //
+            if (!propertyVal.IsNullStr())
+            {
+                set = set.Set(it => it.BodyMeasureProperty, propertyVal);
+            }
+
+            //
+            var res1 = await set
+                .Where(it => it.Id == m.Id)
+               .UpdateAsync();
+
+            Assert.True(res1 == 1);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /***************************************************************************************************************************/
+
+            xx = string.Empty;
         }
 
         [Fact]

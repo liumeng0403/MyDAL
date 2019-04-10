@@ -1,4 +1,5 @@
 ﻿using HPC.DAL.Core.Bases;
+using HPC.DAL.Interfaces.Segments;
 
 namespace HPC.DAL.UserFacade.Update
 {
@@ -7,9 +8,20 @@ namespace HPC.DAL.UserFacade.Update
     /// </summary>
     public sealed class Updater<M> 
         : Operator
+        , ISetU<M>
+        where M : class
     {
         internal Updater(Context dc)
             : base(dc)
         { }
+
+        public SetU<M> SetSegment
+        {
+            get
+            {
+                return new SetU<M>(DC);
+            }
+        }
+
     }
 }
