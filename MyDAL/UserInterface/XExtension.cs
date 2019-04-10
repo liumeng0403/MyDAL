@@ -333,6 +333,58 @@ namespace HPC.DAL
         /******************************************************************************************************************************/
 
         /// <summary>
+        /// Creater 便捷 CreateAsync 方法
+        /// </summary>
+        public static int Create<M>(this IDbConnection conn, M m)
+            where M : class, new()
+        {
+            return conn.Creater<M>().Create(m);
+        }
+
+        /// <summary>
+        /// Creater 便捷 CreateBatchAsync 方法
+        /// </summary>
+        public static int CreateBatch<M>(this IDbConnection conn, IEnumerable<M> mList)
+            where M : class, new()
+        {
+            return conn.Creater<M>().CreateBatch(mList);
+        }
+
+        /// <summary>
+        /// Deleter 便捷 DeleteAsync 方法
+        /// </summary>
+        public static int Delete<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
+            where M : class, new()
+        {
+            if (compareFunc == null)
+            {
+                return conn.Deleter<M>().Delete();
+            }
+            else
+            {
+                return conn.Deleter<M>().Where(compareFunc).Delete();
+            }
+        }
+
+        /// <summary>
+        /// Updater 便捷 UpdateAsync update fields 方法
+        /// </summary>
+        public static int Update<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, dynamic filedsObject, SetEnum set = SetEnum.AllowedNull)
+            where M : class, new()
+        {
+            if (compareFunc == null)
+            {
+                return conn.Updater<M>().Set(filedsObject as object).Update(set);
+            }
+            else
+            {
+                return conn.Updater<M>().Set(filedsObject as object).Where(compareFunc).Update(set);
+            }
+        }
+
+        /******************************************************************************************************************************/
+
+        /// <summary>
         /// Queryer 便捷-同步 QueryOneAsync 方法
         /// </summary>
         public static M QueryOne<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc)
