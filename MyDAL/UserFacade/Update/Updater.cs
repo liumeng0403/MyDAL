@@ -1,4 +1,5 @@
-﻿using MyDAL.Core.Bases;
+using MyDAL.Core.Bases;
+using MyDAL.Interfaces.Segments;
 
 namespace MyDAL.UserFacade.Update
 {
@@ -7,9 +8,20 @@ namespace MyDAL.UserFacade.Update
     /// </summary>
     public sealed class Updater<M> 
         : Operator
+        , ISetU<M>
+        where M : class
     {
         internal Updater(Context dc)
             : base(dc)
         { }
+
+        public SetU<M> SetSegment
+        {
+            get
+            {
+                return new SetU<M>(DC);
+            }
+        }
+
     }
 }
