@@ -220,9 +220,17 @@ namespace MyDAL.Core.Helper
         }
         private string GetCol(Type t, string prop)
         {
+            //
+            if(t==null)
+            {
+                return prop;
+            }
+
+            //
             var tb = DC.XC.GetTableModel(DC.XC.GetModelKey(t.FullName));
 
-            var pc = tb.PCAs.FirstOrDefault(it => prop.Equals(it.PropName, StringComparison.OrdinalIgnoreCase));
+            //
+            var pc = tb?.PCAs?.FirstOrDefault(it => prop.Equals(it.PropName, StringComparison.OrdinalIgnoreCase));
             if (pc != null)
             {
                 return pc.ColName;
