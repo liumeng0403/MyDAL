@@ -10,8 +10,7 @@ namespace MyDAL.Core.Common
     {
         //
         internal Type TbMType { get; set; }
-        internal string TbMProp { get; set; }
-        internal string TbName { get; set; }
+        internal string TbMProp { get; set; }        
         internal string TbAlias { get; set; }
         internal string TbCol { get; set; }
         internal string TbColAlias { get; set; }
@@ -28,7 +27,6 @@ namespace MyDAL.Core.Common
         internal string Format { get; set; }
 
         //
-        internal string Key { get; set; }
         internal ParamTypeEnum ColumnType { get; set; }
         internal ParamInfo ParamInfo { get; set; }
         internal XParam ParamUI { get; set; }
@@ -38,6 +36,5 @@ namespace MyDAL.Core.Common
         internal List<DicParam> InItems { get; set; }
         internal List<DicParam> Inserts { get; set; }
         internal List<DicParam> Columns { get; set; }
-        internal List<DicParam> Not { get; set; }
     }
 }

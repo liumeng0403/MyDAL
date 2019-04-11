@@ -73,7 +73,7 @@ namespace MyDAL.Core.Bases
             var dic = default(IDictionary<string, object>);
 
             //
-            var tbm = DC.XC.GetTableModel(DC.XC.GetModelKey(typeof(M).FullName));
+            var tbm = DC.XC.GetTableModel(typeof(M));
             if (objx is ExpandoObject)
             {
                 dic = objx as IDictionary<string, object>;

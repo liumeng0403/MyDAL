@@ -23,7 +23,6 @@ namespace MyDAL.Core.Models.Cache
         }
         internal Type TbMType { get; set; }
 
-
         internal string TbName
         {
             get
@@ -35,6 +34,7 @@ namespace MyDAL.Core.Models.Cache
 
         internal List<ColumnInfo> TbCols { get; set; }
         internal List<PropertyInfo> TbMProps { get; set; }
-        internal List<TmPropColAttrInfo> PCAs { get; set; }
+
+        internal List<TmPropColAttrInfo> TMPCA { get; set; }
     }
 }

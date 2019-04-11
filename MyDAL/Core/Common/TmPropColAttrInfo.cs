@@ -2,6 +2,7 @@
 
 namespace MyDAL.Core.Common
 {
+    // mydal:2019-04-11:final
     internal class TmPropColAttrInfo
     {
         internal string PropName
@@ -20,6 +21,7 @@ namespace MyDAL.Core.Common
             }
         }
         internal ColumnInfo Col { get; set; }
-        internal XColumnAttribute Attr { get; set; }
+        internal XColumnAttribute ColAttr { get; set; }
+        internal XTableAttribute TbAttr { get; set; }
     }
 }

@@ -135,16 +135,6 @@ namespace MyDAL.Core.Helper
                 DC.PH.GetParamInfo(ui, ui.CsType);
                 return;
             }
-            if (ui.TbMType == null)
-            {
-                ui.Key = string.Empty;
-            }
-            else
-            {
-                ui.Key = DC.XC.GetModelKey(ui.TbMType.FullName);
-                var tbm = DC.XC.GetTableModel(ui.Key);
-                ui.TbName = tbm.TbName;
-            }
             if (ui.CsType != null)
             {
                 if (DC.IsInParameter(ui))
@@ -218,19 +208,19 @@ namespace MyDAL.Core.Helper
             //
             return ds;
         }
-        private string GetCol(Type t, string prop)
+        private string GetCol(Type mType, string prop)
         {
             //
-            if(t==null)
+            if (mType == null)
             {
                 return prop;
             }
 
             //
-            var tb = DC.XC.GetTableModel(DC.XC.GetModelKey(t.FullName));
+            var tb = DC.XC.GetTableModel(mType);
 
             //
-            var pc = tb?.PCAs?.FirstOrDefault(it => prop.Equals(it.PropName, StringComparison.OrdinalIgnoreCase));
+            var pc = tb?.TMPCA?.FirstOrDefault(it => prop.Equals(it.PropName, StringComparison.OrdinalIgnoreCase));
             if (pc != null)
             {
                 return pc.ColName;
