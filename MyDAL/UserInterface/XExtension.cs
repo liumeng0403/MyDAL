@@ -21,7 +21,7 @@ namespace HPC.DAL
     /// </summary>
     public static class XExtension
     {
-
+        /* 内部方法 */
         internal static Creater<M> Creater<M>(this IDbConnection conn)
             where M : class, new()
         {
@@ -209,7 +209,7 @@ namespace HPC.DAL
         }
 
         /// <summary>
-        /// Updater 便捷 UpdateAsync update fields 方法
+        /// 请参阅: <see langword=".UpdateAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static async Task<int> UpdateAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, dynamic filedsObject, SetEnum set = SetEnum.AllowedNull)
             where M : class, new()
