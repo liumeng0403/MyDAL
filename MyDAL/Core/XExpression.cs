@@ -693,7 +693,7 @@ namespace HPC.DAL.Core
                 //
                 var type = prop.PropertyType;
                 var tbm = DC.XC.GetTableModel(mType);
-                var attr = tbm.PCAs.FirstOrDefault(it => prop.Name.Equals(it.PropName, StringComparison.OrdinalIgnoreCase)).Attr;
+                var attr = tbm.TMPCA.FirstOrDefault(it => prop.Name.Equals(it.PropName, StringComparison.OrdinalIgnoreCase)).ColAttr;
                 return new ColumnParam
                 {
                     Prop = prop.Name,

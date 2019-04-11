@@ -69,24 +69,24 @@ namespace HPC.DAL.Core
             return ((Row)ModelRowCache.GetOrAdd(key, k => IL.Row(reader, mType))).Handle;
         }
 
-        internal TableModelCache GetTableModel(Type t)
+        internal TableModelCache GetTableModel(Type mType)
         {
-            var key = GetModelKey(t.FullName);
+            var key = GetModelKey(mType.FullName);
             return TableCache.GetOrAdd(key, k =>
              {
                  var tm = new TableModelCache();
-                 tm.TbMType = t;
-                 var ta = DC.AH.GetAttribute<XTableAttribute>(t) as XTableAttribute;
+                 tm.TbMType = mType;
+                 var ta = DC.AH.GetAttribute<XTableAttribute>(mType) as XTableAttribute;
                  if (ta == null)
                  {
-                     throw new Exception($"类 [[{t.FullName}]] 必须是与 DB Table 对应的实体类,并且要由 [XTable] 标记指定类对应的表名!!!");
+                     throw DC.Exception(XConfig.EC._004, $"类 [[{mType.FullName}]] 必须是与 DB Table 对应的实体类,并且要由 [XTable] 标记指定类对应的表名!!!");
                  }
-                 tm.TbMProps = DC.GH.GetPropertyInfos(t);
+                 tm.TbMProps = DC.GH.GetPropertyInfos(mType);
                  tm.TbCols = DC.SqlProvider.GetColumnsInfos(ta.Name);
                  if (tm.TbCols == null
                     || tm.TbCols.Count <= 0)
                  {
-                     throw new Exception($"表 [[{DC.Conn.Database}.{ta.Name}]] 中不存在任何列!!!");
+                     throw DC.Exception(XConfig.EC._028, $"表 [[{DC.Conn.Database}.{ta.Name}]] 中不存在任何列!!!");
                  }
                  tm.TbMAttr = new XTableAttribute { Name = tm.TbCols.First().TableName };
                  var list = new List<TmPropColAttrInfo>();
@@ -94,34 +94,31 @@ namespace HPC.DAL.Core
                  {
                      var pca = new TmPropColAttrInfo();
                      pca.Prop = p;
-                     var pa = DC.AH.GetAttribute<XColumnAttribute>(t, p) as XColumnAttribute;
-                     if (pa == null
-                        || pa.Name.IsNullStr())
+                     var ca = DC.AH.GetAttribute<XColumnAttribute>(mType, p) as XColumnAttribute;
+                     if (ca == null
+                        || ca.Name.IsNullStr())
                      {
                          pca.Col = tm.TbCols.FirstOrDefault(it => it.ColumnName.Equals(p.Name, StringComparison.OrdinalIgnoreCase));
                          if (pca.Col == null)
                          {
-                             throw new Exception($"属性 [[{t.Name}.{p.Name}]] 在表 [[{DC.Conn.Database}.{tm.TbName}]] 中无对应的列!!!");
+                             throw DC.Exception(XConfig.EC._034, $"属性 [[{mType.Name}.{p.Name}]] 在表 [[{DC.Conn.Database}.{tm.TbName}]] 中无对应的列!!!");
                          }
                      }
                      else
                      {
-                         pca.Col = tm.TbCols.FirstOrDefault(it => it.ColumnName.Equals(pa.Name, StringComparison.OrdinalIgnoreCase));
+                         pca.Col = tm.TbCols.FirstOrDefault(it => it.ColumnName.Equals(ca.Name, StringComparison.OrdinalIgnoreCase));
                          if (pca.Col == null)
                          {
-                             throw new Exception($"属性 [[{t.Name}.{p.Name}]] 上 [XColumn] 标注的字段名 [[{pa.Name}]] 有误!!!");
+                             throw DC.Exception(XConfig.EC._035, $"属性 [[{mType.Name}.{p.Name}]] 上 [XColumn] 标注的字段名 [[{ca.Name}]] 有误!!!");
                          }
                      }
-                     pca.Attr = new XColumnAttribute { Name = pca.Col.ColumnName };
+                     pca.ColAttr = new XColumnAttribute { Name = pca.ColName };
+                     pca.TbAttr = tm.TbMAttr;
                      list.Add(pca);
                  }
-                 tm.PCAs = list;
+                 tm.TMPCA = list;
                  return tm;
              });
-        }
-        internal TableModelCache GetTableModel(string key)
-        {
-            return DC.AR.Invoke(key, p => TableCache[p]);
         }
 
     }

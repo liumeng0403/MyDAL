@@ -288,20 +288,23 @@ namespace HPC.DAL.DataRainbow.XCommon
         private void JoinX()
         {
             Spacing(X);
-            foreach (var item in DC.Parameters)
+            foreach (var dp in DC.Parameters)
             {
-                if (item.Crud != CrudEnum.Join) { continue; }
-                switch (item.Action)
+                if (dp.Crud != CrudEnum.Join) { continue; }
+                switch (dp.Action)
                 {
-                    case ActionEnum.From: break;    // 已处理 
+                    case ActionEnum.From:
+                        /* 已处理 */
+                        break;   
                     case ActionEnum.InnerJoin:
                     case ActionEnum.LeftJoin:
+                        var tbm = DC.XC.GetTableModel(dp.TbMType);
                         CRLF(X); Tab(X);
-                        Action(item.Action, X, DC); Spacing(X); DbSql.TableX(item.TbName, X); As(X); X.Append(item.TbAlias);
+                        Action(dp.Action, X, DC); Spacing(X); DbSql.TableX(tbm.TbName, X); As(X); X.Append(dp.TbAlias);
                         break;
                     case ActionEnum.On:
                         CRLF(X); Tab(X); Tab(X);
-                        Action(item.Action, X, DC); Spacing(X); DbSql.Column(item.TbAlias, item.TbCol, X); Compare(item.Compare, X, DC); DbSql.Column(item.TableAliasTwo, item.ColumnTwo, X);
+                        Action(dp.Action, X, DC); Spacing(X); DbSql.Column(dp.TbAlias, dp.TbCol, X); Compare(dp.Compare, X, DC); DbSql.Column(dp.TableAliasTwo, dp.ColumnTwo, X);
                         break;
                 }
             }
@@ -742,12 +745,13 @@ namespace HPC.DAL.DataRainbow.XCommon
             if (DC.Crud == CrudEnum.Join)
             {
                 var dic = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.From);
-                DbSql.TableX(dic.TbName, X); As(X); X.Append(dic.TbAlias);
+                var tbm = DC.XC.GetTableModel(dic.TbMType);
+                DbSql.TableX(tbm.TbName, X); As(X); X.Append(dic.TbAlias);
                 JoinX();
             }
             else
             {
-                var tbm = DC.XC.GetTableModel(DC.XC.GetModelKey(DC.TbM1.FullName));
+                var tbm = DC.XC.GetTableModel(DC.TbM1);
                 DbSql.TableX(tbm.TbName, X);
             }
         }
@@ -825,8 +829,7 @@ namespace HPC.DAL.DataRainbow.XCommon
         internal protected void OrderBy()
         {
             var dic = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.From);
-            var key = dic != null ? dic.Key : DC.XC.GetModelKey(DC.TbM1.FullName);
-            var tbm = DC.XC.GetTableModel(key);
+            var tbm = DC.XC.GetTableModel(dic != null ? dic.TbMType : DC.TbM1);
             if (DC.Parameters.Any(it => it.Action == ActionEnum.OrderBy))
             {
                 CRLF(X); X.Append("order by"); Spacing(X); OrderByParams();

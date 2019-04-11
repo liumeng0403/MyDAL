@@ -10,55 +10,6 @@ namespace HPC.DAL.Core.Helper
     internal class GenericHelper
     {
 
-        private Assembly LoadAssemblyR(string name)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                return null;
-            }
-
-            //
-            var ass = name.Substring(0, name.LastIndexOf('.'));
-            var assD = $"{ass}.dll";
-            var assE = $"{ass}.exe";
-            var assemD = default(Assembly);
-            var assemE = default(Assembly);
-
-            //
-            try
-            {
-                assemD = Assembly.LoadFrom(assD);
-            }
-            catch
-            {
-                assemD = LoadAssemblyR(ass);
-            }
-            if (assemD == null)
-            {
-                try
-                {
-                    assemE = Assembly.LoadFrom(assE);
-                }
-                catch
-                {
-                    assemE = LoadAssemblyR(ass);
-                }
-            }
-
-            //
-            if (assemD != null)
-            {
-                return assemD;
-            }
-            else if (assemE != null)
-            {
-                return assemE;
-            }
-            else
-            {
-                return null;
-            }
-        }
         private Context DC { get; set; }
         internal GenericHelper(Context dc)
         {
@@ -75,56 +26,6 @@ namespace HPC.DAL.Core.Helper
         {
             var props = mType.GetProperties(BindingFlags.GetProperty | BindingFlags.Instance | BindingFlags.Public).ToList();
             return props;
-        }
-
-        internal Assembly LoadAssembly(string fullName)
-        {
-
-            if (string.IsNullOrWhiteSpace(fullName))
-            {
-                return null;
-            }
-
-            //
-            var assD = $"{fullName}.dll";
-            var assE = $"{fullName}.exe";
-            var assemD = default(Assembly);
-            var assemE = default(Assembly);
-
-            //
-            try
-            {
-                assemD = Assembly.LoadFrom(assD);
-            }
-            catch
-            {
-                assemD = LoadAssemblyR(fullName);
-            }
-            if (assemD == null)
-            {
-                try
-                {
-                    assemE = Assembly.LoadFrom(assE);
-                }
-                catch
-                {
-                    assemE = LoadAssemblyR(fullName);
-                }
-            }
-
-            //
-            if (assemD != null)
-            {
-                return assemD;
-            }
-            else if (assemE != null)
-            {
-                return assemE;
-            }
-            else
-            {
-                return null;
-            }
         }
 
         internal T ConvertT<T>(object value)
