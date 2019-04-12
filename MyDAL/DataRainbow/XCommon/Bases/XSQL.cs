@@ -7,33 +7,29 @@ namespace MyDAL.DataRainbow.XCommon.Bases
 {
     internal abstract class XSQL
     {
+
+        internal protected static char At { get; } = '@';
+        internal protected static char QuestionMark { get; } = '?';
+        internal protected static char EscapeChar { get; } = '/';
+        internal protected static char Percent { get; } = '%';
+
+        /****************************************************************************************************************/
+
         internal protected static void Spacing(StringBuilder sb)
         {
             sb.Append(' ');
         }
-        internal protected static void EscapeChar(StringBuilder sb)
+        internal protected static void EscapeCharX(StringBuilder sb)
         {
             sb.Append('/');
         }
-        internal protected static char EscapeChar()
-        {
-            return '/';
-        }
-        internal protected static void Percent(StringBuilder sb)
+        internal protected static void PercentX(StringBuilder sb)
         {
             sb.Append('%');
-        }
-        internal protected static char Percent()
-        {
-            return '%';
         }
         internal protected static void SingleQuote(StringBuilder sb)
         {
             sb.Append('\'');
-        }
-        internal protected static void At(StringBuilder sb)
-        {
-            sb.Append('@');
         }
         internal static void Dot(StringBuilder sb)
         {
@@ -278,10 +274,6 @@ namespace MyDAL.DataRainbow.XCommon.Bases
             sb.Append("set");
         }
 
-        internal protected static void DbParam(string param, StringBuilder sb)
-        {
-            At(sb); sb.Append(param);
-        }
         internal protected static void Distinct(StringBuilder sb)
         {
             Spacing(sb); sb.Append("distinct"); Spacing(sb);

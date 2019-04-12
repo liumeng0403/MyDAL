@@ -33,6 +33,10 @@ namespace MyDAL.DataRainbow.MySQL
         {
             sb.Append('`');
         }
+        void ISql.ParamSymbol(StringBuilder sb)
+        {
+            sb.Append(QuestionMark);
+        }
 
         /*************************************************************************************************************************************************************/
 
@@ -83,9 +87,13 @@ namespace MyDAL.DataRainbow.MySQL
                 throw dc.Exception(XConfig.EC._010, action.ToString());
             }
         }
+        void ISql.DbParam(string param, StringBuilder sb)
+        {
+            DbSql.ParamSymbol(sb); sb.Append(param);
+        }
         void ISql.OneEqualOneProcess(DicParam p, StringBuilder sb)
         {
-            Spacing(sb); DbParam(p.Param, sb);
+            Spacing(sb); DbSql.DbParam(p.Param, sb);
         }
         void ISql.WhereTrueOrFalse(Context dc, bool flag, StringBuilder sb)
         {
