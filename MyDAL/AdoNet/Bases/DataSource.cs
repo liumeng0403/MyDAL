@@ -45,7 +45,17 @@ namespace HPC.DAL.AdoNet.Bases
         {
             get
             {
-                return DC.DPH.GetParameters(DC.Parameters);
+                var paras = DC.DPH.GetParameters(DC.Parameters);
+
+                //
+                if (XConfig.IsDebug
+                    && DC.Parameters != null
+                    && DC.Parameters.Count > 0)
+                {
+                    DC.SetValue();
+                }
+
+                return paras;
             }
         }
         internal protected DbDataReader Reader { get; set; }
