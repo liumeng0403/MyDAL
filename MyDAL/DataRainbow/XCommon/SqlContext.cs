@@ -116,19 +116,19 @@ namespace HPC.DAL.DataRainbow.XCommon
             if (!value.Contains("%")
                 && !value.Contains("_"))
             {
-                X.Append("CONCAT");
-                LeftRoundBracket(X); StringConst(Percent().ToString(), X); Comma(X); DbParam(name, X); Comma(X); StringConst(Percent().ToString(), X); RightRoundBracket(X);
+                X.Append("concat");
+                LeftRoundBracket(X); StringConst(Percent.ToString(), X); Comma(X); DbSql.DbParam(name, X); Comma(X); StringConst(Percent.ToString(), X); RightRoundBracket(X);
             }
             else if ((value.Contains("%") || value.Contains("_"))
                 && !value.Contains("/%")
                 && !value.Contains("/_"))
             {
-                DbParam(name, X);
+                DbSql.DbParam(name, X);
             }
             else if (value.Contains("/%")
                 || value.Contains("/_"))
             {
-                DbParam(name, X); Spacing(X); Escape(X); Spacing(X); StringConst(EscapeChar().ToString(), X);
+                DbSql.DbParam(name, X); Spacing(X); Escape(X); Spacing(X); StringConst(EscapeChar.ToString(), X);
             }
             else
             {
@@ -141,7 +141,7 @@ namespace HPC.DAL.DataRainbow.XCommon
             foreach (var it in dbs)
             {
                 i++;
-                DbParam(it.Param, X);
+                DbSql.DbParam(it.Param, X);
                 if (i != dbs.Count) { Comma(X); }
             }
         }
@@ -161,7 +161,7 @@ namespace HPC.DAL.DataRainbow.XCommon
                 DbSql.Column(string.Empty, db.TbCol, X);
             }
             RightRoundBracket(X);
-            Compare(db.Compare, X, DC); DbParam(db.Param, X);
+            Compare(db.Compare, X, DC); DbSql.DbParam(db.Param, X);
         }
         private void DateFormatProcess(DicParam db)
         {
@@ -177,7 +177,7 @@ namespace HPC.DAL.DataRainbow.XCommon
             }
 
             Comma(X); StringConst(db.Format, X);
-            RightRoundBracket(X); Compare(db.Compare, X, DC); DbParam(db.Param, X);
+            RightRoundBracket(X); Compare(db.Compare, X, DC); DbSql.DbParam(db.Param, X);
         }
         private void TrimProcess(DicParam db)
         {
@@ -192,7 +192,7 @@ namespace HPC.DAL.DataRainbow.XCommon
                 DbSql.Column(string.Empty, db.TbCol, X);
             }
             RightRoundBracket(X);
-            Compare(db.Compare, X, DC); DbParam(db.Param, X);
+            Compare(db.Compare, X, DC); DbSql.DbParam(db.Param, X);
         }
         private void InProcess(DicParam db)
         {
@@ -247,7 +247,7 @@ namespace HPC.DAL.DataRainbow.XCommon
                 {
                     DbSql.Column(string.Empty, db.TbCol, X);
                 }
-                Compare(db.Compare, X, DC); DbParam(db.Param, X);
+                Compare(db.Compare, X, DC); DbSql.DbParam(db.Param, X);
             }
         }
         private void FunctionProcess(DicParam db)
@@ -409,12 +409,12 @@ namespace HPC.DAL.DataRainbow.XCommon
                     || item.Option == OptionEnum.ChangeMinus)
                 {
                     if (i != 1) { CRLF(X); Tab(X); }
-                    DbSql.Column(string.Empty, item.TbCol, X); Equal(X); DbSql.Column(string.Empty, item.TbCol, X); Option(item.Option, X, DC); DbParam(item.Param, X);
+                    DbSql.Column(string.Empty, item.TbCol, X); Equal(X); DbSql.Column(string.Empty, item.TbCol, X); Option(item.Option, X, DC); DbSql.DbParam(item.Param, X);
                 }
                 else if (item.Option == OptionEnum.Set)
                 {
                     if (i != 1) { CRLF(X); Tab(X); }
-                    DbSql.Column(string.Empty, item.TbCol, X); Option(item.Option, X, DC); DbParam(item.Param, X);
+                    DbSql.Column(string.Empty, item.TbCol, X); Option(item.Option, X, DC); DbSql.DbParam(item.Param, X);
                 }
                 else
                 {
@@ -723,7 +723,7 @@ namespace HPC.DAL.DataRainbow.XCommon
             foreach (var dic in items)
             {
                 i++;
-                CRLF(X); LeftRoundBracket(X); ConcatWithComma(dic.Inserts.Select(it => it.Param), At, null); RightRoundBracket(X);
+                CRLF(X); LeftRoundBracket(X); ConcatWithComma(dic.Inserts.Select(it => it.Param), DbSql.ParamSymbol, null); RightRoundBracket(X);
                 if (i != items.Count)
                 {
                     Comma(X);

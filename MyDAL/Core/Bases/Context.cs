@@ -4,6 +4,7 @@ using HPC.DAL.Core.Common;
 using HPC.DAL.Core.Enums;
 using HPC.DAL.Core.Extensions;
 using HPC.DAL.Core.Helper;
+using HPC.DAL.DataRainbow.XCommon.Bases;
 using HPC.DAL.DataRainbow.XCommon.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -162,7 +163,7 @@ namespace HPC.DAL.Core.Bases
             DPH.ResetParameter();
             foreach (var p in paras)
             {
-                p.ParamName.Replace("@", "");
+                p.ParamName = p.ParamName.Replace(XSQL.QuestionMark.ToString(), "").Replace(XSQL.At.ToString(), "");
                 if (p.ParamType == ParamTypeEnum.None)
                 {
                     p.ParamType = ParamTypeEnum.MySQL_VarChar;
@@ -192,6 +193,18 @@ namespace HPC.DAL.Core.Bases
         private List<string> FlatParameters { get; set; }
         private List<string> FlatSQL { get; set; }
         private List<string> FlatSqlWithParams { get; set; }
+        private char GetParamSymbol()
+        {
+            switch (DB)
+            {
+                case DbEnum.MySQL:
+                    return XSQL.QuestionMark;
+                case DbEnum.SQLServer:
+                    return XSQL.At;
+                default:
+                    throw Exception(XConfig.EC._036, "暂时不支持的DB！！！");
+            }
+        }
         internal void SetValue()
         {
             //
@@ -257,6 +270,7 @@ namespace HPC.DAL.Core.Bases
 
             //
             FlatSqlWithParams = new List<string>();
+            var paramSymbol = GetParamSymbol();
             foreach (var sql in FlatSQL)
             {
                 var sqlStr = sql;
@@ -275,22 +289,22 @@ namespace HPC.DAL.Core.Bases
                     {
                         if (par.Action == ActionEnum.SQL)
                         {
-                            sqlStr = sqlStr.Replace($"@{par.ParamInfo.Name}", par.ParamInfo.Value == DBNull.Value ? "null" : par.ParamInfo.Value.ToString());
+                            sqlStr = sqlStr.Replace($"{paramSymbol}{par.ParamInfo.Name}", par.ParamInfo.Value == DBNull.Value ? "null" : par.ParamInfo.Value.ToString());
                         }
                         else
                         {
-                            sqlStr = sqlStr.Replace($"@{par.Param}", par.ParamInfo.Value == DBNull.Value ? "null" : par.ParamInfo.Value.ToString());
+                            sqlStr = sqlStr.Replace($"{paramSymbol}{par.Param}", par.ParamInfo.Value == DBNull.Value ? "null" : par.ParamInfo.Value.ToString());
                         }
                     }
                     else
                     {
                         if (par.Action == ActionEnum.SQL)
                         {
-                            sqlStr = sqlStr.Replace($"@{par.ParamInfo.Name}", par.ParamInfo.Value == DBNull.Value ? "null" : $"'{par.ParamInfo.Value.ToString()}'");
+                            sqlStr = sqlStr.Replace($"{paramSymbol}{par.ParamInfo.Name}", par.ParamInfo.Value == DBNull.Value ? "null" : $"'{par.ParamInfo.Value.ToString()}'");
                         }
                         else
                         {
-                            sqlStr = sqlStr.Replace($"@{par.Param}", par.ParamInfo.Value == DBNull.Value ? "null" : $"'{par.ParamInfo.Value.ToString()}'");
+                            sqlStr = sqlStr.Replace($"{paramSymbol}{par.Param}", par.ParamInfo.Value == DBNull.Value ? "null" : $"'{par.ParamInfo.Value.ToString()}'");
                         }
                     }
                 }

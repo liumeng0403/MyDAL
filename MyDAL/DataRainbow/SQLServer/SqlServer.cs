@@ -33,6 +33,10 @@ namespace HPC.DAL.DataRainbow.SQLServer
         {
             sb.Append(']');
         }
+        void ISql.ParamSymbol(StringBuilder sb)
+        {
+            sb.Append(At);
+        }
 
         /*************************************************************************************************************************************************************/
 
@@ -78,6 +82,10 @@ namespace HPC.DAL.DataRainbow.SQLServer
                 throw dc.Exception(XConfig.EC._010, action.ToString());
             }
         }
+        void ISql.DbParam(string param, StringBuilder sb)
+        {
+            DbSql.ParamSymbol(sb); sb.Append(param);
+        }
         void ISql.OneEqualOneProcess(DicParam p, StringBuilder sb)
         {
             Spacing(sb); sb.Append("1=1");
@@ -112,7 +120,7 @@ namespace HPC.DAL.DataRainbow.SQLServer
                 }
                 CRLF(sb);
                 sb.Append("offset"); Spacing(sb); sb.Append(start); Spacing(sb);
-                sb.Append("rows fetch next");Spacing(sb); sb.Append(dc.PageSize);Spacing(sb);sb.Append("rows only");                
+                sb.Append("rows fetch next"); Spacing(sb); sb.Append(dc.PageSize); Spacing(sb); sb.Append("rows only");
             }
         }
 
