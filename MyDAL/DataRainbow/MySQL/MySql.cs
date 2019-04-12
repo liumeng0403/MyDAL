@@ -1,4 +1,5 @@
-﻿using HPC.DAL.Core.Bases;
+﻿using HPC.DAL.Core;
+using HPC.DAL.Core.Bases;
 using HPC.DAL.Core.Common;
 using HPC.DAL.Core.Enums;
 using HPC.DAL.Core.Extensions;
@@ -66,6 +67,21 @@ namespace HPC.DAL.DataRainbow.MySQL
         void ISql.TableX(string table, StringBuilder sb)
         {
             DbSql.ObjLeftSymbol(sb); sb.Append(table); DbSql.ObjRightSymbol(sb);
+        }
+        void ISql.MultiAction(ActionEnum action, StringBuilder sb, Context dc)
+        {
+            if (action == ActionEnum.And)
+            {
+                Spacing(sb); sb.Append("&&"); Spacing(sb);
+            }
+            else if (action == ActionEnum.Or)
+            {
+                Spacing(sb); sb.Append("||"); Spacing(sb);
+            }
+            else
+            {
+                throw dc.Exception(XConfig.EC._010, action.ToString());
+            }
         }
         void ISql.OneEqualOneProcess(DicParam p, StringBuilder sb)
         {

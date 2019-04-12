@@ -103,21 +103,6 @@ namespace HPC.DAL.DataRainbow.XCommon.Bases
                     throw dc.Exception(XConfig.EC._014, action.ToString());
             }
         }
-        internal protected static void MultiAction(ActionEnum action, StringBuilder sb, Context dc)
-        {
-            if (action == ActionEnum.And)
-            {
-                Spacing(sb); sb.Append("&&"); Spacing(sb);
-            }
-            else if (action == ActionEnum.Or)
-            {
-                Spacing(sb); sb.Append("||"); Spacing(sb);
-            }
-            else
-            {
-                throw dc.Exception(XConfig.EC._010, action.ToString());
-            }
-        }
         internal protected static void Option(OptionEnum option, StringBuilder sb, Context dc)
         {
             switch (option)

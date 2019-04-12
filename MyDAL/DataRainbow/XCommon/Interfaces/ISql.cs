@@ -1,5 +1,6 @@
 ﻿using HPC.DAL.Core.Bases;
 using HPC.DAL.Core.Common;
+using HPC.DAL.Core.Enums;
 using System.Collections.Generic;
 using System.Text;
 
@@ -16,6 +17,7 @@ namespace HPC.DAL.DataRainbow.XCommon.Interfaces
         void Column(string tbAlias, string colName, StringBuilder sb);
         void ColumnReplaceNullValueForSum(string tbAlias, string colName, StringBuilder sb);
         void TableX(string table, StringBuilder sb);
+        void MultiAction(ActionEnum action, StringBuilder sb, Context dc);
         void OneEqualOneProcess(DicParam p, StringBuilder sb);
         void WhereTrueOrFalse(Context dc, bool flag, StringBuilder sb);
         ColumnInfo GetIndex(List<ColumnInfo> cols);
