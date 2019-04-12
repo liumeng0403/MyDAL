@@ -177,7 +177,7 @@ namespace MyDAL.Core.Helper
                 }
             }
         }
-        private List<DicParam> FlatDics(List<DicParam> dics)
+        internal List<DicParam> FlatDics(List<DicParam> dics)
         {
             var ds = new List<DicParam>();
 
@@ -300,18 +300,6 @@ namespace MyDAL.Core.Helper
                     {
                         paras.Add(db.ParamInfo);
                     }
-                }
-            }
-
-            //
-            if (XConfig.IsDebug
-                && DC.Parameters.Count > 0
-                && list[0].ID == 1)
-            {
-                lock (XDebug.Lock)
-                {
-                    XDebug.Dics = FlatDics(DC.Parameters);
-                    XDebug.SetValue();
                 }
             }
 

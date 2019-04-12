@@ -84,10 +84,6 @@ namespace MyDAL.DataRainbow.MySQL
                     Select(X); Sum(); From(X); Table(); Where(); End();
                     break;
             }
-            if (XConfig.IsDebug)
-            {
-                XDebug.SQL = DC.SQL;
-            }
         }
     }
 }
