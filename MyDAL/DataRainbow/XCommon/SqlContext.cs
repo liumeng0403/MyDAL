@@ -329,7 +329,7 @@ namespace MyDAL.DataRainbow.XCommon
                     }
                     if (i != db.Group.Count)
                     {
-                        MultiAction(db.GroupAction, X, DC);
+                        DbSql.MultiAction(db.GroupAction, X, DC);
                     }
                 }
             }

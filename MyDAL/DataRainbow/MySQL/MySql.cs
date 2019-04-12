@@ -1,4 +1,5 @@
-﻿using MyDAL.Core.Bases;
+using MyDAL.Core;
+using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
@@ -66,6 +67,21 @@ namespace MyDAL.DataRainbow.MySQL
         void ISql.TableX(string table, StringBuilder sb)
         {
             DbSql.ObjLeftSymbol(sb); sb.Append(table); DbSql.ObjRightSymbol(sb);
+        }
+        void ISql.MultiAction(ActionEnum action, StringBuilder sb, Context dc)
+        {
+            if (action == ActionEnum.And)
+            {
+                Spacing(sb); sb.Append("&&"); Spacing(sb);
+            }
+            else if (action == ActionEnum.Or)
+            {
+                Spacing(sb); sb.Append("||"); Spacing(sb);
+            }
+            else
+            {
+                throw dc.Exception(XConfig.EC._010, action.ToString());
+            }
         }
         void ISql.OneEqualOneProcess(DicParam p, StringBuilder sb)
         {
