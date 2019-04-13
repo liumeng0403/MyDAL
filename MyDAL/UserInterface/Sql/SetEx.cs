@@ -12,7 +12,7 @@ namespace MyDAL
     {
 
         /// <summary>
-        /// set 单个字段数据
+        /// 请参阅: <see langword=".UpdateAsync() 之 .Set() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static SetU<M> Set<M, F>(this Updater<M> updater, Expression<Func<M, F>> propertyFunc, F newVal)
             where M : class
@@ -22,7 +22,7 @@ namespace MyDAL
             return new SetU<M>(updater.DC);
         }
         /// <summary>
-        /// set 单个字段数据
+        /// 请参阅: <see langword=".UpdateAsync() 之 .Set() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static SetU<M> Set<M, F>(this SetU<M> set, Expression<Func<M, F>> propertyFunc, F newVal)
             where M : class
@@ -33,7 +33,7 @@ namespace MyDAL
         }
 
         /// <summary>
-        /// set 多个字段数据
+        /// 请参阅: <see langword=".UpdateAsync() 之 .Set() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static SetU<M> Set<M>(this Updater<M> updater, dynamic filedsObject)
             where M : class
@@ -44,11 +44,8 @@ namespace MyDAL
         }
 
         /// <summary>
-        /// set 单个字段变更
+        /// 请参阅: <see langword=".UpdateAsync() 之 .Set() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        /// <param name="func">格式: it => it.LockedCount</param>
-        /// <param name="modifyVal">变更值</param>
-        /// <param name="change">+/-/...</param>
         public static SetU<M> Change<M, F>(this Updater<M> updater, Expression<Func<M, F>> propertyFunc, F modifyVal, ChangeEnum change)
             where M : class
         {
@@ -57,11 +54,8 @@ namespace MyDAL
             return new SetU<M>(updater.DC);
         }
         /// <summary>
-        /// set 单个字段变更
+        /// 请参阅: <see langword=".UpdateAsync() 之 .Set() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        /// <param name="func">格式: it => it.LockedCount</param>
-        /// <param name="modifyVal">变更值</param>
-        /// <param name="change">+/-/...</param>
         public static SetU<M> Change<M, F>(this SetU<M> set, Expression<Func<M, F>> propertyFunc, F modifyVal, ChangeEnum change)
             where M : class
         {
