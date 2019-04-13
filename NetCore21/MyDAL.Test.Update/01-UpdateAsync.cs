@@ -597,25 +597,26 @@ namespace MyDAL.Test.Update
 
             var m = await CreateDbData();
 
-            // set fields
+            // update 要赋值的变量
             var time = DateTime.Now.ToString();
             var propertyVal = "{xxx:yyy,mmm:nnn,zzz:aaa}";
 
+            // 使用 SetSegment 动态 拼接 set field 起点
             var set = Conn.Updater<BodyFitRecord>().SetSegment;
 
-            //
+            // 根据 条件 判断 是否要对字段 CreatedOn 进行 update
             if (!time.IsNullStr())
             {
                 set = set.Set(it => it.CreatedOn, DateTime.Parse(time));
             }
 
-            //
+            // 根据 条件 判断 是否要对字段 BodyMeasureProperty 进行 update
             if (!propertyVal.IsNullStr())
             {
                 set = set.Set(it => it.BodyMeasureProperty, propertyVal);
             }
 
-            //
+            // 对 SetSegment 设定的字段 进行 update 动作
             var res1 = await set
                 .Where(it => it.Id == m.Id)
                .UpdateAsync();
