@@ -30,9 +30,8 @@ namespace MyDAL.UserFacade.Update
         }
 
         /// <summary>
-        /// 单表数据更新
+        /// 请参阅: <see langword=".UpdateAsync() 之 .Set() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        /// <returns>更新条目数</returns>
         [Obsolete("警告：此 API 会更新表中所有数据！！！", false)]
         public async Task<int> UpdateAsync(SetEnum set = SetEnum.AllowedNull)
         {
@@ -40,9 +39,8 @@ namespace MyDAL.UserFacade.Update
         }
 
         /// <summary>
-        /// 单表数据更新
+        /// 请参阅: <see langword=".UpdateAsync() 之 .Set() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        /// <returns>更新条目数</returns>
         [Obsolete("警告：此 API 会更新表中所有数据！！！", false)]
         public int Update(SetEnum set = SetEnum.AllowedNull)
         {

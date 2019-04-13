@@ -18,18 +18,16 @@ namespace MyDAL.UserFacade.Update
         { }
 
         /// <summary>
-        /// 单表数据更新
+        /// 请参阅: <see langword=".UpdateAsync() 之 .Set() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        /// <returns>更新条目数</returns>
         public async Task<int> UpdateAsync(SetEnum set = SetEnum.AllowedNull)
         {
             return await new UpdateAsyncImpl<M>(DC).UpdateAsync(set);
         }
 
         /// <summary>
-        /// 单表数据更新
+        /// 请参阅: <see langword=".UpdateAsync() 之 .Set() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        /// <returns>更新条目数</returns>
         public int Update(SetEnum set = SetEnum.AllowedNull)
         {
             return new UpdateImpl<M>(DC).Update(set);
