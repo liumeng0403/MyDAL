@@ -25,6 +25,7 @@
 * <a href="https://www.cnblogs.com/Meng-NET/p/9831746.html" target="_blank">MyDAL - 快速使用</a>
 * <a href="https://www.cnblogs.com/Meng-NET/p/10691944.html" target="_blank">MyDAL - .UpdateAsync() 使用</a>
 * <a href="https://www.cnblogs.com/Meng-NET/p/10697381.html" target="_blank">MyDAL - .UpdateAsync() 之 .Set() 使用</a>
+* <a href="https://www.cnblogs.com/Meng-NET/p/10703669.html" target="_blank">MyDAL - .UpdateAsync() 之 .SetSegment 根据条件 动态设置 要更新的字段 使用</a>
 * <a href="https://www.cnblogs.com/Meng-NET/p/9978336.html" target="_blank">MyDAL - .Where() & .And() & .Or() 使用</a>
 * <a href="https://www.cnblogs.com/Meng-NET/p/10113980.html" target="_blank">MyDAL - .QueryOneAsync() 使用</a>
 * <a href="https://www.cnblogs.com/Meng-NET/p/10179385.html" target="_blank">MyDAL - .QueryListAsync() 使用</a>
