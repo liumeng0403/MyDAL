@@ -355,11 +355,11 @@ namespace MyDAL.Test.Update
 
             var m = await CreateDbData();
 
-            // set field 1
+            // 多 字段 多 set 用法
             var res1 = await Conn
-                .Updater<BodyFitRecord>()
-                .Set(it => it.CreatedOn, DateTime.Now)
-                .Set(it => it.BodyMeasureProperty, "{xxx:yyy,mmm:nnn,zzz:aaa}")
+                .Updater<BodyFitRecord>()  // 更新表 BodyFitRecord 
+                .Set(it => it.CreatedOn, DateTime.Now)    //  设置字段 CreatedOn 值
+                .Set(it => it.BodyMeasureProperty, "{xxx:yyy,mmm:nnn,zzz:aaa}")  //  设置字段 BodyMeasureProperty 值
                 .Where(it => it.Id == m.Id)
                 .UpdateAsync();
 
@@ -513,11 +513,42 @@ namespace MyDAL.Test.Update
 
             //
             var res1 = await Conn
-                .Updater<AgentInventoryRecord>()
+                .Updater<AgentInventoryRecord>()  // 更新表 AgentInventoryRecord 
                 .Set(new
                 {
-                    TotalSaleCount = 1000,
-                    xxx = 2000
+                    TotalSaleCount = 1000,   // 更新 字段 TotalSaleCount
+                    xxx = 2000  // 字段 xxx 在表中无对应 ， 自动忽略
+                })
+                .Where(it => it.Id == Guid.Parse("032ce51f-1034-4fb2-9741-01655202ecbc"))
+                .UpdateAsync();
+
+            Assert.True(res1 == 1);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            /***************************************************************************************************************************/
+
+            xx = string.Empty;
+
+        }
+
+        [Fact]
+        public async Task Update_SetObject_ST_02()
+        {
+
+            xx = string.Empty;
+
+            // 要更新的 model 字段 赋值
+            var model = new AgentInventoryRecord();
+            model.TotalSaleCount = 1000;
+
+            //
+            var res1 = await Conn
+                .Updater<AgentInventoryRecord>()  //更新表 AgentInventoryRecord
+                .Set(new
+                {
+                    model.TotalSaleCount,   //  更新 字段 TotalSaleCount
+                    xxx = 2000   //  字段 xxx 在表中无对应 ，自动忽略
                 })
                 .Where(it => it.Id == Guid.Parse("032ce51f-1034-4fb2-9741-01655202ecbc"))
                 .UpdateAsync();
