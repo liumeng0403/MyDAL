@@ -37,3 +37,5 @@
 /TestResults/
 /Net462/MyDAL.Test3.Query/bin/
 /Net462/MyDAL.Test3.Query/obj/
+/NetCore21/MyDAL.Test.SqlAction/obj/
+/NetCore21/MyDAL.Test.SqlAction/bin/
