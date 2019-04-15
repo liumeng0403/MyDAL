@@ -70,6 +70,7 @@ namespace HPC.DAL.Core
                new List<KeyValuePair<string, DbEnum>>
                {
                    new KeyValuePair<string, DbEnum>("MySql.Data.MySqlClient.MySqlConnection",DbEnum.MySQL),
+                   new KeyValuePair<string, DbEnum>("Devart.Data.MySql.MySqlConnection",DbEnum.MySQL),
                    new KeyValuePair<string, DbEnum>("System.Data.SqlClient.SqlConnection",DbEnum.SQLServer)
                });
         internal static ConcurrentDictionary<string, Func<DbEnum, ParamTypeEnum>> ColTypes { get; }
