@@ -61,7 +61,18 @@ namespace MyDAL.Test
                 return GetTSQLConnection_2012SP1Plus();
             }
         }
-        
+
+        /// <summary>
+        /// MySQL
+        /// </summary>
+        protected IDbConnection Conn3
+        {
+            get
+            {
+                return GetMySQLConnection();
+            }
+        }
+
         private static IDbConnection GetMySQLConnection()
         {
             //
