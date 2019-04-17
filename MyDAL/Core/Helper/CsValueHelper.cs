@@ -46,7 +46,7 @@ namespace HPC.DAL.Core.Helper
         }
         internal string ValueProcess(object val, Type valType, string format)
         {
-            if (valType == XConfig.TC.DateTime)
+            if (valType == XConfig.CSTC.DateTime)
             {
                 return DateTimeProcess(val, format);
             }

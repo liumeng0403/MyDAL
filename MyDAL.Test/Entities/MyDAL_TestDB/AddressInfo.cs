@@ -10,7 +10,7 @@ namespace MyDAL.Test.Entities.MyDAL_TestDB
      * `ContactName` longtext,
      * `ContactPhone` longtext,
      * `DetailAddress` longtext,
-     * `IsDefault` bit(1) NOT NULL,
+     * `IsDefault` bit(1) NULL,
      * `UserId` char(36) NOT NULL,
      * PRIMARY KEY (`Id`)
      * ) ENGINE=InnoDB DEFAULT CHARSET=utf8
@@ -28,7 +28,7 @@ namespace MyDAL.Test.Entities.MyDAL_TestDB
         
         public string DetailAddress { get; set; }
 
-        public bool IsDefault { get; set; }
+        public bool? IsDefault { get; set; }
 
         public Guid UserId { get; set; }
     }

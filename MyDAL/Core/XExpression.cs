@@ -92,6 +92,22 @@ namespace HPC.DAL.Core
 
             return false;
         }
+        private bool IsNullableExpr(Expression body)
+        {
+            if (body.NodeType == ExpressionType.MemberAccess)
+            {
+                var exStr = body.ToString();
+                if (exStr.EndsWith(".Value")
+                    && exStr.LastIndexOf('.') > exStr.IndexOf('.'))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /********************************************************************************************************************/
 
         private BinExprInfo HandBinExpr(List<string> list, BinaryExpression binExpr)
         {
@@ -153,13 +169,22 @@ namespace HPC.DAL.Core
             }
             else
             {
-                var leftStr = bin.Left.ToString();
+                var left = default(Expression);
+                if(IsNullableExpr(bin.Left))
+                {
+                    left = (bin.Left as MemberExpression).Expression;
+                }
+                else
+                {
+                    left = bin.Left;
+                }
+                var leftStr = left.ToString();
                 var length = DC.CFH.IsLengthFunc(leftStr);
                 var tp = length ? new TrimParam { Flag = false } : DC.CFH.IsTrimFunc(leftStr);
                 var toString = tp.Flag ? false : DC.CFH.IsToStringFunc(leftStr);
                 if (length)
                 {
-                    var cp = GetKey(bin.Left, FuncEnum.CharLength, CompareXEnum.None);
+                    var cp = GetKey(left, FuncEnum.CharLength, CompareXEnum.None);
                     var val = DC.VH.ValueProcess(bin.Right, cp.ValType);
                     DC.Option = OptionEnum.Function;
                     DC.Func = FuncEnum.CharLength;
@@ -168,7 +193,7 @@ namespace HPC.DAL.Core
                 }
                 else if (tp.Flag)
                 {
-                    var cp = GetKey(bin.Left, tp.Trim, CompareXEnum.None);
+                    var cp = GetKey(left, tp.Trim, CompareXEnum.None);
                     var val = DC.VH.ValueProcess(bin.Right, cp.ValType);
                     DC.Option = OptionEnum.Function;
                     DC.Func = tp.Trim;
@@ -177,7 +202,7 @@ namespace HPC.DAL.Core
                 }
                 else if (toString)
                 {
-                    var cp = GetKey(bin.Left, FuncEnum.DateFormat, CompareXEnum.None);
+                    var cp = GetKey(left, FuncEnum.DateFormat, CompareXEnum.None);
                     var val = DC.VH.ValueProcess(bin.Right, cp.ValType, cp.Format);
                     DC.Option = OptionEnum.Function;
                     DC.Func = FuncEnum.DateFormat;
@@ -187,7 +212,7 @@ namespace HPC.DAL.Core
                 }
                 else
                 {
-                    var cp = GetKey(bin.Left, FuncEnum.None, CompareXEnum.None);
+                    var cp = GetKey(left, FuncEnum.None, CompareXEnum.None);
                     var val = DC.VH.ValueProcess(bin.Right, cp.ValType);
                     DC.Option = OptionEnum.Compare;
                     DC.Func = FuncEnum.None;
@@ -416,7 +441,8 @@ namespace HPC.DAL.Core
                 }
                 else if (DC.Action == ActionEnum.Where)
                 {
-                    if (cp.ValType == typeof(bool))
+                    if (cp.ValType == XConfig.CSTC.Bool
+                        || cp.ValType == XConfig.CSTC.BoolNull)
                     {
                         DC.Option = OptionEnum.Compare;
                         DC.Compare = CompareXEnum.Equal;
@@ -722,7 +748,7 @@ namespace HPC.DAL.Core
                 else if (func == FuncEnum.DateFormat)
                 {
                     var mem = mcExpr.Object;
-                    var val = DC.VH.ValueProcess(mcExpr.Arguments[0], XConfig.TC.String);
+                    var val = DC.VH.ValueProcess(mcExpr.Arguments[0], XConfig.CSTC.String);
                     return GetKey(mem, func, compareX, val.Val.ToString());
                 }
                 else
@@ -755,7 +781,14 @@ namespace HPC.DAL.Core
             }
             else if (nodeType == ExpressionType.MemberAccess)
             {
-                result = HandConditionMemberAccess(body as MemberExpression);
+                if (IsNullableExpr(body))
+                {
+                    result = HandConditionMemberAccess((body as MemberExpression).Expression as MemberExpression);
+                }
+                else
+                {
+                    result = HandConditionMemberAccess(body as MemberExpression);
+                }
             }
             else if (nodeType == ExpressionType.Convert)
             {
