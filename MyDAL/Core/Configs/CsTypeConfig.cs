@@ -9,6 +9,7 @@ namespace MyDAL.Core.Configs
         /************************************************************************************************************/
 
         internal Type Bool { get; } = typeof(bool);
+        internal Type BoolNull { get; } = typeof(bool?);
         internal Type Byte { get; } = typeof(byte);
         internal Type ByteArray { get; } = typeof(byte[]);
         internal string LinqBinary { get; } = "System.Data.Linq.Binary";

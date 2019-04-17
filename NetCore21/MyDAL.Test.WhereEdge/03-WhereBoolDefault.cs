@@ -33,23 +33,13 @@ namespace MyDAL.Test.WhereEdge
 
             xx = string.Empty;
 
-            var res2 = await Conn
-                .Queryer<AddressInfo>()
-                .Where(it => it.IsDefault)  //  false  none(true)  
-                .QueryListAsync();
-            Assert.True(res2.Count == 5);
-            Assert.True(res2.First().IsDefault);
 
-            var res21 = await Conn
-                .Queryer<AddressInfo>()
-                .Where(it => it.IsDefault == true)  //  false  none(true)  
-                .QueryListAsync();
-            Assert.True(res21.Count == 5);
-            Assert.True(res21.First().IsDefault);
+
+
 
             var res22 = await Conn
                 .Queryer<AddressInfo>()
-                .Where(it => it.IsDefault == false)  //  false  none(true)  
+                .Where(it => it.IsDefault == false)  //  false 
                 .QueryListAsync();
             Assert.True(res22.Count == 2);
             Assert.True(res22.First().IsDefault == false);
@@ -90,7 +80,7 @@ namespace MyDAL.Test.WhereEdge
                 .From(() => address4)
                     .InnerJoin(() => address44)
                         .On(() => address4.Id == address44.Id)
-                .Where(() => address4.IsDefault)  //  false  none(true)  
+                .Where(() => address4.IsDefault.Value)  //  true
                 .QueryListAsync<AddressInfo>();
             Assert.True(res4.Count == 5);
             Assert.True(res4.First().IsDefault);
@@ -100,7 +90,7 @@ namespace MyDAL.Test.WhereEdge
                 .From(() => address41)
                     .InnerJoin(() => address411)
                         .On(() => address41.Id == address411.Id)
-                .Where(() => address41.IsDefault == true)  //  false  none(true)  
+                .Where(() => address41.IsDefault == true)  //  true
                 .QueryListAsync<AddressInfo>();
             Assert.True(res41.Count == 5);
             Assert.True(res41.First().IsDefault);
@@ -110,7 +100,7 @@ namespace MyDAL.Test.WhereEdge
                 .From(() => address42)
                     .InnerJoin(() => address421)
                         .On(() => address42.Id == address421.Id)
-                .Where(() => address42.IsDefault == false)  //  false  none(true)  
+                .Where(() => address42.IsDefault == false)  //  false
                 .QueryListAsync<AddressInfo>();
             Assert.True(res42.Count == 2);
             Assert.True(res42.First().IsDefault == false);
@@ -127,7 +117,7 @@ namespace MyDAL.Test.WhereEdge
                 .From(() => address5)
                     .InnerJoin(() => address55)
                         .On(() => address5.Id == address55.Id)
-                .Where(() => address5.IsDefault && address5.UserId == guid5)  //  false  none(true)  
+                .Where(() => address5.IsDefault.Value && address5.UserId == guid5)  //  true
                 .QueryListAsync<AddressInfo>();
             Assert.True(res5.Count == 1);
             Assert.True(res5.First().IsDefault);
@@ -137,7 +127,7 @@ namespace MyDAL.Test.WhereEdge
                 .From(() => address51)
                     .InnerJoin(() => address511)
                         .On(() => address51.Id == address511.Id)
-                .Where(() => address51.IsDefault == true && address51.UserId == guid5)  //  false  none(true)  
+                .Where(() => address51.IsDefault == true && address51.UserId == guid5)  //  true
                 .QueryListAsync<AddressInfo>();
             Assert.True(res51.Count == 1);
             Assert.True(res51.First().IsDefault);
@@ -148,7 +138,7 @@ namespace MyDAL.Test.WhereEdge
                 .From(() => address52)
                     .InnerJoin(() => address521)
                         .On(() => address52.Id == address521.Id)
-                .Where(() => address52.IsDefault == false || address52.Id == guid52)  //  false  none(true)  
+                .Where(() => address52.IsDefault == false || address52.Id == guid52)  //  false
                 .QueryListAsync<AddressInfo>();
             Assert.True(res52.Count == 3);
             Assert.True(res52.First(it => it.Id != guid52).IsDefault == false);

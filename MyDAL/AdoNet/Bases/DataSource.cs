@@ -71,7 +71,7 @@ namespace MyDAL.AdoNet.Bases
                 .Columns
                 .FirstOrDefault(it =>
                     it.Func == FuncEnum.DateFormat
-                    && (it.CsType == XConfig.TC.DateTime || it.CsType == XConfig.TC.DateTimeNull)
+                    && (it.CsType == XConfig.CSTC.DateTime || it.CsType == XConfig.CSTC.DateTimeNull)
                     && "%Y".Equals(it.Format, StringComparison.OrdinalIgnoreCase)
                     && (it.Option == OptionEnum.Column || it.Option == OptionEnum.ColumnAs));
             if (dic != null)

@@ -57,7 +57,7 @@ namespace MyDAL.Core
         internal static IDbTypeConfig DTC { get; } = new DbTypeConfig();
         internal static ParamInfoConfig PIC { get; } = new ParamInfoConfig();
         internal static ExceptionConfig EC { get; } = new ExceptionConfig();
-        internal static CsTypeConfig TC { get; } = new CsTypeConfig();
+        internal static CsTypeConfig CSTC { get; } = new CsTypeConfig();
 
         /************************************************************************************************************/
 
@@ -126,48 +126,48 @@ namespace MyDAL.Core
             = new ConcurrentDictionary<Type, Func<Context, ParamTypeEnum, DbType>>(
                 new List<KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>>
                 {
-                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(TC.Int,DTC.IntProc),
-                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(TC.Long,DTC.LongProc),
-                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(TC.Decimal,DTC.DecimalProc),
-                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(TC.Bool,DTC.BoolProc),
-                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(TC.String,DTC.StringProc),
-                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(TC.DateTime,DTC.DateTimeProc),
-                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(TC.Guid,DTC.GuidProc),
-                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(TC.Byte,DTC.ByteProc),
-                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(TC.ByteArray,DTC.ByteArrayProc),
-                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(TC.Char,DTC.CharProc),
-                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(TC.Double,DTC.DoubleProc),
-                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(TC.Float,DTC.FloatProc),
-                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(TC.Sbyte,DTC.SbyteProc),
-                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(TC.Short,DTC.ShortProc),
-                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(TC.Uint,DTC.UintProc),
-                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(TC.Ulong,DTC.UlongProc),
-                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(TC.Ushort,DTC.UshortProc),
-                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(TC.TimeSpan,DTC.TimeSpanProc),
-                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(TC.DateTimeOffset,DTC.DateTimeOffsetProc),
-                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(TC.Object,DTC.ObjectProc)
+                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(CSTC.Int,DTC.IntProc),
+                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(CSTC.Long,DTC.LongProc),
+                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(CSTC.Decimal,DTC.DecimalProc),
+                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(CSTC.Bool,DTC.BoolProc),
+                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(CSTC.String,DTC.StringProc),
+                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(CSTC.DateTime,DTC.DateTimeProc),
+                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(CSTC.Guid,DTC.GuidProc),
+                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(CSTC.Byte,DTC.ByteProc),
+                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(CSTC.ByteArray,DTC.ByteArrayProc),
+                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(CSTC.Char,DTC.CharProc),
+                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(CSTC.Double,DTC.DoubleProc),
+                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(CSTC.Float,DTC.FloatProc),
+                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(CSTC.Sbyte,DTC.SbyteProc),
+                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(CSTC.Short,DTC.ShortProc),
+                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(CSTC.Uint,DTC.UintProc),
+                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(CSTC.Ulong,DTC.UlongProc),
+                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(CSTC.Ushort,DTC.UshortProc),
+                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(CSTC.TimeSpan,DTC.TimeSpanProc),
+                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(CSTC.DateTimeOffset,DTC.DateTimeOffsetProc),
+                    new KeyValuePair<Type, Func<Context, ParamTypeEnum, DbType>>(CSTC.Object,DTC.ObjectProc)
                 });
         internal static ConcurrentDictionary<Type, Func<DicParam, Type, Context, ParamInfo>> ParamFuncs { get; }
             = new ConcurrentDictionary<Type, Func<DicParam, Type, Context, ParamInfo>>(
                 new List<KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>>
                 {
-                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(TC.Int,PIC.IntParam),
-                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(TC.Long,PIC.LongParam),
-                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(TC.Decimal,PIC.DecimalParam),
-                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(TC.Bool,PIC.BoolParam),
-                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(TC.String,PIC.StringParam),
-                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(TC.DateTime,PIC.DateTimeParam),
-                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(TC.Guid,PIC.GuidParam),
-                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(TC.Byte,PIC.ByteParam),
-                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(TC.Char,PIC.CharParam),
-                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(TC.Double,PIC.DoubleParam),
-                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(TC.Float,PIC.FloatParam),
-                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(TC.Sbyte,PIC.SbyteParam),
-                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(TC.Short,PIC.ShortParam),
-                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(TC.Uint,PIC.UintParam),
-                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(TC.Ulong,PIC.UlongParam),
-                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(TC.Ushort,PIC.UshortParam),
-                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(TC.TimeSpan,PIC.TimeSpanParam)
+                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(CSTC.Int,PIC.IntParam),
+                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(CSTC.Long,PIC.LongParam),
+                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(CSTC.Decimal,PIC.DecimalParam),
+                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(CSTC.Bool,PIC.BoolParam),
+                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(CSTC.String,PIC.StringParam),
+                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(CSTC.DateTime,PIC.DateTimeParam),
+                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(CSTC.Guid,PIC.GuidParam),
+                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(CSTC.Byte,PIC.ByteParam),
+                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(CSTC.Char,PIC.CharParam),
+                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(CSTC.Double,PIC.DoubleParam),
+                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(CSTC.Float,PIC.FloatParam),
+                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(CSTC.Sbyte,PIC.SbyteParam),
+                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(CSTC.Short,PIC.ShortParam),
+                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(CSTC.Uint,PIC.UintParam),
+                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(CSTC.Ulong,PIC.UlongParam),
+                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(CSTC.Ushort,PIC.UshortParam),
+                    new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(CSTC.TimeSpan,PIC.TimeSpanParam)
                 });
         internal static ConcurrentDictionary<DbEnum, Func<Context, ISqlProvider>> DbProviders { get; }
             = new ConcurrentDictionary<DbEnum, Func<Context, ISqlProvider>>(

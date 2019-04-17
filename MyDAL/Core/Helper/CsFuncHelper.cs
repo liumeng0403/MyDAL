@@ -51,7 +51,7 @@ namespace MyDAL.Core.Helper
                     if (objNodeType == ExpressionType.MemberAccess)
                     {
                         var memType = objExpr.Type;
-                        if (memType == XConfig.TC.String)
+                        if (memType == XConfig.CSTC.String)
                         {
                             return new ContainsLikeParam
                             {

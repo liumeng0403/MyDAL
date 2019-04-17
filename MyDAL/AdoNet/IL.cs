@@ -327,12 +327,12 @@ namespace MyDAL.AdoNet
                     Type colType = reader.GetFieldType(index);    // reader[index] 的列的类型  source
                     Type memberType = item.MemberType();   //  M[item] 的类型   
 
-                    if (memberType == XConfig.TC.Char || memberType == XConfig.TC.CharNull)
+                    if (memberType == XConfig.CSTC.Char || memberType == XConfig.CSTC.CharNull)
                     {
                         il.EmitCall(
                             OpCodes.Call,
                             typeof(CommonIL).GetMethod(
-                                memberType == XConfig.TC.Char
+                                memberType == XConfig.CSTC.Char
                                 ? nameof(CommonIL.ReadChar)
                                 : nameof(CommonIL.ReadNullableChar), BindingFlags.Static | BindingFlags.NonPublic),
                             null);
@@ -374,7 +374,7 @@ namespace MyDAL.AdoNet
                                 il.Emit(OpCodes.Newobj, memberType.GetConstructor(new[] { nullUnderlyingType })); // stack is now [target][target][typed-value]
                             }
                         }
-                        else if (memberType.FullName == XConfig.TC.LinqBinary)
+                        else if (memberType.FullName == XConfig.CSTC.LinqBinary)
                         {
                             il.Emit(OpCodes.Unbox_Any, typeof(byte[])); // stack is now [target][target][byte-array]
                             il.Emit(OpCodes.Newobj, memberType.GetConstructor(new Type[] { typeof(byte[]) }));// stack is now [target][target][binary]
@@ -491,7 +491,7 @@ namespace MyDAL.AdoNet
                     Type colType = reader.GetFieldType(index);    // reader[index] 的列的类型  source
                     Type memberType = item.MemberType();   //  M[item] 的类型   
 
-                    if (memberType == XConfig.TC.Char || memberType == XConfig.TC.CharNull)
+                    if (memberType == XConfig.CSTC.Char || memberType == XConfig.CSTC.CharNull)
                     {
                         il.EmitCall(
                             OpCodes.Call,
@@ -538,7 +538,7 @@ namespace MyDAL.AdoNet
                                 il.Emit(OpCodes.Newobj, memberType.GetConstructor(new[] { nullUnderlyingType })); // stack is now [target][target][typed-value]
                             }
                         }
-                        else if (memberType.FullName == XConfig.TC.LinqBinary)
+                        else if (memberType.FullName == XConfig.CSTC.LinqBinary)
                         {
                             il.Emit(OpCodes.Unbox_Any, typeof(byte[])); // stack is now [target][target][byte-array]
                             il.Emit(OpCodes.Newobj, memberType.GetConstructor(new Type[] { typeof(byte[]) }));// stack is now [target][target][binary]

@@ -47,11 +47,11 @@ namespace MyDAL.Core.Helper
             {
                 return GetType(colType, Enum.GetUnderlyingType(realType), dc);
             }
-            else if (realType.FullName == XConfig.TC.LinqBinary)
+            else if (realType.FullName == XConfig.CSTC.LinqBinary)
             {
                 return DbType.Binary;
             }
-            else if (XConfig.TC.IEnumerableT.IsAssignableFrom(realType))
+            else if (XConfig.CSTC.IEnumerableT.IsAssignableFrom(realType))
             {
                 return (DbType)(-1);
             }

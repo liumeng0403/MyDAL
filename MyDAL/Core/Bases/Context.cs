@@ -233,7 +233,7 @@ namespace MyDAL.Core.Bases
                     {
                         csVal = "Null";
                     }
-                    else if (dbM.CsType == XConfig.TC.DateTime)
+                    else if (dbM.CsType == XConfig.CSTC.DateTime)
                     {
                         try
                         {

@@ -7,7 +7,7 @@ namespace MyDAL.Core.Extensions
         internal static bool IsList(this Type type)
         {
             if (type.IsGenericType
-                && type.GetGenericTypeDefinition() == XConfig.TC.ListT)
+                && type.GetGenericTypeDefinition() == XConfig.CSTC.ListT)
             {
                 return true;
             }
@@ -17,7 +17,7 @@ namespace MyDAL.Core.Extensions
         internal static bool IsNullable(this Type type)
         {
             if (type.IsGenericType
-                && type.GetGenericTypeDefinition() == XConfig.TC.NullableT)
+                && type.GetGenericTypeDefinition() == XConfig.CSTC.NullableT)
             {
                 return true;
             }
@@ -27,7 +27,7 @@ namespace MyDAL.Core.Extensions
         internal static bool IsSingleColumn(this Type type)
         {
             if (type.IsValueType
-                || type == XConfig.TC.String)
+                || type == XConfig.CSTC.String)
             {
                 return true;
             }
