@@ -1,5 +1,4 @@
-﻿using HPC.DAL;
-using MyDAL.Test.Entities.MyDAL_TestDB;
+﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
