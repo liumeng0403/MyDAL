@@ -22,7 +22,14 @@ namespace MyDAL.DataRainbow.SQLServer
         }
         DbType IDbTypeConfig.BoolProc(Context dc, ParamTypeEnum colType)
         {
-            return DbType.Boolean;
+            if (colType == ParamTypeEnum.SqlServer_Bit)
+            {
+                return DbType.Int16;
+            }
+            else
+            {
+                return DbType.Boolean;
+            }
         }
         DbType IDbTypeConfig.StringProc(Context dc, ParamTypeEnum colType)
         {

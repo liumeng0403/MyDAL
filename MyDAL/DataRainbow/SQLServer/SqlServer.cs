@@ -54,7 +54,14 @@ namespace MyDAL.DataRainbow.SQLServer
             {
                 sb.Append(tbAlias); XSQL.Dot(sb);
             }
-            DbSql.ObjLeftSymbol(sb); sb.Append(colName); DbSql.ObjRightSymbol(sb);
+            if ("*".Equals(colName, StringComparison.OrdinalIgnoreCase))
+            {
+                sb.Append(colName);
+            }
+            else
+            {
+                DbSql.ObjLeftSymbol(sb); sb.Append(colName); DbSql.ObjRightSymbol(sb);
+            }
         }
         void ISql.ColumnReplaceNullValueForSum(string tbAlias, string colName, StringBuilder sb)
         {

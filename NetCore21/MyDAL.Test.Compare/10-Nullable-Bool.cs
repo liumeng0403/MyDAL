@@ -161,39 +161,148 @@ namespace MyDAL.Test.Compare
         }
 
         [Fact]
+        public async Task Not_True_MT()
+        {
+            xx = string.Empty;
+
+            // where 1=1
+            var res1 = await Conn
+                .Queryer(out Agent agent, out AgentInventoryRecord record)
+                .From(() => agent)
+                    .InnerJoin(() => record)
+                        .On(() => agent.Id == record.AgentId)
+                .Where(() => !true)   // false 
+                .QueryListAsync<Agent>();
+
+            Assert.True(res1.Count == 0);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
+        }
+
+        [Fact]
+        public async Task Not_False_MT()
+        {
+            xx = string.Empty;
+
+            var res1 = await Conn
+                .Queryer(out Agent agent, out AgentInventoryRecord record)
+                .From(() => agent)
+                    .InnerJoin(() => record)
+                        .On(() => agent.Id == record.AgentId)
+                .Where(() => !false) //  true
+                .QueryListAsync<Agent>();
+
+            Assert.True(res1.Count == 574);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
+        }
+
+        [Fact]
         public async Task Bool_Default()
         {
+            xx = string.Empty;
 
+            var res1 = await Conn
+                .Queryer<AspnetUsers>()
+                .Where(it => it.RootUser)  //  true
+                .QueryPagingAsync(1, 10);
+
+            Assert.True(res1.Data.Count == 1);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
         }
 
         [Fact]
         public async Task Bool_True()
         {
+            xx = string.Empty;
 
+            var res1 = await Conn
+                .Queryer<AspnetUsers>()
+                .Where(it => it.RootUser == true)  //  true
+                .QueryPagingAsync(1, 10);
+
+            Assert.True(res1.Data.Count == 1);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
         }
 
         [Fact]
         public async Task Bool_False()
         {
+            xx = string.Empty;
 
+            var res1 = await Conn
+                .Queryer<AspnetUsers>()
+                .Where(it => it.RootUser == false)  //  false
+                .QueryPagingAsync(1, 10);
+
+            Assert.True(res1.Data.Count == 10);
+            Assert.True(res1.TotalCount == 28624);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
         }
 
         [Fact]
         public async Task Not_Bool_Default()
         {
+            xx = string.Empty;
 
+            var res1 = await Conn
+                .Queryer<AspnetUsers>()
+                .Where(it => !it.RootUser)  //  false
+                .QueryPagingAsync(1, 10);
+
+            Assert.True(res1.Data.Count == 10);
+            Assert.True(res1.TotalCount == 28624);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
         }
 
         [Fact]
         public async Task Not_Bool_True()
         {
+            xx = string.Empty;
 
+            var res1 = await Conn
+                .Queryer<AspnetUsers>()
+                .Where(it => !(it.RootUser == true))  //  false
+                .QueryPagingAsync(1, 10);
+
+            Assert.True(res1.Data.Count == 10);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
         }
 
         [Fact]
         public async Task Not_Bool_False()
         {
+            xx = string.Empty;
 
+            var res1 = await Conn
+                .Queryer<AspnetUsers>()
+                .Where(it => !(it.RootUser == false))  //  true
+                .QueryPagingAsync(1, 10);
+
+            Assert.True(res1.Data.Count == 1);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
         }
 
         [Fact]
@@ -278,6 +387,91 @@ namespace MyDAL.Test.Compare
                 .QueryPagingAsync(1, 10);
 
             Assert.True(res1.Data.Count == 4);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
+        }
+
+        [Fact]
+        public async Task Not_Nullable_Bool_Default_ST()
+        {
+            xx = string.Empty;
+
+            var res1 = await Conn
+                .Queryer<AddressInfo>()
+                .Where(it => !it.IsDefault.Value)  //  false
+                .QueryListAsync();
+
+            Assert.True(res1.Count == 2);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
+        }
+
+        [Fact]
+        public async Task Not_Nullable_Bool_True_ST()
+        {
+            xx = string.Empty;
+
+            var res1 = await Conn
+                .Queryer<AddressInfo>()
+                .Where(it => !(it.IsDefault.Value == true))  //  false
+                .QueryListAsync();
+
+            Assert.True(res1.Count == 2);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
+        }
+
+        [Fact]
+        public async Task Not_Nullable_Bool_False_ST()
+        {
+            xx = string.Empty;
+
+            var res1 = await Conn
+                .Queryer<AddressInfo>()
+                .Where(it => !(it.IsDefault.Value == false))  //  true 
+                .QueryListAsync();
+
+            Assert.True(res1.Count == 5);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
+        }
+
+        [Fact]
+        public async Task Not_Nullable_Bool_IsNull_ST()
+        {
+            xx = string.Empty;
+
+            var res1 = await Conn
+                .Queryer<Product>()
+                .Where(it => !(it.VipProduct == null))  //  is not null  <--  nullable<bool>
+                .QueryPagingAsync(1, 10);
+
+            Assert.True(res1.Data.Count == 4);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
+        }
+
+        [Fact]
+        public async Task Not_Nullable_Bool_IsNotNull_ST()
+        {
+            xx = string.Empty;
+
+            var res1 = await Conn
+                .Queryer<Product>()
+                .Where(it => !(it.VipProduct != null))  //  is null  <--  nullable<bool>
+                .QueryPagingAsync(1, 10);
+
+            Assert.True(res1.Data.Count == 0);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
@@ -388,39 +582,44 @@ namespace MyDAL.Test.Compare
         }
 
         [Fact]
-        public async Task Not_Nullable_Bool_Default_ST()
+        public async Task Nullable_Multi_Default_MT()
         {
+            xx = string.Empty;
 
+            var res1 = await Conn
+                .Queryer(out AddressInfo addr, out AddressInfo addr2)
+                .From(() => addr)
+                    .InnerJoin(() => addr2)
+                        .On(() => addr.Id == addr2.Id)
+                .Where(() => addr.IsDefault == null && addr.IsDefault.Value)  //  is null && true  <-- nullable<bool>
+                .QueryListAsync<AddressInfo>();
+
+            Assert.True(res1.Count == 0);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
         }
 
         [Fact]
-        public async Task Not_Nullable_Bool_True_ST()
+        public async Task Not_Nullable_Multi_Default_MT()
         {
+            xx = string.Empty;
 
+            var res1 = await Conn
+                .Queryer(out AddressInfo addr, out AddressInfo addr2)
+                .From(() => addr)
+                    .InnerJoin(() => addr2)
+                        .On(() => addr.Id == addr2.Id)
+                .Where(() => addr.IsDefault != null && !addr.IsDefault.Value)  //  is not null && false  <-- nullable<bool>
+                .QueryListAsync<AddressInfo>();
+
+            Assert.True(res1.Count == 2);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
         }
 
-        [Fact]
-        public async Task Not_Nullable_Bool_False_ST()
-        {
-
-        }
-
-        [Fact]
-        public async Task Not_Nullable_Bool_Default_MT()
-        {
-
-        }
-
-        [Fact]
-        public async Task Not_Nullable_Bool_True_MT()
-        {
-
-        }
-
-        [Fact]
-        public async Task Not_Nullable_Bool_False_MT()
-        {
-
-        }
     }
 }
