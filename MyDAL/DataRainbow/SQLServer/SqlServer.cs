@@ -79,7 +79,7 @@ namespace HPC.DAL.DataRainbow.SQLServer
             }
             else
             {
-                throw dc.Exception(XConfig.EC._010, action.ToString());
+                throw dc.Exception(XConfig.EC._037, action.ToString());
             }
         }
         void ISql.DbParam(string param, StringBuilder sb)

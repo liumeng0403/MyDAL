@@ -65,7 +65,7 @@ namespace HPC.DAL.AdoNet
                                         ? dic.TbCol
                                         : dic.Option == OptionEnum.ColumnAs
                                             ? dic.TbColAlias
-                                            : throw DC.Exception(XConfig.EC._016, dic.Option.ToString()))), 1, 1).ToString(dic.Format)));
+                                            : throw DC.Exception(XConfig.EC._038, dic.Option.ToString()))), 1, 1).ToString(dic.Format)));
             }
         }
         private List<F> ReadColumn<F>()
