@@ -25,6 +25,9 @@ namespace HPC.DAL.UserFacade.Query
             : base(dc)
         { }
 
+        /// <summary>
+        /// 请参阅: <see langword=".Where() 之 .WhereSegment 根据条件 动态设置 Select查询条件 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// </summary>
         public WhereQ<M> WhereSegment
         {
             get
