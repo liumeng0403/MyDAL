@@ -30,6 +30,7 @@
 * <a href="https://www.cnblogs.com/Meng-NET/p/10179385.html" target="_blank">MyDAL - .QueryListAsync() 使用</a>
 * <a href="https://www.cnblogs.com/Meng-NET/p/10210668.html" target="_blank">MyDAL - .IsExistAsync() 使用</a>
 * <a href="https://www.cnblogs.com/Meng-NET/p/9978336.html" target="_blank">MyDAL - .Where() & .And() & .Or() 使用</a>
+* <a href="https://www.cnblogs.com/Meng-NET/p/10733275.html" target="_blank">MyDAL - .Where() 之 .WhereSegment 根据条件 动态设置 Select查询条件 使用</a>
 * <a href="https://www.cnblogs.com/Meng-NET/p/10296445.html" target="_blank">MyDAL - is null && is not null 条件 使用</a>
 * <a href="https://www.cnblogs.com/Meng-NET/p/10387628.html" target="_blank">MyDAL - like && not like 条件 使用</a>
 * <a href="https://www.cnblogs.com/Meng-NET/p/10470504.html" target="_blank">MyDAL - in && not in 条件 使用</a>
