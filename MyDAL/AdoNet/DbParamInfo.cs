@@ -27,7 +27,14 @@ namespace HPC.DAL.AdoNet
                 //
                 dbPara.Direction = param.ParameterDirection;
                 dbPara.Value = param.Value;
-                dbPara.DbType = param.Type;
+                try
+                {
+                    dbPara.DbType = param.Type;
+                }
+                catch
+                {
+                    dbPara.DbType = DbType.String;
+                }
                 if (param.Size != null)
                 {
                     dbPara.Size = param.Size.Value;
