@@ -170,7 +170,7 @@ namespace MyDAL.Core
             else
             {
                 var left = default(Expression);
-                if(IsNullableExpr(bin.Left))
+                if (IsNullableExpr(bin.Left))
                 {
                     left = (bin.Left as MemberExpression).Expression;
                 }
@@ -337,6 +337,21 @@ namespace MyDAL.Core
                 return DC.DPH.DateFormatDic(cp, null, format);
             }
         }
+        private DicParam BoolDefaultCondition(ColumnParam cp)
+        {
+            if (cp.ValType == XConfig.CSTC.Bool
+                || cp.ValType == XConfig.CSTC.BoolNull)
+            {
+                DC.Option = OptionEnum.Compare;
+                DC.Compare = CompareXEnum.Equal;
+                return DC.DPH.CompareDic(cp, new ValueInfo
+                {
+                    Val = true.ToString(),
+                    ValStr = string.Empty
+                });
+            }
+            return null;
+        }
 
         /********************************************************************************************************************/
 
@@ -441,18 +456,15 @@ namespace MyDAL.Core
                 }
                 else if (DC.Action == ActionEnum.Where)
                 {
-                    if (cp.ValType == XConfig.CSTC.Bool
-                        || cp.ValType == XConfig.CSTC.BoolNull)
+                    var dp = BoolDefaultCondition(cp);
+                    if (dp != null)
                     {
-                        DC.Option = OptionEnum.Compare;
-                        DC.Compare = CompareXEnum.Equal;
-                        return DC.DPH.CompareDic(cp, new ValueInfo
-                        {
-                            Val = true.ToString(),
-                            ValStr = string.Empty
-                        });
+                        return dp;
                     }
-                    return null;
+                    else
+                    {
+                        throw DC.Exception(XConfig.EC._040, memExpr.ToString());
+                    }
                 }
                 else
                 {
@@ -464,18 +476,15 @@ namespace MyDAL.Core
                 if (DC.Action == ActionEnum.Where)
                 {
                     var cp = GetKey(memExpr, FuncEnum.None, CompareXEnum.None);
-                    if (cp.ValType == typeof(bool))
+                    var dp = BoolDefaultCondition(cp);
+                    if (dp != null)
                     {
-                        DC.Option = OptionEnum.Compare;
-                        DC.Compare = CompareXEnum.Equal;
-                        return DC.DPH.CompareDic(cp, new ValueInfo
-                        {
-                            Val = true.ToString(),
-                            ValStr = string.Empty
-                        });
+                        return dp;
                     }
-
-                    return null;
+                    else
+                    {
+                        throw DC.Exception(XConfig.EC._039, memExpr.ToString());
+                    }
                 }
                 else
                 {
