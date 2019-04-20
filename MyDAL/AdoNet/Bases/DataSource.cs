@@ -20,6 +20,7 @@ namespace HPC.DAL.AdoNet.Bases
                 return DC.Conn;
             }
         }
+        internal protected IDbTransaction Tran { get; set; }
         internal protected int SqlCount
         {
             get
@@ -84,6 +85,10 @@ namespace HPC.DAL.AdoNet.Bases
         internal protected DbCommand SettingCommand(CommandInfo comm, IDbConnection cnn, Action<IDbCommand, DbParamInfo> paramReader)
         {
             var cmd = cnn.CreateCommand();
+            if (Tran != null)
+            {
+                cmd.Transaction = Tran;
+            }
             cmd.CommandText = comm.CommandText;
             cmd.CommandTimeout = XConfig.CommandTimeout;
             cmd.CommandType = CommandType.Text;

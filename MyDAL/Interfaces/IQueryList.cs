@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -8,39 +9,39 @@ namespace HPC.DAL.Interfaces
     internal interface IQueryListAsync<M>
         where M : class
     {
-        Task<List<M>> QueryListAsync();
-        Task<List<VM>> QueryListAsync<VM>()
+        Task<List<M>> QueryListAsync(IDbTransaction tran = null);
+        Task<List<VM>> QueryListAsync<VM>(IDbTransaction tran = null)
             where VM : class;
-        Task<List<T>> QueryListAsync<T>(Expression<Func<M, T>> columnMapFunc);
+        Task<List<T>> QueryListAsync<T>(Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null);
     }
     internal interface IQueryList<M>
         where M : class
     {
-        List<M> QueryList();
-        List<VM> QueryList<VM>()
+        List<M> QueryList(IDbTransaction tran = null);
+        List<VM> QueryList<VM>(IDbTransaction tran = null)
             where VM : class;
-        List<T> QueryList<T>(Expression<Func<M, T>> columnMapFunc);
+        List<T> QueryList<T>(Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null);
     }
 
     internal interface IQueryListXAsync
     {
-        Task<List<M>> QueryListAsync<M>()
+        Task<List<M>> QueryListAsync<M>(IDbTransaction tran = null)
             where M : class;
-        Task<List<T>> QueryListAsync<T>(Expression<Func<T>> columnMapFunc);
+        Task<List<T>> QueryListAsync<T>(Expression<Func<T>> columnMapFunc, IDbTransaction tran = null);
     }
     internal interface IQueryListX
     {
-        List<M> QueryList<M>()
+        List<M> QueryList<M>(IDbTransaction tran = null)
             where M : class;
-        List<T> QueryList<T>(Expression<Func<T>> columnMapFunc);
+        List<T> QueryList<T>(Expression<Func<T>> columnMapFunc, IDbTransaction tran = null);
     }
 
     internal interface IQueryListSQLAsync
     {
-        Task<List<T>> QueryListAsync<T>();
+        Task<List<T>> QueryListAsync<T>(IDbTransaction tran = null);
     }
     internal interface IQueryListSQL
     {
-        List<T> QueryList<T>();
+        List<T> QueryList<T>(IDbTransaction tran = null);
     }
 }

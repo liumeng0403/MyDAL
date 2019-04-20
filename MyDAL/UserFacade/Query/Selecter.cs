@@ -4,6 +4,7 @@ using HPC.DAL.Interfaces;
 using HPC.DAL.Interfaces.Segments;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -40,52 +41,52 @@ namespace HPC.DAL.UserFacade.Query
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         [Obsolete("警告：此 API 会查询表中所有数据！！！", false)]
-        public async Task<List<M>> QueryListAsync()
+        public async Task<List<M>> QueryListAsync(IDbTransaction tran = null)
         {
-            return await new QueryListAsyncImpl<M>(DC).QueryListAsync();
+            return await new QueryListAsyncImpl<M>(DC).QueryListAsync(tran);
         }
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         [Obsolete("警告：此 API 会查询表中所有数据！！！", false)]
-        public async Task<List<VM>> QueryListAsync<VM>()
+        public async Task<List<VM>> QueryListAsync<VM>(IDbTransaction tran = null)
             where VM : class
         {
-            return await new QueryListAsyncImpl<M>(DC).QueryListAsync<VM>();
+            return await new QueryListAsyncImpl<M>(DC).QueryListAsync<VM>(tran);
         }
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         [Obsolete("警告：此 API 会查询表中所有数据！！！", false)]
-        public async Task<List<T>> QueryListAsync<T>(Expression<Func<M, T>> columnMapFunc)
+        public async Task<List<T>> QueryListAsync<T>(Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null)
         {
-            return await new QueryListAsyncImpl<M>(DC).QueryListAsync(columnMapFunc);
+            return await new QueryListAsyncImpl<M>(DC).QueryListAsync(columnMapFunc,tran);
         }
 
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         [Obsolete("警告：此 API 会查询表中所有数据！！！", false)]
-        public List<M> QueryList()
+        public List<M> QueryList(IDbTransaction tran = null)
         {
-            return new QueryListImpl<M>(DC).QueryList();
+            return new QueryListImpl<M>(DC).QueryList(tran);
         }
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         [Obsolete("警告：此 API 会查询表中所有数据！！！", false)]
-        public List<VM> QueryList<VM>()
+        public List<VM> QueryList<VM>(IDbTransaction tran = null)
             where VM : class
         {
-            return new QueryListImpl<M>(DC).QueryList<VM>();
+            return new QueryListImpl<M>(DC).QueryList<VM>(tran);
         }
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         [Obsolete("警告：此 API 会查询表中所有数据！！！", false)]
-        public List<T> QueryList<T>(Expression<Func<M, T>> columnMapFunc)
+        public List<T> QueryList<T>(Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null)
         {
-            return new QueryListImpl<M>(DC).QueryList(columnMapFunc);
+            return new QueryListImpl<M>(DC).QueryList(columnMapFunc,tran);
         }
 
         /// <summary>
@@ -205,17 +206,17 @@ namespace HPC.DAL.UserFacade.Query
         /// <summary>
         /// 请参阅: <see langword=".IsExistAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<bool> IsExistAsync()
+        public async Task<bool> IsExistAsync(IDbTransaction tran = null)
         {
-            return await new IsExistAsyncImpl<M>(DC).IsExistAsync();
+            return await new IsExistAsyncImpl<M>(DC).IsExistAsync(tran);
         }
 
         /// <summary>
         /// 请参阅: <see langword=".IsExistAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public bool IsExist()
+        public bool IsExist(IDbTransaction tran = null)
         {
-            return new IsExistImpl<M>(DC).IsExist();
+            return new IsExistImpl<M>(DC).IsExist(tran);
         }
 
 

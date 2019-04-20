@@ -1,6 +1,7 @@
 ﻿using HPC.DAL.Core.Bases;
 using HPC.DAL.Impls;
 using HPC.DAL.Interfaces;
+using System.Data;
 using System.Threading.Tasks;
 
 namespace HPC.DAL.UserFacade.Delete
@@ -21,18 +22,18 @@ namespace HPC.DAL.UserFacade.Delete
         /// 单表数据删除
         /// </summary>
         /// <returns>删除条目数</returns>
-        public async Task<int> DeleteAsync()
+        public async Task<int> DeleteAsync(IDbTransaction tran = null)
         {
-            return await new DeleteAsyncImpl<M>(DC).DeleteAsync();
+            return await new DeleteAsyncImpl<M>(DC).DeleteAsync(tran);
         }
 
         /// <summary>
         /// 单表数据删除
         /// </summary>
         /// <returns>删除条目数</returns>
-        public int Delete()
+        public int Delete(IDbTransaction tran = null)
         {
-            return new DeleteImpl<M>(DC).Delete();
+            return new DeleteImpl<M>(DC).Delete(tran);
         }
 
     }

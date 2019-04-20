@@ -5,6 +5,7 @@ using HPC.DAL.Impls.Base;
 using HPC.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -12,7 +13,7 @@ namespace HPC.DAL.Impls
 {
     internal sealed class CountAsyncImpl<M>
     : ImplerAsync
-    , ICountAsync<M> 
+    , ICountAsync<M>
     where M : class
     {
         internal CountAsyncImpl(Context dc)
@@ -20,18 +21,18 @@ namespace HPC.DAL.Impls
         {
         }
 
-        public async Task<int> CountAsync()
+        public async Task<int> CountAsync(IDbTransaction tran = null)
         {
             DC.Action = ActionEnum.Select;
-            //DC.Option = OptionEnum.Count;
             DC.Option = OptionEnum.Column;
             DC.Compare = CompareXEnum.None;
             DC.Func = FuncEnum.Count;
             DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(typeof(M), "*") }));
             PreExecuteHandle(UiMethodEnum.CountAsync);
+            DSA.Tran = tran;
             return await DSA.ExecuteScalarAsync<int>();
         }
-        public async Task<int> CountAsync<F>(Expression<Func<M, F>> propertyFunc)
+        public async Task<int> CountAsync<F>(Expression<Func<M, F>> propertyFunc, IDbTransaction tran = null)
         {
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
@@ -40,9 +41,10 @@ namespace HPC.DAL.Impls
             var dic = DC.XE.FuncMFExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.CountAsync);
+            DSA.Tran = tran;
             return await DSA.ExecuteScalarAsync<int>();
         }
- 
+
     }
     internal sealed class CountImpl<M>
         : ImplerSync
@@ -53,8 +55,8 @@ namespace HPC.DAL.Impls
             : base(dc)
         {
         }
-         
-        public int Count()
+
+        public int Count(IDbTransaction tran = null)
         {
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
@@ -62,9 +64,10 @@ namespace HPC.DAL.Impls
             DC.Func = FuncEnum.Count;
             DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(typeof(M), "*") }));
             PreExecuteHandle(UiMethodEnum.CountAsync);
+            DSS.Tran = tran;
             return DSS.ExecuteScalar<int>();
         }
-        public int Count<F>(Expression<Func<M, F>> propertyFunc)
+        public int Count<F>(Expression<Func<M, F>> propertyFunc, IDbTransaction tran = null)
         {
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
@@ -73,19 +76,20 @@ namespace HPC.DAL.Impls
             var dic = DC.XE.FuncMFExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.CountAsync);
+            DSS.Tran = tran;
             return DSS.ExecuteScalar<int>();
         }
     }
 
     internal sealed class CountXAsyncImpl
     : ImplerAsync
-    , ICountXAsync 
+    , ICountXAsync
     {
         public CountXAsyncImpl(Context dc)
             : base(dc)
         { }
 
-        public async Task<int> CountAsync()
+        public async Task<int> CountAsync(IDbTransaction tran = null)
         {
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
@@ -93,9 +97,10 @@ namespace HPC.DAL.Impls
             DC.Func = FuncEnum.Count;
             DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(default(Type), "*", string.Empty) }));
             PreExecuteHandle(UiMethodEnum.CountAsync);
+            DSA.Tran = tran;
             return await DSA.ExecuteScalarAsync<int>();
         }
-        public async Task<int> CountAsync<F>(Expression<Func<F>> propertyFunc)
+        public async Task<int> CountAsync<F>(Expression<Func<F>> propertyFunc, IDbTransaction tran = null)
         {
             DC.Action = ActionEnum.Select;
             DC.Compare = CompareXEnum.None;
@@ -103,6 +108,7 @@ namespace HPC.DAL.Impls
             var dic = DC.XE.FuncTExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.CountAsync);
+            DSA.Tran = tran;
             return await DSA.ExecuteScalarAsync<int>();
         }
 
@@ -115,7 +121,7 @@ namespace HPC.DAL.Impls
             : base(dc)
         { }
 
-        public int Count()
+        public int Count(IDbTransaction tran = null)
         {
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
@@ -123,9 +129,10 @@ namespace HPC.DAL.Impls
             DC.Func = FuncEnum.Count;
             DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(default(Type), "*", string.Empty) }));
             PreExecuteHandle(UiMethodEnum.CountAsync);
+            DSS.Tran = tran;
             return DSS.ExecuteScalar<int>();
         }
-        public int Count<F>(Expression<Func<F>> propertyFunc)
+        public int Count<F>(Expression<Func<F>> propertyFunc, IDbTransaction tran = null)
         {
             DC.Action = ActionEnum.Select;
             DC.Compare = CompareXEnum.None;
@@ -133,6 +140,7 @@ namespace HPC.DAL.Impls
             var dic = DC.XE.FuncTExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.CountAsync);
+            DSS.Tran = tran;
             return DSS.ExecuteScalar<int>();
         }
     }
