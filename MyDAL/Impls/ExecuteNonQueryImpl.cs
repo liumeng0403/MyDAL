@@ -1,6 +1,7 @@
-﻿using MyDAL.Core.Bases;
+using MyDAL.Core.Bases;
 using MyDAL.Impls.Base;
 using MyDAL.Interfaces;
+using System.Data;
 using System.Threading.Tasks;
 
 namespace MyDAL.Impls
@@ -13,8 +14,9 @@ namespace MyDAL.Impls
             : base(dc)
         { }
 
-        public async Task<int> ExecuteNonQueryAsync()
+        public async Task<int> ExecuteNonQueryAsync(IDbTransaction tran = null)
         {
+            DSA.Tran = tran;
             return await DSA.ExecuteNonQueryAsync();
         }
  
@@ -27,8 +29,9 @@ namespace MyDAL.Impls
             : base(dc)
         {   }
 
-        public int ExecuteNonQuery()
+        public int ExecuteNonQuery(IDbTransaction tran = null)
         {
+            DSS.Tran = tran;
             return DSS.ExecuteNonQuery();
         }
     }

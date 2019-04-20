@@ -4,6 +4,7 @@ using MyDAL.Interfaces;
 using MyDAL.Interfaces.Segments;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -72,33 +73,33 @@ namespace MyDAL.UserFacade.Join
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>        
-        public async Task<List<M>> QueryListAsync<M>()
+        public async Task<List<M>> QueryListAsync<M>(IDbTransaction tran = null)
             where M : class
         {
-            return await new QueryListXAsyncImpl(DC).QueryListAsync<M>();
+            return await new QueryListXAsyncImpl(DC).QueryListAsync<M>(tran);
         }
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>        
-        public async Task<List<T>> QueryListAsync<T>(Expression<Func<T>> columnMapFunc)
+        public async Task<List<T>> QueryListAsync<T>(Expression<Func<T>> columnMapFunc, IDbTransaction tran = null)
         {
-            return await new QueryListXAsyncImpl(DC).QueryListAsync(columnMapFunc);
+            return await new QueryListXAsyncImpl(DC).QueryListAsync(columnMapFunc,tran);
         }
 
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>        
-        public List<M> QueryList<M>()
+        public List<M> QueryList<M>(IDbTransaction tran = null)
             where M : class
         {
-            return new QueryListXImpl(DC).QueryList<M>();
+            return new QueryListXImpl(DC).QueryList<M>(tran);
         }
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>        
-        public List<T> QueryList<T>(Expression<Func<T>> columnMapFunc)
+        public List<T> QueryList<T>(Expression<Func<T>> columnMapFunc, IDbTransaction tran = null)
         {
-            return new QueryListXImpl(DC).QueryList(columnMapFunc);
+            return new QueryListXImpl(DC).QueryList(columnMapFunc,tran);
         }
 
         /// <summary>
@@ -176,17 +177,17 @@ namespace MyDAL.UserFacade.Join
         /// <summary>
         /// 请参阅: <see langword=".IsExistAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<bool> IsExistAsync()
+        public async Task<bool> IsExistAsync(IDbTransaction tran = null)
         {
-            return await new IsExistXAsyncImpl(DC).IsExistAsync();
+            return await new IsExistXAsyncImpl(DC).IsExistAsync(tran);
         }
 
         /// <summary>
         /// 请参阅: <see langword=".IsExistAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public bool IsExist()
+        public bool IsExist(IDbTransaction tran = null)
         {
-            return new IsExistXImpl(DC).IsExist();
+            return new IsExistXImpl(DC).IsExist(tran);
         }
     }
 }

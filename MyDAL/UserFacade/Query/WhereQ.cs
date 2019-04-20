@@ -4,6 +4,7 @@ using MyDAL.Interfaces;
 using MyDAL.Interfaces.Segments;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -84,47 +85,47 @@ namespace MyDAL.UserFacade.Query
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<List<M>> QueryListAsync()
+        public async Task<List<M>> QueryListAsync(IDbTransaction tran = null)
         {
-            return await new QueryListAsyncImpl<M>(DC).QueryListAsync();
+            return await new QueryListAsyncImpl<M>(DC).QueryListAsync(tran);
         }
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<List<VM>> QueryListAsync<VM>()
+        public async Task<List<VM>> QueryListAsync<VM>(IDbTransaction tran = null)
             where VM : class
         {
-            return await new QueryListAsyncImpl<M>(DC).QueryListAsync<VM>();
+            return await new QueryListAsyncImpl<M>(DC).QueryListAsync<VM>(tran);
         }
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<List<T>> QueryListAsync<T>(Expression<Func<M, T>> columnMapFunc)
+        public async Task<List<T>> QueryListAsync<T>(Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null)
         {
-            return await new QueryListAsyncImpl<M>(DC).QueryListAsync(columnMapFunc);
+            return await new QueryListAsyncImpl<M>(DC).QueryListAsync(columnMapFunc,tran);
         }
 
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public List<M> QueryList()
+        public List<M> QueryList(IDbTransaction tran = null)
         {
-            return new QueryListImpl<M>(DC).QueryList();
+            return new QueryListImpl<M>(DC).QueryList(tran);
         }
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public List<VM> QueryList<VM>()
+        public List<VM> QueryList<VM>(IDbTransaction tran = null)
             where VM : class
         {
-            return new QueryListImpl<M>(DC).QueryList<VM>();
+            return new QueryListImpl<M>(DC).QueryList<VM>(tran);
         }
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public List<T> QueryList<T>(Expression<Func<M, T>> columnMapFunc)
+        public List<T> QueryList<T>(Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null)
         {
-            return new QueryListImpl<M>(DC).QueryList(columnMapFunc);
+            return new QueryListImpl<M>(DC).QueryList(columnMapFunc,tran);
         }
 
         /// <summary>
@@ -244,31 +245,31 @@ namespace MyDAL.UserFacade.Query
         /// <summary>
         /// 查询符合条件数据条目数
         /// </summary>
-        public async Task<int> CountAsync()
+        public async Task<int> CountAsync(IDbTransaction tran = null)
         {
-            return await new CountAsyncImpl<M>(DC).CountAsync();
+            return await new CountAsyncImpl<M>(DC).CountAsync(tran);
         }
         /// <summary>
         /// 查询符合条件数据条目数
         /// </summary>
-        public async Task<int> CountAsync<F>(Expression<Func<M, F>> propertyFunc)
+        public async Task<int> CountAsync<F>(Expression<Func<M, F>> propertyFunc, IDbTransaction tran = null)
         {
-            return await new CountAsyncImpl<M>(DC).CountAsync(propertyFunc);
+            return await new CountAsyncImpl<M>(DC).CountAsync(propertyFunc, tran);
         }
 
         /// <summary>
         /// 查询符合条件数据条目数
         /// </summary>
-        public int Count()
+        public int Count(IDbTransaction tran = null)
         {
-            return new CountImpl<M>(DC).Count();
+            return new CountImpl<M>(DC).Count(tran);
         }
         /// <summary>
         /// 查询符合条件数据条目数
         /// </summary>
-        public int Count<F>(Expression<Func<M, F>> propertyFunc)
+        public int Count<F>(Expression<Func<M, F>> propertyFunc, IDbTransaction tran = null)
         {
-            return new CountImpl<M>(DC).Count(propertyFunc);
+            return new CountImpl<M>(DC).Count(propertyFunc, tran);
         }
 
         /// <summary>
@@ -308,17 +309,17 @@ namespace MyDAL.UserFacade.Query
         /// <summary>
         /// 请参阅: <see langword=".IsExistAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<bool> IsExistAsync()
+        public async Task<bool> IsExistAsync(IDbTransaction tran = null)
         {
-            return await new IsExistAsyncImpl<M>(DC).IsExistAsync();
+            return await new IsExistAsyncImpl<M>(DC).IsExistAsync(tran);
         }
 
         /// <summary>
         /// 请参阅: <see langword=".IsExistAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public bool IsExist()
+        public bool IsExist(IDbTransaction tran = null)
         {
-            return new IsExistImpl<M>(DC).IsExist();
+            return new IsExistImpl<M>(DC).IsExist(tran);
         }
 
     }

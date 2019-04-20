@@ -273,7 +273,7 @@ namespace MyDAL.Test.QueryAPI
         {
             xx = string.Empty;
 
-            var res1 = await Conn.QueryListAsync<Agent>(null);
+            var res1 = await Conn.QueryListAsync<Agent>(it => true);
 
             Assert.True(res1.Count == 28620);
 
@@ -497,7 +497,7 @@ namespace MyDAL.Test.QueryAPI
             xx = string.Empty;
 
             var res4 = await Conn
-                .Queryer<Agent>()                
+                .Queryer<Agent>()
                 .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
                 .QueryListAsync();
 
@@ -612,10 +612,10 @@ namespace MyDAL.Test.QueryAPI
                 .From(() => agent)
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)
-                .QueryListAsync(()=>new AgentVM
+                .QueryListAsync(() => new AgentVM
                 {
-                    XXXX=agent.Name,
-                    YYYY=agent.PathId
+                    XXXX = agent.Name,
+                    YYYY = agent.PathId
                 });
 
             Assert.True(res1.Count == 574);
@@ -693,7 +693,7 @@ namespace MyDAL.Test.QueryAPI
             Assert.True("~00-d-3-2-1-c-2-1a-1" == res1.First().nn);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-            
+
             /*************************************************************************************************************************/
 
             xx = string.Empty;

@@ -3,6 +3,7 @@ using MyDAL.Impls;
 using MyDAL.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -25,47 +26,47 @@ namespace MyDAL.UserFacade.Query
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<List<M>> QueryListAsync()
+        public async Task<List<M>> QueryListAsync(IDbTransaction tran = null)
         {
-            return await new QueryListAsyncImpl<M>(DC).QueryListAsync();
+            return await new QueryListAsyncImpl<M>(DC).QueryListAsync(tran);
         }
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<List<VM>> QueryListAsync<VM>()
+        public async Task<List<VM>> QueryListAsync<VM>(IDbTransaction tran = null)
             where VM : class
         {
-            return await new QueryListAsyncImpl<M>(DC).QueryListAsync<VM>();
+            return await new QueryListAsyncImpl<M>(DC).QueryListAsync<VM>(tran);
         }
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<List<T>> QueryListAsync<T>(Expression<Func<M, T>> columnMapFunc)
+        public async Task<List<T>> QueryListAsync<T>(Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null)
         {
-            return await new QueryListAsyncImpl<M>(DC).QueryListAsync(columnMapFunc);
+            return await new QueryListAsyncImpl<M>(DC).QueryListAsync(columnMapFunc,tran);
         }
 
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public List<M> QueryList()
+        public List<M> QueryList(IDbTransaction tran = null)
         {
-            return new QueryListImpl<M>(DC).QueryList();
+            return new QueryListImpl<M>(DC).QueryList(tran);
         }
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public List<VM> QueryList<VM>()
+        public List<VM> QueryList<VM>(IDbTransaction tran = null)
             where VM : class
         {
-            return new QueryListImpl<M>(DC).QueryList<VM>();
+            return new QueryListImpl<M>(DC).QueryList<VM>(tran);
         }
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public List<T> QueryList<T>(Expression<Func<M, T>> columnMapFunc)
+        public List<T> QueryList<T>(Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null)
         {
-            return new QueryListImpl<M>(DC).QueryList(columnMapFunc);
+            return new QueryListImpl<M>(DC).QueryList(columnMapFunc,tran);
         }
 
         /// <summary>

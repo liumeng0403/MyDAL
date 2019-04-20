@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Threading.Tasks;
 using MyDAL.Core.Bases;
 using MyDAL.Impls;
@@ -10,7 +11,7 @@ namespace MyDAL.UserFacade.Delete
     /// <summary>
     /// 请参阅: <see langword="目录索引 https://www.cnblogs.com/Meng-NET/"/>
     /// </summary>
-    public sealed class Deleter<M> 
+    public sealed class Deleter<M>
         : Operator
         , IWhereD<M>
         , IDeleteAsync, IDelete
@@ -31,19 +32,19 @@ namespace MyDAL.UserFacade.Delete
         /// <summary>
         /// 单表数据删除
         /// </summary>
-        [Obsolete("警告：此 API 会删除表中所有数据！！！",false)]
-        public async Task<int> DeleteAsync()
+        [Obsolete("警告：此 API 会删除表中所有数据！！！", false)]
+        public async Task<int> DeleteAsync(IDbTransaction tran = null)
         {
-            return await new DeleteAsyncImpl<M>(DC).DeleteAsync();
+            return await new DeleteAsyncImpl<M>(DC).DeleteAsync(tran);
         }
 
         /// <summary>
         /// 单表数据删除
         /// </summary>
         [Obsolete("警告：此 API 会删除表中所有数据！！！", false)]
-        public int Delete()
+        public int Delete(IDbTransaction tran = null)
         {
-            return new DeleteImpl<M>(DC).Delete();
+            return new DeleteImpl<M>(DC).Delete(tran);
         }
     }
 }
