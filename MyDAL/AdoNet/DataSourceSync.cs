@@ -37,18 +37,18 @@ namespace HPC.DAL.AdoNet
         private DbDataReader ExecuteReaderWithRetry(DbCommand cmd, CommandBehavior behavior)
         {
             try
-            {
+            {                
                 return cmd.ExecuteReader(behavior);
             }
-            catch
+            catch(Exception ex1)
             {
                 try
                 {
                     return cmd.ExecuteReader(behavior);
                 }
-                catch
+                catch(Exception ex2)
                 {
-                    return null;
+                    throw DC.Exception(XConfig.EC._041, $"ExecuteReader执行异常:one:{ex1.StackTrace};two:{ex2.StackTrace}.");
                 }
             }
         }
