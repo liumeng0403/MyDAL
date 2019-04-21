@@ -50,7 +50,7 @@ namespace HPC.DAL.DataRainbow.MySQL
                                                                       )
                                             ;
                                   ");
-            return new DataSourceSync(DC).ExecuteReaderMultiRow<ColumnInfo>();
+            return new DataSourceSync(DC).ExecuteReaderMultiRowForCols<ColumnInfo>();
         }
         void ISqlProvider.GetSQL()
         {

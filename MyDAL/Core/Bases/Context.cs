@@ -358,7 +358,7 @@ namespace HPC.DAL.Core.Bases
 
         internal Exception Exception(string code, string msg)
         {
-            return new Exception($"{code} -- [[{msg}]] 未能解析!!! (注 - sql server 尚未完成 !!!)，请 EMail: --> liumeng0403@163.com <--");
+            return new Exception($"【ERR-{code}】 -- [[{msg}]] 未能解析!!!，请 EMail: --> liumeng0403@163.com <--");
         }
 
     }
