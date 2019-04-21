@@ -15,7 +15,9 @@ namespace MyDAL.Test2.Delete
         {
             xx = string.Empty;
 
-            var res1 = await Conn2.DeleteAsync<AddressInfo>(null);
+            var res1 = await Conn2.DeleteAsync<AddressInfo>(it=>true);
+
+            Assert.IsTrue(res1 == 7);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 

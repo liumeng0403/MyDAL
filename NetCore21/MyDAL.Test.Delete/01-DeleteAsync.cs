@@ -101,7 +101,7 @@ namespace MyDAL.Test.Delete
         {
             xx = string.Empty;
 
-            var res1 = await Conn.DeleteAsync<WechatUserInfo>(null);   //  WechatUserInfo -- 空表 
+            var res1 = await Conn.DeleteAsync<WechatUserInfo>(it=>true);   //  WechatUserInfo -- 空表 
 
             Assert.True(res1 == 0);
 
