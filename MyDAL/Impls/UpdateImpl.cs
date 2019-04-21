@@ -1,7 +1,8 @@
-﻿using MyDAL.Core.Bases;
+using MyDAL.Core.Bases;
 using MyDAL.Core.Enums;
 using MyDAL.Impls.Base;
 using MyDAL.Interfaces;
+using System.Data;
 using System.Threading.Tasks;
 
 namespace MyDAL.Impls
@@ -15,10 +16,11 @@ namespace MyDAL.Impls
             : base(dc)
         { }
 
-        public async Task<int> UpdateAsync(SetEnum set = SetEnum.AllowedNull)
+        public async Task<int> UpdateAsync(IDbTransaction tran = null,SetEnum set = SetEnum.AllowedNull)
         {
             DC.Set = set;
             PreExecuteHandle(UiMethodEnum.UpdateAsync);
+            DSA.Tran = tran;
             return await DSA.ExecuteNonQueryAsync();
         }
 
@@ -32,10 +34,11 @@ namespace MyDAL.Impls
             : base(dc)
         { }
 
-        public int Update(SetEnum set = SetEnum.AllowedNull)
+        public int Update(IDbTransaction tran = null,SetEnum set = SetEnum.AllowedNull)
         {
             DC.Set = set;
             PreExecuteHandle(UiMethodEnum.UpdateAsync);
+            DSS.Tran = tran;
             return DSS.ExecuteNonQuery();
         }
     }

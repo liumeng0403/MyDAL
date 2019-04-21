@@ -1,6 +1,7 @@
-﻿using MyDAL.Core.Bases;
+using MyDAL.Core.Bases;
 using MyDAL.Impls;
 using MyDAL.Interfaces;
+using System.Data;
 using System.Threading.Tasks;
 
 namespace MyDAL.UserFacade.Update
@@ -20,17 +21,17 @@ namespace MyDAL.UserFacade.Update
         /// <summary>
         /// 请参阅: <see langword=".UpdateAsync() 之 .Set() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<int> UpdateAsync(SetEnum set = SetEnum.AllowedNull)
+        public async Task<int> UpdateAsync(IDbTransaction tran = null,SetEnum set = SetEnum.AllowedNull)
         {
-            return await new UpdateAsyncImpl<M>(DC).UpdateAsync(set);
+            return await new UpdateAsyncImpl<M>(DC).UpdateAsync(tran,set);
         }
 
         /// <summary>
         /// 请参阅: <see langword=".UpdateAsync() 之 .Set() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public int Update(SetEnum set = SetEnum.AllowedNull)
+        public int Update(IDbTransaction tran = null,SetEnum set = SetEnum.AllowedNull)
         {
-            return new UpdateImpl<M>(DC).Update(set);
+            return new UpdateImpl<M>(DC).Update(tran,set);
         }
     }
 }

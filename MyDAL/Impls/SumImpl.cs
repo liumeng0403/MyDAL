@@ -3,6 +3,7 @@ using MyDAL.Core.Enums;
 using MyDAL.Impls.Base;
 using MyDAL.Interfaces;
 using System;
+using System.Data;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -17,7 +18,7 @@ namespace MyDAL.Impls
             : base(dc)
         {   }
 
-        public async Task<F> SumAsync<F>(Expression<Func<M, F>> propertyFunc)
+        public async Task<F> SumAsync<F>(Expression<Func<M, F>> propertyFunc, IDbTransaction tran = null)
             where F : struct
         {
             DC.Action = ActionEnum.Select;
@@ -27,9 +28,10 @@ namespace MyDAL.Impls
             var dic = DC.XE.FuncMFExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.SumAsync);
+            DSA.Tran = tran;
             return await DSA.ExecuteScalarAsync<F>();
         }
-        public async Task<Nullable<F>> SumAsync<F>(Expression<Func<M, Nullable<F>>> propertyFunc)
+        public async Task<Nullable<F>> SumAsync<F>(Expression<Func<M, Nullable<F>>> propertyFunc, IDbTransaction tran = null)
             where F : struct
         {
             DC.Action = ActionEnum.Select;
@@ -39,6 +41,7 @@ namespace MyDAL.Impls
             var dic = DC.XE.FuncMFExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.SumAsync);
+            DSA.Tran = tran;
             return await DSA.ExecuteScalarAsync<F>();
         }
 
@@ -53,7 +56,7 @@ namespace MyDAL.Impls
         {
         }
 
-        public F Sum<F>(Expression<Func<M, F>> propertyFunc)
+        public F Sum<F>(Expression<Func<M, F>> propertyFunc, IDbTransaction tran = null)
             where F : struct
         {
             DC.Action = ActionEnum.Select;
@@ -63,9 +66,10 @@ namespace MyDAL.Impls
             var dic = DC.XE.FuncMFExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.SumAsync);
+            DSS.Tran = tran;
             return DSS.ExecuteScalar<F>();
         }
-        public Nullable<F> Sum<F>(Expression<Func<M, Nullable<F>>> propertyFunc)
+        public Nullable<F> Sum<F>(Expression<Func<M, Nullable<F>>> propertyFunc, IDbTransaction tran = null)
             where F : struct
         {
             DC.Action = ActionEnum.Select;
@@ -75,6 +79,7 @@ namespace MyDAL.Impls
             var dic = DC.XE.FuncMFExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.SumAsync);
+            DSS.Tran = tran;
             return DSS.ExecuteScalar<F>();
         }
     }
