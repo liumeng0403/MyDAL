@@ -11,7 +11,7 @@ using System.Linq.Expressions;
 namespace HPC.DAL.Core.Bases
 {
     /// <summary>
-    /// 
+    /// 请参阅: <see langword="目录索引 https://www.cnblogs.com/Meng-NET/"/>
     /// </summary>
     public abstract class Operator
     {
@@ -19,52 +19,6 @@ namespace HPC.DAL.Core.Bases
         internal Operator(Context dc)
         {
             DC = dc;
-        }
-
-        private bool CheckWhereVal(object val, Type valType)
-        {
-            if (val == null)
-            {
-                return false;
-            }
-            if (valType.IsEnum && "0".Equals(val.ToString(), StringComparison.OrdinalIgnoreCase))
-            {
-                return false;
-            }
-            if (valType == typeof(DateTime) && Convert.ToDateTime("0001-01-01 00:00:00.000000").Equals(val))
-            {
-                return false;
-            }
-            if (valType.IsList() && (val as IList).Count <= 0)
-            {
-                return false;
-            }
-            if (valType.IsArray && (val as IList).Count <= 0)
-            {
-                return false;
-            }
-
-            return true;
-        }
-        private static CompareXEnum GetCompareX(CompareEnum compare, Context dc)
-        {
-            switch (compare)
-            {
-                case CompareEnum.Equal:
-                    return CompareXEnum.Equal;
-                case CompareEnum.NotEqual:
-                    return CompareXEnum.NotEqual;
-                case CompareEnum.LessThan:
-                    return CompareXEnum.LessThan;
-                case CompareEnum.LessThanOrEqual:
-                    return CompareXEnum.LessThanOrEqual;
-                case CompareEnum.GreaterThan:
-                    return CompareXEnum.GreaterThan;
-                case CompareEnum.GreaterThanOrEqual:
-                    return CompareXEnum.GreaterThanOrEqual;
-                default:
-                    throw dc.Exception(XConfig.EC._002, compare.ToString());
-            }
         }
 
         private List<SetParam> GetSetKPV<M>(object objx)
@@ -86,8 +40,7 @@ namespace HPC.DAL.Core.Bases
                             list.Add(new SetDic
                             {
                                 MField = mp.Name,
-                                VmField = mp.Name,
-                                Compare = CompareEnum.Equal
+                                VmField = mp.Name
                             });
                         }
                     }
@@ -105,8 +58,7 @@ namespace HPC.DAL.Core.Bases
                             list.Add(new SetDic
                             {
                                 MField = mp.Name,
-                                VmField = mp.Name,
-                                Compare = CompareEnum.Equal
+                                VmField = mp.Name
                             });
                         }
                     }
@@ -130,9 +82,7 @@ namespace HPC.DAL.Core.Bases
                         Key = prop.MField,
                         Param = prop.VmField,
                         Val = val,
-                        ValType = valType,
-                        ColType = columnType,
-                        Compare = prop.Compare
+                        ValType = valType
                     });
                 }
                 else
@@ -145,9 +95,7 @@ namespace HPC.DAL.Core.Bases
                         Key = prop.MField,
                         Param = prop.VmField,
                         Val = val,
-                        ValType = valType,
-                        ColType = columnType,
-                        Compare = prop.Compare
+                        ValType = valType
                     });
                 }
             }
@@ -202,22 +150,6 @@ namespace HPC.DAL.Core.Bases
             DC.Action = ActionEnum.Where;
             var field = DC.XE.FuncMBoolExpression(func);
             field.TbMType = typeof(M);
-            DC.DPH.AddParameter(field);
-        }
-
-        internal void AndHandle<M>(Expression<Func<M, bool>> func)
-            where M : class
-        {
-            DC.Action = ActionEnum.And;
-            var field = DC.XE.FuncMBoolExpression(func);
-            DC.DPH.AddParameter(field);
-        }
-
-        internal void OrHandle<M>(Expression<Func<M, bool>> func)
-            where M : class
-        {
-            DC.Action = ActionEnum.Or;
-            var field = DC.XE.FuncMBoolExpression(func);
             DC.DPH.AddParameter(field);
         }
 

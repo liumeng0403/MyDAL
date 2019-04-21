@@ -20,18 +20,5 @@ namespace HPC.DAL.Impls.Base
 
         internal DataSourceAsync DSA { get; private set; }
 
-        protected async Task<PagingResult<T>> PagingListAsyncHandle<T>(UiMethodEnum sqlType, bool single, IDbTransaction tran = null)
-        {
-            PreExecuteHandle(sqlType);
-            DSA.Tran = tran;
-            return await DSA.ExecuteReaderPagingAsync<None, T>(single, null);
-        }
-        protected async Task<PagingResult<T>> PagingListAsyncHandle<M, T>(UiMethodEnum sqlType, bool single, Func<M, T> mapFunc, IDbTransaction tran = null)
-            where M : class
-        {
-            PreExecuteHandle(sqlType);
-            DSA.Tran = tran;
-            return await DSA.ExecuteReaderPagingAsync(single, mapFunc);
-        }
     }
 }

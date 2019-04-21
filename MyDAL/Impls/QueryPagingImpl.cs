@@ -23,14 +23,18 @@ namespace HPC.DAL.Impls
         {
             DC.PageIndex = pageIndex;
             DC.PageSize = pageSize;
-            return await PagingListAsyncHandle<M>(UiMethodEnum.QueryPagingAsync, false,tran);
+            PreExecuteHandle(UiMethodEnum.QueryPagingAsync);
+            DSA.Tran = tran;
+            return await DSA.ExecuteReaderPagingAsync<None, M>(false, null);
         }
         public async Task<PagingResult<VM>> QueryPagingAsync<VM>(int pageIndex, int pageSize, IDbTransaction tran = null)
             where VM : class
         {
             DC.PageIndex = pageIndex;
             DC.PageSize = pageSize;
-            return await PagingListAsyncHandle<M, VM>(UiMethodEnum.QueryPagingAsync, false, null,tran);
+            PreExecuteHandle(UiMethodEnum.QueryPagingAsync);
+            DSA.Tran = tran;
+            return await DSA.ExecuteReaderPagingAsync<M, VM>(false, null);
         }
         public async Task<PagingResult<T>> QueryPagingAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null)
         {
@@ -45,7 +49,9 @@ namespace HPC.DAL.Impls
             {
                 SelectMHandle(columnMapFunc);
             }
-            return await PagingListAsyncHandle<M, T>(UiMethodEnum.QueryPagingAsync, single, columnMapFunc.Compile(),tran);
+            PreExecuteHandle(UiMethodEnum.QueryPagingAsync);
+            DSA.Tran = tran;
+            return await DSA.ExecuteReaderPagingAsync<M, T>(single, columnMapFunc.Compile());
         }
 
     }
@@ -102,7 +108,9 @@ namespace HPC.DAL.Impls
             DC.PageIndex = pageIndex;
             DC.PageSize = pageSize;
             SelectMHandle<M>();
-            return await PagingListAsyncHandle<M>(UiMethodEnum.QueryPagingAsync, false,tran);
+            PreExecuteHandle(UiMethodEnum.QueryPagingAsync);
+            DSA.Tran = tran;
+            return await DSA.ExecuteReaderPagingAsync<None, M>(false, null);
         }
         public async Task<PagingResult<T>> QueryPagingAsync<T>(int pageIndex, int pageSize, Expression<Func<T>> columnMapFunc, IDbTransaction tran = null)
         {
@@ -117,7 +125,9 @@ namespace HPC.DAL.Impls
             {
                 SelectMHandle(columnMapFunc);
             }
-            return await PagingListAsyncHandle<T>(UiMethodEnum.QueryPagingAsync, single,tran);
+            PreExecuteHandle(UiMethodEnum.QueryPagingAsync);
+            DSA.Tran = tran;
+            return await DSA.ExecuteReaderPagingAsync<None, T>(single, null);
         }
 
     }
