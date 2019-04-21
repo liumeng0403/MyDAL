@@ -2,6 +2,7 @@
 using HPC.DAL.Core.Enums;
 using HPC.DAL.Impls.Base;
 using HPC.DAL.Interfaces;
+using System.Data;
 using System.Threading.Tasks;
 
 namespace HPC.DAL.Impls
@@ -15,10 +16,11 @@ namespace HPC.DAL.Impls
             : base(dc)
         { }
 
-        public async Task<int> UpdateAsync(SetEnum set = SetEnum.AllowedNull)
+        public async Task<int> UpdateAsync(IDbTransaction tran = null,SetEnum set = SetEnum.AllowedNull)
         {
             DC.Set = set;
             PreExecuteHandle(UiMethodEnum.UpdateAsync);
+            DSA.Tran = tran;
             return await DSA.ExecuteNonQueryAsync();
         }
 
@@ -32,10 +34,11 @@ namespace HPC.DAL.Impls
             : base(dc)
         { }
 
-        public int Update(SetEnum set = SetEnum.AllowedNull)
+        public int Update(IDbTransaction tran = null,SetEnum set = SetEnum.AllowedNull)
         {
             DC.Set = set;
             PreExecuteHandle(UiMethodEnum.UpdateAsync);
+            DSS.Tran = tran;
             return DSS.ExecuteNonQuery();
         }
     }
