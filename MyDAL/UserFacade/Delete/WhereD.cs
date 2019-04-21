@@ -1,4 +1,5 @@
 using MyDAL.Core.Bases;
+using MyDAL.Core.Bases.Facades;
 using MyDAL.Impls;
 using MyDAL.Interfaces;
 using System.Data;
@@ -10,7 +11,7 @@ namespace MyDAL.UserFacade.Delete
     /// 请参阅: <see langword="目录索引 https://www.cnblogs.com/Meng-NET/"/>
     /// </summary>
     public sealed class WhereD<M>
-        : Operator
+        : WhereBase
         , IDeleteAsync, IDelete
         where M : class
     {

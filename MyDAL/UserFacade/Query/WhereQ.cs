@@ -1,4 +1,5 @@
-﻿using MyDAL.Core.Bases;
+using MyDAL.Core.Bases;
+using MyDAL.Core.Bases.Facades;
 using MyDAL.Impls;
 using MyDAL.Interfaces;
 using MyDAL.Interfaces.Segments;
@@ -14,7 +15,7 @@ namespace MyDAL.UserFacade.Query
     /// 请参阅: <see langword="目录索引 https://www.cnblogs.com/Meng-NET/"/>
     /// </summary>
     public sealed class WhereQ<M>
-        : Operator
+        : WhereBase
         , IOrderByQ<M>
         , IQueryOneAsync<M>, IQueryOne<M>
         , IQueryListAsync<M>, IQueryList<M>
@@ -26,7 +27,8 @@ namespace MyDAL.UserFacade.Query
         where M : class
     {
         internal WhereQ(Context dc)
-            : base(dc) { }
+            : base(dc)
+        { }
 
         public OrderByQ<M> OrderBySegment
         {

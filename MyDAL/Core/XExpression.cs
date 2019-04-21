@@ -355,44 +355,57 @@ namespace MyDAL.Core
 
         /********************************************************************************************************************/
 
-        private DicParam HandConditionBinary(Expression body, ParameterExpression firstParam)
+        private DicParam NotHandle(Expression body, ParameterExpression firstParam)
         {
-            var result = default(DicParam);
-            if (DC.IsSingleTableOption())
+            var ue = body as UnaryExpression;
+            var result = BodyProcess(ue.Operand, firstParam);
+            if (result.Compare == CompareXEnum.Like)
             {
-                var binExpr = body as BinaryExpression;
-                var pres = new List<string>
-                {
-                    firstParam.Name
-                };
-                result = HandBin(binExpr, pres);
+                result.Compare = CompareXEnum.NotLike;
             }
-            else if (DC.Crud == CrudEnum.Join)
+            else if (result.Compare == CompareXEnum.In)
             {
-                var binExpr = body as BinaryExpression;
-                if (DC.Action == ActionEnum.On)
-                {
-                    result = HandOnBinary(binExpr);
-                }
-                else if (DC.Action == ActionEnum.Where
-                    || DC.Action == ActionEnum.And
-                    || DC.Action == ActionEnum.Or)
-                {
-                    var pres = DC.Parameters.Select(it => it.TbAlias).ToList();
-                    result = HandBin(binExpr, pres);
-                }
-                else
-                {
-                    throw DC.Exception(XConfig.EC._029, DC.Action.ToString());
-                }
+                result.Compare = CompareXEnum.NotIn;
+            }
+            else if (result.Compare == CompareXEnum.Equal)
+            {
+                result.Compare = CompareXEnum.NotEqual;
+            }
+            else if (result.Compare == CompareXEnum.NotEqual)
+            {
+                result.Compare = CompareXEnum.Equal;
+            }
+            else if (result.Compare == CompareXEnum.LessThan)
+            {
+                result.Compare = CompareXEnum.GreaterThanOrEqual;
+            }
+            else if (result.Compare == CompareXEnum.LessThanOrEqual)
+            {
+                result.Compare = CompareXEnum.GreaterThan;
+            }
+            else if (result.Compare == CompareXEnum.GreaterThan)
+            {
+                result.Compare = CompareXEnum.LessThanOrEqual;
+            }
+            else if (result.Compare == CompareXEnum.GreaterThanOrEqual)
+            {
+                result.Compare = CompareXEnum.LessThan;
+            }
+            else if (result.Option == OptionEnum.IsNull)
+            {
+                result.Option = OptionEnum.IsNotNull;
+            }
+            else if (result.Option == OptionEnum.IsNotNull)
+            {
+                result.Option = OptionEnum.IsNull;
             }
             else
             {
-                throw DC.Exception(XConfig.EC._030, DC.Crud.ToString());
+                throw DC.Exception(XConfig.EC._027, body.ToString());
             }
             return result;
         }
-        private DicParam HandConditionCall(MethodCallExpression mcExpr)
+        private DicParam CallHandle(MethodCallExpression mcExpr)
         {
             var clp = DC.CFH.IsContainsLikeFunc(mcExpr);
             var cip = clp.Flag ? new ContainsInParam { Flag = false } : DC.CFH.IsContainsInFunc(mcExpr);
@@ -424,7 +437,7 @@ namespace MyDAL.Core
 
             throw new Exception($"出现异常 -- [[{mcExpr.ToString()}]] 不能解析!!!");
         }
-        private DicParam HandConditionConstant(ConstantExpression cExpr, Type valType)
+        private DicParam ConstantHandle(ConstantExpression cExpr, Type valType)
         {
             var val = DC.VH.ValueProcess(cExpr, valType);
             if (cExpr.Type == typeof(bool))
@@ -436,7 +449,7 @@ namespace MyDAL.Core
 
             return null;
         }
-        private DicParam HandConditionMemberAccess(MemberExpression memExpr)
+        private DicParam MemberAccessHandle(MemberExpression memExpr)
         {
             // 原
             // query where
@@ -530,67 +543,7 @@ namespace MyDAL.Core
                 throw new Exception($"未知的操作 -- [[{DC.Crud}]] !!!");
             }
         }
-        private DicParam HandConditionNot(Expression body, ParameterExpression firstParam)
-        {
-            var ue = body as UnaryExpression;
-            var result = BodyProcess(ue.Operand, firstParam);
-            if (result.Compare == CompareXEnum.Like)
-            {
-                result.Compare = CompareXEnum.NotLike;
-            }
-            else if (result.Compare == CompareXEnum.In)
-            {
-                result.Compare = CompareXEnum.NotIn;
-            }
-            else if (result.Compare == CompareXEnum.Equal)
-            {
-                result.Compare = CompareXEnum.NotEqual;
-            }
-            else if (result.Compare == CompareXEnum.NotEqual)
-            {
-                result.Compare = CompareXEnum.Equal;
-            }
-            else if (result.Compare == CompareXEnum.LessThan)
-            {
-                result.Compare = CompareXEnum.GreaterThanOrEqual;
-            }
-            else if (result.Compare == CompareXEnum.LessThanOrEqual)
-            {
-                result.Compare = CompareXEnum.GreaterThan;
-            }
-            else if (result.Compare == CompareXEnum.GreaterThan)
-            {
-                result.Compare = CompareXEnum.LessThanOrEqual;
-            }
-            else if (result.Compare == CompareXEnum.GreaterThanOrEqual)
-            {
-                result.Compare = CompareXEnum.LessThan;
-            }
-            else if (result.Option == OptionEnum.IsNull)
-            {
-                result.Option = OptionEnum.IsNotNull;
-            }
-            else if (result.Option == OptionEnum.IsNotNull)
-            {
-                result.Option = OptionEnum.IsNull;
-            }
-            else
-            {
-                throw DC.Exception(XConfig.EC._027, body.ToString());
-            }
-            return result;
-        }
-        private DicParam HandConditionMulti(Expression body, ParameterExpression firstParam, ExpressionType nodeType)
-        {
-            var result = DC.DPH.GroupDic(GetGroupAction(nodeType));
-            var binExpr = body as BinaryExpression;
-            var left = binExpr.Left;
-            result.Group.Add(BodyProcess(left, firstParam));
-            var right = binExpr.Right;
-            result.Group.Add(BodyProcess(right, firstParam));
-            return result;
-        }
-        private DicParam HandConditionNew(Expression body)
+        private DicParam NewHandle(Expression body)
         {
             var list = new List<DicParam>();
             var nExpr = body as NewExpression;
@@ -605,6 +558,53 @@ namespace MyDAL.Core
                 list.Add(DC.DPH.SelectMemberInitDic(cp, colAlias));
             }
             return DC.DPH.SelectColumnDic(list);
+        }
+        private DicParam BinaryHandle(Expression body, ParameterExpression firstParam)
+        {
+            var result = default(DicParam);
+            if (DC.IsSingleTableOption())
+            {
+                var binExpr = body as BinaryExpression;
+                var pres = new List<string>
+                {
+                    firstParam.Name
+                };
+                result = HandBin(binExpr, pres);
+            }
+            else if (DC.Crud == CrudEnum.Join)
+            {
+                var binExpr = body as BinaryExpression;
+                if (DC.Action == ActionEnum.On)
+                {
+                    result = HandOnBinary(binExpr);
+                }
+                else if (DC.Action == ActionEnum.Where
+                    || DC.Action == ActionEnum.And
+                    || DC.Action == ActionEnum.Or)
+                {
+                    var pres = DC.Parameters.Select(it => it.TbAlias).ToList();
+                    result = HandBin(binExpr, pres);
+                }
+                else
+                {
+                    throw DC.Exception(XConfig.EC._029, DC.Action.ToString());
+                }
+            }
+            else
+            {
+                throw DC.Exception(XConfig.EC._030, DC.Crud.ToString());
+            }
+            return result;
+        }
+        private DicParam MultiHandle(Expression body, ParameterExpression firstParam, ExpressionType nodeType)
+        {
+            var result = DC.DPH.GroupDic(GetGroupAction(nodeType));
+            var binExpr = body as BinaryExpression;
+            var left = binExpr.Left;
+            result.Group.Add(BodyProcess(left, firstParam));
+            var right = binExpr.Right;
+            result.Group.Add(BodyProcess(right, firstParam));
+            return result;
         }
 
         /********************************************************************************************************************/
@@ -777,26 +777,26 @@ namespace MyDAL.Core
             var nodeType = body.NodeType;
             if (nodeType == ExpressionType.Not)
             {
-                result = HandConditionNot(body, firstParam);
+                result = NotHandle(body, firstParam);
             }
             else if (nodeType == ExpressionType.Call)
             {
-                result = HandConditionCall(body as MethodCallExpression);
+                result = CallHandle(body as MethodCallExpression);
             }
             else if (nodeType == ExpressionType.Constant)
             {
                 var cExpr = body as ConstantExpression;
-                result = HandConditionConstant(cExpr, cExpr.Type);
+                result = ConstantHandle(cExpr, cExpr.Type);
             }
             else if (nodeType == ExpressionType.MemberAccess)
             {
                 if (IsNullableExpr(body))
                 {
-                    result = HandConditionMemberAccess((body as MemberExpression).Expression as MemberExpression);
+                    result = MemberAccessHandle((body as MemberExpression).Expression as MemberExpression);
                 }
                 else
                 {
-                    result = HandConditionMemberAccess(body as MemberExpression);
+                    result = MemberAccessHandle(body as MemberExpression);
                 }
             }
             else if (nodeType == ExpressionType.Convert)
@@ -815,15 +815,15 @@ namespace MyDAL.Core
             }
             else if (nodeType == ExpressionType.New)
             {
-                result = HandConditionNew(body);
+                result = NewHandle(body);
             }
             else if (IsBinaryExpr(nodeType))
             {
-                result = HandConditionBinary(body, firstParam);
+                result = BinaryHandle(body, firstParam);
             }
             else if (IsMultiExpr(nodeType))
             {
-                result = HandConditionMulti(body, firstParam, nodeType);
+                result = MultiHandle(body, firstParam, nodeType);
             }
             else
             {
