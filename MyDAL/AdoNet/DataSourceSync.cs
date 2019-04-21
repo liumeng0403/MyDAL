@@ -14,12 +14,15 @@ namespace MyDAL.AdoNet
     internal sealed class DataSourceSync
         : DataSource
     {
+        private IDbConnection ColsConn { get; set; }
         internal DataSourceSync()
             : base()
         { }
         internal DataSourceSync(Context dc)
             : base(dc)
-        { }
+        {
+            ColsConn = (IDbConnection)Activator.CreateInstance(dc.Conn.GetType(), dc.Conn.ConnectionString);
+        }
 
         /*********************************************************************************************************************************************/
 
@@ -37,18 +40,18 @@ namespace MyDAL.AdoNet
         private DbDataReader ExecuteReaderWithRetry(DbCommand cmd, CommandBehavior behavior)
         {
             try
-            {                
+            {
                 return cmd.ExecuteReader(behavior);
             }
-            catch(Exception ex1)
+            catch (Exception ex1)
             {
                 try
                 {
                     return cmd.ExecuteReader(behavior);
                 }
-                catch(Exception ex2)
+                catch (Exception ex2)
                 {
-                    throw DC.Exception(XConfig.EC._041, $"ExecuteReader执行异常:one:{ex1.StackTrace};two:{ex2.StackTrace}.");
+                    throw DC.Exception(XConfig.EC._041, $"ExecuteReader执行异常:[[one]]:{ex1.StackTrace};[[two]]:{ex2.Message}.");
                 }
             }
         }
@@ -201,6 +204,28 @@ namespace MyDAL.AdoNet
             finally
             {
                 if (needClose) { Conn.Close(); }
+            }
+            return result;
+        }
+        internal List<M> ExecuteReaderMultiRowForCols<M>()
+        {
+            var result = new List<M>();
+            var ci = new CommandInfo(SqlOne, Parameter);
+            bool needClose = ColsConn.State == ConnectionState.Closed;
+            try
+            {
+                if (needClose) { Open(ColsConn); }
+                using (var cmd = SettingCommand(ci, ColsConn, ci.Parameter.ParamReader))
+                {
+                    using (Reader = ExecuteReaderWithRetry(cmd, XConfig.MultiRow))
+                    {
+                        result = ReadRow<M>();
+                    }
+                }
+            }
+            finally
+            {
+                if (needClose) { ColsConn.Close(); }
             }
             return result;
         }
