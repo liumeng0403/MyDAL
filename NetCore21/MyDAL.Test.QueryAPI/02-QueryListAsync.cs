@@ -256,11 +256,11 @@ namespace MyDAL.Test.QueryAPI
         [Fact]
         public async Task Mock_QueryAllData_QuerySingleColumn_Shortcut()
         {
-            var xx3 = string.Empty;
+            xx = string.Empty;
 
-            var res3 = await Conn.QueryListAsync<Agent, Guid>(null, it => it.Id);
+            var res1 = await Conn.QueryListAsync<Agent, Guid>(it=>true, it => it.Id);
 
-            Assert.True(res3.Count == 28620);
+            Assert.True(res1.Count == 28620);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
@@ -290,9 +290,9 @@ namespace MyDAL.Test.QueryAPI
         {
             xx = string.Empty;
 
-            var res2 = await Conn.QueryListAsync<Agent, AgentVM>(null);
+            var res1 = await Conn.QueryListAsync<Agent, AgentVM>(it=>true);
 
-            Assert.True(res2.Count == 28620);
+            Assert.True(res1.Count == 28620);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
@@ -304,15 +304,15 @@ namespace MyDAL.Test.QueryAPI
         [Fact]
         public async Task Mock_QueryAllData_QueryVMColumn_Shortcut()
         {
-            var xx4 = string.Empty;
+            xx = string.Empty;
 
-            var res4 = await Conn.QueryListAsync<Agent, AgentVM>(null, it => new AgentVM
+            var res1 = await Conn.QueryListAsync<Agent, AgentVM>(it=>true, it => new AgentVM
             {
                 XXXX = it.Name,
                 YYYY = it.PathId
             });
 
-            Assert.True(res4.Count == 28620);
+            Assert.True(res1.Count == 28620);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 

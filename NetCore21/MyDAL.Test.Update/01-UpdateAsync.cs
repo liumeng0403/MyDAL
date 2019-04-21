@@ -169,7 +169,7 @@ namespace MyDAL.Test.Update
             var model = new AgentInventoryRecord();
             model.LockedCount = 0;
 
-            var res1 = await Conn.UpdateAsync<AgentInventoryRecord>(null, new
+            var res1 = await Conn.UpdateAsync<AgentInventoryRecord>(it=>true, new
             {
                 model.LockedCount
             });
