@@ -2,6 +2,8 @@ using MyDAL.Core.Bases;
 using MyDAL.Core.Bases.Facades;
 using MyDAL.Impls;
 using MyDAL.Interfaces;
+using MyDAL.Interfaces.IAsyncs;
+using MyDAL.Interfaces.ISyncs;
 using MyDAL.Interfaces.Segments;
 using System;
 using System.Collections.Generic;

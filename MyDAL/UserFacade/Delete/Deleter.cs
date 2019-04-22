@@ -1,9 +1,11 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Threading.Tasks;
 using MyDAL.Core.Bases;
 using MyDAL.Impls;
 using MyDAL.Interfaces;
+using MyDAL.Interfaces.IAsyncs;
+using MyDAL.Interfaces.ISyncs;
 using MyDAL.Interfaces.Segments;
 
 namespace MyDAL.UserFacade.Delete

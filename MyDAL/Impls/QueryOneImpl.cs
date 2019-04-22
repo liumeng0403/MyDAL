@@ -1,8 +1,10 @@
-﻿using MyDAL.Core.Bases;
+using MyDAL.Core.Bases;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
 using MyDAL.Impls.Base;
 using MyDAL.Interfaces;
+using MyDAL.Interfaces.IAsyncs;
+using MyDAL.Interfaces.ISyncs;
 using System;
 using System.Data;
 using System.Linq;

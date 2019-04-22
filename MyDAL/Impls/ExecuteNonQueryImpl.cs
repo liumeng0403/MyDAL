@@ -1,6 +1,8 @@
 using MyDAL.Core.Bases;
 using MyDAL.Impls.Base;
 using MyDAL.Interfaces;
+using MyDAL.Interfaces.IAsyncs;
+using MyDAL.Interfaces.ISyncs;
 using System.Data;
 using System.Threading.Tasks;
 
