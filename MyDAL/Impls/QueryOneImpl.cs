@@ -2,7 +2,8 @@
 using HPC.DAL.Core.Enums;
 using HPC.DAL.Core.Extensions;
 using HPC.DAL.Impls.Base;
-using HPC.DAL.Interfaces;
+using HPC.DAL.Interfaces.IAsyncs;
+using HPC.DAL.Interfaces.ISyncs;
 using System;
 using System.Data;
 using System.Linq;

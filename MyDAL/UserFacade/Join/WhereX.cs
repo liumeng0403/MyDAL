@@ -2,6 +2,8 @@
 using HPC.DAL.Core.Bases.Facades;
 using HPC.DAL.Impls;
 using HPC.DAL.Interfaces;
+using HPC.DAL.Interfaces.IAsyncs;
+using HPC.DAL.Interfaces.ISyncs;
 using HPC.DAL.Interfaces.Segments;
 using System;
 using System.Collections.Generic;
