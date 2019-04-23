@@ -11,7 +11,7 @@ using System.Data;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace MyDAL.Impls
+namespace MyDAL.Impls.ImplAsyncs
 {
     internal sealed class CountAsyncImpl<M>
     : ImplerAsync
@@ -20,8 +20,7 @@ namespace MyDAL.Impls
     {
         internal CountAsyncImpl(Context dc)
             : base(dc)
-        {
-        }
+        { }
 
         public async Task<int> CountAsync(IDbTransaction tran = null)
         {
@@ -48,44 +47,10 @@ namespace MyDAL.Impls
         }
 
     }
-    internal sealed class CountImpl<M>
-        : ImplerSync
-        , ICount<M>
-        where M : class
-    {
-        internal CountImpl(Context dc)
-            : base(dc)
-        {
-        }
-
-        public int Count(IDbTransaction tran = null)
-        {
-            DC.Action = ActionEnum.Select;
-            DC.Option = OptionEnum.Column;
-            DC.Compare = CompareXEnum.None;
-            DC.Func = FuncEnum.Count;
-            DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(typeof(M), "*") }));
-            PreExecuteHandle(UiMethodEnum.CountAsync);
-            DSS.Tran = tran;
-            return DSS.ExecuteScalar<int>();
-        }
-        public int Count<F>(Expression<Func<M, F>> propertyFunc, IDbTransaction tran = null)
-        {
-            DC.Action = ActionEnum.Select;
-            DC.Option = OptionEnum.Column;
-            DC.Compare = CompareXEnum.None;
-            DC.Func = FuncEnum.Count;
-            var dic = DC.XE.FuncMFExpression(propertyFunc);
-            DC.DPH.AddParameter(dic);
-            PreExecuteHandle(UiMethodEnum.CountAsync);
-            DSS.Tran = tran;
-            return DSS.ExecuteScalar<int>();
-        }
-    }
 
     internal sealed class CountXAsyncImpl
-    : ImplerAsync
-    , ICountXAsync
+: ImplerAsync
+, ICountXAsync
     {
         public CountXAsyncImpl(Context dc)
             : base(dc)
@@ -114,36 +79,5 @@ namespace MyDAL.Impls
             return await DSA.ExecuteScalarAsync<int>();
         }
 
-    }
-    internal sealed class CountXImpl
-        : ImplerSync
-        , ICountX
-    {
-        public CountXImpl(Context dc)
-            : base(dc)
-        { }
-
-        public int Count(IDbTransaction tran = null)
-        {
-            DC.Action = ActionEnum.Select;
-            DC.Option = OptionEnum.Column;
-            DC.Compare = CompareXEnum.None;
-            DC.Func = FuncEnum.Count;
-            DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(default(Type), "*", string.Empty) }));
-            PreExecuteHandle(UiMethodEnum.CountAsync);
-            DSS.Tran = tran;
-            return DSS.ExecuteScalar<int>();
-        }
-        public int Count<F>(Expression<Func<F>> propertyFunc, IDbTransaction tran = null)
-        {
-            DC.Action = ActionEnum.Select;
-            DC.Compare = CompareXEnum.None;
-            DC.Func = FuncEnum.Count;
-            var dic = DC.XE.FuncTExpression(propertyFunc);
-            DC.DPH.AddParameter(dic);
-            PreExecuteHandle(UiMethodEnum.CountAsync);
-            DSS.Tran = tran;
-            return DSS.ExecuteScalar<int>();
-        }
     }
 }

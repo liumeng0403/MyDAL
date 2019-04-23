@@ -6,11 +6,11 @@ using MyDAL.Interfaces.ISyncs;
 using System.Data;
 using System.Threading.Tasks;
 
-namespace MyDAL.Impls
+namespace MyDAL.Impls.ImplAsyncs
 {
     internal sealed class ExecuteNonQuerySQLAsyncImpl
     : ImplerAsync
-    , IExecuteNonQuerySQLAsync 
+    , IExecuteNonQuerySQLAsync
     {
         public ExecuteNonQuerySQLAsyncImpl(Context dc)
             : base(dc)
@@ -21,20 +21,6 @@ namespace MyDAL.Impls
             DSA.Tran = tran;
             return await DSA.ExecuteNonQueryAsync();
         }
- 
-    }
-    internal sealed class ExecuteNonQuerySQLImpl
-        : ImplerSync
-        , IExecuteNonQuerySQL
-    {
-        public ExecuteNonQuerySQLImpl(Context dc) 
-            : base(dc)
-        {   }
 
-        public int ExecuteNonQuery(IDbTransaction tran = null)
-        {
-            DSS.Tran = tran;
-            return DSS.ExecuteNonQuery();
-        }
     }
 }
