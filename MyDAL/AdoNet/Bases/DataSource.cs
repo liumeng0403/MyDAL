@@ -5,6 +5,7 @@ using MyDAL.Core.Enums;
 using System;
 using System.Data;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
 
 namespace MyDAL.AdoNet.Bases
@@ -50,10 +51,30 @@ namespace MyDAL.AdoNet.Bases
 
                 //
                 if (XConfig.IsDebug
-                    && DC.Parameters != null
-                    && DC.Parameters.Count > 0)
+                    && DC.Parameters != null)
                 {
+                    //
                     DC.SetValue();
+
+                    //
+                    if(DC.FlatOutput)
+                    {
+                        foreach(var sql in DC.FlatSQL)
+                        {
+                            switch(XConfig.DebugType)
+                            {
+                                case DebugEnum.Debug:
+                                    Debug.WriteLine(sql);
+                                    break;
+                                case DebugEnum.Trace:
+                                    Trace.WriteLine(sql);
+                                    break;
+                                case DebugEnum.Console:
+                                    Console.WriteLine(sql);
+                                    break;
+                            }
+                        }
+                    }
                 }
 
                 return paras;
