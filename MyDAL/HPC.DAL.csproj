@@ -40,8 +40,6 @@
     <Folder Include="DataRainbow\SQLite\" />
     <Folder Include="DataRainbow\Teradata\" />
     <Folder Include="DataRainbow\MariaDB\" />
-    <Folder Include="Impls\ImplAsyncs\" />
-    <Folder Include="Impls\ImplSyncs\" />
   </ItemGroup>
 
 </Project>

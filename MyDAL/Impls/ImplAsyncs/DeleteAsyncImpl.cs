@@ -2,11 +2,10 @@
 using HPC.DAL.Core.Enums;
 using HPC.DAL.Impls.Base;
 using HPC.DAL.Interfaces.IAsyncs;
-using HPC.DAL.Interfaces.ISyncs;
 using System.Data;
 using System.Threading.Tasks;
 
-namespace HPC.DAL.Impls
+namespace HPC.DAL.Impls.ImplAsyncs
 {
     internal sealed class DeleteAsyncImpl<M>
     : ImplerAsync
@@ -22,23 +21,6 @@ namespace HPC.DAL.Impls
             PreExecuteHandle(UiMethodEnum.DeleteAsync);
             DSA.Tran = tran;
             return await DSA.ExecuteNonQueryAsync();
-        }
-
-    }
-    internal sealed class DeleteImpl<M>
-        : ImplerSync
-        , IDelete
-        where M : class
-    {
-        internal DeleteImpl(Context dc)
-            : base(dc)
-        { }
-
-        public int Delete(IDbTransaction tran = null)
-        {
-            PreExecuteHandle(UiMethodEnum.DeleteAsync);
-            DSS.Tran = tran;
-            return DSS.ExecuteNonQuery();
         }
 
     }

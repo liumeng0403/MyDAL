@@ -1,5 +1,7 @@
 ﻿using HPC.DAL.Core.Bases;
 using HPC.DAL.Impls;
+using HPC.DAL.Impls.ImplAsyncs;
+using HPC.DAL.Impls.ImplSyncs;
 using HPC.DAL.Interfaces;
 using HPC.DAL.Interfaces.IAsyncs;
 using HPC.DAL.Interfaces.ISyncs;
