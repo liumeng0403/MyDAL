@@ -18,6 +18,7 @@ namespace HPC.DAL.Core
     internal class XConfig
     {
         internal static bool IsDebug { get; set; } = false;
+        internal static DebugEnum DebugType { get; set; } = DebugEnum.Debug;
 
         /************************************************************************************************************/
 

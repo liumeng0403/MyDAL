@@ -209,6 +209,7 @@ namespace HPC.DAL.AdoNet
         }
         internal List<M> ExecuteReaderMultiRowForCols<M>()
         {
+            DC.FlatOutput = false;
             var result = new List<M>();
             var ci = new CommandInfo(SqlOne, Parameter);
             bool needClose = ColsConn.State == ConnectionState.Closed;
@@ -227,6 +228,7 @@ namespace HPC.DAL.AdoNet
             {
                 if (needClose) { ColsConn.Close(); }
             }
+            DC.FlatOutput = true;
             return result;
         }
         internal List<F> ExecuteReaderSingleColumn<M, F>(Func<M, F> propertyFunc)

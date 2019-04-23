@@ -191,8 +191,9 @@ namespace HPC.DAL.Core.Bases
 
         private List<DicParam> FlatDics { get; set; }
         private List<string> FlatParameters { get; set; }
-        private List<string> FlatSQL { get; set; }
+        internal List<string> FlatSQL { get; set; }
         private List<string> FlatSqlWithParams { get; set; }
+        internal bool FlatOutput { get; set; } = true;
         private char GetParamSymbol()
         {
             switch (DB)
