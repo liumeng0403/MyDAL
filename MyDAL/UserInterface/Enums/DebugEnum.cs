@@ -1,4 +1,4 @@
-﻿namespace HPC.DAL
+﻿namespace MyDAL
 {
     public enum DebugEnum
     {
