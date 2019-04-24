@@ -30,16 +30,21 @@ namespace MyDAL
         {
             foreach (var sql in sqlList)
             {
+                var info = $@"
+======================================================================  <--  参数化 SQL 开始
+{sql}
+======================================================================  <--  参数化 SQL 结束
+                                        ";
                 switch (XConfig.DebugType)
                 {
                     case DebugEnum.Debug:
-                        Debug.WriteLine(sql);
+                        Debug.WriteLine(info);
                         break;
                     case DebugEnum.Trace:
-                        Trace.WriteLine(sql);
+                        Trace.WriteLine(info);
                         break;
                     case DebugEnum.Console:
-                        Console.WriteLine(sql);
+                        Console.WriteLine(info);
                         break;
                 }
             }
