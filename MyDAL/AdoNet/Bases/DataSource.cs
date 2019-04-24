@@ -5,7 +5,6 @@ using HPC.DAL.Core.Enums;
 using System;
 using System.Data;
 using System.Data.Common;
-using System.Diagnostics;
 using System.Linq;
 
 namespace HPC.DAL.AdoNet.Bases
@@ -59,24 +58,15 @@ namespace HPC.DAL.AdoNet.Bases
                     //
                     if(DC.FlatOutput)
                     {
-                        foreach(var sql in DC.FlatSQL)
-                        {
-                            switch(XConfig.DebugType)
-                            {
-                                case DebugEnum.Debug:
-                                    Debug.WriteLine(sql);
-                                    break;
-                                case DebugEnum.Trace:
-                                    Trace.WriteLine(sql);
-                                    break;
-                                case DebugEnum.Console:
-                                    Console.WriteLine(sql);
-                                    break;
-                            }
-                        }
+                        XDebug.OutPutSQL(DC.FlatSQL);
                     }
                 }
+                else
+                {
+                    XDebug.OutPutSQL(DC.SQL);
+                }
 
+                //
                 return paras;
             }
         }

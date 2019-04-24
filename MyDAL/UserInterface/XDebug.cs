@@ -1,11 +1,7 @@
 ﻿using HPC.DAL.Core;
-using HPC.DAL.Core.Common;
-using HPC.DAL.Core.Enums;
-using HPC.DAL.Core.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
+using System.Diagnostics;
 
 namespace HPC.DAL
 {
@@ -26,5 +22,24 @@ namespace HPC.DAL
         /// 不一定准确,仅供参考!
         /// </summary>
         public static List<string> SqlWithParams { get; set; }
+
+        internal static void OutPutSQL(List<string> sqlList)
+        {
+            foreach (var sql in sqlList)
+            {
+                switch (XConfig.DebugType)
+                {
+                    case DebugEnum.Debug:
+                        Debug.WriteLine(sql);
+                        break;
+                    case DebugEnum.Trace:
+                        Trace.WriteLine(sql);
+                        break;
+                    case DebugEnum.Console:
+                        Console.WriteLine(sql);
+                        break;
+                }
+            }
+        }
     }
 }
