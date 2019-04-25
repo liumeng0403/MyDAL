@@ -3,6 +3,7 @@ using MyDAL.Test;
 using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.Enums;
 using MyDAL.Test.ViewModels;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MyDAL.Test2.Query
@@ -36,5 +37,53 @@ namespace MyDAL.Test2.Query
             xx = string.Empty;
 
         }
+
+        [TestMethod]
+        public async Task QueryVM_SQL()
+        {
+            xx = string.Empty;
+
+            var totalSql = @"
+                                            select count(*) 
+                                            from (
+                                            select  	agent9.[Name] as XXXX,
+	                                            agent9.[PathId] as YYYY
+                                            from [agent] as agent9 
+	                                            inner join [agentinventoryrecord] as record9
+		                                            on agent9.[Id]=record9.[AgentId]
+                                            where  agent9.[AgentLevel]=@AgentLevel
+                                                     ) temp;
+                                        ";
+
+            var dataSql = @"
+                                            select 	agent9.[Name] as XXXX,
+	                                            agent9.[PathId] as YYYY
+                                            from [agent] as agent9 
+	                                            inner join [agentinventoryrecord] as record9
+		                                            on agent9.[Id]=record9.[AgentId]
+                                            where  agent9.[AgentLevel]=@AgentLevel
+                                            order by agent9.[Id] desc
+                                            offset 0 rows fetch next 10 rows only;
+                                        ";
+
+            var paras = new List<XParam>
+            {
+                new XParam{ParamName="AgentLevel",ParamValue=AgentLevel.DistiAgent,ParamType= ParamTypeEnum.MySQL_Int}
+            };
+
+            var paging = new PagingResult<AgentVM>();
+            paging.PageIndex = 1;
+            paging.PageSize = 10;
+
+            paging = await Conn2.QueryPagingAsync<AgentVM>(paging, totalSql, dataSql, paras);
+
+            Assert.IsTrue(paging.Data.Count == 10);
+
+            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+
+            xx = string.Empty;
+
+        }
+
     }
 }
