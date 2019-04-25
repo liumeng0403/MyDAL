@@ -5,6 +5,7 @@ using MyDAL.Core.Enums;
 using MyDAL.Impls;
 using MyDAL.Impls.ImplAsyncs;
 using MyDAL.Impls.ImplSyncs;
+using MyDAL.ModelTools;
 using MyDAL.UserFacade.Create;
 using MyDAL.UserFacade.Delete;
 using MyDAL.UserFacade.Join;
@@ -23,8 +24,9 @@ namespace MyDAL
     /// </summary>
     public static class XExtension
     {
+        #region Internal
         /* 内部方法 */
-        internal static Creater<M> Creater<M>(this IDbConnection conn)
+        private static Creater<M> Creater<M>(this IDbConnection conn)
             where M : class, new()
         {
             var dc = new XContext<M>(conn)
@@ -33,9 +35,32 @@ namespace MyDAL
             };
             return new Creater<M>(dc);
         }
-
-        /*-------------------------------------------------------------*/
-
+        private static void CheckCreate(string sql)
+        {
+            if (sql.IsNullStr())
+            {
+                throw new Exception("Create SQL 语句不能为空！");
+            }
+            if (!sql.Contains("insert")
+                && !sql.Contains("INSERT")
+                && !sql.Contains("Insert"))
+            {
+                throw new Exception("Create API 只能用来新增数据！");
+            }
+        }
+        private static void CheckDelete(string sql)
+        {
+            if (sql.IsNullStr())
+            {
+                throw new Exception("Delete SQL 语句不能为空！");
+            }
+            if (!sql.Contains("delete")
+                && !sql.Contains("DELETE")
+                && !sql.Contains("Delete"))
+            {
+                throw new Exception("Delete API 只能用来删除数据！");
+            }
+        }
         [Obsolete("警告：此 API 后面会移除！！！", false)]
         public static async Task<int> ExecuteNonQueryAsync(this IDbConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
         {
@@ -58,6 +83,9 @@ namespace MyDAL
             dc.ParseParam(dbParas);
             return new ExecuteNonQuerySQLImpl(dc).ExecuteNonQuery(tran);
         }
+
+        /*-------------------------------------------------------------*/
+
         [Obsolete("警告：此 API 后面会移除！！！", false)]
         public static async Task<PagingResult<T>> QueryPagingAsync<T>
             (this IDbConnection conn, PagingResult<T> paging, string totalCountSql, string pageDataSql, List<XParam> dbParas = null, IDbTransaction tran = null)
@@ -92,9 +120,9 @@ namespace MyDAL
             paging.Data = result.Data;
             return paging;
         }
+        #endregion
 
-        /******************************************************************************************************************************/
-
+        #region Deleter
         /// <summary>
         /// 删除数据 方法簇
         /// </summary>
@@ -108,9 +136,9 @@ namespace MyDAL
             };
             return new Deleter<M>(dc);
         }
+        #endregion
 
-        /*-------------------------------------------------------------*/
-
+        #region Updater
         /// <summary>
         /// 修改数据 方法簇
         /// </summary>
@@ -124,9 +152,9 @@ namespace MyDAL
             };
             return new Updater<M>(dc);
         }
+        #endregion
 
-        /******************************************************************************************************************************/
-
+        #region Queryer
         /// <summary>
         /// 单表查询 方法簇
         /// </summary>
@@ -238,9 +266,9 @@ namespace MyDAL
             };
             return new Queryer(dc);
         }
+        #endregion
 
-        /******************************************************************************************************************************/
-
+        #region Create API
         /// <summary>
         /// Creater 便捷 CreateAsync 方法
         /// </summary>
@@ -248,6 +276,14 @@ namespace MyDAL
             where M : class, new()
         {
             return await conn.Creater<M>().CreateAsync(m, tran);
+        }
+
+        /*-------------------------------------------------------------*/
+
+        public static async Task<int> CreateAsync(this IDbConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
+        {
+            CheckCreate(sql);
+            return await conn.ExecuteNonQueryAsync(sql, dbParas, tran);
         }
 
         /*-------------------------------------------------------------*/
@@ -261,8 +297,16 @@ namespace MyDAL
             return conn.Creater<M>().Create(m, tran);
         }
 
-        /******************************************************************************************************************************/
+        /*-------------------------------------------------------------*/
 
+        public static int Create(this IDbConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
+        {
+            CheckCreate(sql);
+            return conn.ExecuteNonQuery(sql, dbParas, tran);
+        }
+        #endregion
+
+        #region CreateBatch API
         /// <summary>
         /// Creater 便捷 CreateBatchAsync 方法
         /// </summary>
@@ -282,9 +326,9 @@ namespace MyDAL
         {
             return conn.Creater<M>().CreateBatch(mList, tran);
         }
+        #endregion
 
-        /******************************************************************************************************************************/
-
+        #region Delete API
         /// <summary>
         /// Deleter 便捷 DeleteAsync 方法
         /// </summary>
@@ -292,6 +336,14 @@ namespace MyDAL
             where M : class, new()
         {
             return await conn.Deleter<M>().Where(compareFunc).DeleteAsync(tran);
+        }
+
+        /*-------------------------------------------------------------*/
+
+        public static async Task<int> DeleteAsync(this IDbConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
+        {
+            CheckDelete(sql);
+            return await conn.ExecuteNonQueryAsync(sql, dbParas, tran);
         }
 
         /*-------------------------------------------------------------*/
@@ -305,8 +357,16 @@ namespace MyDAL
             return conn.Deleter<M>().Where(compareFunc).Delete(tran);
         }
 
-        /******************************************************************************************************************************/
+        /*-------------------------------------------------------------*/
 
+        public static int Delete(this IDbConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
+        {
+            CheckDelete(sql);
+            return conn.ExecuteNonQuery(sql, dbParas, tran);
+        }
+        #endregion
+
+        #region Update API
         /// <summary>
         /// 请参阅: <see langword=".UpdateAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
@@ -328,9 +388,9 @@ namespace MyDAL
         {
             return conn.Updater<M>().Set(filedsObject as object).Where(compareFunc).Update(tran, set);
         }
+        #endregion
 
-        /******************************************************************************************************************************/
-
+        #region QueryOne API
         /// <summary>
         /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
@@ -411,9 +471,9 @@ namespace MyDAL
             dc.ParseParam(dbParas);
             return new QueryOneSQLImpl(dc).QueryOne<T>(tran);
         }
+        #endregion
 
-        /******************************************************************************************************************************/
-
+        #region QueryList API
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
@@ -494,9 +554,9 @@ namespace MyDAL
             dc.ParseParam(dbParas);
             return new QueryListSQLImpl(dc).QueryList<T>(tran);
         }
+        #endregion
 
-        /******************************************************************************************************************************/
-
+        #region IsExist API
         /// <summary>
         /// 请参阅: <see langword=".IsExistAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
@@ -516,9 +576,9 @@ namespace MyDAL
         {
             return conn.Queryer<M>().Where(compareFunc).IsExist(tran);
         }
+        #endregion
 
-        /******************************************************************************************************************************/
-
+        #region Count API
         /// <summary>
         /// Queryer 便捷 CountAsync 方法
         /// </summary>
@@ -537,7 +597,8 @@ namespace MyDAL
             where M : class, new()
         {
             return conn.Queryer<M>().Where(compareFunc).Count(tran);
-        }
+        } 
+        #endregion
 
         /******************************************************************************************************************************/
 
