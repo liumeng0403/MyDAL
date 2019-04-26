@@ -34,10 +34,7 @@ namespace HPC.DAL
                                         ";
                 switch (XConfig.DebugType)
                 {
-                    case DebugEnum.Debug:
-                        Debug.WriteLine(info);
-                        break;
-                    case DebugEnum.Trace:
+                    case DebugEnum.Output:
                         Trace.WriteLine(info);
                         break;
                     case DebugEnum.Console:

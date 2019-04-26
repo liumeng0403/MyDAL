@@ -649,7 +649,7 @@ namespace HPC.DAL
         /// <summary>
         /// Sql 调试跟踪 开启
         /// </summary>
-        public static IDbConnection OpenDebug(this IDbConnection conn, DebugEnum type = DebugEnum.Debug)
+        public static IDbConnection OpenDebug(this IDbConnection conn, DebugEnum type = DebugEnum.Output)
         {
             XConfig.IsDebug = true;
             XConfig.DebugType = type;
