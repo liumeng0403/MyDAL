@@ -58,7 +58,7 @@ namespace MyDAL.AdoNet.Bases
                     //
                     if(DC.FlatOutput)
                     {
-                        XDebug.OutPutSQL(DC.FlatSQL);
+                        XDebug.OutPutSQL(DC.FlatSqlWithParams);
                     }
                 }
                 else
