@@ -1,4 +1,5 @@
 ﻿using HPC.DAL.Core;
+using HPC.DAL.Core.Bases;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -23,14 +24,21 @@ namespace HPC.DAL
         /// </summary>
         public static List<string> SqlWithParams { get; set; }
 
-        internal static void OutPutSQL(List<string> sqlList)
+        internal static void OutPutSQL(List<string> sqlList, Context dc)
         {
+            //
+            if (!dc.FlatOutput)
+            {
+                return;
+            }
+
+            //
             foreach (var sql in sqlList)
             {
                 var info = $@"
-======================================================================  <--  参数化 SQL 开始
+=================================================================  <--  参数化 SQL 开始，{(XConfig.IsDebug ? "Debug 模式已开启！" : "")}
 {sql}
-======================================================================  <--  参数化 SQL 结束
+=================================================================  <--  参数化 SQL 结束
                                         ";
                 switch (XConfig.DebugType)
                 {
