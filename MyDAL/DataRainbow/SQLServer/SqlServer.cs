@@ -6,6 +6,7 @@ using MyDAL.Core.Extensions;
 using MyDAL.DataRainbow.XCommon.Bases;
 using MyDAL.DataRainbow.XCommon.Interfaces;
 using MyDAL.ModelTools;
+using MyDAL.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;

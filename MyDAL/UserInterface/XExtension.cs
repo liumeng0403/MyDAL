@@ -6,6 +6,7 @@ using MyDAL.Impls;
 using MyDAL.Impls.ImplAsyncs;
 using MyDAL.Impls.ImplSyncs;
 using MyDAL.ModelTools;
+using MyDAL.Tools;
 using MyDAL.UserFacade.Create;
 using MyDAL.UserFacade.Delete;
 using MyDAL.UserFacade.Join;

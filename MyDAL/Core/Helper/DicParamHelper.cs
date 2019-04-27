@@ -4,6 +4,7 @@ using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Models.ExpPara;
 using MyDAL.ModelTools;
+using MyDAL.Tools;
 using System;
 using System.Collections.Generic;
 using System.Data;
