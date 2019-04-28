@@ -33,6 +33,16 @@ namespace HPC.DAL
             }
 
             //
+            if (dc.AlreadyOutput)
+            {
+                return;
+            }
+            else
+            {
+                dc.AlreadyOutput = true;
+            }
+
+            //
             foreach (var sql in sqlList)
             {
                 var info = $@"
