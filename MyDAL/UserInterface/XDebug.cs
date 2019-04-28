@@ -36,6 +36,16 @@ namespace MyDAL
             }
 
             //
+            if (dc.AlreadyOutput)
+            {
+                return;
+            }
+            else
+            {
+                dc.AlreadyOutput = true;
+            }
+
+            //
             foreach (var sql in sqlList)
             {
                 var info = $@"

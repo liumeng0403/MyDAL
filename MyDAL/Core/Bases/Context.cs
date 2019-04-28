@@ -194,6 +194,7 @@ namespace MyDAL.Core.Bases
         private List<string> FlatSQL { get; set; }
         internal List<string> FlatSqlWithParams { get; set; }
         internal bool FlatOutput { get; set; } = true;
+        internal bool AlreadyOutput { get; set; } = false;
         private char GetParamSymbol()
         {
             switch (DB)
