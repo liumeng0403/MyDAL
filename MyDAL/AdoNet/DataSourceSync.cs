@@ -154,7 +154,7 @@ namespace HPC.DAL.AdoNet
                 using (var cmdC = SettingCommand(ci, Conn, ci.Parameter.ParamReader))
                 {
                     var obj = cmdC.ExecuteScalar();
-                    result.TotalCount = DC.GH.ConvertT<long>(obj);
+                    result.TotalCount = DC.GH.ConvertT<int>(obj);
                 }
                 ci = new CommandInfo(SqlTwo, Parameter);
                 using (var cmdD = SettingCommand(ci, Conn, ci.Parameter.ParamReader))

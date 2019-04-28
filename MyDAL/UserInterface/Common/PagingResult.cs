@@ -20,7 +20,7 @@ namespace HPC.DAL
         /// <summary>
         ///     条目总数
         /// </summary>
-        public long TotalCount { get; set; }
+        public int TotalCount { get; set; }
 
         /// <summary>
         ///     页面总数
@@ -34,7 +34,7 @@ namespace HPC.DAL
                 {
                     ++totalPage;
                 }
-                return (int)totalPage;
+                return totalPage;
             }
         }
 
