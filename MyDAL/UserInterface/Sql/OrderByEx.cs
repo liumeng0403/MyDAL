@@ -1,4 +1,5 @@
-﻿using HPC.DAL.Core.Enums;
+﻿using HPC.DAL.Core.Bases;
+using HPC.DAL.Core.Enums;
 using HPC.DAL.UserFacade.Join;
 using HPC.DAL.UserFacade.Query;
 using System;
@@ -11,44 +12,50 @@ namespace HPC.DAL
     /// </summary>
     public static class OrderByEx
     {
-
-        public static OrderByQ<M> OrderBy<M, F>(this WhereQ<M> where, Expression<Func<M, F>> propertyFunc, OrderByEnum orderBy = OrderByEnum.Desc)
+        private static OrderByQ<M> OrderByQ<M, F>(Operator op, Expression<Func<M, F>> propertyFunc, OrderByEnum orderBy)
             where M : class
         {
-            where.DC.Action = ActionEnum.OrderBy;
-            where.OrderByMF(propertyFunc, orderBy);
-            return new OrderByQ<M>(where.DC);
+            op.DC.Action = ActionEnum.OrderBy;
+            op.OrderByMF(propertyFunc, orderBy);
+            return new OrderByQ<M>(op.DC);
         }
 
-        public static OrderByQ<M> ThenOrderBy<M, F>(this OrderByQ<M> order, Expression<Func<M, F>> propertyFunc, OrderByEnum orderBy = OrderByEnum.Desc)
+        public static OrderByQ<M> OrderBy<M, F>(this Queryer<M> target, Expression<Func<M, F>> propertyFunc, OrderByEnum orderBy = OrderByEnum.Desc)
             where M : class
         {
-            order.DC.Action = ActionEnum.OrderBy;
-            order.OrderByMF(propertyFunc, orderBy);
-            return new OrderByQ<M>(order.DC);
+            return OrderByQ(target, propertyFunc, orderBy);
+        }
+        public static OrderByQ<M> OrderBy<M, F>(this WhereQ<M> target, Expression<Func<M, F>> propertyFunc, OrderByEnum orderBy = OrderByEnum.Desc)
+            where M : class
+        {
+            return OrderByQ(target, propertyFunc, orderBy);
+        }
+        public static OrderByQ<M> ThenOrderBy<M, F>(this OrderByQ<M> target, Expression<Func<M, F>> propertyFunc, OrderByEnum orderBy = OrderByEnum.Desc)
+            where M : class
+        {
+            return OrderByQ(target, propertyFunc, orderBy);
         }
 
         /**************************************************************************************************************/
 
-        public static OrderByX OrderBy<F>(this OnX on, Expression<Func<F>> propertyFunc, OrderByEnum orderBy = OrderByEnum.Desc)
+        private static OrderByX OrderByX<F>(Operator op, Expression<Func<F>> propertyFunc, OrderByEnum orderBy)
         {
-            on.DC.Action = ActionEnum.OrderBy;
-            on.OrderByF(propertyFunc, orderBy);
-            return new OrderByX(on.DC);
+            op.DC.Action = ActionEnum.OrderBy;
+            op.OrderByF(propertyFunc, orderBy);
+            return new OrderByX(op.DC);
         }
 
-        public static OrderByX OrderBy<F>(this WhereX where, Expression<Func<F>> propertyFunc, OrderByEnum orderBy = OrderByEnum.Desc)
+        public static OrderByX OrderBy<F>(this OnX target, Expression<Func<F>> propertyFunc, OrderByEnum orderBy = OrderByEnum.Desc)
         {
-            where.DC.Action = ActionEnum.OrderBy;
-            where.OrderByF(propertyFunc, orderBy);
-            return new OrderByX(where.DC);
+            return OrderByX(target, propertyFunc, orderBy);
         }
-
-        public static OrderByX ThenOrderBy<F>(this OrderByX order, Expression<Func<F>> propertyFunc, OrderByEnum orderBy = OrderByEnum.Desc)
+        public static OrderByX OrderBy<F>(this WhereX target, Expression<Func<F>> propertyFunc, OrderByEnum orderBy = OrderByEnum.Desc)
         {
-            order.DC.Action = ActionEnum.OrderBy;
-            order.OrderByF(propertyFunc, orderBy);
-            return new OrderByX(order.DC);
+            return OrderByX(target, propertyFunc, orderBy);
+        }
+        public static OrderByX ThenOrderBy<F>(this OrderByX target, Expression<Func<F>> propertyFunc, OrderByEnum orderBy = OrderByEnum.Desc)
+        {
+            return OrderByX(target, propertyFunc, orderBy);
         }
 
     }

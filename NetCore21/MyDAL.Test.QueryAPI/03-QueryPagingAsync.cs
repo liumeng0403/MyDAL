@@ -14,26 +14,6 @@ namespace MyDAL.Test.QueryAPI
     {
 
         [Fact]
-        public async Task History_01()
-        {
-            xx = string.Empty;
-
-            var res2 = await Conn
-                .Queryer<Agent>()
-                .Where(it => it.Name.StartsWith("张"))
-                .OrderBy(it => it.Name, OrderByEnum.Desc)
-                .QueryPagingAsync(1, 10, it => it.Name);
-
-            Assert.True(res2.Data.Count == 10);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /*****************************************************************************************************************************/
-
-            xx = string.Empty;
-        }
-
-        [Fact]
         public async Task History_02()
         {
 
