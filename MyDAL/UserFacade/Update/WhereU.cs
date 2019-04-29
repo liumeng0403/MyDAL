@@ -1,6 +1,4 @@
 ﻿using HPC.DAL.Core.Bases;
-using HPC.DAL.Core.Bases.Facades;
-using HPC.DAL.Impls;
 using HPC.DAL.Impls.ImplAsyncs;
 using HPC.DAL.Impls.ImplSyncs;
 using HPC.DAL.Interfaces.IAsyncs;
@@ -14,7 +12,7 @@ namespace HPC.DAL.UserFacade.Update
     /// 请参阅: <see langword="目录索引 https://www.cnblogs.com/Meng-NET/"/>
     /// </summary>
     public sealed class WhereU<M>
-        : WhereBase
+        : Operator
         , IUpdateAsync<M>, IUpdate<M>
         where M : class
     {

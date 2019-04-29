@@ -1,5 +1,4 @@
 ﻿using HPC.DAL.Core.Bases;
-using HPC.DAL.Core.Bases.Facades;
 using HPC.DAL.Impls.ImplAsyncs;
 using HPC.DAL.Impls.ImplSyncs;
 using HPC.DAL.Interfaces.IAsyncs;
@@ -13,7 +12,7 @@ namespace HPC.DAL.UserFacade.Delete
     /// 请参阅: <see langword="目录索引 https://www.cnblogs.com/Meng-NET/"/>
     /// </summary>
     public sealed class WhereD<M>
-        : WhereBase
+        : Operator
         , IDeleteAsync, IDelete
         where M : class
     {

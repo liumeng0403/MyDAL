@@ -1,8 +1,6 @@
 ﻿using HPC.DAL.Core.Common;
 using HPC.DAL.Core.Enums;
-using HPC.DAL.Core.Extensions;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
@@ -101,7 +99,7 @@ namespace HPC.DAL.Core.Bases
             }
             return result;
         }
-        
+
         /****************************************************************************************************************************************/
 
         internal Context DC { get; set; }
@@ -138,52 +136,42 @@ namespace HPC.DAL.Core.Bases
             }
         }
 
-        internal void WhereJoinHandle(Operator op, Expression<Func<bool>> func)
+        internal void MT_WhereAndOr(Operator op, Expression<Func<bool>> func)
         {
             var dic = op.DC.XE.FuncBoolExpression(func);
             op.DC.DPH.AddParameter(dic);
         }
-
-        internal void WhereHandle<M>(Expression<Func<M, bool>> func)
+        internal void ST_WhereAndOr<M>(Expression<Func<M, bool>> func)
             where M : class
         {
-            DC.Action = ActionEnum.Where;
             var field = DC.XE.FuncMBoolExpression(func);
-            field.TbMType = typeof(M);
             DC.DPH.AddParameter(field);
         }
 
+        private void AddOrderByParam(DicParam keyDic, OrderByEnum orderBy)
+        {
+            switch (orderBy)
+            {
+                case OrderByEnum.Asc:
+                    DC.Option = OptionEnum.Asc;
+                    break;
+                case OrderByEnum.Desc:
+                    DC.Option = OptionEnum.Desc;
+                    break;
+            }
+
+            DC.DPH.AddParameter(DC.DPH.OrderbyDic(keyDic.TbMType, keyDic.TbCol, keyDic.TbAlias));
+        }
         internal void OrderByMF<M, F>(Expression<Func<M, F>> propertyFunc, OrderByEnum orderBy)
             where M : class
         {
             var keyDic = DC.XE.FuncMFExpression(propertyFunc);
-            switch (orderBy)
-            {
-                case OrderByEnum.Asc:
-                    DC.Option = OptionEnum.Asc;
-                    break;
-                case OrderByEnum.Desc:
-                    DC.Option = OptionEnum.Desc;
-                    break;
-            }
-
-            DC.DPH.AddParameter(DC.DPH.OrderbyDic(keyDic.TbMType, keyDic.TbCol, keyDic.TbAlias));
+            AddOrderByParam(keyDic, orderBy);
         }
-
         internal void OrderByF<F>(Expression<Func<F>> func, OrderByEnum orderBy)
         {
             var keyDic = DC.XE.FuncTExpression(func);
-            switch (orderBy)
-            {
-                case OrderByEnum.Asc:
-                    DC.Option = OptionEnum.Asc;
-                    break;
-                case OrderByEnum.Desc:
-                    DC.Option = OptionEnum.Desc;
-                    break;
-            }
-
-            DC.DPH.AddParameter(DC.DPH.OrderbyDic(keyDic.TbMType, keyDic.TbCol, keyDic.TbAlias));
+            AddOrderByParam(keyDic, orderBy);
         }
 
         internal void DistinctHandle()

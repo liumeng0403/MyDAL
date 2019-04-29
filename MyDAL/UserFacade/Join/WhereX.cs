@@ -1,9 +1,6 @@
 ﻿using HPC.DAL.Core.Bases;
-using HPC.DAL.Core.Bases.Facades;
-using HPC.DAL.Impls;
 using HPC.DAL.Impls.ImplAsyncs;
 using HPC.DAL.Impls.ImplSyncs;
-using HPC.DAL.Interfaces;
 using HPC.DAL.Interfaces.IAsyncs;
 using HPC.DAL.Interfaces.ISyncs;
 using HPC.DAL.Interfaces.Segments;
@@ -19,7 +16,7 @@ namespace HPC.DAL.UserFacade.Join
     /// 请参阅: <see langword="目录索引 https://www.cnblogs.com/Meng-NET/"/>
     /// </summary>
     public sealed class WhereX
-        : WhereBase
+        : Operator
         , IOrderByX
         , IQueryOneXAsync, IQueryOneX
         , IQueryListXAsync, IQueryListX
