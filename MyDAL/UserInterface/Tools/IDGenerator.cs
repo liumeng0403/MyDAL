@@ -7,7 +7,7 @@ namespace HPC.DAL.Tools
         /// <summary>
         /// Twitter SnowFlake ID
         /// </summary>
-        public long LongID
+        public static long LongID
         {
             get
             {
