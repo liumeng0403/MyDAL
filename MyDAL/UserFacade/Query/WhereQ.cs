@@ -1,5 +1,4 @@
 using MyDAL.Core.Bases;
-using MyDAL.Core.Bases.Facades;
 using MyDAL.Impls;
 using MyDAL.Impls.ImplAsyncs;
 using MyDAL.Impls.ImplSyncs;
@@ -19,7 +18,7 @@ namespace MyDAL.UserFacade.Query
     /// 请参阅: <see langword="目录索引 https://www.cnblogs.com/Meng-NET/"/>
     /// </summary>
     public sealed class WhereQ<M>
-        : WhereBase
+        : Operator
         , IOrderByQ<M>
         , IQueryOneAsync<M>, IQueryOne<M>
         , IQueryListAsync<M>, IQueryList<M>

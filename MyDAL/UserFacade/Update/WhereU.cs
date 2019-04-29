@@ -1,5 +1,4 @@
 using MyDAL.Core.Bases;
-using MyDAL.Core.Bases.Facades;
 using MyDAL.Impls;
 using MyDAL.Impls.ImplAsyncs;
 using MyDAL.Impls.ImplSyncs;
@@ -15,7 +14,7 @@ namespace MyDAL.UserFacade.Update
     /// 请参阅: <see langword="目录索引 https://www.cnblogs.com/Meng-NET/"/>
     /// </summary>
     public sealed class WhereU<M>
-        : WhereBase
+        : Operator
         , IUpdateAsync<M>, IUpdate<M>
         where M : class
     {
