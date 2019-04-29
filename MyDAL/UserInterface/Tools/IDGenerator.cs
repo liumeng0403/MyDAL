@@ -7,7 +7,7 @@ namespace MyDAL.Tools
         /// <summary>
         /// Twitter SnowFlake ID
         /// </summary>
-        public long LongID
+        public static long LongID
         {
             get
             {
