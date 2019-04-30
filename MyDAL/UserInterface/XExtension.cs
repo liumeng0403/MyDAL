@@ -3,7 +3,7 @@ using HPC.DAL.Core;
 using HPC.DAL.Core.Enums;
 using HPC.DAL.Impls.ImplAsyncs;
 using HPC.DAL.Impls.ImplSyncs;
-using HPC.DAL.ModelTools;
+using HPC.DAL.Tools;
 using HPC.DAL.UserFacade.Create;
 using HPC.DAL.UserFacade.Delete;
 using HPC.DAL.UserFacade.Join;
@@ -59,8 +59,39 @@ namespace HPC.DAL
                 throw new Exception("Delete API 只能用来删除数据！");
             }
         }
-        [Obsolete("警告：此 API 后面会移除！！！", false)]
-        public static async Task<int> ExecuteNonQueryAsync(this IDbConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
+        private static void CheckUpdate(string sql)
+        {
+            if (sql.IsNullStr())
+            {
+                throw new Exception("Update SQL 语句不能为空！");
+            }
+            if (!sql.Contains("update")
+                && !sql.Contains("UPDATE")
+                && !sql.Contains("Update"))
+            {
+                throw new Exception("Update API 只能用来更新数据！");
+            }
+        }
+        private static void CheckQuery(string sql)
+        {
+            if (sql.IsNullStr())
+            {
+                throw new Exception("Query SQL 语句不能为空！");
+            }
+            if (sql.Contains("insert")
+                || sql.Contains("delete")
+                || sql.Contains("update")
+                || sql.Contains("INSERT")
+                || sql.Contains("DELETE")
+                || sql.Contains("UPDATE")
+                || sql.Contains("Insert")
+                || sql.Contains("Delete")
+                || sql.Contains("Update"))
+            {
+                throw new Exception("Query API 只能用来查询数据！");
+            }
+        }
+        private static XContext DcForSQL(IDbConnection conn, string sql, List<XParam> dbParas)
         {
             var dc = new XContext(conn)
             {
@@ -68,17 +99,18 @@ namespace HPC.DAL
             };
             dc.ParseSQL(sql);
             dc.ParseParam(dbParas);
+            return dc;
+        }
+        [Obsolete("警告：此 API 后面会移除！！！", false)]
+        public static async Task<int> ExecuteNonQueryAsync(this IDbConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
+        {
+            var dc = DcForSQL(conn, sql, dbParas);
             return await new ExecuteNonQuerySQLAsyncImpl(dc).ExecuteNonQueryAsync(tran);
         }
         [Obsolete("警告：此 API 后面会移除！！！", false)]
         public static int ExecuteNonQuery(this IDbConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
         {
-            var dc = new XContext(conn)
-            {
-                Crud = CrudEnum.SQL
-            };
-            dc.ParseSQL(sql);
-            dc.ParseParam(dbParas);
+            var dc = DcForSQL(conn, sql, dbParas);
             return new ExecuteNonQuerySQLImpl(dc).ExecuteNonQuery(tran);
         }
 
@@ -377,6 +409,14 @@ namespace HPC.DAL
 
         /*-------------------------------------------------------------*/
 
+        public static async Task<int> UpdateAsync(this IDbConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
+        {
+            CheckUpdate(sql);
+            return await conn.ExecuteNonQueryAsync(sql, dbParas, tran);
+        }
+
+        /*-------------------------------------------------------------*/
+
         /// <summary>
         /// Updater 便捷 UpdateAsync update fields 方法
         /// </summary>
@@ -385,6 +425,14 @@ namespace HPC.DAL
             where M : class, new()
         {
             return conn.Updater<M>().Set(filedsObject as object).Where(compareFunc).Update(tran, set);
+        }
+
+        /*-------------------------------------------------------------*/
+
+        public static int Update(this IDbConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
+        {
+            CheckUpdate(sql);
+            return conn.ExecuteNonQuery(sql, dbParas, tran);
         }
         #endregion
 
@@ -420,12 +468,8 @@ namespace HPC.DAL
 
         public static async Task<T> QueryOneAsync<T>(this IDbConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
         {
-            var dc = new XContext(conn)
-            {
-                Crud = CrudEnum.SQL
-            };
-            dc.ParseSQL(sql);
-            dc.ParseParam(dbParas);
+            CheckQuery(sql);
+            var dc = DcForSQL(conn, sql, dbParas);
             return await new QueryOneSQLAsyncImpl(dc).QueryOneAsync<T>(tran);
         }
 
@@ -461,12 +505,8 @@ namespace HPC.DAL
 
         public static T QueryOne<T>(this IDbConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
         {
-            var dc = new XContext(conn)
-            {
-                Crud = CrudEnum.SQL
-            };
-            dc.ParseSQL(sql);
-            dc.ParseParam(dbParas);
+            CheckQuery(sql);
+            var dc = DcForSQL(conn, sql, dbParas);
             return new QueryOneSQLImpl(dc).QueryOne<T>(tran);
         }
         #endregion
@@ -503,12 +543,8 @@ namespace HPC.DAL
 
         public static async Task<List<T>> QueryListAsync<T>(this IDbConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
         {
-            var dc = new XContext(conn)
-            {
-                Crud = CrudEnum.SQL
-            };
-            dc.ParseSQL(sql);
-            dc.ParseParam(dbParas);
+            CheckQuery(sql);
+            var dc = DcForSQL(conn, sql, dbParas);
             return await new QueryListSQLAsyncImpl(dc).QueryListAsync<T>(tran);
         }
 
@@ -544,12 +580,8 @@ namespace HPC.DAL
 
         public static List<T> QueryList<T>(this IDbConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
         {
-            var dc = new XContext(conn)
-            {
-                Crud = CrudEnum.SQL
-            };
-            dc.ParseSQL(sql);
-            dc.ParseParam(dbParas);
+            CheckQuery(sql);
+            var dc = DcForSQL(conn, sql, dbParas);
             return new QueryListSQLImpl(dc).QueryList<T>(tran);
         }
         #endregion
@@ -595,14 +627,13 @@ namespace HPC.DAL
             where M : class, new()
         {
             return conn.Queryer<M>().Where(compareFunc).Count(tran);
-        } 
+        }
         #endregion
 
-        /******************************************************************************************************************************/
-
+        #region Sum API
         public static async Task<F> SumAsync<M, F>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, F>> propertyFunc, IDbTransaction tran = null)
-            where M : class, new()
-            where F : struct
+    where M : class, new()
+    where F : struct
         {
             return await conn.Queryer<M>().Where(compareFunc).SumAsync(propertyFunc, tran);
         }
@@ -629,9 +660,9 @@ namespace HPC.DAL
         {
             return conn.Queryer<M>().Where(compareFunc).Sum(propertyFunc, tran);
         }
+        #endregion
 
-        /******************************************************************************************************************************/
-
+        #region ForUser
         /// <summary>
         /// 异步打开 DB 连接
         /// </summary>
@@ -654,7 +685,7 @@ namespace HPC.DAL
             XConfig.IsDebug = true;
             XConfig.DebugType = type;
             return conn;
-        }
-
+        } 
+        #endregion
     }
 }
