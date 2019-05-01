@@ -20,9 +20,4 @@ namespace MyDAL.Interfaces.IAsyncs
             where M : class;
         Task<PagingResult<T>> QueryPagingAsync<T>(int pageIndex, int pageSize, Expression<Func<T>> columnMapFunc, IDbTransaction tran = null);
     }
-
-    internal interface IQueryPagingSQLAsync
-    {
-        Task<PagingResult<T>> QueryPagingAsync<T>(IDbTransaction tran = null);
-    }
 }

@@ -95,21 +95,4 @@ namespace MyDAL.Impls.ImplAsyncs
         }
 
     }
-
-    internal sealed class QueryPagingSQLAsyncImpl
-: ImplerAsync
-, IQueryPagingSQLAsync
-    {
-        public QueryPagingSQLAsyncImpl(Context dc)
-            : base(dc)
-        { }
-
-        public async Task<PagingResult<T>> QueryPagingAsync<T>(IDbTransaction tran = null)
-        {
-            DC.Method = UiMethodEnum.QueryPagingAsync;
-            DSA.Tran = tran;
-            return await DSA.ExecuteReaderPagingAsync<None, T>(typeof(T).IsSingleColumn(), null);
-        }
-
-    }
 }

@@ -19,9 +19,4 @@ namespace MyDAL.Interfaces.ISyncs
             where M : class;
         PagingResult<T> QueryPaging<T>(int pageIndex, int pageSize, Expression<Func<T>> columnMapFunc, IDbTransaction tran = null);
     }
-
-    internal interface IQueryPagingSQL
-    {
-        PagingResult<T> QueryPaging<T>(IDbTransaction tran = null);
-    }
 }
