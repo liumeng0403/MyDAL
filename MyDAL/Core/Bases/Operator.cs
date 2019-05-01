@@ -124,7 +124,6 @@ namespace HPC.DAL.Core.Bases
             DC.Compare = CompareXEnum.None;
             DC.DPH.AddParameter(DC.DPH.SetDic(typeof(M), key, key, val, typeof(F)));
         }
-
         internal void SetDynamicHandle<M>(object mSet)
         {
             var tuples = GetSetKPV<M>(mSet);
