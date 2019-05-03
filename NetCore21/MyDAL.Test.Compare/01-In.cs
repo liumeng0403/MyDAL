@@ -371,7 +371,8 @@ namespace MyDAL.Test.Compare
             }
             catch (Exception ex)
             {
-                Assert.Equal("【new List`1() {}.Contains(it.Id)】 中 集合为空!!!", ex.Message, ignoreCase: true);
+                var errStr = "【ERR-050】 -- [[【new List`1() {}.Contains(it.Id)】 中 集合为空!!!]] ，请 EMail: --> liumeng0403@163.com <--";
+                Assert.Equal(errStr, ex.Message, ignoreCase: true);
             }
 
             /*******************************************************************************************************************/
