@@ -37,6 +37,7 @@ namespace MyDAL.Test.Compare
         [Fact]
         public async Task WhereTestx()
         {
+            xx = string.Empty;
 
             /************************************************************************************************************************/
 
@@ -51,7 +52,7 @@ namespace MyDAL.Test.Compare
 
             /************************************************************************************************************************/
 
-            var xx3 = string.Empty;
+            xx = string.Empty;
 
             var m = await PreData3();
             // 
@@ -65,7 +66,8 @@ namespace MyDAL.Test.Compare
             catch (Exception ex)
             {
                 tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-                Assert.Equal("[[Convert(value(MyDAL.Test.Compare._09_Null).WhereTest.AgentLevelNull, Nullable`1)]] 中,传入的 SQL 筛选条件为 Null !!!", ex.Message, ignoreCase: true);
+                var errStr = "【ERR-078】 -- [[[[Convert(value(MyDAL.Test.Compare._09_Null).WhereTest.AgentLevelNull, Nullable`1)]] 中,传入的 SQL 筛选条件为 Null !!!]] ，请 EMail: --> liumeng0403@163.com <--";
+                Assert.Equal(errStr, ex.Message, ignoreCase: true);
             }
 
             await ClearData3(m);

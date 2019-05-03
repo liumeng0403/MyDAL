@@ -168,7 +168,7 @@ namespace MyDAL.Test.Update
             var model = new AgentInventoryRecord();
             model.LockedCount = 0;
 
-            var res1 = await Conn.UpdateAsync<AgentInventoryRecord>(it=>true, new
+            var res1 = await Conn.UpdateAsync<AgentInventoryRecord>(it => true, new
             {
                 model.LockedCount
             });
@@ -287,11 +287,12 @@ namespace MyDAL.Test.Update
                 var res1 = await Conn.UpdateAsync<Agent>(it => it.Id == agent.Id, new
                 {
                     agent.PathId
-                },null, SetEnum.NotAllowedNull);
+                }, null, SetEnum.NotAllowedNull);
             }
             catch (Exception ex)
             {
-                Assert.Equal("NotAllowedNull -- 字段:[[PathId]]的值不能设为 Null !!!", ex.Message, true);
+                var errStr = "【ERR-054】 -- [[NotAllowedNull -- 字段:[[PathId]]的值不能设为 Null !!!]] ，请 EMail: --> liumeng0403@163.com <--";
+                Assert.Equal(errStr, ex.Message, true);
             }
 
             /*****************************************************************************************************************************************************************/
@@ -313,7 +314,7 @@ namespace MyDAL.Test.Update
             {
                 agent.PathId,
                 agent.ActiveOrderId
-            }, null,SetEnum.IgnoreNull);
+            }, null, SetEnum.IgnoreNull);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
@@ -411,11 +412,12 @@ namespace MyDAL.Test.Update
                     .Updater<Agent>()
                     .Set(it => it.PathId, null)
                     .Where(it => it.Id == agent.Id)
-                    .UpdateAsync(null,SetEnum.NotAllowedNull);
+                    .UpdateAsync(null, SetEnum.NotAllowedNull);
             }
             catch (Exception ex)
             {
-                Assert.Equal("NotAllowedNull -- 字段:[[PathId]]的值不能设为 Null !!!", ex.Message, true);
+                var errStr = "【ERR-054】 -- [[NotAllowedNull -- 字段:[[PathId]]的值不能设为 Null !!!]] ，请 EMail: --> liumeng0403@163.com <--";
+                Assert.Equal(errStr, ex.Message, true);
             }
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
@@ -443,7 +445,7 @@ namespace MyDAL.Test.Update
                     agent.ActiveOrderId
                 })
                 .Where(it => it.Id == agent.Id)
-                .UpdateAsync(null,SetEnum.IgnoreNull);
+                .UpdateAsync(null, SetEnum.IgnoreNull);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
