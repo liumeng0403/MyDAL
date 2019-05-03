@@ -360,7 +360,7 @@ namespace MyDAL.Core.Bases
 
         internal Exception Exception(string code, string msg)
         {
-            return new Exception($"【ERR-{code}】 -- [[{msg}]] 未能解析!!!，请 EMail: --> liumeng0403@163.com <--");
+            return new Exception($"【ERR-{code}】 -- [[{msg}]] ，请 EMail: --> liumeng0403@163.com <--");
         }
 
     }
