@@ -57,7 +57,7 @@ namespace MyDAL.Core.Common.Tools
                 }
                 if (Timestamp < LastTimestamp)
                 {
-                    throw new Exception("时间戳比上一次生成ID时时间戳还小，故异常");
+                    throw XConfig.EC. Exception(XConfig.EC._058, "时间戳比上一次生成ID时时间戳还小，故异常");
                 }
                 SnowFlake.LastTimestamp = Timestamp; //把当前时间戳保存为最后生成ID的时间戳  
                 long Id = ((Timestamp - Twepoch) << (int)TimestampLeftShift) | (DataCenterID << (int)DataCenterIdShift) | (MachineID << (int)MachineIdShift) | Sequence;

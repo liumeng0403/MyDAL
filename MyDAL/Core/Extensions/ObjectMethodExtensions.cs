@@ -1,4 +1,4 @@
-﻿using MyDAL.ModelTools;
+using MyDAL.ModelTools;
 using MyDAL.Tools;
 using System;
 
@@ -15,23 +15,7 @@ namespace MyDAL.Core.Extensions
             }
             catch (Exception ex)
             {
-                throw new Exception($"bool ToBool(this object obj) -- {obj?.ToString()}", ex);
-            }
-            return result;
-        }
-        internal static bool ToBool(this bool? obj)
-        {
-            var result = false;
-            try
-            {
-                if (obj.HasValue)
-                {
-                    result = Convert.ToBoolean(obj);
-                }                
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"bool ToBool(this bool? obj) -- {obj?.ToString()}", ex);
+                throw XConfig.EC.Exception(XConfig.EC._059, $"bool ToBool(this object obj) -- {obj?.ToString()}，InnerExeception：{ex.Message}");
             }
             return result;
         }
@@ -45,7 +29,7 @@ namespace MyDAL.Core.Extensions
             }
             catch (Exception ex)
             {
-                throw new Exception($"byte ToByte(this object obj) -- {obj?.ToString()}", ex);
+                throw XConfig.EC.Exception(XConfig.EC._060, $"byte ToByte(this object obj) -- {obj?.ToString()}，InnerExeception：{ex.Message}");
             }
             return result;
         }
@@ -59,7 +43,7 @@ namespace MyDAL.Core.Extensions
             }
             catch (Exception ex)
             {
-                throw new Exception($"decimal ToDecimal(this object obj) -- {obj?.ToString()}", ex);
+                throw XConfig.EC.Exception(XConfig.EC._061, $"decimal ToDecimal(this object obj) -- {obj?.ToString()}，InnerExeception：{ex.Message}");
             }
             return result;
         }
@@ -73,7 +57,7 @@ namespace MyDAL.Core.Extensions
             }
             catch (Exception ex)
             {
-                throw new Exception($"double ToDouble(this object obj) -- {obj?.ToString()}", ex);
+                throw XConfig.EC.Exception(XConfig.EC._062, $"double ToDouble(this object obj) -- {obj?.ToString()}，InnerExeception：{ex.Message}");
             }
             return result;
         }
@@ -87,7 +71,7 @@ namespace MyDAL.Core.Extensions
             }
             catch (Exception ex)
             {
-                throw new Exception($"float ToFloat(this object obj) -- {obj?.ToString()}", ex);
+                throw XConfig.EC.Exception(XConfig.EC._063, $"float ToFloat(this object obj) -- {obj?.ToString()}，InnerExeception：{ex.Message}");
             }
             return result;
         }
@@ -101,7 +85,7 @@ namespace MyDAL.Core.Extensions
             }
             catch (Exception ex)
             {
-                throw new Exception($"int ToInt(this object obj) -- {obj?.ToString()}", ex);
+                throw XConfig.EC.Exception(XConfig.EC._064, $"int ToInt(this object obj) -- {obj?.ToString()}，InnerExeception：{ex.Message}");
             }
             return result;
         }
@@ -115,7 +99,7 @@ namespace MyDAL.Core.Extensions
             }
             catch (Exception ex)
             {
-                throw new Exception($"long ToLong(this object obj) -- {obj?.ToString()}", ex);
+                throw XConfig.EC.Exception(XConfig.EC._065, $"long ToLong(this object obj) -- {obj?.ToString()}，InnerExeception：{ex.Message}");
             }
             return result;
         }
@@ -129,7 +113,7 @@ namespace MyDAL.Core.Extensions
             }
             catch (Exception ex)
             {
-                throw new Exception($"short ToShort(this object obj) -- {obj?.ToString()}", ex);
+                throw XConfig.EC.Exception(XConfig.EC._066, $"short ToShort(this object obj) -- {obj?.ToString()}，InnerExeception：{ex.Message}");
             }
             return result;
         }
@@ -143,7 +127,7 @@ namespace MyDAL.Core.Extensions
             }
             catch (Exception ex)
             {
-                throw new Exception($"sbyte ToSbtye(this object obj) -- {obj?.ToString()}", ex);
+                throw XConfig.EC.Exception(XConfig.EC._067, $"sbyte ToSbtye(this object obj) -- {obj?.ToString()}，InnerExeception：{ex.Message}");
             }
             return result;
         }
@@ -157,7 +141,7 @@ namespace MyDAL.Core.Extensions
             }
             catch (Exception ex)
             {
-                throw new Exception($"uint ToUint(this object obj) -- {obj?.ToString()}", ex);
+                throw XConfig.EC.Exception(XConfig.EC._068, $"uint ToUint(this object obj) -- {obj?.ToString()}，InnerExeception：{ex.Message}");
             }
             return result;
         }
@@ -171,7 +155,7 @@ namespace MyDAL.Core.Extensions
             }
             catch (Exception ex)
             {
-                throw new Exception($"ulong ToUlong(this object obj) -- {obj?.ToString()}", ex);
+                throw XConfig.EC.Exception(XConfig.EC._069, $"ulong ToUlong(this object obj) -- {obj?.ToString()}，InnerExeception：{ex.Message}");
             }
             return result;
         }
@@ -185,7 +169,7 @@ namespace MyDAL.Core.Extensions
             }
             catch (Exception ex)
             {
-                throw new Exception($"ushort ToUshort(this object obj) -- {obj?.ToString()}", ex);
+                throw XConfig.EC.Exception(XConfig.EC._070, $"ushort ToUshort(this object obj) -- {obj?.ToString()}，InnerExeception：{ex.Message}");
             }
             return result;
         }
@@ -199,7 +183,7 @@ namespace MyDAL.Core.Extensions
             }
             catch (Exception ex)
             {
-                throw new Exception($"DateTime ToDateTime(this object obj) -- {obj?.ToString()}", ex);
+                throw XConfig.EC.Exception(XConfig.EC._071, $"DateTime ToDateTime(this object obj) -- {obj?.ToString()}，InnerExeception：{ex.Message}");
             }
             return result;
         }
@@ -222,7 +206,7 @@ namespace MyDAL.Core.Extensions
             }
             catch (Exception ex)
             {
-                throw new Exception($"string ToDateTimeStr(this object obj) -- {obj?.ToString()}", ex);
+                throw XConfig.EC.Exception(XConfig.EC._072, $"string ToDateTimeStr(this object obj) -- {obj?.ToString()}，InnerExeception：{ex.Message}");
             }
         }
 
@@ -235,7 +219,7 @@ namespace MyDAL.Core.Extensions
             }
             catch (Exception ex)
             {
-                throw new Exception($"Guid ToGuid(this object obj) -- {obj?.ToString()}", ex);
+                throw XConfig.EC.Exception(XConfig.EC._073, $"Guid ToGuid(this object obj) -- {obj?.ToString()}，InnerExeception：{ex.Message}");
             }
             return result;
         }

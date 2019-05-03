@@ -1,4 +1,5 @@
-﻿using MyDAL.Core.Common;
+using MyDAL.Core;
+using MyDAL.Core.Common;
 using System;
 using System.IO;
 using System.Runtime.Serialization;
@@ -30,7 +31,7 @@ namespace MyDAL.ModelTools
             }
             catch (Exception ex)
             {
-                throw new Exception($"不支持类型【{typeof(T).FullName}】的深度复制!!!", ex);
+                throw XConfig.EC.Exception(XConfig.EC._079, $"不支持类型【{typeof(T).FullName}】的深度复制!!! InnerException:{ex.Message}");
             }
             return result;
         }

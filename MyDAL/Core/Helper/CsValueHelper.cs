@@ -27,7 +27,7 @@ namespace MyDAL.Core.Helper
             var ds = vals as IList;
             if (ds.Count <= 0)
             {
-                throw new Exception(" SQL 中 in() 的条件个数不能为 0 !!!");
+                throw XConfig.EC.Exception(XConfig.EC._077, " SQL 中 in() 的条件个数不能为 0 !!!");
             }
             var sb = new StringBuilder();
             for (var i = 0; i < ds.Count; i++)
@@ -65,7 +65,7 @@ namespace MyDAL.Core.Helper
             if (expr != null
                 && val == null)
             {
-                throw new Exception($"[[{expr.ToString()}]] 中,传入的 SQL 筛选条件为 Null !!!");
+                throw XConfig.EC.Exception(XConfig.EC._078, $"[[{expr.ToString()}]] 中,传入的 SQL 筛选条件为 Null !!!");
             }
             var type = val.GetType();
             if (type.IsArray)

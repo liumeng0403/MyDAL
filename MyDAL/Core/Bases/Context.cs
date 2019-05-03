@@ -27,7 +27,7 @@ namespace MyDAL.Core.Bases
             }
             else
             {
-                throw new Exception("MyDAL 目前只支持【MySQL/SQLServer】,后续将会支持【Oracle/PostgreSQL/DB2/Access/SQLite/Teradata/MariaDB】.");
+                throw XConfig.EC. Exception(XConfig.EC._043, "MyDAL 目前只支持【MySQL/SQLServer】,后续将会支持【Oracle/PostgreSQL/DB2/Access/SQLite/Teradata/MariaDB】.");
             }
 
             //
@@ -42,8 +42,7 @@ namespace MyDAL.Core.Bases
             XC = new XCache(this);
             PH = new ParameterHelper(this);
             DPH = new DicParamHelper(this);
-            BDH = new BatchDataHelper();
-            AR = new AutoRetry();
+            BDH = new BatchDataHelper();            
             TbMs = new List<TableDic>();
 
             //
@@ -59,7 +58,6 @@ namespace MyDAL.Core.Bases
         internal GenericHelper GH { get; private set; }
         internal ParameterHelper PH { get; private set; }
         internal BatchDataHelper BDH { get; private set; }
-        internal AutoRetry AR { get; private set; }
 
         /************************************************************************************************************************/
 
@@ -204,7 +202,7 @@ namespace MyDAL.Core.Bases
                 case DbEnum.SQLServer:
                     return XSQL.At;
                 default:
-                    throw Exception(XConfig.EC._036, "暂时不支持的DB！！！");
+                    throw XConfig.EC.Exception(XConfig.EC._036, "暂时不支持的DB！！！");
             }
         }
         internal void SetValue()
@@ -356,11 +354,6 @@ namespace MyDAL.Core.Bases
                     Alias = alias
                 });
             }
-        }
-
-        internal Exception Exception(string code, string msg)
-        {
-            return new Exception($"【ERR-{code}】 -- [[{msg}]] ，请 EMail: --> liumeng0403@163.com <--");
         }
 
     }

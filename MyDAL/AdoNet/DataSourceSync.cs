@@ -51,7 +51,7 @@ namespace MyDAL.AdoNet
                 }
                 catch (Exception ex2)
                 {
-                    throw DC.Exception(XConfig.EC._041, $"ExecuteReader执行异常:[[one]]:{ex1.StackTrace};[[two]]:{ex2.Message}.");
+                    throw XConfig.EC.Exception(XConfig.EC._041, $"ExecuteReader执行异常:[[one]]:{ex1.StackTrace};[[two]]:{ex2.Message}.");
                 }
             }
         }
@@ -68,7 +68,7 @@ namespace MyDAL.AdoNet
                                         ? dic.TbCol
                                         : dic.Option == OptionEnum.ColumnAs
                                             ? dic.TbColAlias
-                                            : throw DC.Exception(XConfig.EC._038, dic.Option.ToString()))), 1, 1).ToString(dic.Format)));
+                                            : throw XConfig.EC.Exception(XConfig.EC._038, dic.Option.ToString()))), 1, 1).ToString(dic.Format)));
             }
         }
         private List<F> ReadColumn<F>()
@@ -91,7 +91,7 @@ namespace MyDAL.AdoNet
                 dic = col?.Columns.FirstOrDefault(it => it.Option == OptionEnum.Column);
                 if (dic == null)
                 {
-                    throw new Exception("[[ReadColumn<F>()]] - 多表连接 - 单列 - 查询 - 异常 !!!");
+                    throw XConfig.EC.Exception(XConfig.EC._045, "[[ReadColumn<F>()]] - 多表连接 - 单列 - 查询 - 异常 !!!");
                 }
                 var tbm = DC.XC.GetTableModel(dic.TbMType);
                 var func = DC.XC.GetHandle(SqlOne, Reader, tbm.TbMType);

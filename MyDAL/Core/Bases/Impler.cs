@@ -66,7 +66,7 @@ namespace MyDAL.Core.Bases
             else
             {
                 var fullNames = DC.Parameters.Where(it => it.TbMType != null).Distinct();
-                throw new Exception($"请使用 [[Task<List<VM>> ListAsync<VM>(Expression<Func<VM>> func)]] 方法! 或者 {mType.Name} 必须为 [[{string.Join(",", fullNames.Select(it => it.TbMType.Name))}]] 其中之一 !");
+                throw XConfig.EC. Exception(XConfig.EC._056, $"请使用 [[Task<List<VM>> ListAsync<VM>(Expression<Func<VM>> func)]] 方法! 或者 {mType.Name} 必须为 [[{string.Join(",", fullNames.Select(it => it.TbMType.Name))}]] 其中之一 !");
             }
         }
         protected void SelectMQ<M, VM>()

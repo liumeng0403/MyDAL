@@ -132,7 +132,7 @@ namespace MyDAL.DataRainbow.XCommon
             }
             else
             {
-                throw DC.Exception(XConfig.EC._015, $"{dic.Action}-{dic.Option}-{value}");
+                throw XConfig.EC.Exception(XConfig.EC._015, $"{dic.Action}-{dic.Option}-{value}");
             }
         }
         private void InParams(List<DicParam> dbs)
@@ -266,7 +266,7 @@ namespace MyDAL.DataRainbow.XCommon
             }
             else
             {
-                throw DC.Exception(XConfig.EC._006, db.Func.ToString());
+                throw XConfig.EC.Exception(XConfig.EC._006, db.Func.ToString());
             }
         }
         private void IsNullProcess(DicParam db)
@@ -295,7 +295,7 @@ namespace MyDAL.DataRainbow.XCommon
                 {
                     case ActionEnum.From:
                         /* 已处理 */
-                        break;   
+                        break;
                     case ActionEnum.InnerJoin:
                     case ActionEnum.LeftJoin:
                         var tbm = DC.XC.GetTableModel(dp.TbMType);
@@ -353,7 +353,7 @@ namespace MyDAL.DataRainbow.XCommon
                 }
                 else
                 {
-                    throw DC.Exception(XConfig.EC._011, $"{db.Action}-{db.Option}");
+                    throw XConfig.EC.Exception(XConfig.EC._011, $"{db.Action}-{db.Option}");
                 }
             }
         }
@@ -377,7 +377,7 @@ namespace MyDAL.DataRainbow.XCommon
         {
             //
             var list = DC.Parameters.Where(it => it.Action == ActionEnum.Update)?.ToList();
-            if (list == null || list.Count == 0) { throw new Exception("没有设置任何要更新的字段!"); }
+            if (list == null || list.Count == 0) { throw XConfig.EC.Exception(XConfig.EC._053, "没有设置任何要更新的字段!"); }
 
             //
             if (DC.Set == SetEnum.AllowedNull)
@@ -386,17 +386,17 @@ namespace MyDAL.DataRainbow.XCommon
             {
                 if (list.Any(it => it.ParamInfo.Value == DBNull.Value))
                 {
-                    throw new Exception($"{DC.Set} -- 字段:[[{string.Join(",", list.Where(it => it.ParamInfo.Value == DBNull.Value).Select(it => it.TbCol))}]]的值不能设为 Null !!!");
+                    throw XConfig.EC.Exception(XConfig.EC._054, $"{DC.Set} -- 字段:[[{string.Join(",", list.Where(it => it.ParamInfo.Value == DBNull.Value).Select(it => it.TbCol))}]]的值不能设为 Null !!!");
                 }
             }
             else if (DC.Set == SetEnum.IgnoreNull)
             {
                 list = list.Where(it => it.ParamInfo.Value != DBNull.Value)?.ToList();
-                if (list == null || list.Count == 0) { throw new Exception("没有设置任何要更新的字段!"); }
+                if (list == null || list.Count == 0) { throw XConfig.EC. Exception(XConfig.EC._055, "没有设置任何要更新的字段!"); }
             }
             else
             {
-                throw DC.Exception(XConfig.EC._012, DC.Set.ToString());
+                throw XConfig.EC.Exception(XConfig.EC._012, DC.Set.ToString());
             }
 
             //
@@ -418,7 +418,7 @@ namespace MyDAL.DataRainbow.XCommon
                 }
                 else
                 {
-                    throw DC.Exception(XConfig.EC._009, $"{item.Action}-{item.Option}");
+                    throw XConfig.EC.Exception(XConfig.EC._009, $"{item.Action}-{item.Option}");
                 }
                 if (i != list.Count) { Comma(X); }
             }
@@ -499,7 +499,7 @@ namespace MyDAL.DataRainbow.XCommon
                 }
                 else
                 {
-                    throw DC.Exception(XConfig.EC._007, dic.Func.ToString());
+                    throw XConfig.EC.Exception(XConfig.EC._007, dic.Func.ToString());
                 }
                 if (i != items.Count) { Comma(X); }
             }
@@ -587,7 +587,7 @@ namespace MyDAL.DataRainbow.XCommon
                     if (cols.First().Columns == null
                         || cols.First().Columns.Count <= 0)
                     {
-                        throw DC.Exception(XConfig.EC._024, "不应该出现的情况！");
+                        throw XConfig.EC.Exception(XConfig.EC._024, "不应该出现的情况！");
                     }
                     else if (cols.First().Columns.Count == 1)
                     {
@@ -657,7 +657,7 @@ namespace MyDAL.DataRainbow.XCommon
                     if (cols.First().Columns == null
                         || cols.First().Columns.Count <= 0)
                     {
-                        throw DC.Exception(XConfig.EC._025, "不应该出现的情况！");
+                        throw XConfig.EC.Exception(XConfig.EC._025, "不应该出现的情况！");
                     }
                     else if (cols.First().Columns.Count == 1)
                     {
@@ -821,7 +821,7 @@ namespace MyDAL.DataRainbow.XCommon
                 }
                 else
                 {
-                    throw DC.Exception(XConfig.EC._013, $"{o.Action}-{o.Option}-{o.Func}");
+                    throw XConfig.EC.Exception(XConfig.EC._013, $"{o.Action}-{o.Option}-{o.Func}");
                 }
                 if (i != orders.Count) { Comma(X); CRLF(X); Tab(X); }
             }

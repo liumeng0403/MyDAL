@@ -121,7 +121,7 @@ namespace MyDAL.Core
             if (list.All(it => !leftStr.Contains($"{it}."))
                 && list.All(it => !rightStr.Contains($"{it}.")))
             {
-                throw new Exception($"查询条件中使用的[[表别名变量]]不在列表[[{string.Join(",", list)}]]中!");
+                throw XConfig.EC.Exception(XConfig.EC._049, $"查询条件中使用的[[表别名变量]]不在列表[[{string.Join(",", list)}]]中!");
             }
 
             // 
@@ -309,16 +309,16 @@ namespace MyDAL.Core
                 var expr = valExpr as MemberInitExpression;
                 if (expr.NewExpression.Arguments.Count == 0)
                 {
-                    throw new Exception($"【{keyExpr}】 中 集合为空!!!");
+                    throw XConfig.EC.Exception(XConfig.EC._050, $"【{keyExpr}】 中 集合为空!!!");
                 }
                 else
                 {
-                    throw DC.Exception(XConfig.EC._019, nodeType.ToString());
+                    throw XConfig.EC.Exception(XConfig.EC._019, nodeType.ToString());
                 }
             }
             else
             {
-                throw DC.Exception(XConfig.EC._020, nodeType.ToString());
+                throw XConfig.EC.Exception(XConfig.EC._020, nodeType.ToString());
             }
         }
         private DicParam FuncToString(MethodCallExpression mcExpr)
@@ -401,7 +401,7 @@ namespace MyDAL.Core
             }
             else
             {
-                throw DC.Exception(XConfig.EC._027, body.ToString());
+                throw XConfig.EC.Exception(XConfig.EC._027, body.ToString());
             }
             return result;
         }
@@ -435,7 +435,7 @@ namespace MyDAL.Core
                 return FuncToString(mcExpr);
             }
 
-            throw new Exception($"出现异常 -- [[{mcExpr.ToString()}]] 不能解析!!!");
+            throw XConfig.EC.Exception(XConfig.EC._046, $"出现异常 -- [[{mcExpr.ToString()}]] 不能解析!!!");
         }
         private DicParam ConstantHandle(ConstantExpression cExpr, Type valType)
         {
@@ -461,7 +461,7 @@ namespace MyDAL.Core
                 var cp = GetKey(memExpr, FuncEnum.None, CompareXEnum.None);
                 if (string.IsNullOrWhiteSpace(cp.Key))
                 {
-                    throw new Exception("无法解析 列名 !!!");
+                    throw XConfig.EC.Exception(XConfig.EC._047, "无法解析 列名 !!!");
                 }
                 if (DC.Action == ActionEnum.Select)
                 {
@@ -476,7 +476,7 @@ namespace MyDAL.Core
                     }
                     else
                     {
-                        throw DC.Exception(XConfig.EC._040, memExpr.ToString());
+                        throw XConfig.EC.Exception(XConfig.EC._040, memExpr.ToString());
                     }
                 }
                 else
@@ -496,7 +496,7 @@ namespace MyDAL.Core
                     }
                     else
                     {
-                        throw DC.Exception(XConfig.EC._039, memExpr.ToString());
+                        throw XConfig.EC.Exception(XConfig.EC._039, memExpr.ToString());
                     }
                 }
                 else
@@ -534,13 +534,13 @@ namespace MyDAL.Core
                     }
                     else
                     {
-                        throw DC.Exception(XConfig.EC._021, $"{memExpr.Expression.NodeType} - {memExpr.ToString()}");
+                        throw XConfig.EC.Exception(XConfig.EC._021, $"{memExpr.Expression.NodeType} - {memExpr.ToString()}");
                     }
                 }
             }
             else
             {
-                throw new Exception($"未知的操作 -- [[{DC.Crud}]] !!!");
+                throw XConfig.EC.Exception(XConfig.EC._048, $"未知的操作 -- [[{DC.Crud}]] !!!");
             }
         }
         private DicParam NewHandle(Expression body)
@@ -587,12 +587,12 @@ namespace MyDAL.Core
                 }
                 else
                 {
-                    throw DC.Exception(XConfig.EC._029, DC.Action.ToString());
+                    throw XConfig.EC.Exception(XConfig.EC._029, DC.Action.ToString());
                 }
             }
             else
             {
-                throw DC.Exception(XConfig.EC._030, DC.Crud.ToString());
+                throw XConfig.EC.Exception(XConfig.EC._030, DC.Crud.ToString());
             }
             return result;
         }
@@ -716,7 +716,7 @@ namespace MyDAL.Core
                     }
                     else
                     {
-                        throw DC.Exception(XConfig.EC._005, bodyL.ToString());
+                        throw XConfig.EC.Exception(XConfig.EC._005, bodyL.ToString());
                     }
                 }
                 else
@@ -762,12 +762,12 @@ namespace MyDAL.Core
                 }
                 else
                 {
-                    throw DC.Exception(XConfig.EC._018, $"{bodyL.NodeType}-{func}");
+                    throw XConfig.EC.Exception(XConfig.EC._018, $"{bodyL.NodeType}-{func}");
                 }
             }
             else
             {
-                throw DC.Exception(XConfig.EC._017, bodyL.NodeType.ToString());
+                throw XConfig.EC.Exception(XConfig.EC._017, bodyL.NodeType.ToString());
             }
         }
         private DicParam BodyProcess(Expression body, ParameterExpression firstParam)
@@ -804,7 +804,7 @@ namespace MyDAL.Core
                 var cp = GetKey(body, FuncEnum.None, CompareXEnum.None);
                 if (string.IsNullOrWhiteSpace(cp.Key))
                 {
-                    throw new Exception("无法解析 列名2 !!!");
+                    throw XConfig.EC. Exception(XConfig.EC._052, "无法解析 列名2 !!!");
                 }
                 result = DC.DPH.ColumnDic(cp);
             }
@@ -827,7 +827,7 @@ namespace MyDAL.Core
             }
             else
             {
-                throw DC.Exception(XConfig.EC._003, body.ToString());
+                throw XConfig.EC.Exception(XConfig.EC._003, body.ToString());
             }
             return result;
         }

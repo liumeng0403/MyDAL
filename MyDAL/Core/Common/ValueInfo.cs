@@ -1,4 +1,4 @@
-﻿using MyDAL.Core.Bases;
+using MyDAL.Core.Bases;
 using MyDAL.Core.Enums;
 
 namespace MyDAL.Core.Common
@@ -32,7 +32,7 @@ namespace MyDAL.Core.Common
             }
             else
             {
-                throw dc.Exception(XConfig.EC._026, $"{likeType.ToString()}");
+                throw XConfig.EC.Exception(XConfig.EC._026, $"{likeType.ToString()}");
             }
         }
     }

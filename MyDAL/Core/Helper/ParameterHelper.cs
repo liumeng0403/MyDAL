@@ -57,7 +57,7 @@ namespace MyDAL.Core.Helper
             }
             else
             {
-                throw dc.Exception(XConfig.EC._032, $"不支持的字段参数类型:[[{realType}]]!");
+                throw XConfig.EC.Exception(XConfig.EC._032, $"不支持的字段参数类型:[[{realType}]]!");
             }
         }
         private static ParamTypeEnum GetColType(string colType, Context dc)
@@ -68,7 +68,7 @@ namespace MyDAL.Core.Helper
             }
             else
             {
-                throw dc.Exception(XConfig.EC._031, colType);
+                throw XConfig.EC.Exception(XConfig.EC._031, colType);
             }
         }
 
@@ -102,7 +102,7 @@ namespace MyDAL.Core.Helper
             }
             else
             {
-                throw dc.Exception(XConfig.EC._051, $"不支持的字段参数类型:[[{realType}]]!");
+                throw XConfig.EC.Exception(XConfig.EC._051, $"不支持的字段参数类型:[[{realType}]]!");
             }
 
             //
@@ -182,7 +182,7 @@ namespace MyDAL.Core.Helper
                 }
                 else
                 {
-                    throw DC.Exception(XConfig.EC._033, $"不支持的字段参数类型:[[{realType}]]!");
+                    throw XConfig.EC.Exception(XConfig.EC._033, $"不支持的字段参数类型:[[{realType}]]!");
                 }
 
                 //

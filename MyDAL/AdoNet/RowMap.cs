@@ -1,4 +1,5 @@
-﻿using MyDAL.Core.Helper;
+using MyDAL.Core;
+using MyDAL.Core.Helper;
 using MyDAL.ModelTools;
 using MyDAL.Tools;
 using System;
@@ -37,7 +38,7 @@ namespace MyDAL.AdoNet
             var con = Type.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).FirstOrDefault(it => it.GetParameters().Length == 0);
             if (con==null)
             {
-                throw new Exception($"[Table-Model]类[[{Type.FullName}]]必须有默认的构造函数!!!");
+                throw XConfig.EC. Exception(XConfig.EC._057, $"[Table-Model]类[[{Type.FullName}]]必须有默认的构造函数!!!");
             }
             return con;
         }

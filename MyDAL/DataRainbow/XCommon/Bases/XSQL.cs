@@ -96,7 +96,7 @@ namespace MyDAL.DataRainbow.XCommon.Bases
                     Tab(sb); Or(sb);
                     return;
                 default:
-                    throw dc.Exception(XConfig.EC._014, action.ToString());
+                    throw XConfig.EC.Exception(XConfig.EC._014, action.ToString());
             }
         }
         internal protected static void Option(OptionEnum option, StringBuilder sb, Context dc)
@@ -132,7 +132,7 @@ namespace MyDAL.DataRainbow.XCommon.Bases
                     sb.Append(" desc ");
                     return;
                 default:
-                    throw dc.Exception(XConfig.EC._022, option.ToString());
+                    throw XConfig.EC.Exception(XConfig.EC._022, option.ToString());
             }
         }
         internal protected static void Compare(CompareXEnum compare, StringBuilder sb, Context dc)
@@ -172,7 +172,7 @@ namespace MyDAL.DataRainbow.XCommon.Bases
                     sb.Append(" not in ");
                     return;
                 default:
-                    throw dc.Exception(XConfig.EC._023, compare.ToString());
+                    throw XConfig.EC.Exception(XConfig.EC._023, compare.ToString());
             }
         }
         internal protected static void Function(FuncEnum func, StringBuilder sb, Context dc)
@@ -204,7 +204,7 @@ namespace MyDAL.DataRainbow.XCommon.Bases
                     Spacing(sb); sb.Append("sum");
                     return;
                 default:
-                    throw dc.Exception(XConfig.EC._008, func.ToString());
+                    throw XConfig.EC.Exception(XConfig.EC._008, func.ToString());
             }
         }
 

@@ -87,7 +87,7 @@ namespace MyDAL.DataRainbow.SQLServer
             }
             else
             {
-                throw dc.Exception(XConfig.EC._037, action.ToString());
+                throw XConfig.EC.Exception(XConfig.EC._037, action.ToString());
             }
         }
         void ISql.DbParam(string param, StringBuilder sb)

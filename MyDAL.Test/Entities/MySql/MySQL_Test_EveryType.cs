@@ -1,5 +1,4 @@
-﻿using HPC.DAL;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace MyDAL.Test.Entities.MySql

@@ -43,46 +43,46 @@ namespace MyDAL
         {
             if (sql.IsNullStr())
             {
-                throw new Exception("Create SQL 语句不能为空！");
+                throw XConfig.EC.Exception(XConfig.EC._080, "Create SQL 语句不能为空！");
             }
             if (!sql.Contains("insert")
                 && !sql.Contains("INSERT")
                 && !sql.Contains("Insert"))
             {
-                throw new Exception("Create API 只能用来新增数据！");
+                throw XConfig.EC.Exception(XConfig.EC._081, "Create API 只能用来新增数据！");
             }
         }
         private static void CheckDelete(string sql)
         {
             if (sql.IsNullStr())
             {
-                throw new Exception("Delete SQL 语句不能为空！");
+                throw XConfig.EC.Exception(XConfig.EC._082, "Delete SQL 语句不能为空！");
             }
             if (!sql.Contains("delete")
                 && !sql.Contains("DELETE")
                 && !sql.Contains("Delete"))
             {
-                throw new Exception("Delete API 只能用来删除数据！");
+                throw XConfig.EC.Exception(XConfig.EC._083, "Delete API 只能用来删除数据！");
             }
         }
         private static void CheckUpdate(string sql)
         {
             if (sql.IsNullStr())
             {
-                throw new Exception("Update SQL 语句不能为空！");
+                throw XConfig.EC.Exception(XConfig.EC._084, "Update SQL 语句不能为空！");
             }
             if (!sql.Contains("update")
                 && !sql.Contains("UPDATE")
                 && !sql.Contains("Update"))
             {
-                throw new Exception("Update API 只能用来更新数据！");
+                throw XConfig.EC.Exception(XConfig.EC._085, "Update API 只能用来更新数据！");
             }
         }
         private static void CheckQuery(string sql)
         {
             if (sql.IsNullStr())
             {
-                throw new Exception("Query SQL 语句不能为空！");
+                throw XConfig.EC.Exception(XConfig.EC._086, "Query SQL 语句不能为空！");
             }
             if (sql.Contains("insert")
                 || sql.Contains("delete")
@@ -94,7 +94,7 @@ namespace MyDAL
                 || sql.Contains("Delete")
                 || sql.Contains("Update"))
             {
-                throw new Exception("Query API 只能用来查询数据！");
+                throw XConfig.EC.Exception(XConfig.EC._087, "Query API 只能用来查询数据！");
             }
         }
         private static XContext DcForSQL(IDbConnection conn, string sql, List<XParam> dbParas)
@@ -655,7 +655,7 @@ namespace MyDAL
             XConfig.IsDebug = true;
             XConfig.DebugType = type;
             return conn;
-        } 
+        }
         #endregion
     }
 }
