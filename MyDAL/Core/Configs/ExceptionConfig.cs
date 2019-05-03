@@ -1,7 +1,13 @@
-﻿namespace HPC.DAL.Core.Configs
+﻿using System;
+
+namespace HPC.DAL.Core.Configs
 {
     internal class ExceptionConfig
     {
+        internal Exception Exception(string code, string msg)
+        {
+            return new Exception($"【ERR-{code}】 -- [[{msg}]] ，请 EMail: --> liumeng0403@163.com <--");
+        }
 
         /************************************************************************************************************/
 
@@ -56,6 +62,44 @@
         internal string _049 { get; } = "049";
         internal string _050 { get; } = "050";
         internal string _051 { get; } = "051";
+        internal string _052 { get; } = "052";
+        internal string _053 { get; } = "053";
+        internal string _054 { get; } = "054";
+        internal string _055 { get; } = "055";
+        internal string _056 { get; } = "056";
+        internal string _057 { get; } = "057";
+        internal string _058 { get; } = "058";
+        internal string _059 { get; } = "059";
+        internal string _060 { get; } = "060";
+        internal string _061 { get; } = "061";
+        internal string _062 { get; } = "062";
+        internal string _063 { get; } = "063";
+        internal string _064 { get; } = "064";
+        internal string _065 { get; } = "065";
+        internal string _066 { get; } = "066";
+        internal string _067 { get; } = "067";
+        internal string _068 { get; } = "068";
+        internal string _069 { get; } = "069";
+        internal string _070 { get; } = "070";
+        internal string _071 { get; } = "071";
+        internal string _072 { get; } = "072";
+        internal string _073 { get; } = "073";
+        internal string _074 { get; } = "074";
+        internal string _075 { get; } = "075";
+        internal string _076 { get; } = "076";
+        internal string _077 { get; } = "077";
+        internal string _078 { get; } = "078";
+        internal string _079 { get; } = "079";
+        internal string _080 { get; } = "080";
+        internal string _081 { get; } = "081";
+        internal string _082 { get; } = "082";
+        internal string _083 { get; } = "083";
+        internal string _084 { get; } = "084";
+        internal string _085 { get; } = "085";
+        internal string _086 { get; } = "086";
+        internal string _087 { get; } = "087";
+        internal string _088 { get; } = "088";
+        internal string _089 { get; } = "089";
 
     }
 }

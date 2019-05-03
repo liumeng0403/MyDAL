@@ -22,27 +22,11 @@ namespace HPC.DAL.Core
 
         /************************************************************************************************************/
 
-        internal static string MySQL { get; } = "MySql.Data.MySqlClient.MySqlConnection";
-        internal static string SqlServer { get; } = "System.Data.SqlClient.SqlConnection";
-
         internal static int CommandTimeout { get; set; } = 30;  // s 
 
-        internal static BindingFlags ClassSelfMember { get; private set; } = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public;
-
-        internal static MethodInfo EnumParse { get; }
-            = typeof(Enum).GetMethod(nameof(Enum.Parse), new Type[] { typeof(Type), typeof(string), typeof(bool) });
+        internal static MethodInfo EnumParse { get; } = typeof(Enum).GetMethod(nameof(Enum.Parse), new Type[] { typeof(Type), typeof(string), typeof(bool) });
 
         internal static CommandBehavior MultiRow { get; } = CommandBehavior.SequentialAccess | CommandBehavior.SingleResult;
-        internal static CommandBehavior SingleRow { get; }
-            = CommandBehavior.SequentialAccess | CommandBehavior.SingleResult | CommandBehavior.SingleRow;
-
-        /************************************************************************************************************/
-
-        internal static Type XTableAttribute { get; private set; } = typeof(XTableAttribute);
-        internal static string XTableFullName { get; private set; } = typeof(XTableAttribute).FullName;
-
-        internal static Type XColumnAttribute { get; private set; } = typeof(XColumnAttribute);
-        internal static string XColumnFullName { get; private set; } = typeof(XColumnAttribute).FullName;
 
         /************************************************************************************************************/
 
@@ -61,8 +45,6 @@ namespace HPC.DAL.Core
         internal static CsTypeConfig CSTC { get; } = new CsTypeConfig();
 
         /************************************************************************************************************/
-
-        internal static int CacheRetry { get; } = 3;
 
         /************************************************************************************************************/
 

@@ -58,7 +58,7 @@ namespace HPC.DAL.AdoNet
                                         ? dic.TbCol
                                         : dic.Option == OptionEnum.ColumnAs
                                             ? dic.TbColAlias
-                                            : throw DC.Exception(XConfig.EC._016, dic.Option.ToString()))), 1, 1).ToString(dic.Format)));
+                                            : throw XConfig.EC.Exception(XConfig.EC._016, dic.Option.ToString()))), 1, 1).ToString(dic.Format)));
             }
         }
         private async Task<List<F>> ReadColumnAsync<F>()
@@ -81,7 +81,7 @@ namespace HPC.DAL.AdoNet
                 dic = col?.Columns.FirstOrDefault(it => it.Option == OptionEnum.Column);
                 if (dic == null)
                 {
-                    throw new Exception("[[ReadColumn<F>()]] - 多表连接 - 单列 - 查询 - 异常 !!!");
+                    throw XConfig.EC.Exception(XConfig.EC._044, "[[ReadColumn<F>()]] - 多表连接 - 单列 - 查询 - 异常 !!!");
                 }
                 var tbm = DC.XC.GetTableModel(dic.TbMType);
                 var func = DC.XC.GetHandle(SqlOne, Reader, tbm.TbMType);

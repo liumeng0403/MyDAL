@@ -1,10 +1,8 @@
 ﻿using HPC.DAL.AdoNet;
 using HPC.DAL.Core.Bases;
 using HPC.DAL.Core.Common;
-using HPC.DAL.Core.Enums;
-using HPC.DAL.Core.Helper;
 using HPC.DAL.Core.Models.Cache;
-using HPC.DAL.ModelTools;
+using HPC.DAL.Tools;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -79,14 +77,14 @@ namespace HPC.DAL.Core
                  var ta = DC.AH.GetAttribute<XTableAttribute>(mType) as XTableAttribute;
                  if (ta == null)
                  {
-                     throw DC.Exception(XConfig.EC._004, $"类 [[{mType.FullName}]] 必须是与 DB Table 对应的实体类,并且要由 [XTable] 标记指定类对应的表名!!!");
+                     throw XConfig.EC.Exception(XConfig.EC._004, $"类 [[{mType.FullName}]] 必须是与 DB Table 对应的实体类,并且要由 [XTable] 标记指定类对应的表名!!!");
                  }
                  tm.TbMProps = DC.GH.GetPropertyInfos(mType);
                  tm.TbCols = DC.SqlProvider.GetColumnsInfos(ta.Name);
                  if (tm.TbCols == null
                     || tm.TbCols.Count <= 0)
                  {
-                     throw DC.Exception(XConfig.EC._028, $"表 [[{DC.Conn.Database}.{ta.Name}]] 中不存在任何列!!!");
+                     throw XConfig.EC.Exception(XConfig.EC._028, $"表 [[{DC.Conn.Database}.{ta.Name}]] 中不存在任何列!!!");
                  }
                  tm.TbMAttr = new XTableAttribute { Name = tm.TbCols.First().TableName };
                  var list = new List<TmPropColAttrInfo>();
@@ -101,7 +99,7 @@ namespace HPC.DAL.Core
                          pca.Col = tm.TbCols.FirstOrDefault(it => it.ColumnName.Equals(p.Name, StringComparison.OrdinalIgnoreCase));
                          if (pca.Col == null)
                          {
-                             throw DC.Exception(XConfig.EC._034, $"属性 [[{mType.Name}.{p.Name}]] 在表 [[{DC.Conn.Database}.{tm.TbName}]] 中无对应的列!!!");
+                             throw XConfig.EC.Exception(XConfig.EC._034, $"属性 [[{mType.Name}.{p.Name}]] 在表 [[{DC.Conn.Database}.{tm.TbName}]] 中无对应的列!!!");
                          }
                      }
                      else
@@ -109,7 +107,7 @@ namespace HPC.DAL.Core
                          pca.Col = tm.TbCols.FirstOrDefault(it => it.ColumnName.Equals(ca.Name, StringComparison.OrdinalIgnoreCase));
                          if (pca.Col == null)
                          {
-                             throw DC.Exception(XConfig.EC._035, $"属性 [[{mType.Name}.{p.Name}]] 上 [XColumn] 标注的字段名 [[{ca.Name}]] 有误!!!");
+                             throw XConfig.EC.Exception(XConfig.EC._035, $"属性 [[{mType.Name}.{p.Name}]] 上 [XColumn] 标注的字段名 [[{ca.Name}]] 有误!!!");
                          }
                      }
                      pca.ColAttr = new XColumnAttribute { Name = pca.ColName };

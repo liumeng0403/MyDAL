@@ -30,7 +30,7 @@ namespace HPC.DAL.Core.Helper
             }
             else
             {
-                throw DC.Exception(XConfig.EC._001, fcs);
+                throw XConfig.EC.Exception(XConfig.EC._001, fcs);
             }
         }
     }

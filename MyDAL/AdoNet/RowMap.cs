@@ -1,5 +1,7 @@
-﻿using HPC.DAL.Core.Helper;
-using HPC.DAL.ModelTools;
+﻿using HPC.DAL.Core;
+using HPC.DAL.Core.Bases;
+using HPC.DAL.Core.Helper;
+using HPC.DAL.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +38,7 @@ namespace HPC.DAL.AdoNet
             var con = Type.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).FirstOrDefault(it => it.GetParameters().Length == 0);
             if (con==null)
             {
-                throw new Exception($"[Table-Model]类[[{Type.FullName}]]必须有默认的构造函数!!!");
+                throw XConfig.EC. Exception(XConfig.EC._057, $"[Table-Model]类[[{Type.FullName}]]必须有默认的构造函数!!!");
             }
             return con;
         }

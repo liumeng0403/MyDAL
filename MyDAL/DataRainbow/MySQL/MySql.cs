@@ -84,7 +84,7 @@ namespace HPC.DAL.DataRainbow.MySQL
             }
             else
             {
-                throw dc.Exception(XConfig.EC._010, action.ToString());
+                throw XConfig.EC.Exception(XConfig.EC._010, action.ToString());
             }
         }
         void ISql.DbParam(string param, StringBuilder sb)

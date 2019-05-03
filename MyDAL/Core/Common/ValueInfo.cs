@@ -1,4 +1,5 @@
 ﻿using HPC.DAL.Core.Bases;
+using HPC.DAL.Core.Configs;
 using HPC.DAL.Core.Enums;
 
 namespace HPC.DAL.Core.Common
@@ -32,7 +33,7 @@ namespace HPC.DAL.Core.Common
             }
             else
             {
-                throw dc.Exception(XConfig.EC._026, $"{likeType.ToString()}");
+                throw XConfig.EC.Exception(XConfig.EC._026, $"{likeType.ToString()}");
             }
         }
     }
