@@ -14,6 +14,41 @@
          * MySQL
          */
 
+        /*Binary Large OBjects 类型*/
+
+        /// <summary>
+        /// [0,255]byte
+        /// </summary>
+        MySQL_TinyBlob,
+        /// <summary>
+        /// 存放最大长度为 255 个字符的字符串。
+        /// </summary>
+        MySQL_TinyText,
+        /// <summary>
+        /// 用于 BLOBs (Binary Large OBjects)。存放最多 65,535 字节的数据。
+        /// </summary>
+        MySQL_Blob,
+        /// <summary>
+        /// 存放最大长度为 65,535 个字符的字符串。
+        /// </summary>
+        MySQL_Text,
+        /// <summary>
+        /// 用于 BLOBs (Binary Large OBjects)。存放最多 16,777,215 字节的数据。
+        /// </summary>
+        MySQL_MediumBlob,
+        /// <summary>
+        /// 存放最大长度为 16,777,215 个字符的字符串。
+        /// </summary>
+        MySQL_MediumText,
+        /// <summary>
+        /// 用于 BLOBs (Binary Large OBjects)。存放最多 4,294,967,295 字节的数据。
+        /// </summary>
+        MySQL_LongBlob,
+        /// <summary>
+        /// 存放最大长度为 4,294,967,295 个字符的字符串。
+        /// </summary>
+        MySQL_LongText,
+
         /*Text 类型*/
         /// <summary>
         /// 保存固定长度的字符串（可包含字母、数字以及特殊字符）。最多 255 个字符。
@@ -23,34 +58,6 @@
         /// 保存可变长度的字符串（可包含字母、数字以及特殊字符）。最多 255 个字符。如果值的长度大于 255，则被转换为 TEXT 类型。
         /// </summary>
         MySQL_VarChar,
-        /// <summary>
-        /// 存放最大长度为 255 个字符的字符串。
-        /// </summary>
-        MySQL_TinyText,
-        /// <summary>
-        /// 存放最大长度为 65,535 个字符的字符串。
-        /// </summary>
-        MySQL_Text,
-        /// <summary>
-        /// 用于 BLOBs (Binary Large OBjects)。存放最多 65,535 字节的数据。
-        /// </summary>
-        MySQL_Blob,
-        /// <summary>
-        /// 存放最大长度为 16,777,215 个字符的字符串。
-        /// </summary>
-        MySQL_MediumText,
-        /// <summary>
-        /// 用于 BLOBs (Binary Large OBjects)。存放最多 16,777,215 字节的数据。
-        /// </summary>
-        MySQL_MediumBlob,
-        /// <summary>
-        /// 存放最大长度为 4,294,967,295 个字符的字符串。
-        /// </summary>
-        MySQL_LongText,
-        /// <summary>
-        /// 用于 BLOBs (Binary Large OBjects)。存放最多 4,294,967,295 字节的数据。
-        /// </summary>
-        MySQL_LongBlob,
         /// <summary>
         /// 可以在 ENUM 列表中列出最大 65535 个值。注释：可以按照此格式输入可能的值：ENUM('X','Y','Z')
         /// </summary>
@@ -98,11 +105,11 @@
         /// </summary>
         MySQL_Date,
         /// <summary>
-        /// *日期和时间的组合。格式：YYYY-MM-DD HH:MM:SS  注释：支持的范围是从 '1000-01-01 00:00:00' 到 '9999-12-31 23:59:59'
+        /// *日期和时间的组合。格式：YYYY-MM-DD HH:MM:SS  注释：支持的范围是从 '1000-01-01 00:00:00.000000' 到 '9999-12-31 23:59:59.999999'
         /// </summary>
         MySQL_DateTime,
         /// <summary>
-        /// *时间戳。TIMESTAMP 值使用 Unix 纪元至今的描述来存储。格式：YYYY-MM-DD HH:MM:SS  注释：支持的范围是从 '1970-01-01 00:00:01' UTC 到 '2038-01-09 03:14:07' UTC
+        /// *时间戳。TIMESTAMP 值使用 Unix 纪元至今的描述来存储。格式：YYYY-MM-DD HH:MM:SS  注释：支持的范围是从 '1970-01-01 00:00:01.000000' 到 '2038-01-19 03:14:07.999999' UTC
         /// </summary>
         MySQL_TimeStamp,
         /// <summary>
@@ -126,10 +133,6 @@
         /// 
         /// </summary>
         MySQL_VarBinary,
-        /// <summary>
-        /// [0,255]byte
-        /// </summary>
-        MySQL_TinyBlob,
         
         /*
          * SQL Server
