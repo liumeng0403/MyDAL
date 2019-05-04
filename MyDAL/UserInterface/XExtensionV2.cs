@@ -1,11 +1,7 @@
-using MyDAL.AdoNet;
-using MyDAL.AdoNet.Bases;
-using MyDAL.Core;
+﻿using MyDAL.Core;
 using MyDAL.Core.Enums;
-using MyDAL.Impls;
 using MyDAL.Impls.ImplAsyncs;
 using MyDAL.Impls.ImplSyncs;
-using MyDAL.ModelTools;
 using MyDAL.Tools;
 using MyDAL.UserFacade.Create;
 using MyDAL.UserFacade.Delete;
@@ -27,18 +23,15 @@ namespace MyDAL
     {
         #region Internal
         /* 内部方法 */
-        private static Creater<M> Creater<M>(this IDbConnection conn)
+        private static Creater<M> Creater<M>(this XConnection conn)
             where M : class, new()
         {
-            var dc = new XContext<M>(conn)
+            var dc = new XContext<M>(conn.Conn)
             {
                 Crud = CrudEnum.Create
             };
             return new Creater<M>(dc);
         }
-
-        /*-------------------------------------------------------------*/
-
         private static void CheckCreate(string sql)
         {
             if (sql.IsNullStr())
@@ -97,9 +90,9 @@ namespace MyDAL
                 throw XConfig.EC.Exception(XConfig.EC._087, "Query API 只能用来查询数据！");
             }
         }
-        private static XContext DcForSQL(IDbConnection conn, string sql, List<XParam> dbParas)
+        private static XContext DcForSQL(XConnection conn, string sql, List<XParam> dbParas)
         {
-            var dc = new XContext(conn)
+            var dc = new XContext(conn.Conn)
             {
                 Crud = CrudEnum.SQL
             };
@@ -107,18 +100,54 @@ namespace MyDAL
             dc.ParseParam(dbParas);
             return dc;
         }
-
-        /*-------------------------------------------------------------*/
-
-        private static async Task<int> ExecuteNonQueryAsync(this IDbConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
+        [Obsolete("警告：此 API 后面会移除！！！", false)]
+        public static async Task<int> ExecuteNonQueryAsync(this XConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
         {
             var dc = DcForSQL(conn, sql, dbParas);
             return await new ExecuteNonQuerySQLAsyncImpl(dc).ExecuteNonQueryAsync(tran);
         }
-        private static int ExecuteNonQuery(this IDbConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
+        [Obsolete("警告：此 API 后面会移除！！！", false)]
+        public static int ExecuteNonQuery(this XConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
         {
             var dc = DcForSQL(conn, sql, dbParas);
             return new ExecuteNonQuerySQLImpl(dc).ExecuteNonQuery(tran);
+        }
+
+        /*-------------------------------------------------------------*/
+
+        [Obsolete("警告：此 API 后面会移除！！！", false)]
+        public static async Task<PagingResult<T>> QueryPagingAsync<T>
+            (this XConnection conn, PagingResult<T> paging, string totalCountSql, string pageDataSql, List<XParam> dbParas = null, IDbTransaction tran = null)
+        {
+            var dc = new XContext(conn.Conn)
+            {
+                Crud = CrudEnum.SQL
+            };
+            dc.PageIndex = paging.PageIndex;
+            dc.PageSize = paging.PageSize;
+            dc.ParseSQL(totalCountSql, pageDataSql);
+            dc.ParseParam(dbParas);
+            var result = await new QueryPagingSQLAsyncImpl(dc).QueryPagingAsync<T>(tran);
+            paging.TotalCount = result.TotalCount;
+            paging.Data = result.Data;
+            return paging;
+        }
+        [Obsolete("警告：此 API 后面会移除！！！", false)]
+        public static PagingResult<T> QueryPaging<T>
+            (this XConnection conn, PagingResult<T> paging, string totalCountSql, string pageDataSql, List<XParam> dbParas = null, IDbTransaction tran = null)
+        {
+            var dc = new XContext(conn.Conn)
+            {
+                Crud = CrudEnum.SQL
+            };
+            dc.PageIndex = paging.PageIndex;
+            dc.PageSize = paging.PageSize;
+            dc.ParseSQL(totalCountSql, pageDataSql);
+            dc.ParseParam(dbParas);
+            var result = new QueryPagingSQLImpl(dc).QueryPaging<T>(tran);
+            paging.TotalCount = result.TotalCount;
+            paging.Data = result.Data;
+            return paging;
         }
         #endregion
 
@@ -127,10 +156,10 @@ namespace MyDAL
         /// 删除数据 方法簇
         /// </summary>
         /// <typeparam name="M">M:与DB Table 一 一对应</typeparam>
-        public static Deleter<M> Deleter<M>(this IDbConnection conn)
+        public static Deleter<M> Deleter<M>(this XConnection conn)
             where M : class, new()
         {
-            var dc = new XContext<M>(conn)
+            var dc = new XContext<M>(conn.Conn)
             {
                 Crud = CrudEnum.Delete
             };
@@ -143,10 +172,10 @@ namespace MyDAL
         /// 修改数据 方法簇
         /// </summary>
         /// <typeparam name="M">M:与DB Table 一 一对应</typeparam>
-        public static Updater<M> Updater<M>(this IDbConnection conn)
+        public static Updater<M> Updater<M>(this XConnection conn)
             where M : class, new()
         {
-            var dc = new XContext<M>(conn)
+            var dc = new XContext<M>(conn.Conn)
             {
                 Crud = CrudEnum.Update
             };
@@ -159,10 +188,10 @@ namespace MyDAL
         /// 单表查询 方法簇
         /// </summary>
         /// <typeparam name="M1">M1:与DB Table 一 一对应</typeparam>
-        public static Queryer<M1> Queryer<M1>(this IDbConnection conn)
+        public static Queryer<M1> Queryer<M1>(this XConnection conn)
             where M1 : class, new()
         {
-            var dc = new XContext<M1>(conn)
+            var dc = new XContext<M1>(conn.Conn)
             {
                 Crud = CrudEnum.Query
             };
@@ -174,13 +203,13 @@ namespace MyDAL
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Queryer Queryer<M1, M2>(this IDbConnection conn, out M1 table1, out M2 table2)
+        public static Queryer Queryer<M1, M2>(this XConnection conn, out M1 table1, out M2 table2)
             where M1 : class, new()
             where M2 : class, new()
         {
             table1 = new M1();
             table2 = new M2();
-            var dc = new XContext<M1, M2>(conn)
+            var dc = new XContext<M1, M2>(conn.Conn)
             {
                 Crud = CrudEnum.Join
             };
@@ -189,7 +218,7 @@ namespace MyDAL
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Queryer Queryer<M1, M2, M3>(this IDbConnection conn, out M1 table1, out M2 table2, out M3 table3)
+        public static Queryer Queryer<M1, M2, M3>(this XConnection conn, out M1 table1, out M2 table2, out M3 table3)
             where M1 : class, new()
             where M2 : class, new()
             where M3 : class, new()
@@ -197,7 +226,7 @@ namespace MyDAL
             table1 = new M1();
             table2 = new M2();
             table3 = new M3();
-            var dc = new XContext<M1, M2, M3>(conn)
+            var dc = new XContext<M1, M2, M3>(conn.Conn)
             {
                 Crud = CrudEnum.Join
             };
@@ -206,7 +235,7 @@ namespace MyDAL
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Queryer Queryer<M1, M2, M3, M4>(this IDbConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4)
+        public static Queryer Queryer<M1, M2, M3, M4>(this XConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4)
             where M1 : class, new()
             where M2 : class, new()
             where M3 : class, new()
@@ -216,7 +245,7 @@ namespace MyDAL
             table2 = new M2();
             table3 = new M3();
             table4 = new M4();
-            var dc = new XContext<M1, M2, M3, M4>(conn)
+            var dc = new XContext<M1, M2, M3, M4>(conn.Conn)
             {
                 Crud = CrudEnum.Join
             };
@@ -225,7 +254,7 @@ namespace MyDAL
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Queryer Queryer<M1, M2, M3, M4, M5>(this IDbConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4, out M5 table5)
+        public static Queryer Queryer<M1, M2, M3, M4, M5>(this XConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4, out M5 table5)
             where M1 : class, new()
             where M2 : class, new()
             where M3 : class, new()
@@ -237,7 +266,7 @@ namespace MyDAL
             table3 = new M3();
             table4 = new M4();
             table5 = new M5();
-            var dc = new XContext<M1, M2, M3, M4, M5>(conn)
+            var dc = new XContext<M1, M2, M3, M4, M5>(conn.Conn)
             {
                 Crud = CrudEnum.Join
             };
@@ -246,7 +275,7 @@ namespace MyDAL
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Queryer Queryer<M1, M2, M3, M4, M5, M6>(this IDbConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4, out M5 table5, out M6 table6)
+        public static Queryer Queryer<M1, M2, M3, M4, M5, M6>(this XConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4, out M5 table5, out M6 table6)
             where M1 : class, new()
             where M2 : class, new()
             where M3 : class, new()
@@ -260,7 +289,7 @@ namespace MyDAL
             table4 = new M4();
             table5 = new M5();
             table6 = new M6();
-            var dc = new XContext<M1, M2, M3, M4, M5, M6>(conn)
+            var dc = new XContext<M1, M2, M3, M4, M5, M6>(conn.Conn)
             {
                 Crud = CrudEnum.Join
             };
@@ -272,7 +301,7 @@ namespace MyDAL
         /// <summary>
         /// Creater 便捷 CreateAsync 方法
         /// </summary>
-        public static async Task<int> CreateAsync<M>(this IDbConnection conn, M m, IDbTransaction tran = null)
+        public static async Task<int> CreateAsync<M>(this XConnection conn, M m, IDbTransaction tran = null)
             where M : class, new()
         {
             return await conn.Creater<M>().CreateAsync(m, tran);
@@ -280,7 +309,7 @@ namespace MyDAL
 
         /*-------------------------------------------------------------*/
 
-        public static async Task<int> CreateAsync(this IDbConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
+        public static async Task<int> CreateAsync(this XConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
         {
             CheckCreate(sql);
             return await conn.ExecuteNonQueryAsync(sql, dbParas, tran);
@@ -291,7 +320,7 @@ namespace MyDAL
         /// <summary>
         /// Creater 便捷 CreateAsync 方法
         /// </summary>
-        public static int Create<M>(this IDbConnection conn, M m, IDbTransaction tran = null)
+        public static int Create<M>(this XConnection conn, M m, IDbTransaction tran = null)
             where M : class, new()
         {
             return conn.Creater<M>().Create(m, tran);
@@ -299,7 +328,7 @@ namespace MyDAL
 
         /*-------------------------------------------------------------*/
 
-        public static int Create(this IDbConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
+        public static int Create(this XConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
         {
             CheckCreate(sql);
             return conn.ExecuteNonQuery(sql, dbParas, tran);
@@ -310,7 +339,7 @@ namespace MyDAL
         /// <summary>
         /// Creater 便捷 CreateBatchAsync 方法
         /// </summary>
-        public static async Task<int> CreateBatchAsync<M>(this IDbConnection conn, IEnumerable<M> mList, IDbTransaction tran = null)
+        public static async Task<int> CreateBatchAsync<M>(this XConnection conn, IEnumerable<M> mList, IDbTransaction tran = null)
             where M : class, new()
         {
             return await conn.Creater<M>().CreateBatchAsync(mList, tran);
@@ -321,7 +350,7 @@ namespace MyDAL
         /// <summary>
         /// Creater 便捷 CreateBatchAsync 方法
         /// </summary>
-        public static int CreateBatch<M>(this IDbConnection conn, IEnumerable<M> mList, IDbTransaction tran = null)
+        public static int CreateBatch<M>(this XConnection conn, IEnumerable<M> mList, IDbTransaction tran = null)
             where M : class, new()
         {
             return conn.Creater<M>().CreateBatch(mList, tran);
@@ -332,7 +361,7 @@ namespace MyDAL
         /// <summary>
         /// Deleter 便捷 DeleteAsync 方法
         /// </summary>
-        public static async Task<int> DeleteAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, IDbTransaction tran = null)
+        public static async Task<int> DeleteAsync<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, IDbTransaction tran = null)
             where M : class, new()
         {
             return await conn.Deleter<M>().Where(compareFunc).DeleteAsync(tran);
@@ -340,7 +369,7 @@ namespace MyDAL
 
         /*-------------------------------------------------------------*/
 
-        public static async Task<int> DeleteAsync(this IDbConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
+        public static async Task<int> DeleteAsync(this XConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
         {
             CheckDelete(sql);
             return await conn.ExecuteNonQueryAsync(sql, dbParas, tran);
@@ -351,7 +380,7 @@ namespace MyDAL
         /// <summary>
         /// Deleter 便捷 DeleteAsync 方法
         /// </summary>
-        public static int Delete<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, IDbTransaction tran = null)
+        public static int Delete<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, IDbTransaction tran = null)
             where M : class, new()
         {
             return conn.Deleter<M>().Where(compareFunc).Delete(tran);
@@ -359,7 +388,7 @@ namespace MyDAL
 
         /*-------------------------------------------------------------*/
 
-        public static int Delete(this IDbConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
+        public static int Delete(this XConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
         {
             CheckDelete(sql);
             return conn.ExecuteNonQuery(sql, dbParas, tran);
@@ -371,7 +400,7 @@ namespace MyDAL
         /// 请参阅: <see langword=".UpdateAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static async Task<int> UpdateAsync<M>
-            (this IDbConnection conn, Expression<Func<M, bool>> compareFunc, dynamic filedsObject, IDbTransaction tran = null, SetEnum set = SetEnum.AllowedNull)
+            (this XConnection conn, Expression<Func<M, bool>> compareFunc, dynamic filedsObject, IDbTransaction tran = null, SetEnum set = SetEnum.AllowedNull)
             where M : class, new()
         {
             return await conn.Updater<M>().Set(filedsObject as object).Where(compareFunc).UpdateAsync(tran, set);
@@ -379,7 +408,7 @@ namespace MyDAL
 
         /*-------------------------------------------------------------*/
 
-        public static async Task<int> UpdateAsync(this IDbConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
+        public static async Task<int> UpdateAsync(this XConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
         {
             CheckUpdate(sql);
             return await conn.ExecuteNonQueryAsync(sql, dbParas, tran);
@@ -391,7 +420,7 @@ namespace MyDAL
         /// Updater 便捷 UpdateAsync update fields 方法
         /// </summary>
         public static int Update<M>
-            (this IDbConnection conn, Expression<Func<M, bool>> compareFunc, dynamic filedsObject, IDbTransaction tran = null, SetEnum set = SetEnum.AllowedNull)
+            (this XConnection conn, Expression<Func<M, bool>> compareFunc, dynamic filedsObject, IDbTransaction tran = null, SetEnum set = SetEnum.AllowedNull)
             where M : class, new()
         {
             return conn.Updater<M>().Set(filedsObject as object).Where(compareFunc).Update(tran, set);
@@ -399,7 +428,7 @@ namespace MyDAL
 
         /*-------------------------------------------------------------*/
 
-        public static int Update(this IDbConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
+        public static int Update(this XConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
         {
             CheckUpdate(sql);
             return conn.ExecuteNonQuery(sql, dbParas, tran);
@@ -410,7 +439,7 @@ namespace MyDAL
         /// <summary>
         /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public static async Task<M> QueryOneAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, IDbTransaction tran = null)
+        public static async Task<M> QueryOneAsync<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, IDbTransaction tran = null)
             where M : class, new()
         {
             return await conn.Queryer<M>().Where(compareFunc).QueryOneAsync(tran);
@@ -418,7 +447,7 @@ namespace MyDAL
         /// <summary>
         /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public static async Task<VM> QueryOneAsync<M, VM>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, IDbTransaction tran = null)
+        public static async Task<VM> QueryOneAsync<M, VM>(this XConnection conn, Expression<Func<M, bool>> compareFunc, IDbTransaction tran = null)
             where M : class, new()
             where VM : class
         {
@@ -428,7 +457,7 @@ namespace MyDAL
         /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static async Task<T> QueryOneAsync<M, T>
-            (this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null)
+            (this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null)
             where M : class, new()
         {
             return await conn.Queryer<M>().Where(compareFunc).QueryOneAsync(columnMapFunc, tran);
@@ -436,7 +465,7 @@ namespace MyDAL
 
         /*-------------------------------------------------------------*/
 
-        public static async Task<T> QueryOneAsync<T>(this IDbConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
+        public static async Task<T> QueryOneAsync<T>(this XConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
         {
             CheckQuery(sql);
             var dc = DcForSQL(conn, sql, dbParas);
@@ -448,7 +477,7 @@ namespace MyDAL
         /// <summary>
         /// Queryer 便捷-同步 QueryOneAsync 方法
         /// </summary>
-        public static M QueryOne<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, IDbTransaction tran = null)
+        public static M QueryOne<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, IDbTransaction tran = null)
             where M : class, new()
         {
             return conn.Queryer<M>().Where(compareFunc).QueryOne(tran);
@@ -456,7 +485,7 @@ namespace MyDAL
         /// <summary>
         /// Queryer 便捷-同步 QueryOneAsync 方法
         /// </summary>
-        public static VM QueryOne<M, VM>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, IDbTransaction tran = null)
+        public static VM QueryOne<M, VM>(this XConnection conn, Expression<Func<M, bool>> compareFunc, IDbTransaction tran = null)
             where M : class, new()
             where VM : class
         {
@@ -465,7 +494,7 @@ namespace MyDAL
         /// <summary>
         /// Queryer 便捷-同步 QueryOneAsync 方法
         /// </summary>
-        public static T QueryOne<M, T>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null)
+        public static T QueryOne<M, T>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null)
             where M : class, new()
         {
             return conn.Queryer<M>().Where(compareFunc).QueryOne(columnMapFunc, tran);
@@ -473,7 +502,7 @@ namespace MyDAL
 
         /*-------------------------------------------------------------*/
 
-        public static T QueryOne<T>(this IDbConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
+        public static T QueryOne<T>(this XConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
         {
             CheckQuery(sql);
             var dc = DcForSQL(conn, sql, dbParas);
@@ -485,7 +514,7 @@ namespace MyDAL
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public static async Task<List<M>> QueryListAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, IDbTransaction tran = null)
+        public static async Task<List<M>> QueryListAsync<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, IDbTransaction tran = null)
             where M : class, new()
         {
             return await conn.Queryer<M>().Where(compareFunc).QueryListAsync(tran);
@@ -493,7 +522,7 @@ namespace MyDAL
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public static async Task<List<VM>> QueryListAsync<M, VM>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, IDbTransaction tran = null)
+        public static async Task<List<VM>> QueryListAsync<M, VM>(this XConnection conn, Expression<Func<M, bool>> compareFunc, IDbTransaction tran = null)
             where M : class, new()
             where VM : class
         {
@@ -503,7 +532,7 @@ namespace MyDAL
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static async Task<List<T>> QueryListAsync<M, T>
-            (this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null)
+            (this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null)
             where M : class, new()
         {
             return await conn.Queryer<M>().Where(compareFunc).QueryListAsync(columnMapFunc, tran);
@@ -511,7 +540,7 @@ namespace MyDAL
 
         /*-------------------------------------------------------------*/
 
-        public static async Task<List<T>> QueryListAsync<T>(this IDbConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
+        public static async Task<List<T>> QueryListAsync<T>(this XConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
         {
             CheckQuery(sql);
             var dc = DcForSQL(conn, sql, dbParas);
@@ -523,7 +552,7 @@ namespace MyDAL
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public static List<M> QueryList<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, IDbTransaction tran = null)
+        public static List<M> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, IDbTransaction tran = null)
             where M : class, new()
         {
             return conn.Queryer<M>().Where(compareFunc).QueryList(tran);
@@ -531,7 +560,7 @@ namespace MyDAL
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public static List<VM> QueryList<M, VM>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, IDbTransaction tran = null)
+        public static List<VM> QueryList<M, VM>(this XConnection conn, Expression<Func<M, bool>> compareFunc, IDbTransaction tran = null)
             where M : class, new()
             where VM : class
         {
@@ -540,7 +569,7 @@ namespace MyDAL
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public static List<T> QueryList<M, T>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null)
+        public static List<T> QueryList<M, T>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null)
             where M : class, new()
         {
             return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc, tran);
@@ -548,7 +577,7 @@ namespace MyDAL
 
         /*-------------------------------------------------------------*/
 
-        public static List<T> QueryList<T>(this IDbConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
+        public static List<T> QueryList<T>(this XConnection conn, string sql, List<XParam> dbParas = null, IDbTransaction tran = null)
         {
             CheckQuery(sql);
             var dc = DcForSQL(conn, sql, dbParas);
@@ -560,7 +589,7 @@ namespace MyDAL
         /// <summary>
         /// 请参阅: <see langword=".IsExistAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public static async Task<bool> IsExistAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, IDbTransaction tran = null)
+        public static async Task<bool> IsExistAsync<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, IDbTransaction tran = null)
             where M : class, new()
         {
             return await conn.Queryer<M>().Where(compareFunc).IsExistAsync(tran);
@@ -571,7 +600,7 @@ namespace MyDAL
         /// <summary>
         /// Queryer 便捷-同步 IsExistAsync 方法
         /// </summary>
-        public static bool IsExist<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, IDbTransaction tran = null)
+        public static bool IsExist<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, IDbTransaction tran = null)
             where M : class, new()
         {
             return conn.Queryer<M>().Where(compareFunc).IsExist(tran);
@@ -582,7 +611,7 @@ namespace MyDAL
         /// <summary>
         /// Queryer 便捷 CountAsync 方法
         /// </summary>
-        public static async Task<int> CountAsync<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, IDbTransaction tran = null)
+        public static async Task<int> CountAsync<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, IDbTransaction tran = null)
             where M : class, new()
         {
             return await conn.Queryer<M>().Where(compareFunc).CountAsync(tran);
@@ -593,7 +622,7 @@ namespace MyDAL
         /// <summary>
         /// Queryer 便捷 CountAsync 方法
         /// </summary>
-        public static int Count<M>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, IDbTransaction tran = null)
+        public static int Count<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, IDbTransaction tran = null)
             where M : class, new()
         {
             return conn.Queryer<M>().Where(compareFunc).Count(tran);
@@ -601,14 +630,14 @@ namespace MyDAL
         #endregion
 
         #region Sum API
-        public static async Task<F> SumAsync<M, F>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, F>> propertyFunc, IDbTransaction tran = null)
-    where M : class, new()
-    where F : struct
+        public static async Task<F> SumAsync<M, F>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, F>> propertyFunc, IDbTransaction tran = null)
+            where M : class, new()
+            where F : struct
         {
             return await conn.Queryer<M>().Where(compareFunc).SumAsync(propertyFunc, tran);
         }
         public static async Task<Nullable<F>> SumAsync<M, F>
-            (this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, Nullable<F>>> propertyFunc, IDbTransaction tran = null)
+            (this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, Nullable<F>>> propertyFunc, IDbTransaction tran = null)
             where M : class, new()
             where F : struct
         {
@@ -617,14 +646,14 @@ namespace MyDAL
 
         /*-------------------------------------------------------------*/
 
-        public static F Sum<M, F>(this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, F>> propertyFunc, IDbTransaction tran = null)
-    where M : class, new()
-    where F : struct
+        public static F Sum<M, F>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, F>> propertyFunc, IDbTransaction tran = null)
+            where M : class, new()
+            where F : struct
         {
             return conn.Queryer<M>().Where(compareFunc).Sum(propertyFunc, tran);
         }
         public static Nullable<F> Sum<M, F>
-            (this IDbConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, Nullable<F>>> propertyFunc, IDbTransaction tran = null)
+            (this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, Nullable<F>>> propertyFunc, IDbTransaction tran = null)
             where M : class, new()
             where F : struct
         {
@@ -634,23 +663,9 @@ namespace MyDAL
 
         #region ForUser
         /// <summary>
-        /// 异步打开 DB 连接
-        /// </summary>
-        public static IDbConnection OpenAsync(this IDbConnection conn)
-        {
-            if (conn.State == ConnectionState.Closed)
-            {
-                new DataSourceAsync().OpenAsync(conn).GetAwaiter().GetResult();
-            }
-            return conn;
-        }
-
-        /*-------------------------------------------------------------*/
-
-        /// <summary>
         /// Sql 调试跟踪 开启
         /// </summary>
-        public static IDbConnection OpenDebug(this IDbConnection conn, DebugEnum type = DebugEnum.Output)
+        public static XConnection OpenDebug(this XConnection conn, DebugEnum type = DebugEnum.Output)
         {
             XConfig.IsDebug = true;
             XConfig.DebugType = type;
