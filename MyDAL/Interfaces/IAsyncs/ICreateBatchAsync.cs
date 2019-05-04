@@ -7,6 +7,6 @@ namespace HPC.DAL.Interfaces.IAsyncs
     internal interface ICreateBatchAsync<M>
         where M : class
     {
-        Task<int> CreateBatchAsync(IEnumerable<M> mList, IDbTransaction tran = null);
+        Task<int> CreateBatchAsync(IEnumerable<M> mList);
     }
 }

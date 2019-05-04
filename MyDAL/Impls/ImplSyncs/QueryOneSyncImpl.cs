@@ -17,20 +17,20 @@ namespace HPC.DAL.Impls.ImplSyncs
     {
         internal QueryOneImpl(Context dc)
             : base(dc)
-        {   }
+        { }
 
-        public M QueryOne(IDbTransaction tran = null)
+        public M QueryOne()
         {
-            return new TopImpl<M>(DC).Top(1, tran).FirstOrDefault();
+            return new TopImpl<M>(DC).Top(1).FirstOrDefault();
         }
-        public VM QueryOne<VM>(IDbTransaction tran = null)
+        public VM QueryOne<VM>()
             where VM : class
         {
-            return new TopImpl<M>(DC).Top<VM>(1, tran).FirstOrDefault();
+            return new TopImpl<M>(DC).Top<VM>(1).FirstOrDefault();
         }
-        public T QueryOne<T>(Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null)
+        public T QueryOne<T>(Expression<Func<M, T>> columnMapFunc)
         {
-            return new TopImpl<M>(DC).Top(1, columnMapFunc, tran).FirstOrDefault();
+            return new TopImpl<M>(DC).Top(1, columnMapFunc).FirstOrDefault();
         }
     }
 
@@ -40,17 +40,16 @@ namespace HPC.DAL.Impls.ImplSyncs
     {
         internal QueryOneXImpl(Context dc)
             : base(dc)
-        {
-        }
+        { }
 
-        public M QueryOne<M>(IDbTransaction tran = null)
+        public M QueryOne<M>()
             where M : class
         {
-            return new TopXImpl(DC).Top<M>(1, tran).FirstOrDefault();
+            return new TopXImpl(DC).Top<M>(1).FirstOrDefault();
         }
-        public T QueryOne<T>(Expression<Func<T>> columnMapFunc, IDbTransaction tran = null)
+        public T QueryOne<T>(Expression<Func<T>> columnMapFunc)
         {
-            return new TopXImpl(DC).Top(1, columnMapFunc, tran).FirstOrDefault();
+            return new TopXImpl(DC).Top(1, columnMapFunc).FirstOrDefault();
         }
     }
 
@@ -62,17 +61,15 @@ namespace HPC.DAL.Impls.ImplSyncs
             : base(dc)
         { }
 
-        public T QueryOne<T>(IDbTransaction tran = null)
+        public T QueryOne<T>()
         {
             DC.Method = UiMethodEnum.QueryOneAsync;
             if (typeof(T).IsSingleColumn())
             {
-                DSS.Tran = tran;
                 return DSS.ExecuteReaderSingleColumn<T>().FirstOrDefault();
             }
             else
             {
-                DSS.Tran = tran;
                 return DSS.ExecuteReaderMultiRow<T>().FirstOrDefault();
             }
         }

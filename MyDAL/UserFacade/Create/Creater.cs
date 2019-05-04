@@ -27,36 +27,36 @@ namespace HPC.DAL.UserFacade.Create
         /// 插入单条数据
         /// </summary>
         /// <returns>插入条目数</returns>
-        public async Task<int> CreateAsync(M m, IDbTransaction tran = null)
+        public async Task<int> CreateAsync(M m)
         {
-            return await new CreateAsyncImpl<M>(DC).CreateAsync(m, tran);
+            return await new CreateAsyncImpl<M>(DC).CreateAsync(m);
         }
 
         /// <summary>
         /// 插入单条数据
         /// </summary>
         /// <returns>插入条目数</returns>
-        public int Create(M m, IDbTransaction tran = null)
+        public int Create(M m)
         {
-            return new CreateImpl<M>(DC).Create(m, tran);
+            return new CreateImpl<M>(DC).Create(m);
         }
 
         /// <summary>
         /// 批量插入数据
         /// </summary>
         /// <returns>插入条目数</returns>
-        public async Task<int> CreateBatchAsync(IEnumerable<M> mList, IDbTransaction tran = null)
+        public async Task<int> CreateBatchAsync(IEnumerable<M> mList)
         {
-            return await new CreateBatchAsyncImpl<M>(DC).CreateBatchAsync(mList, tran);
+            return await new CreateBatchAsyncImpl<M>(DC).CreateBatchAsync(mList);
         }
 
         /// <summary>
         /// 批量插入数据
         /// </summary>
         /// <returns>插入条目数</returns>
-        public int CreateBatch(IEnumerable<M> mList, IDbTransaction tran = null)
+        public int CreateBatch(IEnumerable<M> mList)
         {
-            return new CreateBatchImpl<M>(DC).CreateBatch(mList, tran);
+            return new CreateBatchImpl<M>(DC).CreateBatch(mList);
         }
 
     }

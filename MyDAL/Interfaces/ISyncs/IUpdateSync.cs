@@ -5,6 +5,6 @@ namespace HPC.DAL.Interfaces.ISyncs
     internal interface IUpdate<M>
     where M : class
     {
-        int Update(IDbTransaction tran = null, SetEnum set = SetEnum.AllowedNull);
+        int Update(SetEnum set = SetEnum.AllowedNull);
     }
 }

@@ -8,13 +8,13 @@ namespace HPC.DAL.Interfaces.IAsyncs
     internal interface ICountAsync<M>
         where M : class
     {
-        Task<int> CountAsync(IDbTransaction tran = null);
-        Task<int> CountAsync<F>(Expression<Func<M, F>> func, IDbTransaction tran = null);
+        Task<int> CountAsync();
+        Task<int> CountAsync<F>(Expression<Func<M, F>> func);
     }
 
     internal interface ICountXAsync
     {
-        Task<int> CountAsync(IDbTransaction tran = null);
-        Task<int> CountAsync<F>(Expression<Func<F>> func, IDbTransaction tran = null);
+        Task<int> CountAsync();
+        Task<int> CountAsync<F>(Expression<Func<F>> func);
     }
 }

@@ -5,6 +5,6 @@ namespace HPC.DAL.Interfaces.ISyncs
     internal interface ICreate<M>
         where M : class
     {
-        int Create(M m, IDbTransaction tran = null);
+        int Create(M m);
     }
 }

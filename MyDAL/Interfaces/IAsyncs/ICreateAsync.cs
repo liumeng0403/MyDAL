@@ -6,6 +6,6 @@ namespace HPC.DAL.Interfaces.IAsyncs
     internal interface ICreateAsync<M>
         where M : class
     {
-        Task<int> CreateAsync(M m, IDbTransaction tran = null);
+        Task<int> CreateAsync(M m);
     }
 }

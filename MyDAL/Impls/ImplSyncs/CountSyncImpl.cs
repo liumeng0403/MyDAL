@@ -19,7 +19,7 @@ namespace HPC.DAL.Impls.ImplSyncs
             : base(dc)
         {  }
 
-        public int Count(IDbTransaction tran = null)
+        public int Count()
         {
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
@@ -27,10 +27,9 @@ namespace HPC.DAL.Impls.ImplSyncs
             DC.Func = FuncEnum.Count;
             DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(typeof(M), "*") }));
             PreExecuteHandle(UiMethodEnum.CountAsync);
-            DSS.Tran = tran;
             return DSS.ExecuteScalar<int>();
         }
-        public int Count<F>(Expression<Func<M, F>> propertyFunc, IDbTransaction tran = null)
+        public int Count<F>(Expression<Func<M, F>> propertyFunc)
         {
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
@@ -39,20 +38,19 @@ namespace HPC.DAL.Impls.ImplSyncs
             var dic = DC.XE.FuncMFExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.CountAsync);
-            DSS.Tran = tran;
             return DSS.ExecuteScalar<int>();
         }
     }
 
     internal sealed class CountXImpl
-    : ImplerSync
-    , ICountX
+        : ImplerSync
+        , ICountX
     {
         public CountXImpl(Context dc)
             : base(dc)
         { }
 
-        public int Count(IDbTransaction tran = null)
+        public int Count()
         {
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
@@ -60,10 +58,9 @@ namespace HPC.DAL.Impls.ImplSyncs
             DC.Func = FuncEnum.Count;
             DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(default(Type), "*", string.Empty) }));
             PreExecuteHandle(UiMethodEnum.CountAsync);
-            DSS.Tran = tran;
             return DSS.ExecuteScalar<int>();
         }
-        public int Count<F>(Expression<Func<F>> propertyFunc, IDbTransaction tran = null)
+        public int Count<F>(Expression<Func<F>> propertyFunc)
         {
             DC.Action = ActionEnum.Select;
             DC.Compare = CompareXEnum.None;
@@ -71,7 +68,6 @@ namespace HPC.DAL.Impls.ImplSyncs
             var dic = DC.XE.FuncTExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.CountAsync);
-            DSS.Tran = tran;
             return DSS.ExecuteScalar<int>();
         }
     }

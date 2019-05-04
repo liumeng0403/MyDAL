@@ -7,10 +7,10 @@ namespace HPC.DAL.Interfaces.ISyncs
     internal interface ISum<M>
         where M : class
     {
-        F Sum<F>(Expression<Func<M, F>> propertyFunc, IDbTransaction tran = null)
+        F Sum<F>(Expression<Func<M, F>> propertyFunc)
             where F : struct;
 
-        Nullable<F> Sum<F>(Expression<Func<M, Nullable<F>>> propertyFunc, IDbTransaction tran = null)
+        Nullable<F> Sum<F>(Expression<Func<M, Nullable<F>>> propertyFunc)
             where F : struct;
     }
 }

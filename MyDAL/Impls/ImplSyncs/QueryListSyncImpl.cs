@@ -18,34 +18,30 @@ namespace HPC.DAL.Impls.ImplSyncs
         internal QueryListImpl(Context dc)
             : base(dc) { }
 
-        public List<M> QueryList(IDbTransaction tran = null)
+        public List<M> QueryList()
         {
             PreExecuteHandle(UiMethodEnum.QueryListAsync);
-            DSS.Tran = tran;
             return DSS.ExecuteReaderMultiRow<M>();
         }
-        public List<VM> QueryList<VM>(IDbTransaction tran = null)
+        public List<VM> QueryList<VM>()
             where VM : class
         {
             SelectMQ<M, VM>();
             PreExecuteHandle(UiMethodEnum.QueryListAsync);
-            DSS.Tran = tran;
             return DSS.ExecuteReaderMultiRow<VM>();
         }
-        public List<T> QueryList<T>(Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null)
+        public List<T> QueryList<T>(Expression<Func<M, T>> columnMapFunc)
         {
             if (typeof(T).IsSingleColumn())
             {
                 SingleColumnHandle(columnMapFunc);
                 PreExecuteHandle(UiMethodEnum.QueryListAsync);
-                DSS.Tran = tran;
                 return DSS.ExecuteReaderSingleColumn(columnMapFunc.Compile());
             }
             else
             {
                 SelectMHandle(columnMapFunc);
                 PreExecuteHandle(UiMethodEnum.QueryListAsync);
-                DSS.Tran = tran;
                 return DSS.ExecuteReaderMultiRow<T>();
             }
         }
@@ -58,28 +54,25 @@ namespace HPC.DAL.Impls.ImplSyncs
         internal QueryListXImpl(Context dc)
             : base(dc) { }
 
-        public List<M> QueryList<M>(IDbTransaction tran = null)
+        public List<M> QueryList<M>()
             where M : class
         {
             SelectMHandle<M>();
             PreExecuteHandle(UiMethodEnum.QueryListAsync);
-            DSS.Tran = tran;
             return DSS.ExecuteReaderMultiRow<M>();
         }
-        public List<T> QueryList<T>(Expression<Func<T>> columnMapFunc, IDbTransaction tran = null)
+        public List<T> QueryList<T>(Expression<Func<T>> columnMapFunc)
         {
             if (typeof(T).IsSingleColumn())
             {
                 SingleColumnHandle(columnMapFunc);
                 PreExecuteHandle(UiMethodEnum.QueryListAsync);
-                DSS.Tran = tran;
                 return DSS.ExecuteReaderSingleColumn<T>();
             }
             else
             {
                 SelectMHandle(columnMapFunc);
                 PreExecuteHandle(UiMethodEnum.QueryListAsync);
-                DSS.Tran = tran;
                 return DSS.ExecuteReaderMultiRow<T>();
             }
         }
@@ -93,17 +86,15 @@ namespace HPC.DAL.Impls.ImplSyncs
             : base(dc)
         { }
 
-        public List<T> QueryList<T>(IDbTransaction tran = null)
+        public List<T> QueryList<T>()
         {
             DC.Method = UiMethodEnum.QueryListAsync;
             if (typeof(T).IsSingleColumn())
             {
-                DSS.Tran = tran;
                 return DSS.ExecuteReaderSingleColumn<T>();
             }
             else
             {
-                DSS.Tran = tran;
                 return DSS.ExecuteReaderMultiRow<T>();
             }
         }

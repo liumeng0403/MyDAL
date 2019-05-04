@@ -4,6 +4,6 @@ namespace HPC.DAL.Interfaces.ISyncs
 {
     internal interface IDelete
     {
-        int Delete(IDbTransaction tran = null);
+        int Delete();
     }
 }

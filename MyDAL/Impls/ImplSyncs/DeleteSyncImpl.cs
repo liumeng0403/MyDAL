@@ -15,10 +15,9 @@ namespace HPC.DAL.Impls.ImplSyncs
             : base(dc)
         { }
 
-        public int Delete(IDbTransaction tran = null)
+        public int Delete()
         {
             PreExecuteHandle(UiMethodEnum.DeleteAsync);
-            DSS.Tran = tran;
             return DSS.ExecuteNonQuery();
         }
 

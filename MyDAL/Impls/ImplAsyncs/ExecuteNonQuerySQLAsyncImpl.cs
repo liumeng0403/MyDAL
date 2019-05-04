@@ -14,9 +14,8 @@ namespace HPC.DAL.Impls.ImplAsyncs
             : base(dc)
         { }
 
-        public async Task<int> ExecuteNonQueryAsync(IDbTransaction tran = null)
+        public async Task<int> ExecuteNonQueryAsync()
         {
-            DSA.Tran = tran;
             return await DSA.ExecuteNonQueryAsync();
         }
 

@@ -9,21 +9,21 @@ namespace HPC.DAL.Interfaces.IAsyncs
     internal interface IQueryListAsync<M>
         where M : class
     {
-        Task<List<M>> QueryListAsync(IDbTransaction tran = null);
-        Task<List<VM>> QueryListAsync<VM>(IDbTransaction tran = null)
+        Task<List<M>> QueryListAsync();
+        Task<List<VM>> QueryListAsync<VM>()
             where VM : class;
-        Task<List<T>> QueryListAsync<T>(Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null);
+        Task<List<T>> QueryListAsync<T>(Expression<Func<M, T>> columnMapFunc);
     }
 
     internal interface IQueryListXAsync
     {
-        Task<List<M>> QueryListAsync<M>(IDbTransaction tran = null)
+        Task<List<M>> QueryListAsync<M>()
             where M : class;
-        Task<List<T>> QueryListAsync<T>(Expression<Func<T>> columnMapFunc, IDbTransaction tran = null);
+        Task<List<T>> QueryListAsync<T>(Expression<Func<T>> columnMapFunc);
     }
 
     internal interface IQueryListSQLAsync
     {
-        Task<List<T>> QueryListAsync<T>(IDbTransaction tran = null);
+        Task<List<T>> QueryListAsync<T>();
     }
 }

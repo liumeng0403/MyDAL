@@ -4,6 +4,6 @@ namespace HPC.DAL.Interfaces.ISyncs
 {
     internal interface IExecuteNonQuerySQL
     {
-        int ExecuteNonQuery(IDbTransaction tran = null);
+        int ExecuteNonQuery();
     }
 }

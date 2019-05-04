@@ -5,6 +5,6 @@ namespace HPC.DAL.Interfaces.IAsyncs
 {
     internal interface IDeleteAsync
     {
-        Task<int> DeleteAsync(IDbTransaction tran = null);
+        Task<int> DeleteAsync();
     }
 }

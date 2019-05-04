@@ -9,20 +9,19 @@ using System.Threading.Tasks;
 namespace HPC.DAL.Impls.ImplAsyncs
 {
     internal sealed class CreateAsyncImpl<M>
-    : ImplerAsync
-    , ICreateAsync<M>
+        : ImplerAsync
+        , ICreateAsync<M>
     where M : class
     {
         public CreateAsyncImpl(Context dc)
             : base(dc)
         { }
 
-        public async Task<int> CreateAsync(M m, IDbTransaction tran = null)
+        public async Task<int> CreateAsync(M m)
         {
             DC.Action = ActionEnum.Insert;
             CreateMHandle(new List<M> { m });
             PreExecuteHandle(UiMethodEnum.CreateAsync);
-            DSA.Tran = tran;
             return await DSA.ExecuteNonQueryAsync();
         }
 

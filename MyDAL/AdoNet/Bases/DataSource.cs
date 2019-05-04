@@ -13,14 +13,8 @@ namespace HPC.DAL.AdoNet.Bases
     {
 
         internal protected Context DC { get; private set; }
-        internal protected IDbConnection Conn
-        {
-            get
-            {
-                return DC.Conn;
-            }
-        }
-        internal protected IDbTransaction Tran { get; set; }
+        internal protected IDbConnection Conn { get; private set; }
+        internal protected IDbTransaction Tran { get; private set; }
         internal protected int SqlCount
         {
             get
@@ -107,6 +101,8 @@ namespace HPC.DAL.AdoNet.Bases
         internal protected DataSource(Context dc)
         {
             DC = dc;
+            Conn = dc.Conn;
+            Tran = dc.Tran;
             DC.Method = UiMethodEnum.None;
         }
 

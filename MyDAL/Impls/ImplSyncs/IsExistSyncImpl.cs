@@ -17,7 +17,7 @@ namespace HPC.DAL.Impls.ImplSyncs
         internal IsExistImpl(Context dc)
             : base(dc) { }
 
-        public bool IsExist(IDbTransaction tran = null)
+        public bool IsExist()
         {
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
@@ -25,7 +25,6 @@ namespace HPC.DAL.Impls.ImplSyncs
             DC.Func = FuncEnum.Count;
             DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(typeof(M), "*") }));
             PreExecuteHandle(UiMethodEnum.ExistAsync);
-            DSS.Tran = tran;
             var count = DSS.ExecuteScalar<long>();
             return count > 0;
         }
@@ -38,7 +37,7 @@ namespace HPC.DAL.Impls.ImplSyncs
         public IsExistXImpl(Context dc)
             : base(dc) { }
 
-        public bool IsExist(IDbTransaction tran = null)
+        public bool IsExist()
         {
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
@@ -47,7 +46,6 @@ namespace HPC.DAL.Impls.ImplSyncs
             var dic = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.From);
             DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(dic.TbMType, "*") }));
             PreExecuteHandle(UiMethodEnum.ExistAsync);
-            DSS.Tran = tran;
             var count = DSS.ExecuteScalar<long>();
             return count > 0;
         }

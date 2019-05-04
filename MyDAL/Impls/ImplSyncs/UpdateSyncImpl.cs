@@ -15,11 +15,10 @@ namespace HPC.DAL.Impls.ImplSyncs
             : base(dc)
         { }
 
-        public int Update(IDbTransaction tran = null, SetEnum set = SetEnum.AllowedNull)
+        public int Update(SetEnum set = SetEnum.AllowedNull)
         {
             DC.Set = set;
             PreExecuteHandle(UiMethodEnum.UpdateAsync);
-            DSS.Tran = tran;
             return DSS.ExecuteNonQuery();
         }
     }

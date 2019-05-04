@@ -17,7 +17,7 @@ namespace HPC.DAL.Impls.ImplSyncs
             : base(dc)
         { }
 
-        public F Sum<F>(Expression<Func<M, F>> propertyFunc, IDbTransaction tran = null)
+        public F Sum<F>(Expression<Func<M, F>> propertyFunc)
             where F : struct
         {
             DC.Action = ActionEnum.Select;
@@ -27,10 +27,9 @@ namespace HPC.DAL.Impls.ImplSyncs
             var dic = DC.XE.FuncMFExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.SumAsync);
-            DSS.Tran = tran;
             return DSS.ExecuteScalar<F>();
         }
-        public Nullable<F> Sum<F>(Expression<Func<M, Nullable<F>>> propertyFunc, IDbTransaction tran = null)
+        public Nullable<F> Sum<F>(Expression<Func<M, Nullable<F>>> propertyFunc)
             where F : struct
         {
             DC.Action = ActionEnum.Select;
@@ -40,7 +39,6 @@ namespace HPC.DAL.Impls.ImplSyncs
             var dic = DC.XE.FuncMFExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.SumAsync);
-            DSS.Tran = tran;
             return DSS.ExecuteScalar<F>();
         }
     }

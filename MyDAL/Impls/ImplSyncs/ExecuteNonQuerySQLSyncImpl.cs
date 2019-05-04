@@ -13,9 +13,8 @@ namespace HPC.DAL.Impls.ImplSyncs
             : base(dc)
         { }
 
-        public int ExecuteNonQuery(IDbTransaction tran = null)
+        public int ExecuteNonQuery()
         {
-            DSS.Tran = tran;
             return DSS.ExecuteNonQuery();
         }
     }

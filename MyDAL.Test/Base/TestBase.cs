@@ -44,7 +44,7 @@ namespace MyDAL.Test
         /// <summary>
         /// MySQL
         /// </summary>
-        protected IDbConnection Conn
+        protected XConnection Conn
         {
             get
             {
@@ -62,8 +62,8 @@ namespace MyDAL.Test
                 return GetTSQLConnection_2012SP1Plus();
             }
         }
-        
-        private static IDbConnection GetMySQLConnection()
+
+        private static XConnection GetMySQLConnection()
         {
             //
             // Nuget : Package : MySql.Data
@@ -73,11 +73,7 @@ namespace MyDAL.Test
             // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;"
             // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;allowPublicKeyRetrieval=true;"
             //
-            return
-                new MySqlConnection("Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;allowPublicKeyRetrieval=true;")
-                .OpenDebug()  // 全局 debug 配置, 生产环境不要开启 
-                              //.OpenAsync()  // 建议 每次新实例并打开,以获得更好的性能体验, 但是 用完要注意手动释放, 防止 连接池 资源耗尽!!!
-                ;
+            return new XConnection(new MySqlConnection("Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;allowPublicKeyRetrieval=true;"));
         }
         private static IDbConnection GetTSQLConnection_2012SP1Plus()
         {
