@@ -116,10 +116,6 @@ namespace HPC.DAL
 
         public void Dispose()
         {
-            // None Content But Important ! 
-        }
-        ~XConnection()
-        {
             if (Tran != null) { using (Tran) { } }
             if (Conn != null) { if (AutoClose) { using (Conn) { } } }
         }
