@@ -8,7 +8,7 @@ namespace MyDAL.Test.TestData
 {
     public class CreateData
     {
-        public async Task<List<AddressInfo>> PreCreateBatch(IDbConnection Conn)
+        public async Task<List<AddressInfo>> PreCreateBatchV2(XConnection Conn)
         {
             var res1 = await Conn
                 .Deleter<AddressInfo>()

@@ -31,93 +31,93 @@ namespace MyDAL.UserFacade.Query
         /// <summary>
         /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<M> QueryOneAsync(IDbTransaction tran = null)
+        public async Task<M> QueryOneAsync()
         {
-            return await new QueryOneAsyncImpl<M>(DC).QueryOneAsync(tran);
+            return await new QueryOneAsyncImpl<M>(DC).QueryOneAsync();
         }
         /// <summary>
         /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<VM> QueryOneAsync<VM>(IDbTransaction tran = null)
+        public async Task<VM> QueryOneAsync<VM>()
             where VM : class
         {
-            return await new QueryOneAsyncImpl<M>(DC).QueryOneAsync<VM>(tran);
+            return await new QueryOneAsyncImpl<M>(DC).QueryOneAsync<VM>();
         }
         /// <summary>
         /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<T> QueryOneAsync<T>(Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null)
+        public async Task<T> QueryOneAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
-            return await new QueryOneAsyncImpl<M>(DC).QueryOneAsync<T>(columnMapFunc,tran);
+            return await new QueryOneAsyncImpl<M>(DC).QueryOneAsync<T>(columnMapFunc);
         }
 
         /// <summary>
         /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public M QueryOne(IDbTransaction tran = null)
+        public M QueryOne()
         {
-            return new QueryOneImpl<M>(DC).QueryOne(tran);
+            return new QueryOneImpl<M>(DC).QueryOne();
         }
         /// <summary>
         /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public VM QueryOne<VM>(IDbTransaction tran = null)
+        public VM QueryOne<VM>()
             where VM : class
         {
-            return new QueryOneImpl<M>(DC).QueryOne<VM>(tran);
+            return new QueryOneImpl<M>(DC).QueryOne<VM>();
         }
         /// <summary>
         /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public T QueryOne<T>(Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null)
+        public T QueryOne<T>(Expression<Func<M, T>> columnMapFunc)
         {
-            return new QueryOneImpl<M>(DC).QueryOne<T>(columnMapFunc,tran);
+            return new QueryOneImpl<M>(DC).QueryOne<T>(columnMapFunc);
         }
 
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<List<M>> QueryListAsync(IDbTransaction tran = null)
+        public async Task<List<M>> QueryListAsync()
         {
-            return await new QueryListAsyncImpl<M>(DC).QueryListAsync(tran);
+            return await new QueryListAsyncImpl<M>(DC).QueryListAsync();
         }
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<List<VM>> QueryListAsync<VM>(IDbTransaction tran = null)
+        public async Task<List<VM>> QueryListAsync<VM>()
             where VM : class
         {
-            return await new QueryListAsyncImpl<M>(DC).QueryListAsync<VM>(tran);
+            return await new QueryListAsyncImpl<M>(DC).QueryListAsync<VM>();
         }
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<List<T>> QueryListAsync<T>(Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null)
+        public async Task<List<T>> QueryListAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
-            return await new QueryListAsyncImpl<M>(DC).QueryListAsync(columnMapFunc, tran);
+            return await new QueryListAsyncImpl<M>(DC).QueryListAsync(columnMapFunc);
         }
 
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public List<M> QueryList(IDbTransaction tran = null)
+        public List<M> QueryList()
         {
-            return new QueryListImpl<M>(DC).QueryList(tran);
+            return new QueryListImpl<M>(DC).QueryList();
         }
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public List<VM> QueryList<VM>(IDbTransaction tran = null)
+        public List<VM> QueryList<VM>()
             where VM : class
         {
-            return new QueryListImpl<M>(DC).QueryList<VM>(tran);
+            return new QueryListImpl<M>(DC).QueryList<VM>();
         }
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public List<T> QueryList<T>(Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null)
+        public List<T> QueryList<T>(Expression<Func<M, T>> columnMapFunc)
         {
-            return new QueryListImpl<M>(DC).QueryList(columnMapFunc, tran);
+            return new QueryListImpl<M>(DC).QueryList(columnMapFunc);
         }
 
         /// <summary>
@@ -125,9 +125,9 @@ namespace MyDAL.UserFacade.Query
         /// </summary>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
-        public async Task<PagingResult<M>> QueryPagingAsync(int pageIndex, int pageSize, IDbTransaction tran = null)
+        public async Task<PagingResult<M>> QueryPagingAsync(int pageIndex, int pageSize)
         {
-            return await new QueryPagingAsyncImpl<M>(DC).QueryPagingAsync(pageIndex, pageSize,tran);
+            return await new QueryPagingAsyncImpl<M>(DC).QueryPagingAsync(pageIndex, pageSize);
         }
         /// <summary>
         /// 单表分页查询
@@ -135,17 +135,17 @@ namespace MyDAL.UserFacade.Query
         /// <typeparam name="VM">ViewModel</typeparam>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
-        public async Task<PagingResult<VM>> QueryPagingAsync<VM>(int pageIndex, int pageSize, IDbTransaction tran = null)
+        public async Task<PagingResult<VM>> QueryPagingAsync<VM>(int pageIndex, int pageSize)
             where VM : class
         {
-            return await new QueryPagingAsyncImpl<M>(DC).QueryPagingAsync<VM>(pageIndex, pageSize,tran);
+            return await new QueryPagingAsyncImpl<M>(DC).QueryPagingAsync<VM>(pageIndex, pageSize);
         }
         /// <summary>
         /// 单表分页查询
         /// </summary>
-        public async Task<PagingResult<T>> QueryPagingAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null)
+        public async Task<PagingResult<T>> QueryPagingAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
         {
-            return await new QueryPagingAsyncImpl<M>(DC).QueryPagingAsync<T>(pageIndex, pageSize, columnMapFunc,tran);
+            return await new QueryPagingAsyncImpl<M>(DC).QueryPagingAsync<T>(pageIndex, pageSize, columnMapFunc);
         }
 
         /// <summary>
@@ -153,9 +153,9 @@ namespace MyDAL.UserFacade.Query
         /// </summary>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
-        public PagingResult<M> QueryPaging(int pageIndex, int pageSize, IDbTransaction tran = null)
+        public PagingResult<M> QueryPaging(int pageIndex, int pageSize)
         {
-            return new QueryPagingImpl<M>(DC).QueryPaging(pageIndex, pageSize,tran);
+            return new QueryPagingImpl<M>(DC).QueryPaging(pageIndex, pageSize);
         }
         /// <summary>
         /// 单表分页查询
@@ -163,17 +163,17 @@ namespace MyDAL.UserFacade.Query
         /// <typeparam name="VM">ViewModel</typeparam>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
-        public PagingResult<VM> QueryPaging<VM>(int pageIndex, int pageSize, IDbTransaction tran = null)
+        public PagingResult<VM> QueryPaging<VM>(int pageIndex, int pageSize)
             where VM : class
         {
-            return new QueryPagingImpl<M>(DC).QueryPaging<VM>(pageIndex, pageSize,tran);
+            return new QueryPagingImpl<M>(DC).QueryPaging<VM>(pageIndex, pageSize);
         }
         /// <summary>
         /// 单表分页查询
         /// </summary>
-        public PagingResult<T> QueryPaging<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null)
+        public PagingResult<T> QueryPaging<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
         {
-            return new QueryPagingImpl<M>(DC).QueryPaging<T>(pageIndex, pageSize, columnMapFunc,tran);
+            return new QueryPagingImpl<M>(DC).QueryPaging<T>(pageIndex, pageSize, columnMapFunc);
         }
 
         /// <summary>
@@ -181,28 +181,28 @@ namespace MyDAL.UserFacade.Query
         /// </summary>
         /// <param name="count">top count</param>
         /// <returns>返回 top count 条数据</returns>
-        public async Task<List<M>> TopAsync(int count, IDbTransaction tran = null)
+        public async Task<List<M>> TopAsync(int count)
         {
-            return await new TopAsyncImpl<M>(DC).TopAsync(count,tran);
+            return await new TopAsyncImpl<M>(DC).TopAsync(count);
         }
         /// <summary>
         /// 单表数据查询
         /// </summary>
         /// <param name="count">top count</param>
         /// <returns>返回 top count 条数据</returns>
-        public async Task<List<VM>> TopAsync<VM>(int count, IDbTransaction tran = null)
+        public async Task<List<VM>> TopAsync<VM>(int count)
             where VM : class
         {
-            return await new TopAsyncImpl<M>(DC).TopAsync<VM>(count,tran);
+            return await new TopAsyncImpl<M>(DC).TopAsync<VM>(count);
         }
         /// <summary>
         /// 单表数据查询
         /// </summary>
         /// <param name="count">top count</param>
         /// <returns>返回 top count 条数据</returns>
-        public async Task<List<T>> TopAsync<T>(int count, Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null)
+        public async Task<List<T>> TopAsync<T>(int count, Expression<Func<M, T>> columnMapFunc)
         {
-            return await new TopAsyncImpl<M>(DC).TopAsync<T>(count, columnMapFunc,tran);
+            return await new TopAsyncImpl<M>(DC).TopAsync<T>(count, columnMapFunc);
         }
 
         /// <summary>
@@ -210,28 +210,28 @@ namespace MyDAL.UserFacade.Query
         /// </summary>
         /// <param name="count">top count</param>
         /// <returns>返回 top count 条数据</returns>
-        public List<M> Top(int count, IDbTransaction tran = null)
+        public List<M> Top(int count)
         {
-            return new TopImpl<M>(DC).Top(count,tran);
+            return new TopImpl<M>(DC).Top(count);
         }
         /// <summary>
         /// 单表数据查询
         /// </summary>
         /// <param name="count">top count</param>
         /// <returns>返回 top count 条数据</returns>
-        public List<VM> Top<VM>(int count, IDbTransaction tran = null)
+        public List<VM> Top<VM>(int count)
             where VM : class
         {
-            return new TopImpl<M>(DC).Top<VM>(count,tran);
+            return new TopImpl<M>(DC).Top<VM>(count);
         }
         /// <summary>
         /// 单表数据查询
         /// </summary>
         /// <param name="count">top count</param>
         /// <returns>返回 top count 条数据</returns>
-        public List<T> Top<T>(int count, Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null)
+        public List<T> Top<T>(int count, Expression<Func<M, T>> columnMapFunc)
         {
-            return new TopImpl<M>(DC).Top<T>(count, columnMapFunc,tran);
+            return new TopImpl<M>(DC).Top<T>(count, columnMapFunc);
         }
 
     }

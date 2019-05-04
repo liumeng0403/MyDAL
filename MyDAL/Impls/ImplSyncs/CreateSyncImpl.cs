@@ -16,12 +16,11 @@ namespace MyDAL.Impls.ImplSyncs
             : base(dc)
         { }
 
-        public int Create(M m, IDbTransaction tran = null)
+        public int Create(M m)
         {
             DC.Action = ActionEnum.Insert;
             CreateMHandle(new List<M> { m });
             PreExecuteHandle(UiMethodEnum.CreateAsync);
-            DSS.Tran = tran;
             return DSS.ExecuteNonQuery();
         }
     }

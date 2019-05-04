@@ -8,10 +8,10 @@ namespace MyDAL.Interfaces.IAsyncs
     internal interface ISumAsync<M>
         where M : class
     {
-        Task<F> SumAsync<F>(Expression<Func<M, F>> propertyFunc, IDbTransaction tran = null)
+        Task<F> SumAsync<F>(Expression<Func<M, F>> propertyFunc)
             where F : struct;
 
-        Task<Nullable<F>> SumAsync<F>(Expression<Func<M, Nullable<F>>> propertyFunc, IDbTransaction tran = null)
+        Task<Nullable<F>> SumAsync<F>(Expression<Func<M, Nullable<F>>> propertyFunc)
             where F : struct;
     }
 }

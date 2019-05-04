@@ -26,18 +26,18 @@ namespace MyDAL.UserFacade.Delete
         /// 单表数据删除
         /// </summary>
         /// <returns>删除条目数</returns>
-        public async Task<int> DeleteAsync(IDbTransaction tran = null)
+        public async Task<int> DeleteAsync()
         {
-            return await new DeleteAsyncImpl<M>(DC).DeleteAsync(tran);
+            return await new DeleteAsyncImpl<M>(DC).DeleteAsync();
         }
 
         /// <summary>
         /// 单表数据删除
         /// </summary>
         /// <returns>删除条目数</returns>
-        public int Delete(IDbTransaction tran = null)
+        public int Delete()
         {
-            return new DeleteImpl<M>(DC).Delete(tran);
+            return new DeleteImpl<M>(DC).Delete();
         }
 
     }

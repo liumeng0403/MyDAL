@@ -160,7 +160,7 @@ namespace MyDAL.Test.Create
         public async Task History_02()
         {
             
-            var list1 = await new CreateData().PreCreateBatch(Conn);
+            var list1 = await new CreateData().PreCreateBatchV2(Conn);
 
             xx = string.Empty;
 

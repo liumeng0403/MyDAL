@@ -12,15 +12,15 @@ using System.Threading.Tasks;
 namespace MyDAL.Impls.ImplAsyncs
 {
     internal sealed class SumAsyncImpl<M>
-    : ImplerAsync
-    , ISumAsync<M>
+        : ImplerAsync
+        , ISumAsync<M>
     where M : class
     {
         public SumAsyncImpl(Context dc)
             : base(dc)
         { }
 
-        public async Task<F> SumAsync<F>(Expression<Func<M, F>> propertyFunc, IDbTransaction tran = null)
+        public async Task<F> SumAsync<F>(Expression<Func<M, F>> propertyFunc)
             where F : struct
         {
             DC.Action = ActionEnum.Select;
@@ -30,10 +30,9 @@ namespace MyDAL.Impls.ImplAsyncs
             var dic = DC.XE.FuncMFExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.SumAsync);
-            DSA.Tran = tran;
             return await DSA.ExecuteScalarAsync<F>();
         }
-        public async Task<Nullable<F>> SumAsync<F>(Expression<Func<M, Nullable<F>>> propertyFunc, IDbTransaction tran = null)
+        public async Task<Nullable<F>> SumAsync<F>(Expression<Func<M, Nullable<F>>> propertyFunc)
             where F : struct
         {
             DC.Action = ActionEnum.Select;
@@ -43,7 +42,6 @@ namespace MyDAL.Impls.ImplAsyncs
             var dic = DC.XE.FuncMFExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.SumAsync);
-            DSA.Tran = tran;
             return await DSA.ExecuteScalarAsync<F>();
         }
 

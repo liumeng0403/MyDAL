@@ -19,7 +19,7 @@ namespace MyDAL.Impls.ImplAsyncs
             : base(dc)
         { }
 
-        public async Task<int> CreateBatchAsync(IEnumerable<M> mList, IDbTransaction tran = null)
+        public async Task<int> CreateBatchAsync(IEnumerable<M> mList)
         {
             DC.Action = ActionEnum.Insert;
             return await DC.BDH.StepProcess(mList, 100, async list =>
@@ -27,7 +27,6 @@ namespace MyDAL.Impls.ImplAsyncs
                 DC.DPH.ResetParameter();
                 CreateMHandle(list);
                 PreExecuteHandle(UiMethodEnum.CreateBatchAsync);
-                DSA.Tran = tran;
                 return await DSA.ExecuteNonQueryAsync();
             });
         }

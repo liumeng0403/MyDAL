@@ -17,7 +17,7 @@ namespace MyDAL.Impls.ImplSyncs
         {
         }
 
-        public int CreateBatch(IEnumerable<M> mList, IDbTransaction tran = null)
+        public int CreateBatch(IEnumerable<M> mList)
         {
             DC.Action = ActionEnum.Insert;
             return DC.BDH.StepProcessSync(mList, 100, list =>
@@ -25,7 +25,6 @@ namespace MyDAL.Impls.ImplSyncs
                 DC.DPH.ResetParameter();
                 CreateMHandle(list);
                 PreExecuteHandle(UiMethodEnum.CreateBatchAsync);
-                DSS.Tran = tran;
                 return DSS.ExecuteNonQuery();
             });
         }

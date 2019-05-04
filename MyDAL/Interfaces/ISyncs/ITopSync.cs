@@ -8,16 +8,16 @@ namespace MyDAL.Interfaces.ISyncs
     internal interface ITop<M>
         where M : class
     {
-        List<M> Top(int count, IDbTransaction tran = null);
-        List<VM> Top<VM>(int count, IDbTransaction tran = null)
+        List<M> Top(int count);
+        List<VM> Top<VM>(int count)
             where VM : class;
-        List<T> Top<T>(int count, Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null);
+        List<T> Top<T>(int count, Expression<Func<M, T>> columnMapFunc);
     }
 
     internal interface ITopX
     {
-        List<M> Top<M>(int count, IDbTransaction tran = null)
+        List<M> Top<M>(int count)
             where M : class;
-        List<T> Top<T>(int count, Expression<Func<T>> columnMapFunc, IDbTransaction tran = null);
+        List<T> Top<T>(int count, Expression<Func<T>> columnMapFunc);
     }
 }

@@ -287,7 +287,7 @@ namespace MyDAL.Test.Update
                 var res1 = await Conn.UpdateAsync<Agent>(it => it.Id == agent.Id, new
                 {
                     agent.PathId
-                }, null, SetEnum.NotAllowedNull);
+                }, SetEnum.NotAllowedNull);
             }
             catch (Exception ex)
             {
@@ -314,7 +314,7 @@ namespace MyDAL.Test.Update
             {
                 agent.PathId,
                 agent.ActiveOrderId
-            }, null, SetEnum.IgnoreNull);
+            }, SetEnum.IgnoreNull);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 
@@ -412,7 +412,7 @@ namespace MyDAL.Test.Update
                     .Updater<Agent>()
                     .Set(it => it.PathId, null)
                     .Where(it => it.Id == agent.Id)
-                    .UpdateAsync(null, SetEnum.NotAllowedNull);
+                    .UpdateAsync(SetEnum.NotAllowedNull);
             }
             catch (Exception ex)
             {
@@ -445,7 +445,7 @@ namespace MyDAL.Test.Update
                     agent.ActiveOrderId
                 })
                 .Where(it => it.Id == agent.Id)
-                .UpdateAsync(null, SetEnum.IgnoreNull);
+                .UpdateAsync(SetEnum.IgnoreNull);
 
             tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
 

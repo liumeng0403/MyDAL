@@ -5,6 +5,6 @@ namespace MyDAL.Interfaces.IAsyncs
 {
     internal interface IExecuteNonQuerySQLAsync
     {
-        Task<int> ExecuteNonQueryAsync(IDbTransaction tran = null);
+        Task<int> ExecuteNonQueryAsync();
     }
 }

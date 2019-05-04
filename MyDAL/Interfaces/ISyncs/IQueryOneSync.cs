@@ -6,21 +6,21 @@ namespace MyDAL.Interfaces.ISyncs
 {
     internal interface IQueryOne<M>
     {
-        M QueryOne(IDbTransaction tran = null);
-        VM QueryOne<VM>(IDbTransaction tran = null)
+        M QueryOne();
+        VM QueryOne<VM>()
             where VM : class;
-        T QueryOne<T>(Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null);
+        T QueryOne<T>(Expression<Func<M, T>> columnMapFunc);
     }
 
     internal interface IQueryOneX
     {
-        M QueryOne<M>(IDbTransaction tran = null)
+        M QueryOne<M>()
             where M : class;
-        T QueryOne<T>(Expression<Func<T>> columnMapFunc, IDbTransaction tran = null);
+        T QueryOne<T>(Expression<Func<T>> columnMapFunc);
     }
 
     internal interface IQueryOneSQL
     {
-        T QueryOne<T>(IDbTransaction tran = null);
+        T QueryOne<T>();
     }
 }

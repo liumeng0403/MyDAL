@@ -5,11 +5,11 @@ namespace MyDAL.Interfaces.IAsyncs
 {
     internal interface IIsExistAsync
     {
-        Task<bool> IsExistAsync(IDbTransaction tran = null);
+        Task<bool> IsExistAsync();
     }
 
     internal interface IIsExistXAsync
     {
-        Task<bool> IsExistAsync(IDbTransaction tran = null);
+        Task<bool> IsExistAsync();
     }
 }

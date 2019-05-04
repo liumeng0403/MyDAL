@@ -10,18 +10,17 @@ using System.Threading.Tasks;
 namespace MyDAL.Impls.ImplAsyncs
 {
     internal sealed class DeleteAsyncImpl<M>
-    : ImplerAsync
-    , IDeleteAsync
+        : ImplerAsync
+        , IDeleteAsync
     where M : class
     {
         internal DeleteAsyncImpl(Context dc)
             : base(dc)
         { }
 
-        public async Task<int> DeleteAsync(IDbTransaction tran = null)
+        public async Task<int> DeleteAsync()
         {
             PreExecuteHandle(UiMethodEnum.DeleteAsync);
-            DSA.Tran = tran;
             return await DSA.ExecuteNonQueryAsync();
         }
 

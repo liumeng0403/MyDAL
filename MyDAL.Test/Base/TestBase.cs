@@ -43,7 +43,7 @@ namespace MyDAL.Test
         /// <summary>
         /// MySQL
         /// </summary>
-        protected IDbConnection Conn
+        protected XConnection Conn
         {
             get
             {
@@ -54,7 +54,7 @@ namespace MyDAL.Test
         /// <summary>
         /// SqlServer 2012SP1+
         /// </summary>
-        protected IDbConnection Conn2
+        protected XConnection Conn2
         {
             get
             {
@@ -65,7 +65,7 @@ namespace MyDAL.Test
         /// <summary>
         /// MySQL
         /// </summary>
-        protected IDbConnection Conn3
+        protected XConnection Conn3
         {
             get
             {
@@ -73,7 +73,7 @@ namespace MyDAL.Test
             }
         }
 
-        private static IDbConnection GetMySQLConnection()
+        private static XConnection GetMySQLConnection()
         {
             //
             // Nuget : Package : MySql.Data
@@ -83,22 +83,14 @@ namespace MyDAL.Test
             // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;"
             // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;allowPublicKeyRetrieval=true;"
             //
-            return
-                new MySqlConnection("Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;allowPublicKeyRetrieval=true;")
-                .OpenDebug()  // 全局 debug 配置, 生产环境不要开启 
-                              //.OpenAsync()  // 建议 每次新实例并打开,以获得更好的性能体验, 但是 用完要注意手动释放, 防止 连接池 资源耗尽!!!
-                ;
+            return new XConnection(new MySqlConnection("Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;allowPublicKeyRetrieval=true;"));
         }
-        private static IDbConnection GetTSQLConnection_2012SP1Plus()
+        private static XConnection GetTSQLConnection_2012SP1Plus()
         {
             //
             // Nuget : Package : System.Data.SqlClient
             //
-            return
-                new SqlConnection("Data Source=127.0.0.1;Initial Catalog=MyDAL_TestDB;User Id=sa;Password=1010;")
-                .OpenDebug()  // 全局 debug 配置, 生产环境不要开启 
-                              //.OpenAsync()  // 建议 每次新实例并打开,以获得更好的性能体验, 但是 用完要注意手动释放, 防止 连接池 资源耗尽!!!
-                ;
+            return new XConnection(new SqlConnection("Data Source=127.0.0.1;Initial Catalog=MyDAL_TestDB;User Id=sa;Password=1010;"));
         }
 
         protected Task None()

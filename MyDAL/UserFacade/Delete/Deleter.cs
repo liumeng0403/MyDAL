@@ -37,18 +37,18 @@ namespace MyDAL.UserFacade.Delete
         /// 单表数据删除
         /// </summary>
         [Obsolete("警告：此 API 会删除表中所有数据！！！", false)]
-        public async Task<int> DeleteAsync(IDbTransaction tran = null)
+        public async Task<int> DeleteAsync()
         {
-            return await new DeleteAsyncImpl<M>(DC).DeleteAsync(tran);
+            return await new DeleteAsyncImpl<M>(DC).DeleteAsync();
         }
 
         /// <summary>
         /// 单表数据删除
         /// </summary>
         [Obsolete("警告：此 API 会删除表中所有数据！！！", false)]
-        public int Delete(IDbTransaction tran = null)
+        public int Delete()
         {
-            return new DeleteImpl<M>(DC).Delete(tran);
+            return new DeleteImpl<M>(DC).Delete();
         }
     }
 }

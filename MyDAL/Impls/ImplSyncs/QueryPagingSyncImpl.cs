@@ -18,24 +18,22 @@ namespace MyDAL.Impls.ImplSyncs
             : base(dc)
         { }
 
-        public PagingResult<M> QueryPaging(int pageIndex, int pageSize, IDbTransaction tran = null)
+        public PagingResult<M> QueryPaging(int pageIndex, int pageSize)
         {
             DC.PageIndex = pageIndex;
             DC.PageSize = pageSize;
             PreExecuteHandle(UiMethodEnum.QueryPagingAsync);
-            DSS.Tran = tran;
             return DSS.ExecuteReaderPaging<None, M>(false, null);
         }
-        public PagingResult<VM> QueryPaging<VM>(int pageIndex, int pageSize, IDbTransaction tran = null)
+        public PagingResult<VM> QueryPaging<VM>(int pageIndex, int pageSize)
             where VM : class
         {
             DC.PageIndex = pageIndex;
             DC.PageSize = pageSize;
             PreExecuteHandle(UiMethodEnum.QueryPagingAsync);
-            DSS.Tran = tran;
             return DSS.ExecuteReaderPaging<M, VM>(false, null);
         }
-        public PagingResult<T> QueryPaging<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc, IDbTransaction tran = null)
+        public PagingResult<T> QueryPaging<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
         {
             DC.PageIndex = pageIndex;
             DC.PageSize = pageSize;
@@ -49,7 +47,6 @@ namespace MyDAL.Impls.ImplSyncs
                 SelectMHandle(columnMapFunc);
             }
             PreExecuteHandle(UiMethodEnum.QueryPagingAsync);
-            DSS.Tran = tran;
             return DSS.ExecuteReaderPaging<M, T>(single, columnMapFunc.Compile());
         }
     }
@@ -62,17 +59,16 @@ namespace MyDAL.Impls.ImplSyncs
             : base(dc)
         { }
 
-        public PagingResult<M> QueryPaging<M>(int pageIndex, int pageSize, IDbTransaction tran = null)
+        public PagingResult<M> QueryPaging<M>(int pageIndex, int pageSize)
             where M : class
         {
             DC.PageIndex = pageIndex;
             DC.PageSize = pageSize;
             SelectMHandle<M>();
             PreExecuteHandle(UiMethodEnum.QueryPagingAsync);
-            DSS.Tran = tran;
             return DSS.ExecuteReaderPaging<None, M>(false, null);
         }
-        public PagingResult<T> QueryPaging<T>(int pageIndex, int pageSize, Expression<Func<T>> columnMapFunc, IDbTransaction tran = null)
+        public PagingResult<T> QueryPaging<T>(int pageIndex, int pageSize, Expression<Func<T>> columnMapFunc)
         {
             DC.PageIndex = pageIndex;
             DC.PageSize = pageSize;
@@ -86,7 +82,6 @@ namespace MyDAL.Impls.ImplSyncs
                 SelectMHandle(columnMapFunc);
             }
             PreExecuteHandle(UiMethodEnum.QueryPagingAsync);
-            DSS.Tran = tran;
             return DSS.ExecuteReaderPaging<None, T>(single, null);
         }
     }

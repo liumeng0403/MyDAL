@@ -18,7 +18,7 @@ namespace MyDAL.Core.Bases
 
         /************************************************************************************************************************/
 
-        internal void Init(IDbConnection conn)
+        internal void Init(IDbConnection conn,IDbTransaction tran)
         {
             //
             if (XConfig.ConnTypes.TryGetValue(conn.GetType().FullName, out var db))
@@ -27,11 +27,12 @@ namespace MyDAL.Core.Bases
             }
             else
             {
-                throw XConfig.EC. Exception(XConfig.EC._043, "MyDAL 目前只支持【MySQL/SQLServer】,后续将会支持【Oracle/PostgreSQL/DB2/Access/SQLite/Teradata/MariaDB】.");
+                throw XConfig.EC.Exception(XConfig.EC._043, "MyDAL 目前只支持【MySQL/SQLServer】,后续将会支持【Oracle/PostgreSQL/DB2/Access/SQLite/Teradata/MariaDB】.");
             }
 
             //
             Conn = conn;
+            Tran = tran;
             Parameters = new List<DicParam>();
             AH = new AttributeHelper(this);
             VH = new CsValueHelper(this);
@@ -42,7 +43,7 @@ namespace MyDAL.Core.Bases
             XC = new XCache(this);
             PH = new ParameterHelper(this);
             DPH = new DicParamHelper(this);
-            BDH = new BatchDataHelper();            
+            BDH = new BatchDataHelper();
             TbMs = new List<TableDic>();
 
             //
@@ -99,6 +100,7 @@ namespace MyDAL.Core.Bases
         /************************************************************************************************************************/
 
         internal IDbConnection Conn { get; private set; }
+        internal IDbTransaction Tran { get; private set; }
         internal ISqlProvider SqlProvider { get; set; }
         internal XCache XC { get; private set; }
 
