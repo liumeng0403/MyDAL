@@ -14,14 +14,23 @@ namespace MyDAL.AdoNet
     internal sealed class DataSourceSync
         : DataSource
     {
-        private IDbConnection ColsConn { get; set; }
+        private IDbConnection ConnForCols { get; set; }
+        private DbCommand SettingCommandForCols(CommandInfo comm, IDbConnection cnn, Action<IDbCommand, DbParamInfo> paramReader)
+        {
+            var cmd = cnn.CreateCommand();
+            cmd.CommandText = comm.CommandText;
+            cmd.CommandTimeout = XConfig.CommandTimeout;
+            cmd.CommandType = CommandType.Text;
+            paramReader?.Invoke(cmd, comm.Parameter);
+            return cmd as DbCommand;
+        }
         internal DataSourceSync()
             : base()
         { }
         internal DataSourceSync(Context dc)
             : base(dc)
         {
-            ColsConn = (IDbConnection)Activator.CreateInstance(dc.Conn.GetType(), dc.Conn.ConnectionString);
+            ConnForCols = (IDbConnection)Activator.CreateInstance(dc.Conn.GetType(), dc.Conn.ConnectionString);
         }
 
         /*********************************************************************************************************************************************/
@@ -212,11 +221,11 @@ namespace MyDAL.AdoNet
             DC.FlatOutput = false;
             var result = new List<M>();
             var ci = new CommandInfo(SqlOne, Parameter);
-            bool needClose = ColsConn.State == ConnectionState.Closed;
+            bool needClose = ConnForCols.State == ConnectionState.Closed;
             try
             {
-                if (needClose) { Open(ColsConn); }
-                using (var cmd = SettingCommand(ci, ColsConn, ci.Parameter.ParamReader))
+                if (needClose) { Open(ConnForCols); }
+                using (var cmd = SettingCommandForCols(ci, ConnForCols, ci.Parameter.ParamReader))
                 {
                     using (Reader = ExecuteReaderWithRetry(cmd, XConfig.MultiRow))
                     {
@@ -226,7 +235,7 @@ namespace MyDAL.AdoNet
             }
             finally
             {
-                if (needClose) { ColsConn.Close(); }
+                if (needClose) { ConnForCols.Close(); }
             }
             DC.FlatOutput = true;
             return result;

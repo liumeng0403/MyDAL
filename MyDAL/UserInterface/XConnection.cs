@@ -1,10 +1,13 @@
 ﻿using MyDAL.AdoNet;
+using MyDAL.Core;
+using System;
 using System.Data;
 using System.Threading.Tasks;
 
 namespace MyDAL
 {
     public sealed class XConnection
+        : IDisposable
     {
         private bool AutoClose { get; set; }
         private void NeedClose()
@@ -26,6 +29,9 @@ namespace MyDAL
         private XConnection() { }
         public XConnection(IDbConnection conn)
         {
+            /*
+             * 仅限 组件外 调用。
+             */
             Conn = conn;
             AutoClose = false;
             NeedClose();
@@ -36,6 +42,9 @@ namespace MyDAL
         /// </summary>
         public void Open()
         {
+            /*
+             * 仅限 组件外 调用。
+             */
             if (AutoClose)
             {
                 new DataSourceSync().Open(Conn);
@@ -47,15 +56,20 @@ namespace MyDAL
         /// </summary>
         public async Task OpenAsync()
         {
+            /*
+             * 仅限 组件外 调用。
+             */
             if (AutoClose)
             {
                 await new DataSourceAsync().OpenAsync(Conn);
                 AutoClose = false;
             }
         }
-
         public void Close()
         {
+            /*
+             * 仅限 组件外 调用。
+             */
             if (!AutoClose)
             {
                 Conn.Close();
@@ -63,23 +77,47 @@ namespace MyDAL
             }
         }
 
-        public IDbTransaction BeginTransaction()
+        public void BeginTransaction()
         {
-            if (AutoClose) { this.Open(); }
+            /*
+             * 仅限 组件外 调用。
+             */
+            if (Tran != null)
+            {
+                throw XConfig.EC.Exception(XConfig.EC._090, "上下文中事务已开启，无需再次开启！");
+            }
+            if (AutoClose) { Conn.Open(); }
             Tran = Conn.BeginTransaction();
-            return Tran;
         }
-        public void TransactionCommit()
+        public void CommitTransaction()
         {
+            /*
+             * 仅限 组件外 调用。
+             */
+            if (Tran == null)
+            {
+                throw XConfig.EC.Exception(XConfig.EC._088, "请检查: 1-上下文是否已调用【void BeginTransaction()】开启事务！; 2-在事务范围内使用的【XConnection】对象是否为同一实例！");
+            }
             Tran.Commit();
             if (AutoClose) { Conn.Close(); }
         }
-        public void TransactionRollback()
+        public void RollbackTransaction()
         {
+            /*
+             * 仅限 组件外 调用。
+             */
+            if (Tran == null)
+            {
+                throw XConfig.EC.Exception(XConfig.EC._089, "请检查: 1-上下文是否已调用【void BeginTransaction()】开启事务！; 2-在事务范围内使用的【XConnection】对象是否为同一实例！");
+            }
             Tran.Rollback();
             if (AutoClose) { Conn.Close(); }
         }
 
+        public void Dispose()
+        {
+            // None Content But Important ! 
+        }
         ~XConnection()
         {
             if (Tran != null) { using (Tran) { } }

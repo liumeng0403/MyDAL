@@ -100,6 +100,16 @@ namespace MyDAL.Core.Configs
         internal string _087 { get; } = "087";
         internal string _088 { get; } = "088";
         internal string _089 { get; } = "089";
+        internal string _090 { get; } = "090";
+        internal string _091 { get; } = "091";
+        internal string _092 { get; } = "092";
+        internal string _093 { get; } = "093";
+        internal string _094 { get; } = "094";
+        internal string _095 { get; } = "095";
+        internal string _096 { get; } = "096";
+        internal string _097 { get; } = "097";
+        internal string _098 { get; } = "098";
+        internal string _099 { get; } = "099";
 
     }
 }
