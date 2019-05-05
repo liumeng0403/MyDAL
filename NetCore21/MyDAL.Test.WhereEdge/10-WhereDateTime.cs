@@ -1,7 +1,5 @@
 ﻿using MyDAL.Test.Entities.MyDAL_TestDB;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 

@@ -83,7 +83,13 @@ namespace MyDAL.Test
             // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;"
             // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;allowPublicKeyRetrieval=true;"
             //
-            return new XConnection(new MySqlConnection("Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;allowPublicKeyRetrieval=true;"));
+            var Conn = 
+                new XConnection
+                (
+                    new MySqlConnection
+                        ("Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;allowPublicKeyRetrieval=true;")
+                );
+            return Conn;
         }
         private static XConnection GetTSQLConnection_2012SP1Plus()
         {
