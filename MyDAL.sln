@@ -56,6 +56,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.SqlAction", "Net
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test.CsFunc", "NetCore21\MyDAL.Test.CsFunc\MyDAL.Test.CsFunc.csproj", "{347CAF9D-63A1-4809-9E0E-DE9EBA9056ED}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OtherOrmIssues", "OtherOrmIssues", "{747B3F1D-611D-4BAC-81E9-78FE31227682}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EntityFramework", "EntityFramework", "{84DBB20F-0889-4F7C-9F8F-0F5FEC4B7A15}"
+	ProjectSection(SolutionItems) = preProject
+		OtherOrmIssues\EntityFramework\01-常见问题-EF-query-滥用.jpg = OtherOrmIssues\EntityFramework\01-常见问题-EF-query-滥用.jpg
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -158,6 +165,7 @@ Global
 		{1371A406-E39B-4078-9981-47BC1CBD713F} = {0BD680CF-701A-48F0-8853-4B15EA5A3901}
 		{C8C70E10-A016-4D6D-8852-C65C662ED5BE} = {01469E72-6B01-413A-832F-9777EA94EB8D}
 		{347CAF9D-63A1-4809-9E0E-DE9EBA9056ED} = {01469E72-6B01-413A-832F-9777EA94EB8D}
+		{84DBB20F-0889-4F7C-9F8F-0F5FEC4B7A15} = {747B3F1D-611D-4BAC-81E9-78FE31227682}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {928A4226-96F3-409A-8A83-9E7444488710}
