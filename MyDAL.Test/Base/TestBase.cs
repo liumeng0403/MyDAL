@@ -48,7 +48,21 @@ namespace MyDAL.Test
         {
             get
             {
-                return GetMySQLConnection();
+                //
+                // Nuget : Package : MySql.Data
+                //
+                // 不同版本 mysql 连接字符串一般如下：
+                // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;"
+                // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;"
+                // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;allowPublicKeyRetrieval=true;"
+                //
+                var Conn =
+                    new XConnection
+                    (
+                        new MySqlConnection
+                            ("Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;allowPublicKeyRetrieval=true;")
+                    );
+                return Conn;
             }
         }
 
@@ -63,24 +77,6 @@ namespace MyDAL.Test
             }
         }
 
-        private static XConnection GetMySQLConnection()
-        {
-            //
-            // Nuget : Package : MySql.Data
-            //
-            // 不同版本 mysql 连接字符串一般如下：
-            // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;"
-            // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;"
-            // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;allowPublicKeyRetrieval=true;"
-            //
-            var Conn = 
-                new XConnection
-                (
-                    new MySqlConnection
-                        ("Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;allowPublicKeyRetrieval=true;")
-                );
-            return Conn;
-        }
         private static IDbConnection GetTSQLConnection_2012SP1Plus()
         {
             //
@@ -97,6 +93,7 @@ namespace MyDAL.Test
         {
             return default(Task);
         }
+
         protected void PrintLog(string msg)
         {
             Console.WriteLine(msg);
