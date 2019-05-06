@@ -3,7 +3,6 @@ using MyDAL.Test.Enums;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
@@ -47,7 +46,21 @@ namespace MyDAL.Test
         {
             get
             {
-                return GetMySQLConnection();
+                //
+                // Nuget : Package : MySql.Data
+                //
+                // 不同版本 mysql 连接字符串一般如下：
+                // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;"
+                // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;"
+                // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;allowPublicKeyRetrieval=true;"
+                //
+                var Conn =
+                    new XConnection
+                    (
+                        new MySqlConnection
+                            ("Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;allowPublicKeyRetrieval=true;")
+                    );
+                return Conn;
             }
         }
 
@@ -58,7 +71,10 @@ namespace MyDAL.Test
         {
             get
             {
-                return GetTSQLConnection_2012SP1Plus();
+                //
+                // Nuget : Package : System.Data.SqlClient
+                //
+                return new XConnection(new SqlConnection("Data Source=127.0.0.1;Initial Catalog=MyDAL_TestDB;User Id=sa;Password=1010;"));
             }
         }
 
@@ -69,40 +85,15 @@ namespace MyDAL.Test
         {
             get
             {
-                return GetMySQLConnection();
+                return Conn;
             }
-        }
-
-        private static XConnection GetMySQLConnection()
-        {
-            //
-            // Nuget : Package : MySql.Data
-            //
-            // 不同版本 mysql 连接字符串一般如下：
-            // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;"
-            // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;"
-            // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;allowPublicKeyRetrieval=true;"
-            //
-            var Conn = 
-                new XConnection
-                (
-                    new MySqlConnection
-                        ("Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;allowPublicKeyRetrieval=true;")
-                );
-            return Conn;
-        }
-        private static XConnection GetTSQLConnection_2012SP1Plus()
-        {
-            //
-            // Nuget : Package : System.Data.SqlClient
-            //
-            return new XConnection(new SqlConnection("Data Source=127.0.0.1;Initial Catalog=MyDAL_TestDB;User Id=sa;Password=1010;"));
         }
 
         protected Task None()
         {
             return default(Task);
         }
+
         protected void PrintLog(string msg)
         {
             Console.WriteLine(msg);
@@ -147,5 +138,4 @@ namespace MyDAL.Test
             return result;
         }
     }
-
 }
