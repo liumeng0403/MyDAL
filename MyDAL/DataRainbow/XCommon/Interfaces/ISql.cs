@@ -16,7 +16,7 @@ namespace MyDAL.DataRainbow.XCommon.Interfaces
 
         void Top(Context dc, StringBuilder sb);
         void Column(string tbAlias, string colName, StringBuilder sb);
-        void ColumnAlias(string tbAlias, string colAlias, StringBuilder sb);
+        void ColumnAlias(string colAlias, StringBuilder sb);
         void ColumnReplaceNullValueForSum(string tbAlias, string colName, StringBuilder sb);
         void TableX(string tbName, StringBuilder sb);
         void TableXAlias(string tbAlias, StringBuilder sb);
