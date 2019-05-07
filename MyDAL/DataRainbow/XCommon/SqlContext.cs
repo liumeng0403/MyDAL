@@ -455,7 +455,7 @@ namespace HPC.DAL.DataRainbow.XCommon
                         }
                         else if (dic.Option == OptionEnum.ColumnAs)
                         {
-                            DbSql.Column(dic.TbAlias, dic.TbCol, X); As(X); DbSql.ColumnAlias(dic.TbAlias, dic.TbColAlias, X);
+                            DbSql.Column(dic.TbAlias, dic.TbCol, X); As(X); DbSql.ColumnAlias(dic.TbColAlias, X);
                         }
                     }
                     else if (dic.Crud == CrudEnum.Query)
@@ -466,7 +466,7 @@ namespace HPC.DAL.DataRainbow.XCommon
                         }
                         else if (dic.Option == OptionEnum.ColumnAs)
                         {
-                            DbSql.Column(string.Empty, dic.TbCol, X); As(X); DbSql.ColumnAlias(string.Empty, dic.TbColAlias, X);
+                            DbSql.Column(string.Empty, dic.TbCol, X); As(X); DbSql.ColumnAlias(dic.TbColAlias, X);
                         }
                     }
                 }
@@ -481,7 +481,7 @@ namespace HPC.DAL.DataRainbow.XCommon
                         else if (dic.Option == OptionEnum.ColumnAs)
                         {
                             Function(dic.Func, X, DC); LeftRoundBracket(X); DbSql.Column(dic.TbAlias, dic.TbCol, X); Comma(X); StringConst(dic.Format, X); RightRoundBracket(X);
-                            As(X); DbSql.ColumnAlias(dic.TbAlias, dic.TbColAlias, X);
+                            As(X); DbSql.ColumnAlias(dic.TbColAlias, X);
                         }
                     }
                     else if (dic.Crud == CrudEnum.Query)
@@ -493,7 +493,7 @@ namespace HPC.DAL.DataRainbow.XCommon
                         else if (dic.Option == OptionEnum.ColumnAs)
                         {
                             Function(dic.Func, X, DC); LeftRoundBracket(X); DbSql.Column(string.Empty, dic.TbCol, X); Comma(X); StringConst(dic.Format, X); RightRoundBracket(X);
-                            As(X); DbSql.ColumnAlias(string.Empty, dic.TbColAlias, X);
+                            As(X); DbSql.ColumnAlias(dic.TbColAlias, X);
                         }
                     }
                 }

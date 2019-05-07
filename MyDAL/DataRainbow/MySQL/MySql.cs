@@ -61,12 +61,8 @@ namespace HPC.DAL.DataRainbow.MySQL
             }
             DbSql.ObjLeftSymbol(sb); sb.Append(colName); DbSql.ObjRightSymbol(sb);
         }
-        void ISql.ColumnAlias(string tbAlias, string colAlias, StringBuilder sb)
+        void ISql.ColumnAlias(string colAlias, StringBuilder sb)
         {
-            if (!tbAlias.IsNullStr())
-            {
-                DbSql.TableXAlias(tbAlias, sb); Dot(sb);
-            }
             DbSql.ObjLeftSymbol(sb); sb.Append(colAlias); DbSql.ObjRightSymbol(sb);
         }
         void ISql.ColumnReplaceNullValueForSum(string tbAlias, string colName, StringBuilder sb)

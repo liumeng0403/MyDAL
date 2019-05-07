@@ -63,20 +63,9 @@ namespace HPC.DAL.DataRainbow.SQLServer
                 DbSql.ObjLeftSymbol(sb); sb.Append(colName); DbSql.ObjRightSymbol(sb);
             }
         }
-        void ISql.ColumnAlias(string tbAlias, string colAlias, StringBuilder sb)
+        void ISql.ColumnAlias(string colAlias, StringBuilder sb)
         {
-            if (!tbAlias.IsNullStr())
-            {
-                DbSql.TableXAlias(tbAlias, sb); Dot(sb);
-            }
-            if ("*".Equals(colAlias, StringComparison.OrdinalIgnoreCase))
-            {
-                sb.Append(colAlias);
-            }
-            else
-            {
-                DbSql.ObjLeftSymbol(sb); sb.Append(colAlias); DbSql.ObjRightSymbol(sb);
-            }
+            DbSql.ObjLeftSymbol(sb); sb.Append(colAlias); DbSql.ObjRightSymbol(sb);
         }
         void ISql.ColumnReplaceNullValueForSum(string tbAlias, string colName, StringBuilder sb)
         {
