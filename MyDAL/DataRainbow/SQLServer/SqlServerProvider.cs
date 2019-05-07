@@ -1,5 +1,4 @@
 ﻿using HPC.DAL.AdoNet;
-using HPC.DAL.Core;
 using HPC.DAL.Core.Bases;
 using HPC.DAL.Core.Common;
 using HPC.DAL.Core.Enums;

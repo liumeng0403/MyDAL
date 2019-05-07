@@ -5,7 +5,7 @@ using HPC.DAL.Core.Enums;
 using HPC.DAL.Core.Extensions;
 using HPC.DAL.DataRainbow.XCommon.Bases;
 using HPC.DAL.DataRainbow.XCommon.Interfaces;
-using HPC.DAL.ModelTools;
+using HPC.DAL.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,7 +52,7 @@ namespace HPC.DAL.DataRainbow.SQLServer
         {
             if (!tbAlias.IsNullStr())
             {
-                sb.Append(tbAlias); XSQL.Dot(sb);
+                DbSql.TableXAlias(tbAlias, sb); Dot(sb);
             }
             if ("*".Equals(colName, StringComparison.OrdinalIgnoreCase))
             {
@@ -63,6 +63,21 @@ namespace HPC.DAL.DataRainbow.SQLServer
                 DbSql.ObjLeftSymbol(sb); sb.Append(colName); DbSql.ObjRightSymbol(sb);
             }
         }
+        void ISql.ColumnAlias(string tbAlias, string colAlias, StringBuilder sb)
+        {
+            if (!tbAlias.IsNullStr())
+            {
+                DbSql.TableXAlias(tbAlias, sb); Dot(sb);
+            }
+            if ("*".Equals(colAlias, StringComparison.OrdinalIgnoreCase))
+            {
+                sb.Append(colAlias);
+            }
+            else
+            {
+                DbSql.ObjLeftSymbol(sb); sb.Append(colAlias); DbSql.ObjRightSymbol(sb);
+            }
+        }
         void ISql.ColumnReplaceNullValueForSum(string tbAlias, string colName, StringBuilder sb)
         {
             sb.Append("isnull");
@@ -70,9 +85,13 @@ namespace HPC.DAL.DataRainbow.SQLServer
             DbSql.Column(tbAlias, colName, sb); Comma(sb); sb.Append('0');
             RightRoundBracket(sb);
         }
-        void ISql.TableX(string table, StringBuilder sb)
+        void ISql.TableX(string tbName, StringBuilder sb)
         {
-            DbSql.ObjLeftSymbol(sb); sb.Append(table); DbSql.ObjRightSymbol(sb);
+            DbSql.ObjLeftSymbol(sb); sb.Append(tbName); DbSql.ObjRightSymbol(sb);
+        }
+        void ISql.TableXAlias(string tbAlias, StringBuilder sb)
+        {
+            DbSql.ObjLeftSymbol(sb); sb.Append(tbAlias); DbSql.ObjRightSymbol(sb);
         }
         void ISql.MultiAction(ActionEnum action, StringBuilder sb, Context dc)
         {

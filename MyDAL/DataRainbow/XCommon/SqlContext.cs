@@ -300,7 +300,7 @@ namespace HPC.DAL.DataRainbow.XCommon
                     case ActionEnum.LeftJoin:
                         var tbm = DC.XC.GetTableModel(dp.TbMType);
                         CRLF(X); Tab(X);
-                        Action(dp.Action, X, DC); Spacing(X); DbSql.TableX(tbm.TbName, X); As(X); X.Append(dp.TbAlias);
+                        Action(dp.Action, X, DC); Spacing(X); DbSql.TableX(tbm.TbName, X); As(X); DbSql.TableXAlias(dp.TbAlias, X);
                         break;
                     case ActionEnum.On:
                         CRLF(X); Tab(X); Tab(X);
@@ -392,7 +392,7 @@ namespace HPC.DAL.DataRainbow.XCommon
             else if (DC.Set == SetEnum.IgnoreNull)
             {
                 list = list.Where(it => it.ParamInfo.Value != DBNull.Value)?.ToList();
-                if (list == null || list.Count == 0) { throw XConfig.EC. Exception(XConfig.EC._055, "没有设置任何要更新的字段!"); }
+                if (list == null || list.Count == 0) { throw XConfig.EC.Exception(XConfig.EC._055, "没有设置任何要更新的字段!"); }
             }
             else
             {
@@ -455,7 +455,7 @@ namespace HPC.DAL.DataRainbow.XCommon
                         }
                         else if (dic.Option == OptionEnum.ColumnAs)
                         {
-                            DbSql.Column(dic.TbAlias, dic.TbCol, X); As(X); X.Append(dic.TbColAlias);
+                            DbSql.Column(dic.TbAlias, dic.TbCol, X); As(X); DbSql.ColumnAlias(dic.TbAlias, dic.TbColAlias, X);
                         }
                     }
                     else if (dic.Crud == CrudEnum.Query)
@@ -466,7 +466,7 @@ namespace HPC.DAL.DataRainbow.XCommon
                         }
                         else if (dic.Option == OptionEnum.ColumnAs)
                         {
-                            DbSql.Column(string.Empty, dic.TbCol, X); As(X); X.Append(dic.TbColAlias);
+                            DbSql.Column(string.Empty, dic.TbCol, X); As(X); DbSql.ColumnAlias(string.Empty, dic.TbColAlias, X);
                         }
                     }
                 }
@@ -481,7 +481,7 @@ namespace HPC.DAL.DataRainbow.XCommon
                         else if (dic.Option == OptionEnum.ColumnAs)
                         {
                             Function(dic.Func, X, DC); LeftRoundBracket(X); DbSql.Column(dic.TbAlias, dic.TbCol, X); Comma(X); StringConst(dic.Format, X); RightRoundBracket(X);
-                            As(X); X.Append(dic.TbColAlias);
+                            As(X); DbSql.ColumnAlias(dic.TbAlias, dic.TbColAlias, X);
                         }
                     }
                     else if (dic.Crud == CrudEnum.Query)
@@ -493,7 +493,7 @@ namespace HPC.DAL.DataRainbow.XCommon
                         else if (dic.Option == OptionEnum.ColumnAs)
                         {
                             Function(dic.Func, X, DC); LeftRoundBracket(X); DbSql.Column(string.Empty, dic.TbCol, X); Comma(X); StringConst(dic.Format, X); RightRoundBracket(X);
-                            As(X); X.Append(dic.TbColAlias);
+                            As(X); DbSql.ColumnAlias(string.Empty, dic.TbColAlias, X);
                         }
                     }
                 }
@@ -746,7 +746,7 @@ namespace HPC.DAL.DataRainbow.XCommon
             {
                 var dic = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.From);
                 var tbm = DC.XC.GetTableModel(dic.TbMType);
-                DbSql.TableX(tbm.TbName, X); As(X); X.Append(dic.TbAlias);
+                DbSql.TableX(tbm.TbName, X); As(X); DbSql.TableXAlias(dic.TbAlias, X);
                 JoinX();
             }
             else
