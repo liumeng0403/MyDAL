@@ -58,9 +58,17 @@ namespace MyDAL.DataRainbow.MySQL
         {
             if (!tbAlias.IsNullStr())
             {
-                sb.Append(tbAlias); XSQL.Dot(sb);
+                DbSql.TableXAlias(tbAlias, sb); Dot(sb);
             }
             DbSql.ObjLeftSymbol(sb); sb.Append(colName); DbSql.ObjRightSymbol(sb);
+        }
+        void ISql.ColumnAlias(string tbAlias, string colAlias, StringBuilder sb)
+        {
+            if (!tbAlias.IsNullStr())
+            {
+                DbSql.TableXAlias(tbAlias, sb); Dot(sb);
+            }
+            DbSql.ObjLeftSymbol(sb); sb.Append(colAlias); DbSql.ObjRightSymbol(sb);
         }
         void ISql.ColumnReplaceNullValueForSum(string tbAlias, string colName, StringBuilder sb)
         {
@@ -69,9 +77,13 @@ namespace MyDAL.DataRainbow.MySQL
             DbSql.Column(tbAlias, colName, sb); Comma(sb); sb.Append('0');
             RightRoundBracket(sb);
         }
-        void ISql.TableX(string table, StringBuilder sb)
+        void ISql.TableX(string tbName, StringBuilder sb)
         {
-            DbSql.ObjLeftSymbol(sb); sb.Append(table); DbSql.ObjRightSymbol(sb);
+            DbSql.ObjLeftSymbol(sb); sb.Append(tbName); DbSql.ObjRightSymbol(sb);
+        }
+        void ISql.TableXAlias(string tbAlias, StringBuilder sb)
+        {
+            DbSql.ObjLeftSymbol(sb); sb.Append(tbAlias); DbSql.ObjRightSymbol(sb);
         }
         void ISql.MultiAction(ActionEnum action, StringBuilder sb, Context dc)
         {
