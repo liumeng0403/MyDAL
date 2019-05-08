@@ -26,7 +26,7 @@ namespace HPC.DAL
         private static Creater<M> Creater<M>(this XConnection conn)
             where M : class, new()
         {
-            var dc = new XContext<M>(conn.Conn,conn.Tran)
+            var dc = new XContext<M>(conn.Conn, conn.Tran)
             {
                 Crud = CrudEnum.Create
             };
@@ -92,7 +92,7 @@ namespace HPC.DAL
         }
         private static XContext DcForSQL(XConnection conn, string sql, List<XParam> dbParas)
         {
-            var dc = new XContext(conn.Conn,conn.Tran)
+            var dc = new XContext(conn.Conn, conn.Tran)
             {
                 Crud = CrudEnum.SQL
             };
@@ -119,7 +119,7 @@ namespace HPC.DAL
         public static async Task<PagingResult<T>> QueryPagingAsync<T>
             (this XConnection conn, PagingResult<T> paging, string totalCountSql, string pageDataSql, List<XParam> dbParas = null)
         {
-            var dc = new XContext(conn.Conn,conn.Tran)
+            var dc = new XContext(conn.Conn, conn.Tran)
             {
                 Crud = CrudEnum.SQL
             };
@@ -136,7 +136,7 @@ namespace HPC.DAL
         public static PagingResult<T> QueryPaging<T>
             (this XConnection conn, PagingResult<T> paging, string totalCountSql, string pageDataSql, List<XParam> dbParas = null)
         {
-            var dc = new XContext(conn.Conn,conn.Tran)
+            var dc = new XContext(conn.Conn, conn.Tran)
             {
                 Crud = CrudEnum.SQL
             };
@@ -159,7 +159,7 @@ namespace HPC.DAL
         public static Deleter<M> Deleter<M>(this XConnection conn)
             where M : class, new()
         {
-            var dc = new XContext<M>(conn.Conn,conn.Tran)
+            var dc = new XContext<M>(conn.Conn, conn.Tran)
             {
                 Crud = CrudEnum.Delete
             };
@@ -175,7 +175,7 @@ namespace HPC.DAL
         public static Updater<M> Updater<M>(this XConnection conn)
             where M : class, new()
         {
-            var dc = new XContext<M>(conn.Conn,conn.Tran)
+            var dc = new XContext<M>(conn.Conn, conn.Tran)
             {
                 Crud = CrudEnum.Update
             };
@@ -191,7 +191,7 @@ namespace HPC.DAL
         public static Queryer<M1> Queryer<M1>(this XConnection conn)
             where M1 : class, new()
         {
-            var dc = new XContext<M1>(conn.Conn,conn.Tran)
+            var dc = new XContext<M1>(conn.Conn, conn.Tran)
             {
                 Crud = CrudEnum.Query
             };
@@ -209,7 +209,7 @@ namespace HPC.DAL
         {
             table1 = new M1();
             table2 = new M2();
-            var dc = new XContext<M1, M2>(conn.Conn,conn.Tran)
+            var dc = new XContext<M1, M2>(conn.Conn, conn.Tran)
             {
                 Crud = CrudEnum.Join
             };
@@ -226,7 +226,7 @@ namespace HPC.DAL
             table1 = new M1();
             table2 = new M2();
             table3 = new M3();
-            var dc = new XContext<M1, M2, M3>(conn.Conn,conn.Tran)
+            var dc = new XContext<M1, M2, M3>(conn.Conn, conn.Tran)
             {
                 Crud = CrudEnum.Join
             };
@@ -245,7 +245,7 @@ namespace HPC.DAL
             table2 = new M2();
             table3 = new M3();
             table4 = new M4();
-            var dc = new XContext<M1, M2, M3, M4>(conn.Conn,conn.Tran)
+            var dc = new XContext<M1, M2, M3, M4>(conn.Conn, conn.Tran)
             {
                 Crud = CrudEnum.Join
             };
@@ -266,7 +266,7 @@ namespace HPC.DAL
             table3 = new M3();
             table4 = new M4();
             table5 = new M5();
-            var dc = new XContext<M1, M2, M3, M4, M5>(conn.Conn,conn.Tran)
+            var dc = new XContext<M1, M2, M3, M4, M5>(conn.Conn, conn.Tran)
             {
                 Crud = CrudEnum.Join
             };
@@ -289,7 +289,7 @@ namespace HPC.DAL
             table4 = new M4();
             table5 = new M5();
             table6 = new M6();
-            var dc = new XContext<M1, M2, M3, M4, M5, M6>(conn.Conn,conn.Tran)
+            var dc = new XContext<M1, M2, M3, M4, M5, M6>(conn.Conn, conn.Tran)
             {
                 Crud = CrudEnum.Join
             };
@@ -297,380 +297,12 @@ namespace HPC.DAL
         }
         #endregion
 
-        #region Create API
-        /// <summary>
-        /// Creater 便捷 CreateAsync 方法
-        /// </summary>
-        public static async Task<int> CreateAsync<M>(this XConnection conn, M m)
-            where M : class, new()
-        {
-            return await conn.Creater<M>().CreateAsync(m);
-        }
 
-        /*-------------------------------------------------------------*/
 
-        public static async Task<int> CreateAsync(this XConnection conn, string sql, List<XParam> dbParas = null)
-        {
-            CheckCreate(sql);
-            return await conn.ExecuteNonQueryAsync(sql, dbParas);
-        }
 
-        /*-------------------------------------------------------------*/
 
-        /// <summary>
-        /// Creater 便捷 CreateAsync 方法
-        /// </summary>
-        public static int Create<M>(this XConnection conn, M m)
-            where M : class, new()
-        {
-            return conn.Creater<M>().Create(m);
-        }
 
-        /*-------------------------------------------------------------*/
 
-        public static int Create(this XConnection conn, string sql, List<XParam> dbParas = null)
-        {
-            CheckCreate(sql);
-            return conn.ExecuteNonQuery(sql, dbParas);
-        }
-        #endregion
 
-        #region CreateBatch API
-        /// <summary>
-        /// Creater 便捷 CreateBatchAsync 方法
-        /// </summary>
-        public static async Task<int> CreateBatchAsync<M>(this XConnection conn, IEnumerable<M> mList)
-            where M : class, new()
-        {
-            return await conn.Creater<M>().CreateBatchAsync(mList);
-        }
-
-        /*-------------------------------------------------------------*/
-
-        /// <summary>
-        /// Creater 便捷 CreateBatchAsync 方法
-        /// </summary>
-        public static int CreateBatch<M>(this XConnection conn, IEnumerable<M> mList)
-            where M : class, new()
-        {
-            return conn.Creater<M>().CreateBatch(mList);
-        }
-        #endregion
-
-        #region Delete API
-        /// <summary>
-        /// Deleter 便捷 DeleteAsync 方法
-        /// </summary>
-        public static async Task<int> DeleteAsync<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class, new()
-        {
-            return await conn.Deleter<M>().Where(compareFunc).DeleteAsync();
-        }
-
-        /*-------------------------------------------------------------*/
-
-        public static async Task<int> DeleteAsync(this XConnection conn, string sql, List<XParam> dbParas = null)
-        {
-            CheckDelete(sql);
-            return await conn.ExecuteNonQueryAsync(sql, dbParas);
-        }
-
-        /*-------------------------------------------------------------*/
-
-        /// <summary>
-        /// Deleter 便捷 DeleteAsync 方法
-        /// </summary>
-        public static int Delete<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class, new()
-        {
-            return conn.Deleter<M>().Where(compareFunc).Delete();
-        }
-
-        /*-------------------------------------------------------------*/
-
-        public static int Delete(this XConnection conn, string sql, List<XParam> dbParas = null)
-        {
-            CheckDelete(sql);
-            return conn.ExecuteNonQuery(sql, dbParas);
-        }
-        #endregion
-
-        #region Update API
-        /// <summary>
-        /// 请参阅: <see langword=".UpdateAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        public static async Task<int> UpdateAsync<M>
-            (this XConnection conn, Expression<Func<M, bool>> compareFunc, dynamic filedsObject, SetEnum set = SetEnum.AllowedNull)
-            where M : class, new()
-        {
-            return await conn.Updater<M>().Set(filedsObject as object).Where(compareFunc).UpdateAsync(set);
-        }
-
-        /*-------------------------------------------------------------*/
-
-        public static async Task<int> UpdateAsync(this XConnection conn, string sql, List<XParam> dbParas = null)
-        {
-            CheckUpdate(sql);
-            return await conn.ExecuteNonQueryAsync(sql, dbParas);
-        }
-
-        /*-------------------------------------------------------------*/
-
-        /// <summary>
-        /// Updater 便捷 UpdateAsync update fields 方法
-        /// </summary>
-        public static int Update<M>
-            (this XConnection conn, Expression<Func<M, bool>> compareFunc, dynamic filedsObject, SetEnum set = SetEnum.AllowedNull)
-            where M : class, new()
-        {
-            return conn.Updater<M>().Set(filedsObject as object).Where(compareFunc).Update(set);
-        }
-
-        /*-------------------------------------------------------------*/
-
-        public static int Update(this XConnection conn, string sql, List<XParam> dbParas = null)
-        {
-            CheckUpdate(sql);
-            return conn.ExecuteNonQuery(sql, dbParas);
-        }
-        #endregion
-
-        #region QueryOne API
-        /// <summary>
-        /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        public static async Task<M> QueryOneAsync<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class, new()
-        {
-            return await conn.Queryer<M>().Where(compareFunc).QueryOneAsync();
-        }
-        /// <summary>
-        /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        public static async Task<VM> QueryOneAsync<M, VM>(this XConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class, new()
-            where VM : class
-        {
-            return await conn.Queryer<M>().Where(compareFunc).QueryOneAsync<VM>();
-        }
-        /// <summary>
-        /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        public static async Task<T> QueryOneAsync<M, T>
-            (this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, T>> columnMapFunc)
-            where M : class, new()
-        {
-            return await conn.Queryer<M>().Where(compareFunc).QueryOneAsync(columnMapFunc);
-        }
-
-        /*-------------------------------------------------------------*/
-
-        public static async Task<T> QueryOneAsync<T>(this XConnection conn, string sql, List<XParam> dbParas = null)
-        {
-            CheckQuery(sql);
-            var dc = DcForSQL(conn, sql, dbParas);
-            return await new QueryOneSQLAsyncImpl(dc).QueryOneAsync<T>();
-        }
-
-        /*-------------------------------------------------------------*/
-
-        /// <summary>
-        /// Queryer 便捷-同步 QueryOneAsync 方法
-        /// </summary>
-        public static M QueryOne<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class, new()
-        {
-            return conn.Queryer<M>().Where(compareFunc).QueryOne();
-        }
-        /// <summary>
-        /// Queryer 便捷-同步 QueryOneAsync 方法
-        /// </summary>
-        public static VM QueryOne<M, VM>(this XConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class, new()
-            where VM : class
-        {
-            return conn.Queryer<M>().Where(compareFunc).QueryOne<VM>();
-        }
-        /// <summary>
-        /// Queryer 便捷-同步 QueryOneAsync 方法
-        /// </summary>
-        public static T QueryOne<M, T>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, T>> columnMapFunc)
-            where M : class, new()
-        {
-            return conn.Queryer<M>().Where(compareFunc).QueryOne(columnMapFunc);
-        }
-
-        /*-------------------------------------------------------------*/
-
-        public static T QueryOne<T>(this XConnection conn, string sql, List<XParam> dbParas = null)
-        {
-            CheckQuery(sql);
-            var dc = DcForSQL(conn, sql, dbParas);
-            return new QueryOneSQLImpl(dc).QueryOne<T>();
-        }
-        #endregion
-
-        #region QueryList API
-        /// <summary>
-        /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        public static async Task<List<M>> QueryListAsync<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class, new()
-        {
-            return await conn.Queryer<M>().Where(compareFunc).QueryListAsync();
-        }
-        /// <summary>
-        /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        public static async Task<List<VM>> QueryListAsync<M, VM>(this XConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class, new()
-            where VM : class
-        {
-            return await conn.Queryer<M>().Where(compareFunc).QueryListAsync<VM>();
-        }
-        /// <summary>
-        /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        public static async Task<List<T>> QueryListAsync<M, T>
-            (this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, T>> columnMapFunc)
-            where M : class, new()
-        {
-            return await conn.Queryer<M>().Where(compareFunc).QueryListAsync(columnMapFunc);
-        }
-
-        /*-------------------------------------------------------------*/
-
-        public static async Task<List<T>> QueryListAsync<T>(this XConnection conn, string sql, List<XParam> dbParas = null)
-        {
-            CheckQuery(sql);
-            var dc = DcForSQL(conn, sql, dbParas);
-            return await new QueryListSQLAsyncImpl(dc).QueryListAsync<T>();
-        }
-
-        /*-------------------------------------------------------------*/
-
-        /// <summary>
-        /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        public static List<M> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class, new()
-        {
-            return conn.Queryer<M>().Where(compareFunc).QueryList();
-        }
-        /// <summary>
-        /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        public static List<VM> QueryList<M, VM>(this XConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class, new()
-            where VM : class
-        {
-            return conn.Queryer<M>().Where(compareFunc).QueryList<VM>();
-        }
-        /// <summary>
-        /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        public static List<T> QueryList<M, T>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, T>> columnMapFunc)
-            where M : class, new()
-        {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
-        }
-
-        /*-------------------------------------------------------------*/
-
-        public static List<T> QueryList<T>(this XConnection conn, string sql, List<XParam> dbParas = null)
-        {
-            CheckQuery(sql);
-            var dc = DcForSQL(conn, sql, dbParas);
-            return new QueryListSQLImpl(dc).QueryList<T>();
-        }
-        #endregion
-
-        #region IsExist API
-        /// <summary>
-        /// 请参阅: <see langword=".IsExistAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        public static async Task<bool> IsExistAsync<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class, new()
-        {
-            return await conn.Queryer<M>().Where(compareFunc).IsExistAsync();
-        }
-
-        /*-------------------------------------------------------------*/
-
-        /// <summary>
-        /// Queryer 便捷-同步 IsExistAsync 方法
-        /// </summary>
-        public static bool IsExist<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class, new()
-        {
-            return conn.Queryer<M>().Where(compareFunc).IsExist();
-        }
-        #endregion
-
-        #region Count API
-        /// <summary>
-        /// Queryer 便捷 CountAsync 方法
-        /// </summary>
-        public static async Task<int> CountAsync<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class, new()
-        {
-            return await conn.Queryer<M>().Where(compareFunc).CountAsync();
-        }
-
-        /*-------------------------------------------------------------*/
-
-        /// <summary>
-        /// Queryer 便捷 CountAsync 方法
-        /// </summary>
-        public static int Count<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class, new()
-        {
-            return conn.Queryer<M>().Where(compareFunc).Count();
-        }
-        #endregion
-
-        #region Sum API
-        public static async Task<F> SumAsync<M, F>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, F>> propertyFunc)
-            where M : class, new()
-            where F : struct
-        {
-            return await conn.Queryer<M>().Where(compareFunc).SumAsync(propertyFunc);
-        }
-        public static async Task<Nullable<F>> SumAsync<M, F>
-            (this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, Nullable<F>>> propertyFunc)
-            where M : class, new()
-            where F : struct
-        {
-            return await conn.Queryer<M>().Where(compareFunc).SumAsync(propertyFunc);
-        }
-
-        /*-------------------------------------------------------------*/
-
-        public static F Sum<M, F>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, F>> propertyFunc)
-            where M : class, new()
-            where F : struct
-        {
-            return conn.Queryer<M>().Where(compareFunc).Sum(propertyFunc);
-        }
-        public static Nullable<F> Sum<M, F>
-            (this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, Nullable<F>>> propertyFunc)
-            where M : class, new()
-            where F : struct
-        {
-            return conn.Queryer<M>().Where(compareFunc).Sum(propertyFunc);
-        }
-        #endregion
-
-        #region ForUser
-        /// <summary>
-        /// Sql 调试跟踪 开启
-        /// </summary>
-        public static XConnection OpenDebug(this XConnection conn, DebugEnum type = DebugEnum.Output)
-        {
-            XConfig.IsDebug = true;
-            XConfig.DebugType = type;
-            return conn;
-        }
-        #endregion
     }
 }

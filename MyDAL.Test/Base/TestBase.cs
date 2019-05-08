@@ -67,26 +67,17 @@ namespace MyDAL.Test
         }
 
         /// <summary>
-        /// SqlServer 2012SP1+
+        /// SqlServer
         /// </summary>
-        protected IDbConnection Conn2
+        protected XConnection Conn2
         {
             get
             {
-                return GetTSQLConnection_2012SP1Plus();
+                //
+                // Nuget : Package : System.Data.SqlClient
+                //
+                return new XConnection(new SqlConnection("Data Source=127.0.0.1;Initial Catalog=MyDAL_TestDB;User Id=sa;Password=1010;"));
             }
-        }
-
-        private static IDbConnection GetTSQLConnection_2012SP1Plus()
-        {
-            //
-            // Nuget : Package : System.Data.SqlClient
-            //
-            return
-                new SqlConnection("Data Source=127.0.0.1;Initial Catalog=MyDAL_TestDB;User Id=sa;Password=1010;")
-                .OpenDebug()  // 全局 debug 配置, 生产环境不要开启 
-                              //.OpenAsync()  // 建议 每次新实例并打开,以获得更好的性能体验, 但是 用完要注意手动释放, 防止 连接池 资源耗尽!!!
-                ;
         }
 
         protected Task None()

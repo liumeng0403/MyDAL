@@ -3,7 +3,6 @@ using HPC.DAL.Core.Enums;
 using HPC.DAL.Impls.Base;
 using HPC.DAL.Interfaces.IAsyncs;
 using System;
-using System.Data;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -30,6 +29,7 @@ namespace HPC.DAL.Impls.ImplAsyncs
             PreExecuteHandle(UiMethodEnum.SumAsync);
             return await DSA.ExecuteScalarAsync<F>();
         }
+
         public async Task<Nullable<F>> SumAsync<F>(Expression<Func<M, Nullable<F>>> propertyFunc)
             where F : struct
         {
@@ -42,6 +42,5 @@ namespace HPC.DAL.Impls.ImplAsyncs
             PreExecuteHandle(UiMethodEnum.SumAsync);
             return await DSA.ExecuteScalarAsync<F>();
         }
-
     }
 }

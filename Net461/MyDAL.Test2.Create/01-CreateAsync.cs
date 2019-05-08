@@ -18,7 +18,7 @@ namespace MyDAL.Test2.Create
         public async Task Create_Batch_Shortcut()
         {
 
-            var list = await new CreateData().PreCreateBatch(Conn2);
+            var list = await new CreateData().PreCreateBatchV2(Conn2);
 
             xx = string.Empty;
 

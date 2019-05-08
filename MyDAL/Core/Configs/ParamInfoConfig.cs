@@ -2,7 +2,7 @@
 using HPC.DAL.Core.Bases;
 using HPC.DAL.Core.Common;
 using HPC.DAL.Core.Extensions;
-using HPC.DAL.ModelTools;
+using HPC.DAL.Tools;
 using System;
 using System.Data;
 
