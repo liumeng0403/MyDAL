@@ -5,7 +5,6 @@ using MyDAL.Interfaces;
 using MyDAL.Interfaces.IAsyncs;
 using MyDAL.Interfaces.ISyncs;
 using System;
-using System.Data;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -32,6 +31,7 @@ namespace MyDAL.Impls.ImplAsyncs
             PreExecuteHandle(UiMethodEnum.SumAsync);
             return await DSA.ExecuteScalarAsync<F>();
         }
+
         public async Task<Nullable<F>> SumAsync<F>(Expression<Func<M, Nullable<F>>> propertyFunc)
             where F : struct
         {
@@ -44,6 +44,5 @@ namespace MyDAL.Impls.ImplAsyncs
             PreExecuteHandle(UiMethodEnum.SumAsync);
             return await DSA.ExecuteScalarAsync<F>();
         }
-
     }
 }

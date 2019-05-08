@@ -65,7 +65,7 @@ namespace MyDAL.Test
         }
 
         /// <summary>
-        /// SqlServer 2012SP1+
+        /// SqlServer
         /// </summary>
         protected XConnection Conn2
         {

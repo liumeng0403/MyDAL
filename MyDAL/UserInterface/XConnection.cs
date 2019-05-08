@@ -114,6 +114,16 @@ namespace MyDAL
             if (AutoClose) { Conn.Close(); }
         }
 
+        /// <summary>
+        /// Sql 调试跟踪 开启
+        /// </summary>
+        public XConnection OpenDebug(DebugEnum type = DebugEnum.Output)
+        {
+            XConfig.IsDebug = true;
+            XConfig.DebugType = type;
+            return this;
+        }
+
         public void Dispose()
         {
             if (Tran != null) { using (Tran) { } }
