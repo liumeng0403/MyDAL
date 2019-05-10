@@ -23,7 +23,7 @@ namespace MyDAL.Test2.Query
 
             Assert.IsTrue(res1 == 589);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }

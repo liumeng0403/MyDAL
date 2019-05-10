@@ -26,7 +26,7 @@ namespace MyDAL.Test.WhereEdge
                     Assert.True(true);
                 }
 
-                tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
+                
             }
         }
 
@@ -45,7 +45,7 @@ namespace MyDAL.Test.WhereEdge
             ExistXTest = new InterfaceDI();
             await ExistXTest.eee(vm);
 
-            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
+            
 
             /*****************************************************************************************/
 

@@ -19,7 +19,7 @@ namespace MyDAL.Test.SqlAction
 
             Assert.True(res1.Data.Count == 10);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*****************************************************************************************************************************/
 
@@ -45,7 +45,7 @@ namespace MyDAL.Test.SqlAction
 
             Assert.True(res1.Data.Count == 10);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*****************************************************************************************************************************/
 

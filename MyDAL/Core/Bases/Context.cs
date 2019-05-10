@@ -9,6 +9,7 @@ using MyDAL.DataRainbow.XCommon.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 
 namespace MyDAL.Core.Bases
@@ -18,7 +19,7 @@ namespace MyDAL.Core.Bases
 
         /************************************************************************************************************************/
 
-        internal void Init(IDbConnection conn,IDbTransaction tran)
+        internal void Init(IDbConnection conn, IDbTransaction tran)
         {
             //
             if (XConfig.ConnTypes.TryGetValue(conn.GetType().FullName, out var db))
@@ -190,8 +191,6 @@ namespace MyDAL.Core.Bases
         /*********************************************************************************************************************************************/
 
         private List<DicParam> FlatDics { get; set; }
-        private List<string> FlatParameters { get; set; }
-        private List<string> FlatSQL { get; set; }
         internal List<string> FlatSqlWithParams { get; set; }
         internal bool FlatOutput { get; set; } = true;
         internal bool AlreadyOutput { get; set; } = false;
@@ -210,70 +209,10 @@ namespace MyDAL.Core.Bases
         internal void SetValue()
         {
             //
-            FlatDics = DPH.FlatDics(Parameters);
-
-            //
-            FlatParameters = FlatDics
-                .Select(dbM =>
-                {
-                    var field = string.Empty;
-                    if (dbM.Crud == CrudEnum.Query
-                        || dbM.Crud == CrudEnum.Update
-                        || dbM.Crud == CrudEnum.Create
-                        || dbM.Crud == CrudEnum.Delete)
-                    {
-                        field = dbM.TbCol;
-                    }
-                    else if (dbM.Crud == CrudEnum.Join)
-                    {
-                        field = $"{dbM.TbAlias}.{dbM.TbCol}";
-                    }
-
-                    //
-                    var csVal = string.Empty;
-                    if (dbM.CsValue == null)
-                    {
-                        csVal = "Null";
-                    }
-                    else if (dbM.CsType == XConfig.CSTC.DateTime)
-                    {
-                        try
-                        {
-                            csVal = dbM.CsValue.ToDateTimeStr();
-                        }
-                        catch
-                        {
-                            csVal = dbM.CsValue.ToString();
-                        }
-                    }
-                    else
-                    {
-                        csVal = dbM.CsValue.ToString();
-                    }
-
-                    //
-                    var dbVal = string.Empty;
-                    dbVal = dbM.ParamInfo.Value == DBNull.Value ? "DbNull" : dbM.ParamInfo.Value.ToString();
-
-                    //
-                    if (dbM.Action == ActionEnum.SQL)
-                    {
-                        return $"参数:【{dbM.ParamInfo.Name}】-->【{dbVal}】.";
-                    }
-                    else
-                    {
-                        return $"字段:【{field}】-->【{csVal}】;参数:【{dbM.Param}】-->【{dbVal}】.";
-                    }
-                })
-                .ToList();
-
-            //
-            FlatSQL = SQL;
-
-            //
             FlatSqlWithParams = new List<string>();
             var paramSymbol = GetParamSymbol();
-            foreach (var sql in FlatSQL)
+            FlatDics = DPH.FlatDics(Parameters);
+            foreach (var sql in SQL)
             {
                 var sqlStr = sql;
                 foreach (var par in FlatDics)
@@ -312,11 +251,43 @@ namespace MyDAL.Core.Bases
                 }
                 FlatSqlWithParams.Add(sqlStr);
             }
+        }
+        internal void OutPutSQL(List<string> sqlList, Context dc)
+        {
+            //
+            if (!dc.FlatOutput)
+            {
+                return;
+            }
 
             //
-            XDebug.SQL = FlatSQL;
-            XDebug.Parameters = FlatParameters;
-            XDebug.SqlWithParams = FlatSqlWithParams;
+            if (dc.AlreadyOutput)
+            {
+                return;
+            }
+            else
+            {
+                dc.AlreadyOutput = true;
+            }
+
+            //
+            foreach (var sql in sqlList)
+            {
+                var info = $@"
+=================================================================  <--  参数化 SQL 开始{(XConfig.IsDebug ? "，Debug 模式已开启！" : "")}
+{sql}
+=================================================================  <--  参数化 SQL 结束
+                                        ";
+                switch (XConfig.DebugType)
+                {
+                    case DebugEnum.Output:
+                        Trace.WriteLine(info);
+                        break;
+                    case DebugEnum.Console:
+                        Console.WriteLine(info);
+                        break;
+                }
+            }
         }
 
         /*********************************************************************************************************************************************/

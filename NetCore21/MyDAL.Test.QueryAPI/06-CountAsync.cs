@@ -16,7 +16,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1 == 116);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }

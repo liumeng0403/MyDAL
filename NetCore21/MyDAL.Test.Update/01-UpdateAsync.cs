@@ -46,7 +46,7 @@ namespace MyDAL.Test.Update
             });
             Assert.True(res2 == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             var res21 = await Conn.QueryOneAsync<AlipayPaymentRecord>(it => it.Id == pk2);
 
@@ -72,7 +72,7 @@ namespace MyDAL.Test.Update
 
             Assert.True(res2 == 2);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -94,7 +94,7 @@ namespace MyDAL.Test.Update
 
             Assert.True(res6 == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -127,7 +127,7 @@ namespace MyDAL.Test.Update
 
             Assert.True(res7 == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             var resxx7 = await Conn
                 .Queryer<Product>()
@@ -153,7 +153,7 @@ namespace MyDAL.Test.Update
 
             Assert.True(res81.AgentLevel == AgentLevel.NewCustomer);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -175,7 +175,7 @@ namespace MyDAL.Test.Update
 
             Assert.True(res1 == 574);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             var res11 = await Conn.QueryListAsync<AgentInventoryRecord>(it => it.LockedCount != 0);
             Assert.True(res11.Count == 0);
@@ -201,7 +201,7 @@ namespace MyDAL.Test.Update
 
             Assert.True(res1 == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             // 查询一条数据: AlipayPaymentRecord
             var res11 = await Conn.QueryOneAsync<AlipayPaymentRecord>(it => it.Id == pk1);
@@ -235,7 +235,7 @@ namespace MyDAL.Test.Update
 
             Assert.True(res1 == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             // 查询一条数据: AlipayPaymentRecord
             var res11 = await Conn.QueryOneAsync<AlipayPaymentRecord>(it => it.Id == pk1);
@@ -263,7 +263,7 @@ namespace MyDAL.Test.Update
 
             Assert.True(res1 == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             var res11 = await Conn.QueryOneAsync<Agent>(it => it.Id == agent.Id);
 
@@ -316,7 +316,7 @@ namespace MyDAL.Test.Update
                 agent.ActiveOrderId
             }, SetEnum.IgnoreNull);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             var res11 = await Conn.QueryOneAsync<Agent>(it => it.Id == agent.Id);
 
@@ -341,7 +341,7 @@ namespace MyDAL.Test.Update
 
             Assert.True(res1 == 574);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             var res11 = await Conn.QueryListAsync<AgentInventoryRecord>(it => it.LockedCount != 0);
             Assert.True(res11.Count == 0);
@@ -366,7 +366,7 @@ namespace MyDAL.Test.Update
 
             Assert.True(res1 == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -391,7 +391,7 @@ namespace MyDAL.Test.Update
 
             Assert.Null(res11.PathId);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*****************************************************************************************************************************************************************/
 
@@ -420,7 +420,7 @@ namespace MyDAL.Test.Update
                 Assert.Equal(errStr, ex.Message, true);
             }
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*****************************************************************************************************************************************************************/
 
@@ -447,7 +447,7 @@ namespace MyDAL.Test.Update
                 .Where(it => it.Id == agent.Id)
                 .UpdateAsync(SetEnum.IgnoreNull);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             var res11 = await Conn.QueryOneAsync<Agent>(it => it.Id == agent.Id);
 
@@ -475,7 +475,7 @@ namespace MyDAL.Test.Update
 
             Assert.True(res5 == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -499,7 +499,7 @@ namespace MyDAL.Test.Update
 
             Assert.True(res5 == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -526,7 +526,7 @@ namespace MyDAL.Test.Update
 
             Assert.True(res1 == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -557,7 +557,7 @@ namespace MyDAL.Test.Update
 
             Assert.True(res1 == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -583,7 +583,7 @@ namespace MyDAL.Test.Update
                 .UpdateAsync();
             Assert.True(res1 == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -624,7 +624,7 @@ namespace MyDAL.Test.Update
 
             Assert.True(res1 == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 

@@ -48,7 +48,7 @@ namespace MyDAL.Test.Compare
                 .QueryListAsync();
             Assert.True(res2.Count == 554);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************************/
 
@@ -65,7 +65,7 @@ namespace MyDAL.Test.Compare
             }
             catch (Exception ex)
             {
-                tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+                
                 var errStr = "【ERR-078】 -- [[[[Convert(value(MyDAL.Test.Compare._09_Null).WhereTest.AgentLevelNull, Nullable`1)]] 中,传入的 SQL 筛选条件为 Null !!!]] ，请 EMail: --> liumeng0403@163.com <--";
                 Assert.Equal(errStr, ex.Message, ignoreCase: true);
             }
@@ -83,7 +83,7 @@ namespace MyDAL.Test.Compare
                 .QueryListAsync();
             Assert.True(res4.Count == 554);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************************/
 
@@ -99,14 +99,14 @@ namespace MyDAL.Test.Compare
                 .QueryListAsync<Agent>();
             Assert.True(res5.Count == 28085);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************************/
 
             var res7 = await Conn.QueryListAsync<Agent>(it => it.ActiveOrderId == null);
             Assert.True(res7.Count == 28066);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************************/
 
@@ -116,7 +116,7 @@ namespace MyDAL.Test.Compare
             var res8 = await Conn.QueryListAsync<Agent>(it => it.ActiveOrderId != null);
             Assert.True(res8.Count == 554);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************************/
 
@@ -139,7 +139,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Count == 28066);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************************/
 
@@ -161,7 +161,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Count == 554);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************************/
 
@@ -186,7 +186,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res6.Count == 554);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************************/
 
@@ -211,7 +211,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res6.Count == 28085);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************************/
 

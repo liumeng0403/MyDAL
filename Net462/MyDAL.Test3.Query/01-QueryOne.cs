@@ -25,8 +25,7 @@ namespace MyDAL.Test3.Query
 
             Assert.IsTrue(res1 == pk);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
+            xx = string.Empty;
         }
 
         [TestMethod]
@@ -44,8 +43,7 @@ namespace MyDAL.Test3.Query
 
             Assert.IsNotNull(res1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
+            xx = string.Empty;
         }
 
         [TestMethod]
@@ -63,8 +61,7 @@ namespace MyDAL.Test3.Query
 
             Assert.IsNotNull(res1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
+            xx = string.Empty;
         }
 
         [TestMethod]
@@ -86,10 +83,6 @@ namespace MyDAL.Test3.Query
             });
 
             Assert.IsNotNull(res1);
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /****************************************************************************************/
 
             xx = string.Empty;
         }

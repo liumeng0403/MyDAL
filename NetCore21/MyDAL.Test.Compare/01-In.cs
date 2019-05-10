@@ -59,9 +59,7 @@ namespace MyDAL.Test.Compare
                 .Queryer<Agent>()
                 .Where(it => EnumList.Contains(it.AgentLevel))
                 .QueryListAsync();
-
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
+             
             Assert.True(res3.Count == 555);
 
             /*******************************************************************************************************************/
@@ -79,7 +77,7 @@ namespace MyDAL.Test.Compare
                 .Where(it => names.Contains(it.Name))
                 .QueryListAsync();
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************/
 
@@ -92,7 +90,7 @@ namespace MyDAL.Test.Compare
                 .Where(it => StringList.Contains(it.Name))
                 .QueryListAsync();
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             Assert.True(res4.Count == res6.Count);
             Assert.True(res4.Count == 2);
@@ -112,7 +110,7 @@ namespace MyDAL.Test.Compare
                 .Where(it => new List<int> { 5, 10 }.Contains(it.DirectorStarCount))
                 .QueryListAsync();
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************/
 
@@ -124,7 +122,7 @@ namespace MyDAL.Test.Compare
                 .Where(it => new List<long> { 5, 10 }.Contains(it.DirectorStarCount))
                 .QueryListAsync();
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************/
 
@@ -136,7 +134,7 @@ namespace MyDAL.Test.Compare
                 .Where(it => new List<short> { 5, 10 }.Contains((short)(it.DirectorStarCount)))
                 .QueryListAsync();
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             Assert.True(res7.Count == res8.Count);
             Assert.True(res8.Count == res9.Count);
@@ -153,7 +151,7 @@ namespace MyDAL.Test.Compare
                 .QueryListAsync();
             Assert.True(res10.Count == 2);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************/
 
@@ -166,7 +164,7 @@ namespace MyDAL.Test.Compare
                 .QueryListAsync();
             Assert.True(res11.Count == 555);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************/
             var enumArray = new AgentLevel?[]
@@ -183,7 +181,7 @@ namespace MyDAL.Test.Compare
                 .Where(it => WhereTest.In_Array_枚举.Contains(it.AgentLevel))
                 .QueryListAsync();
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************/
 
@@ -196,7 +194,7 @@ namespace MyDAL.Test.Compare
                 .Where(it => EnumArray.Contains(it.AgentLevel))
                 .QueryListAsync();
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             Assert.True(res13.Count == res14.Count);
             Assert.True(res13.Count == 555);
@@ -216,7 +214,7 @@ namespace MyDAL.Test.Compare
                 .Where(it => nameArray.Contains(it.Name))
                 .QueryListAsync();
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************/
 
@@ -228,7 +226,7 @@ namespace MyDAL.Test.Compare
                 .Where(it => WhereTest.In_Array_String.Contains(it.Name))
                 .QueryListAsync();
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************/
 
@@ -241,7 +239,7 @@ namespace MyDAL.Test.Compare
                 .Where(it => StringArray.Contains(it.Name))
                 .QueryListAsync();
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             Assert.True(res15.Count == res16.Count);
             Assert.True(res16.Count == res17.Count);
@@ -261,7 +259,7 @@ namespace MyDAL.Test.Compare
                 .Where(it => new int[] { 5, 10 }.Contains(it.DirectorStarCount))
                 .QueryListAsync();
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************/
 
@@ -273,7 +271,7 @@ namespace MyDAL.Test.Compare
                 .Where(it => new long[] { 5L, 10L }.Contains(it.DirectorStarCount))
                 .QueryListAsync();
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************/
 
@@ -285,7 +283,7 @@ namespace MyDAL.Test.Compare
                 .Where(it => new short[] { 5, 10 }.Contains((short)(it.DirectorStarCount)))
                 .QueryListAsync();
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             Assert.True(res18.Count == res19.Count);
             Assert.True(res19.Count == res20.Count);
@@ -302,7 +300,7 @@ namespace MyDAL.Test.Compare
                 .QueryListAsync();
             Assert.True(res21.Count == 2);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************/
 
@@ -315,7 +313,7 @@ namespace MyDAL.Test.Compare
                 .QueryListAsync();
             Assert.True(res22.Count == 555);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************/
 
@@ -328,7 +326,7 @@ namespace MyDAL.Test.Compare
                 .QueryListAsync();
             Assert.True(res24.Count == 4);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************/
 
@@ -341,7 +339,7 @@ namespace MyDAL.Test.Compare
                 .QueryListAsync();
             Assert.True(res25.Count == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************/
 
@@ -354,7 +352,7 @@ namespace MyDAL.Test.Compare
                 .QueryListAsync();
             Assert.True(res26.Count == 2);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************/
 
@@ -390,7 +388,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res2.Count == 555);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************/
 
@@ -407,7 +405,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res2.Count == 28065);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************/
 
@@ -428,7 +426,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res5.Count == 2);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************/
 
@@ -448,7 +446,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res5.Count == 28618);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************/
 
@@ -472,7 +470,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Count == 574);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************/
 
@@ -497,7 +495,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Count == 0);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************/
 
@@ -525,7 +523,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Count == 555);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************/
 
@@ -547,7 +545,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Count == 28065 || res1.Count == 28064);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
 
@@ -573,7 +571,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res12.Count == 555);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************/
 
@@ -595,7 +593,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Count == 28065 || res1.Count == 28064);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
 

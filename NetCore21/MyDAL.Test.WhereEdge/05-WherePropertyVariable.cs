@@ -24,7 +24,7 @@ namespace MyDAL.Test.WhereEdge
 
             Assert.NotNull(res1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }

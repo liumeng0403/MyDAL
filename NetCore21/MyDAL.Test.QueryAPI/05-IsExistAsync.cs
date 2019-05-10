@@ -22,7 +22,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /********************************************************************************************************************************************/
 
@@ -41,7 +41,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*****************************************************************************************/
 
@@ -61,7 +61,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*****************************************************************************************/
 
@@ -82,7 +82,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*****************************************************************************************/
 
@@ -104,7 +104,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*****************************************************************************************/
 

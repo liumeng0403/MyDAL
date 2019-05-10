@@ -36,7 +36,7 @@ namespace MyDAL.Test2.Query
             Assert.IsTrue(res1.Count == 574);
             Assert.IsTrue(res1.Any(it => "~00".Equals(it.nn, StringComparison.OrdinalIgnoreCase)));
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*************************************************************************************************************************/
 

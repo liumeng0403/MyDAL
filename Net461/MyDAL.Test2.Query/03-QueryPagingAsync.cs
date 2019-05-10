@@ -32,7 +32,7 @@ namespace MyDAL.Test2.Query
 
             Assert.IsTrue(res1.TotalCount == 574);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
 
@@ -80,7 +80,7 @@ namespace MyDAL.Test2.Query
 
             Assert.IsTrue(paging.Data.Count == 10);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
 

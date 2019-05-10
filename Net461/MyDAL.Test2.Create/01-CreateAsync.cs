@@ -25,7 +25,7 @@ namespace MyDAL.Test2.Create
 
             Assert.IsTrue(res1 == 10);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /********************************************************************************************************************************/
 
@@ -81,7 +81,7 @@ namespace MyDAL.Test2.Create
 
             Assert.IsTrue(res1 == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             var res11 = await Conn2.QueryOneAsync<AlipayPaymentRecord>(it => it.Id == m.Id);
             Assert.IsNotNull(res11);

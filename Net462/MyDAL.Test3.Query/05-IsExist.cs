@@ -21,10 +21,6 @@ namespace MyDAL.Test3.Query
 
             Assert.IsTrue(res1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
-
-            /********************************************************************************************************************************************/
-
             xx = string.Empty;
         }
     }

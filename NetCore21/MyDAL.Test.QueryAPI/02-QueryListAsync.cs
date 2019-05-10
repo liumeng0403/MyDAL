@@ -44,7 +44,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res2.Count == 523);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /**************************************************************************************************************************/
 
@@ -62,7 +62,7 @@ namespace MyDAL.Test.QueryAPI
             Assert.True(res3.Count == 1);
             Assert.Equal(res3.First().Id, Guid.Parse("02dbc81c-5c9a-4cdf-8bf0-016551f756c4"));
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /**************************************************************************************************************************/
 
@@ -79,7 +79,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res4.Count == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /**************************************************************************************************************************/
 
@@ -95,7 +95,7 @@ namespace MyDAL.Test.QueryAPI
                 .QueryListAsync<AgentInventoryRecord>();
             Assert.True(res5.Count == 574);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /**************************************************************************************************************************/
 
@@ -113,7 +113,7 @@ namespace MyDAL.Test.QueryAPI
             Assert.True(res6.Count == 1);
             Assert.Equal(res6.First().Id, Guid.Parse("0ce552c0-2f5e-4c22-b26d-01654443b30e"));
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /**************************************************************************************************************************/
 
@@ -129,7 +129,7 @@ namespace MyDAL.Test.QueryAPI
                 .QueryListAsync<AgentInventoryRecord>();
             Assert.True(res7.Count == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /**************************************************************************************************************************/
 
@@ -145,7 +145,7 @@ namespace MyDAL.Test.QueryAPI
                 .QueryListAsync<AgentInventoryRecord>();
             Assert.True(res8.Count == 574);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /**************************************************************************************************************************/
 
@@ -161,7 +161,7 @@ namespace MyDAL.Test.QueryAPI
                 .QueryListAsync<AgentInventoryRecord>();
             Assert.True(res9.Count == 574);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /**************************************************************************************************************************/
 
@@ -177,7 +177,7 @@ namespace MyDAL.Test.QueryAPI
                 .QueryListAsync<Agent>();
             Assert.True(res10.Count == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /**************************************************************************************************************************/
 
@@ -206,7 +206,7 @@ namespace MyDAL.Test.QueryAPI
             Assert.True(res1.Count == 29180);
             Assert.True(res1.First().UserName == "45285586990");
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*********************************************************************************************************************************************************/
 
@@ -225,7 +225,7 @@ namespace MyDAL.Test.QueryAPI
                 .QueryListAsync<AspnetUsers>();
             Assert.True(res4.Count == 1480);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*********************************************************************************************************************************************************/
 
@@ -247,7 +247,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.Count == 574);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -261,7 +261,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.Count == 28620);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -277,7 +277,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.Count == 28620);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -293,7 +293,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.Count == 28620);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -313,7 +313,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.Count == 28620);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -330,7 +330,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res7.Count == 1996);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /****************************************************************************************/
 
@@ -348,7 +348,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res2.Count == 29);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /****************************************************************************************/
 
@@ -366,7 +366,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res2.Count == 29);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /****************************************************************************************/
 
@@ -387,7 +387,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res3.Count == 29);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
         }
 
@@ -403,7 +403,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.Count == 28620);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -425,7 +425,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.Count == 28620);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /********************************************************************************************************/
 
@@ -446,7 +446,7 @@ namespace MyDAL.Test.QueryAPI
             Assert.NotNull(res1.First().Name);
             Assert.Null(res1.First().XXXX);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /********************************************************************************************************/
 
@@ -466,7 +466,7 @@ namespace MyDAL.Test.QueryAPI
                     YYYY = it.PathId
                 });
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -483,7 +483,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.Count == 555);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************************/
 
@@ -503,7 +503,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res4.Count == 28619);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /********************************************************************************************************************************/
 
@@ -525,7 +525,7 @@ namespace MyDAL.Test.QueryAPI
             Assert.NotNull(res5.First().Name);
             Assert.Null(res5.First().XXXX);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /********************************************************************************************************************************/
 
@@ -551,7 +551,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res5.Count == 555);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*************************************************************************************************************************/
 
@@ -573,7 +573,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.Count == 574);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -596,7 +596,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.Count == 29180);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*********************************************************************************************************************************************************/
 
@@ -620,7 +620,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.Count == 574);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -640,7 +640,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.Count == 574);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -661,7 +661,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res3.Count == 574);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*********************************************************************************************************************************************************/
 
@@ -692,7 +692,7 @@ namespace MyDAL.Test.QueryAPI
             Assert.True(res1.Count == 574);
             Assert.True("~00-d-3-2-1-c-2-1a-1" == res1.First().nn);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*************************************************************************************************************************/
 
@@ -721,7 +721,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.Count == 574);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
 
@@ -754,7 +754,7 @@ namespace MyDAL.Test.QueryAPI
             Assert.True(res1.Count == 574);
             Assert.True("~00-d-3-2-1-c-2-1a-1" == res1.First().nn);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }

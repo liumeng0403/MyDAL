@@ -24,7 +24,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Count == 574);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -45,7 +45,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Count == 0);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /******************************************************************************************************************************/
             xx = string.Empty;
@@ -61,7 +61,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res2.Count == 0);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /******************************************************************************************************************************/
 

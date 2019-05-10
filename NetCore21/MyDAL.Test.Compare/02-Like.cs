@@ -69,7 +69,7 @@ namespace MyDAL.Test.Compare
             var res1 = await Conn.QueryOneAsync<BodyFitRecord>(it => it.BodyMeasureProperty.Contains("xx"));
             Assert.NotNull(res1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************/
 
@@ -83,7 +83,7 @@ namespace MyDAL.Test.Compare
                 .QueryPagingAsync(1, 10);
             Assert.True(res3.TotalCount == 5680);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************/
 
@@ -100,7 +100,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Count == 1431);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -118,7 +118,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Count == 27159);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -140,7 +140,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.TotalCount == 5680);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************/
 
@@ -162,7 +162,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.TotalCount == 22940);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************/
 
@@ -187,7 +187,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Count == 24);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************/
 
@@ -212,7 +212,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Count == 550);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************/
 
@@ -231,7 +231,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Count == 1421);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -245,7 +245,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res12.TotalCount == 5680);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************/
 
@@ -262,7 +262,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res13.Count == 45);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************/
 
@@ -273,7 +273,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res2.Count == 27163);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -287,7 +287,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res21.TotalCount == 22940);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************/
 
@@ -304,7 +304,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res22.Count == 529);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************/
 
@@ -325,7 +325,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Count == 2);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************/
 
@@ -339,7 +339,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res12.TotalCount == 0);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************/
 
@@ -356,7 +356,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res13.Count == 22);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -367,7 +367,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res2.Count == 28620);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************/
 
@@ -381,7 +381,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res21.TotalCount == 28620);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************/
 
@@ -398,7 +398,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res22.Count == 552);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************/
 
@@ -416,7 +416,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res5.Count == 1421);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -427,7 +427,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res6.Count == 498);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -456,7 +456,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res7.Count == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************/
 
@@ -467,7 +467,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res8.Count == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************/
 

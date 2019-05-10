@@ -20,7 +20,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1 == 1527.2600000000000000000000000M);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -37,7 +37,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1 == 589);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }

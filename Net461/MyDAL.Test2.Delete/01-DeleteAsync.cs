@@ -19,7 +19,7 @@ namespace MyDAL.Test2.Delete
 
             Assert.IsTrue(res1 == 7);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }

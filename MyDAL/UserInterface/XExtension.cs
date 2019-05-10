@@ -10,8 +10,6 @@ using MyDAL.UserFacade.Query;
 using MyDAL.UserFacade.Update;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace MyDAL
@@ -21,7 +19,9 @@ namespace MyDAL
     /// </summary>
     public static partial class XExtension
     {
+
         #region Internal
+
         /* 内部方法 */
         private static Creater<M> Creater<M>(this XConnection conn)
             where M : class, new()
@@ -119,6 +119,7 @@ namespace MyDAL
         #endregion
 
         #region Deleter
+
         /// <summary>
         /// 删除数据 方法簇
         /// </summary>
@@ -132,9 +133,11 @@ namespace MyDAL
             };
             return new Deleter<M>(dc);
         }
+        
         #endregion
 
         #region Updater
+
         /// <summary>
         /// 修改数据 方法簇
         /// </summary>
@@ -148,9 +151,11 @@ namespace MyDAL
             };
             return new Updater<M>(dc);
         }
+        
         #endregion
 
         #region Queryer
+
         /// <summary>
         /// 单表查询 方法簇
         /// </summary>
@@ -262,14 +267,8 @@ namespace MyDAL
             };
             return new Queryer(dc);
         }
+
         #endregion
-
-
-
-
-
-
-
 
     }
 }

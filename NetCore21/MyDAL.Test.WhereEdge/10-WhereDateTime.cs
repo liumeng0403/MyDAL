@@ -19,7 +19,7 @@ namespace MyDAL.Test.WhereEdge
                 .QueryListAsync();
             Assert.True(res1.Count == 28619);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /**************************************************************************************************************************************/
             
@@ -31,7 +31,7 @@ namespace MyDAL.Test.WhereEdge
                 .QueryListAsync();
             Assert.True(res2.Count == 28619);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /**************************************************************************************************************************************/
 
@@ -43,7 +43,7 @@ namespace MyDAL.Test.WhereEdge
                 .QueryListAsync();
             Assert.True(res3.Count == 28619);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /**************************************************************************************************************************************/
 
@@ -55,7 +55,7 @@ namespace MyDAL.Test.WhereEdge
                 .QueryListAsync();
             Assert.True(res4.Count == 554);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /**************************************************************************************************************************************/
 

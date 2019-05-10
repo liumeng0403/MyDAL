@@ -29,7 +29,7 @@ namespace MyDAL.Test.Func
                 .CountAsync(it => it.Id);
             Assert.True(res2 == 1421);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
 
@@ -39,7 +39,7 @@ namespace MyDAL.Test.Func
                 .CountAsync();
             Assert.True(res22 == 1421);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************************/
 
@@ -54,7 +54,7 @@ namespace MyDAL.Test.Func
                 .CountAsync();
             Assert.True(res3 == 24);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************************/
 
@@ -69,7 +69,7 @@ namespace MyDAL.Test.Func
                 .CountAsync(() => agent4.Id);
             Assert.True(res4 == 24);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************************/
 
