@@ -24,7 +24,7 @@ namespace MyDAL.Test2.Query
 
             Assert.IsNotNull(res1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
 
@@ -55,7 +55,7 @@ namespace MyDAL.Test2.Query
 
             Assert.IsTrue(res1.Count == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }

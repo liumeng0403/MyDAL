@@ -31,7 +31,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.TotalCount == 555);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /******************************************************************************************************/
 
@@ -45,7 +45,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res2.TotalPage == 2807);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /******************************************************************************************************/
 
@@ -56,7 +56,7 @@ namespace MyDAL.Test.QueryAPI
                 .Where(it => it.CreatedOn >= WhereTest.CreatedOn)
                 .QueryPagingAsync(1, 10);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             var resR4 = await Conn
                 .Queryer<Agent>()
@@ -66,7 +66,7 @@ namespace MyDAL.Test.QueryAPI
             Assert.True(res4.TotalCount == resR4.TotalCount);
             Assert.True(res4.TotalCount == 28619);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*************************************************************************************************************************/
 
@@ -91,7 +91,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res7.Data.Count == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*************************************************************************************************************************/
 
@@ -122,7 +122,7 @@ namespace MyDAL.Test.QueryAPI
             Assert.True(res11.PageIndex == 5);
             Assert.True(res11.Data.Count == 10);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
         }
 
@@ -142,7 +142,7 @@ namespace MyDAL.Test.QueryAPI
             Assert.True(res13.TotalCount == 28620);
             Assert.True(res13.Data.Count == 10);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*************************************************************************************************************************/
 
@@ -165,7 +165,7 @@ namespace MyDAL.Test.QueryAPI
             Assert.True(res1.Data.Count == 10);
             Assert.True(res1.TotalCount == 28620);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -184,7 +184,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res3.TotalCount == 28620);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
         }
 
@@ -202,7 +202,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res7.TotalCount == 28620);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*************************************************************************************************************************/
 
@@ -226,7 +226,7 @@ namespace MyDAL.Test.QueryAPI
             Assert.True(res1.Data.Count == 10);
             Assert.True(res1.TotalCount == 28620);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -246,7 +246,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.Data.Count == 10);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*****************************************************************************************************************************/
 
@@ -266,7 +266,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.TotalPage == 56);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /******************************************************************************************************/
 
@@ -284,7 +284,7 @@ namespace MyDAL.Test.QueryAPI
                 .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
                 .QueryPagingAsync<AgentVM>(1, 10);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             var resR6 = await Conn
                 .Queryer<Agent>()
@@ -294,7 +294,7 @@ namespace MyDAL.Test.QueryAPI
             Assert.True(res6.TotalCount == resR6.TotalCount);
             Assert.True(res6.TotalCount == 28619);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
 
             /*************************************************************************************************************************/
@@ -320,7 +320,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res8.TotalCount == 28619);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*************************************************************************************************************************/
 
@@ -342,7 +342,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.TotalCount == 574);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
 
@@ -363,7 +363,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.TotalCount == 574);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
 
@@ -387,7 +387,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.TotalCount == 574);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -410,7 +410,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.TotalCount == 574);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
 
@@ -432,7 +432,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res5.TotalCount == 574);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*************************************************************************************************************************/
 
@@ -458,7 +458,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.TotalCount == 574);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
 
@@ -503,7 +503,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(paging.TotalPage == 58);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
 
@@ -550,7 +550,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(paging.Data.Count == 10);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
 

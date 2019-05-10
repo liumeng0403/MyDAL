@@ -10,8 +10,6 @@ using HPC.DAL.UserFacade.Query;
 using HPC.DAL.UserFacade.Update;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace HPC.DAL
@@ -21,7 +19,9 @@ namespace HPC.DAL
     /// </summary>
     public static partial class XExtension
     {
+
         #region Internal
+
         /* 内部方法 */
         private static Creater<M> Creater<M>(this XConnection conn)
             where M : class, new()
@@ -149,9 +149,11 @@ namespace HPC.DAL
             paging.Data = result.Data;
             return paging;
         }
+        
         #endregion
 
         #region Deleter
+
         /// <summary>
         /// 删除数据 方法簇
         /// </summary>
@@ -165,9 +167,11 @@ namespace HPC.DAL
             };
             return new Deleter<M>(dc);
         }
+        
         #endregion
 
         #region Updater
+
         /// <summary>
         /// 修改数据 方法簇
         /// </summary>
@@ -181,9 +185,11 @@ namespace HPC.DAL
             };
             return new Updater<M>(dc);
         }
+        
         #endregion
 
         #region Queryer
+
         /// <summary>
         /// 单表查询 方法簇
         /// </summary>
@@ -295,14 +301,8 @@ namespace HPC.DAL
             };
             return new Queryer(dc);
         }
+
         #endregion
-
-
-
-
-
-
-
 
     }
 }

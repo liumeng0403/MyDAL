@@ -23,7 +23,7 @@ namespace MyDAL.Test.WhereEdge
                 .QueryListAsync();
             Assert.True(res1.Count == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -37,7 +37,7 @@ namespace MyDAL.Test.WhereEdge
                 .QueryListAsync();
             Assert.True(res2.Count == 2);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -50,7 +50,7 @@ namespace MyDAL.Test.WhereEdge
                 .QueryListAsync();
             Assert.True(res3.Count == 28619);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -65,7 +65,7 @@ namespace MyDAL.Test.WhereEdge
                 .QueryListAsync();
             Assert.True(res4.Count == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -80,7 +80,7 @@ namespace MyDAL.Test.WhereEdge
                 .QueryListAsync();
             Assert.True(res5.Count == 3);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -96,7 +96,7 @@ namespace MyDAL.Test.WhereEdge
             Assert.True(res6.Count == 1);
             Assert.True(res6.First().Id == guid62);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -112,7 +112,7 @@ namespace MyDAL.Test.WhereEdge
             Assert.True(res7.Count == 1);
             Assert.True(res7.First().Id == guid7);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -129,7 +129,7 @@ namespace MyDAL.Test.WhereEdge
             Assert.True(res8.Count == 1);
             Assert.True(res8.First().PathId == pathId83);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 

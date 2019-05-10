@@ -23,7 +23,7 @@ namespace MyDAL.Test.WhereEdge
                 .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
                 .QueryListAsync();
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             var resR1 = await Conn
                 .Queryer<BodyFitRecord>()
@@ -32,7 +32,7 @@ namespace MyDAL.Test.WhereEdge
 
             Assert.True(res1.Count == resR1.Count);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /********************************************************************************************************************************/
 
@@ -46,7 +46,7 @@ namespace MyDAL.Test.WhereEdge
                 .Where(it => it.CreatedOn >= start)
                 .QueryListAsync();
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             var resR2 = await Conn
                 .Queryer<BodyFitRecord>()
@@ -55,7 +55,7 @@ namespace MyDAL.Test.WhereEdge
 
             Assert.True(res2.Count == resR2.Count);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /********************************************************************************************************************************/
 
@@ -67,7 +67,7 @@ namespace MyDAL.Test.WhereEdge
                 .Where(it => it.CreatedOn <= DateTime.Now)
                 .QueryListAsync();
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             var resR3 = await Conn
                 .Queryer<BodyFitRecord>()
@@ -76,7 +76,7 @@ namespace MyDAL.Test.WhereEdge
 
             Assert.True(res3.Count == resR3.Count);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /********************************************************************************************************************************/
 

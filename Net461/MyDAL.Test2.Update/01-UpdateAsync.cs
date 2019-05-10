@@ -28,7 +28,7 @@ namespace MyDAL.Test2.Update
 
             Assert.IsTrue(res1 == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             // 查询一条数据: AlipayPaymentRecord
             var res11 = await Conn2.QueryOneAsync<AlipayPaymentRecord>(it => it.Id == pk1);

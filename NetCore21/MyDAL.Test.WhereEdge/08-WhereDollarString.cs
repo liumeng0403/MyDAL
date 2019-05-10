@@ -21,7 +21,7 @@ namespace MyDAL.Test.WhereEdge
 
             Assert.NotNull(res1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************/
 
@@ -35,7 +35,7 @@ namespace MyDAL.Test.WhereEdge
 
             Assert.NotNull(res2);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************/
 
@@ -48,7 +48,7 @@ namespace MyDAL.Test.WhereEdge
             Assert.NotNull(res3);
             Assert.True(res3.Count == 28619);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************/
 
@@ -62,7 +62,7 @@ namespace MyDAL.Test.WhereEdge
             Assert.NotNull(res4);
             Assert.True(res4.Count == 1996);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************/
 
@@ -75,7 +75,7 @@ namespace MyDAL.Test.WhereEdge
             Assert.NotNull(res5);
             Assert.True(res5.Count == 20016);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************/
 
@@ -99,7 +99,7 @@ namespace MyDAL.Test.WhereEdge
             Assert.True(res62.Count != 0);
             Assert.True(res6.Count == res61.Count + res62.Count);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************/
 

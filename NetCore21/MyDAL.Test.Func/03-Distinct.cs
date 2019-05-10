@@ -21,7 +21,7 @@ namespace MyDAL.Test.Func
                 .QueryListAsync(it => it.Name);
             Assert.True(res2.Count == 24444);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -33,7 +33,7 @@ namespace MyDAL.Test.Func
                 .QueryListAsync(it => it.CreatedOn.ToString("yyyy-MM-dd"));
             Assert.True(res3.Count == 2);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -45,7 +45,7 @@ namespace MyDAL.Test.Func
                 .QueryListAsync(it => it.CreatedOn.ToString("yyyy-MM"));
             Assert.True(res4.Count == 2);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /***************************************************************************************************************************/
 
@@ -57,7 +57,7 @@ namespace MyDAL.Test.Func
                 .QueryListAsync(it => it.CreatedOn.ToString("yyyy"));
             Assert.True(res5.Count == 2);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /****************************************************************************************************************************************/
 
@@ -73,7 +73,7 @@ namespace MyDAL.Test.Func
             var res61 = await Conn.QueryListAsync<Agent>(it => it.Name == "刘中华");
             Assert.True(res61.Count == 2);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /****************************************************************************************************************************************/
 
@@ -90,7 +90,7 @@ namespace MyDAL.Test.Func
 
             Assert.True(res7.Count == 543);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /****************************************************************************************************************************************/
 

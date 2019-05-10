@@ -42,7 +42,7 @@ namespace MyDAL.Test.Delete
             var res2 = await Conn.DeleteAsync<AlipayPaymentRecord>(it => it.Id == pk2);
             Assert.True(res2 == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             var res21 = await Conn.QueryOneAsync<AlipayPaymentRecord>(it => it.Id == pk2);
 
@@ -68,7 +68,7 @@ namespace MyDAL.Test.Delete
                 .DeleteAsync();
             Assert.True(res3 == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
 
@@ -80,7 +80,7 @@ namespace MyDAL.Test.Delete
                 .DeleteAsync();
             Assert.True(res2 == 28063);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             var xx4 = string.Empty;
 
@@ -92,7 +92,7 @@ namespace MyDAL.Test.Delete
                 .Or(it => it.CreatedOn >= WhereTest.StartTime)
                 .DeleteAsync();
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -106,7 +106,7 @@ namespace MyDAL.Test.Delete
 
             Assert.True(res1 == 0);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -121,7 +121,7 @@ namespace MyDAL.Test.Delete
 
             Assert.True(res1 == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             var res11 = await Conn.QueryOneAsync<AlipayPaymentRecord>(it => it.Id == Guid.Parse("8f2cbb64-8356-4482-88ee-016558c05b2d"));
 
@@ -143,7 +143,7 @@ namespace MyDAL.Test.Delete
 
             Assert.True(res1 == 0);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -164,7 +164,7 @@ namespace MyDAL.Test.Delete
 
             Assert.True(res1 == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }

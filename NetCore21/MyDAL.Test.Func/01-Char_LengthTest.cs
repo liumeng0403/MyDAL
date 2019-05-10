@@ -26,7 +26,7 @@ namespace MyDAL.Test.Func
                 .QueryListAsync();
             Assert.True(res1.Count == 22660);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
 
@@ -38,7 +38,7 @@ namespace MyDAL.Test.Func
             Assert.True(res1.Count == resR1.Count);
             Assert.True(res1.Count == 22660);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************************/
 
@@ -54,7 +54,7 @@ namespace MyDAL.Test.Func
                 .QueryListAsync<Agent>();
             Assert.True(res2.Count == 457);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************************/
 
@@ -71,7 +71,7 @@ namespace MyDAL.Test.Func
                 .QueryListAsync<Agent>();
             Assert.True(res3.Count == 457);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /************************************************************************************************************************/
 

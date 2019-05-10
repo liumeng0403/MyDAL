@@ -54,7 +54,7 @@ namespace MyDAL.Test.Compare
             Assert.True(res52.First(it => it.Id != guid52).IsDefault == false);
             Assert.True(res52.First(it => it.Id == guid52).IsDefault);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /********************************************************************************************************************************************/
 
@@ -68,7 +68,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res61.Data.Count == 4);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             var res62 = await Conn
                 .Queryer<Product>()
@@ -77,7 +77,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res62.Data.Count == 0);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /********************************************************************************************************************************************/
 
@@ -97,7 +97,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Count == 28620);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -115,7 +115,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Count == 0);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -136,7 +136,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Count == 574);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -156,7 +156,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Count == 0);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -177,7 +177,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Count == 0);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -197,7 +197,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Count == 574);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -214,7 +214,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Data.Count == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -231,7 +231,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Data.Count == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -249,7 +249,7 @@ namespace MyDAL.Test.Compare
             Assert.True(res1.Data.Count == 10);
             Assert.True(res1.TotalCount == 28624);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -267,7 +267,7 @@ namespace MyDAL.Test.Compare
             Assert.True(res1.Data.Count == 10);
             Assert.True(res1.TotalCount == 28624);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -284,7 +284,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Data.Count == 10);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -301,7 +301,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Data.Count == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -319,7 +319,7 @@ namespace MyDAL.Test.Compare
             Assert.True(res1.Count == 5);
             Assert.True(res1.First().IsDefault);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -337,7 +337,7 @@ namespace MyDAL.Test.Compare
             Assert.True(res1.Count == 5);
             Assert.True(res1.First().IsDefault);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -355,7 +355,7 @@ namespace MyDAL.Test.Compare
             Assert.True(res1.Count == 2);
             Assert.True(res1.First().IsDefault == false);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -372,7 +372,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Data.Count == 0);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -389,7 +389,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Data.Count == 4);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -406,7 +406,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Count == 2);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -423,7 +423,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Count == 2);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -440,7 +440,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Count == 5);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -457,7 +457,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Data.Count == 4);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -474,7 +474,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Data.Count == 0);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -495,7 +495,7 @@ namespace MyDAL.Test.Compare
             Assert.True(res1.Count == 5);
             Assert.True(res1.First().IsDefault);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -516,7 +516,7 @@ namespace MyDAL.Test.Compare
             Assert.True(res1.Count == 5);
             Assert.True(res1.First().IsDefault);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -537,7 +537,7 @@ namespace MyDAL.Test.Compare
             Assert.True(res1.Count == 2);
             Assert.True(res1.First().IsDefault == false);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -557,7 +557,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Count == 0);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -577,7 +577,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Count == 7);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -597,7 +597,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Count == 0);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -617,7 +617,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Count == 2);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }

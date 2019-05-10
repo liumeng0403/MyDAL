@@ -70,7 +70,7 @@ namespace MyDAL.Test.Create
 
             Assert.True(res2 == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /********************************************************************************************************************************/
 
@@ -92,7 +92,7 @@ namespace MyDAL.Test.Create
                 DirectorStarCount = 1
             });
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /********************************************************************************************************************************/
 
@@ -118,7 +118,7 @@ namespace MyDAL.Test.Create
 
             var res6 = await Conn.CreateAsync(m6);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             var res61 = await Conn.QueryOneAsync<Agent>(it => it.Id == Guid.Parse("ea1ad309-56f7-4e3e-af12-0165c9121e9b"));
             Assert.True(res61.AgentLevel == AgentLevel.DistiAgent);
@@ -147,7 +147,7 @@ namespace MyDAL.Test.Create
 
             var res7 = await Conn.CreateAsync(m7);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             var res71 = await Conn.QueryOneAsync<Agent>(it => it.Id == Guid.Parse("08d60369-4fc1-e8e0-44dc-435f31635e6d"));
             Assert.True(res71.CreatedOn == Convert.ToDateTime("2018-08-16 19:34:25.116759"));
@@ -169,7 +169,7 @@ namespace MyDAL.Test.Create
 
             Assert.True(res1 == 10);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /********************************************************************************************************************************/
 
@@ -203,7 +203,7 @@ namespace MyDAL.Test.Create
 
             Assert.True(res1 == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             var res11 = await Conn.QueryOneAsync<AlipayPaymentRecord>(it => it.Id == m.Id);
             Assert.NotNull(res11);
@@ -233,7 +233,7 @@ namespace MyDAL.Test.Create
 
             Assert.True(res1 == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /********************************************************************************************************************************/
 
@@ -264,7 +264,7 @@ namespace MyDAL.Test.Create
 
             Assert.True(res4 == list.Count);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /********************************************************************************************************************************/
 
@@ -386,7 +386,7 @@ namespace MyDAL.Test.Create
 
             Assert.True(res1 == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             var res11 = await Conn.QueryOneAsync<AlipayPaymentRecord>(it => it.Id == m.Id);
             Assert.NotNull(res11);
@@ -443,7 +443,7 @@ namespace MyDAL.Test.Create
 
             Assert.True(res1 == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             var res11 = await Conn.QueryOneAsync<AlipayPaymentRecord>(it => it.Id == m.Id);
             Assert.NotNull(res11);

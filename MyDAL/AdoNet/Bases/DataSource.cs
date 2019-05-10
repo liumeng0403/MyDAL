@@ -47,11 +47,11 @@ namespace HPC.DAL.AdoNet.Bases
                     && DC.Parameters != null)
                 {
                     DC.SetValue();
-                    XDebug.OutPutSQL(DC.FlatSqlWithParams, DC);
+                    DC.OutPutSQL(DC.FlatSqlWithParams, DC);
                 }
                 else
                 {
-                    XDebug.OutPutSQL(DC.SQL, DC);
+                    DC.OutPutSQL(DC.SQL, DC);
                 }
 
                 //

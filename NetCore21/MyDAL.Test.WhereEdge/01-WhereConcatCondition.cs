@@ -22,7 +22,7 @@ namespace MyDAL.Test.WhereEdge
 
             Assert.NotNull(res1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
 
@@ -56,7 +56,7 @@ namespace MyDAL.Test.WhereEdge
 
             Assert.True(res1.Count == 1);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -99,7 +99,7 @@ namespace MyDAL.Test.WhereEdge
             Assert.True(res1.Data.Count == 10);
             Assert.True(res1.TotalCount == 575);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }

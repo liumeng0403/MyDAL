@@ -50,7 +50,7 @@ namespace MyDAL.Test.Func
 
             Assert.True(res1.Title == "  演示商品01  ");
 
-            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
+            
 
             /******************************************************************************************************************/
 
@@ -64,7 +64,7 @@ namespace MyDAL.Test.Func
 
             Assert.True(res2.Title == "  演示商品01");
 
-            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
+            
 
             /******************************************************************************************************************/
 
@@ -78,7 +78,7 @@ namespace MyDAL.Test.Func
 
             Assert.True(res3.Title == "演示商品01  ");
 
-            tuple = (XDebug.SQL, XDebug.Parameters,XDebug.SqlWithParams);
+            
 
             /******************************************************************************************************************/
 

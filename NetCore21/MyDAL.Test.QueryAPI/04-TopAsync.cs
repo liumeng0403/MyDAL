@@ -23,7 +23,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.Count == 25);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************************/
 
@@ -42,7 +42,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.Count == 25);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
         }
 
@@ -58,7 +58,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.Count == 25);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************************/
 
@@ -81,7 +81,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.Count == 25);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************************/
 
@@ -103,7 +103,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.Count == 25);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             xx = string.Empty;
         }
@@ -123,7 +123,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.Count == 25);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************************/
 
@@ -152,7 +152,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.Count == 25);
 
-            tuple = (XDebug.SQL, XDebug.Parameters, XDebug.SqlWithParams);
+            
 
             /*******************************************************************************************************************************/
 

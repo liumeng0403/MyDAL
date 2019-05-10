@@ -14,7 +14,6 @@ namespace MyDAL.Test
     public abstract class TestBase
     {
         protected string xx { get; set; }
-        protected (List<string>, List<string>, List<string>) tuple { get; set; }
 
         protected WhereTestModel WhereTest
         {
