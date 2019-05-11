@@ -45,11 +45,11 @@ namespace HPC.DAL.Core
 
         internal string GetModelKey(string mFullName)
         {
-            return $"{mFullName}:{DC.Conn.Database}:{DC.DB.ToString()}";
+            return $"{mFullName}:{DC.XConn.Conn.Database}:{DC.DB.ToString()}";
         }
         internal string GetHandleKey(int sqlHash, int colHash, string mFullName)
         {
-            return $"{DC.Conn.GetType().FullName}:{sqlHash}:{colHash}:{GetModelKey(mFullName)}";
+            return $"{DC.XConn.Conn.GetType().FullName}:{sqlHash}:{colHash}:{GetModelKey(mFullName)}";
         }
 
         /*****************************************************************************************************************************************************/
@@ -84,7 +84,7 @@ namespace HPC.DAL.Core
                  if (tm.TbCols == null
                     || tm.TbCols.Count <= 0)
                  {
-                     throw XConfig.EC.Exception(XConfig.EC._028, $"表 [[{DC.Conn.Database}.{ta.Name}]] 中不存在任何列!!!");
+                     throw XConfig.EC.Exception(XConfig.EC._028, $"表 [[{DC.XConn.Conn.Database}.{ta.Name}]] 中不存在任何列!!!");
                  }
                  tm.TbMAttr = new XTableAttribute { Name = tm.TbCols.First().TableName };
                  var list = new List<TmPropColAttrInfo>();
@@ -99,7 +99,7 @@ namespace HPC.DAL.Core
                          pca.Col = tm.TbCols.FirstOrDefault(it => it.ColumnName.Equals(p.Name, StringComparison.OrdinalIgnoreCase));
                          if (pca.Col == null)
                          {
-                             throw XConfig.EC.Exception(XConfig.EC._034, $"属性 [[{mType.Name}.{p.Name}]] 在表 [[{DC.Conn.Database}.{tm.TbName}]] 中无对应的列!!!");
+                             throw XConfig.EC.Exception(XConfig.EC._034, $"属性 [[{mType.Name}.{p.Name}]] 在表 [[{DC.XConn.Conn.Database}.{tm.TbName}]] 中无对应的列!!!");
                          }
                      }
                      else

@@ -114,13 +114,15 @@ namespace HPC.DAL
             if (AutoClose) { Conn.Close(); }
         }
 
+        internal bool IsDebug { get; private set; } = false;
+        internal DebugEnum DebugType { get; private set; } = DebugEnum.Output;
         /// <summary>
         /// Sql 调试跟踪 开启
         /// </summary>
         public XConnection OpenDebug(DebugEnum type = DebugEnum.Output)
         {
-            XConfig.IsDebug = true;
-            XConfig.DebugType = type;
+            IsDebug = true;
+            DebugType = type;
             return this;
         }
 

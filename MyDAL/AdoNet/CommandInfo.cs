@@ -7,11 +7,11 @@ namespace HPC.DAL.AdoNet
         internal string CommandText { get; }
         internal DbParamInfo Parameter { get; }
         internal CommandType CommandType { get; }
-        
+
         internal CommandInfo(string sql, DbParamInfo paras)
         {
             CommandText = sql;
-            Parameter = paras;
+            Parameter = paras ?? new DbParamInfo();
             CommandType = CommandType.Text;
         }
     }

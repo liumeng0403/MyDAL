@@ -6,9 +6,9 @@ namespace HPC.DAL.Core
     internal class XContext
         : Context
     {
-        internal XContext(IDbConnection conn,IDbTransaction tran)
+        internal XContext(XConnection xConn)
         {
-            Init(conn,tran);
+            Init(xConn);
         }
     }
 
@@ -16,9 +16,9 @@ namespace HPC.DAL.Core
         : Context
         where M1 : class
     {
-        internal XContext(IDbConnection conn,IDbTransaction tran)
+        internal XContext(XConnection xConn)
         {
-            Init(conn,tran);
+            Init(xConn);
             SetMTCache<M1>();
         }
     }
@@ -28,9 +28,9 @@ namespace HPC.DAL.Core
         where M1 : class
         where M2 : class
     {
-        internal XContext(IDbConnection conn,IDbTransaction tran)
+        internal XContext(XConnection xConn)
         {
-            Init(conn,tran);
+            Init(xConn);
             SetMTCache<M1>();
             SetMTCache<M2>();
         }
@@ -42,9 +42,9 @@ namespace HPC.DAL.Core
         where M2 : class
         where M3 : class
     {
-        internal XContext(IDbConnection conn,IDbTransaction tran)
+        internal XContext(XConnection xConn)
         {
-            Init(conn,tran);
+            Init(xConn);
             SetMTCache<M1>();
             SetMTCache<M2>();
             SetMTCache<M3>();
@@ -58,9 +58,9 @@ namespace HPC.DAL.Core
         where M3 : class
         where M4 : class
     {
-        internal XContext(IDbConnection conn,IDbTransaction tran)
+        internal XContext(XConnection xConn)
         {
-            Init(conn,tran);
+            Init(xConn);
             SetMTCache<M1>();
             SetMTCache<M2>();
             SetMTCache<M3>();
@@ -76,9 +76,9 @@ namespace HPC.DAL.Core
         where M4 : class
         where M5 : class
     {
-        internal XContext(IDbConnection conn,IDbTransaction tran)
+        internal XContext(XConnection xConn)
         {
-            Init(conn,tran);
+            Init(xConn);
             SetMTCache<M1>();
             SetMTCache<M2>();
             SetMTCache<M3>();
@@ -96,9 +96,9 @@ namespace HPC.DAL.Core
         where M5 : class
         where M6 : class
     {
-        internal XContext(IDbConnection conn,IDbTransaction tran)
+        internal XContext(XConnection xConn)
         {
-            Init(conn,tran);
+            Init(xConn);
             SetMTCache<M1>();
             SetMTCache<M2>();
             SetMTCache<M3>();

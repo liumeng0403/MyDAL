@@ -26,7 +26,7 @@ namespace HPC.DAL
         private static Creater<M> Creater<M>(this XConnection conn)
             where M : class, new()
         {
-            var dc = new XContext<M>(conn.Conn, conn.Tran)
+            var dc = new XContext<M>(conn)
             {
                 Crud = CrudEnum.Create
             };
@@ -92,7 +92,7 @@ namespace HPC.DAL
         }
         private static XContext DcForSQL(XConnection conn, string sql, List<XParam> dbParas)
         {
-            var dc = new XContext(conn.Conn, conn.Tran)
+            var dc = new XContext(conn)
             {
                 Crud = CrudEnum.SQL
             };
@@ -119,7 +119,7 @@ namespace HPC.DAL
         public static async Task<PagingResult<T>> QueryPagingAsync<T>
             (this XConnection conn, PagingResult<T> paging, string totalCountSql, string pageDataSql, List<XParam> dbParas = null)
         {
-            var dc = new XContext(conn.Conn, conn.Tran)
+            var dc = new XContext(conn)
             {
                 Crud = CrudEnum.SQL
             };
@@ -136,7 +136,7 @@ namespace HPC.DAL
         public static PagingResult<T> QueryPaging<T>
             (this XConnection conn, PagingResult<T> paging, string totalCountSql, string pageDataSql, List<XParam> dbParas = null)
         {
-            var dc = new XContext(conn.Conn, conn.Tran)
+            var dc = new XContext(conn)
             {
                 Crud = CrudEnum.SQL
             };
@@ -161,7 +161,7 @@ namespace HPC.DAL
         public static Deleter<M> Deleter<M>(this XConnection conn)
             where M : class, new()
         {
-            var dc = new XContext<M>(conn.Conn, conn.Tran)
+            var dc = new XContext<M>(conn)
             {
                 Crud = CrudEnum.Delete
             };
@@ -179,7 +179,7 @@ namespace HPC.DAL
         public static Updater<M> Updater<M>(this XConnection conn)
             where M : class, new()
         {
-            var dc = new XContext<M>(conn.Conn, conn.Tran)
+            var dc = new XContext<M>(conn)
             {
                 Crud = CrudEnum.Update
             };
@@ -197,7 +197,7 @@ namespace HPC.DAL
         public static Queryer<M1> Queryer<M1>(this XConnection conn)
             where M1 : class, new()
         {
-            var dc = new XContext<M1>(conn.Conn, conn.Tran)
+            var dc = new XContext<M1>(conn)
             {
                 Crud = CrudEnum.Query
             };
@@ -215,7 +215,7 @@ namespace HPC.DAL
         {
             table1 = new M1();
             table2 = new M2();
-            var dc = new XContext<M1, M2>(conn.Conn, conn.Tran)
+            var dc = new XContext<M1, M2>(conn)
             {
                 Crud = CrudEnum.Join
             };
@@ -232,7 +232,7 @@ namespace HPC.DAL
             table1 = new M1();
             table2 = new M2();
             table3 = new M3();
-            var dc = new XContext<M1, M2, M3>(conn.Conn, conn.Tran)
+            var dc = new XContext<M1, M2, M3>(conn)
             {
                 Crud = CrudEnum.Join
             };
@@ -251,7 +251,7 @@ namespace HPC.DAL
             table2 = new M2();
             table3 = new M3();
             table4 = new M4();
-            var dc = new XContext<M1, M2, M3, M4>(conn.Conn, conn.Tran)
+            var dc = new XContext<M1, M2, M3, M4>(conn)
             {
                 Crud = CrudEnum.Join
             };
@@ -272,7 +272,7 @@ namespace HPC.DAL
             table3 = new M3();
             table4 = new M4();
             table5 = new M5();
-            var dc = new XContext<M1, M2, M3, M4, M5>(conn.Conn, conn.Tran)
+            var dc = new XContext<M1, M2, M3, M4, M5>(conn)
             {
                 Crud = CrudEnum.Join
             };
@@ -295,7 +295,7 @@ namespace HPC.DAL
             table4 = new M4();
             table5 = new M5();
             table6 = new M6();
-            var dc = new XContext<M1, M2, M3, M4, M5, M6>(conn.Conn, conn.Tran)
+            var dc = new XContext<M1, M2, M3, M4, M5, M6>(conn)
             {
                 Crud = CrudEnum.Join
             };

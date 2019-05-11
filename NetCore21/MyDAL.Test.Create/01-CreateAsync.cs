@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -249,6 +250,7 @@ namespace MyDAL.Test.Create
             foreach (var item in list)
             {
                 item.Id = Guid.NewGuid();
+                Thread.Sleep(1);
                 item.CreatedOn = DateTime.Now;
             }
 
@@ -260,7 +262,7 @@ namespace MyDAL.Test.Create
             Assert.True(!list.Any(it => it.IsVIP));
             Assert.True(!list.Any(it => it.IsActived));
 
-            var res4 = await Conn.CreateBatchAsync(list);
+            var res4 = await Conn.OpenDebug().CreateBatchAsync(list);
 
             Assert.True(res4 == list.Count);
 

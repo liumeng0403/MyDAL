@@ -17,11 +17,6 @@ namespace HPC.DAL.Core
 {
     internal class XConfig
     {
-        internal static bool IsDebug { get; set; } = false;
-        internal static DebugEnum DebugType { get; set; } = DebugEnum.Output;
-
-        /************************************************************************************************************/
-
         internal static int CommandTimeout { get; set; } = 30;  // s 
 
         internal static MethodInfo EnumParse { get; } = typeof(Enum).GetMethod(nameof(Enum.Parse), new Type[] { typeof(Type), typeof(string), typeof(bool) });

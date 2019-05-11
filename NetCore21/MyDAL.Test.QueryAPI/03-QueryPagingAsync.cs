@@ -266,10 +266,6 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.TotalPage == 56);
 
-            
-
-            /******************************************************************************************************/
-
             xx = string.Empty;
         }
 
@@ -342,10 +338,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1.TotalCount == 574);
 
-            
-
             xx = string.Empty;
-
         }
 
         [Fact]
@@ -549,8 +542,6 @@ namespace MyDAL.Test.QueryAPI
             paging = await Conn.QueryPagingAsync<AgentVM>(paging, totalSql, dataSql, paras);
 
             Assert.True(paging.Data.Count == 10);
-
-            
 
             xx = string.Empty;
 

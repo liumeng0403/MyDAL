@@ -36,26 +36,22 @@ namespace HPC.DAL.AdoNet.Bases
                 return DC.SQL[1];
             }
         }
+        private DbParamInfo _dbParamInfo { get; set; }
         internal protected DbParamInfo Parameter
         {
             get
             {
-                var paras = DC.DPH.GetParameters(DC.Parameters);
-
-                //
-                if (XConfig.IsDebug
-                    && DC.Parameters != null)
+                DC.OutPutSQL();
+                if (!DC.IsSetParam)
                 {
-                    DC.SetValue();
-                    DC.OutPutSQL(DC.FlatSqlWithParams, DC);
+                    DC.IsSetParam = true;
+                    _dbParamInfo = DC.DPH.GetParameters(DC.Parameters);
+                    return _dbParamInfo;
                 }
                 else
                 {
-                    DC.OutPutSQL(DC.SQL, DC);
+                    return _dbParamInfo;
                 }
-
-                //
-                return paras;
             }
         }
         internal protected DbDataReader Reader { get; set; }
@@ -101,8 +97,8 @@ namespace HPC.DAL.AdoNet.Bases
         internal protected DataSource(Context dc)
         {
             DC = dc;
-            Conn = dc.Conn;
-            Tran = dc.Tran;
+            Conn = dc.XConn.Conn;
+            Tran = dc.XConn.Tran;
             DC.Method = UiMethodEnum.None;
         }
 
