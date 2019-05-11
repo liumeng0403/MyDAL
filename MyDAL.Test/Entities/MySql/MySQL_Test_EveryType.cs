@@ -7,8 +7,8 @@ namespace MyDAL.Test.Entities.MySql
     /*
      * create table MySQL_Test_EveryType
      * (
-     *  	MySQL_Char char not null,
-     *  	MySQL_Char_Null char null,
+     *  	MySQL_Char char(20) not null,
+     *  	MySQL_Char_Null char(20) null,
      *  	MySQL_VarChar varchar(50) not null,
      *  	MySQL_VarChar_Null varchar(50) null,
      *  	MySQL_TinyText tinytext not null,
@@ -57,8 +57,8 @@ namespace MyDAL.Test.Entities.MySql
      *  	MySQL_Year_Null year null,
      *  	MySQL_Bit bit not null,
      *  	MySQL_Bit_Null bit null,
-     *  	MySQL_Binary binary not null,
-     *  	MySQL_Binary_Null binary null,
+     *  	MySQL_Binary binary(100) not null,
+     *  	MySQL_Binary_Null binary(100) null,
      *  	MySQL_VarBinary varbinary(1000) not null,
      *  	MySQL_VarBinary_Null varbinary(1000) null,
      *  	MySQL_TinyBlob tinyblob not null,
@@ -146,13 +146,15 @@ namespace MyDAL.Test.Entities.MySql
         [XColumn(Name = "MySQL_VarBinary_Null")]
         public byte[] VarBinary_Null { get; set; }
 
-        /*--------------------------------------------------------------------------------*/
+        /*--------------------------------------------------------------------------------*/   // int & string
 
         [XColumn(Name = "MySQL_Enum")]
         public MySQL_Enum Enum { get; set; }
 
         [XColumn(Name = "MySQL_Enum_Null")]
         public MySQL_Enum? Enum_Null { get; set; }
+
+        /*--------------------------------------------------------------------------------*/  // int & long & string & List<string> 
 
         [XColumn(Name = "MySQL_Set_Field")]
         public List<string> Set { get; set; }
@@ -242,11 +244,13 @@ namespace MyDAL.Test.Entities.MySql
         [XColumn(Name = "MySQL_TimeStamp_Null")]
         public DateTime? TimeStamp_Null { get; set; }
 
+        /*--------------------------------------------------------------------------------*/   // int & string
+
         [XColumn(Name = "MySQL_Year")]
-        public DateTime Year { get; set; }
+        public string Year { get; set; }
 
         [XColumn(Name = "MySQL_Year_Null")]
-        public DateTime? Year_Null { get; set; }
+        public string Year_Null { get; set; }
 
         /*--------------------------------------------------------------------------------*/
 

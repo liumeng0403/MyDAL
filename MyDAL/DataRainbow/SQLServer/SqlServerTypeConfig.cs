@@ -1,5 +1,7 @@
-﻿using HPC.DAL.Core.Bases;
+﻿using HPC.DAL.Core;
+using HPC.DAL.Core.Bases;
 using HPC.DAL.DataRainbow.XCommon.Interfaces;
+using System;
 using System.Data;
 
 namespace HPC.DAL.DataRainbow.SQLServer
@@ -35,13 +37,17 @@ namespace HPC.DAL.DataRainbow.SQLServer
         {
             return DbType.String;
         }
+        DbType IDbTypeConfig.ListStringProc(Context dc, ParamTypeEnum colType)
+        {
+            throw XConfig.EC.Exception(XConfig.EC._092, "sql server 不处理 List-String 此种类型的列！");
+        }
         DbType IDbTypeConfig.DateTimeProc(Context dc, ParamTypeEnum colType)
         {
             if (colType == ParamTypeEnum.SqlServer_DateTime2)
             {
                 return DbType.DateTime2;
             }
-            else if(colType== ParamTypeEnum.SqlServer_DateTime)
+            else if (colType == ParamTypeEnum.SqlServer_DateTime)
             {
                 return DbType.DateTime;
             }

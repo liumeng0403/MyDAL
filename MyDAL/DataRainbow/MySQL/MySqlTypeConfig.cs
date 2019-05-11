@@ -63,6 +63,17 @@ namespace HPC.DAL.DataRainbow.MySQL
                 return DbType.AnsiString;
             }
         }
+        DbType IDbTypeConfig.ListStringProc(Context dc, ParamTypeEnum colType)
+        {
+            if (colType == ParamTypeEnum.MySQL_Set)
+            {
+                return DbType.String;
+            }
+            else
+            {
+                return DbType.AnsiString;
+            }
+        }
         DbType IDbTypeConfig.DateTimeProc(Context dc, ParamTypeEnum colType)
         {
             if (colType == ParamTypeEnum.MySQL_DateTime)
