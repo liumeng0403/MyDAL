@@ -243,7 +243,7 @@ namespace MyDAL.Test.Entities.MySql
         public DateTime? TimeStamp_Null { get; set; }
 
         [XColumn(Name = "MySQL_Year")]
-        public DateTime MySQL_Year { get; set; }
+        public DateTime Year { get; set; }
 
         [XColumn(Name = "MySQL_Year_Null")]
         public DateTime? Year_Null { get; set; }

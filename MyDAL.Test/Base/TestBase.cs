@@ -1,12 +1,13 @@
 ﻿using HPC.DAL;
 using MyDAL.Test.Entities;
+using MyDAL.Test.Entities.MySql;
 using MyDAL.Test.Enums;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace MyDAL.Test
@@ -127,6 +128,100 @@ namespace MyDAL.Test
             //
             return result;
         }
+
+        public async Task MySQL_PreData(char pk, int num)
+        {
+            var flag = num % 2 == 0;
+
+            var m = new MySQL_EveryType();
+
+            m.Char = $"{pk}-char";
+            m.Char_Null = flag ? null : $"{pk}- char null";
+
+            m.VarChar = $"{pk}-var char";
+            m.VarChar_Null = flag ? null : $"{pk}-var char null";
+
+            m.TinyText = $"{pk}-tiny text";
+            m.TinyText_Null = flag ? null : $"{pk}-tiny text null";
+
+            m.Text = $"{pk}-text";
+            m.Text_Null = flag ? null : $"{pk}-text null";
+
+            m.MediumText = $"{pk}-medium text";
+            m.MediumText_Null = flag ? null : $"{pk}-medium text null";
+
+            m.LongText = $"{pk}-long text";
+            m.LongText_Null = flag ? null : $"{pk}-long text null";
+
+            m.TinyBlob = Encoding.UTF8.GetBytes($"{pk}-tiny blob");
+            m.TinyBlob_Null = flag ? null : Encoding.UTF8.GetBytes($"{pk}- tiny blob null");
+
+            m.Blob = Encoding.UTF8.GetBytes($"{pk}-blob");
+            m.Blob_Null = flag ? null : Encoding.UTF8.GetBytes($"{pk}-blob null");
+
+            m.MediumBlob = Encoding.UTF8.GetBytes($"{pk}-medium blob");
+            m.MediumBlob_Null = flag ? null : Encoding.UTF8.GetBytes($"{pk}-medium blob null");
+
+            m.LongBlob = Encoding.UTF8.GetBytes($"{pk}-long blob");
+            m.LongBlob_Null = flag ? null : Encoding.UTF8.GetBytes($"{pk}-long blob null");
+
+            m.Binary = Encoding.UTF8.GetBytes($"{pk}-binary");
+            m.Binary_Null = flag ? null : Encoding.UTF8.GetBytes($"{pk}-binary null");
+
+            m.VarBinary = Encoding.UTF8.GetBytes($"{pk}-var binary");
+            m.VarBinary_Null = flag ? null : Encoding.UTF8.GetBytes($"{pk} var binary null");
+
+            m.Enum = MySQL_Enum.A;
+            m.Enum_Null = flag ? null : (MySQL_Enum?)MySQL_Enum.B;
+
+            m.Set = new List<string> { "music", "movie" };
+            m.Set_Null = flag ? null : new List<string> { "swimming" };
+
+            m.TinyInt = (byte)pk;
+            m.TinyInt_Null = flag ? null : (byte?)pk;
+
+            m.SmallInt = short.MaxValue;
+            m.SmallInt_Null = flag ? null : (short?)short.MinValue;
+
+            m.MediumInt = 10000000;
+            m.MediumInt_Null = flag ? null : (int?)10000000;
+
+            m.Int = int.MaxValue;
+            m.Int_Null = flag ? null : (int?)int.MinValue;
+
+            m.BigInt = long.MaxValue;
+            m.BigInt_Null = flag ? null : (long?)long.MinValue;
+
+            m.Float = float.MaxValue;
+            m.Float_Null = flag ? null : (float?)float.MinValue;
+
+            m.Double = double.MaxValue;
+            m.Double_Null = flag ? null : (double?)double.MinValue;
+
+            m.Decimal = decimal.MaxValue;
+            m.Decimal_Null = flag ? null : (decimal?)decimal.MinValue;
+
+            m.Date = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd"));
+            m.Date_Null = flag ? null : (DateTime?)DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd"));
+
+            m.DateTime = DateTime.Now;
+            m.DateTime_Null = flag ? null : (DateTime?)DateTime.Now;
+
+            m.TimeStamp = DateTime.Now;
+            m.TimeStamp_Null = flag ? null : (DateTime?)DateTime.Now;
+
+            m.Year = new DateTime(Convert.ToInt32(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Substring(0, 4)), 1, 1);
+            m.Year_Null = flag ? null : (DateTime?)new DateTime(Convert.ToInt32(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Substring(0, 4)), 1, 1);
+
+            m.Time = DateTime.Now - DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd"));
+            m.Time_Null = flag ? null : (TimeSpan?)(DateTime.Now - DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd")));
+
+            m.Bit = true;
+            m.Bit_Null = flag ? null : (bool?)false;
+
+            await Conn.CreateAsync(m);
+        }
+
     }
 
 }
