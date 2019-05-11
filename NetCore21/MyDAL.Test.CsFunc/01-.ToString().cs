@@ -6,10 +6,17 @@ namespace MyDAL.Test.CsFunc
     public class _01_
         : TestBase
     {
+
         [Fact]
         public async Task QueryOne_SingleColumn_ST()
         {
+            await MySQL_PreData('A', 1);
 
+            xx = string.Empty;
+
+
+
+            xx = string.Empty;
         }
 
         [Fact]
