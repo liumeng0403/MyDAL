@@ -249,7 +249,7 @@ namespace MyDAL.Test.Create
             foreach (var item in list)
             {
                 item.Id = Guid.NewGuid();
-                Thread.Sleep(1);
+                //Thread.Sleep(1);
                 item.CreatedOn = DateTime.Now;
             }
 
@@ -264,10 +264,6 @@ namespace MyDAL.Test.Create
             var res4 = await Conn.OpenDebug().CreateBatchAsync(list);
 
             Assert.True(res4 == list.Count);
-
-            
-
-            /********************************************************************************************************************************/
 
             xx = string.Empty;
 

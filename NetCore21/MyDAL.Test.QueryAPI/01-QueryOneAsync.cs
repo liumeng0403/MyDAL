@@ -50,17 +50,13 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.NotNull(res1);
 
-            
-
-            var resR1 = await Conn
+            var resR1 = await Conn.OpenDebug()
                 .Queryer<BodyFitRecord>()
                 .Where(it => Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e") == it.Id)
                 .QueryOneAsync();
 
             Assert.NotNull(resR1);
             Assert.True(res1.Id == resR1.Id);
-
-            
 
             /****************************************************************************************************************************************/
 
@@ -74,17 +70,13 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.NotNull(res2);
 
-            
-
-            var resR2 = await Conn
+            var resR2 = await Conn.OpenDebug()
                 .Queryer<BodyFitRecord>()
                 .Where(it => Convert.ToDateTime("2018-08-23 13:36:58") == it.CreatedOn)
                 .QueryOneAsync();
 
             Assert.NotNull(resR2);
             Assert.True(res2.Id == resR2.Id);
-
-            
 
             /****************************************************************************************************************************************/
 
@@ -98,9 +90,7 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.NotNull(res3);
 
-            
-
-            var resR3 = await Conn
+            var resR3 = await Conn.OpenDebug()
                 .Queryer<BodyFitRecord>()
                 .Where(it => "xxxx" == it.BodyMeasureProperty)
                 .QueryOneAsync();
@@ -108,10 +98,9 @@ namespace MyDAL.Test.QueryAPI
             Assert.NotNull(resR3);
             Assert.True(res3.Id == resR3.Id);
 
-            
-
             /****************************************************************************************************************************************/
 
+            xx = string.Empty;
         }
 
         [Fact]
