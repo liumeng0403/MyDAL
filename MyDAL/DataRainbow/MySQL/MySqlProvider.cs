@@ -37,10 +37,10 @@ namespace MyDAL.DataRainbow.MySQL
                                             FROM
                                                 information_schema.COLUMNS
                                             WHERE  ( 
-                                                                table_schema='{DC.Conn.Database.Trim().ToUpper()}' 
-                                                                or table_schema='{DC.Conn.Database.Trim().ToLower()}' 
-                                                                or table_schema='{DC.Conn.Database.Trim()}' 
-                                                                or table_schema='{DC.Conn.Database}' 
+                                                                table_schema='{DC.XConn.Conn.Database.Trim().ToUpper()}' 
+                                                                or table_schema='{DC.XConn.Conn.Database.Trim().ToLower()}' 
+                                                                or table_schema='{DC.XConn.Conn.Database.Trim()}' 
+                                                                or table_schema='{DC.XConn.Conn.Database}' 
                                                             )
                                                             and  ( 
                                                                         TABLE_NAME = '{tableName.Trim().ToUpper()}' 

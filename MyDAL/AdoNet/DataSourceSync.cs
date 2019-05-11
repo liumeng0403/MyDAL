@@ -30,7 +30,7 @@ namespace MyDAL.AdoNet
         internal DataSourceSync(Context dc)
             : base(dc)
         {
-            ConnForCols = (IDbConnection)Activator.CreateInstance(dc.Conn.GetType(), dc.Conn.ConnectionString);
+            ConnForCols = (IDbConnection)Activator.CreateInstance(Conn.GetType(), Conn.ConnectionString);
         }
 
         /*********************************************************************************************************************************************/
@@ -220,7 +220,7 @@ namespace MyDAL.AdoNet
         {
             DC.FlatOutput = false;
             var result = new List<M>();
-            var ci = new CommandInfo(SqlOne, Parameter);
+            var ci = new CommandInfo(SqlOne, null);
             bool needClose = ConnForCols.State == ConnectionState.Closed;
             try
             {

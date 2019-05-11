@@ -244,8 +244,10 @@ namespace MyDAL.Core.Helper
 
         internal void ResetParameter()
         {
-            DC.Parameters.Clear();
+            DC.AlreadyOutput = false;
+            DC.IsSetParam = false;
             DC.DicID = 1;
+            DC.Parameters.Clear();
         }
         internal void SetParameter()
         {
