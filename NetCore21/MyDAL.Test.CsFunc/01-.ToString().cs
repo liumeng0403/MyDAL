@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using MyDAL.Test.Entities.MySql;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace MyDAL.Test.CsFunc
@@ -10,11 +11,12 @@ namespace MyDAL.Test.CsFunc
         [Fact]
         public async Task QueryOne_SingleColumn_ST()
         {
-            await MySQL_PreData('A', 1);
+            var pk = 'A';
+            await MySQL_PreData(pk, 1);
 
             xx = string.Empty;
 
-
+            var res1 = await Conn.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char");
 
             xx = string.Empty;
         }

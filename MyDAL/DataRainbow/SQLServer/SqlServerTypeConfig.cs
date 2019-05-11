@@ -1,4 +1,5 @@
-﻿using MyDAL.Core.Bases;
+using MyDAL.Core;
+using MyDAL.Core.Bases;
 using MyDAL.DataRainbow.XCommon.Interfaces;
 using System.Data;
 
@@ -35,13 +36,17 @@ namespace MyDAL.DataRainbow.SQLServer
         {
             return DbType.String;
         }
+        DbType IDbTypeConfig.ListStringProc(Context dc, ParamTypeEnum colType)
+        {
+            throw XConfig.EC.Exception(XConfig.EC._092, "sql server 不处理 List-String 此种类型的列！");
+        }
         DbType IDbTypeConfig.DateTimeProc(Context dc, ParamTypeEnum colType)
         {
             if (colType == ParamTypeEnum.SqlServer_DateTime2)
             {
                 return DbType.DateTime2;
             }
-            else if(colType== ParamTypeEnum.SqlServer_DateTime)
+            else if (colType == ParamTypeEnum.SqlServer_DateTime)
             {
                 return DbType.DateTime;
             }

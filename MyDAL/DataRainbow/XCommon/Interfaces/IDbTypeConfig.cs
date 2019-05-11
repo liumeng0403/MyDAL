@@ -10,6 +10,7 @@ namespace MyDAL.DataRainbow.XCommon.Interfaces
         DbType DecimalProc(Context dc, ParamTypeEnum colType);
         DbType BoolProc(Context dc, ParamTypeEnum colType);
         DbType StringProc(Context dc, ParamTypeEnum colType);
+        DbType ListStringProc(Context dc, ParamTypeEnum colType);
         DbType DateTimeProc(Context dc, ParamTypeEnum colType);
         DbType GuidProc(Context dc, ParamTypeEnum colType);
         DbType ByteProc(Context dc, ParamTypeEnum colType);

@@ -141,6 +141,10 @@ namespace MyDAL.Test
 
         public async Task MySQL_PreData(char pk, int num)
         {
+            xx = string.Empty;
+
+            await Conn.DeleteAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char");
+
             var flag = num % 2 == 0;
 
             var m = new MySQL_EveryType();
@@ -193,8 +197,8 @@ namespace MyDAL.Test
             m.SmallInt = short.MaxValue;
             m.SmallInt_Null = flag ? null : (short?)short.MinValue;
 
-            m.MediumInt = 10000000;
-            m.MediumInt_Null = flag ? null : (int?)10000000;
+            m.MediumInt = 1000000;
+            m.MediumInt_Null = flag ? null : (int?)1000000;
 
             m.Int = int.MaxValue;
             m.Int_Null = flag ? null : (int?)int.MinValue;
@@ -202,14 +206,14 @@ namespace MyDAL.Test
             m.BigInt = long.MaxValue;
             m.BigInt_Null = flag ? null : (long?)long.MinValue;
 
-            m.Float = float.MaxValue;
-            m.Float_Null = flag ? null : (float?)float.MinValue;
+            m.Float = 50.00F;
+            m.Float_Null = flag ? null : (float?)50.00F;
 
             m.Double = double.MaxValue;
             m.Double_Null = flag ? null : (double?)double.MinValue;
 
-            m.Decimal = decimal.MaxValue;
-            m.Decimal_Null = flag ? null : (decimal?)decimal.MinValue;
+            m.Decimal = 600.00M;
+            m.Decimal_Null = flag ? null : (decimal?)600.00M;
 
             m.Date = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd"));
             m.Date_Null = flag ? null : (DateTime?)DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd"));
@@ -220,8 +224,8 @@ namespace MyDAL.Test
             m.TimeStamp = DateTime.Now;
             m.TimeStamp_Null = flag ? null : (DateTime?)DateTime.Now;
 
-            m.Year = new DateTime(Convert.ToInt32(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Substring(0, 4)), 1, 1);
-            m.Year_Null = flag ? null : (DateTime?)new DateTime(Convert.ToInt32(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss").Substring(0, 4)), 1, 1);
+            m.Year = DateTime.Now.Year.ToString();
+            m.Year_Null = flag ? null : DateTime.Now.Year.ToString();
 
             m.Time = DateTime.Now - DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd"));
             m.Time_Null = flag ? null : (TimeSpan?)(DateTime.Now - DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd")));
@@ -230,6 +234,8 @@ namespace MyDAL.Test
             m.Bit_Null = flag ? null : (bool?)false;
 
             await Conn.CreateAsync(m);
+
+            xx = string.Empty;
         }
 
     }

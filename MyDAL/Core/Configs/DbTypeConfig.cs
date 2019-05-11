@@ -73,6 +73,18 @@ namespace MyDAL.Core.Configs
                     return DbType.AnsiString;
             }
         }
+        DbType IDbTypeConfig.ListStringProc(Context dc, ParamTypeEnum colType)
+        {
+            switch (dc.DB)
+            {
+                case DbEnum.MySQL:
+                    return MySql.ListStringProc(dc, colType);
+                case DbEnum.SQLServer:
+                    throw XConfig.EC.Exception(XConfig.EC._091, "sql server 不支持 set 类型的列！");
+                default:
+                    return DbType.String;
+            }
+        }
         DbType IDbTypeConfig.DateTimeProc(Context dc, ParamTypeEnum colType)
         {
             switch (dc.DB)

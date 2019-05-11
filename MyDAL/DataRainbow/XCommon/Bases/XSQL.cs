@@ -12,6 +12,7 @@ namespace MyDAL.DataRainbow.XCommon.Bases
         internal protected static char QuestionMark { get; } = '?';
         internal protected static char EscapeChar { get; } = '/';
         internal protected static char Percent { get; } = '%';
+        internal static char CommaChar { get; } = ',';
 
         /****************************************************************************************************************/
 

@@ -26,6 +26,7 @@ namespace MyDAL.Core.Configs
         internal Type Ulong { get; } = typeof(ulong);
         internal Type Ushort { get; } = typeof(ushort);
         internal Type String { get; } = typeof(string);
+        internal Type ListString { get; } = typeof(List<string>);
         internal Type DateTime { get; } = typeof(DateTime);
         internal Type DateTimeNull { get; } = typeof(DateTime?);
         internal Type DateTimeOffset { get; } = typeof(DateTimeOffset);

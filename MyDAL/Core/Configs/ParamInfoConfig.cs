@@ -1,10 +1,13 @@
-﻿using MyDAL.AdoNet;
+using MyDAL.AdoNet;
 using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Extensions;
+using MyDAL.DataRainbow.XCommon.Bases;
 using MyDAL.ModelTools;
 using MyDAL.Tools;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 
 namespace MyDAL.Core.Configs
@@ -54,6 +57,24 @@ namespace MyDAL.Core.Configs
             if (type == DbType.Byte)
             {
                 val = ui.CsValue.ToByte();
+            }
+            else
+            {
+                val = ui.CsValue;
+            }
+
+            //
+            return dc.PH.GetDefault(ui.Param, val, type);
+        }
+        internal ParamInfo ByteArryParam(DicParam ui, Type realType, Context dc)
+        {
+            var type = dc.PH.GetType(ui.ColumnType, realType, dc);
+            var val = default(object);
+
+            //
+            if (type == DbType.Binary)
+            {
+                val = ui.CsValue;
             }
             else
             {
@@ -284,6 +305,26 @@ namespace MyDAL.Core.Configs
             //
             return dc.PH.GetDefault(ui.Param, val, type);
         }
+        internal ParamInfo ListStringParam(DicParam ui, Type realType, Context dc)
+        {
+            var type = dc.PH.GetType(ui.ColumnType, realType, dc);
+            var val = default(object);
+
+            //
+            if (type == DbType.String
+                && ui.CsValue is IList
+                && ui.ColumnType== ParamTypeEnum.MySQL_Set)
+            {
+                val = string.Join(XSQL.CommaChar.ToString(), ui.CsValue as List<string>);
+            }
+            else
+            {
+                val = ui.CsValue;
+            }
+
+            //
+            return dc.PH.GetDefault(ui.Param, val, type);
+        }
         internal ParamInfo DateTimeParam(DicParam ui, Type realType, Context dc)
         {
             var type = dc.PH.GetType(ui.ColumnType, realType, dc);
@@ -329,7 +370,7 @@ namespace MyDAL.Core.Configs
             //
             if (type == DbType.Time)
             {
-                val = ui.CsValueStr.ToDateTime();
+                val = ui.CsValue;
             }
             else
             {
