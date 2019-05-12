@@ -1,12 +1,6 @@
-<<<<<<< HEAD
-﻿using MyDAL.Test.Entities.MySql;
-=======
-﻿using HPC.DAL;
 using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.Entities.MySql;
 using System;
-using System.Text;
->>>>>>> 95401e8... [add]  to string & query one api
 using System.Threading.Tasks;
 using Xunit;
 
