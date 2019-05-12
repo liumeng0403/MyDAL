@@ -156,10 +156,10 @@ namespace MyDAL.Test.Entities.MySql
         /*--------------------------------------------------------------------------------*/  // int & long & string & List<string> 
 
         [XColumn(Name = "MySQL_Set_Field")]
-        public List<string> Set { get; set; }
+        public string Set { get; set; }
 
         [XColumn(Name = "MySQL_Set_Null")]
-        public List<string> Set_Null { get; set; }
+        public string Set_Null { get; set; }
 
         /*--------------------------------------------------------------------------------*/
 

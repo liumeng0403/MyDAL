@@ -115,10 +115,6 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1 == pk);
 
-            
-
-            /****************************************************************************************/
-
             xx = string.Empty;
         }
 

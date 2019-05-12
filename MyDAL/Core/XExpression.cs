@@ -202,13 +202,7 @@ namespace MyDAL.Core
                 }
                 else if (toString)
                 {
-                    var cp = GetKey(left, FuncEnum.DateFormat, CompareXEnum.None);
-                    var val = DC.VH.ValueProcess(bin.Right, cp.ValType, cp.Format);
-                    DC.Option = OptionEnum.Function;
-                    DC.Func = FuncEnum.DateFormat;
-                    DC.Compare = bin.Compare;
-                    var format = DC.TSH.DateTime(cp.Format);
-                    return DC.DPH.DateFormatDic(cp, val, format);
+                    return WhereFuncToString(left, bin);
                 }
                 else
                 {
@@ -321,20 +315,37 @@ namespace MyDAL.Core
                 throw XConfig.EC.Exception(XConfig.EC._020, nodeType.ToString());
             }
         }
-        private DicParam FuncToString(MethodCallExpression mcExpr)
+        private DicParam WhereFuncToString(Expression left,BinExprInfo bin)
         {
-            var cp = DC.XE.GetKey(mcExpr, FuncEnum.DateFormat, CompareXEnum.None);
-            DC.Option = OptionEnum.ColumnAs;
+            var cp = GetKey(left, FuncEnum.DateFormat, CompareXEnum.None);
+            var val = DC.VH.ValueProcess(bin.Right, cp.ValType, cp.Format);
+            DC.Option = OptionEnum.Function;
             DC.Func = FuncEnum.DateFormat;
-            DC.Compare = CompareXEnum.None;
+            DC.Compare = bin.Compare;
             var format = DC.TSH.DateTime(cp.Format);
-            if (DC.Action == ActionEnum.Select)
+            return DC.DPH.DateFormatDic(cp, val, format);
+        }
+        private DicParam SelectFuncToString(MethodCallExpression mcExpr)
+        {
+            if (mcExpr.Object.Type== XConfig.CSTC.String)
             {
-                return DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.DateFormatDic(cp, null, format) });
+                return MemberAccessHandle(mcExpr.Object as MemberExpression);
             }
             else
             {
-                return DC.DPH.DateFormatDic(cp, null, format);
+                var cp = GetKey(mcExpr, FuncEnum.DateFormat, CompareXEnum.None);
+                DC.Option = OptionEnum.ColumnAs;
+                DC.Func = FuncEnum.DateFormat;
+                DC.Compare = CompareXEnum.None;
+                var format = DC.TSH.DateTime(cp.Format);
+                if (DC.Action == ActionEnum.Select)
+                {
+                    return DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.DateFormatDic(cp, null, format) });
+                }
+                else
+                {
+                    return DC.DPH.DateFormatDic(cp, null, format);
+                }
             }
         }
         private DicParam BoolDefaultCondition(ColumnParam cp)
@@ -433,7 +444,7 @@ namespace MyDAL.Core
             }
             else if (tsp.Flag)
             {
-                return FuncToString(mcExpr);
+                return SelectFuncToString(mcExpr);
             }
 
             throw XConfig.EC.Exception(XConfig.EC._046, $"出现异常 -- [[{mcExpr.ToString()}]] 不能解析!!!");
@@ -805,7 +816,7 @@ namespace MyDAL.Core
                 var cp = GetKey(body, FuncEnum.None, CompareXEnum.None);
                 if (string.IsNullOrWhiteSpace(cp.Key))
                 {
-                    throw XConfig.EC. Exception(XConfig.EC._052, "无法解析 列名2 !!!");
+                    throw XConfig.EC.Exception(XConfig.EC._052, "无法解析 列名2 !!!");
                 }
                 result = DC.DPH.ColumnDic(cp);
             }
