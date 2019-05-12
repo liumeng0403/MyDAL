@@ -178,8 +178,8 @@ namespace MyDAL.Test
             m.Enum = MySQL_Enum.A;
             m.Enum_Null = flag ? null : (MySQL_Enum?)MySQL_Enum.B;
 
-            m.Set = new List<string> { "music", "movie" };
-            m.Set_Null = flag ? null : new List<string> { "swimming" };
+            m.Set = string.Join(",", new List<string> { "music", "movie" });
+            m.Set_Null = flag ? null : string.Join(",", new List<string> { "swimming" });
 
             m.TinyInt = (byte)pk;
             m.TinyInt_Null = flag ? null : (byte?)pk;

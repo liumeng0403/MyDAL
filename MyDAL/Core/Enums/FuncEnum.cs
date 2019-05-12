@@ -6,12 +6,12 @@
         /// ""
         /// </summary>
         None,
-        
+
         /// <summary>
         /// " char_length"
         /// </summary>
         CharLength,
-        
+
         /// <summary>
         /// " DATE_FORMAT"
         /// </summary>
@@ -29,7 +29,7 @@
         /// " rtrim"
         /// </summary>
         RTrim,
-        
+
         /// <summary>
         /// " count"
         /// </summary>
@@ -39,7 +39,11 @@
         /// " sum"
         /// </summary>
         Sum,
-        SumNullable
+        SumNullable,
+
+        /********************************************************************************************************************************/
+
+        ToString_CS
 
     }
 }
