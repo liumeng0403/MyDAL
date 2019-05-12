@@ -1,4 +1,4 @@
-﻿namespace HPC.DAL.AdoNet
+﻿namespace MyDAL.AdoNet
 {    
     internal class Reflect
     {
