@@ -18,6 +18,7 @@ namespace MyDAL.UserFacade.Query
     /// </summary>
     public sealed class OrderByQ<M>
         : Operator
+        , IQueryOneAsync<M>, IQueryOne<M>
         , IQueryListAsync<M>, IQueryList<M>
         , IQueryPagingAsync<M>, IQueryPaging<M>
         , ITopAsync<M>, ITop<M>
@@ -26,6 +27,52 @@ namespace MyDAL.UserFacade.Query
         internal OrderByQ(Context dc)
             : base(dc)
         { }
+
+        /// <summary>
+        /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// </summary>
+        public async Task<M> QueryOneAsync()
+        {
+            return await new QueryOneAsyncImpl<M>(DC).QueryOneAsync();
+        }
+        /// <summary>
+        /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// </summary>
+        public async Task<VM> QueryOneAsync<VM>()
+            where VM : class
+        {
+            return await new QueryOneAsyncImpl<M>(DC).QueryOneAsync<VM>();
+        }
+        /// <summary>
+        /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// </summary>
+        public async Task<T> QueryOneAsync<T>(Expression<Func<M, T>> columnMapFunc)
+        {
+            return await new QueryOneAsyncImpl<M>(DC).QueryOneAsync<T>(columnMapFunc);
+        }
+
+        /// <summary>
+        /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// </summary>
+        public M QueryOne()
+        {
+            return new QueryOneImpl<M>(DC).QueryOne();
+        }
+        /// <summary>
+        /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// </summary>
+        public VM QueryOne<VM>()
+            where VM : class
+        {
+            return new QueryOneImpl<M>(DC).QueryOne<VM>();
+        }
+        /// <summary>
+        /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// </summary>
+        public T QueryOne<T>(Expression<Func<M, T>> columnMapFunc)
+        {
+            return new QueryOneImpl<M>(DC).QueryOne<T>(columnMapFunc);
+        }
 
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
