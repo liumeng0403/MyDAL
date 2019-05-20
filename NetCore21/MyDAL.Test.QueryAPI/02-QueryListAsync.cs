@@ -86,7 +86,7 @@ namespace MyDAL.Test.QueryAPI
             xx = string.Empty;
 
             // 
-            var res5 = await Conn
+            var res5 = await Conn.OpenDebug()
                 .Queryer(out Agent agent5, out AgentInventoryRecord record5)
                 .From(() => agent5)
                     .InnerJoin(() => record5)

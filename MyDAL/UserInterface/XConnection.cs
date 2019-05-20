@@ -117,7 +117,7 @@ namespace MyDAL
         internal bool IsDebug { get; private set; } = false;
         internal DebugEnum DebugType { get; private set; } = DebugEnum.Output;
         /// <summary>
-        /// Sql 调试跟踪 开启
+        /// 请参阅: <see langword=".OpenDebug() 与 Visual Studio 输出窗口 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public XConnection OpenDebug(DebugEnum type = DebugEnum.Output)
         {

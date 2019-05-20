@@ -72,11 +72,12 @@ namespace MyDAL.Test.Delete
             xx = string.Empty;
 
             // where or
-            var res2 = await Conn
+            var res2 = await Conn.OpenDebug()
                 .Deleter<Agent>()
                 .Where(it => it.PathId == path)
                 .Or(it => it.AgentLevel == (AgentLevel)level)
                 .DeleteAsync();
+
             Assert.True(res2 == 28063);
 
             
