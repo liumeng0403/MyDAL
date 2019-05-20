@@ -315,7 +315,7 @@ namespace HPC.DAL.Core
                 throw XConfig.EC.Exception(XConfig.EC._020, nodeType.ToString());
             }
         }
-        private DicParam WhereFuncToString(Expression left,BinExprInfo bin)
+        private DicParam WhereFuncToString(Expression left, BinExprInfo bin)
         {
             var cp = GetKey(left, FuncEnum.DateFormat, CompareXEnum.None);
             var val = DC.VH.ValueProcess(bin.Right, cp.ValType, cp.Format);
@@ -327,16 +327,25 @@ namespace HPC.DAL.Core
         }
         private DicParam SelectFuncToString(MethodCallExpression mcExpr)
         {
-            if (mcExpr.Object.Type== XConfig.CSTC.String)
+            var type = mcExpr.Object.Type;
+            DC.Option = OptionEnum.ColumnAs;
+            DC.Compare = CompareXEnum.None;
+            if (type.IsEnum)
+            {
+                return null;
+            }
+            else if (type == XConfig.CSTC.String)
             {
                 return MemberAccessHandle(mcExpr.Object as MemberExpression);
+            }
+            else if (type == XConfig.CSTC.ByteArray)
+            {
+                throw XConfig.EC.Exception(XConfig.EC._093, $"【byte[]】对应 DB column 不能使用 C# .ToString() 函数！表达式--【{mcExpr.ToString()}】");
             }
             else
             {
                 var cp = GetKey(mcExpr, FuncEnum.DateFormat, CompareXEnum.None);
-                DC.Option = OptionEnum.ColumnAs;
                 DC.Func = FuncEnum.DateFormat;
-                DC.Compare = CompareXEnum.None;
                 var format = DC.TSH.DateTime(cp.Format);
                 if (DC.Action == ActionEnum.Select)
                 {
