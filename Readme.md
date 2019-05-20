@@ -23,6 +23,7 @@
 * <a href="http://www.cnblogs.com/Meng-NET/p/8963476.html" target="_blank">目录索引</a>
 * <a href="https://www.cnblogs.com/Meng-NET/p/10355760.html" target="_blank">MyDAL - 组件适用范围说明</a>
 * <a href="https://www.cnblogs.com/Meng-NET/p/9831746.html" target="_blank">MyDAL - 快速使用</a>
+* <a href="https://www.cnblogs.com/Meng-NET/p/10895268.html" target="_blank">MyDAL - .OpenDebug() 与 Visual Studio 输出窗口 使用</a>
 * <a href="https://www.cnblogs.com/Meng-NET/p/10691944.html" target="_blank">MyDAL - .UpdateAsync() 使用</a>
 * <a href="https://www.cnblogs.com/Meng-NET/p/10697381.html" target="_blank">MyDAL - .UpdateAsync() 之 .Set() 使用</a>
 * <a href="https://www.cnblogs.com/Meng-NET/p/10703669.html" target="_blank">MyDAL - .UpdateAsync() 之 .SetSegment 根据条件 动态设置 要更新的字段 使用</a>
