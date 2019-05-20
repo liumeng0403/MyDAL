@@ -1,5 +1,8 @@
 ﻿namespace HPC.DAL
 {
+    /// <summary>
+    /// 请参阅: <see langword=".OpenDebug() 与 Visual Studio 输出窗口 使用 https://www.cnblogs.com/Meng-NET/"/>
+    /// </summary>
     public enum DebugEnum
     {
         /// <summary>

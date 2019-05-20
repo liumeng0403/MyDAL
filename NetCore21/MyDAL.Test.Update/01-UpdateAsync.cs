@@ -358,7 +358,7 @@ namespace MyDAL.Test.Update
             var m = await CreateDbData();
 
             // 多 字段 多 set 用法
-            var res1 = await Conn
+            var res1 = await Conn.OpenDebug()
                 .Updater<BodyFitRecord>()  // 更新表 BodyFitRecord 
                 .Set(it => it.CreatedOn, DateTime.Now)    //  设置字段 CreatedOn 值
                 .Set(it => it.BodyMeasureProperty, "{xxx:yyy,mmm:nnn,zzz:aaa}")  //  设置字段 BodyMeasureProperty 值
