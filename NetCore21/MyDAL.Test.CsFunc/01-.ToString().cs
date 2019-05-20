@@ -1,6 +1,7 @@
 using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.Entities.MySql;
 using System;
+using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
