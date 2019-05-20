@@ -27,7 +27,8 @@ namespace MyDAL.Core.Extensions
         internal static bool IsSingleColumn(this Type type)
         {
             if (type.IsValueType
-                || type == XConfig.CSTC.String)
+                || type == XConfig.CSTC.String
+                || type == XConfig.CSTC.ByteArray)
             {
                 return true;
             }
