@@ -1,6 +1,7 @@
 ﻿using HPC.DAL.Core.Bases;
 using HPC.DAL.Core.Common;
 using HPC.DAL.Core.Enums;
+using HPC.DAL.Core.Expressions;
 using HPC.DAL.Core.Models.ExpPara;
 using System;
 using System.Collections.Generic;
@@ -202,7 +203,7 @@ namespace HPC.DAL.Core
                 }
                 else if (toString)
                 {
-                    return WhereFuncToString(left, bin);
+                    return new CsToStringExpression(DC).WhereFuncToString(left, bin);
                 }
                 else
                 {
@@ -315,48 +316,6 @@ namespace HPC.DAL.Core
                 throw XConfig.EC.Exception(XConfig.EC._020, nodeType.ToString());
             }
         }
-        private DicParam WhereFuncToString(Expression left, BinExprInfo bin)
-        {
-            var cp = GetKey(left, FuncEnum.DateFormat, CompareXEnum.None);
-            var val = DC.VH.ValueProcess(bin.Right, cp.ValType, cp.Format);
-            DC.Option = OptionEnum.Function;
-            DC.Func = FuncEnum.DateFormat;
-            DC.Compare = bin.Compare;
-            var format = DC.TSH.DateTime(cp.Format);
-            return DC.DPH.DateFormatDic(cp, val, format);
-        }
-        private DicParam SelectFuncToString(MethodCallExpression mcExpr)
-        {
-            var type = mcExpr.Object.Type;
-            DC.Option = OptionEnum.ColumnAs;
-            DC.Compare = CompareXEnum.None;
-            if (type.IsEnum)
-            {
-                return null;
-            }
-            else if (type == XConfig.CSTC.String)
-            {
-                return MemberAccessHandle(mcExpr.Object as MemberExpression);
-            }
-            else if (type == XConfig.CSTC.ByteArray)
-            {
-                throw XConfig.EC.Exception(XConfig.EC._093, $"【byte[]】对应 DB column 不能使用 C# .ToString() 函数！表达式--【{mcExpr.ToString()}】");
-            }
-            else
-            {
-                var cp = GetKey(mcExpr, FuncEnum.DateFormat, CompareXEnum.None);
-                DC.Func = FuncEnum.DateFormat;
-                var format = DC.TSH.DateTime(cp.Format);
-                if (DC.Action == ActionEnum.Select)
-                {
-                    return DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.DateFormatDic(cp, null, format) });
-                }
-                else
-                {
-                    return DC.DPH.DateFormatDic(cp, null, format);
-                }
-            }
-        }
         private DicParam BoolDefaultCondition(ColumnParam cp)
         {
             if (cp.ValType == XConfig.CSTC.Bool
@@ -453,7 +412,7 @@ namespace HPC.DAL.Core
             }
             else if (tsp.Flag)
             {
-                return SelectFuncToString(mcExpr);
+                return new CsToStringExpression(DC).SelectFuncToString(mcExpr);
             }
 
             throw XConfig.EC.Exception(XConfig.EC._046, $"出现异常 -- [[{mcExpr.ToString()}]] 不能解析!!!");
@@ -470,7 +429,7 @@ namespace HPC.DAL.Core
 
             return null;
         }
-        private DicParam MemberAccessHandle(MemberExpression memExpr)
+        internal DicParam MemberAccessHandle(MemberExpression memExpr)
         {
             // 原
             // query where
@@ -704,7 +663,7 @@ namespace HPC.DAL.Core
 
             return alias;
         }
-        private ColumnParam GetKey(Expression bodyL, FuncEnum func, CompareXEnum compareX, string format = "")
+        internal ColumnParam GetKey(Expression bodyL, FuncEnum func, CompareXEnum compareX, string format = "")
         {
             if (bodyL.NodeType == ExpressionType.Convert)
             {
