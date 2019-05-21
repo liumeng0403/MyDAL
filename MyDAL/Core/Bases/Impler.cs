@@ -17,13 +17,13 @@ namespace HPC.DAL.Core.Bases
         {
             var tbm = DC.XC.GetTableModel(m.GetType());
             var list = new List<DicParam>();
-            foreach (var prop in tbm.TbMProps)
+            foreach (var prop in tbm.MProps)
             {
                 var val = DC.VH.PropertyValue(prop, m);
                 DC.Compare = CompareXEnum.None;
-                list.Add(DC.DPH.InsertHelperDic(tbm.TbMType, prop.Name, val, prop.PropertyType));
+                list.Add(DC.DPH.InsertHelperDic(tbm.MType, prop.Name, val, prop.PropertyType));
             }
-            DC.DPH.AddParameter(DC.DPH.InsertDic(tbm.TbMType, list));
+            DC.DPH.AddParameter(DC.DPH.InsertDic(tbm.MType, list));
         }
 
         /**********************************************************************************************************/
@@ -73,7 +73,7 @@ namespace HPC.DAL.Core.Bases
         {
             var tbm = DC.XC.GetTableModel(typeof(M));
             var vmType = typeof(VM);
-            if (tbm.TbMType == vmType)
+            if (tbm.MType == vmType)
             {
                 return;
             }
@@ -84,13 +84,13 @@ namespace HPC.DAL.Core.Bases
             DC.Compare = CompareXEnum.None;
             var vmProps = DC.GH.GetPropertyInfos(vmType);
             var list = new List<DicParam>();
-            foreach (var prop in tbm.TbMProps)
+            foreach (var prop in tbm.MProps)
             {
                 foreach (var vProp in vmProps)
                 {
                     if (prop.Name.Equals(vProp.Name, StringComparison.OrdinalIgnoreCase))
                     {
-                        list.Add(DC.DPH.ColumnDic(prop.Name, string.Empty, tbm.TbMType, prop.Name));
+                        list.Add(DC.DPH.ColumnDic(prop.Name, string.Empty, tbm.MType, prop.Name));
                     }
                 }
             }

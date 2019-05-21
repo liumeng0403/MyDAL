@@ -29,7 +29,7 @@ namespace HPC.DAL.Core.Bases
             if (objx is ExpandoObject)
             {
                 dic = objx as IDictionary<string, object>;
-                foreach (var mp in tbm.TbMProps)
+                foreach (var mp in tbm.MProps)
                 {
                     foreach (var sp in dic.Keys)
                     {
@@ -47,7 +47,7 @@ namespace HPC.DAL.Core.Bases
             else
             {
                 var oProps = objx.GetType().GetProperties();
-                foreach (var mp in tbm.TbMProps)
+                foreach (var mp in tbm.MProps)
                 {
                     foreach (var sp in oProps)
                     {

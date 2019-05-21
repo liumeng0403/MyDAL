@@ -2,6 +2,7 @@
 using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.Entities.MySql;
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
@@ -68,6 +69,18 @@ namespace MyDAL.Test.CsFunc
 
             var res_Enum = await Conn.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Enum.ToString());
             Assert.Equal(MySQL_Enum.A.ToString(), res_Enum);
+
+            var res_Enum_Null = await Conn.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Enum_Null.ToString());
+            Assert.Equal(MySQL_Enum.B.ToString(), res_Enum_Null);
+
+            var res_Set = await Conn.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Set.ToString());
+            Assert.Equal(string.Join(",", new List<string> { "music", "movie" }), res_Set);
+
+            var res_Set_Null = await Conn.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Set_Null.ToString());
+            Assert.Equal(string.Join(",", new List<string> { "swimming" }), res_Set_Null);
+
+            var res_TinyInt = await Conn.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.TinyInt.ToString());
+            Assert.Equal("65", res_TinyInt);
 
             xx = string.Empty;
         }

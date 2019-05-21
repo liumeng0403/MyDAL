@@ -73,22 +73,22 @@ namespace HPC.DAL.Core
             return TableCache.GetOrAdd(key, k =>
              {
                  var tm = new TableModelCache();
-                 tm.TbMType = mType;
+                 tm.MType = mType;
                  var ta = DC.AH.GetAttribute<XTableAttribute>(mType) as XTableAttribute;
                  if (ta == null)
                  {
                      throw XConfig.EC.Exception(XConfig.EC._004, $"类 [[{mType.FullName}]] 必须是与 DB Table 对应的实体类,并且要由 [XTable] 标记指定类对应的表名!!!");
                  }
-                 tm.TbMProps = DC.GH.GetPropertyInfos(mType);
+                 tm.MProps = DC.GH.GetPropertyInfos(mType);
                  tm.TbCols = DC.SqlProvider.GetColumnsInfos(ta.Name);
                  if (tm.TbCols == null
                     || tm.TbCols.Count <= 0)
                  {
                      throw XConfig.EC.Exception(XConfig.EC._028, $"表 [[{DC.XConn.Conn.Database}.{ta.Name}]] 中不存在任何列!!!");
                  }
-                 tm.TbMAttr = new XTableAttribute { Name = tm.TbCols.First().TableName };
+                 tm.TbAttr = new XTableAttribute { Name = tm.TbCols.First().TableName };
                  var list = new List<TmPropColAttrInfo>();
-                 foreach (var p in tm.TbMProps)
+                 foreach (var p in tm.MProps)
                  {
                      var pca = new TmPropColAttrInfo();
                      pca.Prop = p;
@@ -111,10 +111,10 @@ namespace HPC.DAL.Core
                          }
                      }
                      pca.ColAttr = new XColumnAttribute { Name = pca.ColName };
-                     pca.TbAttr = tm.TbMAttr;
+                     pca.TbAttr = tm.TbAttr;
                      list.Add(pca);
                  }
-                 tm.TMPCA = list;
+                 tm.PCA = list;
                  return tm;
              });
         }
