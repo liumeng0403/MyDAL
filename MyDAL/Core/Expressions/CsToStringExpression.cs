@@ -1,6 +1,8 @@
 ﻿using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
+using MyDAL.Core.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
@@ -33,6 +35,35 @@ namespace MyDAL.Core.Expressions
                  || type.IsEnum)
             {
                 return DC.XE.MemberAccessHandle(mcExpr.Object as MemberExpression);
+            }
+            else if(type.IsSimpleValueType())
+            {
+                DC.Option = OptionEnum.ColumnAs;
+                DC.Compare = CompareXEnum.None;
+                var cp = DC.XE.GetKey(mcExpr, FuncEnum.ToString_CS, CompareXEnum.None);
+                DC.Func = FuncEnum.DateFormat;
+                var format = DC.TSH.DateTime(cp.Format);
+                if (DC.Action == ActionEnum.Select)
+                {
+                    return DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.DateFormatDic(cp, null, format) });
+                }
+                else
+                {
+                    return DC.DPH.DateFormatDic(cp, null, format);
+                }
+                return null;
+            }
+            else if (type.IsNullable())
+            {
+                var typeT = Nullable.GetUnderlyingType(type);
+                if (typeT.IsEnum)
+                {
+                    return DC.XE.MemberAccessHandle(mcExpr.Object as MemberExpression);
+                }
+                else
+                {
+                    return null;
+                }
             }
             else if (type == XConfig.CSTC.ByteArray)
             {

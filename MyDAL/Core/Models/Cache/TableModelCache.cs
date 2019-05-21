@@ -7,34 +7,22 @@ namespace MyDAL.Core.Models.Cache
 {
     internal class TableModelCache
     {
-        internal string TbMName
-        {
-            get
-            {
-                return TbMType.Name;
-            }
-        }
-        internal string TbMFullName
-        {
-            get
-            {
-                return TbMType.FullName;
-            }
-        }
-        internal Type TbMType { get; set; }
+        internal Type MType { get; set; }
+        internal List<PropertyInfo> MProps { get; set; }
 
         internal string TbName
         {
             get
             {
-                return TbMAttr.Name;
+                return TbAttr.Name;
             }
         }
-        internal XTableAttribute TbMAttr { get; set; }
-
+        internal XTableAttribute TbAttr { get; set; }
         internal List<ColumnInfo> TbCols { get; set; }
-        internal List<PropertyInfo> TbMProps { get; set; }
 
-        internal List<TmPropColAttrInfo> TMPCA { get; set; }
+        /// <summary>
+        /// Prop-Col-Attr
+        /// </summary>
+        internal List<TmPropColAttrInfo> PCA { get; set; }
     }
 }

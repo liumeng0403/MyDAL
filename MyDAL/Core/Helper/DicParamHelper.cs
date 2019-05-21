@@ -221,7 +221,7 @@ namespace MyDAL.Core.Helper
             var tb = DC.XC.GetTableModel(mType);
 
             //
-            var pc = tb?.TMPCA?.FirstOrDefault(it => prop.Equals(it.PropName, StringComparison.OrdinalIgnoreCase));
+            var pc = tb?.PCA?.FirstOrDefault(it => prop.Equals(it.PropName, StringComparison.OrdinalIgnoreCase));
             if (pc != null)
             {
                 return pc.ColName;

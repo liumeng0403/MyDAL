@@ -2,6 +2,7 @@ using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Expressions;
+using MyDAL.Core.Models.Cache;
 using MyDAL.Core.Models.ExpPara;
 using System;
 using System.Collections.Generic;
@@ -665,13 +666,7 @@ namespace MyDAL.Core
         }
         internal ColumnParam GetKey(Expression bodyL, FuncEnum func, CompareXEnum compareX, string format = "")
         {
-            if (bodyL.NodeType == ExpressionType.Convert)
-            {
-                var exp = bodyL as UnaryExpression;
-                var opMem = exp.Operand;
-                return GetKey(opMem, func, compareX);
-            }
-            else if (bodyL.NodeType == ExpressionType.MemberAccess)
+            if (bodyL.NodeType == ExpressionType.MemberAccess)
             {
                 var leftBody = bodyL as MemberExpression;
                 var prop = default(PropertyInfo);
@@ -707,8 +702,20 @@ namespace MyDAL.Core
 
                 //
                 var type = prop.PropertyType;
-                var tbm = DC.XC.GetTableModel(mType);
-                var attr = tbm.TMPCA.FirstOrDefault(it => prop.Name.Equals(it.PropName, StringComparison.OrdinalIgnoreCase)).ColAttr;
+                var tbm = default(TableModelCache);
+                try
+                {
+                    tbm = DC.XC.GetTableModel(mType);
+                }
+                catch (Exception ex)
+                {
+                    if (ex.Message.Contains("004")
+                        && ex.Message.Contains("[XTable]"))
+                    {
+                        throw XConfig.EC.Exception(XConfig.EC._094, $"表达式 -- {bodyL.ToString()} -- 不能正确解析！");
+                    }
+                }
+                var attr = tbm.PCA.FirstOrDefault(it => prop.Name.Equals(it.PropName, StringComparison.OrdinalIgnoreCase)).ColAttr;
                 return new ColumnParam
                 {
                     Prop = prop.Name,
@@ -718,6 +725,12 @@ namespace MyDAL.Core
                     TbMType = mType,
                     Format = format
                 };
+            }
+            else if (bodyL.NodeType == ExpressionType.Convert)
+            {
+                var exp = bodyL as UnaryExpression;
+                var opMem = exp.Operand;
+                return GetKey(opMem, func, compareX);
             }
             else if (bodyL.NodeType == ExpressionType.Call)
             {
@@ -739,6 +752,11 @@ namespace MyDAL.Core
                     var mem = mcExpr.Object;
                     var val = DC.VH.ValueProcess(mcExpr.Arguments[0], XConfig.CSTC.String);
                     return GetKey(mem, func, compareX, val.Val.ToString());
+                }
+                else if (func == FuncEnum.ToString_CS)
+                {
+                    var mem = mcExpr.Object;
+                    return GetKey(mem, func, compareX);
                 }
                 else
                 {
