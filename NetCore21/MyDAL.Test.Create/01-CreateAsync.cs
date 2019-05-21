@@ -261,7 +261,7 @@ namespace MyDAL.Test.Create
             Assert.True(!list.Any(it => it.IsVIP));
             Assert.True(!list.Any(it => it.IsActived));
 
-            var res4 = await Conn.OpenDebug().CreateBatchAsync(list);
+            var res4 = await Conn.CreateBatchAsync(list);
 
             Assert.True(res4 == list.Count);
 
