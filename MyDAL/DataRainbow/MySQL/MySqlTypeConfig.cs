@@ -43,7 +43,9 @@ namespace HPC.DAL.DataRainbow.MySQL
         }
         DbType IDbTypeConfig.BoolProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_Bit)
+            if (colType == ParamTypeEnum.MySQL_Bit
+                || colType == ParamTypeEnum.MySQL_TinyInt
+                || colType == ParamTypeEnum.MySQL_Int)
             {
                 return DbType.UInt16;
             }

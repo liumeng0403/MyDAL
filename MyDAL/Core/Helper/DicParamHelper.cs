@@ -3,7 +3,7 @@ using HPC.DAL.Core.Bases;
 using HPC.DAL.Core.Common;
 using HPC.DAL.Core.Enums;
 using HPC.DAL.Core.Models.ExpPara;
-using HPC.DAL.ModelTools;
+using HPC.DAL.Tools;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -357,6 +357,23 @@ namespace HPC.DAL.Core.Helper
             dic.CsValueStr = v?.ValStr;
             dic.CsType = cp.ValType;
             dic.Format = format;
+
+            return dic;
+        }
+        internal DicParam CsToStringDic(ColumnParam cp, ValueInfo v)
+        {
+            var dic = SetDicBase(DC);
+            dic.TbMType = cp.TbMType;
+            dic.TbMProp = cp.Prop;
+            dic.TbCol = GetCol(cp.TbMType, cp.Key);
+            dic.TbColAlias = cp.Key;
+            dic.TbAlias = cp.Alias;
+            dic.Param = cp.Key;
+            dic.ParamRaw = cp.Key;
+            dic.CsValue = v?.Val;
+            dic.CsValueStr = v?.ValStr;
+            dic.CsType = cp.ValType;
+            dic.Format = string.Empty;
 
             return dic;
         }

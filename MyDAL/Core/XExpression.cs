@@ -771,30 +771,29 @@ namespace HPC.DAL.Core
         private DicParam BodyProcess(Expression body, ParameterExpression firstParam)
         {
             //
-            var result = default(DicParam);
             var nodeType = body.NodeType;
             if (nodeType == ExpressionType.Not)
             {
-                result = NotHandle(body, firstParam);
+                return NotHandle(body, firstParam);
             }
             else if (nodeType == ExpressionType.Call)
             {
-                result = CallHandle(body as MethodCallExpression);
+                return CallHandle(body as MethodCallExpression);
             }
             else if (nodeType == ExpressionType.Constant)
             {
                 var cExpr = body as ConstantExpression;
-                result = ConstantHandle(cExpr, cExpr.Type);
+                return ConstantHandle(cExpr, cExpr.Type);
             }
             else if (nodeType == ExpressionType.MemberAccess)
             {
                 if (IsNullableExpr(body))
                 {
-                    result = MemberAccessHandle((body as MemberExpression).Expression as MemberExpression);
+                    return MemberAccessHandle((body as MemberExpression).Expression as MemberExpression);
                 }
                 else
                 {
-                    result = MemberAccessHandle(body as MemberExpression);
+                    return MemberAccessHandle(body as MemberExpression);
                 }
             }
             else if (nodeType == ExpressionType.Convert)
@@ -804,30 +803,29 @@ namespace HPC.DAL.Core
                 {
                     throw XConfig.EC.Exception(XConfig.EC._052, "无法解析 列名2 !!!");
                 }
-                result = DC.DPH.ColumnDic(cp);
+                return DC.DPH.ColumnDic(cp);
             }
             else if (nodeType == ExpressionType.MemberInit)
             {
                 var miExpr = body as MemberInitExpression;
-                result = DC.DPH.SelectColumnDic(HandSelectMemberInit(miExpr));
+                return DC.DPH.SelectColumnDic(HandSelectMemberInit(miExpr));
             }
             else if (nodeType == ExpressionType.New)
             {
-                result = NewHandle(body);
+                return NewHandle(body);
             }
             else if (IsBinaryExpr(nodeType))
             {
-                result = BinaryHandle(body, firstParam);
+                return BinaryHandle(body, firstParam);
             }
             else if (IsMultiExpr(nodeType))
             {
-                result = MultiHandle(body, firstParam, nodeType);
+                return MultiHandle(body, firstParam, nodeType);
             }
             else
             {
                 throw XConfig.EC.Exception(XConfig.EC._003, body.ToString());
             }
-            return result;
         }
 
         /********************************************************************************************************************/
