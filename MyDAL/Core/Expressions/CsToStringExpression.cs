@@ -18,6 +18,15 @@ namespace MyDAL.Core.Expressions
             DC = dc;
         }
 
+        private DicParam SimpleValueTypeToString(MethodCallExpression mcExpr)
+        {
+            DC.Option = OptionEnum.ColumnAs;
+            DC.Compare = CompareXEnum.None;
+            var cp = DC.XE.GetKey(mcExpr, FuncEnum.ToString_CS, CompareXEnum.None);
+            DC.Func = FuncEnum.ToString_CS;
+            return DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CsToStringDic(cp, null) });
+        }
+
         internal DicParam WhereFuncToString(Expression left, BinExprInfo bin)
         {
             var cp = DC.XE.GetKey(left, FuncEnum.DateFormat, CompareXEnum.None);
@@ -36,22 +45,9 @@ namespace MyDAL.Core.Expressions
             {
                 return DC.XE.MemberAccessHandle(mcExpr.Object as MemberExpression);
             }
-            else if(type.IsSimpleValueType())
+            else if (type.IsSimpleValueType())
             {
-                DC.Option = OptionEnum.ColumnAs;
-                DC.Compare = CompareXEnum.None;
-                var cp = DC.XE.GetKey(mcExpr, FuncEnum.ToString_CS, CompareXEnum.None);
-                DC.Func = FuncEnum.DateFormat;
-                var format = DC.TSH.DateTime(cp.Format);
-                if (DC.Action == ActionEnum.Select)
-                {
-                    return DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.DateFormatDic(cp, null, format) });
-                }
-                else
-                {
-                    return DC.DPH.DateFormatDic(cp, null, format);
-                }
-                return null;
+                return SimpleValueTypeToString(mcExpr);
             }
             else if (type.IsNullable())
             {
@@ -59,6 +55,10 @@ namespace MyDAL.Core.Expressions
                 if (typeT.IsEnum)
                 {
                     return DC.XE.MemberAccessHandle(mcExpr.Object as MemberExpression);
+                }
+                else if(typeT.IsSimpleValueType())
+                {
+                    return SimpleValueTypeToString(mcExpr);
                 }
                 else
                 {

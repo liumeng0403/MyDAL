@@ -1,4 +1,4 @@
-﻿using MyDAL.AdoNet;
+using MyDAL.AdoNet;
 using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
@@ -358,6 +358,23 @@ namespace MyDAL.Core.Helper
             dic.CsValueStr = v?.ValStr;
             dic.CsType = cp.ValType;
             dic.Format = format;
+
+            return dic;
+        }
+        internal DicParam CsToStringDic(ColumnParam cp, ValueInfo v)
+        {
+            var dic = SetDicBase(DC);
+            dic.TbMType = cp.TbMType;
+            dic.TbMProp = cp.Prop;
+            dic.TbCol = GetCol(cp.TbMType, cp.Key);
+            dic.TbColAlias = cp.Key;
+            dic.TbAlias = cp.Alias;
+            dic.Param = cp.Key;
+            dic.ParamRaw = cp.Key;
+            dic.CsValue = v?.Val;
+            dic.CsValueStr = v?.ValStr;
+            dic.CsType = cp.ValType;
+            dic.Format = string.Empty;
 
             return dic;
         }

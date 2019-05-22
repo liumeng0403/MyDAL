@@ -81,6 +81,9 @@ namespace MyDAL.Test.CsFunc
             var res_TinyInt = await Conn.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.TinyInt.ToString());
             Assert.Equal("65", res_TinyInt);
 
+            var res_TinyInt_Null = await Conn.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.TinyInt_Null.ToString());
+            Assert.Equal("65", res_TinyInt_Null);
+
             xx = string.Empty;
         }
 
