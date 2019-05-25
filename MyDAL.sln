@@ -61,6 +61,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EntityFramework", "EntityFramework", "{84DBB20F-0889-4F7C-9F8F-0F5FEC4B7A15}"
 	ProjectSection(SolutionItems) = preProject
 		OtherOrmIssues\EntityFramework\01-常见问题-EF-query-滥用.jpg = OtherOrmIssues\EntityFramework\01-常见问题-EF-query-滥用.jpg
+		OtherOrmIssues\EntityFramework\02-常见问题-EF-join-滥用.jpg = OtherOrmIssues\EntityFramework\02-常见问题-EF-join-滥用.jpg
 	EndProjectSection
 EndProject
 Global
