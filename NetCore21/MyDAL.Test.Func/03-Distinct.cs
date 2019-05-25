@@ -31,6 +31,7 @@ namespace MyDAL.Test.Func
                 .Queryer<Agent>()
                 .Distinct()
                 .QueryListAsync(it => it.CreatedOn.ToString("yyyy-MM-dd"));
+
             Assert.True(res3.Count == 2);
 
             
