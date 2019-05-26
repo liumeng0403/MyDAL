@@ -25,17 +25,17 @@ namespace MyDAL.UserFacade.Update
         /// <summary>
         /// 请参阅: <see langword=".UpdateAsync() 之 .Set() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<int> UpdateAsync(SetEnum set = SetEnum.AllowedNull)
+        public async Task<int> UpdateAsync()
         {
-            return await new UpdateAsyncImpl<M>(DC).UpdateAsync(set);
+            return await new UpdateAsyncImpl<M>(DC).UpdateAsync();
         }
 
         /// <summary>
         /// 请参阅: <see langword=".UpdateAsync() 之 .Set() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public int Update(SetEnum set = SetEnum.AllowedNull)
+        public int Update()
         {
-            return new UpdateImpl<M>(DC).Update(set);
+            return new UpdateImpl<M>(DC).Update();
         }
     }
 }

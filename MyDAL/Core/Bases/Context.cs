@@ -83,8 +83,6 @@ namespace MyDAL.Core.Bases
 
         internal UiMethodEnum Method { get; set; } = UiMethodEnum.None;
 
-        internal SetEnum Set { get; set; } = SetEnum.AllowedNull;
-
         /************************************************************************************************************************/
 
         internal bool NeedSetSingle { get; set; } = true;

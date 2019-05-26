@@ -6,6 +6,6 @@ namespace MyDAL.Interfaces.IAsyncs
     internal interface IUpdateAsync<M>
         where M : class
     {
-        Task<int> UpdateAsync(SetEnum set = SetEnum.AllowedNull);
+        Task<int> UpdateAsync();
     }
 }

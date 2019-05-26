@@ -103,9 +103,6 @@ namespace MyDAL
             dc.ParseParam(dbParas);
             return dc;
         }
-
-        /*-------------------------------------------------------------*/
-
         private static async Task<int> ExecuteNonQueryAsync(this XConnection conn, string sql, List<XParam> dbParas = null)
         {
             var dc = DcForSQL(conn, sql, dbParas);
