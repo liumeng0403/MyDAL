@@ -100,56 +100,16 @@ namespace HPC.DAL
             dc.ParseParam(dbParas);
             return dc;
         }
-        [Obsolete("警告：此 API 后面会移除！！！", false)]
-        public static async Task<int> ExecuteNonQueryAsync(this XConnection conn, string sql, List<XParam> dbParas = null)
+        private static async Task<int> ExecuteNonQueryAsync(this XConnection conn, string sql, List<XParam> dbParas = null)
         {
             var dc = DcForSQL(conn, sql, dbParas);
             return await new ExecuteNonQuerySQLAsyncImpl(dc).ExecuteNonQueryAsync();
         }
-        [Obsolete("警告：此 API 后面会移除！！！", false)]
-        public static int ExecuteNonQuery(this XConnection conn, string sql, List<XParam> dbParas = null)
+        private static int ExecuteNonQuery(this XConnection conn, string sql, List<XParam> dbParas = null)
         {
             var dc = DcForSQL(conn, sql, dbParas);
             return new ExecuteNonQuerySQLImpl(dc).ExecuteNonQuery();
         }
-
-        /*-------------------------------------------------------------*/
-
-        [Obsolete("警告：此 API 后面会移除！！！", false)]
-        public static async Task<PagingResult<T>> QueryPagingAsync<T>
-            (this XConnection conn, PagingResult<T> paging, string totalCountSql, string pageDataSql, List<XParam> dbParas = null)
-        {
-            var dc = new XContext(conn)
-            {
-                Crud = CrudEnum.SQL
-            };
-            dc.PageIndex = paging.PageIndex;
-            dc.PageSize = paging.PageSize;
-            dc.ParseSQL(totalCountSql, pageDataSql);
-            dc.ParseParam(dbParas);
-            var result = await new QueryPagingSQLAsyncImpl(dc).QueryPagingAsync<T>();
-            paging.TotalCount = result.TotalCount;
-            paging.Data = result.Data;
-            return paging;
-        }
-        [Obsolete("警告：此 API 后面会移除！！！", false)]
-        public static PagingResult<T> QueryPaging<T>
-            (this XConnection conn, PagingResult<T> paging, string totalCountSql, string pageDataSql, List<XParam> dbParas = null)
-        {
-            var dc = new XContext(conn)
-            {
-                Crud = CrudEnum.SQL
-            };
-            dc.PageIndex = paging.PageIndex;
-            dc.PageSize = paging.PageSize;
-            dc.ParseSQL(totalCountSql, pageDataSql);
-            dc.ParseParam(dbParas);
-            var result = new QueryPagingSQLImpl(dc).QueryPaging<T>();
-            paging.TotalCount = result.TotalCount;
-            paging.Data = result.Data;
-            return paging;
-        }
-        
         #endregion
 
         #region Deleter

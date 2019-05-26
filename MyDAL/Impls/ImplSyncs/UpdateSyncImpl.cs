@@ -15,9 +15,8 @@ namespace HPC.DAL.Impls.ImplSyncs
             : base(dc)
         { }
 
-        public int Update(SetEnum set = SetEnum.AllowedNull)
+        public int Update()
         {
-            DC.Set = set;
             PreExecuteHandle(UiMethodEnum.UpdateAsync);
             return DSS.ExecuteNonQuery();
         }

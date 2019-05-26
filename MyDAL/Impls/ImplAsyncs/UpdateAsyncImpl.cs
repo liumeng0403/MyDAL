@@ -16,9 +16,8 @@ namespace HPC.DAL.Impls.ImplAsyncs
             : base(dc)
         { }
 
-        public async Task<int> UpdateAsync(SetEnum set = SetEnum.AllowedNull)
+        public async Task<int> UpdateAsync()
         {
-            DC.Set = set;
             PreExecuteHandle(UiMethodEnum.UpdateAsync);
             return await DSA.ExecuteNonQueryAsync();
         }

@@ -288,7 +288,7 @@ namespace MyDAL.Test.Update
                 var res1 = await Conn.UpdateAsync<Agent>(it => it.Id == agent.Id, new
                 {
                     agent.PathId
-                }, SetEnum.NotAllowedNull);
+                });
             }
             catch (Exception ex)
             {
@@ -315,7 +315,7 @@ namespace MyDAL.Test.Update
             {
                 agent.PathId,
                 agent.ActiveOrderId
-            }, SetEnum.IgnoreNull);
+            });
 
             
 
@@ -413,7 +413,7 @@ namespace MyDAL.Test.Update
                     .Updater<Agent>()
                     .Set(it => it.PathId, null)
                     .Where(it => it.Id == agent.Id)
-                    .UpdateAsync(SetEnum.NotAllowedNull);
+                    .UpdateAsync();
             }
             catch (Exception ex)
             {
@@ -446,7 +446,7 @@ namespace MyDAL.Test.Update
                     agent.ActiveOrderId
                 })
                 .Where(it => it.Id == agent.Id)
-                .UpdateAsync(SetEnum.IgnoreNull);
+                .UpdateAsync();
 
             
 

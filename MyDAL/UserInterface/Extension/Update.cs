@@ -17,10 +17,10 @@ namespace HPC.DAL
         /// 请参阅: <see langword=".UpdateAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static async Task<int> UpdateAsync<M>
-            (this XConnection conn, Expression<Func<M, bool>> compareFunc, dynamic filedsObject, SetEnum set = SetEnum.AllowedNull)
+            (this XConnection conn, Expression<Func<M, bool>> compareFunc, dynamic filedsObject)
             where M : class, new()
         {
-            return await conn.Updater<M>().Set(filedsObject as object).Where(compareFunc).UpdateAsync(set);
+            return await conn.Updater<M>().Set(filedsObject as object).Where(compareFunc).UpdateAsync();
         }
 
         /*-------------------------------------------------------------*/
@@ -37,10 +37,10 @@ namespace HPC.DAL
         /// Updater 便捷 UpdateAsync update fields 方法
         /// </summary>
         public static int Update<M>
-            (this XConnection conn, Expression<Func<M, bool>> compareFunc, dynamic filedsObject, SetEnum set = SetEnum.AllowedNull)
+            (this XConnection conn, Expression<Func<M, bool>> compareFunc, dynamic filedsObject)
             where M : class, new()
         {
-            return conn.Updater<M>().Set(filedsObject as object).Where(compareFunc).Update(set);
+            return conn.Updater<M>().Set(filedsObject as object).Where(compareFunc).Update();
         }
 
         /*-------------------------------------------------------------*/

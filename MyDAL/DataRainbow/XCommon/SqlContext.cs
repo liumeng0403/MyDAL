@@ -476,26 +476,6 @@ namespace HPC.DAL.DataRainbow.XCommon
             if (list == null || list.Count == 0) { throw XConfig.EC.Exception(XConfig.EC._053, "没有设置任何要更新的字段!"); }
 
             //
-            if (DC.Set == SetEnum.AllowedNull)
-            { }
-            else if (DC.Set == SetEnum.NotAllowedNull)
-            {
-                if (list.Any(it => it.ParamInfo.Value == DBNull.Value))
-                {
-                    throw XConfig.EC.Exception(XConfig.EC._054, $"{DC.Set} -- 字段:[[{string.Join(",", list.Where(it => it.ParamInfo.Value == DBNull.Value).Select(it => it.TbCol))}]]的值不能设为 Null !!!");
-                }
-            }
-            else if (DC.Set == SetEnum.IgnoreNull)
-            {
-                list = list.Where(it => it.ParamInfo.Value != DBNull.Value)?.ToList();
-                if (list == null || list.Count == 0) { throw XConfig.EC.Exception(XConfig.EC._055, "没有设置任何要更新的字段!"); }
-            }
-            else
-            {
-                throw XConfig.EC.Exception(XConfig.EC._012, DC.Set.ToString());
-            }
-
-            //
             Spacing(X);
             var i = 0;
             foreach (var item in list)

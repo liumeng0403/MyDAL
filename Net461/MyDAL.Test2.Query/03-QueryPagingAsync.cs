@@ -75,8 +75,9 @@ namespace MyDAL.Test2.Query
             var paging = new PagingResult<AgentVM>();
             paging.PageIndex = 1;
             paging.PageSize = 10;
-
-            paging = await Conn2.QueryPagingAsync<AgentVM>(paging, totalSql, dataSql, paras);
+             
+            paging.TotalCount = await Conn2.QueryOneAsync<int>(totalSql, paras);
+            paging.Data = await Conn2.QueryListAsync<AgentVM>(dataSql, paras);
 
             Assert.IsTrue(paging.Data.Count == 10);
 

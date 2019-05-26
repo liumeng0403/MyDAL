@@ -380,7 +380,7 @@ namespace MyDAL.Test.Create
             };
 
             // 新增一条数据: AlipayPaymentRecord
-            var res1 = await Conn.ExecuteNonQueryAsync(sql, paras);
+            var res1 = await Conn.CreateAsync(sql, paras);
 
             Assert.True(res1 == 1);
 
