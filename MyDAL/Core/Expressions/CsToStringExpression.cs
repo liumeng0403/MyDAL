@@ -29,10 +29,10 @@ namespace MyDAL.Core.Expressions
 
         internal DicParam WhereFuncToString(Expression left, BinExprInfo bin)
         {
-            var cp = DC.XE.GetKey(left, FuncEnum.DateFormat, CompareXEnum.None);
+            var cp = DC.XE.GetKey(left, FuncEnum.ToString_CS_DateTime_Format, CompareXEnum.None);
             var val = DC.VH.ValueProcess(bin.Right, cp.ValType, cp.Format);
             DC.Option = OptionEnum.Function;
-            DC.Func = FuncEnum.DateFormat;
+            DC.Func = FuncEnum.ToString_CS_DateTime_Format;
             DC.Compare = bin.Compare;
             var format = DC.TSH.DateTime(cp.Format);
             return DC.DPH.DateFormatDic(cp, val, format);
@@ -73,8 +73,8 @@ namespace MyDAL.Core.Expressions
             {
                 DC.Option = OptionEnum.ColumnAs;
                 DC.Compare = CompareXEnum.None;
-                var cp = DC.XE.GetKey(mcExpr, FuncEnum.DateFormat, CompareXEnum.None);
-                DC.Func = FuncEnum.DateFormat;
+                var cp = DC.XE.GetKey(mcExpr, FuncEnum.ToString_CS_DateTime_Format, CompareXEnum.None);
+                DC.Func = FuncEnum.ToString_CS_DateTime_Format;
                 var format = DC.TSH.DateTime(cp.Format);
                 if (DC.Action == ActionEnum.Select)
                 {

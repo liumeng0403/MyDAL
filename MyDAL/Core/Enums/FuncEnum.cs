@@ -13,11 +13,6 @@
         CharLength,
 
         /// <summary>
-        /// " DATE_FORMAT"
-        /// </summary>
-        DateFormat,
-
-        /// <summary>
         /// " trim"
         /// </summary>
         Trim,
@@ -43,7 +38,12 @@
 
         /********************************************************************************************************************************/
 
-        ToString_CS
+        ToString_CS,
+
+        /// <summary>
+        /// " DATE_FORMAT"
+        /// </summary>
+        ToString_CS_DateTime_Format
 
     }
 }

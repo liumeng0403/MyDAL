@@ -675,7 +675,7 @@ namespace MyDAL.Core
                 var mType = default(Type);
                 var alias = GetAlias(leftBody);
                 if (func == FuncEnum.CharLength
-                    || func == FuncEnum.DateFormat)
+                    || func == FuncEnum.ToString_CS_DateTime_Format)
                 {
                     var exp = leftBody.Expression;
                     if (exp is MemberExpression)
@@ -747,7 +747,7 @@ namespace MyDAL.Core
                     var mem = mcExpr.Arguments[0];
                     return GetKey(mem, func, compareX);
                 }
-                else if (func == FuncEnum.DateFormat)
+                else if (func == FuncEnum.ToString_CS_DateTime_Format)
                 {
                     var mem = mcExpr.Object;
                     var val = DC.VH.ValueProcess(mcExpr.Arguments[0], XConfig.CSTC.String);

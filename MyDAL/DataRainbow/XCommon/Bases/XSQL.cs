@@ -185,7 +185,7 @@ namespace MyDAL.DataRainbow.XCommon.Bases
                 case FuncEnum.CharLength:
                     Spacing(sb); sb.Append("char_length");
                     return;
-                case FuncEnum.DateFormat:
+                case FuncEnum.ToString_CS_DateTime_Format:
                     Spacing(sb); sb.Append("date_format");
                     return;
                 case FuncEnum.Trim:

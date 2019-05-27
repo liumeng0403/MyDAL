@@ -257,7 +257,7 @@ namespace MyDAL.DataRainbow.XCommon
             {
                 CharLengthProcess(db);
             }
-            else if (db.Func == FuncEnum.DateFormat)
+            else if (db.Func == FuncEnum.ToString_CS_DateTime_Format)
             {
                 DateFormatProcess(db);
             }
@@ -524,7 +524,7 @@ namespace MyDAL.DataRainbow.XCommon
                 {
                     SelectSpecialNoFuncCol(dic);
                 }
-                else if (dic.Func == FuncEnum.DateFormat)
+                else if (dic.Func == FuncEnum.ToString_CS_DateTime_Format)
                 {
                     SelectSpecialDateFormatCol(dic);
                 }
