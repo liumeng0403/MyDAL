@@ -107,7 +107,46 @@ namespace MyDAL.Test.CsFunc
         }
 
         [Fact]
-        public async Task DateTime_yyyy_MM_dd()
+        public async Task DateTime_Query_yyyy_MM_dd()
+        {
+            xx = string.Empty;
+
+            var res1 = await Conn
+                .Queryer<Agent>()
+                .Distinct()
+                .QueryListAsync(it => it.CreatedOn.ToString("yyyy-MM-dd"));
+
+            Assert.True(res1.Count == 2);
+        }
+
+        [Fact]
+        public async Task DateTime_Query_yyyy_MM()
+        {
+            xx = string.Empty;
+
+            var res1 = await Conn
+                .Queryer<Agent>()
+                .Distinct()
+                .QueryListAsync(it => it.CreatedOn.ToString("yyyy-MM"));
+
+            Assert.True(res1.Count == 2);
+        }
+
+        [Fact]
+        public async Task DateTime_Query_yyyy()
+        {
+            xx = string.Empty;
+
+            var res1 = await Conn
+                .Queryer<Agent>()
+                .Distinct()
+                .QueryListAsync(it => it.CreatedOn.ToString("yyyy"));
+
+            Assert.True(res1.Count == 2);
+        }
+
+        [Fact]
+        public async Task DateTime_Where_yyyy_MM_dd()
         {
             var date = DateTime.Parse("2018-08-16 12:03:47.225916");
 
@@ -124,7 +163,7 @@ namespace MyDAL.Test.CsFunc
         }
 
         [Fact]
-        public async Task DateTime_yyyy_MM()
+        public async Task DateTime_Where_yyyy_MM()
         {
             var date = DateTime.Parse("2018-08-16 12:03:47.225916");
 
@@ -141,7 +180,7 @@ namespace MyDAL.Test.CsFunc
         }
 
         [Fact]
-        public async Task DateTime_yyyy()
+        public async Task DateTime_Where_yyyy()
         {
             var date = DateTime.Parse("2018-08-16 12:03:47.225916");
 
@@ -158,7 +197,7 @@ namespace MyDAL.Test.CsFunc
         }
 
         [Fact]
-        public async Task DateTime_Null_yyyy_MM_dd()
+        public async Task DateTime_Where_Nullable_yyyy_MM_dd()
         {
             xx = string.Empty;
 

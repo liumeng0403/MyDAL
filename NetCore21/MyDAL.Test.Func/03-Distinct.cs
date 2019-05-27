@@ -19,47 +19,9 @@ namespace MyDAL.Test.Func
                 .Queryer<Agent>()
                 .Distinct()
                 .QueryListAsync(it => it.Name);
+
             Assert.True(res2.Count == 24444);
-
-            
-
-            /***************************************************************************************************************************/
-
-            xx = string.Empty;
-
-            var res3 = await Conn
-                .Queryer<Agent>()
-                .Distinct()
-                .QueryListAsync(it => it.CreatedOn.ToString("yyyy-MM-dd"));
-
-            Assert.True(res3.Count == 2);
-
-            
-
-            /***************************************************************************************************************************/
-
-            xx = string.Empty;
-
-            var res4 = await Conn
-                .Queryer<Agent>()
-                .Distinct()
-                .QueryListAsync(it => it.CreatedOn.ToString("yyyy-MM"));
-            Assert.True(res4.Count == 2);
-
-            
-
-            /***************************************************************************************************************************/
-
-            xx = string.Empty;
-
-            var res5 = await Conn
-                .Queryer<Agent>()
-                .Distinct()
-                .QueryListAsync(it => it.CreatedOn.ToString("yyyy"));
-            Assert.True(res5.Count == 2);
-
-            
-
+             
             /****************************************************************************************************************************************/
 
             xx = string.Empty;

@@ -28,6 +28,7 @@ namespace HPC.DAL.Core.Extensions
         {
             if (type.IsValueType
                 && !type.IsEnum
+                && type != XConfig.CSTC.DateTime
                 && !type.IsNullable())
             {
                 return true;
