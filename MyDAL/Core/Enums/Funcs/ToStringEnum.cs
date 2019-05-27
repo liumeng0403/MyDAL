@@ -1,4 +1,4 @@
-﻿namespace HPC.DAL.Core.Enums.Funcs
+﻿namespace MyDAL.Core.Enums.Funcs
 {
     internal enum ToStringEnum
     {
