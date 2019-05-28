@@ -1,13 +1,10 @@
 ﻿using HPC.DAL.Core.Bases;
-using HPC.DAL.Impls;
 using HPC.DAL.Impls.ImplAsyncs;
 using HPC.DAL.Impls.ImplSyncs;
-using HPC.DAL.Interfaces;
 using HPC.DAL.Interfaces.IAsyncs;
 using HPC.DAL.Interfaces.ISyncs;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -22,11 +19,14 @@ namespace HPC.DAL.UserFacade.Query
         , IQueryListAsync<M>, IQueryList<M>
         , IQueryPagingAsync<M>, IQueryPaging<M>
         , ITopAsync<M>, ITop<M>
+        ,ICountAsync<M>,ICount<M>
         where M : class
     {
         internal DistinctQ(Context dc)
             : base(dc)
         { }
+
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
         /// <summary>
         /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
@@ -74,6 +74,8 @@ namespace HPC.DAL.UserFacade.Query
             return new QueryOneImpl<M>(DC).QueryOne<T>(columnMapFunc);
         }
 
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
@@ -119,6 +121,8 @@ namespace HPC.DAL.UserFacade.Query
         {
             return new QueryListImpl<M>(DC).QueryList(columnMapFunc);
         }
+
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
         /// <summary>
         /// 单表分页查询
@@ -176,6 +180,8 @@ namespace HPC.DAL.UserFacade.Query
             return new QueryPagingImpl<M>(DC).QueryPaging<T>(pageIndex, pageSize, columnMapFunc);
         }
 
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
         /// <summary>
         /// 单表数据查询
         /// </summary>
@@ -232,6 +238,38 @@ namespace HPC.DAL.UserFacade.Query
         public List<T> Top<T>(int count, Expression<Func<M, T>> columnMapFunc)
         {
             return new TopImpl<M>(DC).Top<T>(count, columnMapFunc);
+        }
+
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+        /// <summary>
+        /// 查询符合条件数据条目数
+        /// </summary>
+        public async Task<int> CountAsync()
+        {
+            return await new CountAsyncImpl<M>(DC).CountAsync();
+        }
+        /// <summary>
+        /// 查询符合条件数据条目数
+        /// </summary>
+        public async Task<int> CountAsync<F>(Expression<Func<M, F>> propertyFunc)
+        {
+            return await new CountAsyncImpl<M>(DC).CountAsync(propertyFunc);
+        }
+
+        /// <summary>
+        /// 查询符合条件数据条目数
+        /// </summary>
+        public int Count()
+        {
+            return new CountImpl<M>(DC).Count();
+        }
+        /// <summary>
+        /// 查询符合条件数据条目数
+        /// </summary>
+        public int Count<F>(Expression<Func<M, F>> propertyFunc)
+        {
+            return new CountImpl<M>(DC).Count(propertyFunc);
         }
 
     }

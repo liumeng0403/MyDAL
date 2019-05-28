@@ -18,7 +18,7 @@ namespace HPC.DAL.Impls.ImplAsyncs
 
         public async Task<int> UpdateAsync()
         {
-            PreExecuteHandle(UiMethodEnum.UpdateAsync);
+            PreExecuteHandle(UiMethodEnum.Update);
             return await DSA.ExecuteNonQueryAsync();
         }
 

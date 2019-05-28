@@ -1,14 +1,11 @@
-﻿using System;
-using System.Data;
-using System.Threading.Tasks;
-using HPC.DAL.Core.Bases;
-using HPC.DAL.Impls;
+﻿using HPC.DAL.Core.Bases;
 using HPC.DAL.Impls.ImplAsyncs;
 using HPC.DAL.Impls.ImplSyncs;
-using HPC.DAL.Interfaces;
 using HPC.DAL.Interfaces.IAsyncs;
 using HPC.DAL.Interfaces.ISyncs;
 using HPC.DAL.Interfaces.Segments;
+using System;
+using System.Threading.Tasks;
 
 namespace HPC.DAL.UserFacade.Update
 {
@@ -26,6 +23,8 @@ namespace HPC.DAL.UserFacade.Update
             : base(dc)
         { }
 
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
         public WhereU<M> WhereSegment
         {
             get
@@ -33,6 +32,8 @@ namespace HPC.DAL.UserFacade.Update
                 return new WhereU<M>(DC);
             }
         }
+
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
         /// <summary>
         /// 请参阅: <see langword=".UpdateAsync() 之 .Set() 使用 https://www.cnblogs.com/Meng-NET/"/>

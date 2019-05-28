@@ -79,30 +79,30 @@ namespace HPC.DAL.DataRainbow.SQLServer
             DC.SQL.Clear();
             switch (DC.Method)
             {
-                case UiMethodEnum.CreateAsync:
-                case UiMethodEnum.CreateBatchAsync:
+                case UiMethodEnum.Create:
+                case UiMethodEnum.CreateBatch:
                     InsertInto(X); Table(); InsertColumn(); Values(X); InsertValue(); End();
                     break;
-                case UiMethodEnum.DeleteAsync:
+                case UiMethodEnum.Delete:
                     Delete(X); From(X); Table(); Where(); End();
                     break;
-                case UiMethodEnum.UpdateAsync:
+                case UiMethodEnum.Update:
                     Update(X); Table(); Set(X); UpdateColumn(); Where(); End();
                     break;
-                case UiMethodEnum.TopAsync:
-                case UiMethodEnum.QueryOneAsync:
-                case UiMethodEnum.QueryListAsync:
+                case UiMethodEnum.Top:
+                case UiMethodEnum.QueryOne:
+                case UiMethodEnum.QueryList:
                     Select(X); DistinctX(); DbSql.Top(DC, X); SelectColumn(); From(X); Table(); Where(); OrderBy(); End();
                     break;
-                case UiMethodEnum.QueryPagingAsync:
+                case UiMethodEnum.QueryPaging:
                     Select(X); Count(); From(X); Table(); Where(); CountMulti(); End();
                     Select(X); DistinctX(); SelectColumn(); From(X); Table(); Where(); OrderBy(); DbSql.Pager(DC, X); End();
                     break;
-                case UiMethodEnum.ExistAsync:
-                case UiMethodEnum.CountAsync:
+                case UiMethodEnum.IsExist:
+                case UiMethodEnum.Count:
                     Select(X); Count(); From(X); Table(); Where(); CountMulti(); End();
                     break;
-                case UiMethodEnum.SumAsync:
+                case UiMethodEnum.Sum:
                     Select(X); Sum(); From(X); Table(); Where(); End();
                     break;
             }

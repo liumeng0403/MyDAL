@@ -63,7 +63,7 @@ namespace HPC.DAL.Impls.ImplSyncs
 
         public T QueryOne<T>()
         {
-            DC.Method = UiMethodEnum.QueryOneAsync;
+            DC.Method = UiMethodEnum.QueryOne;
             if (typeof(T).IsSingleColumn())
             {
                 return DSS.ExecuteReaderSingleColumn<T>().FirstOrDefault();

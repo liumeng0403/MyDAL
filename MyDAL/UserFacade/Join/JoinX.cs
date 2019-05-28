@@ -13,7 +13,5 @@ namespace HPC.DAL.UserFacade.Join
             : base(dc)
         { }
 
-
-
     }
 }

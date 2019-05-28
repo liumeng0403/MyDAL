@@ -20,14 +20,14 @@ namespace HPC.DAL.Impls.ImplSyncs
 
         public List<M> QueryList()
         {
-            PreExecuteHandle(UiMethodEnum.QueryListAsync);
+            PreExecuteHandle(UiMethodEnum.QueryList);
             return DSS.ExecuteReaderMultiRow<M>();
         }
         public List<VM> QueryList<VM>()
             where VM : class
         {
             SelectMQ<M, VM>();
-            PreExecuteHandle(UiMethodEnum.QueryListAsync);
+            PreExecuteHandle(UiMethodEnum.QueryList);
             return DSS.ExecuteReaderMultiRow<VM>();
         }
         public List<T> QueryList<T>(Expression<Func<M, T>> columnMapFunc)
@@ -35,13 +35,13 @@ namespace HPC.DAL.Impls.ImplSyncs
             if (typeof(T).IsSingleColumn())
             {
                 SingleColumnHandle(columnMapFunc);
-                PreExecuteHandle(UiMethodEnum.QueryListAsync);
+                PreExecuteHandle(UiMethodEnum.QueryList);
                 return DSS.ExecuteReaderSingleColumn(columnMapFunc.Compile());
             }
             else
             {
                 SelectMHandle(columnMapFunc);
-                PreExecuteHandle(UiMethodEnum.QueryListAsync);
+                PreExecuteHandle(UiMethodEnum.QueryList);
                 return DSS.ExecuteReaderMultiRow<T>();
             }
         }
@@ -58,7 +58,7 @@ namespace HPC.DAL.Impls.ImplSyncs
             where M : class
         {
             SelectMHandle<M>();
-            PreExecuteHandle(UiMethodEnum.QueryListAsync);
+            PreExecuteHandle(UiMethodEnum.QueryList);
             return DSS.ExecuteReaderMultiRow<M>();
         }
         public List<T> QueryList<T>(Expression<Func<T>> columnMapFunc)
@@ -66,13 +66,13 @@ namespace HPC.DAL.Impls.ImplSyncs
             if (typeof(T).IsSingleColumn())
             {
                 SingleColumnHandle(columnMapFunc);
-                PreExecuteHandle(UiMethodEnum.QueryListAsync);
+                PreExecuteHandle(UiMethodEnum.QueryList);
                 return DSS.ExecuteReaderSingleColumn<T>();
             }
             else
             {
                 SelectMHandle(columnMapFunc);
-                PreExecuteHandle(UiMethodEnum.QueryListAsync);
+                PreExecuteHandle(UiMethodEnum.QueryList);
                 return DSS.ExecuteReaderMultiRow<T>();
             }
         }
@@ -88,7 +88,7 @@ namespace HPC.DAL.Impls.ImplSyncs
 
         public List<T> QueryList<T>()
         {
-            DC.Method = UiMethodEnum.QueryListAsync;
+            DC.Method = UiMethodEnum.QueryList;
             if (typeof(T).IsSingleColumn())
             {
                 return DSS.ExecuteReaderSingleColumn<T>();

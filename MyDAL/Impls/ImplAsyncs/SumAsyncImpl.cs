@@ -26,7 +26,7 @@ namespace HPC.DAL.Impls.ImplAsyncs
             DC.Func = FuncEnum.Sum;
             var dic = DC.XE.FuncMFExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
-            PreExecuteHandle(UiMethodEnum.SumAsync);
+            PreExecuteHandle(UiMethodEnum.Sum);
             return await DSA.ExecuteScalarAsync<F>();
         }
 
@@ -39,7 +39,7 @@ namespace HPC.DAL.Impls.ImplAsyncs
             DC.Func = FuncEnum.SumNullable;
             var dic = DC.XE.FuncMFExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
-            PreExecuteHandle(UiMethodEnum.SumAsync);
+            PreExecuteHandle(UiMethodEnum.Sum);
             return await DSA.ExecuteScalarAsync<F>();
         }
     }
@@ -61,7 +61,7 @@ namespace HPC.DAL.Impls.ImplAsyncs
             DC.Func = FuncEnum.Sum;
             var dic = DC.XE.FuncTExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
-            PreExecuteHandle(UiMethodEnum.SumAsync);
+            PreExecuteHandle(UiMethodEnum.Sum);
             return await DSA.ExecuteScalarAsync<F>();
         }
 
@@ -74,7 +74,7 @@ namespace HPC.DAL.Impls.ImplAsyncs
             DC.Func = FuncEnum.SumNullable;
             var dic = DC.XE.FuncTExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
-            PreExecuteHandle(UiMethodEnum.SumAsync);
+            PreExecuteHandle(UiMethodEnum.Sum);
             return await DSA.ExecuteScalarAsync<F>();
         }
     }

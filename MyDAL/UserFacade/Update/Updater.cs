@@ -15,6 +15,8 @@ namespace HPC.DAL.UserFacade.Update
             : base(dc)
         { }
 
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
         /// <summary>
         /// 请参阅: <see langword=".UpdateAsync() 之 .SetSegment 根据条件 动态设置 要更新的字段 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>

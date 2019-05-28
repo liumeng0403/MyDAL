@@ -22,6 +22,8 @@ namespace HPC.DAL
             return new DistinctQ<M>(where.DC);
         }
 
+        /******************************************************************************************************************/
+
         public static DistinctX Distinct(this WhereX where)
         {
             where.DistinctHandle();

@@ -1,11 +1,9 @@
 ﻿using HPC.DAL.Core.Bases;
-using HPC.DAL.Impls;
 using HPC.DAL.Impls.ImplAsyncs;
 using HPC.DAL.Impls.ImplSyncs;
 using HPC.DAL.Interfaces.IAsyncs;
 using HPC.DAL.Interfaces.ISyncs;
 using System.Collections.Generic;
-using System.Data;
 using System.Threading.Tasks;
 
 namespace HPC.DAL.UserFacade.Create
@@ -22,6 +20,8 @@ namespace HPC.DAL.UserFacade.Create
         internal Creater(Context dc)
             : base(dc)
         { }
+
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
         /// <summary>
         /// 插入单条数据
@@ -40,6 +40,8 @@ namespace HPC.DAL.UserFacade.Create
         {
             return new CreateImpl<M>(DC).Create(m);
         }
+
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
         /// <summary>
         /// 批量插入数据

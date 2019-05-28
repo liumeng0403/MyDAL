@@ -17,7 +17,7 @@ namespace HPC.DAL.Impls.ImplSyncs
 
         public int Delete()
         {
-            PreExecuteHandle(UiMethodEnum.DeleteAsync);
+            PreExecuteHandle(UiMethodEnum.Delete);
             return DSS.ExecuteNonQuery();
         }
 

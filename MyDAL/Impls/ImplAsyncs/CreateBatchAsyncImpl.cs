@@ -24,7 +24,7 @@ namespace HPC.DAL.Impls.ImplAsyncs
             {
                 DC.DPH.ResetParameter();
                 CreateMHandle(list);
-                PreExecuteHandle(UiMethodEnum.CreateBatchAsync);
+                PreExecuteHandle(UiMethodEnum.CreateBatch);
                 return await DSA.ExecuteNonQueryAsync();
             });
         }

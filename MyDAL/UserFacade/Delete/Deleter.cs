@@ -5,7 +5,6 @@ using HPC.DAL.Interfaces.IAsyncs;
 using HPC.DAL.Interfaces.ISyncs;
 using HPC.DAL.Interfaces.Segments;
 using System;
-using System.Data;
 using System.Threading.Tasks;
 
 namespace HPC.DAL.UserFacade.Delete
@@ -23,6 +22,8 @@ namespace HPC.DAL.UserFacade.Delete
             : base(dc)
         { }
 
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
         public WhereD<M> WhereSegment
         {
             get
@@ -30,6 +31,8 @@ namespace HPC.DAL.UserFacade.Delete
                 return new WhereD<M>(DC);
             }
         }
+
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
         /// <summary>
         /// 单表数据删除

@@ -3,7 +3,6 @@ using HPC.DAL.Impls.ImplAsyncs;
 using HPC.DAL.Impls.ImplSyncs;
 using HPC.DAL.Interfaces.IAsyncs;
 using HPC.DAL.Interfaces.ISyncs;
-using System.Data;
 using System.Threading.Tasks;
 
 namespace HPC.DAL.UserFacade.Delete
@@ -19,6 +18,8 @@ namespace HPC.DAL.UserFacade.Delete
         internal WhereD(Context dc)
             : base(dc)
         { }
+
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
         /// <summary>
         /// 单表数据删除

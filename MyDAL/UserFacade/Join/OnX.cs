@@ -1,14 +1,11 @@
 ﻿using HPC.DAL.Core.Bases;
-using HPC.DAL.Impls;
 using HPC.DAL.Impls.ImplAsyncs;
 using HPC.DAL.Impls.ImplSyncs;
-using HPC.DAL.Interfaces;
 using HPC.DAL.Interfaces.IAsyncs;
 using HPC.DAL.Interfaces.ISyncs;
 using HPC.DAL.Interfaces.Segments;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -31,6 +28,8 @@ namespace HPC.DAL.UserFacade.Join
             : base(dc)
         { }
 
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
         /// <summary>
         /// 请参阅: <see langword=".Where() 之 .WhereSegment 根据条件 动态设置 Select查询条件 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
@@ -41,6 +40,8 @@ namespace HPC.DAL.UserFacade.Join
                 return new WhereX(DC);
             }
         }
+
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
         /// <summary>
         /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
@@ -74,6 +75,8 @@ namespace HPC.DAL.UserFacade.Join
             return new QueryOneXImpl(DC).QueryOne<T>(columnMapFunc);
         }
 
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>        
@@ -105,6 +108,8 @@ namespace HPC.DAL.UserFacade.Join
         {
             return new QueryListXImpl(DC).QueryList(columnMapFunc);
         }
+
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
         /// <summary>
         /// 多表分页查询
@@ -146,6 +151,8 @@ namespace HPC.DAL.UserFacade.Join
             return new QueryPagingXImpl(DC).QueryPaging(pageIndex, pageSize, columnMapFunc);
         }
 
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
         /// <summary>
         /// 多表多条数据查询
         /// </summary>
@@ -177,6 +184,8 @@ namespace HPC.DAL.UserFacade.Join
         {
             return new TopXImpl(DC).Top(count, columnMapFunc);
         }
+
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
         /// <summary>
         /// 请参阅: <see langword=".IsExistAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>

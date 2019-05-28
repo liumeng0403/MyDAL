@@ -3,16 +3,16 @@
     internal enum UiMethodEnum
     {
         None,
-        CreateAsync,
-        CreateBatchAsync,
-        DeleteAsync,
-        UpdateAsync,
-        QueryOneAsync,
-        QueryListAsync,
-        QueryPagingAsync,
-        TopAsync,
-        ExistAsync,
-        CountAsync,
-        SumAsync
+        Create,
+        CreateBatch,
+        Delete,
+        Update,
+        QueryOne,
+        QueryList,
+        QueryPaging,
+        Top,
+        IsExist,
+        Count,
+        Sum
     }
 }

@@ -26,7 +26,7 @@ namespace HPC.DAL.Impls.ImplAsyncs
             DC.Compare = CompareXEnum.None;
             DC.Func = FuncEnum.Count;
             DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(typeof(M), "*") }));
-            PreExecuteHandle(UiMethodEnum.ExistAsync);
+            PreExecuteHandle(UiMethodEnum.IsExist);
             var count = await DSA.ExecuteScalarAsync<long>();
             return count > 0;
         }
@@ -48,7 +48,7 @@ namespace HPC.DAL.Impls.ImplAsyncs
             DC.Func = FuncEnum.Count;
             var dic = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.From);
             DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(dic.TbMType, "*") }));
-            PreExecuteHandle(UiMethodEnum.ExistAsync);
+            PreExecuteHandle(UiMethodEnum.IsExist);
             var count = await DSA.ExecuteScalarAsync<long>();
             return count > 0;
         }

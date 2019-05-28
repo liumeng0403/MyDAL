@@ -21,14 +21,14 @@ namespace HPC.DAL.Impls.ImplAsyncs
 
         public async Task<List<M>> QueryListAsync()
         {
-            PreExecuteHandle(UiMethodEnum.QueryListAsync);
+            PreExecuteHandle(UiMethodEnum.QueryList);
             return await DSA.ExecuteReaderMultiRowAsync<M>();
         }
         public async Task<List<VM>> QueryListAsync<VM>()
             where VM : class
         {
             SelectMQ<M, VM>();
-            PreExecuteHandle(UiMethodEnum.QueryListAsync);
+            PreExecuteHandle(UiMethodEnum.QueryList);
             return await DSA.ExecuteReaderMultiRowAsync<VM>();
         }
         public async Task<List<T>> QueryListAsync<T>(Expression<Func<M, T>> columnMapFunc)
@@ -36,13 +36,13 @@ namespace HPC.DAL.Impls.ImplAsyncs
             if (typeof(T).IsSingleColumn())
             {
                 SingleColumnHandle(columnMapFunc);
-                PreExecuteHandle(UiMethodEnum.QueryListAsync);
+                PreExecuteHandle(UiMethodEnum.QueryList);
                 return await DSA.ExecuteReaderSingleColumnAsync(columnMapFunc.Compile());
             }
             else
             {
                 SelectMHandle(columnMapFunc);
-                PreExecuteHandle(UiMethodEnum.QueryListAsync);
+                PreExecuteHandle(UiMethodEnum.QueryList);
                 return await DSA.ExecuteReaderMultiRowAsync<T>();
             }
         }
@@ -60,7 +60,7 @@ namespace HPC.DAL.Impls.ImplAsyncs
             where M : class
         {
             SelectMHandle<M>();
-            PreExecuteHandle(UiMethodEnum.QueryListAsync);
+            PreExecuteHandle(UiMethodEnum.QueryList);
             return await DSA.ExecuteReaderMultiRowAsync<M>();
         }
         public async Task<List<T>> QueryListAsync<T>(Expression<Func<T>> columnMapFunc)
@@ -68,13 +68,13 @@ namespace HPC.DAL.Impls.ImplAsyncs
             if (typeof(T).IsSingleColumn())
             {
                 SingleColumnHandle(columnMapFunc);
-                PreExecuteHandle(UiMethodEnum.QueryListAsync);
+                PreExecuteHandle(UiMethodEnum.QueryList);
                 return await DSA.ExecuteReaderSingleColumnAsync<T>();
             }
             else
             {
                 SelectMHandle(columnMapFunc);
-                PreExecuteHandle(UiMethodEnum.QueryListAsync);
+                PreExecuteHandle(UiMethodEnum.QueryList);
                 return await DSA.ExecuteReaderMultiRowAsync<T>();
             }
         }
@@ -91,7 +91,7 @@ namespace HPC.DAL.Impls.ImplAsyncs
 
         public async Task<List<T>> QueryListAsync<T>()
         {
-            DC.Method = UiMethodEnum.QueryListAsync;
+            DC.Method = UiMethodEnum.QueryList;
             if (typeof(T).IsSingleColumn())
             {
                 return await DSA.ExecuteReaderSingleColumnAsync<T>();
