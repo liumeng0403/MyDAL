@@ -22,7 +22,7 @@ namespace MyDAL.Impls.ImplSyncs
         {
             DC.PageIndex = pageIndex;
             DC.PageSize = pageSize;
-            PreExecuteHandle(UiMethodEnum.QueryPagingAsync);
+            PreExecuteHandle(UiMethodEnum.QueryPaging);
             return DSS.ExecuteReaderPaging<None, M>(false, null);
         }
         public PagingResult<VM> QueryPaging<VM>(int pageIndex, int pageSize)
@@ -30,7 +30,7 @@ namespace MyDAL.Impls.ImplSyncs
         {
             DC.PageIndex = pageIndex;
             DC.PageSize = pageSize;
-            PreExecuteHandle(UiMethodEnum.QueryPagingAsync);
+            PreExecuteHandle(UiMethodEnum.QueryPaging);
             return DSS.ExecuteReaderPaging<M, VM>(false, null);
         }
         public PagingResult<T> QueryPaging<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
@@ -46,7 +46,7 @@ namespace MyDAL.Impls.ImplSyncs
             {
                 SelectMHandle(columnMapFunc);
             }
-            PreExecuteHandle(UiMethodEnum.QueryPagingAsync);
+            PreExecuteHandle(UiMethodEnum.QueryPaging);
             return DSS.ExecuteReaderPaging<M, T>(single, columnMapFunc.Compile());
         }
     }
@@ -65,7 +65,7 @@ namespace MyDAL.Impls.ImplSyncs
             DC.PageIndex = pageIndex;
             DC.PageSize = pageSize;
             SelectMHandle<M>();
-            PreExecuteHandle(UiMethodEnum.QueryPagingAsync);
+            PreExecuteHandle(UiMethodEnum.QueryPaging);
             return DSS.ExecuteReaderPaging<None, M>(false, null);
         }
         public PagingResult<T> QueryPaging<T>(int pageIndex, int pageSize, Expression<Func<T>> columnMapFunc)
@@ -81,7 +81,7 @@ namespace MyDAL.Impls.ImplSyncs
             {
                 SelectMHandle(columnMapFunc);
             }
-            PreExecuteHandle(UiMethodEnum.QueryPagingAsync);
+            PreExecuteHandle(UiMethodEnum.QueryPaging);
             return DSS.ExecuteReaderPaging<None, T>(single, null);
         }
     }

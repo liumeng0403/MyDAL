@@ -7,7 +7,6 @@ using MyDAL.Interfaces.IAsyncs;
 using MyDAL.Interfaces.ISyncs;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -27,6 +26,8 @@ namespace MyDAL.UserFacade.Query
         internal OrderByQ(Context dc)
             : base(dc)
         { }
+
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
         /// <summary>
         /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
@@ -74,6 +75,8 @@ namespace MyDAL.UserFacade.Query
             return new QueryOneImpl<M>(DC).QueryOne<T>(columnMapFunc);
         }
 
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
@@ -119,6 +122,8 @@ namespace MyDAL.UserFacade.Query
         {
             return new QueryListImpl<M>(DC).QueryList(columnMapFunc);
         }
+
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
         /// <summary>
         /// 单表分页查询
@@ -175,6 +180,8 @@ namespace MyDAL.UserFacade.Query
         {
             return new QueryPagingImpl<M>(DC).QueryPaging<T>(pageIndex, pageSize, columnMapFunc);
         }
+
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
         /// <summary>
         /// 单表数据查询

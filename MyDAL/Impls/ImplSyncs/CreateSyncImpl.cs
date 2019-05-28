@@ -20,7 +20,7 @@ namespace MyDAL.Impls.ImplSyncs
         {
             DC.Action = ActionEnum.Insert;
             CreateMHandle(new List<M> { m });
-            PreExecuteHandle(UiMethodEnum.CreateAsync);
+            PreExecuteHandle(UiMethodEnum.Create);
             return DSS.ExecuteNonQuery();
         }
     }

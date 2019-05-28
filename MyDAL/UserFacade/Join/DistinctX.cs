@@ -7,7 +7,6 @@ using MyDAL.Interfaces.IAsyncs;
 using MyDAL.Interfaces.ISyncs;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -22,11 +21,14 @@ namespace MyDAL.UserFacade.Join
         , IQueryListXAsync, IQueryListX
         , IQueryPagingXAsync, IQueryPagingX
         , ITopXAsync, ITopX
+        ,ICountXAsync,ICountX
     {
         internal DistinctX(Context dc)
             : base(dc)
         {
         }
+
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
         /// <summary>
         /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
@@ -60,6 +62,8 @@ namespace MyDAL.UserFacade.Join
             return new QueryOneXImpl(DC).QueryOne(columnMapFunc);
         }
 
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
         /// <summary>
         /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
@@ -91,6 +95,8 @@ namespace MyDAL.UserFacade.Join
         {
             return new QueryListXImpl(DC).QueryList(columnMapFunc);
         }
+
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
         /// <summary>
         /// 多表分页查询
@@ -130,6 +136,8 @@ namespace MyDAL.UserFacade.Join
             return new QueryPagingXImpl(DC).QueryPaging(pageIndex, pageSize, columnMapFunc);
         }
 
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
         /// <summary>
         /// 多表多条数据查询
         /// </summary>
@@ -160,6 +168,26 @@ namespace MyDAL.UserFacade.Join
         public List<T> Top<T>(int count, Expression<Func<T>> columnMapFunc)
         {
             return new TopXImpl(DC).Top(count, columnMapFunc);
+        }
+
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+        public async Task<int> CountAsync()
+        {
+            return await new CountXAsyncImpl(DC).CountAsync();
+        }
+        public async Task<int> CountAsync<F>(Expression<Func<F>> propertyFunc)
+        {
+            return await new CountXAsyncImpl(DC).CountAsync(propertyFunc);
+        }
+
+        public int Count()
+        {
+            return new CountXImpl(DC).Count();
+        }
+        public int Count<F>(Expression<Func<F>> propertyFunc)
+        {
+            return new CountXImpl(DC).Count(propertyFunc);
         }
 
     }

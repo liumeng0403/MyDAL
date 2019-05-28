@@ -26,7 +26,7 @@ namespace MyDAL.Impls.ImplAsyncs
         {
             DC.PageIndex = 0;
             DC.PageSize = count;
-            PreExecuteHandle(UiMethodEnum.TopAsync);
+            PreExecuteHandle(UiMethodEnum.Top);
             return await DSA.ExecuteReaderMultiRowAsync<M>();
         }
         public async Task<List<VM>> TopAsync<VM>(int count)
@@ -35,7 +35,7 @@ namespace MyDAL.Impls.ImplAsyncs
             DC.PageIndex = 0;
             DC.PageSize = count;
             SelectMQ<M, VM>();
-            PreExecuteHandle(UiMethodEnum.TopAsync);
+            PreExecuteHandle(UiMethodEnum.Top);
             return await DSA.ExecuteReaderMultiRowAsync<VM>();
         }
         public async Task<List<T>> TopAsync<T>(int count, Expression<Func<M, T>> columnMapFunc)
@@ -45,13 +45,13 @@ namespace MyDAL.Impls.ImplAsyncs
             if (typeof(T).IsSingleColumn())
             {
                 SingleColumnHandle(columnMapFunc);
-                PreExecuteHandle(UiMethodEnum.TopAsync);
+                PreExecuteHandle(UiMethodEnum.Top);
                 return await DSA.ExecuteReaderSingleColumnAsync(columnMapFunc.Compile());
             }
             else
             {
                 SelectMHandle(columnMapFunc);
-                PreExecuteHandle(UiMethodEnum.TopAsync);
+                PreExecuteHandle(UiMethodEnum.Top);
                 return await DSA.ExecuteReaderMultiRowAsync<T>();
             }
         }
@@ -72,7 +72,7 @@ namespace MyDAL.Impls.ImplAsyncs
             SelectMHandle<M>();
             DC.PageIndex = 0;
             DC.PageSize = count;
-            PreExecuteHandle(UiMethodEnum.TopAsync);
+            PreExecuteHandle(UiMethodEnum.Top);
             return await DSA.ExecuteReaderMultiRowAsync<M>();
         }
         public async Task<List<T>> TopAsync<T>(int count, Expression<Func<T>> columnMapFunc)
@@ -82,13 +82,13 @@ namespace MyDAL.Impls.ImplAsyncs
             if (typeof(T).IsSingleColumn())
             {
                 SingleColumnHandle(columnMapFunc);
-                PreExecuteHandle(UiMethodEnum.TopAsync);
+                PreExecuteHandle(UiMethodEnum.Top);
                 return await DSA.ExecuteReaderSingleColumnAsync<T>();
             }
             else
             {
                 SelectMHandle(columnMapFunc);
-                PreExecuteHandle(UiMethodEnum.TopAsync);
+                PreExecuteHandle(UiMethodEnum.Top);
                 return await DSA.ExecuteReaderMultiRowAsync<T>();
             }
         }

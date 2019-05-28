@@ -23,7 +23,7 @@ namespace MyDAL.Impls.ImplAsyncs
         {
             DC.Action = ActionEnum.Insert;
             CreateMHandle(new List<M> { m });
-            PreExecuteHandle(UiMethodEnum.CreateAsync);
+            PreExecuteHandle(UiMethodEnum.Create);
             return await DSA.ExecuteNonQueryAsync();
         }
 

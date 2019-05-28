@@ -25,7 +25,7 @@ namespace MyDAL.Impls.ImplAsyncs
         {
             DC.PageIndex = pageIndex;
             DC.PageSize = pageSize;
-            PreExecuteHandle(UiMethodEnum.QueryPagingAsync);
+            PreExecuteHandle(UiMethodEnum.QueryPaging);
             return await DSA.ExecuteReaderPagingAsync<None, M>(false, null);
         }
         public async Task<PagingResult<VM>> QueryPagingAsync<VM>(int pageIndex, int pageSize)
@@ -33,7 +33,7 @@ namespace MyDAL.Impls.ImplAsyncs
         {
             DC.PageIndex = pageIndex;
             DC.PageSize = pageSize;
-            PreExecuteHandle(UiMethodEnum.QueryPagingAsync);
+            PreExecuteHandle(UiMethodEnum.QueryPaging);
             return await DSA.ExecuteReaderPagingAsync<M, VM>(false, null);
         }
         public async Task<PagingResult<T>> QueryPagingAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
@@ -49,7 +49,7 @@ namespace MyDAL.Impls.ImplAsyncs
             {
                 SelectMHandle(columnMapFunc);
             }
-            PreExecuteHandle(UiMethodEnum.QueryPagingAsync);
+            PreExecuteHandle(UiMethodEnum.QueryPaging);
             return await DSA.ExecuteReaderPagingAsync<M, T>(single, columnMapFunc.Compile());
         }
 
@@ -69,7 +69,7 @@ namespace MyDAL.Impls.ImplAsyncs
             DC.PageIndex = pageIndex;
             DC.PageSize = pageSize;
             SelectMHandle<M>();
-            PreExecuteHandle(UiMethodEnum.QueryPagingAsync);
+            PreExecuteHandle(UiMethodEnum.QueryPaging);
             return await DSA.ExecuteReaderPagingAsync<None, M>(false, null);
         }
         public async Task<PagingResult<T>> QueryPagingAsync<T>(int pageIndex, int pageSize, Expression<Func<T>> columnMapFunc)
@@ -85,7 +85,7 @@ namespace MyDAL.Impls.ImplAsyncs
             {
                 SelectMHandle(columnMapFunc);
             }
-            PreExecuteHandle(UiMethodEnum.QueryPagingAsync);
+            PreExecuteHandle(UiMethodEnum.QueryPaging);
             return await DSA.ExecuteReaderPagingAsync<None, T>(single, null);
         }
 

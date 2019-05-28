@@ -24,7 +24,7 @@ namespace MyDAL.Impls.ImplSyncs
             {
                 DC.DPH.ResetParameter();
                 CreateMHandle(list);
-                PreExecuteHandle(UiMethodEnum.CreateBatchAsync);
+                PreExecuteHandle(UiMethodEnum.CreateBatch);
                 return DSS.ExecuteNonQuery();
             });
         }

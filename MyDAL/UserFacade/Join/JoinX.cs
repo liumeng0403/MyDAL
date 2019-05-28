@@ -13,7 +13,5 @@ namespace MyDAL.UserFacade.Join
             : base(dc)
         { }
 
-
-
     }
 }

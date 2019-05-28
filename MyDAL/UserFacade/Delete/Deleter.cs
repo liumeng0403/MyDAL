@@ -1,5 +1,4 @@
 using System;
-using System.Data;
 using System.Threading.Tasks;
 using MyDAL.Core.Bases;
 using MyDAL.Impls;
@@ -25,6 +24,8 @@ namespace MyDAL.UserFacade.Delete
             : base(dc)
         { }
 
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
         public WhereD<M> WhereSegment
         {
             get
@@ -32,6 +33,8 @@ namespace MyDAL.UserFacade.Delete
                 return new WhereD<M>(DC);
             }
         }
+
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
         /// <summary>
         /// 单表数据删除

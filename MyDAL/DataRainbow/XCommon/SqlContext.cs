@@ -48,7 +48,7 @@ namespace MyDAL.DataRainbow.XCommon
 
         private static bool IsPaging(Context dc)
         {
-            if (dc.Method == UiMethodEnum.QueryPagingAsync)
+            if (dc.Method == UiMethodEnum.QueryPaging)
             {
                 return true;
             }

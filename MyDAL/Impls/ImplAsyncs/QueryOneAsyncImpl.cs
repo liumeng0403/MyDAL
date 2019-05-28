@@ -66,7 +66,7 @@ namespace MyDAL.Impls.ImplAsyncs
 
         public async Task<T> QueryOneAsync<T>()
         {
-            DC.Method = UiMethodEnum.QueryOneAsync;
+            DC.Method = UiMethodEnum.QueryOne;
             if (typeof(T).IsSingleColumn())
             {
                 return (await DSA.ExecuteReaderSingleColumnAsync<T>()).FirstOrDefault();

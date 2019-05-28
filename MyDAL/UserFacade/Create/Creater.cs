@@ -6,7 +6,6 @@ using MyDAL.Interfaces;
 using MyDAL.Interfaces.IAsyncs;
 using MyDAL.Interfaces.ISyncs;
 using System.Collections.Generic;
-using System.Data;
 using System.Threading.Tasks;
 
 namespace MyDAL.UserFacade.Create
@@ -23,6 +22,8 @@ namespace MyDAL.UserFacade.Create
         internal Creater(Context dc)
             : base(dc)
         { }
+
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
         /// <summary>
         /// 插入单条数据
@@ -41,6 +42,8 @@ namespace MyDAL.UserFacade.Create
         {
             return new CreateImpl<M>(DC).Create(m);
         }
+
+        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
         /// <summary>
         /// 批量插入数据

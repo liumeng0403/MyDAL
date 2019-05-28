@@ -29,7 +29,7 @@ namespace MyDAL.Impls.ImplAsyncs
             DC.Compare = CompareXEnum.None;
             DC.Func = FuncEnum.Count;
             DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(typeof(M), "*") }));
-            PreExecuteHandle(UiMethodEnum.CountAsync);
+            PreExecuteHandle(UiMethodEnum.Count);
             return await DSA.ExecuteScalarAsync<int>();
         }
         public async Task<int> CountAsync<F>(Expression<Func<M, F>> propertyFunc)
@@ -40,7 +40,7 @@ namespace MyDAL.Impls.ImplAsyncs
             DC.Func = FuncEnum.Count;
             var dic = DC.XE.FuncMFExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
-            PreExecuteHandle(UiMethodEnum.CountAsync);            
+            PreExecuteHandle(UiMethodEnum.Count);            
             return await DSA.ExecuteScalarAsync<int>();
         }
 
@@ -61,7 +61,7 @@ namespace MyDAL.Impls.ImplAsyncs
             DC.Compare = CompareXEnum.None;
             DC.Func = FuncEnum.Count;
             DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(default(Type), "*", string.Empty) }));
-            PreExecuteHandle(UiMethodEnum.CountAsync);
+            PreExecuteHandle(UiMethodEnum.Count);
             return await DSA.ExecuteScalarAsync<int>();
         }
         public async Task<int> CountAsync<F>(Expression<Func<F>> propertyFunc)
@@ -71,7 +71,7 @@ namespace MyDAL.Impls.ImplAsyncs
             DC.Func = FuncEnum.Count;
             var dic = DC.XE.FuncTExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
-            PreExecuteHandle(UiMethodEnum.CountAsync);            
+            PreExecuteHandle(UiMethodEnum.Count);            
             return await DSA.ExecuteScalarAsync<int>();
         }
 

@@ -26,7 +26,7 @@ namespace MyDAL.Impls.ImplSyncs
             DC.Func = FuncEnum.Sum;
             var dic = DC.XE.FuncMFExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
-            PreExecuteHandle(UiMethodEnum.SumAsync);
+            PreExecuteHandle(UiMethodEnum.Sum);
             return DSS.ExecuteScalar<F>();
         }
         public F? Sum<F>(Expression<Func<M, F?>> propertyFunc)
@@ -38,7 +38,7 @@ namespace MyDAL.Impls.ImplSyncs
             DC.Func = FuncEnum.SumNullable;
             var dic = DC.XE.FuncMFExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
-            PreExecuteHandle(UiMethodEnum.SumAsync);
+            PreExecuteHandle(UiMethodEnum.Sum);
             return DSS.ExecuteScalar<F>();
         }
     }
@@ -60,7 +60,7 @@ namespace MyDAL.Impls.ImplSyncs
             DC.Func = FuncEnum.Sum;
             var dic = DC.XE.FuncTExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
-            PreExecuteHandle(UiMethodEnum.SumAsync);
+            PreExecuteHandle(UiMethodEnum.Sum);
             return DSS.ExecuteScalar<F>();
         }
         public F? Sum<F>(Expression<Func<F?>> propertyFunc)
@@ -72,7 +72,7 @@ namespace MyDAL.Impls.ImplSyncs
             DC.Func = FuncEnum.SumNullable;
             var dic = DC.XE.FuncTExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
-            PreExecuteHandle(UiMethodEnum.SumAsync);
+            PreExecuteHandle(UiMethodEnum.Sum);
             return DSS.ExecuteScalar<F>();
         }
     }
