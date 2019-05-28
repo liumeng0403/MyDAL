@@ -71,8 +71,8 @@ namespace MyDAL
         {
             return await conn.Queryer<M>().Where(compareFunc).SumAsync(propertyFunc);
         }
-        public static async Task<Nullable<F>> SumAsync<M, F>
-            (this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, Nullable<F>>> propertyFunc)
+        public static async Task<F?> SumAsync<M, F>
+            (this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, F?>> propertyFunc)
             where M : class, new()
             where F : struct
         {
@@ -140,8 +140,8 @@ namespace MyDAL
         {
             return conn.Queryer<M>().Where(compareFunc).Sum(propertyFunc);
         }
-        public static Nullable<F> Sum<M, F>
-            (this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, Nullable<F>>> propertyFunc)
+        public static F? Sum<M, F>
+            (this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, F?>> propertyFunc)
             where M : class, new()
             where F : struct
         {

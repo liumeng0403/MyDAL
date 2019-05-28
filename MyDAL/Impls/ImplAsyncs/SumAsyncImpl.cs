@@ -32,7 +32,7 @@ namespace MyDAL.Impls.ImplAsyncs
             return await DSA.ExecuteScalarAsync<F>();
         }
 
-        public async Task<Nullable<F>> SumAsync<F>(Expression<Func<M, Nullable<F>>> propertyFunc)
+        public async Task<F?> SumAsync<F>(Expression<Func<M, F?>> propertyFunc)
             where F : struct
         {
             DC.Action = ActionEnum.Select;
@@ -40,6 +40,41 @@ namespace MyDAL.Impls.ImplAsyncs
             DC.Compare = CompareXEnum.None;
             DC.Func = FuncEnum.SumNullable;
             var dic = DC.XE.FuncMFExpression(propertyFunc);
+            DC.DPH.AddParameter(dic);
+            PreExecuteHandle(UiMethodEnum.SumAsync);
+            return await DSA.ExecuteScalarAsync<F>();
+        }
+    }
+
+    internal sealed class SumXAsyncImpl
+        : ImplerAsync
+        , ISumXAsync
+    {
+        public SumXAsyncImpl(Context dc)
+            : base(dc)
+        { }
+
+        public async Task<F> SumAsync<F>(Expression<Func<F>> propertyFunc)
+            where F : struct
+        {
+            DC.Action = ActionEnum.Select;
+            DC.Option = OptionEnum.Column;
+            DC.Compare = CompareXEnum.None;
+            DC.Func = FuncEnum.Sum;
+            var dic = DC.XE.FuncTExpression(propertyFunc);
+            DC.DPH.AddParameter(dic);
+            PreExecuteHandle(UiMethodEnum.SumAsync);
+            return await DSA.ExecuteScalarAsync<F>();
+        }
+
+        public async Task<F?> SumAsync<F>(Expression<Func<F?>> propertyFunc)
+            where F : struct
+        {
+            DC.Action = ActionEnum.Select;
+            DC.Option = OptionEnum.Column;
+            DC.Compare = CompareXEnum.None;
+            DC.Func = FuncEnum.SumNullable;
+            var dic = DC.XE.FuncTExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.SumAsync);
             return await DSA.ExecuteScalarAsync<F>();

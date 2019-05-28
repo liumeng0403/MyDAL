@@ -26,6 +26,7 @@ namespace MyDAL.UserFacade.Join
         , ITopXAsync, ITopX
         , IIsExistXAsync, IIsExistX
         , ICountXAsync, ICountX
+        , ISumXAsync, ISumX
     {
 
         internal WhereX(Context dc)
@@ -144,24 +145,6 @@ namespace MyDAL.UserFacade.Join
             return new QueryPagingXImpl(DC).QueryPaging(pageIndex, pageSize, columnMapFunc);
         }
 
-        public async Task<int> CountAsync()
-        {
-            return await new CountXAsyncImpl(DC).CountAsync();
-        }
-        public async Task<int> CountAsync<F>(Expression<Func<F>> propertyFunc)
-        {
-            return await new CountXAsyncImpl(DC).CountAsync(propertyFunc);
-        }
-
-        public int Count()
-        {
-            return new CountXImpl(DC).Count();
-        }
-        public int Count<F>(Expression<Func<F>> propertyFunc)
-        {
-            return new CountXImpl(DC).Count(propertyFunc);
-        }
-
         /// <summary>
         /// 多表多条数据查询
         /// </summary>
@@ -209,5 +192,46 @@ namespace MyDAL.UserFacade.Join
         {
             return new IsExistXImpl(DC).IsExist();
         }
+
+        public async Task<int> CountAsync()
+        {
+            return await new CountXAsyncImpl(DC).CountAsync();
+        }
+        public async Task<int> CountAsync<F>(Expression<Func<F>> propertyFunc)
+        {
+            return await new CountXAsyncImpl(DC).CountAsync(propertyFunc);
+        }
+
+        public int Count()
+        {
+            return new CountXImpl(DC).Count();
+        }
+        public int Count<F>(Expression<Func<F>> propertyFunc)
+        {
+            return new CountXImpl(DC).Count(propertyFunc);
+        }
+
+        public async Task<F> SumAsync<F>(Expression<Func<F>> propertyFunc)
+            where F : struct
+        {
+            return await new SumXAsyncImpl(DC).SumAsync(propertyFunc);
+        }
+        public async Task<F?> SumAsync<F>(Expression<Func<F?>> propertyFunc)
+            where F : struct
+        {
+            return await new SumXAsyncImpl(DC).SumAsync(propertyFunc);
+        }
+
+        public F Sum<F>(Expression<Func<F>> propertyFunc)
+            where F : struct
+        {
+            return new SumXImpl(DC).Sum(propertyFunc);
+        }
+        public F? Sum<F>(Expression<Func<F?>> propertyFunc)
+            where F : struct
+        {
+            return new SumXImpl(DC).Sum(propertyFunc);
+        }
+
     }
 }

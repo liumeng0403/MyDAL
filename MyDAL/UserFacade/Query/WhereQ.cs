@@ -248,6 +248,22 @@ namespace MyDAL.UserFacade.Query
         }
 
         /// <summary>
+        /// 请参阅: <see langword=".IsExistAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// </summary>
+        public async Task<bool> IsExistAsync()
+        {
+            return await new IsExistAsyncImpl<M>(DC).IsExistAsync();
+        }
+
+        /// <summary>
+        /// 请参阅: <see langword=".IsExistAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// </summary>
+        public bool IsExist()
+        {
+            return new IsExistImpl<M>(DC).IsExist();
+        }
+
+        /// <summary>
         /// 查询符合条件数据条目数
         /// </summary>
         public async Task<int> CountAsync()
@@ -288,7 +304,7 @@ namespace MyDAL.UserFacade.Query
         /// <summary>
         /// 列求和 -- select sum(col) from ...
         /// </summary>
-        public async Task<Nullable<F>> SumAsync<F>(Expression<Func<M, Nullable<F>>> propertyFunc)
+        public async Task<F?> SumAsync<F>(Expression<Func<M, F?>> propertyFunc)
             where F : struct
         {
             return await new SumAsyncImpl<M>(DC).SumAsync(propertyFunc);
@@ -305,26 +321,10 @@ namespace MyDAL.UserFacade.Query
         /// <summary>
         /// 列求和 -- select sum(col) from ...
         /// </summary>
-        public Nullable<F> Sum<F>(Expression<Func<M, Nullable<F>>> propertyFunc)
+        public F? Sum<F>(Expression<Func<M, F?>> propertyFunc)
             where F : struct
         {
             return new SumImpl<M>(DC).Sum(propertyFunc);
-        }
-
-        /// <summary>
-        /// 请参阅: <see langword=".IsExistAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        public async Task<bool> IsExistAsync()
-        {
-            return await new IsExistAsyncImpl<M>(DC).IsExistAsync();
-        }
-
-        /// <summary>
-        /// 请参阅: <see langword=".IsExistAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        public bool IsExist()
-        {
-            return new IsExistImpl<M>(DC).IsExist();
         }
 
     }
