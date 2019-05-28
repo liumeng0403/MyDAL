@@ -10,7 +10,16 @@ namespace HPC.DAL.Interfaces.IAsyncs
         Task<F> SumAsync<F>(Expression<Func<M, F>> propertyFunc)
             where F : struct;
 
-        Task<Nullable<F>> SumAsync<F>(Expression<Func<M, Nullable<F>>> propertyFunc)
+        Task<F?> SumAsync<F>(Expression<Func<M, F?>> propertyFunc)
+            where F : struct;
+    }
+
+    internal interface ISumXAsync
+    {
+        Task<F> SumAsync<F>(Expression<Func<F>> propertyFunc)
+            where F : struct;
+
+        Task<F?> SumAsync<F>(Expression<Func<F?>> propertyFunc)
             where F : struct;
     }
 }

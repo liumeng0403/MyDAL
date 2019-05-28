@@ -1,5 +1,6 @@
 ﻿using HPC.DAL;
 using MyDAL.Test.Entities.MyDAL_TestDB;
+using MyDAL.Test.Enums;
 using System;
 using System.Threading.Tasks;
 using Xunit;
@@ -21,8 +22,6 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1 == 1527.2600000000000000000000000M);
 
-            
-
             xx = string.Empty;
         }
 
@@ -38,10 +37,43 @@ namespace MyDAL.Test.QueryAPI
 
             Assert.True(res1 == 589);
 
-            
+            xx = string.Empty;
+        }
+
+        [Fact]
+        public async Task Sum_MT()
+        {
+            xx = string.Empty;
+
+            var res1 = await Conn
+                .Queryer(out Agent a, out AgentInventoryRecord air)
+                .From(() => a)
+                    .InnerJoin(() => air)
+                        .On(() => a.Id == air.AgentId)
+                .Where(() => a.AgentLevel == AgentLevel.DistiAgent)
+                .SumAsync(() => air.LockedCount);
+
+            Assert.Equal(0, res1);
 
             xx = string.Empty;
         }
 
+        [Fact]
+        public async Task Sum_Nullable_MT()
+        {
+            xx = string.Empty;
+
+            var res1 = await Conn
+                .Queryer(out Agent a, out AgentInventoryRecord air)
+                .From(() => a)
+                    .InnerJoin(() => air)
+                        .On(() => a.Id == air.AgentId)
+                .Where(() => a.AgentLevel == AgentLevel.DistiAgent)
+                .SumAsync(() => air.TotalSaleCount);
+
+            Assert.Equal(589, res1.Value);
+
+            xx = string.Empty;
+        }
     }
 }

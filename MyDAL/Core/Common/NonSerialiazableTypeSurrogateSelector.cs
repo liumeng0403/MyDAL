@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HPC.DAL.Core.Extensions;
+using System;
 using System.Reflection;
 using System.Runtime.Serialization;
 
@@ -7,7 +8,7 @@ namespace HPC.DAL.Core.Common
     /// <summary>
     /// 深度复制 / Surrogate
     /// </summary>
-    internal class NonSerialiazableTypeSurrogateSelector 
+    internal class NonSerialiazableTypeSurrogateSelector
         : ISerializationSurrogate, ISurrogateSelector
     {
         /// <summary>
@@ -45,7 +46,7 @@ namespace HPC.DAL.Core.Common
             {
                 if (IsKnownType(fi.FieldType))
                 {
-                    if (IsNullableType(fi.FieldType))
+                    if (fi.FieldType.IsNullable())
                     {
                         Type argumentValueForTheNullableType = GetFirstArgumentOfGenericType(fi.FieldType);
                         fi.SetValue(obj, info.GetValue(fi.Name, argumentValueForTheNullableType));
@@ -111,18 +112,6 @@ namespace HPC.DAL.Core.Common
         private bool IsKnownType(Type type)
         {
             return type == typeof(string) || type.IsPrimitive || type.IsSerializable;
-        }
-
-        /// <summary>
-        /// 是否为可空类型
-        /// </summary>
-        private bool IsNullableType(Type type)
-        {
-            if (type.IsGenericType)
-            {
-                return type.GetGenericTypeDefinition() == typeof(Nullable<>);
-            }
-            return false;
         }
 
         /// <summary>

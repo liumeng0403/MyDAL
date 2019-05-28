@@ -71,7 +71,7 @@ namespace MyDAL.Test.WhereEdge
             var pageSize = 10;
 
             // 上下文 条件 变量
-            var level = (Nullable<AgentLevel>)AgentLevel.DistiAgent;
+            var level = (AgentLevel?)AgentLevel.DistiAgent;
             var pk1 = Guid.Parse("fbad4af4-c160-4e66-a8fc-0165443b4db0");
 
             // 可 自由混合书写 多个 inner join 或 left join 

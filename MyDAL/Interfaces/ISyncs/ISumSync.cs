@@ -9,7 +9,16 @@ namespace HPC.DAL.Interfaces.ISyncs
         F Sum<F>(Expression<Func<M, F>> propertyFunc)
             where F : struct;
 
-        Nullable<F> Sum<F>(Expression<Func<M, Nullable<F>>> propertyFunc)
+        F? Sum<F>(Expression<Func<M, F?>> propertyFunc)
+            where F : struct;
+    }
+
+    internal interface ISumX
+    {
+        F Sum<F>(Expression<Func<F>> propertyFunc)
+            where F : struct;
+
+        F? Sum<F>(Expression<Func<F?>> propertyFunc)
             where F : struct;
     }
 }
