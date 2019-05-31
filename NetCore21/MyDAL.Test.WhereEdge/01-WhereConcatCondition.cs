@@ -1,4 +1,4 @@
-﻿using MyDAL.Tools;
+using MyDAL.Tools;
 using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.Enums;
 using System;

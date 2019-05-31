@@ -1,4 +1,4 @@
-﻿using MyDAL.Tools;
+using MyDAL.Tools;
 using System;
 using System.IO;
 using System.Net;
