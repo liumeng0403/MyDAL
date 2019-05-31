@@ -1,5 +1,5 @@
 ﻿using HPC.DAL;
-using HPC.DAL.ModelTools;
+using HPC.DAL.Tools;
 using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.Enums;
 using System;
