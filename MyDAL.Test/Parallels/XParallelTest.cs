@@ -1,5 +1,6 @@
 ﻿using HPC.DAL;
 using HPC.DAL.ModelTools;
+using HPC.DAL.Tools;
 using MyDAL.Test.Common;
 using System;
 using System.Collections.Concurrent;
