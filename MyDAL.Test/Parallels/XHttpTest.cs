@@ -1,5 +1,4 @@
-﻿using HPC.DAL;
-using HPC.DAL.Tools;
+﻿using MyDAL.Tools;
 using System;
 
 namespace MyDAL.Test.Parallels

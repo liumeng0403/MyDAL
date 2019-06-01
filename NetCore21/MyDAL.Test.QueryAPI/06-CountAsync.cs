@@ -1,4 +1,6 @@
-﻿using MyDAL.Test.Entities.MyDAL_TestDB;
+using MyDAL.Test.Entities.MyDAL_TestDB;
+using MyDAL.Test.Enums;
+using System;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -103,6 +105,35 @@ namespace MyDAL.Test.QueryAPI
                 .CountAsync(it => it.AgentLevel);
 
             Assert.Equal(3, res1);
+
+            xx = string.Empty;
+        }
+
+        [Fact]
+        public async Task SqlAction_Where_Distinct_Count_Star_MT()
+        {
+            xx = string.Empty;
+
+            try
+            {
+                var res1 = await Conn
+                    .Queryer(out Agent agent, out AgentInventoryRecord record)
+                    .From(() => agent)
+                        .InnerJoin(() => record)
+                            .On(() => agent.Id == record.AgentId)
+                    .Where(() => agent.AgentLevel == AgentLevel.DistiAgent)
+                    .Distinct()
+                    .CountAsync();
+            }
+            catch (Exception ex)
+            {
+                /*
+                 * Agent 表 有 Id 列
+                 * AgentInventoryRecord 表 也有 Id 列
+                 * 这种情况 MySQL DB -- count 会报错：【Duplicate column name 'Id'】
+                 */
+                Assert.Equal("Duplicate column name 'Id'", ex.Message);
+            }
 
             xx = string.Empty;
         }
