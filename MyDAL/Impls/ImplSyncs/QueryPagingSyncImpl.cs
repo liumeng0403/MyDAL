@@ -85,19 +85,4 @@ namespace HPC.DAL.Impls.ImplSyncs
             return DSS.ExecuteReaderPaging<None, T>(single, null);
         }
     }
-
-    internal sealed class QueryPagingSQLImpl
-        : ImplerSync
-        , IQueryPagingSQL
-    {
-        public QueryPagingSQLImpl(Context dc)
-            : base(dc)
-        { }
-
-        public PagingResult<T> QueryPaging<T>()
-        {
-            DC.Method = UiMethodEnum.QueryPaging;
-            return DSS.ExecuteReaderPaging<None, T>(typeof(T).IsSingleColumn(), null);
-        }
-    }
 }

@@ -19,9 +19,4 @@ namespace HPC.DAL.Interfaces.ISyncs
             where M : class;
         PagingResult<T> QueryPaging<T>(int pageIndex, int pageSize, Expression<Func<T>> columnMapFunc);
     }
-
-    internal interface IQueryPagingSQL
-    {
-        PagingResult<T> QueryPaging<T>();
-    }
 }

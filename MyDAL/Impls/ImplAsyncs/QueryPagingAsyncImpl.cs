@@ -88,20 +88,4 @@ namespace HPC.DAL.Impls.ImplAsyncs
         }
 
     }
-
-    internal sealed class QueryPagingSQLAsyncImpl
-        : ImplerAsync
-        , IQueryPagingSQLAsync
-    {
-        public QueryPagingSQLAsyncImpl(Context dc)
-            : base(dc)
-        { }
-
-        public async Task<PagingResult<T>> QueryPagingAsync<T>()
-        {
-            DC.Method = UiMethodEnum.QueryPaging;
-            return await DSA.ExecuteReaderPagingAsync<None, T>(typeof(T).IsSingleColumn(), null);
-        }
-
-    }
 }
