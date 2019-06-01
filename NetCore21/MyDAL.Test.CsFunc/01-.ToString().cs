@@ -85,6 +85,48 @@ namespace MyDAL.Test.CsFunc
             var res_TinyInt_Null = await Conn.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.TinyInt_Null.ToString());
             Assert.Equal("65", res_TinyInt_Null);
 
+            var res_SmallInt = await Conn.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.SmallInt.ToString());
+            Assert.Equal("32767", res_SmallInt);
+
+            var res_SmallInt_Null = await Conn.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.SmallInt_Null.ToString());
+            Assert.Equal("-32768", res_SmallInt_Null);
+
+            var res_MediumInt = await Conn.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.MediumInt.ToString());
+            Assert.Equal("1000000", res_MediumInt);
+
+            var res_MediumInt_Null = await Conn.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.MediumInt_Null.ToString());
+            Assert.Equal("1000000", res_MediumInt_Null);
+
+            var res_Int = await Conn.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Int.ToString());
+            Assert.Equal("2147483647", res_Int);
+
+            var res_Int_Null = await Conn.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Int_Null.ToString());
+            Assert.Equal("-2147483648", res_Int_Null);
+
+            var res_BigInt = await Conn.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.BigInt.ToString());
+            Assert.Equal("9223372036854775807", res_BigInt);
+
+            var res_BigInt_Null = await Conn.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.BigInt_Null.ToString());
+            Assert.Equal("-9223372036854775808", res_BigInt_Null);
+
+            var res_Float = await Conn.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Float.ToString());
+            Assert.Equal("50", res_Float);
+
+            var res_Float_Null = await Conn.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Float_Null.ToString());     
+            Assert.Equal("50", res_Float_Null);
+
+            var res_Double = await Conn.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Double.ToString());
+            Assert.Equal("1.79769313486232E+308", res_Double);
+
+            var res_Double_Null = await Conn.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Double_Null.ToString());
+            Assert.Equal("-1.79769313486232E+308", res_Double_Null);
+
+            var res_Decimal = await Conn.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Decimal.ToString());
+            Assert.Equal("600", res_Decimal);
+
+            var res_Decimal_Null = await Conn.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Decimal_Null.ToString());
+            Assert.Equal("600", res_Decimal_Null);
+
             xx = string.Empty;
         }
 

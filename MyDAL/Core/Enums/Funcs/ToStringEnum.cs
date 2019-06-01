@@ -2,6 +2,7 @@
 {
     internal enum ToStringEnum
     {
-        concat
+        concat,
+        add
     }
 }

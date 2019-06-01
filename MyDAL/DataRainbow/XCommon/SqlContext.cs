@@ -423,6 +423,10 @@ namespace HPC.DAL.DataRainbow.XCommon
             {
                 X.Append("concat"); LeftRoundBracket(X); DbSql.Column(tbAlias, tbCol, X); Comma(X); StringConst(string.Empty, X); RightRoundBracket(X);
             }
+            else if (func == ToStringEnum.add)
+            {
+                StringConst(string.Empty, X); X.Append('+'); DbSql.Column(tbAlias, tbCol, X);
+            }
             else
             {
                 throw XConfig.EC.Exception(XConfig.EC._095, $"函数 -- {func.ToString()} -- 未能解析！");
@@ -430,26 +434,37 @@ namespace HPC.DAL.DataRainbow.XCommon
         }
         private void SelectSpecialCsToStringCol(DicParam dic)
         {
+            var ts = default(ToStringEnum);
+            if (dic.CsType == XConfig.CSTC.Double)
+            {
+                ts = ToStringEnum.add;
+            }
+            else
+            {
+                ts = ToStringEnum.concat;
+            }
+
+            //
             if (dic.Crud == CrudEnum.Join)
             {
                 if (dic.Option == OptionEnum.Column)
                 {
-                    ToStringCol(dic.TbAlias, dic.TbCol, ToStringEnum.concat);
+                    ToStringCol(dic.TbAlias, dic.TbCol, ts);
                 }
                 else if (dic.Option == OptionEnum.ColumnAs)
                 {
-                    ToStringCol(dic.TbAlias, dic.TbCol, ToStringEnum.concat); As(X); DbSql.ColumnAlias(dic.TbColAlias, X);
+                    ToStringCol(dic.TbAlias, dic.TbCol, ts); As(X); DbSql.ColumnAlias(dic.TbColAlias, X);
                 }
             }
             else if (dic.Crud == CrudEnum.Query)
             {
                 if (dic.Option == OptionEnum.Column)
                 {
-                    ToStringCol(string.Empty, dic.TbCol, ToStringEnum.concat);
+                    ToStringCol(string.Empty, dic.TbCol, ts);
                 }
                 else if (dic.Option == OptionEnum.ColumnAs)
                 {
-                    ToStringCol(string.Empty, dic.TbCol, ToStringEnum.concat); As(X); DbSql.ColumnAlias(dic.TbColAlias, X);
+                    ToStringCol(string.Empty, dic.TbCol, ts); As(X); DbSql.ColumnAlias(dic.TbColAlias, X);
                 }
             }
         }
