@@ -10,7 +10,7 @@ namespace HPC.DAL.DataRainbow.MySQL
 
         DbType IDbTypeConfig.IntProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_Int)
+            if (colType == ParamTypeEnum.Int_MySQL_SqlServer)
             {
                 return DbType.Int32;
             }
@@ -21,7 +21,7 @@ namespace HPC.DAL.DataRainbow.MySQL
         }
         DbType IDbTypeConfig.LongProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_BigInt)
+            if (colType == ParamTypeEnum.BigInt_MySQL_SqlServer)
             {
                 return DbType.Int64;
             }
@@ -32,7 +32,7 @@ namespace HPC.DAL.DataRainbow.MySQL
         }
         DbType IDbTypeConfig.DecimalProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_Decimal)
+            if (colType == ParamTypeEnum.Decimal_MySQL_SqlServer)
             {
                 return DbType.Decimal;
             }
@@ -43,9 +43,9 @@ namespace HPC.DAL.DataRainbow.MySQL
         }
         DbType IDbTypeConfig.BoolProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_Bit
-                || colType == ParamTypeEnum.MySQL_TinyInt
-                || colType == ParamTypeEnum.MySQL_Int)
+            if (colType == ParamTypeEnum.Bit_MySQL_SqlServer
+                || colType == ParamTypeEnum.TinyInt_MySQL_SqlServer
+                || colType == ParamTypeEnum.Int_MySQL_SqlServer)
             {
                 return DbType.UInt16;
             }
@@ -56,7 +56,7 @@ namespace HPC.DAL.DataRainbow.MySQL
         }
         DbType IDbTypeConfig.StringProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_LongText)
+            if (colType == ParamTypeEnum.LongText_MySQL)
             {
                 return DbType.String;
             }
@@ -67,7 +67,7 @@ namespace HPC.DAL.DataRainbow.MySQL
         }
         DbType IDbTypeConfig.ListStringProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_Set)
+            if (colType == ParamTypeEnum.Set_MySQL)
             {
                 return DbType.String;
             }
@@ -78,7 +78,7 @@ namespace HPC.DAL.DataRainbow.MySQL
         }
         DbType IDbTypeConfig.DateTimeProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_DateTime)
+            if (colType == ParamTypeEnum.DateTime_MySQL_SqlServer)
             {
                 return DbType.AnsiString;
             }
@@ -89,7 +89,7 @@ namespace HPC.DAL.DataRainbow.MySQL
         }
         DbType IDbTypeConfig.GuidProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_Char)
+            if (colType == ParamTypeEnum.Char_MySQL_SqlServer)
             {
                 return DbType.AnsiStringFixedLength;
             }
@@ -100,7 +100,7 @@ namespace HPC.DAL.DataRainbow.MySQL
         }
         DbType IDbTypeConfig.ByteProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_TinyInt)
+            if (colType == ParamTypeEnum.TinyInt_MySQL_SqlServer)
             {
                 return DbType.Byte;
             }
@@ -115,7 +115,7 @@ namespace HPC.DAL.DataRainbow.MySQL
         }
         DbType IDbTypeConfig.CharProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_VarChar)
+            if (colType == ParamTypeEnum.VarChar_MySQL_SqlServer)
             {
                 return DbType.AnsiString;
             }
@@ -126,7 +126,7 @@ namespace HPC.DAL.DataRainbow.MySQL
         }
         DbType IDbTypeConfig.DoubleProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_Double)
+            if (colType == ParamTypeEnum.Double_MySQL)
             {
                 return DbType.Double;
             }
@@ -137,7 +137,7 @@ namespace HPC.DAL.DataRainbow.MySQL
         }
         DbType IDbTypeConfig.FloatProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_Float)
+            if (colType == ParamTypeEnum.Float_MySQL_SqlServer)
             {
                 return DbType.Single;
             }
@@ -148,7 +148,7 @@ namespace HPC.DAL.DataRainbow.MySQL
         }
         DbType IDbTypeConfig.SbyteProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_TinyInt)
+            if (colType == ParamTypeEnum.TinyInt_MySQL_SqlServer)
             {
                 return DbType.Int16;
             }
@@ -159,7 +159,7 @@ namespace HPC.DAL.DataRainbow.MySQL
         }
         DbType IDbTypeConfig.ShortProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_SmallInt)
+            if (colType == ParamTypeEnum.SmallInt_MySQL_SqlServer)
             {
                 return DbType.Int16;
             }
@@ -170,7 +170,7 @@ namespace HPC.DAL.DataRainbow.MySQL
         }
         DbType IDbTypeConfig.UintProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_Int)
+            if (colType == ParamTypeEnum.Int_MySQL_SqlServer)
             {
                 return DbType.UInt32;
             }
@@ -181,7 +181,7 @@ namespace HPC.DAL.DataRainbow.MySQL
         }
         DbType IDbTypeConfig.UlongProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_BigInt)
+            if (colType == ParamTypeEnum.BigInt_MySQL_SqlServer)
             {
                 return DbType.UInt64;
             }
@@ -192,7 +192,7 @@ namespace HPC.DAL.DataRainbow.MySQL
         }
         DbType IDbTypeConfig.UshortProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_SmallInt)
+            if (colType == ParamTypeEnum.SmallInt_MySQL_SqlServer)
             {
                 return DbType.UInt16;
             }
@@ -203,7 +203,7 @@ namespace HPC.DAL.DataRainbow.MySQL
         }
         DbType IDbTypeConfig.TimeSpanProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.MySQL_Time)
+            if (colType == ParamTypeEnum.Time_MySQL_SqlServer)
             {
                 return DbType.Time;
             }

@@ -1,7 +1,8 @@
-﻿using HPC.DAL.Core.Enums;
+﻿using HPC.DAL;
+using MyDAL.Test.Enums;
 using System;
 
-namespace HPC.DAL.DataRainbow.MySQL
+namespace MyDAL.Test.Docs.MySQL
 {
     /*
      * CREATE TABLE `MySqlCloumnType` (
@@ -43,7 +44,7 @@ namespace HPC.DAL.DataRainbow.MySQL
      * PRIMARY KEY (`Guid`)
      * ) ENGINE=InnoDB DEFAULT CHARSET=utf8
      */
-    [XTable(Name="MySqlCloumnType")]
+    [XTable(Name = "MySqlCloumnType")]
     internal class DbDefaultType
     {
         public bool Bool { get; set; }  // bit(1) NOT NULL
@@ -134,8 +135,8 @@ namespace HPC.DAL.DataRainbow.MySQL
         public Guid Guid { get; set; }  // char(36) NOT NULL
         public Guid? GuidNull { get; set; }  // char(36) DEFAULT NULL
 
-        public ActionEnum Enum { get; set; }  // int(11) NOT NULL
-        public ActionEnum? EnumNull { get; set; }  // int(11) DEFAULT NULL
+        public AgentLevel Enum { get; set; }  // int(11) NOT NULL
+        public AgentLevel? EnumNull { get; set; }  // int(11) DEFAULT NULL
 
     }
 }

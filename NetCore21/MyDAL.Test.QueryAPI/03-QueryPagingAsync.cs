@@ -485,7 +485,7 @@ namespace MyDAL.Test.QueryAPI
 
             var paras = new List<XParam>
             {
-                new XParam{ParamName="AgentLevel",ParamValue=AgentLevel.DistiAgent,ParamType= ParamTypeEnum.MySQL_Int}
+                new XParam{ParamName="AgentLevel",ParamValue=AgentLevel.DistiAgent,ParamType= ParamTypeEnum.Int_MySQL_SqlServer}
             };
 
             var paging = new PagingResult<Guid>();
@@ -533,7 +533,7 @@ namespace MyDAL.Test.QueryAPI
 
             var paras = new List<XParam>
             {
-                new XParam{ParamName="AgentLevel",ParamValue=AgentLevel.DistiAgent,ParamType= ParamTypeEnum.MySQL_Int}
+                new XParam{ParamName="AgentLevel",ParamValue=AgentLevel.DistiAgent,ParamType= ParamTypeEnum.Int_MySQL_SqlServer}
             };
 
             var paging = new PagingResult<AgentVM>();

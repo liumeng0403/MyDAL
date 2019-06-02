@@ -9,9 +9,8 @@ namespace HPC.DAL.Core.Configs
             switch (db)
             {
                 case DbEnum.MySQL:
-                    return ParamTypeEnum.MySQL_BigInt;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_BigInt;
+                    return ParamTypeEnum.BigInt_MySQL_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -21,9 +20,8 @@ namespace HPC.DAL.Core.Configs
             switch (db)
             {
                 case DbEnum.MySQL:
-                    return ParamTypeEnum.MySQL_Binary;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_Binary;
+                    return ParamTypeEnum.Binary_MySQL_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -33,9 +31,8 @@ namespace HPC.DAL.Core.Configs
             switch (db)
             {
                 case DbEnum.MySQL:
-                    return ParamTypeEnum.MySQL_Bit;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_Bit;
+                    return ParamTypeEnum.Bit_MySQL_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -45,7 +42,7 @@ namespace HPC.DAL.Core.Configs
             switch (db)
             {
                 case DbEnum.MySQL:
-                    return ParamTypeEnum.MySQL_Blob;
+                    return ParamTypeEnum.Blob_MySQL;
                 case DbEnum.SQLServer:
                     return ParamTypeEnum.None;
                 default:
@@ -57,9 +54,8 @@ namespace HPC.DAL.Core.Configs
             switch (db)
             {
                 case DbEnum.MySQL:
-                    return ParamTypeEnum.MySQL_Char;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_Char;
+                    return ParamTypeEnum.Char_MySQL_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -69,9 +65,8 @@ namespace HPC.DAL.Core.Configs
             switch (db)
             {
                 case DbEnum.MySQL:
-                    return ParamTypeEnum.MySQL_Date;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_Date;
+                    return ParamTypeEnum.Date_MySQL_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -81,9 +76,8 @@ namespace HPC.DAL.Core.Configs
             switch (db)
             {
                 case DbEnum.MySQL:
-                    return ParamTypeEnum.MySQL_DateTime;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_DateTime;
+                    return ParamTypeEnum.DateTime_MySQL_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -93,9 +87,8 @@ namespace HPC.DAL.Core.Configs
             switch (db)
             {
                 case DbEnum.MySQL:
-                    return ParamTypeEnum.MySQL_Decimal;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_Decimal;
+                    return ParamTypeEnum.Decimal_MySQL_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -105,7 +98,7 @@ namespace HPC.DAL.Core.Configs
             switch (db)
             {
                 case DbEnum.MySQL:
-                    return ParamTypeEnum.MySQL_Double;
+                    return ParamTypeEnum.Double_MySQL;
                 case DbEnum.SQLServer:
                     return ParamTypeEnum.None;
                 default:
@@ -117,7 +110,7 @@ namespace HPC.DAL.Core.Configs
             switch (db)
             {
                 case DbEnum.MySQL:
-                    return ParamTypeEnum.MySQL_Enum;
+                    return ParamTypeEnum.Enum_MySQL;
                 case DbEnum.SQLServer:
                     return ParamTypeEnum.None;
                 default:
@@ -129,9 +122,8 @@ namespace HPC.DAL.Core.Configs
             switch (db)
             {
                 case DbEnum.MySQL:
-                    return ParamTypeEnum.MySQL_Float;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_Float;
+                    return ParamTypeEnum.Float_MySQL_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -141,9 +133,8 @@ namespace HPC.DAL.Core.Configs
             switch (db)
             {
                 case DbEnum.MySQL:
-                    return ParamTypeEnum.MySQL_Int;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_Int;
+                    return ParamTypeEnum.Int_MySQL_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -153,7 +144,7 @@ namespace HPC.DAL.Core.Configs
             switch (db)
             {
                 case DbEnum.MySQL:
-                    return ParamTypeEnum.MySQL_LongBlob;
+                    return ParamTypeEnum.LongBlob_MySQL;
                 case DbEnum.SQLServer:
                     return ParamTypeEnum.None;
                 default:
@@ -165,7 +156,7 @@ namespace HPC.DAL.Core.Configs
             switch (db)
             {
                 case DbEnum.MySQL:
-                    return ParamTypeEnum.MySQL_LongText;
+                    return ParamTypeEnum.LongText_MySQL;
                 case DbEnum.SQLServer:
                     return ParamTypeEnum.None;
                 default:
@@ -177,7 +168,7 @@ namespace HPC.DAL.Core.Configs
             switch (db)
             {
                 case DbEnum.MySQL:
-                    return ParamTypeEnum.MySQL_MediumBlob;
+                    return ParamTypeEnum.MediumBlob_MySQL;
                 case DbEnum.SQLServer:
                     return ParamTypeEnum.None;
                 default:
@@ -189,7 +180,7 @@ namespace HPC.DAL.Core.Configs
             switch (db)
             {
                 case DbEnum.MySQL:
-                    return ParamTypeEnum.MySQL_MediumInt;
+                    return ParamTypeEnum.MediumInt_MySQL;
                 case DbEnum.SQLServer:
                     return ParamTypeEnum.None;
                 default:
@@ -201,7 +192,7 @@ namespace HPC.DAL.Core.Configs
             switch (db)
             {
                 case DbEnum.MySQL:
-                    return ParamTypeEnum.MySQL_MediumText;
+                    return ParamTypeEnum.MediumText_MySQL;
                 case DbEnum.SQLServer:
                     return ParamTypeEnum.None;
                 default:
@@ -213,7 +204,7 @@ namespace HPC.DAL.Core.Configs
             switch (db)
             {
                 case DbEnum.MySQL:
-                    return ParamTypeEnum.MySQL_Set;
+                    return ParamTypeEnum.Set_MySQL;
                 case DbEnum.SQLServer:
                     return ParamTypeEnum.None;
                 default:
@@ -225,9 +216,8 @@ namespace HPC.DAL.Core.Configs
             switch (db)
             {
                 case DbEnum.MySQL:
-                    return ParamTypeEnum.MySQL_SmallInt;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_SmallInt;
+                    return ParamTypeEnum.SmallInt_MySQL_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -237,9 +227,8 @@ namespace HPC.DAL.Core.Configs
             switch (db)
             {
                 case DbEnum.MySQL:
-                    return ParamTypeEnum.MySQL_Text;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_Text;
+                    return ParamTypeEnum.Text_MySQL_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -249,9 +238,8 @@ namespace HPC.DAL.Core.Configs
             switch (db)
             {
                 case DbEnum.MySQL:
-                    return ParamTypeEnum.MySQL_Time;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_Time;
+                    return ParamTypeEnum.Time_MySQL_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -261,9 +249,8 @@ namespace HPC.DAL.Core.Configs
             switch (db)
             {
                 case DbEnum.MySQL:
-                    return ParamTypeEnum.MySQL_TimeStamp;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_TimeStamp;
+                    return ParamTypeEnum.TimeStamp_MySQL_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -273,7 +260,7 @@ namespace HPC.DAL.Core.Configs
             switch (db)
             {
                 case DbEnum.MySQL:
-                    return ParamTypeEnum.MySQL_TinyBlob;
+                    return ParamTypeEnum.TinyBlob_MySQL;
                 case DbEnum.SQLServer:
                     return ParamTypeEnum.None;
                 default:
@@ -285,9 +272,8 @@ namespace HPC.DAL.Core.Configs
             switch (db)
             {
                 case DbEnum.MySQL:
-                    return ParamTypeEnum.MySQL_TinyInt;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_TinyInt;
+                    return ParamTypeEnum.TinyInt_MySQL_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -297,7 +283,7 @@ namespace HPC.DAL.Core.Configs
             switch (db)
             {
                 case DbEnum.MySQL:
-                    return ParamTypeEnum.MySQL_TinyText;
+                    return ParamTypeEnum.TinyText_MySQL;
                 case DbEnum.SQLServer:
                     return ParamTypeEnum.None;
                 default:
@@ -309,9 +295,8 @@ namespace HPC.DAL.Core.Configs
             switch (db)
             {
                 case DbEnum.MySQL:
-                    return ParamTypeEnum.MySQL_VarBinary;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_VarBinary;
+                    return ParamTypeEnum.VarBinary_MySQL_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -321,9 +306,8 @@ namespace HPC.DAL.Core.Configs
             switch (db)
             {
                 case DbEnum.MySQL:
-                    return ParamTypeEnum.MySQL_VarChar;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_VarChar;
+                    return ParamTypeEnum.VarChar_MySQL_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -333,7 +317,7 @@ namespace HPC.DAL.Core.Configs
             switch (db)
             {
                 case DbEnum.MySQL:
-                    return ParamTypeEnum.MySQL_Year;
+                    return ParamTypeEnum.Year_MySQL;
                 case DbEnum.SQLServer:
                     return ParamTypeEnum.None;
                 default:
@@ -347,7 +331,7 @@ namespace HPC.DAL.Core.Configs
                 case DbEnum.MySQL:
                     return ParamTypeEnum.None;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_NChar;
+                    return ParamTypeEnum.NChar_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -359,7 +343,7 @@ namespace HPC.DAL.Core.Configs
                 case DbEnum.MySQL:
                     return ParamTypeEnum.None;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_NVarChar;
+                    return ParamTypeEnum.NVarChar_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -371,7 +355,7 @@ namespace HPC.DAL.Core.Configs
                 case DbEnum.MySQL:
                     return ParamTypeEnum.None;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_NText;
+                    return ParamTypeEnum.NText_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -383,7 +367,7 @@ namespace HPC.DAL.Core.Configs
                 case DbEnum.MySQL:
                     return ParamTypeEnum.None;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_Image;
+                    return ParamTypeEnum.Image_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -395,7 +379,7 @@ namespace HPC.DAL.Core.Configs
                 case DbEnum.MySQL:
                     return ParamTypeEnum.None;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_Numeric;
+                    return ParamTypeEnum.Numeric_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -407,7 +391,7 @@ namespace HPC.DAL.Core.Configs
                 case DbEnum.MySQL:
                     return ParamTypeEnum.None;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_SmallMoney;
+                    return ParamTypeEnum.SmallMoney_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -419,7 +403,7 @@ namespace HPC.DAL.Core.Configs
                 case DbEnum.MySQL:
                     return ParamTypeEnum.None;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_Money;
+                    return ParamTypeEnum.Money_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -431,7 +415,7 @@ namespace HPC.DAL.Core.Configs
                 case DbEnum.MySQL:
                     return ParamTypeEnum.None;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_Real;
+                    return ParamTypeEnum.Real_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -444,7 +428,7 @@ namespace HPC.DAL.Core.Configs
                     return ParamTypeEnum.None;
                 case DbEnum.SQLServer:
 
-                    return ParamTypeEnum.SqlServer_DateTime2;
+                    return ParamTypeEnum.DateTime2_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -456,7 +440,7 @@ namespace HPC.DAL.Core.Configs
                 case DbEnum.MySQL:
                     return ParamTypeEnum.None;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_SmallDateTime;
+                    return ParamTypeEnum.SmallDateTime_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -468,7 +452,7 @@ namespace HPC.DAL.Core.Configs
                 case DbEnum.MySQL:
                     return ParamTypeEnum.None;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_DateTimeOffset;
+                    return ParamTypeEnum.DateTimeOffset_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -480,7 +464,7 @@ namespace HPC.DAL.Core.Configs
                 case DbEnum.MySQL:
                     return ParamTypeEnum.None;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_Sql_Variant;
+                    return ParamTypeEnum.Sql_Variant_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -492,7 +476,7 @@ namespace HPC.DAL.Core.Configs
                 case DbEnum.MySQL:
                     return ParamTypeEnum.None;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_UniqueIdentifier;
+                    return ParamTypeEnum.UniqueIdentifier_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -504,7 +488,7 @@ namespace HPC.DAL.Core.Configs
                 case DbEnum.MySQL:
                     return ParamTypeEnum.None;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_Xml;
+                    return ParamTypeEnum.Xml_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -516,7 +500,7 @@ namespace HPC.DAL.Core.Configs
                 case DbEnum.MySQL:
                     return ParamTypeEnum.None;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_Cursor;
+                    return ParamTypeEnum.Cursor_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }
@@ -528,7 +512,7 @@ namespace HPC.DAL.Core.Configs
                 case DbEnum.MySQL:
                     return ParamTypeEnum.None;
                 case DbEnum.SQLServer:
-                    return ParamTypeEnum.SqlServer_Table;
+                    return ParamTypeEnum.Table_SqlServer;
                 default:
                     return ParamTypeEnum.None;
             }

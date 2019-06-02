@@ -144,10 +144,10 @@ namespace HPC.DAL.Core.Bases
 
         /************************************************************************************************************************/
 
-        internal void ParseSQL(params string[] paras)
+        internal void ParseSQL(string paras)
         {
             SQL.Clear();
-            SQL.AddRange(paras);
+            SQL.Add(paras);
         }
         internal void ParseParam(List<XParam> paras)
         {
@@ -161,15 +161,40 @@ namespace HPC.DAL.Core.Bases
             DPH.ResetParameter();
             foreach (var p in paras)
             {
+                //
                 p.ParamName = p.ParamName.Replace(XSQL.QuestionMark.ToString(), "").Replace(XSQL.At.ToString(), "");
-                if (p.ParamType == ParamTypeEnum.None)
+
+                //
+                if (p.ParamType == ParamTypeEnum.None
+                    && p.ParamValue != null)
                 {
-                    p.ParamType = ParamTypeEnum.MySQL_VarChar;
+                    var type = p.ParamValue.GetType();
+                    if (type.IsEnum)
+                    {
+                        type = Enum.GetUnderlyingType(type);
+                    }
+                    else if (type.IsNullable())
+                    {
+                        type = Nullable.GetUnderlyingType(type);
+                    }
+
+                    if (XConfig.DefaultParamTypes.TryGetValue(type, out var func))
+                    {
+                        p.ParamType = func(DB);
+                    }
+                    else
+                    {
+                        throw XConfig.EC.Exception(XConfig.EC._012, $"请为参数【{p.ParamName}】指定【XParam.ParamType】类型 ！");
+                    }
                 }
+
+                //
                 if (p.ParamDirection == ParamDirectionEnum.None)
                 {
                     p.ParamDirection = ParamDirectionEnum.Input;
                 }
+
+                //
                 DPH.AddParameter(new DicParam
                 {
                     Crud = CrudEnum.SQL,
