@@ -1,4 +1,4 @@
-﻿namespace MyDAL.DataRainbow.MySQL
+﻿namespace MyDAL.Test.Docs.MySQL
 {
     internal enum DbKeyType
     {

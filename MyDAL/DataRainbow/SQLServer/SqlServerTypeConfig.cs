@@ -23,7 +23,7 @@ namespace MyDAL.DataRainbow.SQLServer
         }
         DbType IDbTypeConfig.BoolProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.SqlServer_Bit)
+            if (colType == ParamTypeEnum.Bit_MySQL_SqlServer)
             {
                 return DbType.Int16;
             }
@@ -42,11 +42,11 @@ namespace MyDAL.DataRainbow.SQLServer
         }
         DbType IDbTypeConfig.DateTimeProc(Context dc, ParamTypeEnum colType)
         {
-            if (colType == ParamTypeEnum.SqlServer_DateTime2)
+            if (colType == ParamTypeEnum.DateTime2_SqlServer)
             {
                 return DbType.DateTime2;
             }
-            else if (colType == ParamTypeEnum.SqlServer_DateTime)
+            else if (colType == ParamTypeEnum.DateTime_MySQL_SqlServer)
             {
                 return DbType.DateTime;
             }

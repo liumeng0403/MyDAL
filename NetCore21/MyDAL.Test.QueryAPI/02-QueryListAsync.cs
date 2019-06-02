@@ -714,7 +714,7 @@ namespace MyDAL.Test.QueryAPI
 
             var paras = new List<XParam>
             {
-                new XParam{ParamName="AgentLevel",ParamValue=AgentLevel.DistiAgent,ParamType= ParamTypeEnum.MySQL_Int}
+                new XParam{ParamName="AgentLevel",ParamValue=AgentLevel.DistiAgent,ParamType= ParamTypeEnum.Int_MySQL_SqlServer}
             };
 
             var res1 = await Conn.QueryListAsync<DateTime>(sql, paras);
@@ -746,7 +746,7 @@ namespace MyDAL.Test.QueryAPI
 
             var param = new List<XParam>
             {
-                new XParam{ParamName="@CreatedOn",ParamValue=Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30),ParamType= ParamTypeEnum.MySQL_DateTime}
+                new XParam{ParamName="@CreatedOn",ParamValue=Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30),ParamType= ParamTypeEnum.DateTime_MySQL_SqlServer}
             };
 
             var res1 = await Conn.QueryListAsync<AgentVM>(sql, param);

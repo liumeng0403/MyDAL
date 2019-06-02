@@ -1,9 +1,8 @@
-﻿using MyDAL.Core.Enums;
+using MyDAL.Test.Enums;
 using System;
 
-namespace MyDAL.DataRainbow.SQLServer
+namespace MyDAL.Test.Docs.SQLServer
 {
-
     /*
      * CREATE TABLE [dbo].[TSqlCloumnType](
 	 * [Guid] [uniqueidentifier] NOT NULL,
@@ -139,9 +138,8 @@ namespace MyDAL.DataRainbow.SQLServer
         public Guid Guid { get; set; }  // [uniqueidentifier] NOT NULL
         public Guid? GuidNull { get; set; }  // [uniqueidentifier] NULL
 
-        public ActionEnum Enum { get; set; }  // [int] NOT NULL
-        public ActionEnum? EnumNull { get; set; }  // [int] NULL
+        public AgentLevel Enum { get; set; }  // [int] NOT NULL
+        public AgentLevel? EnumNull { get; set; }  // [int] NULL
 
     }
-
 }

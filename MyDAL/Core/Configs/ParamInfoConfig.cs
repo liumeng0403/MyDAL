@@ -313,7 +313,7 @@ namespace MyDAL.Core.Configs
             //
             if (type == DbType.String
                 && ui.CsValue is IList
-                && ui.ColumnType== ParamTypeEnum.MySQL_Set)
+                && ui.ColumnType== ParamTypeEnum.Set_MySQL)
             {
                 val = string.Join(XSQL.CommaChar.ToString(), ui.CsValue as List<string>);
             }

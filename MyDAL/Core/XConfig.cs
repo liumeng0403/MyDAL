@@ -1,10 +1,11 @@
-﻿using MyDAL.AdoNet;
+using MyDAL.AdoNet;
 using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Configs;
 using MyDAL.Core.Enums;
 using MyDAL.DataRainbow.MySQL;
 using MyDAL.DataRainbow.SQLServer;
+using MyDAL.DataRainbow.XCommon;
 using MyDAL.DataRainbow.XCommon.Interfaces;
 using System;
 using System.Collections.Concurrent;
@@ -38,8 +39,7 @@ namespace MyDAL.Core
         internal static ParamInfoConfig PIC { get; } = new ParamInfoConfig();
         internal static ExceptionConfig EC { get; } = new ExceptionConfig();
         internal static CsTypeConfig CSTC { get; } = new CsTypeConfig();
-
-        /************************************************************************************************************/
+        internal static SqlParamDefaultType SPDT { get; } = new SqlParamDefaultType();
 
         /************************************************************************************************************/
 
@@ -149,6 +149,29 @@ namespace MyDAL.Core
                     new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(CSTC.Ulong,PIC.UlongParam),
                     new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(CSTC.Ushort,PIC.UshortParam),
                     new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(CSTC.TimeSpan,PIC.TimeSpanParam)
+                });
+        internal static ConcurrentDictionary<Type, Func<DbEnum, ParamTypeEnum>> DefaultParamTypes { get; }
+            = new ConcurrentDictionary<Type, Func<DbEnum, ParamTypeEnum>>(
+                new List<KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>>
+                {
+                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.Bool,SPDT.BoolProc),
+                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.Byte,SPDT.ByteProc),
+                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.ByteArray,SPDT.ByteArrayProc),
+                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.Char,SPDT.CharProc),
+                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.Decimal,SPDT.DecimalProc),
+                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.Double,SPDT.DoubleProc),
+                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.Float,SPDT.FloatProc),
+                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.Int,SPDT.IntProc),
+                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.Long,SPDT.LongProc),
+                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.Sbyte,SPDT.SbyteProc),
+                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.Short,SPDT.ShortProc),
+                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.Uint,SPDT.UintProc),
+                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.Ulong,SPDT.UlongProc),
+                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.Ushort,SPDT.UshortProc),
+                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.String,SPDT.StringProc),
+                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.DateTime,SPDT.DateTimeProc),
+                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.TimeSpan,SPDT.TimeSpanProc),
+                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.Guid,SPDT.GuidProc)
                 });
         internal static ConcurrentDictionary<DbEnum, Func<Context, ISqlProvider>> DbProviders { get; }
             = new ConcurrentDictionary<DbEnum, Func<Context, ISqlProvider>>(
