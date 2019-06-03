@@ -14,6 +14,15 @@ namespace HPC.DAL.Core.Extensions
             return false;
         }
 
+        internal static bool IsEnumerable(this Type type)
+        {
+            if (type.DeclaringType == XConfig.CSTC.EnumerableOfLinq)
+            {
+                return true;
+            }
+            return false;
+        }
+
         internal static bool IsNullable(this Type type)
         {
             if (type.IsGenericType

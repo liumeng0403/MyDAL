@@ -455,7 +455,7 @@ namespace MyDAL.Test.Compare
         }
 
         [Fact]
-        public async Task In_MT()
+        public async Task In_Array_MT()
         {
 
             xx = string.Empty;
@@ -507,7 +507,6 @@ namespace MyDAL.Test.Compare
         [Fact]
         public async Task In_List()
         {
-
             xx = string.Empty;
 
             var enums = new List<AgentLevel?>
@@ -524,12 +523,7 @@ namespace MyDAL.Test.Compare
 
             Assert.True(res1.Count == 555);
 
-            
-
-            /*******************************************************************************************************************/
-
             xx = string.Empty;
-
         }
 
         [Fact]
@@ -600,5 +594,49 @@ namespace MyDAL.Test.Compare
 
         }
 
+        [Fact]
+        public async Task In_IEnumerable_ST()
+        {
+
+            xx = string.Empty;
+
+            var enums = new List<AgentLevel?>
+            {
+                AgentLevel.CityAgent,
+                AgentLevel.DistiAgent
+            }.Select(it=>it);
+
+            // in
+            var res1 = await Conn
+                .Queryer<Agent>()
+                .Where(it => enums.Contains(it.AgentLevel))
+                .QueryListAsync();
+
+            Assert.True(res1.Count == 555);
+
+            xx = string.Empty;
+
+        }
+
+        [Fact]
+        public async Task In_IEnumerable_MT()
+        {
+            xx = string.Empty;
+
+            var arr = new AgentLevel?[] { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Where(it => true);
+
+            // in
+            var res1 = await Conn
+                .Queryer(out Agent agent, out AgentInventoryRecord record)
+                .From(() => agent)
+                    .InnerJoin(() => record)
+                        .On(() => agent.Id == record.AgentId)
+                .Where(() => arr.Contains(agent.AgentLevel))
+                .QueryListAsync<Agent>();
+
+            Assert.True(res1.Count == 574);
+
+            xx = string.Empty;
+        }
     }
 }

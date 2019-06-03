@@ -389,7 +389,7 @@ namespace HPC.DAL.Core
         {
             var clp = DC.CFH.IsContainsLikeFunc(mcExpr);
             var cip = clp.Flag ? new ContainsInParam { Flag = false } : DC.CFH.IsContainsInFunc(mcExpr);
-            var tsp = cip.Flag ? new ToStringParam { Flag = false } : DC.CFH.IsToStringFunc(mcExpr);
+            var tsp = cip.Flag || clp.Flag ? new ToStringParam { Flag = false } : DC.CFH.IsToStringFunc(mcExpr);
 
             //
             if (clp.Flag)
