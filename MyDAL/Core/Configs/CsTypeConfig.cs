@@ -47,6 +47,7 @@ namespace MyDAL.Core.Configs
         internal Type GuidNull { get; } = typeof(Guid?);
         internal Type NullableT { get; } = typeof(Nullable<>);
         internal Type ListT { get; } = typeof(List<>);
+        internal Type EnumerableOfLinq = typeof(System.Linq.Enumerable);
         internal Type IEnumerableT { get; } = typeof(IEnumerable<>);
         internal Type Object { get; } = typeof(object);
 

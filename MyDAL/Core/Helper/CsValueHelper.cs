@@ -1,4 +1,4 @@
-﻿using MyDAL.Core.Bases;
+using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Extensions;
 using System;
@@ -21,24 +21,18 @@ namespace MyDAL.Core.Helper
 
         /*******************************************************************************************************/
 
-        private string InValue(object vals, bool isArray)
+        private string InValue(object vals)
         {
-            //var ds = vals as dynamic;
-            var ds = vals as IList;
-            if (ds.Count <= 0)
+            var sb = new StringBuilder();
+            foreach (var item in (vals as IEnumerable))
+            {
+                sb.Append(item); sb.Append(',');
+            }
+            if (sb.Length <= 0)
             {
                 throw XConfig.EC.Exception(XConfig.EC._077, " SQL 中 in() 的条件个数不能为 0 !!!");
             }
-            var sb = new StringBuilder();
-            for (var i = 0; i < ds.Count; i++)
-            {
-                sb.Append(ds[i]);
-                if (i != ds.Count - 1)
-                {
-                    sb.Append(',');
-                }
-            }
-            return sb.ToString();
+            return sb.Remove(sb.Length - 1, 1).ToString();
         }
         private string DateTimeProcess(object val, string format)
         {
@@ -61,21 +55,24 @@ namespace MyDAL.Core.Helper
 
         internal ValueInfo ValueProcess(Expression expr, Type valType, string format = "")
         {
+            //
             var val = Expression.Lambda(expr).Compile().DynamicInvoke();
             if (expr != null
                 && val == null)
             {
                 throw XConfig.EC.Exception(XConfig.EC._078, $"[[{expr.ToString()}]] 中,传入的 SQL 筛选条件为 Null !!!");
             }
+
+            //
             var type = val.GetType();
-            if (type.IsArray)
+            if (type.IsArray
+                || type.IsEnumerable()
+                || type.IsList())
             {
-                val = InValue(val, true);
+                val = InValue(val);
             }
-            else if (type.IsList())
-            {
-                val = InValue(val, false);
-            }
+
+            //
             return new ValueInfo
             {
                 Val = val,
@@ -103,27 +100,6 @@ namespace MyDAL.Core.Helper
                 Val = val,
                 ValStr = valStr
             };
-        }
-        internal (string val, Type valType) InValue(Type type, object vals)
-        {
-            var isArray = false;
-            var valType = default(Type);
-            var typeT = default(Type);
-            if (type.IsArray)
-            {
-                typeT = type.GetElementType();
-                isArray = true;
-            }
-            else
-            {
-                typeT = type.GetGenericArguments()[0];
-            }
-            if (typeT.IsNullable())
-            {
-                typeT = Nullable.GetUnderlyingType(typeT);
-            }
-            valType = typeT;
-            return (InValue(vals, isArray), valType);
         }
 
     }
