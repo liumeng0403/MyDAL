@@ -15,7 +15,7 @@
     <PackageTags>HPC.DAL</PackageTags>
     <PackageReleaseNotes>由一个开发项目中的 idea 产生,实现与演变 !
        -- https://www.cnblogs.com/Meng-NET/p/8963476.html</PackageReleaseNotes>
-    <ApplicationIcon>Others\MyDAL.ico</ApplicationIcon>
+    <ApplicationIcon></ApplicationIcon>
     <Win32Resource />
     <PackageId>HPC.DAL</PackageId>
     <PackageIconUrl></PackageIconUrl>
