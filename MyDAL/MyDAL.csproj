@@ -15,7 +15,7 @@
     <PackageTags>MyDAL,MySQL,SqlServer,HPC.DAL,Yunyong.DataExchange,EasyDAL.Exchange,Meng,Meng-NET,Meng.NET</PackageTags>
     <PackageReleaseNotes>由一个开发项目中的 idea 产生,实现与演变 !
        -- https://www.cnblogs.com/Meng-NET/p/8963476.html</PackageReleaseNotes>
-    <ApplicationIcon>Others\MyDAL.ico</ApplicationIcon>
+    <ApplicationIcon></ApplicationIcon>
     <Win32Resource />
     <PackageId>MyDAL</PackageId>
     <PackageIconUrl>http://images.cnblogs.com/cnblogs_com/Meng-NET/1310410/o_MyDAL.png</PackageIconUrl>

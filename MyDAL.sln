@@ -64,6 +64,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EntityFramework", "EntityFr
 		OtherOrmIssues\EntityFramework\02-常见问题-EF-join-滥用.jpg = OtherOrmIssues\EntityFramework\02-常见问题-EF-join-滥用.jpg
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Asserts", "Asserts", "{A6ABE0DE-65BC-47AF-9AB0-493F309B5681}"
+	ProjectSection(SolutionItems) = preProject
+		Asserts\MyDAL-V2.png = Asserts\MyDAL-V2.png
+		Asserts\MyDAL-V3.png = Asserts\MyDAL-V3.png
+		Asserts\MyDAL.ico = Asserts\MyDAL.ico
+		Asserts\MyDAL.pfx = Asserts\MyDAL.pfx
+		Asserts\MyDAL.png = Asserts\MyDAL.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
