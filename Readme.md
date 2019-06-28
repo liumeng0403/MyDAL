@@ -42,6 +42,6 @@
 
 <b>Histories:</b>
 ><a href="https://www.nuget.org/packages/EasyDAL.Exchange/" target="_blank">EasyDAL.Exchange (0.0.1-0.2.3)</a><br/>
-><a href="https://www.nuget.org/packages/Yunyong.DataExchange/" target="_blank">Yunyong.DataExchange (1.0.23-1.3.0)</a>
+><a href="https://www.nuget.org/packages/Yunyong.DataExchange/" target="_blank">Yunyong.DataExchange (1.0.23-1.3.0)</a><br/>
 ><a href="https://www.nuget.org/packages/HPC.DAL/" target="_blank">HPC.DAL (1.0.0-1.1.4)</a>
 
