@@ -8,8 +8,8 @@
 
 # Project Introduction 
 
-[![](https://img.shields.io/badge/Download-10,774-golden.svg)](https://www.nuget.org/profiles/Meng.NET)
-[![](https://img.shields.io/badge/Star-28-yellow.svg)](https://github.com/liumeng0403/MyDAL/stargazers)
+[![](https://img.shields.io/badge/Download-13,535-golden.svg)](https://www.nuget.org/profiles/Meng.NET)
+[![](https://img.shields.io/badge/Star-29-yellow.svg)](https://github.com/liumeng0403/MyDAL/stargazers)
 [![](https://img.shields.io/badge/Fork-4-orange.svg)](https://github.com/liumeng0403/MyDAL/network/members)
 [![](https://img.shields.io/badge/Apache-2.0-blue.svg)](https://github.com/liumeng0403/MyDAL/blob/master/License)
 [![](https://img.shields.io/badge/MySQL-5.7.21+-purple.svg)](https://www.cnblogs.com/Meng-NET/p/9831746.html)
@@ -43,4 +43,5 @@
 <b>Histories:</b>
 ><a href="https://www.nuget.org/packages/EasyDAL.Exchange/" target="_blank">EasyDAL.Exchange (0.0.1-0.2.3)</a><br/>
 ><a href="https://www.nuget.org/packages/Yunyong.DataExchange/" target="_blank">Yunyong.DataExchange (1.0.23-1.3.0)</a>
+><a href="https://www.nuget.org/packages/HPC.DAL/" target="_blank">HPC.DAL (1.0.0-1.1.4)</a>
 
