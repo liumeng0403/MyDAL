@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <Version>0.9.1</Version>
     <Authors>Meng.NET</Authors>
     <Company></Company>
@@ -29,9 +29,6 @@
     <OutputPath>bin\Release\</OutputPath>
     <DocumentationFile>bin\Release\MyDAL.xml</DocumentationFile>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.3.0" />
-  </ItemGroup>
   <ItemGroup>
     <Folder Include="DataRainbow\Oracle\" />
     <Folder Include="DataRainbow\PostgreSQL\" />
