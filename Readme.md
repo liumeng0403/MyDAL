@@ -8,7 +8,7 @@
 
 # Project Introduction 
 
-[![](https://img.shields.io/badge/Download-13,535-golden.svg)](https://www.nuget.org/profiles/Meng.NET)
+[![](https://img.shields.io/badge/Download-33,170-golden.svg)](https://www.nuget.org/profiles/Meng.NET)
 [![](https://img.shields.io/badge/Star-29-yellow.svg)](https://github.com/liumeng0403/MyDAL/stargazers)
 [![](https://img.shields.io/badge/Fork-4-orange.svg)](https://github.com/liumeng0403/MyDAL/network/members)
 [![](https://img.shields.io/badge/Apache-2.0-blue.svg)](https://github.com/liumeng0403/MyDAL/blob/master/License)
