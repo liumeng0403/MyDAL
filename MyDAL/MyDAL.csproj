@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <Version>0.9.1</Version>
+    <Version>0.9.11</Version>
     <Authors>Meng.NET</Authors>
     <Company></Company>
     <Product>MyDAL</Product>
@@ -14,7 +14,8 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>MyDAL,MySQL,SqlServer,HPC.DAL,Yunyong.DataExchange,EasyDAL.Exchange,Meng,Meng-NET,Meng.NET</PackageTags>
     <PackageReleaseNotes>由一个开发项目中的 idea 产生,实现与演变 !
-       -- https://www.cnblogs.com/Meng-NET/p/8963476.html</PackageReleaseNotes>
+       -- https://www.cnblogs.com/Meng-NET/p/8963476.html
+0.9.11 版本, 全面拥抱 .net 5 , 抛弃 .net core 3.1 以下的支持~</PackageReleaseNotes>
     <ApplicationIcon></ApplicationIcon>
     <Win32Resource />
     <PackageId>MyDAL</PackageId>
