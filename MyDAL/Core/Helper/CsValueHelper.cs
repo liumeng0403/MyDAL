@@ -1,6 +1,7 @@
 using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Extensions;
+using MyDAL.Tools;
 using System;
 using System.Collections;
 using System.Linq.Expressions;

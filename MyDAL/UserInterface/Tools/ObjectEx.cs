@@ -1,12 +1,11 @@
-using MyDAL.ModelTools;
-using MyDAL.Tools;
+﻿using MyDAL.Core;
 using System;
 
-namespace MyDAL.Core.Extensions
+namespace MyDAL.Tools
 {
-    internal static class ObjectMethodExtensions
+    public static class ObjectEx
     {
-        internal static bool ToBool(this object obj)
+        public static bool ToBool(this object obj)
         {
             var result = false;
             try
@@ -20,7 +19,7 @@ namespace MyDAL.Core.Extensions
             return result;
         }
 
-        internal static byte ToByte(this object obj)
+        public static byte ToByte(this object obj)
         {
             var result = default(byte);
             try
@@ -34,7 +33,7 @@ namespace MyDAL.Core.Extensions
             return result;
         }
 
-        internal static decimal ToDecimal(this object obj)
+        public static decimal ToDecimal(this object obj)
         {
             var result = default(decimal);
             try
@@ -48,7 +47,7 @@ namespace MyDAL.Core.Extensions
             return result;
         }
 
-        internal static double ToDouble(this object obj)
+        public static double ToDouble(this object obj)
         {
             var result = default(double);
             try
@@ -62,7 +61,7 @@ namespace MyDAL.Core.Extensions
             return result;
         }
 
-        internal static float ToFloat(this object obj)
+        public static float ToFloat(this object obj)
         {
             var result = default(float);
             try
@@ -76,7 +75,7 @@ namespace MyDAL.Core.Extensions
             return result;
         }
 
-        internal static int ToInt(this object obj)
+        public static int ToInt(this object obj)
         {
             var result = default(int);
             try
@@ -90,7 +89,7 @@ namespace MyDAL.Core.Extensions
             return result;
         }
 
-        internal static long ToLong(this object obj)
+        public static long ToLong(this object obj)
         {
             var result = default(long);
             try
@@ -104,7 +103,7 @@ namespace MyDAL.Core.Extensions
             return result;
         }
 
-        internal static short ToShort(this object obj)
+        public static short ToShort(this object obj)
         {
             var result = default(short);
             try
@@ -118,7 +117,7 @@ namespace MyDAL.Core.Extensions
             return result;
         }
 
-        internal static sbyte ToSbtye(this object obj)
+        public static sbyte ToSbtye(this object obj)
         {
             var result = default(sbyte);
             try
@@ -132,7 +131,7 @@ namespace MyDAL.Core.Extensions
             return result;
         }
 
-        internal static uint ToUint(this object obj)
+        public static uint ToUint(this object obj)
         {
             var result = default(uint);
             try
@@ -146,7 +145,7 @@ namespace MyDAL.Core.Extensions
             return result;
         }
 
-        internal static ulong ToUlong(this object obj)
+        public static ulong ToUlong(this object obj)
         {
             var result = default(ulong);
             try
@@ -160,7 +159,7 @@ namespace MyDAL.Core.Extensions
             return result;
         }
 
-        internal static ushort ToUshort(this object obj)
+        public static ushort ToUshort(this object obj)
         {
             var result = default(ushort);
             try
@@ -174,7 +173,7 @@ namespace MyDAL.Core.Extensions
             return result;
         }
 
-        internal static DateTime ToDateTime(this object obj)
+        public static DateTime ToDateTime(this object obj)
         {
             var result = default(DateTime);
             try
@@ -187,7 +186,7 @@ namespace MyDAL.Core.Extensions
             }
             return result;
         }
-        internal static string ToDateTimeStr(this object obj, string format = "")
+        public static string ToDateTimeStr(this object obj, string format = "")
         {
             try
             {
@@ -210,7 +209,7 @@ namespace MyDAL.Core.Extensions
             }
         }
 
-        internal static Guid ToGuid(this object obj)
+        public static Guid ToGuid(this object obj)
         {
             var result = Guid.Empty;
             try
