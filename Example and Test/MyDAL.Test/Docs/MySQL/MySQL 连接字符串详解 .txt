@@ -1,0 +1,49 @@
+﻿通常数据库连接字符串为：
+Database=dbname;Data Source=192.168.1.1;Port=3306;User Id=root;Password=****;Charset=utf8;TreatTinyAsBoolean=false;
+
+其中：
+数据库位置													-- Server/host/data source/datasource/address/addr/network address
+数据库名													-- Database/initial catalog
+端口，默认 3306												-- Port
+连接协议，默认 Sockets										-- ConnectionProtocol/protocol
+连接管道，默认 MYSQL										-- PipeName/pipe
+连接是否压缩，默认 false									-- UseCompression/compress
+是否允许一次执行多条SQL语句，默认 true						-- AllowBatch
+是否启用日志，默认 false									-- Logging
+内存共享的名称，默认 MYSQL									-- SharedMemoryName
+是否兼容旧版的语法，默认 false								-- UseOldSyntax/old syntax/oldsyntax
+连接超时等待时间，默认15s									-- ConnectionTimeout/connection timeout
+MySqlCommand 超时时间，默认 30s								-- DefaultCommandTimeout/command timeout
+数据库登录帐号												-- UserID/uid/username/user name/user
+登录密码													-- Password/pwd
+是否保持敏感信息，默认 false								-- PersistSecurityInfo
+加密连接,已淘汰,已用SSL替代，默认false						-- Encrypt
+证书文件(.pfx)格式											-- CertificateFile
+证书的密码													-- CertificatePassword
+证书的存储位置												-- CertificateStoreLocation
+证书指纹													-- CertificateThumbprint
+日期时间能否为零，默认 false								-- AllowZeroDateTime
+为零的日期时间是否转化为 DateTime.MinValue，默认 false		-- ConvertZeroDateTime
+是否启用助手，会影响数据库性能，默认 false					-- UseUsageAdvisor/usage advisor
+同一时间能缓存几条存储过程，0为禁止，默认 25				-- ProcedureCacheSize/procedure cache/procedurecache
+是否启用性能监视，默认 false								-- UsePerformanceMonitor/userperfmon/perfmon
+是否忽略 Prepare() 调用，默认 true							-- IgnorePrepare
+是否检查存储过程体、参数的有效性，默认 true					-- UseProcedureBodies/procedure bodies
+是否自动使用活动的连接，默认 true							-- AutoEnlist
+是否响应列上元数据的二进制标志，默认 true					-- RespectBinaryFlags
+是否将 TINYINT(1) 列视为布尔型，默认 true					-- TreatTinyAsBoolean
+是否允许 SQL 中出现用户变量，默认 false						-- AllowUserVariables
+会话是否允许交互，默认 false								-- InteractiveSession/interactive
+所有服务器函数是否按返回字符串处理，默认 false				-- FunctionsReturnString
+是否用受影响的行数替代查找到的行数来返回数据，默认 false	-- UseAffectedRows
+是否将 binary(16) 列作为 Guids，默认 false					-- OldGuids
+保持 TCP 连接的秒数，默认0，不保持。						-- Keepalive
+连接被销毁前在连接池中保持的最少时间（秒）。默认 0			-- ConnectionLifeTime
+是否使用线程池，默认 true									-- Pooling
+线程池中允许的最少线程数，默认 0							-- MinimumPoolSize/min pool size
+线程池中允许的最多线程数，默认 100							-- MaximumPoolSize/max pool size
+连接过期后是否自动复位，默认 false							-- ConnectionReset
+向服务器请求连接所使用的字符集，默认：无					-- CharacterSet/charset
+binary blobs 是否按 utf8 对待，默认 false					-- TreatBlobsAsUTF8
+列的匹配模式，一旦匹配将按 utf8 处理，默认：无				-- BlobAsUTF8IncludePattern
+是否启用 SSL 连接模式，默认：MySqlSslMode.None				-- SslMode

@@ -1,5 +1,6 @@
 ﻿using MyDAL.Core;
 using System;
+using System.Collections;
 
 namespace MyDAL.Tools
 {
@@ -10,6 +11,48 @@ namespace MyDAL.Tools
             var result = false;
             try
             {
+                //
+                if(null == obj)
+                {
+                    return false;
+                }
+                else if (obj is string)
+                {
+                    if (obj.IsNullStr())
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        var str = ((string)obj).Trim().ToLower();
+                        if ("1".Equals(str)
+                            || "true".Equals(str))
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                }
+                else if (obj is int || obj is long)
+                {
+                    if (0 == (long)obj)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+                else if (obj is IEnumerable)   //  如  Microsoft.Extensions.Primitives.StringValues
+                {
+                    return obj.ToString().ToBool();
+                }
+
+                //
                 result = Convert.ToBoolean(obj);
             }
             catch (Exception ex)
@@ -80,11 +123,32 @@ namespace MyDAL.Tools
             var result = default(int);
             try
             {
+                if(obj is IEnumerable)     //  如  Microsoft.Extensions.Primitives.StringValues
+                {
+                    return Convert.ToInt32(obj.ToString());
+                }
                 result = Convert.ToInt32(obj);
             }
             catch (Exception ex)
             {
                 throw XConfig.EC.Exception(XConfig.EC._064, $"int ToInt(this object obj) -- {obj?.ToString()}，InnerExeception：{ex.Message}");
+            }
+            return result;
+        }
+        public static int ToInt(this object obj,int customValue)
+        {
+            var result = default(int);
+            try
+            {
+                if (obj is IEnumerable)     //  如  Microsoft.Extensions.Primitives.StringValues
+                {
+                    return Convert.ToInt32(obj.ToString());
+                }
+                result = Convert.ToInt32(obj);
+            }
+            catch
+            {
+                return customValue;
             }
             return result;
         }
@@ -94,11 +158,32 @@ namespace MyDAL.Tools
             var result = default(long);
             try
             {
+                if(obj is IEnumerable)    //   如 Microsoft.Extensions.Primitives.StringValues
+                {
+                    return Convert.ToInt64(obj.ToString());
+                }
                 result = Convert.ToInt64(obj);
             }
             catch (Exception ex)
             {
                 throw XConfig.EC.Exception(XConfig.EC._065, $"long ToLong(this object obj) -- {obj?.ToString()}，InnerExeception：{ex.Message}");
+            }
+            return result;
+        }
+        public static long ToLong(this object obj, long customValue)
+        {
+            var result = default(long);
+            try
+            {
+                if (obj is IEnumerable)    //   如 Microsoft.Extensions.Primitives.StringValues
+                {
+                    return Convert.ToInt64(obj.ToString());
+                }
+                result = Convert.ToInt64(obj);
+            }
+            catch 
+            {
+                return customValue;
             }
             return result;
         }

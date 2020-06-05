@@ -11,6 +11,8 @@ namespace MyDAL.Tools
     public class XHttp
     {
 
+        // 下一步改进  自动url encode ,  cookie 携带支持
+
         private byte[] Buffer { get; set; }
         private Stream RequestStream { get; set; }
         private HttpWebRequest Request { get; set; }

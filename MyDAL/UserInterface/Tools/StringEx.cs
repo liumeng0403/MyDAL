@@ -14,5 +14,20 @@ namespace MyDAL.Tools
             return string.IsNullOrWhiteSpace(str);
         }
 
+        /// <summary>
+        /// Is null/empty/whitespace ?
+        /// </summary>
+        public static bool IsNullStr(this object str)
+        {
+            if (null == str)
+            {
+                return true;
+            }
+            else
+            {
+                return string.IsNullOrWhiteSpace((string)str);
+            }
+        }
+
     }
 }
