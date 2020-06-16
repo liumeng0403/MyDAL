@@ -1,7 +1,6 @@
 ﻿using MyDAL.Core.Bases;
 using MyDAL.Core.Enums;
 using MyDAL.DataRainbow.MySQL;
-using MyDAL.DataRainbow.SQLServer;
 using MyDAL.DataRainbow.XCommon.Interfaces;
 using System.Data;
 
@@ -11,7 +10,6 @@ namespace MyDAL.Core.Configs
         : IDbTypeConfig
     {
         private static IDbTypeConfig MySql { get; } = new MySqlTypeConfig();
-        private static IDbTypeConfig SqlServer { get; } = new SqlServerTypeConfig();
 
         DbType IDbTypeConfig.IntProc(Context dc, ParamTypeEnum colType)
         {
@@ -19,8 +17,6 @@ namespace MyDAL.Core.Configs
             {
                 case DbEnum.MySQL:
                     return MySql.IntProc(dc, colType);
-                case DbEnum.SQLServer:
-                    return SqlServer.IntProc(dc, colType);
                 default:
                     return DbType.Int32;
             }
@@ -31,8 +27,6 @@ namespace MyDAL.Core.Configs
             {
                 case DbEnum.MySQL:
                     return MySql.LongProc(dc, colType);
-                case DbEnum.SQLServer:
-                    return SqlServer.LongProc(dc, colType);
                 default:
                     return DbType.Int64;
             }
@@ -43,8 +37,6 @@ namespace MyDAL.Core.Configs
             {
                 case DbEnum.MySQL:
                     return MySql.DecimalProc(dc, colType);
-                case DbEnum.SQLServer:
-                    return SqlServer.DecimalProc(dc, colType);
                 default:
                     return DbType.Decimal;
             }
@@ -55,8 +47,6 @@ namespace MyDAL.Core.Configs
             {
                 case DbEnum.MySQL:
                     return MySql.BoolProc(dc, colType);
-                case DbEnum.SQLServer:
-                    return SqlServer.BoolProc(dc, colType);
                 default:
                     return DbType.Boolean;
             }
@@ -67,8 +57,6 @@ namespace MyDAL.Core.Configs
             {
                 case DbEnum.MySQL:
                     return MySql.StringProc(dc, colType);
-                case DbEnum.SQLServer:
-                    return SqlServer.StringProc(dc, colType);
                 default:
                     return DbType.AnsiString;
             }
@@ -79,8 +67,6 @@ namespace MyDAL.Core.Configs
             {
                 case DbEnum.MySQL:
                     return MySql.ListStringProc(dc, colType);
-                case DbEnum.SQLServer:
-                    throw XConfig.EC.Exception(XConfig.EC._091, "sql server 不支持 set 类型的列！");
                 default:
                     return DbType.String;
             }
@@ -91,8 +77,6 @@ namespace MyDAL.Core.Configs
             {
                 case DbEnum.MySQL:
                     return MySql.DateTimeProc(dc, colType);
-                case DbEnum.SQLServer:
-                    return SqlServer.DateTimeProc(dc, colType);
                 default:
                     return DbType.DateTime2;
             }
@@ -103,8 +87,6 @@ namespace MyDAL.Core.Configs
             {
                 case DbEnum.MySQL:
                     return MySql.GuidProc(dc, colType);
-                case DbEnum.SQLServer:
-                    return SqlServer.GuidProc(dc, colType);
                 default:
                     return DbType.Guid;
             }
@@ -115,8 +97,6 @@ namespace MyDAL.Core.Configs
             {
                 case DbEnum.MySQL:
                     return MySql.ByteProc(dc, colType);
-                case DbEnum.SQLServer:
-                    return SqlServer.ByteProc(dc, colType);
                 default:
                     return DbType.Byte;
             }
@@ -127,8 +107,6 @@ namespace MyDAL.Core.Configs
             {
                 case DbEnum.MySQL:
                     return MySql.ByteArrayProc(dc, colType);
-                case DbEnum.SQLServer:
-                    return SqlServer.ByteArrayProc(dc, colType);
                 default:
                     return DbType.Binary;
             }
@@ -139,8 +117,6 @@ namespace MyDAL.Core.Configs
             {
                 case DbEnum.MySQL:
                     return MySql.CharProc(dc, colType);
-                case DbEnum.SQLServer:
-                    return SqlServer.CharProc(dc, colType);
                 default:
                     return DbType.AnsiString;
             }
@@ -151,8 +127,6 @@ namespace MyDAL.Core.Configs
             {
                 case DbEnum.MySQL:
                     return MySql.DoubleProc(dc, colType);
-                case DbEnum.SQLServer:
-                    return SqlServer.DoubleProc(dc, colType);
                 default:
                     return DbType.Double;
             }
@@ -163,8 +137,6 @@ namespace MyDAL.Core.Configs
             {
                 case DbEnum.MySQL:
                     return MySql.FloatProc(dc, colType);
-                case DbEnum.SQLServer:
-                    return SqlServer.FloatProc(dc, colType);
                 default:
                     return DbType.Single;
             }
@@ -175,8 +147,6 @@ namespace MyDAL.Core.Configs
             {
                 case DbEnum.MySQL:
                     return MySql.SbyteProc(dc, colType);
-                case DbEnum.SQLServer:
-                    return SqlServer.SbyteProc(dc, colType);
                 default:
                     return DbType.SByte;
             }
@@ -187,8 +157,6 @@ namespace MyDAL.Core.Configs
             {
                 case DbEnum.MySQL:
                     return MySql.ShortProc(dc, colType);
-                case DbEnum.SQLServer:
-                    return SqlServer.ShortProc(dc, colType);
                 default:
                     return DbType.Int16;
             }
@@ -199,8 +167,6 @@ namespace MyDAL.Core.Configs
             {
                 case DbEnum.MySQL:
                     return MySql.UintProc(dc, colType);
-                case DbEnum.SQLServer:
-                    return SqlServer.UintProc(dc, colType);
                 default:
                     return DbType.UInt32;
             }
@@ -211,8 +177,6 @@ namespace MyDAL.Core.Configs
             {
                 case DbEnum.MySQL:
                     return MySql.UlongProc(dc, colType);
-                case DbEnum.SQLServer:
-                    return SqlServer.UlongProc(dc, colType);
                 default:
                     return DbType.UInt64;
             }
@@ -223,8 +187,6 @@ namespace MyDAL.Core.Configs
             {
                 case DbEnum.MySQL:
                     return MySql.UshortProc(dc, colType);
-                case DbEnum.SQLServer:
-                    return SqlServer.UshortProc(dc, colType);
                 default:
                     return DbType.UInt16;
             }
@@ -235,8 +197,6 @@ namespace MyDAL.Core.Configs
             {
                 case DbEnum.MySQL:
                     return MySql.TimeSpanProc(dc, colType);
-                case DbEnum.SQLServer:
-                    return SqlServer.TimeSpanProc(dc, colType);
                 default:
                     return DbType.Time;
             }
@@ -247,8 +207,6 @@ namespace MyDAL.Core.Configs
             {
                 case DbEnum.MySQL:
                     return MySql.DateTimeOffsetProc(dc, colType);
-                case DbEnum.SQLServer:
-                    return SqlServer.DateTimeOffsetProc(dc, colType);
                 default:
                     return DbType.DateTimeOffset;
             }
@@ -259,8 +217,6 @@ namespace MyDAL.Core.Configs
             {
                 case DbEnum.MySQL:
                     return MySql.ObjectProc(dc, colType);
-                case DbEnum.SQLServer:
-                    return SqlServer.ObjectProc(dc, colType);
                 default:
                     return DbType.Object;
             }

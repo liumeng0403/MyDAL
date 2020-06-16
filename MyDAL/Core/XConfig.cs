@@ -4,7 +4,6 @@ using MyDAL.Core.Common;
 using MyDAL.Core.Configs;
 using MyDAL.Core.Enums;
 using MyDAL.DataRainbow.MySQL;
-using MyDAL.DataRainbow.SQLServer;
 using MyDAL.DataRainbow.XCommon;
 using MyDAL.DataRainbow.XCommon.Interfaces;
 using System;
@@ -178,7 +177,6 @@ namespace MyDAL.Core
                new List<KeyValuePair<DbEnum, Func<Context, ISqlProvider>>>
                {
                    new KeyValuePair<DbEnum, Func<Context, ISqlProvider>>(DbEnum.MySQL,dc=>new MySqlProvider(dc)),
-                   new KeyValuePair<DbEnum, Func<Context, ISqlProvider>>(DbEnum.SQLServer,dc=>new SqlServerProvider(dc))
                });
 
     }

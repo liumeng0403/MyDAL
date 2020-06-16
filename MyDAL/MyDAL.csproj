@@ -35,13 +35,27 @@
     <DocumentationFile>bin\Release\MyDAL.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="DataRainbow\Oracle\" />
-    <Folder Include="DataRainbow\PostgreSQL\" />
-    <Folder Include="DataRainbow\DB2\" />
-    <Folder Include="DataRainbow\Access\" />
-    <Folder Include="DataRainbow\SQLite\" />
-    <Folder Include="DataRainbow\Teradata\" />
-    <Folder Include="DataRainbow\MariaDB\" />
+    <Compile Remove="DataRainbow\Access\**" />
+    <Compile Remove="DataRainbow\DB2\**" />
+    <Compile Remove="DataRainbow\MariaDB\**" />
+    <Compile Remove="DataRainbow\Oracle\**" />
+    <Compile Remove="DataRainbow\PostgreSQL\**" />
+    <Compile Remove="DataRainbow\SQLite\**" />
+    <Compile Remove="DataRainbow\Teradata\**" />
+    <EmbeddedResource Remove="DataRainbow\Access\**" />
+    <EmbeddedResource Remove="DataRainbow\DB2\**" />
+    <EmbeddedResource Remove="DataRainbow\MariaDB\**" />
+    <EmbeddedResource Remove="DataRainbow\Oracle\**" />
+    <EmbeddedResource Remove="DataRainbow\PostgreSQL\**" />
+    <EmbeddedResource Remove="DataRainbow\SQLite\**" />
+    <EmbeddedResource Remove="DataRainbow\Teradata\**" />
+    <None Remove="DataRainbow\Access\**" />
+    <None Remove="DataRainbow\DB2\**" />
+    <None Remove="DataRainbow\MariaDB\**" />
+    <None Remove="DataRainbow\Oracle\**" />
+    <None Remove="DataRainbow\PostgreSQL\**" />
+    <None Remove="DataRainbow\SQLite\**" />
+    <None Remove="DataRainbow\Teradata\**" />
   </ItemGroup>
 
 </Project>
