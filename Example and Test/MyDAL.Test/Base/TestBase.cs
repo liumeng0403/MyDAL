@@ -4,7 +4,6 @@ using MyDAL.Test.Enums;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +12,10 @@ namespace MyDAL.Test
 {
     public abstract class TestBase
     {
+        //private static XConnection XConn = XConnection
+        //    .Builder()
+        //    .
+
         protected string xx { get; set; }
 
         protected WhereTestModel WhereTest
@@ -61,31 +64,6 @@ namespace MyDAL.Test
                         new MySqlConnection
                             ("Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;allowPublicKeyRetrieval=true;")
                     );
-                return Conn;
-            }
-        }
-
-        /// <summary>
-        /// SqlServer
-        /// </summary>
-        protected XConnection Conn2
-        {
-            get
-            {
-                //
-                // Nuget : Package : System.Data.SqlClient
-                //
-                return new XConnection(new SqlConnection("Data Source=127.0.0.1;Initial Catalog=MyDAL_TestDB;User Id=sa;Password=1010;"));
-            }
-        }
-
-        /// <summary>
-        /// MySQL
-        /// </summary>
-        protected XConnection Conn3
-        {
-            get
-            {
                 return Conn;
             }
         }

@@ -9,6 +9,7 @@ namespace MyDAL
     public sealed class XConnection
         : IDisposable
     {
+        private XConnectionBuilder _Builder { get; }
         private bool AutoClose { get; set; }
         private void NeedClose()
         {
@@ -22,11 +23,17 @@ namespace MyDAL
                 AutoClose = true;
             }
         }
+        private XConnection() { }
+
+        // ************************************************************************************
 
         internal IDbConnection Conn { get; private set; }
         internal IDbTransaction Tran { get; private set; }
+        internal bool IsDebug { get; private set; } = false;
+        internal DebugEnum DebugType { get; private set; } = DebugEnum.Output;
 
-        private XConnection() { }
+        // ************************************************************************************
+
         public XConnection(IDbConnection conn)
         {
             /*
@@ -35,6 +42,14 @@ namespace MyDAL
             Conn = conn;
             AutoClose = false;
             NeedClose();
+        }
+        internal XConnection(XConnectionBuilder builder)
+        {
+            this._Builder = builder;
+        }
+        public static XConnectionBuilder Builder()
+        {
+            return new XConnectionBuilder();
         }
 
         /// <summary>
@@ -114,8 +129,6 @@ namespace MyDAL
             if (AutoClose) { Conn.Close(); }
         }
 
-        internal bool IsDebug { get; private set; } = false;
-        internal DebugEnum DebugType { get; private set; } = DebugEnum.Output;
         /// <summary>
         /// 请参阅: <see langword=".OpenDebug() 与 Visual Studio 输出窗口 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
