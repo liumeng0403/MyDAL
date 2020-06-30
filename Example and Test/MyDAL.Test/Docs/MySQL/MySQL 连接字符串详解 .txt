@@ -3,5 +3,6 @@ Database=dbname;Data Source=192.168.1.1;Port=3306;User Id=root;Password=****;Cha
 
 以以下说明为准:
 https://mysqlconnector.net/connection-options/
+https://dev.mysql.com/doc/connector-net/en/connector-net-6-10-connection-options.html
 https://dev.mysql.com/doc/connector-net/en/connector-net-8-0-connection-options.html
 https://www.devart.com/dotconnect/connection-strings.html

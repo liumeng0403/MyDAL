@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E75C41DE-4ADB-4C3B-A92F-302E6F731790}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MyDAL</RootNamespace>
+    <AssemblyName>MyDAL.Net4</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AdoNet\Bases\DataSource.cs" />
+    <Compile Include="AdoNet\CommandInfo.cs" />
+    <Compile Include="AdoNet\DataSourceAsync.cs" />
+    <Compile Include="AdoNet\DataSourceSync.cs" />
+    <Compile Include="AdoNet\DbParamInfo.cs" />
+    <Compile Include="AdoNet\IL.cs" />
+    <Compile Include="AdoNet\MapType.cs" />
+    <Compile Include="AdoNet\ParamInfo.cs" />
+    <Compile Include="AdoNet\Reflect.cs" />
+    <Compile Include="AdoNet\Row.cs" />
+    <Compile Include="AdoNet\RowMap.cs" />
+    <Compile Include="Core\Bases\Context.cs" />
+    <Compile Include="Core\Bases\DicBase.cs" />
+    <Compile Include="Core\Bases\Impler.cs" />
+    <Compile Include="Core\Bases\IRow.cs" />
+    <Compile Include="Core\Bases\Operator.cs" />
+    <Compile Include="Core\Common\BinExprInfo.cs" />
+    <Compile Include="Core\Common\ColumnInfo.cs" />
+    <Compile Include="Core\Common\DicParam.cs" />
+    <Compile Include="Core\Common\NonSerialiazableTypeSurrogateSelector.cs" />
+    <Compile Include="Core\Common\SetDic.cs" />
+    <Compile Include="Core\Common\SetParam.cs" />
+    <Compile Include="Core\Common\TableDic.cs" />
+    <Compile Include="Core\Common\TmPropColAttrInfo.cs" />
+    <Compile Include="Core\Common\Tools\SnowFlake.cs" />
+    <Compile Include="Core\Common\ValueInfo.cs" />
+    <Compile Include="Core\Configs\ColTypeConfig.cs" />
+    <Compile Include="Core\Configs\CsTypeConfig.cs" />
+    <Compile Include="Core\Configs\DbTypeConfig.cs" />
+    <Compile Include="Core\Configs\ExceptionConfig.cs" />
+    <Compile Include="Core\Configs\ParamInfoConfig.cs" />
+    <Compile Include="Core\Enums\ActionEnum.cs" />
+    <Compile Include="Core\Enums\CompareXEnum.cs" />
+    <Compile Include="Core\Enums\CrudEnum.cs" />
+    <Compile Include="Core\Enums\DbEnum.cs" />
+    <Compile Include="Core\Enums\FuncEnum.cs" />
+    <Compile Include="Core\Enums\Funcs\ToStringEnum.cs" />
+    <Compile Include="Core\Enums\OptionEnum.cs" />
+    <Compile Include="Core\Enums\StringLikeEnum.cs" />
+    <Compile Include="Core\Enums\UiMethodEnum.cs" />
+    <Compile Include="Core\Expressions\CsToStringExpression.cs" />
+    <Compile Include="Core\Extensions\DictionaryExtension.cs" />
+    <Compile Include="Core\Extensions\TypeExtensions.cs" />
+    <Compile Include="Core\Helper\AttributeHelper.cs" />
+    <Compile Include="Core\Helper\BatchDataHelper.cs" />
+    <Compile Include="Core\Helper\CsFuncHelper.cs" />
+    <Compile Include="Core\Helper\CsValueHelper.cs" />
+    <Compile Include="Core\Helper\DicParamHelper.cs" />
+    <Compile Include="Core\Helper\GenericHelper.cs" />
+    <Compile Include="Core\Helper\ParameterHelper.cs" />
+    <Compile Include="Core\Helper\ToStringHelper.cs" />
+    <Compile Include="Core\Models\Cache\TableModelCache.cs" />
+    <Compile Include="Core\Models\ExpPara\ColumnParam.cs" />
+    <Compile Include="Core\Models\ExpPara\ContainsInParam.cs" />
+    <Compile Include="Core\Models\ExpPara\ContainsLikeParam.cs" />
+    <Compile Include="Core\Models\ExpPara\ToStringParam.cs" />
+    <Compile Include="Core\Models\ExpPara\TrimParam.cs" />
+    <Compile Include="Core\XCache.cs" />
+    <Compile Include="Core\XConfig.cs" />
+    <Compile Include="Core\XContext.cs" />
+    <Compile Include="Core\XExpression.cs" />
+    <Compile Include="DataRainbow\MySQL\MySql.cs" />
+    <Compile Include="DataRainbow\MySQL\MySqlProvider.cs" />
+    <Compile Include="DataRainbow\MySQL\MySqlTypeConfig.cs" />
+    <Compile Include="DataRainbow\XCommon\Bases\XSQL.cs" />
+    <Compile Include="DataRainbow\XCommon\Interfaces\IDbTypeConfig.cs" />
+    <Compile Include="DataRainbow\XCommon\Interfaces\ISql.cs" />
+    <Compile Include="DataRainbow\XCommon\Interfaces\ISqlProvider.cs" />
+    <Compile Include="DataRainbow\XCommon\SqlContext.cs" />
+    <Compile Include="DataRainbow\XCommon\SqlParamDefaultType.cs" />
+    <Compile Include="Impls\Base\ImplerAsync.cs" />
+    <Compile Include="Impls\Base\ImplerSync.cs" />
+    <Compile Include="Impls\ImplAsyncs\CountAsyncImpl.cs" />
+    <Compile Include="Impls\ImplAsyncs\CreateAsyncImpl.cs" />
+    <Compile Include="Impls\ImplAsyncs\CreateBatchAsyncImpl.cs" />
+    <Compile Include="Impls\ImplAsyncs\DeleteAsyncImpl.cs" />
+    <Compile Include="Impls\ImplAsyncs\ExecuteNonQuerySQLAsyncImpl.cs" />
+    <Compile Include="Impls\ImplAsyncs\IsExistAsyncImpl.cs" />
+    <Compile Include="Impls\ImplAsyncs\QueryListAsyncImpl.cs" />
+    <Compile Include="Impls\ImplAsyncs\QueryOneAsyncImpl.cs" />
+    <Compile Include="Impls\ImplAsyncs\QueryPagingAsyncImpl.cs" />
+    <Compile Include="Impls\ImplAsyncs\SumAsyncImpl.cs" />
+    <Compile Include="Impls\ImplAsyncs\TopAsyncImpl.cs" />
+    <Compile Include="Impls\ImplAsyncs\UpdateAsyncImpl.cs" />
+    <Compile Include="Impls\ImplSyncs\CountSyncImpl.cs" />
+    <Compile Include="Impls\ImplSyncs\CreateBatchSyncImpl.cs" />
+    <Compile Include="Impls\ImplSyncs\CreateSyncImpl.cs" />
+    <Compile Include="Impls\ImplSyncs\DeleteSyncImpl.cs" />
+    <Compile Include="Impls\ImplSyncs\ExecuteNonQuerySQLSyncImpl.cs" />
+    <Compile Include="Impls\ImplSyncs\IsExistSyncImpl.cs" />
+    <Compile Include="Impls\ImplSyncs\QueryListSyncImpl.cs" />
+    <Compile Include="Impls\ImplSyncs\QueryOneSyncImpl.cs" />
+    <Compile Include="Impls\ImplSyncs\QueryPagingSyncImpl.cs" />
+    <Compile Include="Impls\ImplSyncs\SumSyncImpl.cs" />
+    <Compile Include="Impls\ImplSyncs\TopSyncImpl.cs" />
+    <Compile Include="Impls\ImplSyncs\UpdateSyncImpl.cs" />
+    <Compile Include="Interfaces\IAsyncs\ICountAsync.cs" />
+    <Compile Include="Interfaces\IAsyncs\ICreateAsync.cs" />
+    <Compile Include="Interfaces\IAsyncs\ICreateBatchAsync.cs" />
+    <Compile Include="Interfaces\IAsyncs\IDeleteAsync.cs" />
+    <Compile Include="Interfaces\IAsyncs\IExecuteNonQuerySQLAsync.cs" />
+    <Compile Include="Interfaces\IAsyncs\IIsExistAsync.cs" />
+    <Compile Include="Interfaces\IAsyncs\IQueryListAsync.cs" />
+    <Compile Include="Interfaces\IAsyncs\IQueryOneAsync.cs" />
+    <Compile Include="Interfaces\IAsyncs\IQueryPagingAsync.cs" />
+    <Compile Include="Interfaces\IAsyncs\ISumAsync.cs" />
+    <Compile Include="Interfaces\IAsyncs\ITopAsync.cs" />
+    <Compile Include="Interfaces\IAsyncs\IUpdateAsync.cs" />
+    <Compile Include="Interfaces\ISyncs\ICountSync.cs" />
+    <Compile Include="Interfaces\ISyncs\ICreateBatchSync.cs" />
+    <Compile Include="Interfaces\ISyncs\ICreateSync.cs" />
+    <Compile Include="Interfaces\ISyncs\IDeleteSync.cs" />
+    <Compile Include="Interfaces\ISyncs\IExecuteNonQuerySQLSync.cs" />
+    <Compile Include="Interfaces\ISyncs\IIsExistSync.cs" />
+    <Compile Include="Interfaces\ISyncs\IQueryListSync.cs" />
+    <Compile Include="Interfaces\ISyncs\IQueryOneSync.cs" />
+    <Compile Include="Interfaces\ISyncs\IQueryPagingSync.cs" />
+    <Compile Include="Interfaces\ISyncs\ISumSync.cs" />
+    <Compile Include="Interfaces\ISyncs\ITopSync.cs" />
+    <Compile Include="Interfaces\ISyncs\IUpdateSync.cs" />
+    <Compile Include="Interfaces\Segments\IOrderBy.cs" />
+    <Compile Include="Interfaces\Segments\ISet.cs" />
+    <Compile Include="Interfaces\Segments\IWhere.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserFacade\Create\Creater.cs" />
+    <Compile Include="UserFacade\Delete\Deleter.cs" />
+    <Compile Include="UserFacade\Delete\WhereD.cs" />
+    <Compile Include="UserFacade\Join\DistinctX.cs" />
+    <Compile Include="UserFacade\Join\FromX.cs" />
+    <Compile Include="UserFacade\Join\Joiner.cs" />
+    <Compile Include="UserFacade\Join\JoinX.cs" />
+    <Compile Include="UserFacade\Join\OnX.cs" />
+    <Compile Include="UserFacade\Join\OrderByX.cs" />
+    <Compile Include="UserFacade\Join\WhereX.cs" />
+    <Compile Include="UserFacade\Query\DistinctQ.cs" />
+    <Compile Include="UserFacade\Query\OrderByQ.cs" />
+    <Compile Include="UserFacade\Query\Selecter.cs" />
+    <Compile Include="UserFacade\Query\WhereQ.cs" />
+    <Compile Include="UserFacade\Update\SetU.cs" />
+    <Compile Include="UserFacade\Update\Updater.cs" />
+    <Compile Include="UserFacade\Update\WhereU.cs" />
+    <Compile Include="UserInterface\AttributeX\XColumnAttribute.cs" />
+    <Compile Include="UserInterface\AttributeX\XTableAttribute.cs" />
+    <Compile Include="UserInterface\Common\None.cs" />
+    <Compile Include="UserInterface\Common\PagingResult.cs" />
+    <Compile Include="UserInterface\Common\XConnectionBuilder.cs" />
+    <Compile Include="UserInterface\Common\XParam.cs" />
+    <Compile Include="UserInterface\Enums\Builder\GuidFormatTypeEnum.cs" />
+    <Compile Include="UserInterface\Enums\Builder\LoadBalanceTypeEnum.cs" />
+    <Compile Include="UserInterface\Enums\Builder\ProtocolTypeEnum.cs" />
+    <Compile Include="UserInterface\Enums\Builder\SslModeTypeEnum.cs" />
+    <Compile Include="UserInterface\Enums\Builder\TlsVersionTypeEnum.cs" />
+    <Compile Include="UserInterface\Enums\ChangeEnum.cs" />
+    <Compile Include="UserInterface\Enums\DebugEnum.cs" />
+    <Compile Include="UserInterface\Enums\OrderByEnum.cs" />
+    <Compile Include="UserInterface\Enums\ParamDirectionEnum.cs" />
+    <Compile Include="UserInterface\Enums\ParamTypeEnum.cs" />
+    <Compile Include="UserInterface\Extension\Count.cs" />
+    <Compile Include="UserInterface\Extension\Create.cs" />
+    <Compile Include="UserInterface\Extension\CreateBatch.cs" />
+    <Compile Include="UserInterface\Extension\Delete.cs" />
+    <Compile Include="UserInterface\Extension\IsExist.cs" />
+    <Compile Include="UserInterface\Extension\QueryList.cs" />
+    <Compile Include="UserInterface\Extension\QueryOne.cs" />
+    <Compile Include="UserInterface\Extension\Sum.cs" />
+    <Compile Include="UserInterface\Extension\Update.cs" />
+    <Compile Include="UserInterface\ModelTools\ObjectEx.cs" />
+    <Compile Include="UserInterface\Sql\DistinctEx.cs" />
+    <Compile Include="UserInterface\Sql\FromEx.cs" />
+    <Compile Include="UserInterface\Sql\JoinEx.cs" />
+    <Compile Include="UserInterface\Sql\OnEx.cs" />
+    <Compile Include="UserInterface\Sql\OrderByEx.cs" />
+    <Compile Include="UserInterface\Sql\SetEx.cs" />
+    <Compile Include="UserInterface\Sql\WhereEx.cs" />
+    <Compile Include="UserInterface\Tools\IDGenerator.cs" />
+    <Compile Include="UserInterface\Tools\ObjectEx.cs" />
+    <Compile Include="UserInterface\Tools\StringEx.cs" />
+    <Compile Include="UserInterface\Tools\XHttp.cs" />
+    <Compile Include="UserInterface\XConnection.cs" />
+    <Compile Include="UserInterface\XExtension.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

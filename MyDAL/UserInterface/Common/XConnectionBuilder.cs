@@ -10,6 +10,7 @@ namespace MyDAL
 {
     public sealed class XConnectionBuilder
     {
+        //  需要完善 都进入 这个 dic 里面
         private Dictionary<string, string> DbPairs { get; }
         private List<string> KvPairs { get; }
         /// <summary>
@@ -701,6 +702,22 @@ namespace MyDAL
 
         // ---------------------------------------------------------------------------------------------
 
+        /// <summary>
+        /// 连接字符串: key1=value1;key2=value2;key3=...
+        /// </summary>
+        public XConnectionBuilder SetConnectionStrings(string connStr)
+        {
+            if (connStr.IsNullStr())
+            {
+                throw XConfig.EC.Exception(XConfig.EC._098, "连接字符串 connStr 不能为空!");
+            }
+            if (!(connStr.Contains("=") && connStr.Contains(";")))
+            {
+                throw XConfig.EC.Exception(XConfig.EC._099, "连接字符串 connStr 必须是 key=value; 的格式!");
+            }
+            KvPairs.Add(connStr);
+            return this;
+        }
         /// <summary>
         /// connection string 片段: key1=value1;key2=value2;key3=...
         /// </summary>
