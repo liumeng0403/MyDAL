@@ -263,6 +263,10 @@ namespace MyDAL.Tools
             var result = default(DateTime);
             try
             {
+                if (obj is IEnumerable)    //   如 Microsoft.Extensions.Primitives.StringValues
+                {
+                    return ((string)obj).ToDateTime();
+                }
                 result = Convert.ToDateTime(obj);
             }
             catch (Exception ex)

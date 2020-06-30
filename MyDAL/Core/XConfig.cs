@@ -46,6 +46,7 @@ namespace MyDAL.Core
             = new ConcurrentDictionary<string, DbEnum>(
                new List<KeyValuePair<string, DbEnum>>
                {
+                   // MySqlConnection 
                    new KeyValuePair<string, DbEnum>("MySql.Data.MySqlClient.MySqlConnection",DbEnum.MySQL),
                    new KeyValuePair<string, DbEnum>("Devart.Data.MySql.MySqlConnection",DbEnum.MySQL),
                    new KeyValuePair<string, DbEnum>("System.Data.SqlClient.SqlConnection",DbEnum.SQLServer)

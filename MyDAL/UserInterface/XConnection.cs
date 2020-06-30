@@ -1,7 +1,9 @@
 ﻿using MyDAL.AdoNet;
 using MyDAL.Core;
+using MyDAL.Tools;
 using System;
 using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MyDAL
@@ -34,7 +36,7 @@ namespace MyDAL
 
         // ************************************************************************************
 
-        public XConnection(IDbConnection conn)
+        private XConnection(IDbConnection conn)
         {
             /*
              * 仅限 组件外 调用。
@@ -50,6 +52,25 @@ namespace MyDAL
         public static XConnectionBuilder Builder()
         {
             return new XConnectionBuilder();
+        }
+        /// <summary>
+        /// 上下文线程安全的 MySQL DB 操作实例
+        /// </summary>
+        public XConnection GetDB()
+        {
+            try
+            {
+                IDbConnection obj = (IDbConnection)Activator.CreateInstance(_Builder.DriverType, _Builder.ConnStr);
+                return new XConnection(obj);
+            }
+            catch (Exception ex)
+            {
+                string errMsg = ex.Message.IsNullStr() ? string.Empty : ex.Message;
+                string innerErrMsg = ex.InnerException == null ? 
+                    string.Empty : 
+                    ex.InnerException.Message.IsNullStr() ? string.Empty : ex.InnerException.Message;
+                throw XConfig.EC.Exception(XConfig.EC._100, "MySQL 驱动异常: [1]" + errMsg + ". [2]" + innerErrMsg);
+            }
         }
 
         /// <summary>

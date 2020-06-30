@@ -9,6 +9,8 @@ namespace MyDAL
     public static partial class XExtension
     {
 
+        // create 要支持自增 id 
+
         #region Create API
 
         /// <summary>

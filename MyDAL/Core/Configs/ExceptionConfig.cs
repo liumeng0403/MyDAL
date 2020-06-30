@@ -11,6 +11,50 @@ namespace MyDAL.Core.Configs
 
         /************************************************************************************************************/
 
+        internal string _141 { get; } = "141";
+        internal string _142 { get; } = "142";
+        internal string _143 { get; } = "143";
+        internal string _144 { get; } = "144";
+        internal string _145 { get; } = "145";
+        internal string _146 { get; } = "146";
+        internal string _147 { get; } = "147";
+        internal string _148 { get; } = "148";
+        internal string _149 { get; } = "149";
+        internal string _150 { get; } = "150";
+
+        internal string _131 { get; } = "131";
+        internal string _132 { get; } = "132";
+        internal string _133 { get; } = "133";
+        internal string _134 { get; } = "134";
+        internal string _135 { get; } = "135";
+        internal string _136 { get; } = "136";
+        internal string _137 { get; } = "137";
+        internal string _138 { get; } = "138";
+        internal string _139 { get; } = "139";
+        internal string _140 { get; } = "140";
+
+        internal string _121 { get; } = "121";
+        internal string _122 { get; } = "122";
+        internal string _123 { get; } = "123";
+        internal string _124 { get; } = "124";
+        internal string _125 { get; } = "125";
+        internal string _126 { get; } = "126";
+        internal string _127 { get; } = "127";
+        internal string _128 { get; } = "128";
+        internal string _129 { get; } = "129";
+        internal string _130 { get; } = "130";
+
+        internal string _111 { get; } = "111";
+        internal string _112 { get; } = "112";
+        internal string _113 { get; } = "113";
+        internal string _114 { get; } = "114";
+        internal string _115 { get; } = "115";
+        internal string _116 { get; } = "116";
+        internal string _117 { get; } = "117";
+        internal string _118 { get; } = "118";
+        internal string _119 { get; } = "119";
+        internal string _120 { get; } = "120";
+
         internal string _101 { get; } = "101";
         internal string _102 { get; } = "102";
         internal string _103 { get; } = "103";

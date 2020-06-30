@@ -12,9 +12,24 @@ namespace MyDAL.Test
 {
     public abstract class TestBase
     {
-        //private static XConnection XConn = XConnection
-        //    .Builder()
-        //    .
+        //
+        // Nuget : Package : MySql.Data
+        //
+        // 不同版本 mysql 连接字符串一般如下：
+        // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;"
+        // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;"
+        // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;allowPublicKeyRetrieval=true;"
+        //
+        private static XConnection XConn = XConnection
+            .Builder()
+            .SetServer("localhost")
+            .SetDatabase("MyDAL_TestDB")
+            .SetUser("SkyUser")
+            .SetPassword("Sky@4321")
+            .SetSslMode(SslModeTypeEnum.None)
+            .SetAllowPublicKeyRetrieval(true)
+            .SetMySqlDriver<MySqlConnection>()
+            .Build();
 
         protected string xx { get; set; }
 
@@ -50,21 +65,7 @@ namespace MyDAL.Test
         {
             get
             {
-                //
-                // Nuget : Package : MySql.Data
-                //
-                // 不同版本 mysql 连接字符串一般如下：
-                // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;"
-                // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;"
-                // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;allowPublicKeyRetrieval=true;"
-                //
-                var Conn =
-                    new XConnection
-                    (
-                        new MySqlConnection
-                            ("Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;allowPublicKeyRetrieval=true;")
-                    );
-                return Conn;
+                return XConn.GetDB();
             }
         }
 

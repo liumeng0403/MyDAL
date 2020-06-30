@@ -104,6 +104,7 @@ namespace MyDAL.Tools
                 }
                 if (TimeoutFlag)
                 {
+                    // 应该改为调试模式下永远不超时
                     throw new Exception(string.Format("请求超时!超时时间:{0}S", TimeoutTime / 1000));
                 }
                 timeNum += WaitSleep;
