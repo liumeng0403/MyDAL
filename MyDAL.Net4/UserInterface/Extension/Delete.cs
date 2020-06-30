@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace MyDAL
 {
@@ -13,22 +12,7 @@ namespace MyDAL
 
         #region Delete API
 
-        /// <summary>
-        /// Deleter 便捷 DeleteAsync 方法
-        /// </summary>
-        public static async Task<int> DeleteAsync<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class, new()
-        {
-            return await conn.Deleter<M>().Where(compareFunc).DeleteAsync();
-        }
-
         /*-------------------------------------------------------------*/
-
-        public static async Task<int> DeleteAsync(this XConnection conn, string sql, List<XParam> dbParas = null)
-        {
-            CheckDelete(sql);
-            return await conn.ExecuteNonQueryAsync(sql, dbParas);
-        }
 
         /*-------------------------------------------------------------*/
 

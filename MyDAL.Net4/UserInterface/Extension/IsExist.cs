@@ -12,15 +12,6 @@ namespace MyDAL
 
         #region IsExist API
 
-        /// <summary>
-        /// 请参阅: <see langword=".IsExistAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        public static async Task<bool> IsExistAsync<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc)
-            where M : class, new()
-        {
-            return await conn.Queryer<M>().Where(compareFunc).IsExistAsync();
-        }
-
         /*-------------------------------------------------------------*/
 
         /// <summary>

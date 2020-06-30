@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace MyDAL
 {
@@ -10,15 +9,6 @@ namespace MyDAL
     {
 
         #region CreateBatch API
-
-        /// <summary>
-        /// Creater 便捷 CreateBatchAsync 方法
-        /// </summary>
-        public static async Task<int> CreateBatchAsync<M>(this XConnection conn, IEnumerable<M> mList)
-            where M : class, new()
-        {
-            return await conn.Creater<M>().CreateBatchAsync(mList);
-        }
 
         /*-------------------------------------------------------------*/
 
