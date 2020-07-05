@@ -1,0 +1,25 @@
+﻿
+
+C#连接mysql数据库插入数据后获取自增长主键ID值
+https://www.cnblogs.com/joeblackzqq/p/5885720.html
+
+MYSQL获取自增主键【4种方法】（转）
+https://www.cnblogs.com/tv151579/p/3896020.html
+
+
+MySql.Data:
+public long LastInsertedId { get; }
+    MySql.Data.MySqlClient.MySqlCommand 的成员
+
+MySqlConnector:
+public long LastInsertedId { get; }
+    MySql.Data.MySqlClient.MySqlCommand 的成员
+
+Devart.Data.MySql:
+public long InsertId { get; }
+    Devart.Data.MySql.MySqlCommand 的成员
+
+
+
+
+
