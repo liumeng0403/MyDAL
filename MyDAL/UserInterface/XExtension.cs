@@ -1,6 +1,5 @@
 ﻿using MyDAL.Core;
 using MyDAL.Core.Enums;
-using MyDAL.Impls.ImplAsyncs;
 using MyDAL.Impls.ImplSyncs;
 using MyDAL.Tools;
 using MyDAL.UserFacade.Create;
@@ -8,9 +7,7 @@ using MyDAL.UserFacade.Delete;
 using MyDAL.UserFacade.Join;
 using MyDAL.UserFacade.Query;
 using MyDAL.UserFacade.Update;
-using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace MyDAL
 {
@@ -108,11 +105,6 @@ namespace MyDAL
             dc.ParseSQL(sql);
             dc.ParseParam(dbParas);
             return dc;
-        }
-        private static async Task<int> ExecuteNonQueryAsync(this XConnection conn, string sql, List<XParam> dbParas = null)
-        {
-            var dc = DcForSQL(conn, sql, dbParas);
-            return await new ExecuteNonQuerySQLAsyncImpl(dc).ExecuteNonQueryAsync();
         }
         private static int ExecuteNonQuery(this XConnection conn, string sql, List<XParam> dbParas = null)
         {

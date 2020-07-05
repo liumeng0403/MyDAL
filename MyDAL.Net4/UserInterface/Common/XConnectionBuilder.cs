@@ -10,6 +10,7 @@ namespace MyDAL
 {
     public sealed class XConnectionBuilder
     {
+        //  需要完善 都进入 这个 dic 里面
         private Dictionary<string, string> DbPairs { get; }
         private List<string> KvPairs { get; }
         /// <summary>

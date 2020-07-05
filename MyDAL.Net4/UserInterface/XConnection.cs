@@ -6,7 +6,7 @@ using System.Data;
 
 namespace MyDAL
 {
-    public sealed class XConnection
+    public sealed partial class XConnection
         : IDisposable
     {
         private XConnectionBuilder _Builder { get; }
@@ -85,6 +85,7 @@ namespace MyDAL
                 AutoClose = false;
             }
         }
+
         public void Close()
         {
             /*

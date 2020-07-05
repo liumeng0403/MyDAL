@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace MyDAL
 {
@@ -10,6 +11,15 @@ namespace MyDAL
     {
 
         #region Count API
+
+        /// <summary>
+        /// Queryer 便捷 CountAsync 方法
+        /// </summary>
+        public static async Task<int> CountAsync<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc)
+            where M : class, new()
+        {
+            return await conn.Queryer<M>().Where(compareFunc).CountAsync();
+        }
 
         /*-------------------------------------------------------------*/
 

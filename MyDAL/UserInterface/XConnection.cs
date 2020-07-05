@@ -3,12 +3,10 @@ using MyDAL.Core;
 using MyDAL.Tools;
 using System;
 using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MyDAL
 {
-    public sealed class XConnection
+    public sealed partial class XConnection
         : IDisposable
     {
         private XConnectionBuilder _Builder { get; }
@@ -87,20 +85,7 @@ namespace MyDAL
                 AutoClose = false;
             }
         }
-        /// <summary>
-        /// 异步 打开 DB 连接
-        /// </summary>
-        public async Task OpenAsync()
-        {
-            /*
-             * 仅限 组件外 调用。
-             */
-            if (AutoClose)
-            {
-                await new DataSourceAsync().OpenAsync(Conn);
-                AutoClose = false;
-            }
-        }
+
         public void Close()
         {
             /*

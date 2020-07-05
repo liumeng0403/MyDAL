@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MyDAL
 {
@@ -12,7 +13,22 @@ namespace MyDAL
 
         #region Create API
 
+        /// <summary>
+        /// Creater 便捷 CreateAsync 方法
+        /// </summary>
+        public static async Task<int> CreateAsync<M>(this XConnection conn, M m)
+            where M : class, new()
+        {
+            return await conn.Creater<M>().CreateAsync(m);
+        }
+
         /*-------------------------------------------------------------*/
+
+        public static async Task<int> CreateAsync(this XConnection conn, string sql, List<XParam> dbParas = null)
+        {
+            CheckCreate(sql);
+            return await conn.ExecuteNonQueryAsync(sql, dbParas);
+        }
 
         /*-------------------------------------------------------------*/
 

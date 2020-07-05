@@ -1,0 +1,11 @@
+
+
+MyDAL.Net4
+	1. 该版本不支持 async api 
+MyDAL.NetCore31
+MyDAL.Net6
+MyDAL.Net8
+
+
+
+

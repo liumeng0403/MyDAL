@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{5AA2915B-8
 		Code_of_Conduct.md = Code_of_Conduct.md
 		CONTRIBUTING.md = CONTRIBUTING.md
 		License = License
+		LTS版本计划.png = LTS版本计划.png
+		LTS版本计划.txt = LTS版本计划.txt
 		PULL_REQUEST_TEMPLATE.md = PULL_REQUEST_TEMPLATE.md
 		Readme.md = Readme.md
 	EndProjectSection
