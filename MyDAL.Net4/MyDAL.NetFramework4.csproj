@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MyDAL</RootNamespace>
-    <AssemblyName>MyDAL.Net4</AssemblyName>
+    <AssemblyName>MyDAL.NetFramework4</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -64,6 +64,7 @@
     <Compile Include="Core\Common\SetParam.cs" />
     <Compile Include="Core\Common\TableDic.cs" />
     <Compile Include="Core\Common\TmPropColAttrInfo.cs" />
+    <Compile Include="Core\Common\Tools\RuntimeInfo.cs" />
     <Compile Include="Core\Common\Tools\SnowFlake.cs" />
     <Compile Include="Core\Common\ValueInfo.cs" />
     <Compile Include="Core\Configs\ColTypeConfig.cs" />
@@ -220,6 +221,9 @@
     <Compile Include="UserInterface\Tools\XHttp.cs" />
     <Compile Include="UserInterface\XConnection.cs" />
     <Compile Include="UserInterface\XExtension.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="UserInterface\Tools\XHttp.NetFramework4.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

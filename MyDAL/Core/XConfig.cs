@@ -1,6 +1,7 @@
 using MyDAL.AdoNet;
 using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
+using MyDAL.Core.Common.Tools;
 using MyDAL.Core.Configs;
 using MyDAL.Core.Enums;
 using MyDAL.DataRainbow.MySQL;
@@ -39,6 +40,7 @@ namespace MyDAL.Core
         internal static ExceptionConfig EC { get; } = new ExceptionConfig();
         internal static CsTypeConfig CSTC { get; } = new CsTypeConfig();
         internal static SqlParamDefaultType SPDT { get; } = new SqlParamDefaultType();
+        internal static RuntimeInfo RI { get; } = new RuntimeInfo();
 
         /************************************************************************************************************/
 
@@ -173,12 +175,6 @@ namespace MyDAL.Core
                     new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.TimeSpan,SPDT.TimeSpanProc),
                     new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.Guid,SPDT.GuidProc)
                 });
-        internal static ConcurrentDictionary<DbEnum, Func<Context, ISqlProvider>> DbProviders { get; }
-            = new ConcurrentDictionary<DbEnum, Func<Context, ISqlProvider>>(
-               new List<KeyValuePair<DbEnum, Func<Context, ISqlProvider>>>
-               {
-                   new KeyValuePair<DbEnum, Func<Context, ISqlProvider>>(DbEnum.MySQL,dc=>new MySqlProvider(dc)),
-               });
 
     }
 }

@@ -4,6 +4,7 @@ using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
 using MyDAL.Core.Helper;
+using MyDAL.DataRainbow.MySQL;
 using MyDAL.DataRainbow.XCommon.Bases;
 using MyDAL.DataRainbow.XCommon.Interfaces;
 using System;
@@ -47,10 +48,7 @@ namespace MyDAL.Core.Bases
             TbMs = new List<TableDic>();
 
             //
-            if (XConfig.DbProviders.TryGetValue(DB, out var func))
-            {
-                SqlProvider = func(this);
-            }
+            SqlProvider = new MySqlProvider(this);
         }
 
         /************************************************************************************************************************/

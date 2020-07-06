@@ -1,14 +1,13 @@
-﻿using System;
+﻿using MyDAL.Core;
+using System;
 using System.IO;
 using System.Net;
-using System.Net.Security;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 
 namespace MyDAL.Tools
 {
-    public class XHttp
+    public sealed partial class XHttp
     {
 
         // 下一步改进  自动url encode ,  cookie 携带支持
@@ -63,14 +62,30 @@ namespace MyDAL.Tools
                     }, this);
                     break;
                 }
-                catch (Exception ex)
+                catch (AggregateException ae)
                 {
-                    Thread.Sleep(this.TrySleep);
+                    string errMsg = string.Empty;
+                    ae.Flatten().Handle(e =>
+                    {
+                        errMsg += e.Message;
+                        return true;
+                    });
                     reNum++;
                     if (reNum == this.RetryCount)
                     {
-                        throw new Exception(string.Format("重试失败!重试次数:{0}次,失败原因:{1}", this.RetryCount, ex.Message));
+                        throw XConfig.EC.Exception(XConfig.EC._116, $"请求失败!请求次数:{this.RetryCount}次,失败原因:{errMsg};Url:{this.URL}");
                     }
+                    Thread.Sleep(this.TrySleep);
+                    continue;
+                }
+                catch (Exception ex)
+                {
+                    reNum++;
+                    if (reNum == this.RetryCount)
+                    {
+                        throw XConfig.EC.Exception(XConfig.EC._117, $"请求失败!请求次数:{this.RetryCount}次,失败原因:{ex.Message};Url:{this.URL}");
+                    }
+                    Thread.Sleep(this.TrySleep);
                     continue;
                 }
             }
@@ -88,7 +103,7 @@ namespace MyDAL.Tools
             //
             if (string.IsNullOrWhiteSpace(this.URL))
             {
-                throw new Exception("requestURL, 未赋值 !");
+                throw XConfig.EC.Exception(XConfig.EC._118, "requestURL, 未赋值 !");
             }
 
             // 
@@ -104,8 +119,10 @@ namespace MyDAL.Tools
                 }
                 if (TimeoutFlag)
                 {
-                    // 应该改为调试模式下永远不超时
-                    throw new Exception(string.Format("请求超时!超时时间:{0}S", TimeoutTime / 1000));
+                    if (!XConfig.RI.IsDebug) // 调试模式下永远不超时
+                    {
+                        throw XConfig.EC.Exception(XConfig.EC._097, $"请求超时!超时时间:{TimeoutTime / 1000}S;Url:{this.URL}");
+                    }
                 }
                 timeNum += WaitSleep;
                 if (timeNum >= TimeoutTime)
@@ -122,29 +139,6 @@ namespace MyDAL.Tools
         private string Token { get; set; }
 
         /***********************************************************************************************************************************************/
-
-        public XHttp()
-        {
-            //
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-            ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors) => true);
-
-            // 
-            this.URL = string.Empty;
-            this.Request = default(HttpWebRequest);
-            this.JsonContent = string.Empty;
-            this.Buffer = default(byte[]);
-            this.RequestStream = default(Stream);
-            this.ResponseFlag = false;
-            this.Result = string.Empty;
-            this.TimeoutFlag = false;
-            this.TimeoutTime = 20 * 1000;
-            //this.RetryFlag = false;
-            this.RetryCount = 3;
-            this.WaitSleep = 10;
-            this.RequestMethod = "POST";
-            this.TrySleep = 2 * 1000;
-        }
 
         public string GET(string requestURL)
         {
