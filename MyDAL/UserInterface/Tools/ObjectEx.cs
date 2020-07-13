@@ -155,37 +155,44 @@ namespace MyDAL.Tools
 
         public static long ToLong(this object obj)
         {
-            var result = default(long);
             try
             {
                 if(obj is IEnumerable)    //   如 Microsoft.Extensions.Primitives.StringValues
                 {
                     return Convert.ToInt64(obj.ToString());
                 }
-                result = Convert.ToInt64(obj);
+                return Convert.ToInt64(obj);
             }
             catch (Exception ex)
             {
                 throw XConfig.EC.Exception(XConfig.EC._065, $"long ToLong(this object obj) -- {obj?.ToString()}，InnerExeception：{ex.Message}");
             }
-            return result;
         }
         public static long ToLong(this object obj, long customValue)
         {
-            var result = default(long);
             try
             {
-                if (obj is IEnumerable)    //   如 Microsoft.Extensions.Primitives.StringValues
-                {
-                    return Convert.ToInt64(obj.ToString());
-                }
-                result = Convert.ToInt64(obj);
+                return obj.ToLong();
             }
             catch 
             {
                 return customValue;
             }
-            return result;
+        }
+        public static long? ToLongNull(this object obj)
+        {
+            try
+            {
+                if (obj.IsNullStr())
+                {
+                    return null;
+                }
+                return obj.ToLong();
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public static short ToShort(this object obj)

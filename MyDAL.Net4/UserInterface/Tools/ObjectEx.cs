@@ -12,7 +12,7 @@ namespace MyDAL.Tools
             try
             {
                 //
-                if(null == obj)
+                if (null == obj)
                 {
                     return false;
                 }
@@ -123,7 +123,7 @@ namespace MyDAL.Tools
             var result = default(int);
             try
             {
-                if(obj is IEnumerable)     //  如  Microsoft.Extensions.Primitives.StringValues
+                if (obj is IEnumerable)     //  如  Microsoft.Extensions.Primitives.StringValues
                 {
                     return Convert.ToInt32(obj.ToString());
                 }
@@ -135,7 +135,7 @@ namespace MyDAL.Tools
             }
             return result;
         }
-        public static int ToInt(this object obj,int customValue)
+        public static int ToInt(this object obj, int customValue)
         {
             var result = default(int);
             try
@@ -155,37 +155,44 @@ namespace MyDAL.Tools
 
         public static long ToLong(this object obj)
         {
-            var result = default(long);
-            try
-            {
-                if(obj is IEnumerable)    //   如 Microsoft.Extensions.Primitives.StringValues
-                {
-                    return Convert.ToInt64(obj.ToString());
-                }
-                result = Convert.ToInt64(obj);
-            }
-            catch (Exception ex)
-            {
-                throw XConfig.EC.Exception(XConfig.EC._065, $"long ToLong(this object obj) -- {obj?.ToString()}，InnerExeception：{ex.Message}");
-            }
-            return result;
-        }
-        public static long ToLong(this object obj, long customValue)
-        {
-            var result = default(long);
             try
             {
                 if (obj is IEnumerable)    //   如 Microsoft.Extensions.Primitives.StringValues
                 {
                     return Convert.ToInt64(obj.ToString());
                 }
-                result = Convert.ToInt64(obj);
+                return Convert.ToInt64(obj);
             }
-            catch 
+            catch (Exception ex)
+            {
+                throw XConfig.EC.Exception(XConfig.EC._065, $"long ToLong(this object obj) -- {obj?.ToString()}，InnerExeception：{ex.Message}");
+            }
+        }
+        public static long ToLong(this object obj, long customValue)
+        {
+            try
+            {
+                return obj.ToLong();
+            }
+            catch
             {
                 return customValue;
             }
-            return result;
+        }
+        public static long? ToLongNull(this object obj)
+        {
+            try
+            {
+                if (obj.IsNullStr())
+                {
+                    return null;
+                }
+                return obj.ToLong();
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public static short ToShort(this object obj)

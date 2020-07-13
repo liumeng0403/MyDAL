@@ -25,7 +25,7 @@ namespace MyDAL.Tools
             }
             else
             {
-                return string.IsNullOrWhiteSpace((string)str);
+                return string.IsNullOrWhiteSpace(str.ToString());
             }
         }
 
