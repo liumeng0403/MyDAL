@@ -267,20 +267,22 @@ namespace MyDAL.Tools
 
         public static DateTime ToDateTime(this object obj)
         {
-            var result = default(DateTime);
             try
             {
-                if (obj is IEnumerable)    //   如 Microsoft.Extensions.Primitives.StringValues
+                if (obj is string)
                 {
                     return ((string)obj).ToDateTime();
                 }
-                result = Convert.ToDateTime(obj);
+                else if (obj is IEnumerable)    //   如 Microsoft.Extensions.Primitives.StringValues
+                {
+                    return obj.ToString().ToDateTime();
+                }
+                return Convert.ToDateTime(obj);
             }
             catch (Exception ex)
             {
                 throw XConfig.EC.Exception(XConfig.EC._071, $"DateTime ToDateTime(this object obj) -- {obj?.ToString()}，InnerExeception：{ex.Message}");
             }
-            return result;
         }
         public static string ToDateTimeStr(this object obj, string format = "")
         {

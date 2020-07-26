@@ -1,3 +1,6 @@
+using MyDAL.Core;
+using System;
+
 namespace MyDAL.Tools
 {
     /// <summary>
@@ -26,6 +29,22 @@ namespace MyDAL.Tools
             else
             {
                 return string.IsNullOrWhiteSpace(str.ToString());
+            }
+        }
+
+        public static DateTime ToDateTime(this string str)
+        {
+            try
+            {
+                if (str.IsNullStr())
+                {
+                    throw XConfig.EC.Exception(XConfig.EC._115, $"DateTime ToDateTime(this object obj) -- 参数 str 为 null !!!");
+                }
+                return Convert.ToDateTime(str);
+            }
+            catch (Exception ex)
+            {
+                throw XConfig.EC.Exception(XConfig.EC._114, $"DateTime ToDateTime(this object obj) -- {str?.ToString()}，InnerExeception：{ex.Message}");
             }
         }
 
