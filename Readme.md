@@ -1,7 +1,7 @@
 <p align="center">
   <img src="https://github.com/liumeng0403/MyDAL/blob/master/Asserts/MyDAL_origin.png">
   <p align="center">
-    The fastest and best ORM lite on .NET Core for MySQL/SqlServer ! <br/>
+    The fastest and best ORM lite on .NET Core for MySQL ! <br/>
        -- 友好, 轻量, 极致性能, 无任何第三方依赖, 持续演进~~
   </p>
 </p>
