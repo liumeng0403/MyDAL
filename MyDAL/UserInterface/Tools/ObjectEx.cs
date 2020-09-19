@@ -298,6 +298,45 @@ namespace MyDAL.Tools
                 throw XConfig.EC.Exception(XConfig.EC._071, $"DateTime ToDateTime(this object obj) -- {obj?.ToString()}，InnerExeception：{ex.Message}");
             }
         }
+        public static DateTime? ToDateTimeNull(this object obj)
+        {
+            try
+            {
+                if (obj == null)
+                {
+                    return null;
+                }
+                else if (obj is string)
+                {
+                    var str = ((string)obj);
+                    if (str.IsNullStr())
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        return str.ToDateTime();
+                    }
+                }
+                else if (obj is IEnumerable)    //   如 Microsoft.Extensions.Primitives.StringValues
+                {
+                    var str = obj.ToString();
+                    if (str.IsNullStr())
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        return str.ToDateTime();
+                    }
+                }
+                return Convert.ToDateTime(obj);
+            }
+            catch (Exception ex)
+            {
+                throw XConfig.EC.Exception(XConfig.EC._124, $"DateTime ToDateTime(this object obj) -- {obj?.ToString()}，InnerExeception：{ex.Message}");
+            }
+        }
         public static string ToDateTimeStr(this object obj, string format = "")
         {
             try

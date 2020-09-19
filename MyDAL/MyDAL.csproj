@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <Version>0.9.1.7</Version>
+    <Version>0.9.1.8</Version>
     <Authors>Meng.NET</Authors>
     <Company></Company>
     <Product>MyDAL</Product>
@@ -15,6 +15,7 @@
     <PackageTags>MyDAL,MySQL,HPC.DAL,Yunyong.DataExchange,EasyDAL.Exchange,Meng,Meng-NET,Meng.NET</PackageTags>
     <PackageReleaseNotes>由一个开发项目中的 idea 产生,实现与演变 !
        -- https://www.cnblogs.com/Meng-NET/p/8963476.html
+0.9.1.8 版本, 已知问题完善
 0.9.1.7 版本, 已知 bug-fix
 0.9.1.6 版本, 已知 bug-fix
 0.9.1.5 版本, 已知 bug-fix
@@ -26,8 +27,8 @@
     <Win32Resource />
     <PackageId>MyDAL</PackageId>
     <PackageIconUrl>http://images.cnblogs.com/cnblogs_com/Meng-NET/1310410/o_MyDAL.png</PackageIconUrl>
-    <AssemblyVersion>0.9.1.7</AssemblyVersion>
-    <FileVersion>0.9.1.7</FileVersion>
+    <AssemblyVersion>0.9.1.8</AssemblyVersion>
+    <FileVersion>0.9.1.8</FileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\MyDAL.xml</DocumentationFile>
