@@ -80,8 +80,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Connector", "Example 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Devart", "Example and Test\MyDAL.Devart\MyDAL.Devart.csproj", "{A39127E6-14E2-4391-B143-406BB814F440}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyDAL.NetFramework4", "MyDAL.Net4\MyDAL.NetFramework4.csproj", "{E75C41DE-4ADB-4C3B-A92F-302E6F731790}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetFramework4", "NetFramework4", "{7B5F3D0F-B1DB-4B86-B6E6-D72F8B1E6273}"
 EndProject
 Global
@@ -150,10 +148,6 @@ Global
 		{A39127E6-14E2-4391-B143-406BB814F440}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A39127E6-14E2-4391-B143-406BB814F440}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A39127E6-14E2-4391-B143-406BB814F440}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E75C41DE-4ADB-4C3B-A92F-302E6F731790}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E75C41DE-4ADB-4C3B-A92F-302E6F731790}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E75C41DE-4ADB-4C3B-A92F-302E6F731790}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E75C41DE-4ADB-4C3B-A92F-302E6F731790}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

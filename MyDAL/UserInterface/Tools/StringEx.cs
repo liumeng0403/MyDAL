@@ -18,18 +18,34 @@ namespace MyDAL.Tools
         }
 
         /// <summary>
-        /// Is null/empty/whitespace ?
+        /// Is not null/empty/whitespace ?
         /// </summary>
-        public static bool IsNullStr(this object str)
+        public static bool IsNotNullStr(this string str)
         {
-            if (null == str)
+            return !str.IsNullStr();
+        }
+
+        /// <summary>
+        /// Obj is null/empty/whitespace ?
+        /// </summary>
+        public static bool IsNullStr(this object obj)
+        {
+            if (null == obj)
             {
                 return true;
             }
             else
             {
-                return string.IsNullOrWhiteSpace(str.ToString());
+                return obj.ToString().IsNullStr();
             }
+        }
+
+        /// <summary>
+        /// Obj is not null/empty/whitespace ?
+        /// </summary>
+        public static bool IsNotNullStr(this object obj)
+        {
+            return !obj.IsNullStr();
         }
 
         public static DateTime ToDateTime(this string str)

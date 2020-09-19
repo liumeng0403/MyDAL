@@ -1,16 +1,11 @@
 
-
-★MyDAL.NetFramework4
-	1. 该版本不支持 async api 
-
+★MyDAL.NetCore31
 https://dotnet.microsoft.com/download/dotnet-core
 Version			Status	Latest-release	Latest-release-date	End-of-support
 .NET Core 3.1	LTS 	3.1.5			2020-06-09			2022-12-03
-.NET Core 2.1	LTS 	2.1.19			2020-06-09			2021-08-21
-★MyDAL.NetCore21
-★MyDAL.NetCore31
 
 ★MyDAL.Net6
+
 ★MyDAL.Net8
 
 
