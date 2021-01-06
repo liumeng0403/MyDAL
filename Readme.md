@@ -12,7 +12,6 @@
 [![](https://img.shields.io/badge/Download-37,043-golden.svg)](https://www.nuget.org/profiles/Meng.NET)
 [![](https://img.shields.io/badge/Star-30-yellow.svg)](https://github.com/liumeng0403/MyDAL/stargazers)
 [![](https://img.shields.io/badge/Fork-4-orange.svg)](https://github.com/liumeng0403/MyDAL/network/members)
-[![](https://img.shields.io/badge/Nuget-0.9.1-green.svg)](https://www.nuget.org/packages/MyDAL/)
 [![](https://img.shields.io/badge/MySQL-5.7.21+-purple.svg)](https://www.cnblogs.com/Meng-NET/p/9831746.html)
 [![](https://img.shields.io/badge/Drivers-MySql.Data/MySqlConnector/Devart.Data.MySql-cyan.svg)](https://www.cnblogs.com/Meng-NET/p/9831746.html)
 
