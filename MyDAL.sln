@@ -5,11 +5,6 @@ VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL", "MyDAL\MyDAL.csproj", "{06C72481-97EA-45A9-BE4D-9ED33DACC9D5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetCore21", "NetCore21", "{01469E72-6B01-413A-832F-9777EA94EB8D}"
-	ProjectSection(SolutionItems) = preProject
-		Example and Test\AsyncMethod\NetCore21\拥抱 .Net 5 , 不再支持此版本.txt = Example and Test\AsyncMethod\NetCore21\拥抱 .Net 5 , 不再支持此版本.txt
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{5AA2915B-8D46-40EA-9C10-993571F2C19A}"
 	ProjectSection(SolutionItems) = preProject
 		Code_of_Conduct.md = Code_of_Conduct.md
@@ -74,13 +69,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.WhereEdge", "Example 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Parallel", "Example and Test\Parallel\MyDAL.Parallel\MyDAL.Parallel.csproj", "{290F5A17-0097-4A0F-9B47-F8FF8B385350}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Test", "Example and Test\MyDAL.Test\MyDAL.Test.csproj", "{400CE933-B8D9-4BCF-875B-147A478145F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Data", "Example and Test\MyDAL.Test\MyDAL.Data.csproj", "{400CE933-B8D9-4BCF-875B-147A478145F8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Connector", "Example and Test\MyDAL.Connector\MyDAL.Connector.csproj", "{6E3A56EF-9565-41D5-945E-9220753D8A49}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Devart", "Example and Test\MyDAL.Devart\MyDAL.Devart.csproj", "{A39127E6-14E2-4391-B143-406BB814F440}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NetFramework4", "NetFramework4", "{7B5F3D0F-B1DB-4B86-B6E6-D72F8B1E6273}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -153,7 +146,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{01469E72-6B01-413A-832F-9777EA94EB8D} = {8C56055A-CF29-4AF8-947A-F301B0B73673}
 		{84DBB20F-0889-4F7C-9F8F-0F5FEC4B7A15} = {747B3F1D-611D-4BAC-81E9-78FE31227682}
 		{F9638D46-CC52-44A9-B247-B1D4D28E1124} = {754F34DC-1500-4ED5-8AE4-9FD25F758FA5}
 		{8C56055A-CF29-4AF8-947A-F301B0B73673} = {754F34DC-1500-4ED5-8AE4-9FD25F758FA5}
@@ -175,7 +167,6 @@ Global
 		{400CE933-B8D9-4BCF-875B-147A478145F8} = {754F34DC-1500-4ED5-8AE4-9FD25F758FA5}
 		{6E3A56EF-9565-41D5-945E-9220753D8A49} = {754F34DC-1500-4ED5-8AE4-9FD25F758FA5}
 		{A39127E6-14E2-4391-B143-406BB814F440} = {754F34DC-1500-4ED5-8AE4-9FD25F758FA5}
-		{7B5F3D0F-B1DB-4B86-B6E6-D72F8B1E6273} = {F9638D46-CC52-44A9-B247-B1D4D28E1124}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {928A4226-96F3-409A-8A83-9E7444488710}
