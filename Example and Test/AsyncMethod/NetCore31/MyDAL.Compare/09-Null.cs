@@ -13,12 +13,12 @@ namespace MyDAL.Compare
 
         public async Task<Agent> PreData3()
         {
-            var m = await Conn
+            var m = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.Id == Guid.Parse("0001c614-dbef-4335-94b4-01654433a215"))
                 .QueryOneAsync();
 
-            await Conn
+            await MyDAL_TestDB
                 .Updater<Agent>()
                 .Set(it => it.AgentLevel, WhereTest.AgentLevelNull)
                 .Where(it => it.Id == m.Id)
@@ -28,7 +28,7 @@ namespace MyDAL.Compare
         }
         private async Task ClearData3(Agent m)
         {
-            await Conn
+            await MyDAL_TestDB
                 .Updater<Agent>()
                 .Set(it => it.AgentLevel, m.AgentLevel)
                 .Where(it => it.Id == m.Id)
@@ -43,7 +43,7 @@ namespace MyDAL.Compare
             /************************************************************************************************************************/
 
             // is not null 
-            var res2 = await Conn
+            var res2 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.ActiveOrderId != null)
                 .QueryListAsync();
@@ -59,7 +59,7 @@ namespace MyDAL.Compare
             // 
             try
             {
-                var res3 = await Conn
+                var res3 = await MyDAL_TestDB
                     .Queryer<Agent>()
                     .Where(it => it.AgentLevel == WhereTest.AgentLevelNull)
                     .QueryListAsync();
@@ -78,7 +78,7 @@ namespace MyDAL.Compare
             var xx4 = string.Empty;
 
             // is not null 
-            var res4 = await Conn
+            var res4 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.ActivedOn != null && it.ActiveOrderId != null && it.CrmUserId == null)
                 .QueryListAsync();
@@ -91,7 +91,7 @@ namespace MyDAL.Compare
             var xx5 = string.Empty;
 
             // is not null 
-            var res5 = await Conn
+            var res5 = await MyDAL_TestDB
                 .Queryer(out Agent a5, out AgentInventoryRecord r5)
                 .From(() => a5)
                     .LeftJoin(() => r5)
@@ -104,7 +104,7 @@ namespace MyDAL.Compare
 
             /************************************************************************************************************************/
 
-            var res7 = await Conn.QueryListAsync<Agent>(it => it.ActiveOrderId == null);
+            var res7 = await MyDAL_TestDB.QueryListAsync<Agent>(it => it.ActiveOrderId == null);
             Assert.True(res7.Count == 28066);
 
             
@@ -114,7 +114,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // is not null 
-            var res8 = await Conn.QueryListAsync<Agent>(it => it.ActiveOrderId != null);
+            var res8 = await MyDAL_TestDB.QueryListAsync<Agent>(it => it.ActiveOrderId != null);
             Assert.True(res8.Count == 554);
 
             
@@ -133,7 +133,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // is null 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.ActiveOrderId == null)
                 .QueryListAsync();
@@ -155,7 +155,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // !(is null) --> is not null 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => !(it.ActiveOrderId == null))
                 .QueryListAsync();
@@ -177,7 +177,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // is not null 
-            var res6 = await Conn
+            var res6 = await MyDAL_TestDB
                 .Queryer(out Agent a6, out AgentInventoryRecord r6)
                 .From(() => a6)
                     .LeftJoin(() => r6)
@@ -202,7 +202,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // !(is not null) --> is null 
-            var res6 = await Conn
+            var res6 = await MyDAL_TestDB
                 .Queryer(out Agent a6, out AgentInventoryRecord r6)
                 .From(() => a6)
                     .LeftJoin(() => r6)

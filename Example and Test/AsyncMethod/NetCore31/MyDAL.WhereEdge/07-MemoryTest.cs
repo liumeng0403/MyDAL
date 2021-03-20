@@ -19,7 +19,7 @@ namespace MyDAL.WhereEdge
             for (var i = 0; i < 100; i++)
             {
                 var name = "张";
-                var res = await Conn
+                var res = await MyDAL_TestDB
                     .Queryer<Agent>()
                     .Where(it => it.Name.Contains($"{name}%") && it.CreatedOn > Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30) || it.AgentLevel == AgentLevel.DistiAgent)
                     .QueryListAsync();

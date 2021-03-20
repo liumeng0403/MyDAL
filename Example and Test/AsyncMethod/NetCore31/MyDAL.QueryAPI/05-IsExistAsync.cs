@@ -19,7 +19,7 @@ namespace MyDAL.QueryAPI
             var id = Guid.Parse("89c9407f-7427-4570-92b7-0165590ac07e");
 
             // 判断 AlipayPaymentRecord 表中是否存在符合条件的数据
-            bool res1 = await Conn.IsExistAsync<AlipayPaymentRecord>(it => it.CreatedOn == date && it.OrderId == id);
+            bool res1 = await MyDAL_TestDB.IsExistAsync<AlipayPaymentRecord>(it => it.CreatedOn == date && it.OrderId == id);
 
             Assert.True(res1);
 
@@ -36,7 +36,7 @@ namespace MyDAL.QueryAPI
 
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .IsExistAsync();
 
@@ -55,7 +55,7 @@ namespace MyDAL.QueryAPI
             xx = string.Empty;
 
             // 判断 Agent 表 中 是否存在符合条件的数据
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.Id == Guid.Parse("002c1ca9-f2df-453a-87e0-0165443dcc31"))
                 .IsExistAsync();
@@ -74,7 +74,7 @@ namespace MyDAL.QueryAPI
 
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
@@ -95,7 +95,7 @@ namespace MyDAL.QueryAPI
             xx = string.Empty;
 
             //
-            bool res1 = await Conn
+            bool res1 = await MyDAL_TestDB
                 .Queryer(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)

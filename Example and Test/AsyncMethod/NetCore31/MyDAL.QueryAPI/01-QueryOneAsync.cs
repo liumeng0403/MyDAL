@@ -25,10 +25,10 @@ namespace MyDAL.QueryAPI
             };
 
             // 清理数据
-            var resd = await Conn.DeleteAsync<BodyFitRecord>(it => it.Id == m.Id);
+            var resd = await MyDAL_TestDB.DeleteAsync<BodyFitRecord>(it => it.Id == m.Id);
 
             // 造数据
-            var resc = await Conn.CreateAsync(m);
+            var resc = await MyDAL_TestDB.CreateAsync(m);
 
             return m;
         }
@@ -44,14 +44,14 @@ namespace MyDAL.QueryAPI
             xx = string.Empty;
 
             //  == Guid
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<BodyFitRecord>()
                 .Where(it => it.Id == Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"))
                 .QueryOneAsync();
 
             Assert.NotNull(res1);
 
-            var resR1 = await Conn.OpenDebug()
+            var resR1 = await MyDAL_TestDB.OpenDebug()
                 .Queryer<BodyFitRecord>()
                 .Where(it => Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e") == it.Id)
                 .QueryOneAsync();
@@ -64,14 +64,14 @@ namespace MyDAL.QueryAPI
             xx = string.Empty;
 
             // == DateTime
-            var res2 = await Conn
+            var res2 = await MyDAL_TestDB
                 .Queryer<BodyFitRecord>()
                 .Where(it => it.CreatedOn == Convert.ToDateTime("2018-08-23 13:36:58"))
                 .QueryOneAsync();
 
             Assert.NotNull(res2);
 
-            var resR2 = await Conn.OpenDebug()
+            var resR2 = await MyDAL_TestDB.OpenDebug()
                 .Queryer<BodyFitRecord>()
                 .Where(it => Convert.ToDateTime("2018-08-23 13:36:58") == it.CreatedOn)
                 .QueryOneAsync();
@@ -84,14 +84,14 @@ namespace MyDAL.QueryAPI
             xx = string.Empty;
 
             // == string
-            var res3 = await Conn
+            var res3 = await MyDAL_TestDB
                 .Queryer<BodyFitRecord>()
                 .Where(it => it.BodyMeasureProperty == "xxxx")
                 .QueryOneAsync();
 
             Assert.NotNull(res3);
 
-            var resR3 = await Conn.OpenDebug()
+            var resR3 = await MyDAL_TestDB.OpenDebug()
                 .Queryer<BodyFitRecord>()
                 .Where(it => "xxxx" == it.BodyMeasureProperty)
                 .QueryOneAsync();
@@ -112,7 +112,7 @@ namespace MyDAL.QueryAPI
             var pk = Guid.Parse("8f2cbb64-8356-4482-88ee-016558c05b2d");
             var date = DateTime.Parse("2018-08-20 19:12:05.933786");
 
-            var res1 = await Conn.QueryOneAsync<AlipayPaymentRecord, Guid>(it => it.Id == pk && it.CreatedOn == date, it => it.Id);
+            var res1 = await MyDAL_TestDB.QueryOneAsync<AlipayPaymentRecord, Guid>(it => it.Id == pk && it.CreatedOn == date, it => it.Id);
 
             Assert.True(res1 == pk);
 
@@ -128,7 +128,7 @@ namespace MyDAL.QueryAPI
             var pk = Guid.Parse("8f2cbb64-8356-4482-88ee-016558c05b2d");
             var date = DateTime.Parse("2018-08-20 19:12:05.933786");
 
-            var res1 = await Conn.QueryOneAsync<AlipayPaymentRecord>(it => it.Id == pk && it.CreatedOn == date);
+            var res1 = await MyDAL_TestDB.QueryOneAsync<AlipayPaymentRecord>(it => it.Id == pk && it.CreatedOn == date);
 
             Assert.NotNull(res1);
 
@@ -148,7 +148,7 @@ namespace MyDAL.QueryAPI
             var pk = Guid.Parse("8f2cbb64-8356-4482-88ee-016558c05b2d");
             var date = DateTime.Parse("2018-08-20 19:12:05.933786");
 
-            var res1 = await Conn.QueryOneAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.Id == pk && it.CreatedOn == date);
+            var res1 = await MyDAL_TestDB.QueryOneAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.Id == pk && it.CreatedOn == date);
 
             Assert.NotNull(res1);
 
@@ -168,7 +168,7 @@ namespace MyDAL.QueryAPI
             var pk = Guid.Parse("8f2cbb64-8356-4482-88ee-016558c05b2d");
             var date = DateTime.Parse("2018-08-20 19:12:05.933786");
 
-            var res1 = await Conn.QueryOneAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.Id == pk && it.CreatedOn == date,
+            var res1 = await MyDAL_TestDB.QueryOneAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.Id == pk && it.CreatedOn == date,
             it => new AlipayPaymentRecordVM
             {
                 Id = it.Id,
@@ -191,7 +191,7 @@ namespace MyDAL.QueryAPI
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.CreatedOn == DateTime.Parse("2018-08-16 19:22:01.716307"))
                 .QueryOneAsync(it => it.Id);
@@ -210,7 +210,7 @@ namespace MyDAL.QueryAPI
             xx = string.Empty;
 
             // 
-            var res4 = await Conn
+            var res4 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
                     .And(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
@@ -234,7 +234,7 @@ namespace MyDAL.QueryAPI
 
             /****************************************************************************************************************************************/
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
                 .QueryOneAsync<AgentVM>();
@@ -256,7 +256,7 @@ namespace MyDAL.QueryAPI
 
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
                 .QueryOneAsync(it => new AgentVM
@@ -280,7 +280,7 @@ namespace MyDAL.QueryAPI
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer(out Agent agent, out AgentInventoryRecord agentRecord)
                 .From(() => agent)
                     .InnerJoin(() => agentRecord)
@@ -300,7 +300,7 @@ namespace MyDAL.QueryAPI
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
@@ -323,7 +323,7 @@ namespace MyDAL.QueryAPI
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
@@ -365,7 +365,7 @@ namespace MyDAL.QueryAPI
                 new XParam{ParamName="AgentLevel",ParamValue=AgentLevel.DistiAgent}
             };
 
-            var res1 = await Conn.QueryOneAsync<string>(sql, paras);
+            var res1 = await MyDAL_TestDB.QueryOneAsync<string>(sql, paras);
 
             Assert.True(res1.Length > 1);
 
@@ -397,7 +397,7 @@ namespace MyDAL.QueryAPI
                 new XParam{ParamName="Id",ParamValue=Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef")}
             };
 
-            var res1 = await Conn.QueryOneAsync<AgentVM>(sql, paras);
+            var res1 = await MyDAL_TestDB.QueryOneAsync<AgentVM>(sql, paras);
 
             Assert.NotNull(res1);
             Assert.Equal("夏明君", res1.zz);
@@ -425,7 +425,7 @@ namespace MyDAL.QueryAPI
                                     limit 0,1;
                                 ";
             
-            var res1 = await Conn.QueryOneAsync<AgentVM>(sql);
+            var res1 = await MyDAL_TestDB.QueryOneAsync<AgentVM>(sql);
 
             Assert.NotNull(res1);
             Assert.Equal("夏明君", res1.zz);

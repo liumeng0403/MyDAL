@@ -22,21 +22,21 @@ namespace MyDAL.Create
 
             xx = string.Empty;
 
-            var res2 = await Conn
+            var res2 = await MyDAL_TestDB
                 .Deleter<BodyFitRecord>()
                 .Where(it => it.Id == Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"))
                 .DeleteAsync();
         }
         private async Task ClearData6()
         {
-            await Conn
+            await MyDAL_TestDB
                 .Deleter<Agent>()
                 .Where(it => it.Id == Guid.Parse("ea1ad309-56f7-4e3e-af12-0165c9121e9b"))
                 .DeleteAsync();
         }
         private async Task ClearData7()
         {
-            await Conn
+            await MyDAL_TestDB
                 .Deleter<Agent>()
                 .Where(it => it.Id == Guid.Parse("08d60369-4fc1-e8e0-44dc-435f31635e6d"))
                 .DeleteAsync();
@@ -66,7 +66,7 @@ namespace MyDAL.Create
 
             xx = string.Empty;
 
-            var res2 = await Conn.CreateAsync(m2);
+            var res2 = await MyDAL_TestDB.CreateAsync(m2);
 
             Assert.True(res2 == 1);
 
@@ -76,7 +76,7 @@ namespace MyDAL.Create
 
             xx = string.Empty;
 
-            var res5 = await Conn.CreateAsync(new Agent
+            var res5 = await MyDAL_TestDB.CreateAsync(new Agent
             {
                 Id = Guid.NewGuid(),
                 CreatedOn = Convert.ToDateTime("2018-10-07 17:02:05"),
@@ -116,11 +116,11 @@ namespace MyDAL.Create
                 DirectorStarCount = 1
             };
 
-            var res6 = await Conn.CreateAsync(m6);
+            var res6 = await MyDAL_TestDB.CreateAsync(m6);
 
             
 
-            var res61 = await Conn.QueryOneAsync<Agent>(it => it.Id == Guid.Parse("ea1ad309-56f7-4e3e-af12-0165c9121e9b"));
+            var res61 = await MyDAL_TestDB.QueryOneAsync<Agent>(it => it.Id == Guid.Parse("ea1ad309-56f7-4e3e-af12-0165c9121e9b"));
             Assert.True(res61.AgentLevel == AgentLevel.DistiAgent);
 
             /********************************************************************************************************************************/
@@ -145,11 +145,11 @@ namespace MyDAL.Create
                 DirectorStarCount = 1
             };
 
-            var res7 = await Conn.CreateAsync(m7);
+            var res7 = await MyDAL_TestDB.CreateAsync(m7);
 
             
 
-            var res71 = await Conn.QueryOneAsync<Agent>(it => it.Id == Guid.Parse("08d60369-4fc1-e8e0-44dc-435f31635e6d"));
+            var res71 = await MyDAL_TestDB.QueryOneAsync<Agent>(it => it.Id == Guid.Parse("08d60369-4fc1-e8e0-44dc-435f31635e6d"));
             Assert.True(res71.CreatedOn == Convert.ToDateTime("2018-08-16 19:34:25.116759"));
 
             /********************************************************************************************************************************/
@@ -161,11 +161,11 @@ namespace MyDAL.Create
         public async Task History_02()
         {
             
-            var list1 = await new CreateData().PreCreateBatchV2(Conn);
+            var list1 = await new CreateData().PreCreateBatchV2(MyDAL_TestDB);
 
             xx = string.Empty;
 
-            var res1 = await Conn.CreateBatchAsync(list1);
+            var res1 = await MyDAL_TestDB.CreateBatchAsync(list1);
 
             Assert.True(res1 == 10);
 
@@ -196,16 +196,16 @@ namespace MyDAL.Create
             };
 
             // 删除一条数据: AlipayPaymentRecord
-            await Conn.DeleteAsync<AlipayPaymentRecord>(it => it.Id == m.Id);
+            await MyDAL_TestDB.DeleteAsync<AlipayPaymentRecord>(it => it.Id == m.Id);
 
             // 新增一条数据: AlipayPaymentRecord
-            var res1 = await Conn.CreateAsync(m);
+            var res1 = await MyDAL_TestDB.CreateAsync(m);
 
             Assert.True(res1 == 1);
 
             
 
-            var res11 = await Conn.QueryOneAsync<AlipayPaymentRecord>(it => it.Id == m.Id);
+            var res11 = await MyDAL_TestDB.QueryOneAsync<AlipayPaymentRecord>(it => it.Id == m.Id);
             Assert.NotNull(res11);
 
             /****************************************************************************************/
@@ -229,7 +229,7 @@ namespace MyDAL.Create
             xx = string.Empty;
 
             // 新建
-            var res1 = await Conn.CreateAsync(m1);
+            var res1 = await MyDAL_TestDB.CreateAsync(m1);
 
             Assert.True(res1 == 1);
 
@@ -261,7 +261,7 @@ namespace MyDAL.Create
             Assert.True(!list.Any(it => it.IsVIP));
             Assert.True(!list.Any(it => it.IsActived));
 
-            var res4 = await Conn.CreateBatchAsync(list);
+            var res4 = await MyDAL_TestDB.CreateBatchAsync(list);
 
             Assert.True(res4 == list.Count);
 
@@ -356,7 +356,7 @@ namespace MyDAL.Create
             };
 
             // 删除一条数据: AlipayPaymentRecord
-            await Conn.DeleteAsync<AlipayPaymentRecord>(it => it.Id == m.Id);
+            await MyDAL_TestDB.DeleteAsync<AlipayPaymentRecord>(it => it.Id == m.Id);
 
             var sql = @"
                                 insert into `alipaypaymentrecord` 
@@ -379,13 +379,13 @@ namespace MyDAL.Create
             };
 
             // 新增一条数据: AlipayPaymentRecord
-            var res1 = await Conn.CreateAsync(sql, paras);
+            var res1 = await MyDAL_TestDB.CreateAsync(sql, paras);
 
             Assert.True(res1 == 1);
 
             
 
-            var res11 = await Conn.QueryOneAsync<AlipayPaymentRecord>(it => it.Id == m.Id);
+            var res11 = await MyDAL_TestDB.QueryOneAsync<AlipayPaymentRecord>(it => it.Id == m.Id);
             Assert.NotNull(res11);
 
             xx = string.Empty;
@@ -413,7 +413,7 @@ namespace MyDAL.Create
             };
 
             // 删除一条数据: AlipayPaymentRecord
-            await Conn.DeleteAsync<AlipayPaymentRecord>(it => it.Id == m.Id);
+            await MyDAL_TestDB.DeleteAsync<AlipayPaymentRecord>(it => it.Id == m.Id);
 
             var sql = @"
                                 insert into `alipaypaymentrecord` 
@@ -436,13 +436,13 @@ namespace MyDAL.Create
             };
 
             // 新增一条数据: AlipayPaymentRecord
-            var res1 = await Conn.CreateAsync(sql, paras);
+            var res1 = await MyDAL_TestDB.CreateAsync(sql, paras);
 
             Assert.True(res1 == 1);
 
             
 
-            var res11 = await Conn.QueryOneAsync<AlipayPaymentRecord>(it => it.Id == m.Id);
+            var res11 = await MyDAL_TestDB.QueryOneAsync<AlipayPaymentRecord>(it => it.Id == m.Id);
             Assert.NotNull(res11);
 
             xx = string.Empty;

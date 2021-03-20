@@ -9,7 +9,7 @@ namespace MyDAL.Parallel
     {
         public None test(None none)
         {
-            var res5 = (Conn
+            var res5 = (MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.Name == "刘中华")
                 .Distinct()

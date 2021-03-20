@@ -16,7 +16,7 @@ namespace MyDAL.WhereEdge
         {
             xx = string.Empty;
 
-            var where = Conn.Queryer<Agent>().WhereSegment;
+            var where = MyDAL_TestDB.Queryer<Agent>().WhereSegment;
 
             var res1 = await where.TopAsync(1);
 
@@ -37,7 +37,7 @@ namespace MyDAL.WhereEdge
             var userId = "08d6036b-0a7e-b07d-b9bd-af03841b3baa";
             var firstName = "伏";
 
-            var where = Conn.Queryer<Agent>().WhereSegment;
+            var where = MyDAL_TestDB.Queryer<Agent>().WhereSegment;
 
             // 根据条件 判断 是否 拼接 UserId 字段 的 过滤条件
             if (!userId.IsNullStr())
@@ -75,7 +75,7 @@ namespace MyDAL.WhereEdge
             var pk1 = Guid.Parse("fbad4af4-c160-4e66-a8fc-0165443b4db0");
 
             // 可 自由混合书写 多个 inner join 或 left join 
-            var where = Conn
+            var where = MyDAL_TestDB
                 .Queryer(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .LeftJoin(() => record)

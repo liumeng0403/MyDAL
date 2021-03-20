@@ -14,7 +14,7 @@ namespace MyDAL.WhereEdge
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.Name == $"{"樊士芹"}")
                 .QueryOneAsync();
@@ -28,7 +28,7 @@ namespace MyDAL.WhereEdge
             xx = string.Empty;
 
             var name2 = "樊士芹";
-            var res2 = await Conn
+            var res2 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.Name == $"{name2}")
                 .QueryOneAsync();
@@ -41,7 +41,7 @@ namespace MyDAL.WhereEdge
 
             xx = string.Empty;
 
-            var res3 = await Conn
+            var res3 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.CreatedOn > DateTime.Parse($"{Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30).AddDays(-10)}"))
                 .QueryListAsync();
@@ -55,7 +55,7 @@ namespace MyDAL.WhereEdge
             xx = string.Empty;
 
             var name4 = "张";
-            var res4 = await Conn
+            var res4 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.Name.Contains($"{name4}%"))
                 .QueryListAsync();
@@ -68,7 +68,7 @@ namespace MyDAL.WhereEdge
 
             xx = string.Empty;
 
-            var res5 = await Conn
+            var res5 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.PathId.Contains($"{WhereTest.ContainStr2}%"))
                 .QueryListAsync();
@@ -83,15 +83,15 @@ namespace MyDAL.WhereEdge
 
             var like61 = "李";
             var like62 = "张";
-            var res6 = await Conn
+            var res6 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.Name.Contains($"{like61}%") || it.Name.Contains($"{like62}%"))
                 .QueryListAsync();
-            var res61 = await Conn
+            var res61 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.Name.Contains($"{like61}%"))
                 .QueryListAsync();
-            var res62 = await Conn
+            var res62 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.Name.Contains($"{like62}%"))
                 .QueryListAsync();

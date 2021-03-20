@@ -11,14 +11,14 @@ namespace MyDAL.Test.Func
         private async Task PreTrim()
         {
             var pk1 = Guid.Parse("b3866d7c-2b51-46ae-85cb-0165c9121e8f");
-            var res1 = await Conn.UpdateAsync<Product>(it => it.Id == pk1, new
+            var res1 = await MyDAL_TestDB.UpdateAsync<Product>(it => it.Id == pk1, new
             {
                 Title = "  演示商品01  "
             });
         }
         private async Task PreLTrim()
         {
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Updater<Product>()
                 .Set(it => it.Title, "  演示商品01")
                 .Where(it => it.Id == Guid.Parse("b3866d7c-2b51-46ae-85cb-0165c9121e8f"))
@@ -26,7 +26,7 @@ namespace MyDAL.Test.Func
         }
         private async Task PreRTrim()
         {
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Updater<Product>()
                 .Set(it => it.Title, "演示商品01  ")
                 .Where(it => it.Id == Guid.Parse("b3866d7c-2b51-46ae-85cb-0165c9121e8f"))
@@ -42,7 +42,7 @@ namespace MyDAL.Test.Func
             xx = string.Empty;
 
             await PreTrim();
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<Product>()
                 .Where(it => it.Title.Trim() == "演示商品01")
                 .QueryOneAsync();
@@ -56,7 +56,7 @@ namespace MyDAL.Test.Func
             xx = string.Empty;
 
             await PreLTrim();
-            var res2 = await Conn
+            var res2 = await MyDAL_TestDB
                 .Queryer<Product>()
                 .Where(it => it.Title.TrimStart() == "演示商品01")
                 .QueryOneAsync();
@@ -70,7 +70,7 @@ namespace MyDAL.Test.Func
             xx=string.Empty;
 
             await PreRTrim();
-            var res3 = await Conn
+            var res3 = await MyDAL_TestDB
                 .Queryer<Product>()
                 .Where(it => it.Title.TrimEnd() == "演示商品01")
                 .QueryOneAsync();

@@ -21,7 +21,7 @@ namespace MyDAL.Compare
             var xx5 = string.Empty;
 
             var guid5 = Guid.Parse("08d6036c-66c8-7c2c-83b0-725f93ff8137");
-            var res5 = await Conn
+            var res5 = await MyDAL_TestDB
                 .Queryer(out AddressInfo address5, out AddressInfo address55)
                 .From(() => address5)
                     .InnerJoin(() => address55)
@@ -32,7 +32,7 @@ namespace MyDAL.Compare
             Assert.True(res5.Count == 1);
             Assert.True(res5.First().IsDefault);
 
-            var res51 = await Conn
+            var res51 = await MyDAL_TestDB
                 .Queryer(out AddressInfo address51, out AddressInfo address511)
                 .From(() => address51)
                     .InnerJoin(() => address511)
@@ -43,7 +43,7 @@ namespace MyDAL.Compare
             Assert.True(res51.First().IsDefault);
 
             var guid52 = Guid.Parse("6f390324-2c07-40cf-90ca-0165569461b1");
-            var res52 = await Conn
+            var res52 = await MyDAL_TestDB
                 .Queryer(out AddressInfo address52, out AddressInfo address521)
                 .From(() => address52)
                     .InnerJoin(() => address521)
@@ -61,7 +61,7 @@ namespace MyDAL.Compare
 
             xx = string.Empty;
 
-            var res61 = await Conn
+            var res61 = await MyDAL_TestDB
                 .Queryer<Product>()
                 .Where(it => it.VipProduct.Value == false)
                 .QueryPagingAsync(1, 10);
@@ -70,7 +70,7 @@ namespace MyDAL.Compare
 
             
 
-            var res62 = await Conn
+            var res62 = await MyDAL_TestDB
                 .Queryer<Product>()
                 .Where(it => it.VipProduct.Value == true)
                 .QueryPagingAsync(1, 10);
@@ -90,7 +90,7 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => true) // true 
                 .QueryListAsync();
@@ -108,7 +108,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // where 1=1
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => false) //  false
                 .QueryListAsync();
@@ -126,7 +126,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // where 1=1
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
@@ -146,7 +146,7 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
@@ -167,7 +167,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // where 1=1
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
@@ -187,7 +187,7 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
@@ -207,7 +207,7 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<AspnetUsers>()
                 .Where(it => it.RootUser)  //  true
                 .QueryPagingAsync(1, 10);
@@ -224,7 +224,7 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<AspnetUsers>()
                 .Where(it => it.RootUser == true)  //  true
                 .QueryPagingAsync(1, 10);
@@ -241,7 +241,7 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<AspnetUsers>()
                 .Where(it => it.RootUser == false)  //  false
                 .QueryPagingAsync(1, 10);
@@ -259,7 +259,7 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<AspnetUsers>()
                 .Where(it => !it.RootUser)  //  false
                 .QueryPagingAsync(1, 10);
@@ -277,7 +277,7 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<AspnetUsers>()
                 .Where(it => !(it.RootUser == true))  //  false
                 .QueryPagingAsync(1, 10);
@@ -294,7 +294,7 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<AspnetUsers>()
                 .Where(it => !(it.RootUser == false))  //  true
                 .QueryPagingAsync(1, 10);
@@ -311,7 +311,7 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<AddressInfo>()
                 .Where(it => it.IsDefault.Value)  //  true
                 .QueryListAsync();
@@ -329,7 +329,7 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<AddressInfo>()
                 .Where(it => it.IsDefault.Value == true)  //  true
                 .QueryListAsync();
@@ -347,7 +347,7 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<AddressInfo>()
                 .Where(it => it.IsDefault.Value == false)  //  false 
                 .QueryListAsync();
@@ -365,7 +365,7 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<Product>()
                 .Where(it => it.VipProduct == null)  //  is null  <--  nullable<bool>
                 .QueryPagingAsync(1, 10);
@@ -382,7 +382,7 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<Product>()
                 .Where(it => it.VipProduct != null)  //  is not null  <--  nullable<bool>
                 .QueryPagingAsync(1, 10);
@@ -399,7 +399,7 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<AddressInfo>()
                 .Where(it => !it.IsDefault.Value)  //  false
                 .QueryListAsync();
@@ -416,7 +416,7 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<AddressInfo>()
                 .Where(it => !(it.IsDefault.Value == true))  //  false
                 .QueryListAsync();
@@ -433,7 +433,7 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<AddressInfo>()
                 .Where(it => !(it.IsDefault.Value == false))  //  true 
                 .QueryListAsync();
@@ -450,7 +450,7 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<Product>()
                 .Where(it => !(it.VipProduct == null))  //  is not null  <--  nullable<bool>
                 .QueryPagingAsync(1, 10);
@@ -467,7 +467,7 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<Product>()
                 .Where(it => !(it.VipProduct != null))  //  is null  <--  nullable<bool>
                 .QueryPagingAsync(1, 10);
@@ -484,7 +484,7 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer(out AddressInfo addr, out AddressInfo addr2)
                 .From(() => addr)
                     .InnerJoin(() => addr2)
@@ -505,7 +505,7 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer(out AddressInfo addr, out AddressInfo addr2)
                 .From(() => addr)
                     .InnerJoin(() => addr2)
@@ -526,7 +526,7 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer(out AddressInfo addr, out AddressInfo addr2)
                 .From(() => addr)
                     .InnerJoin(() => addr2)
@@ -547,7 +547,7 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer(out AddressInfo addr, out AddressInfo addr2)
                 .From(() => addr)
                     .InnerJoin(() => addr2)
@@ -567,7 +567,7 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer(out AddressInfo addr, out AddressInfo addr2)
                 .From(() => addr)
                     .InnerJoin(() => addr2)
@@ -587,7 +587,7 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer(out AddressInfo addr, out AddressInfo addr2)
                 .From(() => addr)
                     .InnerJoin(() => addr2)
@@ -607,7 +607,7 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer(out AddressInfo addr, out AddressInfo addr2)
                 .From(() => addr)
                     .InnerJoin(() => addr2)

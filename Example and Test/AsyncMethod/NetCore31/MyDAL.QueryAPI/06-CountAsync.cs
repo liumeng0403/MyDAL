@@ -15,7 +15,7 @@ namespace MyDAL.QueryAPI
         {
             xx = string.Empty;
 
-            var res1 = await Conn.CountAsync<Agent>(it => it.Name.Length > 3);
+            var res1 = await MyDAL_TestDB.CountAsync<Agent>(it => it.Name.Length > 3);
 
             Assert.True(res1 == 116);
 
@@ -33,7 +33,7 @@ namespace MyDAL.QueryAPI
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.Name.Contains("陈%"))
                 .CountAsync();
@@ -49,7 +49,7 @@ namespace MyDAL.QueryAPI
             xx = string.Empty;
 
             // count(id)  like "陈%"
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.Name.Contains("陈%"))
                 .CountAsync(it => it.Id);
@@ -64,7 +64,7 @@ namespace MyDAL.QueryAPI
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer(out Agent agent3, out AgentInventoryRecord record3)
                 .From(() => agent3)
                     .InnerJoin(() => record3)
@@ -82,7 +82,7 @@ namespace MyDAL.QueryAPI
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer(out Agent agent4, out AgentInventoryRecord record4)
                 .From(() => agent4)
                     .InnerJoin(() => record4)
@@ -100,7 +100,7 @@ namespace MyDAL.QueryAPI
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Distinct()
                 .CountAsync(it => it.AgentLevel);
@@ -117,7 +117,7 @@ namespace MyDAL.QueryAPI
 
             try
             {
-                var res1 = await Conn
+                var res1 = await MyDAL_TestDB
                     .Queryer(out Agent agent, out AgentInventoryRecord record)
                     .From(() => agent)
                         .InnerJoin(() => record)

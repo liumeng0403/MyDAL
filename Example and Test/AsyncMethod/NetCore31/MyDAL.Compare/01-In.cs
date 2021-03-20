@@ -235,7 +235,7 @@ namespace MyDAL.Compare
 
             StringArray = nameArray;
             // where in -- this.prop string[]
-            var res17 = await Conn
+            var res17 = await 
                 .Queryer<Agent>()
                 .Where(it => StringArray.Contains(it.Name))
                 .QueryListAsync();
@@ -295,7 +295,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // where in -- string[] init
-            var res21 = await Conn
+            var res21 = await 
                 .Queryer<Agent>()
                 .Where(it => new string[] { "黄银凤", "刘建芬" }.Contains(it.Name))
                 .QueryListAsync();
@@ -308,7 +308,7 @@ namespace MyDAL.Compare
             var xx22 = string.Empty;
 
             // where in -- enum[] init
-            var res22 = await Conn
+            var res22 = await 
                 .Queryer<Agent>()
                 .Where(it => new AgentLevel?[] { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel))
                 .QueryListAsync();
@@ -321,7 +321,7 @@ namespace MyDAL.Compare
             var guid241 = Guid.Parse("0048793b-ca61-457e-a2b4-0165442f3684");
             var guid242 = Guid.Parse("004f4290-9576-43b9-903f-01654434da0f");
             // where in -- string[] init
-            var res24 = await Conn
+            var res24 = await 
                 .Queryer<Agent>()
                 .Where(it => new string[] { "黄银凤", "刘建芬" }.Contains(it.Name) || new List<Guid> { guid241, guid242 }.Contains(it.Id))
                 .QueryListAsync();
@@ -402,7 +402,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // in
-            var res2 = await Conn.QueryListAsync<Agent>(it => !new List<AgentLevel?> { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel));
+            var res2 = await .QueryListAsync<Agent>(it => !new List<AgentLevel?> { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel));
 
             Assert.True(res2.Count == 28065);
 
@@ -420,7 +420,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // in
-            var res5 = await Conn
+            var res5 = await 
                 .Queryer<Agent>()
                 .Where(it => new List<string> { "黄银凤", "刘建芬" }.Contains(it.Name))
                 .QueryListAsync();
@@ -440,7 +440,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // in
-            var res5 = await Conn
+            var res5 = await 
                 .Queryer<Agent>()
                 .Where(it => !new List<string> { "黄银凤", "刘建芬" }.Contains(it.Name))
                 .QueryListAsync();
@@ -461,7 +461,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // in
-            var res1 = await Conn
+            var res1 = await 
                 .Queryer(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
@@ -486,7 +486,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // not in
-            var res1 = await Conn
+            var res1 = await 
                 .Queryer(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
@@ -516,7 +516,7 @@ namespace MyDAL.Compare
             };
 
             // in
-            var res1 = await Conn
+            var res1 = await 
                 .Queryer<Agent>()
                 .Where(it => enums.Contains(it.AgentLevel))
                 .QueryListAsync();
@@ -559,7 +559,7 @@ namespace MyDAL.Compare
             };
 
             // in
-            var res12 = await Conn
+            var res12 = await 
                 .Queryer<Agent>()
                 .Where(it => enumArray.Contains(it.AgentLevel))
                 .QueryListAsync();
@@ -581,7 +581,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // not in
-            var res1 = await Conn
+            var res1 = await 
                 .Queryer<Agent>()
                 .Where(it => !new AgentLevel?[] { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel))
                 .QueryListAsync();
@@ -607,7 +607,7 @@ namespace MyDAL.Compare
             }.Select(it=>it);
 
             // in
-            var res1 = await Conn
+            var res1 = await 
                 .Queryer<Agent>()
                 .Where(it => enums.Contains(it.AgentLevel))
                 .QueryListAsync();
@@ -626,7 +626,7 @@ namespace MyDAL.Compare
             var arr = new AgentLevel?[] { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Where(it => true);
 
             // in
-            var res1 = await Conn
+            var res1 = await 
                 .Queryer(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)

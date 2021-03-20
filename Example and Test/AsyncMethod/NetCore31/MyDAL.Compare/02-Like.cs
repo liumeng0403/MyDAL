@@ -22,10 +22,10 @@ namespace MyDAL.Compare
             };
 
             // 清理数据
-            var resx1 = await Conn.QueryOneAsync<BodyFitRecord>(it => it.Id == m.Id);
+            var resx1 = await .QueryOneAsync<BodyFitRecord>(it => it.Id == m.Id);
             if (resx1 != null)
             {
-                var resx2 = await Conn.DeleteAsync<BodyFitRecord>(it => it.Id == resx1.Id);
+                var resx2 = await MyDAL_TestDB.DeleteAsync<BodyFitRecord>(it => it.Id == resx1.Id);
             }
 
             // 新建
@@ -67,7 +67,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // 默认 "%"+"xx"+"%"
-            var res1 = await Conn.QueryOneAsync<BodyFitRecord>(it => it.BodyMeasureProperty.Contains("xx"));
+            var res1 = await MyDAL_TestDB.QueryOneAsync<BodyFitRecord>(it => it.BodyMeasureProperty.Contains("xx"));
             Assert.NotNull(res1);
 
             
@@ -77,7 +77,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // 默认 "%"+"~00-d-3-1-"+"%"
-            var res3 = await Conn
+            var res3 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
                     .And(it => it.PathId.Contains("~00-d-3-1-"))
@@ -97,7 +97,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // like
-            var res1 = await Conn.QueryListAsync<Agent>(it => it.Name.Contains("陈"));
+            var res1 = await MyDAL_TestDB.QueryListAsync<Agent>(it => it.Name.Contains("陈"));
 
             Assert.True(res1.Count == 1431);
 
@@ -115,7 +115,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // not like
-            var res1 = await Conn.QueryListAsync<Agent>(it => !it.Name.Contains("刘"));
+            var res1 = await MyDAL_TestDB.QueryListAsync<Agent>(it => !it.Name.Contains("刘"));
 
             Assert.True(res1.Count == 27159);
 

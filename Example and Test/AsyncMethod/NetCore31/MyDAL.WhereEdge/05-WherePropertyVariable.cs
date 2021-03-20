@@ -18,7 +18,7 @@ namespace MyDAL.WhereEdge
             xx = string.Empty;
 
             AgentId = Guid.Parse("00079c84-a511-418b-bd5b-0165442eb30a");
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.Id == AgentId)
                 .QueryOneAsync<AgentVM>();

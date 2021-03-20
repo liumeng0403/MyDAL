@@ -14,7 +14,7 @@ namespace MyDAL.Test.Func
 
             xx = string.Empty;
 
-            var res2 = await Conn
+            var res2 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Distinct()
                 .QueryListAsync(it => it.Name);
@@ -25,14 +25,14 @@ namespace MyDAL.Test.Func
 
             xx = string.Empty;
 
-            var res6 = await Conn
+            var res6 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.Name == "刘中华")
                 .Distinct()
                 .QueryOneAsync();
 
             Assert.NotNull(res6);
-            var res61 = await Conn.QueryListAsync<Agent>(it => it.Name == "刘中华");
+            var res61 = await MyDAL_TestDB.QueryListAsync<Agent>(it => it.Name == "刘中华");
             Assert.True(res61.Count == 2);
 
             
@@ -41,7 +41,7 @@ namespace MyDAL.Test.Func
 
             xx = string.Empty;
 
-            var res7 = await Conn
+            var res7 = await MyDAL_TestDB
                 .Queryer(out Agent agent1, out AgentInventoryRecord record1)
                 .From(() => agent1)
                     .InnerJoin(() => record1)

@@ -18,7 +18,7 @@ namespace MyDAL.WhereEdge
             {
                 xx = string.Empty;
 
-                if (!await Conn
+                if (!await MyDAL_TestDB
                         .Queryer<PlatformMonthlyPerformance>()
                         .Where(it => it.Year == vm.Year)
                             .And(it => it.Month == vm.Month)

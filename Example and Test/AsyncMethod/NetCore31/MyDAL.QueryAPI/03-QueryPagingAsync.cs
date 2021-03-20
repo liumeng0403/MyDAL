@@ -22,7 +22,7 @@ namespace MyDAL.QueryAPI
             xx = string.Empty;
 
             // order by
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.AgentLevel == (AgentLevel)128)
                 .OrderBy(it => it.PathId)
@@ -38,7 +38,7 @@ namespace MyDAL.QueryAPI
             xx = string.Empty;
 
             // key
-            var res2 = await Conn
+            var res2 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.AgentLevel == (AgentLevel)2)
                 .QueryPagingAsync(1, 10);
@@ -51,14 +51,14 @@ namespace MyDAL.QueryAPI
 
             xx = string.Empty;
 
-            var res4 = await Conn
+            var res4 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.CreatedOn >= WhereTest.CreatedOn)
                 .QueryPagingAsync(1, 10);
 
             
 
-            var resR4 = await Conn
+            var resR4 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => WhereTest.CreatedOn <= it.CreatedOn)
                 .QueryPagingAsync(1, 10);
@@ -79,7 +79,7 @@ namespace MyDAL.QueryAPI
             xx = string.Empty;
 
             // where method -- option orderby 
-            var res7 = await Conn
+            var res7 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.Name == "樊士芹")
                 .OrderBy(it => it.Name, OrderByEnum.Desc)
@@ -105,7 +105,7 @@ namespace MyDAL.QueryAPI
 
             xx = string.Empty;
 
-            var res11 = await Conn
+            var res11 = await MyDAL_TestDB
                 .Queryer(out Agent agent11, out AgentInventoryRecord record11)
                 .From(() => agent11)
                     .InnerJoin(() => record11)
@@ -135,7 +135,7 @@ namespace MyDAL.QueryAPI
             xx = string.Empty;
 
             // 无条件
-            var res13 = await Conn
+            var res13 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .QueryPagingAsync<AgentVM>(1, 10);
 
@@ -158,7 +158,7 @@ namespace MyDAL.QueryAPI
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .QueryPagingAsync(1, 10, it => it.Id);
 
@@ -178,7 +178,7 @@ namespace MyDAL.QueryAPI
 
             xx = string.Empty;
 
-            var res3 = await Conn
+            var res3 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .QueryPagingAsync(1, 10);
 
@@ -196,7 +196,7 @@ namespace MyDAL.QueryAPI
 
             xx = string.Empty;
 
-            var res7 = await Conn
+            var res7 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .QueryPagingAsync<AgentVM>(1, 10);
 
@@ -215,7 +215,7 @@ namespace MyDAL.QueryAPI
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .QueryPagingAsync(1, 10, it => new AgentVM
                 {
@@ -239,7 +239,7 @@ namespace MyDAL.QueryAPI
 
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
                 .QueryPagingAsync(1, 10, it => it.Name);
@@ -259,7 +259,7 @@ namespace MyDAL.QueryAPI
             xx = string.Empty;
 
             // 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<WechatPaymentRecord>()
                 .Where(it => it.Amount > 1)
                 .QueryPagingAsync(1, 10);
@@ -275,14 +275,14 @@ namespace MyDAL.QueryAPI
 
             xx = string.Empty;
 
-            var res6 = await Conn
+            var res6 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
                 .QueryPagingAsync<AgentVM>(1, 10);
 
             
 
-            var resR6 = await Conn
+            var resR6 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30) <= it.CreatedOn)
                 .QueryPagingAsync<AgentVM>(1, 10);
@@ -305,7 +305,7 @@ namespace MyDAL.QueryAPI
 
             xx = string.Empty;
 
-            var res8 = await Conn
+            var res8 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
                 .QueryPagingAsync(1, 10, agent => new AgentVM
@@ -329,7 +329,7 @@ namespace MyDAL.QueryAPI
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
@@ -347,7 +347,7 @@ namespace MyDAL.QueryAPI
 
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
@@ -367,7 +367,7 @@ namespace MyDAL.QueryAPI
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
@@ -393,7 +393,7 @@ namespace MyDAL.QueryAPI
 
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer(out Agent agent1, out AgentInventoryRecord record1)
                 .From(() => agent1)
                     .InnerJoin(() => record1)
@@ -415,7 +415,7 @@ namespace MyDAL.QueryAPI
 
             xx = string.Empty;
 
-            var res5 = await Conn
+            var res5 = await MyDAL_TestDB
                 .Queryer(out Agent agent5, out AgentInventoryRecord record5)
                 .From(() => agent5)
                     .InnerJoin(() => record5)
@@ -437,7 +437,7 @@ namespace MyDAL.QueryAPI
 
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
@@ -492,8 +492,8 @@ namespace MyDAL.QueryAPI
             paging.PageIndex = 1;
             paging.PageSize = 10;
 
-            paging.TotalCount = await Conn.QueryOneAsync<int>(totalSql, paras);
-            paging.Data = await Conn.QueryListAsync<Guid>(dataSql, paras);
+            paging.TotalCount = await MyDAL_TestDB.QueryOneAsync<int>(totalSql, paras);
+            paging.Data = await MyDAL_TestDB.QueryListAsync<Guid>(dataSql, paras);
 
             Assert.True(paging.TotalPage == 58);
 
@@ -540,8 +540,8 @@ namespace MyDAL.QueryAPI
             paging.PageIndex = 1;
             paging.PageSize = 10;
 
-            paging.TotalCount = await Conn.QueryOneAsync<int>(totalSql, paras);
-            paging.Data = await Conn.QueryListAsync<AgentVM>(dataSql, paras);
+            paging.TotalCount = await MyDAL_TestDB.QueryOneAsync<int>(totalSql, paras);
+            paging.Data = await MyDAL_TestDB.QueryListAsync<AgentVM>(dataSql, paras);
 
             Assert.True(paging.Data.Count == 10);
 

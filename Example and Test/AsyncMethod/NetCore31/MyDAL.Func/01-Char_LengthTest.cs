@@ -19,7 +19,7 @@ namespace MyDAL.Test.Func
             xx = string.Empty;
 
             // .Where(a => a.Name.Length > 0)
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.Name.Length > 2)
                 .QueryListAsync();
@@ -30,7 +30,7 @@ namespace MyDAL.Test.Func
             xx = string.Empty;
 
             // .Where(a => a.Name.Length > 0)
-            var resR1 = await Conn
+            var resR1 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => 2 < it.Name.Length)
                 .QueryListAsync();
@@ -44,7 +44,7 @@ namespace MyDAL.Test.Func
             xx = string.Empty;
 
             // .Where(a => a.Name.Length > 0)
-            var res2 = await Conn
+            var res2 = await MyDAL_TestDB
                 .Queryer(out Agent agent2, out AgentInventoryRecord record2)
                 .From(() => agent2)
                     .InnerJoin(() => record2)
@@ -60,7 +60,7 @@ namespace MyDAL.Test.Func
             xx = string.Empty;
 
             // .Where(a => a.Name.Length > 0)
-            var res3 = await Conn
+            var res3 = await MyDAL_TestDB
                 .Queryer(out Agent agent3, out AgentInventoryRecord record3)
                 .From(() => agent3)
                     .InnerJoin(() => record3)

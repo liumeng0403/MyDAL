@@ -42,7 +42,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // <= --> <=
-            var res2 = await Conn.QueryListAsync<Agent>(it => it.CreatedOn <= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30));
+            var res2 = await .QueryListAsync<Agent>(it => it.CreatedOn <= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30));
 
             Assert.True(res2.Count == 1);
 

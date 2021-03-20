@@ -13,7 +13,7 @@ namespace MyDAL.SqlAction
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .OrderBy(it => it.Name, OrderByEnum.Desc)
                 .QueryPagingAsync(1, 10, it => it.Name);
@@ -38,7 +38,7 @@ namespace MyDAL.SqlAction
         {
             xx = string.Empty;
 
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.Name.StartsWith("张"))
                 .OrderBy(it => it.Name, OrderByEnum.Desc)

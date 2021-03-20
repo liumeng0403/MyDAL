@@ -18,14 +18,14 @@ namespace MyDAL.WhereEdge
             xx = string.Empty;
 
             // >= obj.DateTime
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<BodyFitRecord>()
                 .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
                 .QueryListAsync();
 
             
 
-            var resR1 = await Conn
+            var resR1 = await MyDAL_TestDB
                 .Queryer<BodyFitRecord>()
                 .Where(it => Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30) <= it.CreatedOn)
                 .QueryListAsync();
@@ -41,14 +41,14 @@ namespace MyDAL.WhereEdge
             var start = Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30).AddDays(-10);
 
             // >= variable(DateTime)
-            var res2 = await Conn
+            var res2 = await MyDAL_TestDB
                 .Queryer<BodyFitRecord>()
                 .Where(it => it.CreatedOn >= start)
                 .QueryListAsync();
 
             
 
-            var resR2 = await Conn
+            var resR2 = await MyDAL_TestDB
                 .Queryer<BodyFitRecord>()
                 .Where(it => start <= it.CreatedOn)
                 .QueryListAsync();
@@ -62,14 +62,14 @@ namespace MyDAL.WhereEdge
             var xx3 = string.Empty;
 
             // <= DateTime
-            var res3 = await Conn
+            var res3 = await MyDAL_TestDB
                 .Queryer<BodyFitRecord>()
                 .Where(it => it.CreatedOn <= DateTime.Now)
                 .QueryListAsync();
 
             
 
-            var resR3 = await Conn
+            var resR3 = await MyDAL_TestDB
                 .Queryer<BodyFitRecord>()
                 .Where(it => DateTime.Now >= it.CreatedOn)
                 .QueryListAsync();

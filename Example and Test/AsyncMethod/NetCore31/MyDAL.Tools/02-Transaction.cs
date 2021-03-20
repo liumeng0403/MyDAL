@@ -12,7 +12,7 @@ namespace MyDAL.Tools
         {
             xx = string.Empty;
 
-            using (var conn = Conn)
+            using (var conn = MyDAL_TestDB)
             {
 
                 await conn.OpenAsync();
@@ -33,7 +33,7 @@ namespace MyDAL.Tools
         {
             xx = string.Empty;
 
-            var conn = Conn;
+            var conn = MyDAL_TestDB;
 
             await conn.OpenAsync();
 
@@ -56,7 +56,7 @@ namespace MyDAL.Tools
         {
             xx = string.Empty;
 
-            var conn = Conn;
+            var conn = MyDAL_TestDB;
 
             using (conn)
             {
@@ -75,7 +75,7 @@ namespace MyDAL.Tools
         {
             xx = string.Empty;
 
-            var conn = Conn;
+            var conn = MyDAL_TestDB;
 
             conn.Open();
 
@@ -93,7 +93,7 @@ namespace MyDAL.Tools
         {
             xx = string.Empty;
 
-            var conn = Conn;
+            var conn = MyDAL_TestDB;
 
             conn.BeginTransaction();
 
