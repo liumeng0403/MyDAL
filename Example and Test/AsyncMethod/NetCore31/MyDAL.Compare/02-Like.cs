@@ -22,7 +22,7 @@ namespace MyDAL.Compare
             };
 
             // 清理数据
-            var resx1 = await .QueryOneAsync<BodyFitRecord>(it => it.Id == m.Id);
+            var resx1 = await MyDAL_TestDB.QueryOneAsync<BodyFitRecord>(it => it.Id == m.Id);
             if (resx1 != null)
             {
                 var resx2 = await MyDAL_TestDB.DeleteAsync<BodyFitRecord>(it => it.Id == resx1.Id);
