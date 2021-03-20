@@ -14,10 +14,10 @@
 [![](https://img.shields.io/badge/Apache-2.0-blue.svg)](https://github.com/liumeng0403/MyDAL/blob/master/License)
 
 
-<b>Nuget:</b>
+## Nuget:
 ><a href="https://www.nuget.org/packages/MyDAL/" target="_blank">PM> Install-Package MyDAL -Version 0.9.1</a>
 
-<b>Tutorials:</b><br/>
+## Tutorials:
 * <a href="http://www.cnblogs.com/Meng-NET/p/8963476.html" target="_blank">目录索引</a>
 * <a href="https://www.cnblogs.com/Meng-NET/p/10355760.html" target="_blank">MyDAL - 组件适用范围说明</a>
 * <a href="https://www.cnblogs.com/Meng-NET/p/9831746.html" target="_blank">MyDAL - 快速使用</a>
@@ -35,10 +35,12 @@
 * <a href="https://www.cnblogs.com/Meng-NET/p/10470504.html" target="_blank">MyDAL - in && not in 条件 使用</a>
 * <a href="https://www.cnblogs.com/Meng-NET/p/10500946.html" target="_blank">MyDAL - 引用类型对象 .DeepClone() 深度克隆[深度复制] 工具 使用</a>
 
-<b>Clone && Fork:</b>
+## Clone && Fork:
+>单兵作战, <b>私活</b>利器</b>.<br/>
+>大龄失业程序员, <b>养家糊口</b>神器.<br/>
 >有帮助的同学不要忘了<b>右上角</b>给点个<b>Star(★)</b>.
 
-<b>Histories:</b>
+## Histories:
 ><a href="https://www.nuget.org/packages/EasyDAL.Exchange/" target="_blank">EasyDAL.Exchange (0.0.1-0.2.3)</a><br/>
 ><a href="https://www.nuget.org/packages/Yunyong.DataExchange/" target="_blank">Yunyong.DataExchange (1.0.23-1.3.0)</a><br/>
 ><a href="https://www.nuget.org/packages/HPC.DAL/" target="_blank">HPC.DAL (1.0.0-1.1.4)</a>
