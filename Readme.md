@@ -36,6 +36,8 @@
 * <a href="https://www.cnblogs.com/Meng-NET/p/10500946.html" target="_blank">MyDAL - 引用类型对象 .DeepClone() 深度克隆[深度复制] 工具 使用</a>
 
 <b>Clone && Fork:</b>
+>单兵作战, <b>私活</b>利器</b>.<br/>
+>大龄失业程序员, 养家糊口<b>必备</b>神器.<br/>
 >有帮助的同学不要忘了<b>右上角</b>给点个<b>Star(★)</b>.
 
 <b>Histories:</b>
