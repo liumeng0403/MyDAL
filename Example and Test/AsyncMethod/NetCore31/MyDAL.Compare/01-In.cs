@@ -18,22 +18,22 @@ namespace MyDAL.Compare
         private string[] StringArray { get; set; }
         private async Task PereValue()
         {
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.Id == Guid.Parse("03f0a7b4-acd3-4003-b686-01654436e906"))
                 .QueryOneAsync();
 
-            var res2 = await Conn
+            var res2 = await MyDAL_TestDB
                 .Updater<Agent>()
                 .Set(it => it.DirectorStarCount, 10)
                 .Where(it => it.Id == res1.Id)
                 .UpdateAsync();
-            var res3 = await Conn
+            var res3 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => it.Id == Guid.Parse("03fc18e2-4b1e-4aa2-832b-0165443388bd"))
                 .QueryOneAsync();
 
-            var res4 = await Conn
+            var res4 = await MyDAL_TestDB
                 .Updater<Agent>()
                 .Set(it => it.DirectorStarCount, 5)
                 .Where(it => it.Id == res3.Id)
@@ -56,7 +56,7 @@ namespace MyDAL.Compare
 
             EnumList = enums;
             // where in -- this.prop List<enum>
-            var res3 = await Conn
+            var res3 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => EnumList.Contains(it.AgentLevel))
                 .QueryListAsync();
@@ -73,7 +73,7 @@ namespace MyDAL.Compare
                 "刘建芬"
             };
             // where in  --  variable  List<string>  
-            var res4 = await Conn
+            var res4 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => names.Contains(it.Name))
                 .QueryListAsync();
@@ -86,7 +86,7 @@ namespace MyDAL.Compare
 
             StringList = names;
             // where in -- this.prop List<string>
-            var res6 = await Conn
+            var res6 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => StringList.Contains(it.Name))
                 .QueryListAsync();
@@ -106,7 +106,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // where in -- List<int>  init 
-            var res7 = await Conn
+            var res7 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => new List<int> { 5, 10 }.Contains(it.DirectorStarCount))
                 .QueryListAsync();
@@ -118,7 +118,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // where in -- List<long> init
-            var res8 = await Conn
+            var res8 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => new List<long> { 5, 10 }.Contains(it.DirectorStarCount))
                 .QueryListAsync();
@@ -130,7 +130,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // where in -- List<short> init
-            var res9 = await Conn
+            var res9 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => new List<short> { 5, 10 }.Contains((short)(it.DirectorStarCount)))
                 .QueryListAsync();
@@ -146,7 +146,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // where in -- List<string> init
-            var res10 = await Conn
+            var res10 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => new List<string> { "黄银凤", "刘建芬" }.Contains(it.Name))
                 .QueryListAsync();
@@ -159,7 +159,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // where in -- List<enum> init
-            var res11 = await Conn
+            var res11 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => new List<AgentLevel?> { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel))
                 .QueryListAsync();
@@ -177,7 +177,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // where in -- obj.prop enum[]
-            var res13 = await Conn
+            var res13 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => WhereTest.In_Array_枚举.Contains(it.AgentLevel))
                 .QueryListAsync();
@@ -190,7 +190,7 @@ namespace MyDAL.Compare
 
             EnumArray = enumArray;
             // where in -- this.prop enum[]
-            var res14 = await Conn
+            var res14 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => EnumArray.Contains(it.AgentLevel))
                 .QueryListAsync();
@@ -210,7 +210,7 @@ namespace MyDAL.Compare
                 "刘建芬"
             };
             // where in  --  variable  string[]  
-            var res15 = await Conn
+            var res15 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => nameArray.Contains(it.Name))
                 .QueryListAsync();
@@ -222,7 +222,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // where in -- obj.prop string[]
-            var res16 = await Conn
+            var res16 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => WhereTest.In_Array_String.Contains(it.Name))
                 .QueryListAsync();
@@ -255,7 +255,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // where in -- int[]  init 
-            var res18 = await Conn
+            var res18 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => new int[] { 5, 10 }.Contains(it.DirectorStarCount))
                 .QueryListAsync();
@@ -267,7 +267,7 @@ namespace MyDAL.Compare
             var xx19 = string.Empty;
 
             // where in -- long[] init
-            var res19 = await Conn
+            var res19 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => new long[] { 5L, 10L }.Contains(it.DirectorStarCount))
                 .QueryListAsync();
@@ -279,7 +279,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // where in -- short[] init
-            var res20 = await Conn
+            var res20 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => new short[] { 5, 10 }.Contains((short)(it.DirectorStarCount)))
                 .QueryListAsync();
@@ -334,7 +334,7 @@ namespace MyDAL.Compare
             var xx25 = string.Empty;
 
             // where in -- string[] init
-            var res25 = await Conn
+            var res25 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => new string[] { "刘建芬" }.Contains(it.Name))
                 .QueryListAsync();
@@ -347,7 +347,7 @@ namespace MyDAL.Compare
             var xx26 = string.Empty;
 
             // where in -- string[] init
-            var res26 = await Conn
+            var res26 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => new string[] { "刘建芬" }.Contains(it.Name) || new List<Guid> { guid241 }.Contains(it.Id))
                 .QueryListAsync();
@@ -362,7 +362,7 @@ namespace MyDAL.Compare
             try
             {
                 // where in -- string[] init
-                var res27 = await Conn
+                var res27 = await MyDAL_TestDB
                     .Queryer<Agent>()
                     .Where(it => new List<Guid> { }.Contains(it.Id))
                     .QueryListAsync();
@@ -385,7 +385,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // in
-            var res2 = await Conn.QueryListAsync<Agent>(it => new List<AgentLevel?> { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel));
+            var res2 = await MyDAL_TestDB.QueryListAsync<Agent>(it => new List<AgentLevel?> { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel));
 
             Assert.True(res2.Count == 555);
 
@@ -533,7 +533,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // not in
-            var res1 = await Conn
+            var res1 = await MyDAL_TestDB
                 .Queryer<Agent>()
                 .Where(it => !new List<AgentLevel?> { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel))
                 .QueryListAsync();

@@ -61,7 +61,7 @@ namespace MyDAL.Test
         /// <summary>
         /// MySQL
         /// </summary>
-        protected XConnection Conn
+        protected XConnection MyDAL_TestDB
         {
             get
             {
@@ -122,7 +122,7 @@ namespace MyDAL.Test
         {
             xx = string.Empty;
 
-            await Conn.DeleteAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char");
+            await MyDAL_TestDB.DeleteAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char");
 
             var flag = num % 2 == 0;
 
@@ -212,7 +212,7 @@ namespace MyDAL.Test
             m.Bit = true;
             m.Bit_Null = flag ? null : (bool?)false;
 
-            await Conn.CreateAsync(m);
+            await MyDAL_TestDB.CreateAsync(m);
 
             xx = string.Empty;
         }

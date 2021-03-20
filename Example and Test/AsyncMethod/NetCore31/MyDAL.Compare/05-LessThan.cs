@@ -17,7 +17,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // < --> <
-            var res1 = await Conn.QueryListAsync<Agent>(it => it.CreatedOn < DateTime.Parse("2019-02-10"));
+            var res1 = await MyDAL_TestDB.QueryListAsync<Agent>(it => it.CreatedOn < DateTime.Parse("2019-02-10"));
 
             Assert.True(res1.Count == 28620);
 
@@ -33,7 +33,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // !(<) --> >=
-            var res1 = await Conn.QueryListAsync<Agent>(it => !(it.CreatedOn < DateTime.Parse("2019-02-10")));
+            var res1 = await MyDAL_TestDB.QueryListAsync<Agent>(it => !(it.CreatedOn < DateTime.Parse("2019-02-10")));
 
             Assert.True(res1.Count == 0);
 
@@ -44,7 +44,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // >= --> >=
-            var res2 = await Conn.QueryListAsync<AlipayPaymentRecord>(it => it.CreatedOn >= DateTime.Parse("2018-08-20"));
+            var res2 = await MyDAL_TestDB.QueryListAsync<AlipayPaymentRecord>(it => it.CreatedOn >= DateTime.Parse("2018-08-20"));
 
             Assert.True(res2.Count == 29);
 
