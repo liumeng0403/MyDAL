@@ -1,20 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>0.9.1.13</Version>
+    <Version>0.9.1.14</Version>
     <Authors>Meng.NET</Authors>
     <Company></Company>
     <Product>MyDAL</Product>
     <Description>The fastest and best ORM lite on C# for MySQL ! 
         -- 友好, 轻量, 极致性能, 无任何第三方依赖, 持续演进~~</Description>
     <Copyright>2018--2021 Meng.NET</Copyright>
-    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageLicenseUrl></PackageLicenseUrl>
     <PackageProjectUrl>https://www.cnblogs.com/Meng-NET/p/8963476.html</PackageProjectUrl>
     <RepositoryUrl>https://gitee.com/lm-mydal/MyDAL</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>MyDAL,MySQL,ORM</PackageTags>
     <PackageReleaseNotes>由一个开发项目中的 idea 产生,实现与演变 !
        -- https://www.cnblogs.com/Meng-NET/p/8963476.html
+0.9.1.14  增加四个实用函数
 0.9.1.13  .net based 升级, 抛弃 .net standard 平台
 0.9.1.12  版本, 清理代码
 0.9.1.9    版本, Ex 方法实用性完善
@@ -29,9 +30,13 @@
     <ApplicationIcon></ApplicationIcon>
     <Win32Resource />
     <PackageId>MyDAL</PackageId>
-    <PackageIconUrl>http://images.cnblogs.com/cnblogs_com/Meng-NET/1310410/o_MyDAL.png</PackageIconUrl>
-    <AssemblyVersion>0.9.1.13</AssemblyVersion>
-    <FileVersion>0.9.1.13</FileVersion>
+    <PackageIconUrl></PackageIconUrl>
+    <AssemblyVersion>0.9.1.14</AssemblyVersion>
+    <FileVersion>0.9.1.14</FileVersion>
+    <PackageLicenseFile>License</PackageLicenseFile>
+    <PackageIcon>MyDAL_origin.png</PackageIcon>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\MyDAL.xml</DocumentationFile>
@@ -64,6 +69,14 @@
     <None Remove="DataRainbow\PostgreSQL\**" />
     <None Remove="DataRainbow\SQLite\**" />
     <None Remove="DataRainbow\Teradata\**" />
+    <None Include="..\Asserts\MyDAL_origin.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\License">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -22,10 +22,10 @@ namespace MyDAL.Test
         //
         private static XConnection XConn = XConnection
             .Builder()
-            .SetServer("localhost")
-            .SetDatabase("MyDAL_TestDB")
-            .SetUser("SkyUser")
-            .SetPassword("Sky@4321")
+            .SetServer("192.168.89.4")
+            .SetDatabase("mydal_testdb")
+            .SetUser("root")
+            .SetPassword("local_ROOT@123_pwd")
             .SetSslMode(SslModeTypeEnum.None)
             .SetAllowPublicKeyRetrieval(true)
             .SetMySqlDriver<MySqlConnection>()
