@@ -6,6 +6,9 @@ namespace MyDAL.Tools
 {
     public static class ObjectEx
     {
+
+        // StringValues
+
         public static bool ToBool(this object obj)
         {
             var result = false;
