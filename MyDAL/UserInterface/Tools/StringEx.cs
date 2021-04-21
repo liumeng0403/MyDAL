@@ -13,7 +13,23 @@ namespace MyDAL.Tools
         /// <summary>
         /// Is null/empty/whitespace ?
         /// </summary>
+        [Obsolete("请使用IsEmpty/IsBlank方法")]
         public static bool IsNullStr(this string str)
+        {
+            return string.IsNullOrWhiteSpace(str);
+        }
+
+        /// <summary>
+        /// Is null/empty ?
+        /// </summary>
+        public static bool IsEmpty(this string str)
+        {
+            return null == str || 0==str.Length;
+        }
+        /// <summary>
+        /// Is null/empty/whitespace ?
+        /// </summary>
+        public static bool IsBlank(this string str)
         {
             return string.IsNullOrWhiteSpace(str);
         }
@@ -21,9 +37,25 @@ namespace MyDAL.Tools
         /// <summary>
         /// Is not null/empty/whitespace ?
         /// </summary>
+        [Obsolete("请使用IsNotEmpty/IsNotBlank方法")]
         public static bool IsNotNullStr(this string str)
         {
             return !str.IsNullStr();
+        }
+
+        /// <summary>
+        /// Is not null/empty/whitespace ?
+        /// </summary>
+        public static bool IsNotEmpty(this string str)
+        {
+            return !str.IsEmpty();
+        }
+        /// <summary>
+        /// Is not null/empty/whitespace ?
+        /// </summary>
+        public static bool IsNotBlank(this string str)
+        {
+            return !str.IsBlank();
         }
 
         public static bool ToBool(this IReadOnlyCollection<string> str)
@@ -98,6 +130,23 @@ namespace MyDAL.Tools
 
         //public static bool? ToBoolNull(this IReadOnlyCollection<string> str, bool defaultValueIfNull){ }    // 此方法无比要定义
 
+        public static bool IsInt(this IReadOnlyCollection<string> str)
+        {
+
+            /*
+             * 如:
+             * Microsoft.Extensions.Primitives.StringValues
+             */
+
+            if (null == str
+                || str.Count == 0)
+            {
+                return false;
+            }
+
+            return int.TryParse(str.ToString(), out var result);
+        }
+
         public static int ToInt(this IReadOnlyCollection<string> str)
         {
 
@@ -156,6 +205,24 @@ namespace MyDAL.Tools
             }
 
             return str.ToInt();
+        }
+
+
+        public static bool IsLong(this IReadOnlyCollection<string> str)
+        {
+
+            /*
+             * 如:
+             * Microsoft.Extensions.Primitives.StringValues
+             */
+
+            if (null == str
+                || str.Count == 0)
+            {
+                return false;
+            }
+
+            return long.TryParse(str.ToString(), out var result);
         }
 
         public static long ToLong(this IReadOnlyCollection<string> str)

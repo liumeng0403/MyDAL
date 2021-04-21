@@ -7,7 +7,8 @@ namespace MyDAL.Tools
     public static class ObjectEx
     {
 
-        // StringValues
+        // StringValues  defaultVauleWhenNull
+        // string is int long
 
         public static bool ToBool(this object obj)
         {
