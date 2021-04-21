@@ -86,7 +86,7 @@ namespace MyDAL.Tools
 
             var strValue = str.ToString();
 
-            if (strValue.IsNullStr())
+            if (strValue.IsBlank())
             {
                 return false;
             }

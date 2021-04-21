@@ -329,7 +329,7 @@ namespace MyDAL.Core.Configs
         {
             var type = dc.PH.GetType(ui.ColumnType, realType, dc);
             var val = default(object);
-            var flag = ((!ui.CsValueStr.IsNullStr()) && ui.Format.IsNullStr());
+            var flag = ((ui.CsValueStr.IsNotBlank()) && ui.Format.IsBlank());
 
             //
             switch (type)

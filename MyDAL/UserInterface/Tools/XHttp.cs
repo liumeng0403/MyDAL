@@ -36,7 +36,7 @@ namespace MyDAL.Tools
                     this.Request.KeepAlive = false;
                     this.Request.Method = this.RequestMethod;
                     this.Request.Credentials = CredentialCache.DefaultCredentials;
-                    if (!Token.IsNullStr())
+                    if (Token.IsNotBlank())
                     {
                         Request.Headers.Add(HttpRequestHeader.Authorization, $" Bearer {Token}");
                     }

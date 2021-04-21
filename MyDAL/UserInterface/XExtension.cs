@@ -40,7 +40,7 @@ namespace MyDAL
 
         private static void CheckCreate(string sql)
         {
-            if (sql.IsNullStr())
+            if (sql.IsBlank())
             {
                 throw XConfig.EC.Exception(XConfig.EC._080, "Create SQL 语句不能为空！");
             }
@@ -53,7 +53,7 @@ namespace MyDAL
         }
         private static void CheckDelete(string sql)
         {
-            if (sql.IsNullStr())
+            if (sql.IsBlank())
             {
                 throw XConfig.EC.Exception(XConfig.EC._082, "Delete SQL 语句不能为空！");
             }
@@ -66,7 +66,7 @@ namespace MyDAL
         }
         private static void CheckUpdate(string sql)
         {
-            if (sql.IsNullStr())
+            if (sql.IsBlank())
             {
                 throw XConfig.EC.Exception(XConfig.EC._084, "Update SQL 语句不能为空！");
             }
@@ -79,7 +79,7 @@ namespace MyDAL
         }
         private static void CheckQuery(string sql)
         {
-            if (sql.IsNullStr())
+            if (sql.IsBlank())
             {
                 throw XConfig.EC.Exception(XConfig.EC._086, "Query SQL 语句不能为空！");
             }

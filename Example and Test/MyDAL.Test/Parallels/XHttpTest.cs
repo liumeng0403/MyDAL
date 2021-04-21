@@ -18,12 +18,12 @@ namespace MyDAL.Test.Parallels
         {
             if ("GET".Equals(this.RequestMethod, StringComparison.OrdinalIgnoreCase))
             {
-                if (!this.URL.IsNullStr())
+                if (this.URL.IsNotBlank())
                 {
                     return new None { String = new XHttp().GET(this.URL) };
                 }
-                if (!this.URL.IsNullStr()
-                    && !this.Token.IsNullStr())
+                if (this.URL.IsNotBlank()
+                    && this.Token.IsNotBlank())
                 {
                     return new None { String = new XHttp().GET(this.URL, this.Token) };
                 }
@@ -31,18 +31,18 @@ namespace MyDAL.Test.Parallels
 
             if ("POST".Equals(this.RequestMethod, StringComparison.OrdinalIgnoreCase))
             {
-                if (!this.URL.IsNullStr())
+                if (this.URL.IsNotBlank())
                 {
                     return new None { String = new XHttp().POST(this.URL) };
                 }
-                if (!this.URL.IsNullStr()
-                    && !this.JsonContent.IsNullStr())
+                if (this.URL.IsNotBlank()
+                    && this.JsonContent.IsNotBlank())
                 {
                     return new None { String = new XHttp().POST(this.URL, this.JsonContent) };
                 }
-                if (!this.URL.IsNullStr()
-                    && !this.JsonContent.IsNullStr()
-                    && !this.Token.IsNullStr())
+                if (this.URL.IsNotBlank()
+                    && this.JsonContent.IsNotBlank()
+                    && this.Token.IsNotBlank())
                 {
                     return new None { String = new XHttp().POST(this.URL, this.JsonContent, this.Token) };
                 }

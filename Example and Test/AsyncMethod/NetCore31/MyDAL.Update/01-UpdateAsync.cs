@@ -607,13 +607,13 @@ namespace MyDAL.Update
             var set = MyDAL_TestDB.Updater<BodyFitRecord>().SetSegment;
 
             // 根据 条件 判断 是否要对字段 CreatedOn 进行 update
-            if (!time.IsNullStr())
+            if (time.IsNotBlank())
             {
                 set = set.Set(it => it.CreatedOn, DateTime.Parse(time));
             }
 
             // 根据 条件 判断 是否要对字段 BodyMeasureProperty 进行 update
-            if (!propertyVal.IsNullStr())
+            if (propertyVal.IsNotBlank())
             {
                 set = set.Set(it => it.BodyMeasureProperty, propertyVal);
             }

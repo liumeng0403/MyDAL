@@ -98,7 +98,7 @@ namespace MyDAL
         /// </summary>
         public XConnectionBuilder SetUser(string user)
         {
-            if (user.IsNullStr())
+            if (user.IsBlank())
             {
                 throw XConfig.EC.Exception(XConfig.EC._103, "登录帐号 User Id 不能为空!");
             }
@@ -110,7 +110,7 @@ namespace MyDAL
         /// </summary>
         public XConnectionBuilder SetPassword(string pwd)
         {
-            if (pwd.IsNullStr())
+            if (pwd.IsBlank())
             {
                 throw XConfig.EC.Exception(XConfig.EC._104, "登录密码 Password 不能为空!");
             }
@@ -122,7 +122,7 @@ namespace MyDAL
         /// </summary>
 		public XConnectionBuilder SetDatabase(string database)
         {
-            if(database.IsNullStr())
+            if(database.IsBlank())
             {
                 throw XConfig.EC.Exception(XConfig.EC._054, "数据库名 Database 不能为空!");
             }
@@ -142,7 +142,7 @@ namespace MyDAL
         /// </summary>
         public XConnectionBuilder SetPipe(string pipe)
         {
-            if(pipe.IsNullStr())
+            if(pipe.IsBlank())
             {
                 throw XConfig.EC.Exception(XConfig.EC._092, "连接管道 Pipe 不能为空!");
             }
@@ -165,7 +165,7 @@ namespace MyDAL
         /// </summary>
         public XConnectionBuilder SetCertificateFile(string certificateFile)
         {
-            if (certificateFile.IsNullStr())
+            if (certificateFile.IsBlank())
             {
                 throw XConfig.EC.Exception(XConfig.EC._106, "证书文件 CertificateFile 不能为空!");
             }
@@ -201,7 +201,7 @@ namespace MyDAL
         /// </summary>
         public XConnectionBuilder SetCertificateStoreLocation(string certificateStoreLocation)
         {
-            if (certificateStoreLocation.IsNullStr())
+            if (certificateStoreLocation.IsBlank())
             {
                 throw XConfig.EC.Exception(XConfig.EC._108, "证书的存储位置 CertificateStoreLocation 不能为空!");
             }
@@ -213,7 +213,7 @@ namespace MyDAL
         /// </summary>
         public XConnectionBuilder SetCertificateThumbprint(string certificateThumbprint)
         {
-            if (certificateThumbprint.IsNullStr())
+            if (certificateThumbprint.IsBlank())
             {
                 throw XConfig.EC.Exception(XConfig.EC._109, "证书指纹 CertificateThumbprint 不能为空!");
             }
@@ -503,7 +503,7 @@ namespace MyDAL
         /// </summary>
         public XConnectionBuilder SetDateTimeKind(string dateTimeKind)
         {
-            if(dateTimeKind.IsNullStr())
+            if(dateTimeKind.IsBlank())
             {
                 throw XConfig.EC.Exception(XConfig.EC._139, "DateTimeKind 不能为空!");
             }
@@ -652,7 +652,7 @@ namespace MyDAL
         /// </summary>
         public XConnectionBuilder SetServerRSAPublicKeyFile(string serverRSAPublicKeyFile)
         {
-            if(serverRSAPublicKeyFile.IsNullStr())
+            if(serverRSAPublicKeyFile.IsBlank())
             {
                 throw XConfig.EC.Exception(XConfig.EC._142, "ServerRSAPublicKeyFile, Server RSA Public Key File 不能为空!");
             }
@@ -707,7 +707,7 @@ namespace MyDAL
         /// </summary>
         public XConnectionBuilder SetConnectionStrings(string connStr)
         {
-            if (connStr.IsNullStr())
+            if (connStr.IsBlank())
             {
                 throw XConfig.EC.Exception(XConfig.EC._098, "连接字符串 connStr 不能为空!");
             }
@@ -723,7 +723,7 @@ namespace MyDAL
         /// </summary>
         public XConnectionBuilder SetExtraConnectionStrings(string partConnStr)
         {
-            if (partConnStr.IsNullStr())
+            if (partConnStr.IsBlank())
             {
                 throw XConfig.EC.Exception(XConfig.EC._145, "connection string 片段 partConnStr 不能为空!");
             }

@@ -345,7 +345,7 @@ namespace MyDAL.Tools
         {
             try
             {
-                if (format.IsNullStr())
+                if (format.IsBlank())
                 {
                     format = "yyyy-MM-dd HH:mm:ss.ffffff";
                 }

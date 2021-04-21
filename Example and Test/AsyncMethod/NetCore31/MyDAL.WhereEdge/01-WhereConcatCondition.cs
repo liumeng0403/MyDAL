@@ -40,13 +40,13 @@ namespace MyDAL.WhereEdge
             var where = MyDAL_TestDB.Queryer<Agent>().WhereSegment;
 
             // 根据条件 判断 是否 拼接 UserId 字段 的 过滤条件
-            if (!userId.IsNullStr())
+            if (userId.IsNotBlank())
             {
                 where = where.And(it => it.UserId == Guid.Parse(userId));
             }
 
             // 根据条件 判断 是否 拼接 Name 字段 的 过滤条件
-            if (!firstName.IsNullStr())
+            if (firstName.IsNotBlank())
             {
                 where = where.And(it => it.Name.StartsWith(firstName));
             }
