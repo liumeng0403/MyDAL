@@ -7,9 +7,6 @@ namespace MyDAL.Tools
     public static class ObjectEx
     {
 
-        // StringValues  defaultVauleWhenNull
-        // string is int long
-
         public static bool ToBool(this object obj)
         {
             var result = false;
@@ -164,48 +161,6 @@ namespace MyDAL.Tools
             try
             {
                 return obj.ToInt();
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        public static long ToLong(this object obj)
-        {
-            try
-            {
-                if(obj is IEnumerable)    //   如 Microsoft.Extensions.Primitives.StringValues
-                {
-                    return Convert.ToInt64(obj.ToString());
-                }
-                return Convert.ToInt64(obj);
-            }
-            catch (Exception ex)
-            {
-                throw XConfig.EC.Exception(XConfig.EC._065, $"long ToLong(this object obj) -- {obj?.ToString()}，InnerExeception：{ex.Message}");
-            }
-        }
-        public static long ToLong(this object obj, long customValue)
-        {
-            try
-            {
-                return obj.ToLong();
-            }
-            catch 
-            {
-                return customValue;
-            }
-        }
-        public static long? ToLongNull(this object obj)
-        {
-            try
-            {
-                if (obj.IsNullStr())
-                {
-                    return null;
-                }
-                return obj.ToLong();
             }
             catch
             {

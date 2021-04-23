@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Version>0.9.1.17</Version>
+    <Version>0.9.1.18</Version>
     <Authors>Meng.NET</Authors>
     <Company></Company>
     <Product>MyDAL</Product>
@@ -15,6 +15,7 @@
     <PackageTags>MyDAL,MySQL,ORM</PackageTags>
     <PackageReleaseNotes>由一个开发项目中的 idea 产生,实现与演变 !
        -- https://www.cnblogs.com/Meng-NET/p/8963476.html
+0.9.1.18  优化四个实用函数算法
 0.9.1.17  增加六个实用函数
 0.9.1.16  增加九个实用函数
 0.9.1.15  增加四个实用函数
@@ -34,8 +35,8 @@
     <Win32Resource />
     <PackageId>MyDAL</PackageId>
     <PackageIconUrl></PackageIconUrl>
-    <AssemblyVersion>0.9.1.17</AssemblyVersion>
-    <FileVersion>0.9.1.17</FileVersion>
+    <AssemblyVersion>0.9.1.18</AssemblyVersion>
+    <FileVersion>0.9.1.18</FileVersion>
     <PackageLicenseFile>License</PackageLicenseFile>
     <PackageIcon>MyDAL_origin.png</PackageIcon>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

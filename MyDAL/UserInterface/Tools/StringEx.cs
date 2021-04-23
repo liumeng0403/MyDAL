@@ -69,7 +69,7 @@ namespace MyDAL.Tools
             return str.ToBool(false);
         }
 
-        public static bool ToBool(this IReadOnlyCollection<string> str, bool defaultValueIfNull)
+        public static bool ToBool(this IReadOnlyCollection<string> str, bool defaultVauleWhenNull)
         {
 
             /*
@@ -81,7 +81,7 @@ namespace MyDAL.Tools
             if (null == str
                 || str.Count == 0)
             {
-                return defaultValueIfNull;
+                return defaultVauleWhenNull;
             }
 
             var strValue = str.ToString();
@@ -130,6 +130,8 @@ namespace MyDAL.Tools
 
         //public static bool? ToBoolNull(this IReadOnlyCollection<string> str, bool defaultValueIfNull){ }    // 此方法无比要定义
 
+        // ----------------------------------------------------------------------------------------------------------------------
+
         public static bool IsInt(this IReadOnlyCollection<string> str)
         {
 
@@ -173,7 +175,7 @@ namespace MyDAL.Tools
             }
         }
         
-        public static int ToInt(this IReadOnlyCollection<string> str, int defaultValueIfNull)
+        public static int ToInt(this IReadOnlyCollection<string> str, int defaultVauleWhenNull)
         {
 
             /*
@@ -184,7 +186,7 @@ namespace MyDAL.Tools
             if (null == str
                 || str.Count == 0)
             {
-                return defaultValueIfNull;
+                return defaultVauleWhenNull;
             }
 
             return str.ToInt();
@@ -207,6 +209,7 @@ namespace MyDAL.Tools
             return str.ToInt();
         }
 
+        // -----------------------------------------------------------------------------------------------------------------------
 
         public static bool IsLong(this IReadOnlyCollection<string> str)
         {
@@ -224,7 +227,6 @@ namespace MyDAL.Tools
 
             return long.TryParse(str.ToString(), out var result);
         }
-
         public static long ToLong(this IReadOnlyCollection<string> str)
         {
 
@@ -250,8 +252,7 @@ namespace MyDAL.Tools
                 throw XConfig.EC.Exception(XConfig.EC._150, $"long ToLong(this IReadOnlyCollection<string> str) -- {str?.ToString()}，InnerExeception：{ex.Message}");
             }
         }
-
-        public static long ToLong(this IReadOnlyCollection<string> str, long defaultValueIfNull)
+        public static long ToLong(this IReadOnlyCollection<string> str, long defaultVauleWhenNull)
         {
 
             /*
@@ -262,12 +263,11 @@ namespace MyDAL.Tools
             if (null == str
                 || str.Count == 0)
             {
-                return defaultValueIfNull;
+                return defaultVauleWhenNull;
             }
 
             return str.ToLong();
         }
-
         public static long? ToLongNull(this IReadOnlyCollection<string> str)
         {
 
@@ -284,6 +284,51 @@ namespace MyDAL.Tools
 
             return str.ToLong();
         }
+
+        public static bool IsLong(this string str)
+        {
+            if (str.IsBlank())
+            {
+                return false;
+            }
+
+            return long.TryParse(str, out var result);
+        }
+        public static long ToLong(this string str)
+        {
+            if (str.IsLong())
+            {
+                return Convert.ToInt64(str);
+            }
+            else
+            {
+                throw XConfig.EC.Exception(XConfig.EC._065, $"long ToLong(this object obj) -- {str}，InnerExeception: 非数字字符串转换!");
+            }
+        }
+        public static long ToLong(this string str, long defaultVauleWhenNull)
+        {
+            if (str.IsLong())
+            {
+                return str.ToLong();
+            }
+            else
+            {
+                return defaultVauleWhenNull;
+            }
+        }
+        public static long? ToLongNull(this string str)
+        {
+            if (str.IsLong())
+            {
+                return str.ToLong();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        // ----------------------------------------------------------------------------------------------------------------------
 
         /// <summary>
         /// Obj is null/empty/whitespace ?
