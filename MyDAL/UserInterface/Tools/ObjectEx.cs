@@ -6,6 +6,25 @@ namespace MyDAL.Tools
 {
     public static class ObjectEx
     {
+        // http debug timeout 
+        // long? toLong
+
+        public static bool IsNull(this object obj)
+        {
+            if(null == obj)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static bool NonNull(this object obj)
+        {
+            return !obj.IsNull();
+        }
 
         public static bool ToBool(this object obj)
         {

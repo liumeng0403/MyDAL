@@ -6,7 +6,7 @@ using System.Text;
 
 namespace MyDAL.Tools
 {
-    public static class ObjEx
+    public static class InternalEx
     {
 
         internal static long ToLong(this object obj)
