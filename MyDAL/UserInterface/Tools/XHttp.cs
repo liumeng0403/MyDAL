@@ -119,9 +119,14 @@ namespace MyDAL.Tools
                 }
                 if (TimeoutFlag)
                 {
-                    if (!XConfig.RI.IsDebug) // 调试模式下永远不超时
+                    if (!XConfig.RI.IsDebug) 
                     {
                         throw XConfig.EC.Exception(XConfig.EC._097, $"请求超时!超时时间:{TimeoutTime / 1000}S;Url:{this.URL}");
+                    }
+                    else // 调试模式下 5分钟超时
+                    {
+                        Thread.Sleep(TimeSpan.FromMinutes(5));
+                        throw XConfig.EC.Exception(XConfig.EC._097, $"调试超时!Url:{this.URL}");
                     }
                 }
                 timeNum += WaitSleep;

@@ -6,8 +6,6 @@ namespace MyDAL.Tools
 {
     public static class ObjectEx
     {
-        // http debug timeout 
-        // long? toLong
 
         public static bool IsNull(this object obj)
         {
