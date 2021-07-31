@@ -136,55 +136,6 @@ namespace MyDAL.Tools
             return result;
         }
 
-        public static int ToInt(this object obj)
-        {
-            try
-            {
-                if (null == obj)
-                {
-                    throw XConfig.EC.Exception(XConfig.EC._113, $".ToInt() 的对象为 null !!!");
-                }
-                else if (obj is string)
-                {
-                    return Convert.ToInt32(obj);
-                }
-                else if (obj is IEnumerable)     //  如  Microsoft.Extensions.Primitives.StringValues
-                {
-                    return obj.ToString().ToInt();
-                }
-                else
-                {
-                    return Convert.ToInt32(obj);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw XConfig.EC.Exception(XConfig.EC._064, $"int ToInt(this object obj) -- {obj?.ToString()}，InnerExeception：{ex.Message}");
-            }
-        }
-        public static int ToInt(this object obj,int customValue)
-        {
-            try
-            {
-                return obj.ToInt();
-            }
-            catch
-            {
-                return customValue;
-            }
-        }
-        public static int? ToIntNull(this object obj)
-        {
-            try
-            {
-                return obj.ToInt();
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
         public static short ToShort(this object obj)
         {
             var result = default(short);
