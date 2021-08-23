@@ -25,6 +25,16 @@ namespace MyDAL.Tools
 
             return long.TryParse(str.ToString(), out var result);
         }
+        public static bool IsNotLong(this IReadOnlyCollection<string> str)
+        {
+
+            /*
+             * 如:
+             * Microsoft.Extensions.Primitives.StringValues
+             */
+
+            return !str.IsLong();
+        }
         public static long ToLong(this IReadOnlyCollection<string> str)
         {
 
@@ -34,20 +44,13 @@ namespace MyDAL.Tools
              * Microsoft.Extensions.Primitives.StringValues
              */
 
-
-            try
+            if (str.IsNotLong())
             {
-                if (null == str
-                    || str.Count == 0)
-                {
-                    throw XConfig.EC.Exception(XConfig.EC._146, $"long ToLong(this IReadOnlyCollection<string> str) 的对象为 null 或 无值 !!!");
-                }
-
-                return Convert.ToInt64(str.ToString());
+                throw XConfig.EC.Exception(XConfig.EC._146, $"long ToLong(this IReadOnlyCollection<string> str) 的对象为 null 或 无值 !!!");
             }
-            catch (Exception ex)
+            else
             {
-                throw XConfig.EC.Exception(XConfig.EC._150, $"long ToLong(this IReadOnlyCollection<string> str) -- {str?.ToString()}，InnerExeception：{ex.Message}");
+                return Convert.ToInt64(str.ToString());
             }
         }
         public static long ToLong(this IReadOnlyCollection<string> str, long defaultVauleWhenNull)
@@ -58,13 +61,14 @@ namespace MyDAL.Tools
              * Microsoft.Extensions.Primitives.StringValues
              */
 
-            if (null == str
-                || str.Count == 0)
+            if (str.IsNotLong())
             {
                 return defaultVauleWhenNull;
             }
-
-            return str.ToLong();
+            else
+            {
+                return str.ToLong();
+            }
         }
         public static long? ToLongNull(this IReadOnlyCollection<string> str)
         {
@@ -74,13 +78,14 @@ namespace MyDAL.Tools
              * Microsoft.Extensions.Primitives.StringValues
              */
 
-            if (null == str
-                || str.Count == 0)
+            if (str.IsNotLong())
             {
                 return null;
             }
-
-            return str.ToLong();
+            else
+            {
+                return str.ToLong();
+            }
         }
 
         public static bool IsLong(this string str)
@@ -91,6 +96,10 @@ namespace MyDAL.Tools
             }
 
             return long.TryParse(str, out var result);
+        }
+        public static bool IsNotLong(this string str)
+        {
+            return !str.IsLong();
         }
         public static long ToLong(this string str)
         {
@@ -136,6 +145,10 @@ namespace MyDAL.Tools
             {
                 return true;
             }
+        }
+        public static bool IsNotLong(this long? number)
+        {
+            return !number.IsLong();
         }
         public static long ToLong(this long? number)
         {
