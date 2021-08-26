@@ -2,6 +2,8 @@
 using System;
 using System.IO;
 using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 
@@ -28,6 +30,7 @@ namespace MyDAL.Tools
             var reNum = 0;
             for (var i = 0; i < this.RetryCount; i++)
             {
+                reNum++;
                 try
                 {
                     //
@@ -60,6 +63,7 @@ namespace MyDAL.Tools
                         respStream.Close();
                         response.Close();
                     }, this);
+
                     break;
                 }
                 catch (AggregateException ae)
@@ -70,21 +74,21 @@ namespace MyDAL.Tools
                         errMsg += e.Message;
                         return true;
                     });
-                    reNum++;
                     if (reNum == this.RetryCount)
                     {
                         throw XConfig.EC.Exception(XConfig.EC._116, $"请求失败!请求次数:{this.RetryCount}次,失败原因:{errMsg};Url:{this.URL}");
                     }
-                    Thread.Sleep(this.TrySleep);
-                    continue;
                 }
                 catch (Exception ex)
                 {
-                    reNum++;
                     if (reNum == this.RetryCount)
                     {
                         throw XConfig.EC.Exception(XConfig.EC._117, $"请求失败!请求次数:{this.RetryCount}次,失败原因:{ex.Message};Url:{this.URL}");
                     }
+                }
+
+                if (this.RetryCount > 1)
+                {
                     Thread.Sleep(this.TrySleep);
                     continue;
                 }
@@ -92,7 +96,7 @@ namespace MyDAL.Tools
         }
         private void SetResult(XHttp state, string jsonData)
         {
-            if (!string.IsNullOrWhiteSpace(jsonData))
+            if (jsonData.IsNotBlank())
             {
                 state.Result = jsonData;
                 state.ResponseFlag = true;
@@ -119,14 +123,15 @@ namespace MyDAL.Tools
                 }
                 if (TimeoutFlag)
                 {
-                    if (!XConfig.RI.IsDebug) 
+                    if (XConfig.RI.IsDebug
+                        && timeNum < 10 * 60 * 1000)
+                    {
+                        // 调试模式下 10 分钟超时
+                        TimeoutTime = 10 * 60 * 1000;
+                    }
+                    else
                     {
                         throw XConfig.EC.Exception(XConfig.EC._097, $"请求超时!超时时间:{TimeoutTime / 1000}S;Url:{this.URL}");
-                    }
-                    else // 调试模式下 5分钟超时
-                    {
-                        Thread.Sleep(TimeSpan.FromMinutes(5));
-                        throw XConfig.EC.Exception(XConfig.EC._097, $"调试超时!Url:{this.URL}");
                     }
                 }
                 timeNum += WaitSleep;
@@ -184,5 +189,38 @@ namespace MyDAL.Tools
             this.GetRemoteDataX();
             return this.Result;
         }
+
+        // 下一步改进  自动url encode ,  cookie 携带支持
+
+        /***********************************************************************************************************************************************/
+
+        /// <summary>
+        /// Http Client
+        /// </summary>
+        /// <param name="timeoutTime">请求超时时间 ms</param>
+        /// <param name="requestCount">请求次数: requestCount = retryCount + 1</param>
+        public XHttp(int timeoutTime = 30 * 1000, int requestCount = 1)
+        {
+            //
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+            ServicePointManager.ServerCertificateValidationCallback
+                = new RemoteCertificateValidationCallback((object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors) => true);
+
+            // 
+            this.URL = string.Empty;
+            this.Request = default(HttpWebRequest);
+            this.JsonContent = string.Empty;
+            this.Buffer = default(byte[]);
+            this.RequestStream = default(Stream);
+            this.ResponseFlag = false;
+            this.Result = string.Empty;
+            this.TimeoutFlag = false;
+            this.TimeoutTime = timeoutTime;
+            this.RetryCount = requestCount;
+            this.WaitSleep = 10;
+            this.RequestMethod = "POST";
+            this.TrySleep = 2 * 1000;
+        }
+
     }
 }
