@@ -10,6 +10,8 @@ namespace MyDAL.Tools
     public static class StringEx
     {
 
+        // datetime? tostring 方法
+        
         /// <summary>
         /// Is null/empty/whitespace ?
         /// </summary>

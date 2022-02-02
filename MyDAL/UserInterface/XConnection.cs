@@ -63,10 +63,10 @@ namespace MyDAL
             }
             catch (Exception ex)
             {
-                string errMsg = ex.Message.IsNullStr() ? string.Empty : ex.Message;
+                string errMsg = ex.Message.IsBlank() ? string.Empty : ex.Message;
                 string innerErrMsg = ex.InnerException == null ? 
                     string.Empty : 
-                    ex.InnerException.Message.IsNullStr() ? string.Empty : ex.InnerException.Message;
+                    ex.InnerException.Message.IsBlank() ? string.Empty : ex.InnerException.Message;
                 throw XConfig.EC.Exception(XConfig.EC._100, "MySQL 驱动异常: [1]" + errMsg + ". [2]" + innerErrMsg);
             }
         }

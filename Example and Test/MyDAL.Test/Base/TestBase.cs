@@ -22,7 +22,7 @@ namespace MyDAL.Test
         //
         private static XConnection XConn = XConnection
             .Builder()
-            .SetServer("192.168.89.4")
+            .SetServer("192.168.89.12")
             .SetDatabase("mydal_testdb")
             .SetUser("root")
             .SetPassword("local_ROOT@123_pwd")

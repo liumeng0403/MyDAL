@@ -112,7 +112,9 @@ namespace MyDAL.QueryAPI
             var pk = Guid.Parse("8f2cbb64-8356-4482-88ee-016558c05b2d");
             var date = DateTime.Parse("2018-08-20 19:12:05.933786");
 
-            var res1 = await MyDAL_TestDB.QueryOneAsync<AlipayPaymentRecord, Guid>(it => it.Id == pk && it.CreatedOn == date, it => it.Id);
+            var res1 = await MyDAL_TestDB
+                // .OpenDebug()
+                .QueryOneAsync<AlipayPaymentRecord, Guid>(it => it.Id == pk && it.CreatedOn == date, it => it.Id);
 
             Assert.True(res1 == pk);
 

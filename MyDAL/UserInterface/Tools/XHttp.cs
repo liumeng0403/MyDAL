@@ -128,6 +128,7 @@ namespace MyDAL.Tools
                     {
                         // 调试模式下 10 分钟超时
                         TimeoutTime = 10 * 60 * 1000;
+                        TimeoutFlag = false;
                     }
                     else
                     {

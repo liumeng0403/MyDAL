@@ -74,3 +74,5 @@
 /Example and Test/MyDAL.Connector/bin/
 /Example and Test/MyDAL.Connector/obj/
 /MyDAL.Net4/obj/
+/MyDAL/.idea/
+/MyDAL.sln.DotSettings.user
