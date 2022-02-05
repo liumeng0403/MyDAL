@@ -18,5 +18,15 @@ namespace MyDAL
         /// Table - 列名
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// 是否主键
+        /// </summary>
+        public bool IsPK { get; set; } = false;
+
+        /// <summary>
+        /// 是否主键自增
+        /// </summary>
+        public bool IsPkAutoIncrement { get; set; } = false;
     }
 }

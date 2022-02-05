@@ -15,6 +15,9 @@ namespace MyDAL.Impls.Base
             DSS = new DataSourceSync(dc);
         }
 
+        /// <summary>
+        /// 数据源 同步方式 实现
+        /// </summary>
         internal DataSourceSync DSS { get; private set; }
 
     }

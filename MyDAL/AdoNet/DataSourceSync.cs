@@ -304,6 +304,28 @@ namespace MyDAL.AdoNet
             }
             return result;
         }
+        /// <summary>
+        /// for - create & pk-auto-increament create
+        /// </summary>
+        internal int ExecuteNonQueryForCreate()
+        {
+            var result = default(int);
+            var comm = new CommandInfo(SqlOne, Parameter);
+            var needClose = Conn.State == ConnectionState.Closed;
+            try
+            {
+                if (needClose) { Open(Conn); }
+                using (var cmd = SettingCommand(comm, Conn, comm.Parameter.ParamReader))
+                {
+                    result = cmd.ExecuteNonQuery();
+                }
+            }
+            finally
+            {
+                if (needClose) { Conn.Close(); }
+            }
+            return result;
+        }
         internal T ExecuteScalar<T>()
             where T : struct
         {

@@ -24,6 +24,9 @@ namespace MyDAL
 
         /*-------------------------------------------------------------*/
 
+        /// <summary>
+        /// Creater 便捷 CreateAsync 方法 , SQL 语句
+        /// </summary>
         public static async Task<int> CreateAsync(this XConnection conn, string sql, List<XParam> dbParas = null)
         {
             CheckCreate(sql);
@@ -33,7 +36,7 @@ namespace MyDAL
         /*-------------------------------------------------------------*/
 
         /// <summary>
-        /// Creater 便捷 CreateAsync 方法
+        /// Creater 便捷 Create 方法
         /// </summary>
         public static int Create<M>(this XConnection conn, M m)
             where M : class, new()
@@ -43,6 +46,9 @@ namespace MyDAL
 
         /*-------------------------------------------------------------*/
 
+        /// <summary>
+        /// Creater 便捷 Create 方法 , SQL 语句
+        /// </summary>
         public static int Create(this XConnection conn, string sql, List<XParam> dbParas = null)
         {
             CheckCreate(sql);

@@ -1,5 +1,8 @@
 ﻿namespace MyDAL.Core.Enums
 {
+    /// <summary>
+    /// sql 动作枚举
+    /// </summary>
     internal enum ActionEnum
     {
         /// <summary>

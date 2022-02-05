@@ -20,6 +20,9 @@ namespace MyDAL.Core.Bases
             DC = dc;
         }
 
+        /// <summary>
+        /// 获取 sql 属性-参数-参数值
+        /// </summary>
         private List<SetParam> GetSetKPV<M>(object objx)
         {
             var list = new List<SetDic>();
@@ -70,7 +73,6 @@ namespace MyDAL.Core.Bases
             {
                 var val = default(ValueInfo);
                 var valType = default(Type);
-                var columnType = tbm.TbCols.First(it => it.ColumnName.Equals(prop.MField, StringComparison.OrdinalIgnoreCase)).DataType;
                 if (objx is ExpandoObject)
                 {
                     var obj = dic[prop.MField];
@@ -103,6 +105,9 @@ namespace MyDAL.Core.Bases
 
         /****************************************************************************************************************************************/
 
+        /// <summary>
+        /// sql 操作 上下文
+        /// </summary>
         internal Context DC { get; set; }
 
         /****************************************************************************************************************************************/

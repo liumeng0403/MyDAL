@@ -80,6 +80,9 @@ namespace MyDAL.Core.Helper
                 ValStr = ValueProcess(val, valType, format)
             };
         }
+        /// <summary>
+        /// 获取 对象中 属性 的 值
+        /// </summary>
         internal ValueInfo PropertyValue(PropertyInfo prop, object obj)
         {
             var valtype = prop.PropertyType;

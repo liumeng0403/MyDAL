@@ -1,10 +1,7 @@
 using MyDAL.AdoNet;
 using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
-using MyDAL.Core.Enums;
-using MyDAL.Core.Helper;
 using MyDAL.Core.Models.Cache;
-using MyDAL.ModelTools;
 using MyDAL.Tools;
 using System;
 using System.Collections.Concurrent;
@@ -15,6 +12,9 @@ using System.Reflection;
 
 namespace MyDAL.Core
 {
+    /// <summary>
+    /// 元数据 缓存
+    /// </summary>
     internal class XCache
     {
         private int GetColumnHash(IDataReader reader)
@@ -118,6 +118,18 @@ namespace MyDAL.Core
                      list.Add(pca);
                  }
                  tm.PCA = list;
+                 TmPropColAttrInfo autoPk = tm
+                     .PCA
+                     .FirstOrDefault(it => it.ColAttr.IsPK && it.ColAttr.IsPkAutoIncrement);
+                 if (autoPk.NonNull())
+                 {
+                     tm.HaveAutoIncrementPK = true;
+                     tm.AutoIncrementPK = autoPk;
+                 }
+                 else
+                 {
+                     tm.HaveAutoIncrementPK = false;
+                 }
                  return tm;
              });
         }

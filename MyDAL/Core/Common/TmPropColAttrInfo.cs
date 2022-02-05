@@ -21,6 +21,9 @@ namespace MyDAL.Core.Common
             }
         }
         internal ColumnInfo Col { get; set; }
+        /// <summary>
+        /// XColumn
+        /// </summary>
         internal XColumnAttribute ColAttr { get; set; }
         internal XTableAttribute TbAttr { get; set; }
     }

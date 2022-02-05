@@ -12,6 +12,9 @@ using System.Linq;
 
 namespace MyDAL.Core.Helper
 {
+    /// <summary>
+    /// sql 参数 处理 对象
+    /// </summary>
     internal class DicParamHelper
     {
         private static DicParam SetDicBase(Context dc)

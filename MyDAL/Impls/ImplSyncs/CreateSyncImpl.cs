@@ -21,6 +21,10 @@ namespace MyDAL.Impls.ImplSyncs
             DC.Action = ActionEnum.Insert;
             CreateMHandle(new List<M> { m });
             PreExecuteHandle(UiMethodEnum.Create);
+            if (DC.XC.GetTableModel(m.GetType()).HaveAutoIncrementPK)
+            {
+                
+            }
             return DSS.ExecuteNonQuery();
         }
     }

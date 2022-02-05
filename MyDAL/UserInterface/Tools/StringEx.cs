@@ -11,7 +11,10 @@ namespace MyDAL.Tools
     {
 
         // datetime? tostring 方法
-        
+
+        // 自然 sql 命名 , select insert update delete 
+
+        // create 返回 实体 , 支持自增 主键 携带返回      
         /// <summary>
         /// Is null/empty/whitespace ?
         /// </summary>

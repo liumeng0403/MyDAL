@@ -1,5 +1,3 @@
-using MyDAL.AdoNet;
-using MyDAL.AdoNet.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
@@ -15,6 +13,9 @@ using System.Linq;
 
 namespace MyDAL.Core.Bases
 {
+    /// <summary>
+    /// sql 操作 上下文
+    /// </summary>
     internal abstract class Context
     {
 
@@ -29,7 +30,7 @@ namespace MyDAL.Core.Bases
             }
             else
             {
-                throw XConfig.EC.Exception(XConfig.EC._043, "MyDAL 目前只支持【MySQL/SQLServer】,后续将会支持【Oracle/PostgreSQL/DB2/Access/SQLite/Teradata/MariaDB】.");
+                throw XConfig.EC.Exception(XConfig.EC._043, "MyDAL 只支持【MySQL】.");
             }
 
             //
@@ -65,7 +66,14 @@ namespace MyDAL.Core.Bases
         internal CsFuncHelper CFH { get; private set; }
         internal ToStringHelper TSH { get; private set; }
 
+        /// <summary>
+        /// cs 对象 值 处理 
+        /// </summary>
         internal CsValueHelper VH { get; private set; }
+        
+        /// <summary>
+        /// sql 参数 对象 处理
+        /// </summary>
         internal DicParamHelper DPH { get; private set; }
 
         /************************************************************************************************************************/
@@ -75,6 +83,9 @@ namespace MyDAL.Core.Bases
 
         internal CrudEnum Crud { get; set; } = CrudEnum.None;
         internal ActionEnum Action { get; set; } = ActionEnum.None;
+        /// <summary>
+        /// sql 操作动作 与 sql 关键字
+        /// </summary>
         internal OptionEnum Option { get; set; } = OptionEnum.None;
         internal CompareXEnum Compare { get; set; } = CompareXEnum.None;
         internal FuncEnum Func { get; set; } = FuncEnum.None;
@@ -97,6 +108,9 @@ namespace MyDAL.Core.Bases
 
         internal XConnection XConn { get; private set; }
         internal ISqlProvider SqlProvider { get; set; }
+        /// <summary>
+        /// 元数据 缓存
+        /// </summary>
         internal XCache XC { get; private set; }
 
         /************************************************************************************************************************/
