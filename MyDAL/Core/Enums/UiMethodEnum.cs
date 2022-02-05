@@ -1,5 +1,8 @@
 ﻿namespace MyDAL.Core.Enums
 {
+    /// <summary>
+    /// UI Interface SQL option type
+    /// </summary>
     internal enum UiMethodEnum
     {
         None,

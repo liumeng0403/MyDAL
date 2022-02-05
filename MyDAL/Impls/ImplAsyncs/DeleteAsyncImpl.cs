@@ -21,7 +21,7 @@ namespace MyDAL.Impls.ImplAsyncs
         public async Task<int> DeleteAsync()
         {
             PreExecuteHandle(UiMethodEnum.Delete);
-            return await DSA.ExecuteNonQueryAsync();
+            return await DSA.ExecuteNonQueryAsync<M>(null);
         }
 
     }

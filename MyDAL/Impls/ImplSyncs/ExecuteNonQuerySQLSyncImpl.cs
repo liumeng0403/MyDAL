@@ -15,7 +15,7 @@ namespace MyDAL.Impls.ImplSyncs
 
         public int ExecuteNonQuery()
         {
-            return DSS.ExecuteNonQuery();
+            return DSS.ExecuteNonQuery<None>(null);
         }
     }
 }

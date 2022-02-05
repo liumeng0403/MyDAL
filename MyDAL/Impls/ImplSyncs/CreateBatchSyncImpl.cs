@@ -20,13 +20,27 @@ namespace MyDAL.Impls.ImplSyncs
         public int CreateBatch(IEnumerable<M> mList)
         {
             DC.Action = ActionEnum.Insert;
-            return DC.BDH.StepProcessSync(mList, 100, list =>
+            var tm = DC.XC.GetTableModel(typeof(M));
+            if (tm.HaveAutoIncrementPK)
             {
-                DC.DPH.ResetParameter();
-                CreateMHandle(list);
-                PreExecuteHandle(UiMethodEnum.CreateBatch);
-                return DSS.ExecuteNonQuery();
-            });
+                return DC.BDH.StepProcessSync(mList, 1, list =>
+                {
+                    DC.DPH.ResetParameter();
+                    CreateMHandle(list);
+                    PreExecuteHandle(UiMethodEnum.CreateBatch);
+                    return DSS.ExecuteNonQuery<M>(list);
+                });
+            }
+            else
+            {
+                return DC.BDH.StepProcessSync(mList, 100, list =>
+                {
+                    DC.DPH.ResetParameter();
+                    CreateMHandle(list);
+                    PreExecuteHandle(UiMethodEnum.CreateBatch);
+                    return DSS.ExecuteNonQuery<M>(list);
+                });
+            }
         }
     }
 }

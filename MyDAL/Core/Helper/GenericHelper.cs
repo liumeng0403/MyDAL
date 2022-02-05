@@ -7,6 +7,9 @@ using System.Reflection;
 
 namespace MyDAL.Core.Helper
 {
+    /// <summary>
+    /// 泛型 操作 处理器
+    /// </summary>
     internal class GenericHelper
     {
 
@@ -21,6 +24,10 @@ namespace MyDAL.Core.Helper
         internal object GetObjPropValue(PropertyInfo outerProp, object outerObj)
         {
             return outerProp.GetValue(outerObj);
+        }
+        internal void SetObjPropValue(object outerObj,PropertyInfo outerProp, object outerPropValue)
+        { 
+            outerProp.SetValue(outerObj,outerPropValue);
         }
         internal List<PropertyInfo> GetPropertyInfos(Type mType)
         {

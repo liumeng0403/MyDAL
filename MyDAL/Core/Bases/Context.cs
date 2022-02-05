@@ -54,7 +54,14 @@ namespace MyDAL.Core.Bases
 
         /************************************************************************************************************************/
 
+        /// <summary>
+        /// 注解 解析器
+        /// </summary>
         internal AttributeHelper AH { get; private set; }
+        
+        /// <summary>
+        /// 泛型 处理器
+        /// </summary>
         internal GenericHelper GH { get; private set; }
         internal ParameterHelper PH { get; private set; }
         internal BatchDataHelper BDH { get; private set; }
@@ -77,6 +84,10 @@ namespace MyDAL.Core.Bases
         internal DicParamHelper DPH { get; private set; }
 
         /************************************************************************************************************************/
+        
+        
+        
+        /************************************************************************************************************************/
 
         internal DbEnum DB { get; set; } = DbEnum.None;
 
@@ -90,6 +101,9 @@ namespace MyDAL.Core.Bases
         internal CompareXEnum Compare { get; set; } = CompareXEnum.None;
         internal FuncEnum Func { get; set; } = FuncEnum.None;
 
+        /// <summary>
+        /// UI-Interface DB 动作
+        /// </summary>
         internal UiMethodEnum Method { get; set; } = UiMethodEnum.None;
 
         /************************************************************************************************************************/

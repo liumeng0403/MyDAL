@@ -2,7 +2,9 @@
 
 namespace MyDAL.Core.Common
 {
-    // mydal:2019-04-11:final
+    /// <summary>
+    /// property-column-table , mydal:2019-04-11:final
+    /// </summary>
     internal class TmPropColAttrInfo
     {
         internal string PropName

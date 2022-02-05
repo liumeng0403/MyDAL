@@ -1,5 +1,4 @@
 using MyDAL.AdoNet;
-using MyDAL.Core;
 using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;

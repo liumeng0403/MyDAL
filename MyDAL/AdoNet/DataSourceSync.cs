@@ -216,6 +216,7 @@ namespace MyDAL.AdoNet
             }
             return result;
         }
+        // 仅 sync 有, 内部使用
         internal List<M> ExecuteReaderMultiRowForCols<M>()
         {
             DC.FlatOutput = false;
@@ -227,6 +228,7 @@ namespace MyDAL.AdoNet
                 if (needClose) { Open(ConnForCols); }
                 using (var cmd = SettingCommandForCols(ci, ConnForCols, ci.Parameter.ParamReader))
                 {
+                    DC.XC.GetCommandModel(cmd.GetType());
                     using (Reader = ExecuteReaderWithRetry(cmd, XConfig.MultiRow))
                     {
                         result = ReadRow<M>();
@@ -285,7 +287,7 @@ namespace MyDAL.AdoNet
             }
             return result;
         }
-        internal int ExecuteNonQuery()
+        internal int ExecuteNonQuery<M>(IEnumerable<M> mList)
         {
             var result = default(int);
             var comm = new CommandInfo(SqlOne, Parameter);
@@ -296,28 +298,7 @@ namespace MyDAL.AdoNet
                 using (var cmd = SettingCommand(comm, Conn, comm.Parameter.ParamReader))
                 {
                     result = cmd.ExecuteNonQuery();
-                }
-            }
-            finally
-            {
-                if (needClose) { Conn.Close(); }
-            }
-            return result;
-        }
-        /// <summary>
-        /// for - create & pk-auto-increament create
-        /// </summary>
-        internal int ExecuteNonQueryForCreate()
-        {
-            var result = default(int);
-            var comm = new CommandInfo(SqlOne, Parameter);
-            var needClose = Conn.State == ConnectionState.Closed;
-            try
-            {
-                if (needClose) { Open(Conn); }
-                using (var cmd = SettingCommand(comm, Conn, comm.Parameter.ParamReader))
-                {
-                    result = cmd.ExecuteNonQuery();
+                    AutoPkProcess(mList,cmd);
                 }
             }
             finally

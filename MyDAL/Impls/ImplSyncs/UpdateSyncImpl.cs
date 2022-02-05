@@ -18,7 +18,7 @@ namespace MyDAL.Impls.ImplSyncs
         public int Update()
         {
             PreExecuteHandle(UiMethodEnum.Update);
-            return DSS.ExecuteNonQuery();
+            return DSS.ExecuteNonQuery<M>(null);
         }
     }
 }

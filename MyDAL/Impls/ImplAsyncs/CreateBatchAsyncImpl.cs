@@ -22,13 +22,27 @@ namespace MyDAL.Impls.ImplAsyncs
         public async Task<int> CreateBatchAsync(IEnumerable<M> mList)
         {
             DC.Action = ActionEnum.Insert;
-            return await DC.BDH.StepProcess(mList, 100, async list =>
+            var tm = DC.XC.GetTableModel(typeof(M));
+            if (tm.HaveAutoIncrementPK)
             {
-                DC.DPH.ResetParameter();
-                CreateMHandle(list);
-                PreExecuteHandle(UiMethodEnum.CreateBatch);
-                return await DSA.ExecuteNonQueryAsync();
-            });
+                return await DC.BDH.StepProcess(mList, 1, async list =>
+                {
+                    DC.DPH.ResetParameter();
+                    CreateMHandle(list);
+                    PreExecuteHandle(UiMethodEnum.CreateBatch);
+                    return await DSA.ExecuteNonQueryAsync<M>(list);
+                });
+            }
+            else
+            {
+                return await DC.BDH.StepProcess(mList, 100, async list =>
+                {
+                    DC.DPH.ResetParameter();
+                    CreateMHandle(list);
+                    PreExecuteHandle(UiMethodEnum.CreateBatch);
+                    return await DSA.ExecuteNonQueryAsync<M>(list);
+                });
+            }
         }
 
     }

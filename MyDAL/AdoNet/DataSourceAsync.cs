@@ -242,7 +242,7 @@ namespace MyDAL.AdoNet
             }
             return result;
         }
-        internal async Task<int> ExecuteNonQueryAsync()
+        internal async Task<int> ExecuteNonQueryAsync<M>(IEnumerable<M> mList)
         {
             var result = default(int);
             var comm = new CommandInfo(SqlOne, Parameter);
@@ -253,6 +253,7 @@ namespace MyDAL.AdoNet
                 using (var cmd = SettingCommand(comm, Conn, comm.Parameter.ParamReader))
                 {
                     result = await cmd.ExecuteNonQueryAsync();
+                    AutoPkProcess(mList,cmd);
                 }
             }
             finally

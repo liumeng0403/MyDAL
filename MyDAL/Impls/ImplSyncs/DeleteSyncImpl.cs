@@ -18,7 +18,7 @@ namespace MyDAL.Impls.ImplSyncs
         public int Delete()
         {
             PreExecuteHandle(UiMethodEnum.Delete);
-            return DSS.ExecuteNonQuery();
+            return DSS.ExecuteNonQuery<M>(null);
         }
 
     }

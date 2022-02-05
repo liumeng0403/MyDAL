@@ -31,13 +31,19 @@ namespace MyDAL.Core
                 return hash;
             }
         }
-
-        private static ConcurrentDictionary<string, Assembly> AssemblyCache { get; } = new ConcurrentDictionary<string, Assembly>();
+        
         private static ConcurrentDictionary<string, IRow> ModelRowCache { get; } = new ConcurrentDictionary<string, IRow>();
-        private static ConcurrentDictionary<string, TableModelCache> TableCache { get; } = new ConcurrentDictionary<string, TableModelCache>();
+        private static ConcurrentDictionary<string, TableModelCache> TableCache { get; } 
+            = new ConcurrentDictionary<string, TableModelCache>();
+
+        private static ConcurrentDictionary<string, CommandModelCache> CommandCache { get; } =
+            new ConcurrentDictionary<string, CommandModelCache>();
 
         /*****************************************************************************************************************************************************/
 
+        /// <summary>
+        /// sql 操作 上下文
+        /// </summary>
         private Context DC { get; set; }
         internal XCache(Context dc)
         {
@@ -80,6 +86,10 @@ namespace MyDAL.Core
                  var ta = DC.AH.GetAttribute<XTableAttribute>(mType) as XTableAttribute;
                  if (ta == null)
                  {
+                     if (mType == typeof(None))
+                     {
+                         return tm;
+                     }
                      throw XConfig.EC.Exception(XConfig.EC._004, $"类 [[{mType.FullName}]] 必须是与 DB Table 对应的实体类,并且要由 [XTable] 标记指定类对应的表名!!!");
                  }
                  tm.MProps = DC.GH.GetPropertyInfos(mType);
@@ -134,5 +144,25 @@ namespace MyDAL.Core
              });
         }
 
+        internal CommandModelCache GetCommandModel(Type cType)
+        {
+            var key = GetModelKey(cType.FullName);
+            return CommandCache.GetOrAdd(key, k =>
+             {
+                 var tm = new CommandModelCache();
+                 tm.CType = cType;
+                 tm.CProps = DC.GH.GetPropertyInfos(cType);
+                 foreach (var cp in tm.CProps)
+                 {
+                     if (cp.Name.Equals("LastInsertedId", StringComparison.OrdinalIgnoreCase)
+                         || cp.Name.Equals("InsertId", StringComparison.OrdinalIgnoreCase))
+                     {
+                         tm.AutoValue = cp;
+                         break;
+                     }
+                 }
+                 return tm;
+             });
+        }
     }
 }

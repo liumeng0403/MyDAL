@@ -3,6 +3,7 @@ using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
@@ -12,6 +13,9 @@ namespace MyDAL.AdoNet.Bases
     internal abstract class DataSource
     {
 
+        /// <summary>
+        /// sql 操作 上下文
+        /// </summary>
         internal protected Context DC { get; private set; }
         internal protected IDbConnection Conn { get; private set; }
         internal protected IDbTransaction Tran { get; private set; }
@@ -77,7 +81,10 @@ namespace MyDAL.AdoNet.Bases
             }
             return false;
         }
-        internal protected DbCommand SettingCommand(CommandInfo comm, IDbConnection cnn, Action<IDbCommand, DbParamInfo> paramReader)
+        internal protected DbCommand SettingCommand(
+            CommandInfo comm, 
+            IDbConnection cnn, 
+            Action<IDbCommand, DbParamInfo> paramReader)
         {
             var cmd = cnn.CreateCommand();
             if (Tran != null)
@@ -89,6 +96,18 @@ namespace MyDAL.AdoNet.Bases
             cmd.CommandType = CommandType.Text;
             paramReader?.Invoke(cmd, comm.Parameter);
             return cmd as DbCommand;
+        }
+
+        internal protected void AutoPkProcess<M>(IEnumerable<M> mlist,DbCommand cmd)
+        {
+            var tm = DC.XC.GetTableModel(typeof(M));
+            var ap = DC.XC.GetCommandModel(cmd.GetType());
+            if ((DC.Method == UiMethodEnum.Create || DC.Method == UiMethodEnum.CreateBatch)
+                && tm.HaveAutoIncrementPK)
+            {
+                var av = DC.GH.GetObjPropValue(ap.AutoValue, cmd);
+                DC.GH.SetObjPropValue(mlist.FirstOrDefault(),tm.AutoIncrementPK.Prop,av);
+            }
         }
 
         /*********************************************************************************************************************************************/

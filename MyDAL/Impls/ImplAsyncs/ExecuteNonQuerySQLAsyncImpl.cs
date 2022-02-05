@@ -1,9 +1,6 @@
 using MyDAL.Core.Bases;
 using MyDAL.Impls.Base;
-using MyDAL.Interfaces;
 using MyDAL.Interfaces.IAsyncs;
-using MyDAL.Interfaces.ISyncs;
-using System.Data;
 using System.Threading.Tasks;
 
 namespace MyDAL.Impls.ImplAsyncs
@@ -18,7 +15,7 @@ namespace MyDAL.Impls.ImplAsyncs
 
         public async Task<int> ExecuteNonQueryAsync()
         {
-            return await DSA.ExecuteNonQueryAsync();
+            return await DSA.ExecuteNonQueryAsync<None>(null);
         }
 
     }
