@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Data;
 using System.Threading.Tasks;
 
 namespace MyDAL.Interfaces.IAsyncs
@@ -7,6 +6,6 @@ namespace MyDAL.Interfaces.IAsyncs
     internal interface ICreateBatchAsync<M>
         where M : class
     {
-        Task<int> CreateBatchAsync(IEnumerable<M> mList);
+        Task<int> InsertBatchAsync(IEnumerable<M> mList);
     }
 }

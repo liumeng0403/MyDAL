@@ -1,11 +1,8 @@
 using MyDAL.Core.Bases;
 using MyDAL.Core.Enums;
 using MyDAL.Impls.Base;
-using MyDAL.Interfaces;
 using MyDAL.Interfaces.IAsyncs;
-using MyDAL.Interfaces.ISyncs;
 using System.Collections.Generic;
-using System.Data;
 using System.Threading.Tasks;
 
 namespace MyDAL.Impls.ImplAsyncs
@@ -19,7 +16,7 @@ namespace MyDAL.Impls.ImplAsyncs
             : base(dc)
         { }
 
-        public async Task<int> CreateAsync(M m)
+        public async Task<int> InsertAsync(M m)
         {
             DC.Action = ActionEnum.Insert;
             CreateMHandle(new List<M> { m });

@@ -3,7 +3,6 @@ using MyDAL.Core.Enums;
 using MyDAL.Impls.Base;
 using MyDAL.Interfaces.ISyncs;
 using System.Collections.Generic;
-using System.Data;
 
 namespace MyDAL.Impls.ImplSyncs
 {
@@ -16,7 +15,7 @@ namespace MyDAL.Impls.ImplSyncs
             : base(dc)
         { }
 
-        public int Create(M m)
+        public int Insert(M m)
         {
             DC.Action = ActionEnum.Insert;
             CreateMHandle(new List<M> { m });

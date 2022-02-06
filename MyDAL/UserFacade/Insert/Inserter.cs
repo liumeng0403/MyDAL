@@ -1,14 +1,12 @@
-using MyDAL.Core.Bases;
-using MyDAL.Impls;
-using MyDAL.Impls.ImplAsyncs;
-using MyDAL.Impls.ImplSyncs;
-using MyDAL.Interfaces;
-using MyDAL.Interfaces.IAsyncs;
-using MyDAL.Interfaces.ISyncs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using MyDAL.Core.Bases;
+using MyDAL.Impls.ImplAsyncs;
+using MyDAL.Impls.ImplSyncs;
+using MyDAL.Interfaces.IAsyncs;
+using MyDAL.Interfaces.ISyncs;
 
-namespace MyDAL.UserFacade.Create
+namespace MyDAL.UserFacade.Insert
 {
     /// <summary>
     /// 请参阅: <see langword="目录索引 https://www.cnblogs.com/Meng-NET/"/>

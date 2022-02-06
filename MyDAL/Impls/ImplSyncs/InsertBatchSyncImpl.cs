@@ -3,7 +3,6 @@ using MyDAL.Core.Enums;
 using MyDAL.Impls.Base;
 using MyDAL.Interfaces.ISyncs;
 using System.Collections.Generic;
-using System.Data;
 
 namespace MyDAL.Impls.ImplSyncs
 {
@@ -17,7 +16,7 @@ namespace MyDAL.Impls.ImplSyncs
         {
         }
 
-        public int CreateBatch(IEnumerable<M> mList)
+        public int InsertBatch(IEnumerable<M> mList)
         {
             DC.Action = ActionEnum.Insert;
             var tm = DC.XC.GetTableModel(typeof(M));

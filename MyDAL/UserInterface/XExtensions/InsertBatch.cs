@@ -17,7 +17,7 @@ namespace MyDAL
         public static async Task<int> CreateBatchAsync<M>(this XConnection conn, IEnumerable<M> mList)
             where M : class, new()
         {
-            return await conn.Creater<M>().CreateBatchAsync(mList);
+            return await conn.Inserter<M>().InsertBatchAsync(mList);
         }
 
         /*-------------------------------------------------------------*/
@@ -28,7 +28,7 @@ namespace MyDAL
         public static int CreateBatch<M>(this XConnection conn, IEnumerable<M> mList)
             where M : class, new()
         {
-            return conn.Creater<M>().CreateBatch(mList);
+            return conn.Inserter<M>().InsertBatch(mList);
         }
 
         #endregion
