@@ -2,7 +2,7 @@
 
 namespace MyDAL.Interfaces.ISyncs
 {
-    internal interface ICreateBatch<M>
+    internal interface IInsertBatch<M>
     where M : class
     {
         int InsertBatch(IEnumerable<M> mList);

@@ -11,13 +11,13 @@ namespace MyDAL.UserFacade.Insert
     /// <summary>
     /// 请参阅: <see langword="目录索引 https://www.cnblogs.com/Meng-NET/"/>
     /// </summary>
-    public sealed class Creater<M>
+    public sealed class Inserter<M>
         : Operator
-        , ICreateAsync<M>, ICreate<M>
-        , ICreateBatchAsync<M>, ICreateBatch<M>
+        , IInsertAsync<M>, IInsert<M>
+        , IInsertBatchAsync<M>, IInsertBatch<M>
         where M : class
     {
-        internal Creater(Context dc)
+        internal Inserter(Context dc)
             : base(dc)
         { }
 
@@ -27,18 +27,18 @@ namespace MyDAL.UserFacade.Insert
         /// 插入单条数据
         /// </summary>
         /// <returns>插入条目数</returns>
-        public async Task<int> CreateAsync(M m)
+        public async Task<int> InsertAsync(M m)
         {
-            return await new CreateAsyncImpl<M>(DC).CreateAsync(m);
+            return await new InsertAsyncImpl<M>(DC).InsertAsync(m);
         }
 
         /// <summary>
         /// 插入单条数据
         /// </summary>
         /// <returns>插入条目数</returns>
-        public int Create(M m)
+        public int Insert(M m)
         {
-            return new CreateImpl<M>(DC).Create(m);
+            return new InsertImpl<M>(DC).Insert(m);
         }
 
         /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -47,18 +47,18 @@ namespace MyDAL.UserFacade.Insert
         /// 批量插入数据
         /// </summary>
         /// <returns>插入条目数</returns>
-        public async Task<int> CreateBatchAsync(IEnumerable<M> mList)
+        public async Task<int> InsertBatchAsync(IEnumerable<M> mList)
         {
-            return await new CreateBatchAsyncImpl<M>(DC).CreateBatchAsync(mList);
+            return await new InsertBatchAsyncImpl<M>(DC).InsertBatchAsync(mList);
         }
 
         /// <summary>
         /// 批量插入数据
         /// </summary>
         /// <returns>插入条目数</returns>
-        public int CreateBatch(IEnumerable<M> mList)
+        public int InsertBatch(IEnumerable<M> mList)
         {
-            return new CreateBatchImpl<M>(DC).CreateBatch(mList);
+            return new InsertBatchImpl<M>(DC).InsertBatch(mList);
         }
 
     }

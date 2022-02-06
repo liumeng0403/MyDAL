@@ -9,12 +9,12 @@ namespace MyDAL
     public static partial class XExtension
     {
 
-        #region CreateBatch API
+        #region InsertBatch API
 
         /// <summary>
-        /// Creater 便捷 CreateBatchAsync 方法
+        /// Inserter 便捷 InsertBatchAsync 方法
         /// </summary>
-        public static async Task<int> CreateBatchAsync<M>(this XConnection conn, IEnumerable<M> mList)
+        public static async Task<int> InsertBatchAsync<M>(this XConnection conn, IEnumerable<M> mList)
             where M : class, new()
         {
             return await conn.Inserter<M>().InsertBatchAsync(mList);
@@ -23,9 +23,9 @@ namespace MyDAL
         /*-------------------------------------------------------------*/
 
         /// <summary>
-        /// Creater 便捷 CreateBatchAsync 方法
+        /// Inserter 便捷 InsertBatch 方法
         /// </summary>
-        public static int CreateBatch<M>(this XConnection conn, IEnumerable<M> mList)
+        public static int InsertBatch<M>(this XConnection conn, IEnumerable<M> mList)
             where M : class, new()
         {
             return conn.Inserter<M>().InsertBatch(mList);

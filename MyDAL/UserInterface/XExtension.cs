@@ -2,12 +2,12 @@
 using MyDAL.Core.Enums;
 using MyDAL.Impls.ImplSyncs;
 using MyDAL.Tools;
-using MyDAL.UserFacade.Create;
 using MyDAL.UserFacade.Delete;
 using MyDAL.UserFacade.Join;
 using MyDAL.UserFacade.Query;
 using MyDAL.UserFacade.Update;
 using System.Collections.Generic;
+using MyDAL.UserFacade.Insert;
 
 namespace MyDAL
 {
@@ -26,14 +26,14 @@ namespace MyDAL
         #region Internal
 
         /* 内部方法 */
-        private static Creater<M> Creater<M>(this XConnection conn)
+        private static Inserter<M> Inserter<M>(this XConnection conn)
             where M : class, new()
         {
             var dc = new XContext<M>(conn)
             {
                 Crud = CrudEnum.Create
             };
-            return new Creater<M>(dc);
+            return new Inserter<M>(dc);
         }
 
         /*-------------------------------------------------------------*/

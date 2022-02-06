@@ -6,12 +6,12 @@ using System.Collections.Generic;
 
 namespace MyDAL.Impls.ImplSyncs
 {
-    internal sealed class CreateImpl<M>
+    internal sealed class InsertImpl<M>
         : ImplerSync
-        , ICreate<M>
+        , IInsert<M>
         where M : class
     {
-        public CreateImpl(Context dc)
+        public InsertImpl(Context dc)
             : base(dc)
         { }
 

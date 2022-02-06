@@ -212,7 +212,7 @@ namespace MyDAL.Test
             m.Bit = true;
             m.Bit_Null = flag ? null : (bool?)false;
 
-            await MyDAL_TestDB.CreateAsync(m);
+            await MyDAL_TestDB.InsertAsync(m);
 
             xx = string.Empty;
         }

@@ -6,12 +6,12 @@ using System.Collections.Generic;
 
 namespace MyDAL.Impls.ImplSyncs
 {
-    internal sealed class CreateBatchImpl<M>
+    internal sealed class InsertBatchImpl<M>
         : ImplerSync
-        , ICreateBatch<M>
+        , IInsertBatch<M>
         where M : class
     {
-        internal CreateBatchImpl(Context dc)
+        internal InsertBatchImpl(Context dc)
             : base(dc)
         {
         }

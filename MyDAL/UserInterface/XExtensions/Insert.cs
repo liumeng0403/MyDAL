@@ -9,25 +9,23 @@ namespace MyDAL
     public static partial class XExtension
     {
 
-        // create 要支持自增 id 
-
-        #region Create API
+        #region Insert API
 
         /// <summary>
-        /// Creater 便捷 CreateAsync 方法
+        /// Inserter 便捷 InsertAsync 方法
         /// </summary>
-        public static async Task<int> CreateAsync<M>(this XConnection conn, M m)
+        public static async Task<int> InsertAsync<M>(this XConnection conn, M m)
             where M : class, new()
         {
-            return await conn.Creater<M>().CreateAsync(m);
+            return await conn.Inserter<M>().InsertAsync(m);
         }
 
         /*-------------------------------------------------------------*/
 
         /// <summary>
-        /// Creater 便捷 CreateAsync 方法 , SQL 语句
+        /// Inserter 便捷 InsertAsync 方法 , SQL 语句
         /// </summary>
-        public static async Task<int> CreateAsync(this XConnection conn, string sql, List<XParam> dbParas = null)
+        public static async Task<int> InsertAsync(this XConnection conn, string sql, List<XParam> dbParas = null)
         {
             CheckCreate(sql);
             return await conn.ExecuteNonQueryAsync(sql, dbParas);
@@ -36,20 +34,20 @@ namespace MyDAL
         /*-------------------------------------------------------------*/
 
         /// <summary>
-        /// Creater 便捷 Create 方法
+        /// Inserter 便捷 Insert 方法
         /// </summary>
-        public static int Create<M>(this XConnection conn, M m)
+        public static int Insert<M>(this XConnection conn, M m)
             where M : class, new()
         {
-            return conn.Creater<M>().Create(m);
+            return conn.Inserter<M>().Insert(m);
         }
 
         /*-------------------------------------------------------------*/
 
         /// <summary>
-        /// Creater 便捷 Create 方法 , SQL 语句
+        /// Inserter 便捷 Insert 方法 , SQL 语句
         /// </summary>
-        public static int Create(this XConnection conn, string sql, List<XParam> dbParas = null)
+        public static int Insert(this XConnection conn, string sql, List<XParam> dbParas = null)
         {
             CheckCreate(sql);
             return conn.ExecuteNonQuery(sql, dbParas);

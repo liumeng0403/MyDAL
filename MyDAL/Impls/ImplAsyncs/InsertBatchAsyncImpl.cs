@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Impls.ImplAsyncs
 {
-    internal sealed class CreateBatchAsyncImpl<M>
+    internal sealed class InsertBatchAsyncImpl<M>
     : ImplerAsync
-    , ICreateBatchAsync<M>
+    , IInsertBatchAsync<M>
     where M : class
     {
-        internal CreateBatchAsyncImpl(Context dc)
+        internal InsertBatchAsyncImpl(Context dc)
             : base(dc)
         { }
 

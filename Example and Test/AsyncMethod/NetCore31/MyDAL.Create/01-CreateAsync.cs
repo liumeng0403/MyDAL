@@ -66,7 +66,7 @@ namespace MyDAL.Create
 
             xx = string.Empty;
 
-            var res2 = await MyDAL_TestDB.CreateAsync(m2);
+            var res2 = await MyDAL_TestDB.InsertAsync(m2);
 
             Assert.True(res2 == 1);
 
@@ -76,7 +76,7 @@ namespace MyDAL.Create
 
             xx = string.Empty;
 
-            var res5 = await MyDAL_TestDB.CreateAsync(new Agent
+            var res5 = await MyDAL_TestDB.InsertAsync(new Agent
             {
                 Id = Guid.NewGuid(),
                 CreatedOn = Convert.ToDateTime("2018-10-07 17:02:05"),
@@ -116,7 +116,7 @@ namespace MyDAL.Create
                 DirectorStarCount = 1
             };
 
-            var res6 = await MyDAL_TestDB.CreateAsync(m6);
+            var res6 = await MyDAL_TestDB.InsertAsync(m6);
 
             
 
@@ -145,7 +145,7 @@ namespace MyDAL.Create
                 DirectorStarCount = 1
             };
 
-            var res7 = await MyDAL_TestDB.CreateAsync(m7);
+            var res7 = await MyDAL_TestDB.InsertAsync(m7);
 
             
 
@@ -165,7 +165,7 @@ namespace MyDAL.Create
 
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB.CreateBatchAsync(list1);
+            var res1 = await MyDAL_TestDB.InsertBatchAsync(list1);
 
             Assert.True(res1 == 10);
 
@@ -199,7 +199,7 @@ namespace MyDAL.Create
             await MyDAL_TestDB.DeleteAsync<AlipayPaymentRecord>(it => it.Id == m.Id);
 
             // 新增一条数据: AlipayPaymentRecord
-            var res1 = await MyDAL_TestDB.CreateAsync(m);
+            var res1 = await MyDAL_TestDB.InsertAsync(m);
 
             Assert.True(res1 == 1);
 
@@ -229,7 +229,7 @@ namespace MyDAL.Create
             xx = string.Empty;
 
             // 新建
-            var res1 = await MyDAL_TestDB.CreateAsync(m1);
+            var res1 = await MyDAL_TestDB.InsertAsync(m1);
 
             Assert.True(res1 == 1);
 
@@ -261,7 +261,7 @@ namespace MyDAL.Create
             Assert.True(!list.Any(it => it.IsVIP));
             Assert.True(!list.Any(it => it.IsActived));
 
-            var res4 = await MyDAL_TestDB.CreateBatchAsync(list);
+            var res4 = await MyDAL_TestDB.InsertBatchAsync(list);
 
             Assert.True(res4 == list.Count);
 
@@ -379,7 +379,7 @@ namespace MyDAL.Create
             };
 
             // 新增一条数据: AlipayPaymentRecord
-            var res1 = await MyDAL_TestDB.CreateAsync(sql, paras);
+            var res1 = await MyDAL_TestDB.InsertAsync(sql, paras);
 
             Assert.True(res1 == 1);
 
@@ -436,7 +436,7 @@ namespace MyDAL.Create
             };
 
             // 新增一条数据: AlipayPaymentRecord
-            var res1 = await MyDAL_TestDB.CreateAsync(sql, paras);
+            var res1 = await MyDAL_TestDB.InsertAsync(sql, paras);
 
             Assert.True(res1 == 1);
 

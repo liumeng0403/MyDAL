@@ -28,7 +28,7 @@ namespace MyDAL.Delete
                 .Where(it => it.Id == m.Id)
                 .DeleteAsync();
 
-            var res0 = await MyDAL_TestDB.CreateAsync(m);
+            var res0 = await MyDAL_TestDB.InsertAsync(m);
 
             return m;
         }

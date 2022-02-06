@@ -28,7 +28,7 @@ namespace MyDAL.QueryAPI
             var resd = await MyDAL_TestDB.DeleteAsync<BodyFitRecord>(it => it.Id == m.Id);
 
             // 造数据
-            var resc = await MyDAL_TestDB.CreateAsync(m);
+            var resc = await MyDAL_TestDB.InsertAsync(m);
 
             return m;
         }

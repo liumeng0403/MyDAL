@@ -29,7 +29,7 @@ namespace MyDAL.Update
                 .DeleteAsync();
 
             // 建
-            var res2 = await MyDAL_TestDB.CreateAsync(m);
+            var res2 = await MyDAL_TestDB.InsertAsync(m);
 
             return m;
 
