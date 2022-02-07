@@ -1,0 +1,12 @@
+﻿
+
+项目: MyDAL.Tools 已通过 (9)	340 毫秒		
+项目: MyDAL.SqlAction 已通过 (6)	346 毫秒		
+项目: MyDAL.WhereEdge 已通过 (11)	10.7 秒		
+项目: MyDAL.QueryAPI 已通过 (86)	7.6 秒		
+项目: MyDAL.Func 已通过 (3)	2 秒		
+
+
+
+
+

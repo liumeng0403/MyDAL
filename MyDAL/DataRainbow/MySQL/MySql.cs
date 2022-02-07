@@ -60,7 +60,15 @@ namespace MyDAL.DataRainbow.MySQL
             {
                 DbSql.TableXAlias(tbAlias, sb); Dot(sb);
             }
-            DbSql.ObjLeftSymbol(sb); sb.Append(colName); DbSql.ObjRightSymbol(sb);
+
+            if ("*".Equals(colName, StringComparison.OrdinalIgnoreCase))
+            {
+                sb.Append(colName);
+            }
+            else
+            {
+                DbSql.ObjLeftSymbol(sb); sb.Append(colName); DbSql.ObjRightSymbol(sb);
+            }
         }
         void ISql.ColumnAlias(string colAlias, StringBuilder sb)
         {

@@ -79,7 +79,7 @@ namespace MyDAL.Core.Bases
         internal CsValueHelper VH { get; private set; }
         
         /// <summary>
-        /// sql 参数 对象 处理
+        /// sql 语句 and 参数 对象 处理
         /// </summary>
         internal DicParamHelper DPH { get; private set; }
 

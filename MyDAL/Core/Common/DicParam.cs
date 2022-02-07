@@ -28,10 +28,14 @@ namespace MyDAL.Core.Common
         internal string ColumnTwo { get; set; }
 
         /// <summary>
-        /// model property name ?
+        /// model property name + dic_id
         /// </summary>
         internal string Param { get; set; }
+        /// <summary>
+        /// model property name
+        /// </summary>
         internal string ParamRaw { get; set; }
+
         internal object CsValue { get; set; }
         internal string CsValueStr { get; set; }
         internal Type CsType { get; set; }

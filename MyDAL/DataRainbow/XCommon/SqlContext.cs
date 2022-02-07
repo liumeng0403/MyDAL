@@ -822,7 +822,7 @@ namespace MyDAL.DataRainbow.XCommon
                 var aId = and == null ? -1 : and.ID;
                 var oId = or == null ? -1 : or.ID;
                 var flag = aId < oId || oId == -1;
-                Spacing(X); DbSql.WhereTrueOrFalse(DC, flag, X); Spacing(X);
+                CRLF(X); DbSql.WhereTrueOrFalse(DC, flag, X); Spacing(X);
             }
             foreach (var db in cons)
             {

@@ -13,7 +13,7 @@ using System.Linq;
 namespace MyDAL.Core.Helper
 {
     /// <summary>
-    /// sql 参数 处理 对象
+    /// sql 语句 and 参数 处理 对象
     /// </summary>
     internal class DicParamHelper
     {
@@ -88,7 +88,7 @@ namespace MyDAL.Core.Helper
             //
             dic.ID = DC.DicID;
             DC.DicID++;
-            if (!dic.ParamRaw.IsNullStr())
+            if (dic.ParamRaw.IsNotBlank())
             {
                 dic.Param = $"{dic.ParamRaw}_{dic.ID}";
             }
