@@ -3,67 +3,6 @@ using System.Collections.Generic;
 
 namespace MyDAL.Test.Entities.MySql
 {
-    /*
-     * create table MySQL_Test_EveryType
-     * (
-     *  	MySQL_Char char(20) not null,
-     *  	MySQL_Char_Null char(20) null,
-     *  	MySQL_VarChar varchar(50) not null,
-     *  	MySQL_VarChar_Null varchar(50) null,
-     *  	MySQL_TinyText tinytext not null,
-     *  	MySQL_TinyText_Null tinytext null,
-     *  	MySQL_Text text not null,
-     *  	MySQL_Text_Null text null,
-     *  	MySQL_Blob blob not null,
-     *  	MySQL_Blob_Null blob null,
-     *  	MySQL_MediumText mediumtext not null,
-     *  	MySQL_MediumText_Null mediumtext null,
-     *  	MySQL_MediumBlob mediumblob not null,
-     *  	MySQL_MediumBlob_Null mediumblob null,
-     *  	MySQL_LongText longtext not null,
-     *  	MySQL_LongText_Null longtext null,
-     *  	MySQL_LongBlob longblob not null,
-     *  	MySQL_LongBlob_Null longblob null,
-     *  	MySQL_Enum enum('A','B') not null,
-     *  	MySQL_Enum_Null enum('A','B') null,
-     *  	MySQL_Set_Field set('music','movie','swimming') not null,
-     *  	MySQL_Set_Null set('music','movie','swimming') null,
-     *  	MySQL_TinyInt tinyint not null,
-     *  	MySQL_TinyInt_Null tinyint null,
-     *  	MySQL_SmallInt smallint not null,
-     *  	MySQL_SmallInt_Null smallint null,
-     *  	MySQL_MediumInt mediumint not null,
-     *  	MySQL_MediumInt_Null mediumint null,
-     *  	MySQL_Int int not null,
-     *  	MySQL_Int_Null int null,
-     *  	MySQL_BigInt bigint not null,
-     *  	MySQL_BigInt_Null bigint null,
-     *  	MySQL_Float float not null,
-     *  	MySQL_Float_Null float null,
-     *  	MySQL_Double double not null,
-     *  	MySQL_Double_Null double null,
-     *  	MySQL_Decimal decimal not null,
-     *  	MySQL_Decimal_Null decimal null,
-     *  	MySQL_Date date not null,
-     *  	MySQL_Date_Null date null,
-     *  	MySQL_DateTime datetime not null,
-     *  	MySQL_DateTime_Null datetime null,
-     *  	MySQL_TimeStamp timestamp not null,
-     *  	MySQL_TimeStamp_Null timestamp null,
-     *  	MySQL_Time time not null,
-     *  	MySQL_Time_Null time null,
-     *  	MySQL_Year year not null,
-     *  	MySQL_Year_Null year null,
-     *  	MySQL_Bit bit not null,
-     *  	MySQL_Bit_Null bit null,
-     *  	MySQL_Binary binary(100) not null,
-     *  	MySQL_Binary_Null binary(100) null,
-     *  	MySQL_VarBinary varbinary(1000) not null,
-     *  	MySQL_VarBinary_Null varbinary(1000) null,
-     *  	MySQL_TinyBlob tinyblob not null,
-     *  	MySQL_TinyBlob_Null tinyblob null
-     * );
-     */
     [XTable(Name = "MySQL_Test_EveryType")]
     public class MySQL_EveryType
     {

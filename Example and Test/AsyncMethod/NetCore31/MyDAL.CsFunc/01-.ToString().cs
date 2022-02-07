@@ -116,10 +116,10 @@ namespace MyDAL.CsFunc
             Assert.Equal("50", res_Float_Null);
 
             var res_Double = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Double.ToString());
-            Assert.Equal("1.79769313486232E+308", res_Double);
+            Assert.Equal("1.7976931348623157E+308", res_Double);
 
             var res_Double_Null = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Double_Null.ToString());
-            Assert.Equal("-1.79769313486232E+308", res_Double_Null);
+            Assert.Equal("-1.7976931348623157E+308", res_Double_Null);
 
             var res_Decimal = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Decimal.ToString());
             Assert.Equal("600", res_Decimal);

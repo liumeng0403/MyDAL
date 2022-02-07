@@ -114,6 +114,7 @@ namespace MyDAL.Core
                          {
                              throw XConfig.EC.Exception(XConfig.EC._034, $"属性 [[{mType.Name}.{p.Name}]] 在表 [[{DC.XConn.Conn.Database}.{tm.TbName}]] 中无对应的列!!!");
                          }
+                         pca.ColAttr = new XColumnAttribute {Name = pca.ColName};
                      }
                      else
                      {
@@ -122,8 +123,8 @@ namespace MyDAL.Core
                          {
                              throw XConfig.EC.Exception(XConfig.EC._035, $"属性 [[{mType.Name}.{p.Name}]] 上 [XColumn] 标注的字段名 [[{ca.Name}]] 有误!!!");
                          }
+                         pca.ColAttr = ca;
                      }
-                     pca.ColAttr = new XColumnAttribute { Name = pca.ColName };
                      pca.TbAttr = tm.TbAttr;
                      list.Add(pca);
                  }

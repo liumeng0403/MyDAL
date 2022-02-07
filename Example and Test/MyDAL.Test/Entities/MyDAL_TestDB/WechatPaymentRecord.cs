@@ -3,16 +3,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyDAL.Test.Entities.MyDAL_TestDB
 {
-    /*
-     *CREATE TABLE `wechatpaymentrecord` (
-     * `Id` char(36) NOT NULL,
-     * `CreatedOn` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-     * `PaymentBillId` char(36) NOT NULL,
-     * `Amount` double NOT NULL,
-     * `PaymentTime` datetime(6) NOT NULL,
-     * `WechatpayTradeNo` longtext
-     * ) ENGINE=InnoDB DEFAULT CHARSET=utf8
-     */
     [XTable(Name ="WechatPaymentRecord")]
     public class WechatPaymentRecord 
     {

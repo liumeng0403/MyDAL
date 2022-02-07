@@ -404,7 +404,7 @@ namespace MyDAL.Compare
             // in
             var res2 = await MyDAL_TestDB.QueryListAsync<Agent>(it => !new List<AgentLevel?> { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel));
 
-            Assert.True(res2.Count == 28065);
+            Assert.True(res2.Count == 28064);
 
             
 

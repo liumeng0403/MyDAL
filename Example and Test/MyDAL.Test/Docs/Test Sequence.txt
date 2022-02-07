@@ -4,7 +4,12 @@
 项目: MyDAL.SqlAction 已通过 (6)	346 毫秒		
 项目: MyDAL.WhereEdge 已通过 (11)	10.7 秒		
 项目: MyDAL.QueryAPI 已通过 (86)	7.6 秒		
-项目: MyDAL.Func 已通过 (3)	2 秒		
+项目: MyDAL.Func 已通过 (3)	2 秒	
+项目: MyDAL.CsFunc 已通过 (11)	1.6 秒		
+项目: MyDAL.Compare 已通过 (71)	33.7 秒		
+项目: MyDAL.Update 已通过 (20)	703 毫秒		
+项目: MyDAL.Delete 已通过 (8)	549 毫秒		
+项目: MyDAL.Create 已通过 (11)	7.1 秒		
 
 
 

@@ -4,17 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyDAL.Test.Entities.MyDAL_TestDB
 {
-
-    /*
-     * CREATE TABLE `bodyfitrecord` (
-     * `Id` char(36) NOT NULL,
-     * `CreatedOn` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-     * `UserId` char(36) NOT NULL,
-     * `BodyMeasureProperty` longtext,
-     * PRIMARY KEY (`Id`)
-     * ) ENGINE=InnoDB DEFAULT CHARSET=utf8
-     */
-
     [XTable(Name ="BodyFitRecord")]
     public class BodyFitRecord
     {

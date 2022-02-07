@@ -6,23 +6,6 @@ using System.Text;
 
 namespace MyDAL.Test.Entities.MyDAL_TestDB
 {
-    /*
-     * CREATE TABLE `userinfo` (
-     * `Id` char(36) NOT NULL,
-     * `CreatedOn` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
-     * `Name` longtext,
-     * `Phone` longtext,
-     * `RootUser` bit(1) NOT NULL,
-     * `InvitedCount` int(11) NOT NULL,
-     * `PathId` longtext,
-     * `SuperiorId` char(36) NOT NULL,
-     * `ArrangePathId` longtext,
-     * `ArrangeSuperiorId` char(36) NOT NULL,
-     * `IsVIP` bit(1) NOT NULL,
-     * `IsActived` bit(1) NOT NULL,
-     * PRIMARY KEY (`Id`)
-     * ) ENGINE=InnoDB DEFAULT CHARSET=utf8
-     */
     [XTable(Name ="UserInfo")]
     public class UserInfo
     {

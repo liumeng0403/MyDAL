@@ -2,25 +2,6 @@
 
 namespace MyDAL.Test.Entities.MyDAL_TestDB
 {
-
-    /*
-     *CREATE TABLE `wechatuserinfo` (
-     * `Id` char(36) NOT NULL,
-     * `CreatedOn` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-     * `AppId` longtext,
-     * `OpenId` longtext,
-     * `UserId` char(36) NOT NULL,
-     * `Nickname` longtext,
-     * `Sex` int(11) NOT NULL,
-     * `Province` longtext,
-     * `City` longtext,
-     * `Country` longtext,
-     * `Headimgurl` longtext,
-     * `Privilege` longtext,
-     * `UnionId` longtext,
-     * PRIMARY KEY (`Id`)
-     * ) ENGINE=InnoDB DEFAULT CHARSET=utf8
-     */
     [XTable(Name ="WechatUserInfo")]
     public class WechatUserInfo 
     {

@@ -4,21 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyDAL.Test.Entities.MyDAL_TestDB
 {
-    /*
-     * CREATE TABLE `agentinventoryrecord` (
-     * `Id` char(36) NOT NULL,
-     * `CreatedOn` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-     * `AgentId` char(36) NOT NULL,
-     * `ProductId` char(36) NOT NULL,
-     * `StockingCount` int(11) NOT NULL,
-     * `TotalStockingCount` int(11) NOT NULL,
-     * `UnconfirmedStockingCount` int(11) NOT NULL,
-     * `TotalSaleCount` int(11) NULL,
-     * `UnconfirmedSaleCount` int(11) NOT NULL,
-     * `LockedCount` int(11) NOT NULL,
-     * PRIMARY KEY (`Id`)
-     * ) ENGINE=InnoDB DEFAULT CHARSET=utf8
-     */
     [XTable(Name ="AgentInventoryRecord")]
     public class AgentInventoryRecord 
     {

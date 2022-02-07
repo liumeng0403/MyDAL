@@ -67,7 +67,7 @@ namespace MyDAL.Compare
             catch (Exception ex)
             {
                 
-                var errStr = "【ERR-078】 -- [[[[Convert(value(MyDAL.Test.Compare._09_Null).WhereTest.AgentLevelNull, Nullable`1)]] 中,传入的 SQL 筛选条件为 Null !!!]] ，请 EMail: --> liumeng0403@163.com <--";
+                var errStr = "【ERR-078】 -- [[[[Convert(value(MyDAL.Compare._09_Null).WhereTest.AgentLevelNull, Nullable`1)]] 中,传入的 SQL 筛选条件为 Null !!!]] ，请 EMail: --> liumeng0403@163.com <--";
                 Assert.Equal(errStr, ex.Message, ignoreCase: true);
             }
 

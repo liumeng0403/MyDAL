@@ -4,23 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyDAL.Test.Entities.MyDAL_TestDB
 {
-    /*
-     * CREATE TABLE `agent` (
-     * `Id` char(36) NOT NULL,
-     * `CreatedOn` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-     * `UserId` char(36) NOT NULL,
-     * `PathId` longtext,
-     * `Name` longtext NOT NULL,
-     * `Phone` longtext NOT NULL,
-     * `IdCardNo` longtext,
-     * `CrmUserId` longtext,
-     * `AgentLevel` int(11) NOT NULL,
-     * `ActivedOn` datetime(6) DEFAULT NULL,
-     * `ActiveOrderId` char(36) DEFAULT NULL,
-     * `DirectorStarCount` int(11) NOT NULL,
-     * PRIMARY KEY (`Id`)
-     * ) ENGINE=InnoDB DEFAULT CHARSET=utf8
-     */
     [XTable(Name ="Agent")]
     public class Agent 
     {

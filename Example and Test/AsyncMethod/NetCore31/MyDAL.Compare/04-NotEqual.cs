@@ -34,7 +34,7 @@ namespace MyDAL.Compare
             // !(!=) --> =
             var res1 = await MyDAL_TestDB.QueryListAsync<Agent>(it => !(it.AgentLevel != AgentLevel.Customer));
 
-            Assert.True(res1.Count == 28064);
+            Assert.True(res1.Count == 28063);
 
             
 

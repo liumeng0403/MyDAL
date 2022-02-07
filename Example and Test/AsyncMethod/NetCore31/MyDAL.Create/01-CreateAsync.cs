@@ -244,7 +244,7 @@ namespace MyDAL.Create
         public async Task Create_Batch_Shortcut()
         {
 
-            var json = File.ReadAllText(@"C:\Users\liume\Desktop\Work\DalTestDB\ProfileData.json");
+            var json = File.ReadAllText(@"D:\GitHub\Me\MyDal\DalTestDB\ProfileData.json");
             var list = JsonConvert.DeserializeObject<List<UserInfo>>(json);
             foreach (var item in list)
             {

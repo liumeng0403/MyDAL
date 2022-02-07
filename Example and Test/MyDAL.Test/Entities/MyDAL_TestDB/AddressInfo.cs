@@ -2,18 +2,6 @@
 
 namespace MyDAL.Test.Entities.MyDAL_TestDB
 {
-    /*
-     * CREATE TABLE `addressinfo` (
-     * `Id` char(36) NOT NULL,
-     * `CreatedOn` datetime(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-     * `ContactName` longtext,
-     * `ContactPhone` longtext,
-     * `DetailAddress` longtext,
-     * `IsDefault` bit(1) NULL,
-     * `UserId` char(36) NOT NULL,
-     * PRIMARY KEY (`Id`)
-     * ) ENGINE=InnoDB DEFAULT CHARSET=utf8
-     */
     [XTable(Name ="AddressInfo")]
     public class AddressInfo
     {
