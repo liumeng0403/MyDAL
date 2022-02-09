@@ -18,18 +18,18 @@ namespace MyDAL
         public static async Task<bool> IsExistAsync<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc)
             where M : class, new()
         {
-            return await conn.Queryer<M>().Where(compareFunc).IsExistAsync();
+            return await conn.Selecter<M>().Where(compareFunc).IsExistAsync();
         }
 
         /*-------------------------------------------------------------*/
 
         /// <summary>
-        /// Queryer 便捷-同步 IsExistAsync 方法
+        /// Selecter 便捷-同步 IsExistAsync 方法
         /// </summary>
         public static bool IsExist<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).IsExist();
+            return conn.Selecter<M>().Where(compareFunc).IsExist();
         }
         
         #endregion

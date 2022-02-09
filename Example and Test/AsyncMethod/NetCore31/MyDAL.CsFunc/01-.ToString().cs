@@ -14,40 +14,40 @@ namespace MyDAL.CsFunc
     {
 
         [Fact]
-        public async Task QueryOne_SingleColumn_ST()
+        public async Task SelectOne_SingleColumn_ST()
         {
             var pk = 'A';
             await MySQL_PreData(pk, 1);
 
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char");
+            var res1 = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char");
             Assert.NotNull(res1);
 
-            var res_char = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Char.ToString());
+            var res_char = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Char.ToString());
             Assert.Equal(res_char, $"{pk}-char");
 
-            var res_VarChar = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.VarChar.ToString());
+            var res_VarChar = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.VarChar.ToString());
             Assert.Equal(res_VarChar, $"{pk}-var char");
 
-            var res_TinyText = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.TinyText.ToString());
+            var res_TinyText = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.TinyText.ToString());
             Assert.Equal(res_TinyText, $"{pk}-tiny text");
 
-            var res_Text = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Text.ToString());
+            var res_Text = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Text.ToString());
             Assert.Equal(res_Text, $"{pk}-text");
 
-            var res_MediumText = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.MediumText.ToString());
+            var res_MediumText = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.MediumText.ToString());
             Assert.Equal(res_MediumText, $"{pk}-medium text");
 
-            var res_LongText = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.LongText.ToString());
+            var res_LongText = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.LongText.ToString());
             Assert.Equal(res_LongText, $"{pk}-long text");
 
-            var res_TinyBlob = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.TinyBlob);
+            var res_TinyBlob = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.TinyBlob);
             Assert.Equal(Encoding.UTF8.GetString(res_TinyBlob), $"{pk}-tiny blob");
 
             try
             {
-                var res_Blob = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Blob.ToString());
+                var res_Blob = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Blob.ToString());
             }
             catch (Exception ex)
             {
@@ -55,106 +55,106 @@ namespace MyDAL.CsFunc
                 Assert.Equal(ex.Message, err);
             }
 
-            var res_MediumBlob = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.MediumBlob);
+            var res_MediumBlob = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.MediumBlob);
             Assert.Equal(Encoding.UTF8.GetString(res_MediumBlob), $"{pk}-medium blob");
 
-            var res_LongBlob = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.LongBlob);
+            var res_LongBlob = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.LongBlob);
             Assert.Equal(Encoding.UTF8.GetString(res_LongBlob), $"{pk}-long blob");
 
-            var res_Binary = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Binary);
+            var res_Binary = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Binary);
             Assert.StartsWith($"{pk}-binary",Encoding.UTF8.GetString(res_Binary));
 
-            var res_VarBinary = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.VarBinary);
+            var res_VarBinary = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.VarBinary);
             Assert.Equal($"{pk}-var binary", Encoding.UTF8.GetString(res_VarBinary));
 
-            var res_Enum = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Enum.ToString());
+            var res_Enum = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Enum.ToString());
             Assert.Equal(MySQL_Enum.A.ToString(), res_Enum);
 
-            var res_Enum_Null = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Enum_Null.ToString());
+            var res_Enum_Null = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Enum_Null.ToString());
             Assert.Equal(MySQL_Enum.B.ToString(), res_Enum_Null);
 
-            var res_Set = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Set.ToString());
+            var res_Set = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Set.ToString());
             Assert.Equal(string.Join(",", new List<string> { "music", "movie" }), res_Set);
 
-            var res_Set_Null = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Set_Null.ToString());
+            var res_Set_Null = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Set_Null.ToString());
             Assert.Equal(string.Join(",", new List<string> { "swimming" }), res_Set_Null);
 
-            var res_TinyInt = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.TinyInt.ToString());
+            var res_TinyInt = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.TinyInt.ToString());
             Assert.Equal("65", res_TinyInt);
 
-            var res_TinyInt_Null = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.TinyInt_Null.ToString());
+            var res_TinyInt_Null = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.TinyInt_Null.ToString());
             Assert.Equal("65", res_TinyInt_Null);
 
-            var res_SmallInt = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.SmallInt.ToString());
+            var res_SmallInt = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.SmallInt.ToString());
             Assert.Equal("32767", res_SmallInt);
 
-            var res_SmallInt_Null = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.SmallInt_Null.ToString());
+            var res_SmallInt_Null = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.SmallInt_Null.ToString());
             Assert.Equal("-32768", res_SmallInt_Null);
 
-            var res_MediumInt = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.MediumInt.ToString());
+            var res_MediumInt = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.MediumInt.ToString());
             Assert.Equal("1000000", res_MediumInt);
 
-            var res_MediumInt_Null = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.MediumInt_Null.ToString());
+            var res_MediumInt_Null = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.MediumInt_Null.ToString());
             Assert.Equal("1000000", res_MediumInt_Null);
 
-            var res_Int = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Int.ToString());
+            var res_Int = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Int.ToString());
             Assert.Equal("2147483647", res_Int);
 
-            var res_Int_Null = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Int_Null.ToString());
+            var res_Int_Null = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Int_Null.ToString());
             Assert.Equal("-2147483648", res_Int_Null);
 
-            var res_BigInt = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.BigInt.ToString());
+            var res_BigInt = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.BigInt.ToString());
             Assert.Equal("9223372036854775807", res_BigInt);
 
-            var res_BigInt_Null = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.BigInt_Null.ToString());
+            var res_BigInt_Null = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.BigInt_Null.ToString());
             Assert.Equal("-9223372036854775808", res_BigInt_Null);
 
-            var res_Float = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Float.ToString());
+            var res_Float = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Float.ToString());
             Assert.Equal("50", res_Float);
 
-            var res_Float_Null = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Float_Null.ToString());     
+            var res_Float_Null = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Float_Null.ToString());     
             Assert.Equal("50", res_Float_Null);
 
-            var res_Double = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Double.ToString());
+            var res_Double = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Double.ToString());
             Assert.Equal("1.7976931348623157E+308", res_Double);
 
-            var res_Double_Null = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Double_Null.ToString());
+            var res_Double_Null = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Double_Null.ToString());
             Assert.Equal("-1.7976931348623157E+308", res_Double_Null);
 
-            var res_Decimal = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Decimal.ToString());
+            var res_Decimal = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Decimal.ToString());
             Assert.Equal("600", res_Decimal);
 
-            var res_Decimal_Null = await MyDAL_TestDB.QueryOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Decimal_Null.ToString());
+            var res_Decimal_Null = await MyDAL_TestDB.SelectOneAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char", it => it.Decimal_Null.ToString());
             Assert.Equal("600", res_Decimal_Null);
 
             xx = string.Empty;
         }
 
         [Fact]
-        public async Task QueryOne_VmColumn_ST()
+        public async Task SelectOne_VmColumn_ST()
         {
 
         }
 
         [Fact]
-        public async Task QueryOne_SingleColumn_MT()
+        public async Task SelectOne_SingleColumn_MT()
         {
 
         }
 
         [Fact]
-        public async Task QueryOne_VmColumn_MT()
+        public async Task SelectOne_VmColumn_MT()
         {
 
         }
 
         [Fact]
-        public async Task DateTime_Query_yyyy_MM_dd()
+        public async Task DateTime_Select_yyyy_MM_dd()
         {
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Distinct()
                 .QueryListAsync(it => it.CreatedOn.ToString("yyyy-MM-dd"));
 

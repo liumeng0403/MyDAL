@@ -13,7 +13,7 @@ namespace MyDAL
     public static partial class XExtension
     {
 
-        #region QueryList API
+        #region SelectList API
 
         /*-------------------------------------------------------------*/
 
@@ -23,213 +23,213 @@ namespace MyDAL
 
         /*-------------------------------------------------------------*/
 
-        public static List<bool> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, bool>> columnMapFunc)
+        public static List<bool> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, bool>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<bool?> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, bool?>> columnMapFunc)
+        public static List<bool?> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, bool?>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<byte> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, byte>> columnMapFunc)
+        public static List<byte> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, byte>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<byte?> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, byte?>> columnMapFunc)
+        public static List<byte?> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, byte?>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<char> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, char>> columnMapFunc)
+        public static List<char> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, char>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<char?> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, char?>> columnMapFunc)
+        public static List<char?> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, char?>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<decimal> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, decimal>> columnMapFunc)
+        public static List<decimal> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, decimal>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<decimal?> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, decimal?>> columnMapFunc)
+        public static List<decimal?> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, decimal?>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<double> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, double>> columnMapFunc)
+        public static List<double> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, double>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<double?> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, double?>> columnMapFunc)
+        public static List<double?> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, double?>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<float> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, float>> columnMapFunc)
+        public static List<float> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, float>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<float?> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, float?>> columnMapFunc)
+        public static List<float?> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, float?>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<int> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, int>> columnMapFunc)
+        public static List<int> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, int>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<int?> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, int?>> columnMapFunc)
+        public static List<int?> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, int?>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<long> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, long>> columnMapFunc)
+        public static List<long> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, long>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<long?> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, long?>> columnMapFunc)
+        public static List<long?> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, long?>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<sbyte> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, sbyte>> columnMapFunc)
+        public static List<sbyte> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, sbyte>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<sbyte?> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, sbyte?>> columnMapFunc)
+        public static List<sbyte?> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, sbyte?>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<short> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, short>> columnMapFunc)
+        public static List<short> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, short>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<short?> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, short?>> columnMapFunc)
+        public static List<short?> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, short?>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<uint> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, uint>> columnMapFunc)
+        public static List<uint> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, uint>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<uint?> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, uint?>> columnMapFunc)
+        public static List<uint?> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, uint?>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<ulong> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, ulong>> columnMapFunc)
+        public static List<ulong> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, ulong>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<ulong?> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, ulong?>> columnMapFunc)
+        public static List<ulong?> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, ulong?>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<ushort> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, ushort>> columnMapFunc)
+        public static List<ushort> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, ushort>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<ushort?> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, ushort?>> columnMapFunc)
+        public static List<ushort?> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, ushort?>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<DateTime> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, DateTime>> columnMapFunc)
+        public static List<DateTime> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, DateTime>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<DateTime?> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, DateTime?>> columnMapFunc)
+        public static List<DateTime?> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, DateTime?>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<TimeSpan> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, TimeSpan>> columnMapFunc)
+        public static List<TimeSpan> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, TimeSpan>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<TimeSpan?> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, TimeSpan?>> columnMapFunc)
+        public static List<TimeSpan?> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, TimeSpan?>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<Guid> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, Guid>> columnMapFunc)
+        public static List<Guid> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, Guid>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<Guid?> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, Guid?>> columnMapFunc)
+        public static List<Guid?> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, Guid?>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<object> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, object>> columnMapFunc)
+        public static List<object> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, object>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<byte[]> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, byte[]>> columnMapFunc)
+        public static List<byte[]> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, byte[]>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
-        public static List<string> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, string>> columnMapFunc)
+        public static List<string> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, string>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
 
         /*-------------------------------------------------------------*/
 
         /// <summary>
-        /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".SelectListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public static List<M> QueryList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc)
+        public static List<M> SelectList<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList();
+            return conn.Selecter<M>().Where(compareFunc).QueryList();
         }
         /// <summary>
-        /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".SelectListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public static List<VM> QueryList<M, VM>(this XConnection conn, Expression<Func<M, bool>> compareFunc)
+        public static List<VM> SelectList<M, VM>(this XConnection conn, Expression<Func<M, bool>> compareFunc)
             where M : class, new()
             where VM : class
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList<VM>();
+            return conn.Selecter<M>().Where(compareFunc).QueryList<VM>();
         }
         /// <summary>
-        /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".SelectListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public static List<T> QueryList<M, T>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, T>> columnMapFunc)
+        public static List<T> SelectList<M, T>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, T>> columnMapFunc)
             where M : class, new()
         {
-            return conn.Queryer<M>().Where(compareFunc).QueryList(columnMapFunc);
+            return conn.Selecter<M>().Where(compareFunc).QueryList(columnMapFunc);
         }
 
         /*-------------------------------------------------------------*/
 
-        public static List<T> QueryList<T>(this XConnection conn, string sql, List<XParam> dbParas = null)
+        public static List<T> SelectList<T>(this XConnection conn, string sql, List<XParam> dbParas = null)
         {
             CheckQuery(sql);
             var dc = DcForSQL(conn, sql, dbParas);

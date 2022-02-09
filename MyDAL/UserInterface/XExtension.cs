@@ -81,7 +81,7 @@ namespace MyDAL
         {
             if (sql.IsBlank())
             {
-                throw XConfig.EC.Exception(XConfig.EC._086, "Query SQL 语句不能为空！");
+                throw XConfig.EC.Exception(XConfig.EC._086, "Select SQL 语句不能为空！");
             }
             if (sql.Contains("insert")
                 || sql.Contains("delete")
@@ -93,7 +93,7 @@ namespace MyDAL
                 || sql.Contains("Delete")
                 || sql.Contains("Update"))
             {
-                throw XConfig.EC.Exception(XConfig.EC._087, "Query API 只能用来查询数据！");
+                throw XConfig.EC.Exception(XConfig.EC._087, "Select API 只能用来查询数据！");
             }
         }
         private static XContext DcForSQL(XConnection conn, string sql, List<XParam> dbParas)
@@ -149,13 +149,13 @@ namespace MyDAL
         
         #endregion
 
-        #region Queryer
+        #region Selecter
 
         /// <summary>
         /// 单表查询 方法簇
         /// </summary>
         /// <typeparam name="M1">M1:与DB Table 一 一对应</typeparam>
-        public static Queryer<M1> Queryer<M1>(this XConnection conn)
+        public static Queryer<M1> Selecter<M1>(this XConnection conn)
             where M1 : class, new()
         {
             var dc = new XContext<M1>(conn)
@@ -170,7 +170,7 @@ namespace MyDAL
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Queryer Queryer<M1, M2>(this XConnection conn, out M1 table1, out M2 table2)
+        public static Queryer Selecter<M1, M2>(this XConnection conn, out M1 table1, out M2 table2)
             where M1 : class, new()
             where M2 : class, new()
         {
@@ -185,7 +185,7 @@ namespace MyDAL
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Queryer Queryer<M1, M2, M3>(this XConnection conn, out M1 table1, out M2 table2, out M3 table3)
+        public static Queryer Selecter<M1, M2, M3>(this XConnection conn, out M1 table1, out M2 table2, out M3 table3)
             where M1 : class, new()
             where M2 : class, new()
             where M3 : class, new()
@@ -202,7 +202,7 @@ namespace MyDAL
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Queryer Queryer<M1, M2, M3, M4>(this XConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4)
+        public static Queryer Selecter<M1, M2, M3, M4>(this XConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4)
             where M1 : class, new()
             where M2 : class, new()
             where M3 : class, new()
@@ -221,7 +221,7 @@ namespace MyDAL
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Queryer Queryer<M1, M2, M3, M4, M5>(this XConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4, out M5 table5)
+        public static Queryer Selecter<M1, M2, M3, M4, M5>(this XConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4, out M5 table5)
             where M1 : class, new()
             where M2 : class, new()
             where M3 : class, new()
@@ -242,7 +242,7 @@ namespace MyDAL
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Queryer Queryer<M1, M2, M3, M4, M5, M6>(this XConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4, out M5 table5, out M6 table6)
+        public static Queryer Selecter<M1, M2, M3, M4, M5, M6>(this XConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4, out M5 table5, out M6 table6)
             where M1 : class, new()
             where M2 : class, new()
             where M3 : class, new()

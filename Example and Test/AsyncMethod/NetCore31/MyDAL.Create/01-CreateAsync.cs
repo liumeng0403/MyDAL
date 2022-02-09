@@ -120,7 +120,7 @@ namespace MyDAL.Create
 
             
 
-            var res61 = await MyDAL_TestDB.QueryOneAsync<Agent>(it => it.Id == Guid.Parse("ea1ad309-56f7-4e3e-af12-0165c9121e9b"));
+            var res61 = await MyDAL_TestDB.SelectOneAsync<Agent>(it => it.Id == Guid.Parse("ea1ad309-56f7-4e3e-af12-0165c9121e9b"));
             Assert.True(res61.AgentLevel == AgentLevel.DistiAgent);
 
             /********************************************************************************************************************************/
@@ -149,7 +149,7 @@ namespace MyDAL.Create
 
             
 
-            var res71 = await MyDAL_TestDB.QueryOneAsync<Agent>(it => it.Id == Guid.Parse("08d60369-4fc1-e8e0-44dc-435f31635e6d"));
+            var res71 = await MyDAL_TestDB.SelectOneAsync<Agent>(it => it.Id == Guid.Parse("08d60369-4fc1-e8e0-44dc-435f31635e6d"));
             Assert.True(res71.CreatedOn == Convert.ToDateTime("2018-08-16 19:34:25.116759"));
 
             /********************************************************************************************************************************/
@@ -205,7 +205,7 @@ namespace MyDAL.Create
 
             
 
-            var res11 = await MyDAL_TestDB.QueryOneAsync<AlipayPaymentRecord>(it => it.Id == m.Id);
+            var res11 = await MyDAL_TestDB.SelectOneAsync<AlipayPaymentRecord>(it => it.Id == m.Id);
             Assert.NotNull(res11);
 
             /****************************************************************************************/
@@ -385,7 +385,7 @@ namespace MyDAL.Create
 
             
 
-            var res11 = await MyDAL_TestDB.QueryOneAsync<AlipayPaymentRecord>(it => it.Id == m.Id);
+            var res11 = await MyDAL_TestDB.SelectOneAsync<AlipayPaymentRecord>(it => it.Id == m.Id);
             Assert.NotNull(res11);
 
             xx = string.Empty;
@@ -442,7 +442,7 @@ namespace MyDAL.Create
 
             
 
-            var res11 = await MyDAL_TestDB.QueryOneAsync<AlipayPaymentRecord>(it => it.Id == m.Id);
+            var res11 = await MyDAL_TestDB.SelectOneAsync<AlipayPaymentRecord>(it => it.Id == m.Id);
             Assert.NotNull(res11);
 
             xx = string.Empty;
