@@ -17,7 +17,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // != --> <>
-            var res1 = await MyDAL_TestDB.QueryListAsync<Agent>(it => it.AgentLevel != AgentLevel.Customer);
+            var res1 = await MyDAL_TestDB.SelectListAsync<Agent>(it => it.AgentLevel != AgentLevel.Customer);
 
             Assert.True(res1.Count == 556);
 
@@ -32,7 +32,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // !(!=) --> =
-            var res1 = await MyDAL_TestDB.QueryListAsync<Agent>(it => !(it.AgentLevel != AgentLevel.Customer));
+            var res1 = await MyDAL_TestDB.SelectListAsync<Agent>(it => !(it.AgentLevel != AgentLevel.Customer));
 
             Assert.True(res1.Count == 28063);
 
@@ -44,7 +44,7 @@ namespace MyDAL.Compare
 
             // == --> =
             var res2 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
                 .OrderBy(it => it.CreatedOn)
                 .QueryListAsync<AgentVM>();

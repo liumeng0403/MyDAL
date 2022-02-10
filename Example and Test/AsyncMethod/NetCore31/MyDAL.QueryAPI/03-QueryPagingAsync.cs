@@ -9,7 +9,7 @@ using Xunit;
 
 namespace MyDAL.QueryAPI
 {
-    public class _03_QueryPagingAsync
+    public class _03_SelectPagingAsync
         : TestBase
     {
 
@@ -23,7 +23,7 @@ namespace MyDAL.QueryAPI
 
             // order by
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.AgentLevel == (AgentLevel)128)
                 .OrderBy(it => it.PathId)
                     .ThenOrderBy(it => it.Name, OrderByEnum.Asc)
@@ -39,7 +39,7 @@ namespace MyDAL.QueryAPI
 
             // key
             var res2 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.AgentLevel == (AgentLevel)2)
                 .QueryPagingAsync(1, 10);
 
@@ -52,14 +52,14 @@ namespace MyDAL.QueryAPI
             xx = string.Empty;
 
             var res4 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= WhereTest.CreatedOn)
                 .QueryPagingAsync(1, 10);
 
             
 
             var resR4 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => WhereTest.CreatedOn <= it.CreatedOn)
                 .QueryPagingAsync(1, 10);
 
@@ -80,7 +80,7 @@ namespace MyDAL.QueryAPI
 
             // where method -- option orderby 
             var res7 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.Name == "樊士芹")
                 .OrderBy(it => it.Name, OrderByEnum.Desc)
                 .QueryPagingAsync(1, 10, agent => new AgentVM
@@ -106,7 +106,7 @@ namespace MyDAL.QueryAPI
             xx = string.Empty;
 
             var res11 = await MyDAL_TestDB
-                .Queryer(out Agent agent11, out AgentInventoryRecord record11)
+                .Selecter(out Agent agent11, out AgentInventoryRecord record11)
                 .From(() => agent11)
                     .InnerJoin(() => record11)
                         .On(() => agent11.Id == record11.AgentId)
@@ -136,7 +136,7 @@ namespace MyDAL.QueryAPI
 
             // 无条件
             var res13 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .QueryPagingAsync<AgentVM>(1, 10);
 
             Assert.True(res13.TotalCount == 28620);
@@ -154,12 +154,12 @@ namespace MyDAL.QueryAPI
         /*********************************************************************************************************************************************************/
 
         [Fact]
-        public async Task Mock_QueryAllPaging_QuerySingleColumn_ST()
+        public async Task Mock_SelectAllPaging_SelectSingleColumn_ST()
         {
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .QueryPagingAsync(1, 10, it => it.Id);
 
             Assert.True(res1.Data.Count == 10);
@@ -171,7 +171,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task Mock_QueryAllPaging_QueryM_ST()
+        public async Task Mock_SelectAllPaging_SelectM_ST()
         {
 
             /*************************************************************************************************************************/
@@ -179,7 +179,7 @@ namespace MyDAL.QueryAPI
             xx = string.Empty;
 
             var res3 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .QueryPagingAsync(1, 10);
 
             Assert.True(res3.TotalCount == 28620);
@@ -189,7 +189,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task Mock_QueryAllPaging_QueryVM_ST()
+        public async Task Mock_SelectAllPaging_SelectVM_ST()
         {
 
             /****************************************************************************************************************************************/
@@ -197,7 +197,7 @@ namespace MyDAL.QueryAPI
             xx = string.Empty;
 
             var res7 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .QueryPagingAsync<AgentVM>(1, 10);
 
             Assert.True(res7.TotalCount == 28620);
@@ -211,12 +211,12 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task Mock_QueryAllPaging_QueryVmColumn_ST()
+        public async Task Mock_SelectAllPaging_SelectVmColumn_ST()
         {
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .QueryPagingAsync(1, 10, it => new AgentVM
                 {
                     XXXX = it.Name,
@@ -234,13 +234,13 @@ namespace MyDAL.QueryAPI
         /*********************************************************************************************************************************************************/
 
         [Fact]
-        public async Task QuerySingleColumn_ST()
+        public async Task SelectSingleColumn_ST()
         {
 
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
                 .QueryPagingAsync(1, 10, it => it.Name);
 
@@ -253,14 +253,14 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryM_ST()
+        public async Task SelectM_ST()
         {
 
             xx = string.Empty;
 
             // 
             var res1 = await MyDAL_TestDB
-                .Queryer<WechatPaymentRecord>()
+                .Selecter<WechatPaymentRecord>()
                 .Where(it => it.Amount > 1)
                 .QueryPagingAsync(1, 10);
 
@@ -270,20 +270,20 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryVM_ST()
+        public async Task SelectVM_ST()
         {
 
             xx = string.Empty;
 
             var res6 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
                 .QueryPagingAsync<AgentVM>(1, 10);
 
             
 
             var resR6 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30) <= it.CreatedOn)
                 .QueryPagingAsync<AgentVM>(1, 10);
 
@@ -300,13 +300,13 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryVmColumn_ST()
+        public async Task SelectVmColumn_ST()
         {
 
             xx = string.Empty;
 
             var res8 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
                 .QueryPagingAsync(1, 10, agent => new AgentVM
                 {
@@ -325,12 +325,12 @@ namespace MyDAL.QueryAPI
         /*********************************************************************************************************************************************************/
 
         [Fact]
-        public async Task Mock_NoneCondition_QuerySingleColumn_MT()
+        public async Task Mock_NoneCondition_SelectSingleColumn_MT()
         {
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer(out Agent agent, out AgentInventoryRecord record)
+                .Selecter(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)
@@ -342,13 +342,13 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task Mock_NoneCondition_QueryM_MT()
+        public async Task Mock_NoneCondition_SelectM_MT()
         {
 
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer(out Agent agent, out AgentInventoryRecord record)
+                .Selecter(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)
@@ -363,12 +363,12 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task Mock_NoneCondition_QueryVmColumn_MT()
+        public async Task Mock_NoneCondition_SelectVmColumn_MT()
         {
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer(out Agent agent, out AgentInventoryRecord record)
+                .Selecter(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)
@@ -388,13 +388,13 @@ namespace MyDAL.QueryAPI
         /*********************************************************************************************************************************************************/
 
         [Fact]
-        public async Task QuerySingleColumn_MT()
+        public async Task SelectSingleColumn_MT()
         {
 
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer(out Agent agent1, out AgentInventoryRecord record1)
+                .Selecter(out Agent agent1, out AgentInventoryRecord record1)
                 .From(() => agent1)
                     .InnerJoin(() => record1)
                         .On(() => agent1.Id == record1.AgentId)
@@ -410,13 +410,13 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryM_MT()
+        public async Task SelectM_MT()
         {
 
             xx = string.Empty;
 
             var res5 = await MyDAL_TestDB
-                .Queryer(out Agent agent5, out AgentInventoryRecord record5)
+                .Selecter(out Agent agent5, out AgentInventoryRecord record5)
                 .From(() => agent5)
                     .InnerJoin(() => record5)
                         .On(() => agent5.Id == record5.AgentId)
@@ -432,13 +432,13 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryVmColumn_MT()
+        public async Task SelectVmColumn_MT()
         {
 
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer(out Agent agent, out AgentInventoryRecord record)
+                .Selecter(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)
@@ -460,7 +460,7 @@ namespace MyDAL.QueryAPI
         /*********************************************************************************************************************************************************/
 
         [Fact]
-        public async Task QuerySingleColumn_SQL()
+        public async Task SelectSingleColumn_SQL()
         {
 
             xx = string.Empty;
@@ -492,8 +492,8 @@ namespace MyDAL.QueryAPI
             paging.PageIndex = 1;
             paging.PageSize = 10;
 
-            paging.TotalCount = await MyDAL_TestDB.QueryOneAsync<int>(totalSql, paras);
-            paging.Data = await MyDAL_TestDB.QueryListAsync<Guid>(dataSql, paras);
+            paging.TotalCount = await MyDAL_TestDB.SelectOneAsync<int>(totalSql, paras);
+            paging.Data = await MyDAL_TestDB.SelectListAsync<Guid>(dataSql, paras);
 
             Assert.True(paging.TotalPage == 58);
 
@@ -504,7 +504,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryVM_SQL()
+        public async Task SelectVM_SQL()
         {
             xx = string.Empty;
 
@@ -540,8 +540,8 @@ namespace MyDAL.QueryAPI
             paging.PageIndex = 1;
             paging.PageSize = 10;
 
-            paging.TotalCount = await MyDAL_TestDB.QueryOneAsync<int>(totalSql, paras);
-            paging.Data = await MyDAL_TestDB.QueryListAsync<AgentVM>(dataSql, paras);
+            paging.TotalCount = await MyDAL_TestDB.SelectOneAsync<int>(totalSql, paras);
+            paging.Data = await MyDAL_TestDB.SelectListAsync<AgentVM>(dataSql, paras);
 
             Assert.True(paging.Data.Count == 10);
 

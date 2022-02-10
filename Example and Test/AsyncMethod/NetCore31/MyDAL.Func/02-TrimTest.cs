@@ -43,7 +43,7 @@ namespace MyDAL.Test.Func
 
             await PreTrim();
             var res1 = await MyDAL_TestDB
-                .Queryer<Product>()
+                .Selecter<Product>()
                 .Where(it => it.Title.Trim() == "演示商品01")
                 .QueryOneAsync();
 
@@ -57,7 +57,7 @@ namespace MyDAL.Test.Func
 
             await PreLTrim();
             var res2 = await MyDAL_TestDB
-                .Queryer<Product>()
+                .Selecter<Product>()
                 .Where(it => it.Title.TrimStart() == "演示商品01")
                 .QueryOneAsync();
 
@@ -71,7 +71,7 @@ namespace MyDAL.Test.Func
 
             await PreRTrim();
             var res3 = await MyDAL_TestDB
-                .Queryer<Product>()
+                .Selecter<Product>()
                 .Where(it => it.Title.TrimEnd() == "演示商品01")
                 .QueryOneAsync();
 

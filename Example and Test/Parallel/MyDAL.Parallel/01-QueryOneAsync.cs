@@ -4,13 +4,13 @@ using MyDAL.Test.Parallels;
 
 namespace MyDAL.Parallel
 {
-    public class _01_QueryOneAsync
+    public class _01_SelectOneAsync
          : TestBase
     {
         public None test(None none)
         {
             var res5 = (MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.Name == "刘中华")
                 .Distinct()
                 .QueryOneAsync()).GetAwaiter().GetResult();
@@ -18,13 +18,13 @@ namespace MyDAL.Parallel
             return none;
         }
 
-        public void QueryOneAsyncTest()
+        public void SelectOneAsyncTest()
         {
             var parallel = new XParallelTest();
             parallel.IsLookTask = true;
             parallel.Request = new None();
             parallel.Response = new None();
-            parallel.TargetFunc = () => new _01_QueryOneAsync().test;
+            parallel.TargetFunc = () => new _01_SelectOneAsync().test;
             parallel.ApiDebug();
             //parallel.Parallel_100_10000();
             //parallel.Parallel_90_10000();

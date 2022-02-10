@@ -10,14 +10,14 @@ using Xunit;
 
 namespace MyDAL.QueryAPI
 {
-    public class _02_QueryListAsync
+    public class _02_SelectListAsync
         : TestBase
     {
 
         private async Task<Agent> PreData01()
         {
             return await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("0ce552c0-2f5e-4c22-b26d-01654443b30e"))
                 .QueryOneAsync();
         }
@@ -36,7 +36,7 @@ namespace MyDAL.QueryAPI
 
             // 
             var res2 = await MyDAL_TestDB
-                .Queryer(out Agent agent2, out AgentInventoryRecord record2)
+                .Selecter(out Agent agent2, out AgentInventoryRecord record2)
                 .From(() => agent2)
                     .InnerJoin(() => record2)
                         .On(() => agent2.Id == record2.AgentId)
@@ -53,7 +53,7 @@ namespace MyDAL.QueryAPI
 
             // 
             var res3 = await MyDAL_TestDB
-                .Queryer(out Agent agent3, out AgentInventoryRecord record3)
+                .Selecter(out Agent agent3, out AgentInventoryRecord record3)
                 .From(() => agent3)
                     .InnerJoin(() => record3)
                         .On(() => agent3.Id == record3.AgentId)
@@ -71,7 +71,7 @@ namespace MyDAL.QueryAPI
 
             // 
             var res4 = await MyDAL_TestDB
-                .Queryer(out Agent agent4, out AgentInventoryRecord record4)
+                .Selecter(out Agent agent4, out AgentInventoryRecord record4)
                 .From(() => agent4)
                     .InnerJoin(() => record4)
                         .On(() => agent4.Id == record4.AgentId)
@@ -88,7 +88,7 @@ namespace MyDAL.QueryAPI
 
             // 
             var res5 = await MyDAL_TestDB.OpenDebug()
-                .Queryer(out Agent agent5, out AgentInventoryRecord record5)
+                .Selecter(out Agent agent5, out AgentInventoryRecord record5)
                 .From(() => agent5)
                     .InnerJoin(() => record5)
                         .On(() => agent5.Id == record5.AgentId)
@@ -104,7 +104,7 @@ namespace MyDAL.QueryAPI
 
             // 
             var res6 = await MyDAL_TestDB
-                .Queryer(out Agent agent6, out AgentInventoryRecord record6)
+                .Selecter(out Agent agent6, out AgentInventoryRecord record6)
                 .From(() => agent6)
                     .InnerJoin(() => record6)
                         .On(() => agent6.Id == record6.AgentId)
@@ -122,7 +122,7 @@ namespace MyDAL.QueryAPI
 
             // 
             var res7 = await MyDAL_TestDB
-                .Queryer(out Agent agent7, out AgentInventoryRecord record7)
+                .Selecter(out Agent agent7, out AgentInventoryRecord record7)
                 .From(() => agent7)
                     .InnerJoin(() => record7)
                         .On(() => agent7.Id == record7.AgentId)
@@ -138,7 +138,7 @@ namespace MyDAL.QueryAPI
 
             // 
             var res8 = await MyDAL_TestDB
-                .Queryer(out Agent agent8, out AgentInventoryRecord record8)
+                .Selecter(out Agent agent8, out AgentInventoryRecord record8)
                 .From(() => agent8)
                     .InnerJoin(() => record8)
                         .On(() => agent8.Id == record8.AgentId)
@@ -154,7 +154,7 @@ namespace MyDAL.QueryAPI
 
             // 
             var res9 = await MyDAL_TestDB
-                .Queryer(out Agent agent9, out AgentInventoryRecord record9)
+                .Selecter(out Agent agent9, out AgentInventoryRecord record9)
                 .From(() => agent9)
                     .InnerJoin(() => record9)
                         .On(() => agent9.Id == record9.AgentId)
@@ -169,7 +169,7 @@ namespace MyDAL.QueryAPI
             xx = string.Empty;
 
             var res10 = await MyDAL_TestDB
-                .Queryer(out Agent agent10, out AgentInventoryRecord record10)
+                .Selecter(out Agent agent10, out AgentInventoryRecord record10)
                 .From(() => agent10)
                     .InnerJoin(() => record10)
                         .On(() => agent10.Id == record10.AgentId)
@@ -195,7 +195,7 @@ namespace MyDAL.QueryAPI
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer(out AspnetUsers user1, out AspnetUserRoles userRole1, out AspnetRoles role1)
+                .Selecter(out AspnetUsers user1, out AspnetUserRoles userRole1, out AspnetRoles role1)
                 .From(() => user1)
                     .InnerJoin(() => userRole1)
                         .On(() => user1.Id == userRole1.UserId)
@@ -214,7 +214,7 @@ namespace MyDAL.QueryAPI
             xx = string.Empty;
 
             var res4 = await MyDAL_TestDB
-                .Queryer(out AspnetUsers user4, out AspnetUserRoles userRole4, out AspnetRoles role4)
+                .Selecter(out AspnetUsers user4, out AspnetUserRoles userRole4, out AspnetRoles role4)
                 .From(() => user4)
                     .InnerJoin(() => userRole4)
                         .On(() => user4.Id == userRole4.UserId)
@@ -240,7 +240,7 @@ namespace MyDAL.QueryAPI
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer(out Agent agent1, out AgentInventoryRecord record1)
+                .Selecter(out Agent agent1, out AgentInventoryRecord record1)
                 .From(() => agent1)
                     .InnerJoin(() => record1)
                         .On(() => agent1.Id == record1.AgentId)
@@ -254,11 +254,11 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task Mock_QueryAllData_QuerySingleColumn_Shortcut()
+        public async Task Mock_SelectAllData_SelectSingleColumn_Shortcut()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB.QueryListAsync<Agent, Guid>(it=>true, it => it.Id);
+            var res1 = await MyDAL_TestDB.SelectListAsync<Agent, Guid>(it=>true, it => it.Id);
 
             Assert.True(res1.Count == 28620);
 
@@ -270,11 +270,11 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task Mock_QueryAllData_QueryM_Shortcut()
+        public async Task Mock_SelectAllData_SelectM_Shortcut()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB.QueryListAsync<Agent>(it => true);
+            var res1 = await MyDAL_TestDB.SelectListAsync<Agent>(it => true);
 
             Assert.True(res1.Count == 28620);
 
@@ -286,11 +286,11 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task Mock_QueryAllData_QueryVM_Shortcut()
+        public async Task Mock_SelectAllData_SelectVM_Shortcut()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB.QueryListAsync<Agent, AgentVM>(it=>true);
+            var res1 = await MyDAL_TestDB.SelectListAsync<Agent, AgentVM>(it=>true);
 
             Assert.True(res1.Count == 28620);
 
@@ -302,11 +302,11 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task Mock_QueryAllData_QueryVMColumn_Shortcut()
+        public async Task Mock_SelectAllData_SelectVMColumn_Shortcut()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB.QueryListAsync<Agent, AgentVM>(it=>true, it => new AgentVM
+            var res1 = await MyDAL_TestDB.SelectListAsync<Agent, AgentVM>(it=>true, it => new AgentVM
             {
                 XXXX = it.Name,
                 YYYY = it.PathId
@@ -322,12 +322,12 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QuerySingleColumn_Shortcut()
+        public async Task SelectSingleColumn_Shortcut()
         {
 
             xx = string.Empty;
 
-            var res7 = await MyDAL_TestDB.QueryListAsync<Agent, string>(it => it.Name.StartsWith("张"), it => it.Name);
+            var res7 = await MyDAL_TestDB.SelectListAsync<Agent, string>(it => it.Name.StartsWith("张"), it => it.Name);
 
             Assert.True(res7.Count == 1996);
 
@@ -340,12 +340,12 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryM_Shortcut()
+        public async Task SelectM_Shortcut()
         {
 
             xx = string.Empty;
 
-            var res2 = await MyDAL_TestDB.QueryListAsync<AlipayPaymentRecord>(it => it.CreatedOn >= DateTime.Parse("2018-08-20"));
+            var res2 = await MyDAL_TestDB.SelectListAsync<AlipayPaymentRecord>(it => it.CreatedOn >= DateTime.Parse("2018-08-20"));
 
             Assert.True(res2.Count == 29);
 
@@ -358,12 +358,12 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryVM_Shortcut()
+        public async Task SelectVM_Shortcut()
         {
 
             xx = string.Empty;
 
-            var res2 = await MyDAL_TestDB.QueryListAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.CreatedOn >= DateTime.Parse("2018-08-20"));
+            var res2 = await MyDAL_TestDB.SelectListAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.CreatedOn >= DateTime.Parse("2018-08-20"));
 
             Assert.True(res2.Count == 29);
 
@@ -374,12 +374,12 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryVMColumn_Shortcut()
+        public async Task SelectVMColumn_Shortcut()
         {
 
             xx = string.Empty;
 
-            var res3 = await MyDAL_TestDB.QueryListAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.CreatedOn >= DateTime.Parse("2018-08-20"),
+            var res3 = await MyDAL_TestDB.SelectListAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.CreatedOn >= DateTime.Parse("2018-08-20"),
             it => new AlipayPaymentRecordVM
             {
                 TotalAmount = it.TotalAmount,
@@ -393,13 +393,13 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task Mock_QueryAllData_QuerySingleColumn_ST()
+        public async Task Mock_SelectAllData_SelectSingleColumn_ST()
         {
 
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .QueryListAsync(it => it.Id);
 
             Assert.True(res1.Count == 28620);
@@ -413,7 +413,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task Mock_QueryAllData_QueryM_ST()
+        public async Task Mock_SelectAllData_SelectM_ST()
         {
 
             /********************************************************************************************************/
@@ -421,7 +421,7 @@ namespace MyDAL.QueryAPI
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .QueryListAsync();
 
             Assert.True(res1.Count == 28620);
@@ -435,12 +435,12 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task Mock_QueryAllData_QueryVM_ST()
+        public async Task Mock_SelectAllData_SelectVM_ST()
         {
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .QueryListAsync<AgentVM>();
 
             Assert.True(res1.Count == 28620);
@@ -455,12 +455,12 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task Mock_QueryAllData_QueryVMColumn_ST()
+        public async Task Mock_SelectAllData_SelectVMColumn_ST()
         {
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .QueryListAsync(it => new AgentVM
                 {
                     XXXX = it.Name,
@@ -473,12 +473,12 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QuerySingleColumn_ST()
+        public async Task SelectSingleColumn_ST()
         {
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
                 .QueryListAsync(it => it.Name);
 
@@ -492,13 +492,13 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryM_ST()
+        public async Task SelectM_ST()
         {
 
             xx = string.Empty;
 
             var res4 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
                 .QueryListAsync();
 
@@ -513,12 +513,12 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryVM_ST()
+        public async Task SelectVM_ST()
         {
             xx = string.Empty;
 
             var res5 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
                 .QueryListAsync<AgentVM>();
 
@@ -534,7 +534,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryVMColumn_ST()
+        public async Task SelectVMColumn_ST()
         {
 
             xx = string.Empty;
@@ -542,7 +542,7 @@ namespace MyDAL.QueryAPI
             /*************************************************************************************************************************/
 
             var res5 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
                 .QueryListAsync(agent => new AgentVM
                 {
@@ -561,12 +561,12 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task Mock_QueryAllData_QuerySingleColumn_MT()
+        public async Task Mock_SelectAllData_SelectSingleColumn_MT()
         {
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer(out Agent agent1, out AgentInventoryRecord record1)
+                .Selecter(out Agent agent1, out AgentInventoryRecord record1)
                 .From(() => agent1)
                     .InnerJoin(() => record1)
                         .On(() => agent1.Id == record1.AgentId)
@@ -580,14 +580,14 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task Mock_QueryAllData_QueryM_MT()
+        public async Task Mock_SelectAllData_SelectM_MT()
         {
 
             xx = string.Empty;
 
             // 
             var res1 = await MyDAL_TestDB
-                .Queryer(out AspnetUsers user, out AspnetUserRoles userRole, out AspnetRoles role)
+                .Selecter(out AspnetUsers user, out AspnetUserRoles userRole, out AspnetRoles role)
                 .From(() => user)
                     .InnerJoin(() => userRole)
                         .On(() => user.Id == userRole.UserId)
@@ -604,12 +604,12 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task Mock_QueryAllData_QueryVMColumn_MT()
+        public async Task Mock_SelectAllData_SelectVMColumn_MT()
         {
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer(out Agent agent, out AgentInventoryRecord record)
+                .Selecter(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)
@@ -627,12 +627,12 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QuerySingleColumn_MT()
+        public async Task SelectSingleColumn_MT()
         {
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer(out Agent agent1, out AgentInventoryRecord record1)
+                .Selecter(out Agent agent1, out AgentInventoryRecord record1)
                 .From(() => agent1)
                     .InnerJoin(() => record1)
                         .On(() => agent1.Id == record1.AgentId)
@@ -647,14 +647,14 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryM_MT()
+        public async Task SelectM_MT()
         {
 
             xx = string.Empty;
 
             //
             var res3 = await MyDAL_TestDB
-                .Queryer(out Agent agent3, out AgentInventoryRecord record3)
+                .Selecter(out Agent agent3, out AgentInventoryRecord record3)
                 .From(() => agent3)
                     .InnerJoin(() => record3)
                         .On(() => agent3.Id == record3.AgentId)
@@ -671,12 +671,12 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryVMColumn_MT()
+        public async Task SelectVMColumn_MT()
         {
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer(out Agent agent, out AgentInventoryRecord record)
+                .Selecter(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)
@@ -701,7 +701,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QuerySingleColumn_SQL()
+        public async Task SelectSingleColumn_SQL()
         {
             xx = string.Empty;
 
@@ -718,7 +718,7 @@ namespace MyDAL.QueryAPI
                 new XParam{ParamName="AgentLevel",ParamValue=AgentLevel.DistiAgent,ParamType= ParamTypeEnum.Int_MySQL_SqlServer}
             };
 
-            var res1 = await MyDAL_TestDB.QueryListAsync<DateTime>(sql, paras);
+            var res1 = await MyDAL_TestDB.SelectListAsync<DateTime>(sql, paras);
 
             Assert.True(res1.Count == 574);
 
@@ -729,7 +729,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryVM_SQL()
+        public async Task SelectVM_SQL()
         {
             xx = string.Empty;
 
@@ -750,7 +750,7 @@ namespace MyDAL.QueryAPI
                 new XParam{ParamName="@CreatedOn",ParamValue=Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30),ParamType= ParamTypeEnum.DateTime_MySQL_SqlServer}
             };
 
-            var res1 = await MyDAL_TestDB.QueryListAsync<AgentVM>(sql, param);
+            var res1 = await MyDAL_TestDB.SelectListAsync<AgentVM>(sql, param);
 
             Assert.True(res1.Count == 574);
             Assert.True("~00-d-3-2-1-c-2-1a-1" == res1.First().nn);

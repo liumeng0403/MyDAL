@@ -18,7 +18,7 @@ namespace MyDAL.Compare
 
             // == --> =
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
                 .QueryListAsync();
 
@@ -38,7 +38,7 @@ namespace MyDAL.Compare
 
             // !(==) --> <>
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => !(it.AgentLevel == AgentLevel.DistiAgent))
                 .QueryListAsync();
 
@@ -52,7 +52,7 @@ namespace MyDAL.Compare
 
             // != --> <>
             var res2 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.AgentLevel != AgentLevel.DistiAgent)
                 .QueryListAsync();
 

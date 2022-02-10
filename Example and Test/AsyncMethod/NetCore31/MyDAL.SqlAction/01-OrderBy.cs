@@ -9,12 +9,12 @@ namespace MyDAL.SqlAction
         : TestBase
     {
         [Fact]
-        public async Task Queryer_OrderBy_QueryPaging_ST()
+        public async Task Selecter_OrderBy_SelectPaging_ST()
         {
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .OrderBy(it => it.Name, OrderByEnum.Desc)
                 .QueryPagingAsync(1, 10, it => it.Name);
 
@@ -28,18 +28,18 @@ namespace MyDAL.SqlAction
         }
 
         [Fact]
-        public async Task Queryer_OrderBy_ThenOrderBy_QueryPaging_ST()
+        public async Task Selecter_OrderBy_ThenOrderBy_SelectPaging_ST()
         {
 
         }
 
         [Fact]
-        public async Task Where_OrderBy_QueryPaging_ST()
+        public async Task Where_OrderBy_SelectPaging_ST()
         {
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.Name.StartsWith("张"))
                 .OrderBy(it => it.Name, OrderByEnum.Desc)
                 .QueryPagingAsync(1, 10, it => it.Name);
@@ -54,19 +54,19 @@ namespace MyDAL.SqlAction
         }
 
         [Fact]
-        public async Task Where_OrderBy_ThenOrderBy_QueryPaging_ST()
+        public async Task Where_OrderBy_ThenOrderBy_SelectPaging_ST()
         {
 
         }
 
         [Fact]
-        public async Task Where_OrderBy_QueryPaging_MT()
+        public async Task Where_OrderBy_SelectPaging_MT()
         {
 
         }
 
         [Fact]
-        public async Task Where_OrderBy_ThenOrderBy_QueryPaging_MT()
+        public async Task Where_OrderBy_ThenOrderBy_SelectPaging_MT()
         {
 
         }

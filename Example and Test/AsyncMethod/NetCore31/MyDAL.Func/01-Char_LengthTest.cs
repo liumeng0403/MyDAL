@@ -20,7 +20,7 @@ namespace MyDAL.Test.Func
 
             // .Where(a => a.Name.Length > 0)
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.Name.Length > 2)
                 .QueryListAsync();
             Assert.True(res1.Count == 22660);
@@ -31,7 +31,7 @@ namespace MyDAL.Test.Func
 
             // .Where(a => a.Name.Length > 0)
             var resR1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => 2 < it.Name.Length)
                 .QueryListAsync();
             Assert.True(res1.Count == resR1.Count);
@@ -45,7 +45,7 @@ namespace MyDAL.Test.Func
 
             // .Where(a => a.Name.Length > 0)
             var res2 = await MyDAL_TestDB
-                .Queryer(out Agent agent2, out AgentInventoryRecord record2)
+                .Selecter(out Agent agent2, out AgentInventoryRecord record2)
                 .From(() => agent2)
                     .InnerJoin(() => record2)
                         .On(() => agent2.Id == record2.AgentId)
@@ -61,7 +61,7 @@ namespace MyDAL.Test.Func
 
             // .Where(a => a.Name.Length > 0)
             var res3 = await MyDAL_TestDB
-                .Queryer(out Agent agent3, out AgentInventoryRecord record3)
+                .Selecter(out Agent agent3, out AgentInventoryRecord record3)
                 .From(() => agent3)
                     .InnerJoin(() => record3)
                         .On(() => agent3.Id == record3.AgentId)

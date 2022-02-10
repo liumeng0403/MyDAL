@@ -9,7 +9,7 @@ using Xunit;
 
 namespace MyDAL.QueryAPI
 {
-    public class _01_QueryOneAsync
+    public class _01_SelectOneAsync
         : TestBase
     {
         private async Task<BodyFitRecord> PreQuery()
@@ -45,14 +45,14 @@ namespace MyDAL.QueryAPI
 
             //  == Guid
             var res1 = await MyDAL_TestDB
-                .Queryer<BodyFitRecord>()
+                .Selecter<BodyFitRecord>()
                 .Where(it => it.Id == Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"))
                 .QueryOneAsync();
 
             Assert.NotNull(res1);
 
             var resR1 = await MyDAL_TestDB.OpenDebug()
-                .Queryer<BodyFitRecord>()
+                .Selecter<BodyFitRecord>()
                 .Where(it => Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e") == it.Id)
                 .QueryOneAsync();
 
@@ -65,14 +65,14 @@ namespace MyDAL.QueryAPI
 
             // == DateTime
             var res2 = await MyDAL_TestDB
-                .Queryer<BodyFitRecord>()
+                .Selecter<BodyFitRecord>()
                 .Where(it => it.CreatedOn == Convert.ToDateTime("2018-08-23 13:36:58"))
                 .QueryOneAsync();
 
             Assert.NotNull(res2);
 
             var resR2 = await MyDAL_TestDB.OpenDebug()
-                .Queryer<BodyFitRecord>()
+                .Selecter<BodyFitRecord>()
                 .Where(it => Convert.ToDateTime("2018-08-23 13:36:58") == it.CreatedOn)
                 .QueryOneAsync();
 
@@ -85,14 +85,14 @@ namespace MyDAL.QueryAPI
 
             // == string
             var res3 = await MyDAL_TestDB
-                .Queryer<BodyFitRecord>()
+                .Selecter<BodyFitRecord>()
                 .Where(it => it.BodyMeasureProperty == "xxxx")
                 .QueryOneAsync();
 
             Assert.NotNull(res3);
 
             var resR3 = await MyDAL_TestDB.OpenDebug()
-                .Queryer<BodyFitRecord>()
+                .Selecter<BodyFitRecord>()
                 .Where(it => "xxxx" == it.BodyMeasureProperty)
                 .QueryOneAsync();
 
@@ -105,7 +105,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QuerySingleColumn_Shortcut()
+        public async Task SelectSingleColumn_Shortcut()
         {
             xx = string.Empty;
 
@@ -114,7 +114,7 @@ namespace MyDAL.QueryAPI
 
             var res1 = await MyDAL_TestDB
                 // .OpenDebug()
-                .QueryOneAsync<AlipayPaymentRecord, Guid>(it => it.Id == pk && it.CreatedOn == date, it => it.Id);
+                .SelectOneAsync<AlipayPaymentRecord, Guid>(it => it.Id == pk && it.CreatedOn == date, it => it.Id);
 
             Assert.True(res1 == pk);
 
@@ -122,7 +122,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryM_Shortcut()
+        public async Task SelectM_Shortcut()
         {
 
             xx = string.Empty;
@@ -130,7 +130,7 @@ namespace MyDAL.QueryAPI
             var pk = Guid.Parse("8f2cbb64-8356-4482-88ee-016558c05b2d");
             var date = DateTime.Parse("2018-08-20 19:12:05.933786");
 
-            var res1 = await MyDAL_TestDB.QueryOneAsync<AlipayPaymentRecord>(it => it.Id == pk && it.CreatedOn == date);
+            var res1 = await MyDAL_TestDB.SelectOneAsync<AlipayPaymentRecord>(it => it.Id == pk && it.CreatedOn == date);
 
             Assert.NotNull(res1);
 
@@ -142,7 +142,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryVM_Shortcut()
+        public async Task SelectVM_Shortcut()
         {
 
             xx = string.Empty;
@@ -150,7 +150,7 @@ namespace MyDAL.QueryAPI
             var pk = Guid.Parse("8f2cbb64-8356-4482-88ee-016558c05b2d");
             var date = DateTime.Parse("2018-08-20 19:12:05.933786");
 
-            var res1 = await MyDAL_TestDB.QueryOneAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.Id == pk && it.CreatedOn == date);
+            var res1 = await MyDAL_TestDB.SelectOneAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.Id == pk && it.CreatedOn == date);
 
             Assert.NotNull(res1);
 
@@ -162,7 +162,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryVMColumn_Shortcut()
+        public async Task SelectVMColumn_Shortcut()
         {
 
             xx = string.Empty;
@@ -170,7 +170,7 @@ namespace MyDAL.QueryAPI
             var pk = Guid.Parse("8f2cbb64-8356-4482-88ee-016558c05b2d");
             var date = DateTime.Parse("2018-08-20 19:12:05.933786");
 
-            var res1 = await MyDAL_TestDB.QueryOneAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.Id == pk && it.CreatedOn == date,
+            var res1 = await MyDAL_TestDB.SelectOneAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.Id == pk && it.CreatedOn == date,
             it => new AlipayPaymentRecordVM
             {
                 Id = it.Id,
@@ -189,12 +189,12 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QuerySingleColumn_ST()
+        public async Task SelectSingleColumn_ST()
         {
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.CreatedOn == DateTime.Parse("2018-08-16 19:22:01.716307"))
                 .QueryOneAsync(it => it.Id);
 
@@ -206,14 +206,14 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryM_ST()
+        public async Task SelectM_ST()
         {
 
             xx = string.Empty;
 
             // 
             var res4 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
                     .And(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
                 .QueryOneAsync();
@@ -229,7 +229,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryVM_ST()
+        public async Task SelectVM_ST()
         {
 
             xx = string.Empty;
@@ -237,7 +237,7 @@ namespace MyDAL.QueryAPI
             /****************************************************************************************************************************************/
 
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
                 .QueryOneAsync<AgentVM>();
 
@@ -253,13 +253,13 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryVMColumn_ST()
+        public async Task SelectVMColumn_ST()
         {
 
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
                 .QueryOneAsync(it => new AgentVM
                 {
@@ -278,12 +278,12 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QuerySingleColumn_MT()
+        public async Task SelectSingleColumn_MT()
         {
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer(out Agent agent, out AgentInventoryRecord agentRecord)
+                .Selecter(out Agent agent, out AgentInventoryRecord agentRecord)
                 .From(() => agent)
                     .InnerJoin(() => agentRecord)
                         .On(() => agent.Id == agentRecord.AgentId)
@@ -298,12 +298,12 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryM_MT()
+        public async Task SelectM_MT()
         {
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer(out Agent agent, out AgentInventoryRecord record)
+                .Selecter(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)
@@ -321,12 +321,12 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryVMColumn_MT()
+        public async Task SelectVMColumn_MT()
         {
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer(out Agent agent, out AgentInventoryRecord record)
+                .Selecter(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)
@@ -349,7 +349,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QuerySingleColumn_SQL()
+        public async Task SelectSingleColumn_SQL()
         {
             xx = string.Empty;
 
@@ -367,7 +367,7 @@ namespace MyDAL.QueryAPI
                 new XParam{ParamName="AgentLevel",ParamValue=AgentLevel.DistiAgent}
             };
 
-            var res1 = await MyDAL_TestDB.QueryOneAsync<string>(sql, paras);
+            var res1 = await MyDAL_TestDB.SelectOneAsync<string>(sql, paras);
 
             Assert.True(res1.Length > 1);
 
@@ -377,7 +377,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryVM_SQL()
+        public async Task SelectVM_SQL()
         {
             xx = string.Empty;
 
@@ -399,7 +399,7 @@ namespace MyDAL.QueryAPI
                 new XParam{ParamName="Id",ParamValue=Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef")}
             };
 
-            var res1 = await MyDAL_TestDB.QueryOneAsync<AgentVM>(sql, paras);
+            var res1 = await MyDAL_TestDB.SelectOneAsync<AgentVM>(sql, paras);
 
             Assert.NotNull(res1);
             Assert.Equal("夏明君", res1.zz);
@@ -410,7 +410,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryVM_SQL_NoneParam()
+        public async Task SelectVM_SQL_NoneParam()
         {
             xx = string.Empty;
 
@@ -427,7 +427,7 @@ namespace MyDAL.QueryAPI
                                     limit 0,1;
                                 ";
             
-            var res1 = await MyDAL_TestDB.QueryOneAsync<AgentVM>(sql);
+            var res1 = await MyDAL_TestDB.SelectOneAsync<AgentVM>(sql);
 
             Assert.NotNull(res1);
             Assert.Equal("夏明君", res1.zz);

@@ -14,7 +14,7 @@ namespace MyDAL.Compare
         public async Task<Agent> PreData3()
         {
             var m = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("0001c614-dbef-4335-94b4-01654433a215"))
                 .QueryOneAsync();
 
@@ -44,7 +44,7 @@ namespace MyDAL.Compare
 
             // is not null 
             var res2 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.ActiveOrderId != null)
                 .QueryListAsync();
             Assert.True(res2.Count == 554);
@@ -60,7 +60,7 @@ namespace MyDAL.Compare
             try
             {
                 var res3 = await MyDAL_TestDB
-                    .Queryer<Agent>()
+                    .Selecter<Agent>()
                     .Where(it => it.AgentLevel == WhereTest.AgentLevelNull)
                     .QueryListAsync();
             }
@@ -79,7 +79,7 @@ namespace MyDAL.Compare
 
             // is not null 
             var res4 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.ActivedOn != null && it.ActiveOrderId != null && it.CrmUserId == null)
                 .QueryListAsync();
             Assert.True(res4.Count == 554);
@@ -92,7 +92,7 @@ namespace MyDAL.Compare
 
             // is not null 
             var res5 = await MyDAL_TestDB
-                .Queryer(out Agent a5, out AgentInventoryRecord r5)
+                .Selecter(out Agent a5, out AgentInventoryRecord r5)
                 .From(() => a5)
                     .LeftJoin(() => r5)
                         .On(() => a5.Id == r5.AgentId)
@@ -104,7 +104,7 @@ namespace MyDAL.Compare
 
             /************************************************************************************************************************/
 
-            var res7 = await MyDAL_TestDB.QueryListAsync<Agent>(it => it.ActiveOrderId == null);
+            var res7 = await MyDAL_TestDB.SelectListAsync<Agent>(it => it.ActiveOrderId == null);
             Assert.True(res7.Count == 28066);
 
             
@@ -114,7 +114,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // is not null 
-            var res8 = await MyDAL_TestDB.QueryListAsync<Agent>(it => it.ActiveOrderId != null);
+            var res8 = await MyDAL_TestDB.SelectListAsync<Agent>(it => it.ActiveOrderId != null);
             Assert.True(res8.Count == 554);
 
             
@@ -134,7 +134,7 @@ namespace MyDAL.Compare
 
             // is null 
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.ActiveOrderId == null)
                 .QueryListAsync();
 
@@ -156,7 +156,7 @@ namespace MyDAL.Compare
 
             // !(is null) --> is not null 
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => !(it.ActiveOrderId == null))
                 .QueryListAsync();
 
@@ -178,7 +178,7 @@ namespace MyDAL.Compare
 
             // is not null 
             var res6 = await MyDAL_TestDB
-                .Queryer(out Agent a6, out AgentInventoryRecord r6)
+                .Selecter(out Agent a6, out AgentInventoryRecord r6)
                 .From(() => a6)
                     .LeftJoin(() => r6)
                         .On(() => a6.Id == r6.AgentId)
@@ -203,7 +203,7 @@ namespace MyDAL.Compare
 
             // !(is not null) --> is null 
             var res6 = await MyDAL_TestDB
-                .Queryer(out Agent a6, out AgentInventoryRecord r6)
+                .Selecter(out Agent a6, out AgentInventoryRecord r6)
                 .From(() => a6)
                     .LeftJoin(() => r6)
                         .On(() => a6.Id == r6.AgentId)

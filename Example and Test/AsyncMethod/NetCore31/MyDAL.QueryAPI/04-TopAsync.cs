@@ -12,12 +12,12 @@ namespace MyDAL.QueryAPI
     {
 
         [Fact]
-        public async Task QuerySingleColumn_ST()
+        public async Task SelectSingleColumn_ST()
         {
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
                 .TopAsync(25, it => it.Name);
 
@@ -31,13 +31,13 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryM_ST()
+        public async Task SelectM_ST()
         {
 
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .TopAsync(25);
 
             Assert.True(res1.Count == 25);
@@ -47,12 +47,12 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryVM_ST()
+        public async Task SelectVM_ST()
         {
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
                 .TopAsync<AgentVM>(25);
 
@@ -66,12 +66,12 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryVmColumn_ST()
+        public async Task SelectVmColumn_ST()
         {
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
                 .TopAsync(25, agent => new AgentVM
                 {
@@ -89,12 +89,12 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QuerySingleColumn_MT()
+        public async Task SelectSingleColumn_MT()
         {
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer(out Agent agent, out AgentInventoryRecord record)
+                .Selecter(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)
@@ -109,12 +109,12 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryM_MT()
+        public async Task SelectM_MT()
         {
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer(out Agent agent8, out AgentInventoryRecord record8)
+                .Selecter(out Agent agent8, out AgentInventoryRecord record8)
                 .From(() => agent8)
                     .InnerJoin(() => record8)
                         .On(() => agent8.Id == record8.AgentId)
@@ -131,12 +131,12 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task QueryVmColumn_MT()
+        public async Task SelectVmColumn_MT()
         {
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer(out Agent agent, out AgentInventoryRecord record)
+                .Selecter(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)

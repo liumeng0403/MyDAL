@@ -44,7 +44,7 @@ namespace MyDAL.Delete
 
             
 
-            var res21 = await MyDAL_TestDB.QueryOneAsync<AlipayPaymentRecord>(it => it.Id == pk2);
+            var res21 = await MyDAL_TestDB.SelectOneAsync<AlipayPaymentRecord>(it => it.Id == pk2);
 
             Assert.Null(res21);
 
@@ -124,7 +124,7 @@ namespace MyDAL.Delete
 
             
 
-            var res11 = await MyDAL_TestDB.QueryOneAsync<AlipayPaymentRecord>(it => it.Id == Guid.Parse("8f2cbb64-8356-4482-88ee-016558c05b2d"));
+            var res11 = await MyDAL_TestDB.SelectOneAsync<AlipayPaymentRecord>(it => it.Id == Guid.Parse("8f2cbb64-8356-4482-88ee-016558c05b2d"));
 
             Assert.Null(res11);
 

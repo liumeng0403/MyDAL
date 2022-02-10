@@ -18,7 +18,7 @@ namespace MyDAL.Compare
 
             // <= --> <=
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.CreatedOn <= DateTime.Parse("2018-08-16 19:20:35.867228"))
                 .QueryListAsync();
 
@@ -36,7 +36,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // !(<=) --> >
-            var res1 = await MyDAL_TestDB.QueryListAsync<Agent>(it => !(it.CreatedOn <= DateTime.Parse("2018-08-16 19:20:35.867228")));
+            var res1 = await MyDAL_TestDB.SelectListAsync<Agent>(it => !(it.CreatedOn <= DateTime.Parse("2018-08-16 19:20:35.867228")));
 
             Assert.True(res1.Count == 21778);
 
@@ -47,7 +47,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // > --> >
-            var res2 = await MyDAL_TestDB.QueryListAsync<Agent>(it => it.CreatedOn > DateTime.Parse("2018-08-16 19:20:35.867228"));
+            var res2 = await MyDAL_TestDB.SelectListAsync<Agent>(it => it.CreatedOn > DateTime.Parse("2018-08-16 19:20:35.867228"));
 
             Assert.True(res2.Count == 21778);
 

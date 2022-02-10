@@ -37,7 +37,7 @@ namespace MyDAL.QueryAPI
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .IsExistAsync();
 
             Assert.True(res1);
@@ -56,7 +56,7 @@ namespace MyDAL.QueryAPI
 
             // 判断 Agent 表 中 是否存在符合条件的数据
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("002c1ca9-f2df-453a-87e0-0165443dcc31"))
                 .IsExistAsync();
 
@@ -75,7 +75,7 @@ namespace MyDAL.QueryAPI
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer(out Agent agent, out AgentInventoryRecord record)
+                .Selecter(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)
@@ -96,7 +96,7 @@ namespace MyDAL.QueryAPI
 
             //
             bool res1 = await MyDAL_TestDB
-                .Queryer(out Agent agent, out AgentInventoryRecord record)
+                .Selecter(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)

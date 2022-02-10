@@ -16,7 +16,7 @@ namespace MyDAL.Compare
 
             // >= --> >=
             var res1 = await MyDAL_TestDB
-                .Queryer(out Agent agent1, out AgentInventoryRecord record1)
+                .Selecter(out Agent agent1, out AgentInventoryRecord record1)
                 .From(() => agent1)
                     .InnerJoin(() => record1)
                         .On(() => agent1.Id == record1.AgentId)
@@ -37,7 +37,7 @@ namespace MyDAL.Compare
 
             // !(>=) --> <
             var res1 = await MyDAL_TestDB
-                .Queryer(out Agent agent1, out AgentInventoryRecord record1)
+                .Selecter(out Agent agent1, out AgentInventoryRecord record1)
                 .From(() => agent1)
                     .InnerJoin(() => record1)
                         .On(() => agent1.Id == record1.AgentId)
@@ -53,7 +53,7 @@ namespace MyDAL.Compare
 
             // < --> <
             var res2 = await MyDAL_TestDB
-                .Queryer(out Agent agent2, out AgentInventoryRecord record2)
+                .Selecter(out Agent agent2, out AgentInventoryRecord record2)
                 .From(() => agent2)
                     .InnerJoin(() => record2)
                         .On(() => agent2.Id == record2.AgentId)
