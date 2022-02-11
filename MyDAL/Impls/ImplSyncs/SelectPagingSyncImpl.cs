@@ -1,42 +1,39 @@
-using MyDAL.Core.Bases;
+﻿using MyDAL.Core.Bases;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
 using MyDAL.Impls.Base;
-using MyDAL.Interfaces;
-using MyDAL.Interfaces.IAsyncs;
 using MyDAL.Interfaces.ISyncs;
 using System;
 using System.Data;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
-namespace MyDAL.Impls.ImplAsyncs
+namespace MyDAL.Impls.ImplSyncs
 {
-    internal sealed class QueryPagingAsyncImpl<M>
-        : ImplerAsync
-        , IQueryPagingAsync<M>
-        where M : class
+    internal sealed class SelectPagingImpl<M>
+        : ImplerSync
+        , ISelectPaging<M>
+            where M : class
     {
-        internal QueryPagingAsyncImpl(Context dc)
+        internal SelectPagingImpl(Context dc)
             : base(dc)
         { }
 
-        public async Task<PagingResult<M>> QueryPagingAsync(int pageIndex, int pageSize)
+        public PagingResult<M> SelectPaging(int pageIndex, int pageSize)
         {
             DC.PageIndex = pageIndex;
             DC.PageSize = pageSize;
             PreExecuteHandle(UiMethodEnum.QueryPaging);
-            return await DSA.ExecuteReaderPagingAsync<None, M>(false, null);
+            return DSS.ExecuteReaderPaging<None, M>(false, null);
         }
-        public async Task<PagingResult<VM>> QueryPagingAsync<VM>(int pageIndex, int pageSize)
+        public PagingResult<VM> SelectPaging<VM>(int pageIndex, int pageSize)
             where VM : class
         {
             DC.PageIndex = pageIndex;
             DC.PageSize = pageSize;
             PreExecuteHandle(UiMethodEnum.QueryPaging);
-            return await DSA.ExecuteReaderPagingAsync<M, VM>(false, null);
+            return DSS.ExecuteReaderPaging<M, VM>(false, null);
         }
-        public async Task<PagingResult<T>> QueryPagingAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
+        public PagingResult<T> SelectPaging<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
         {
             DC.PageIndex = pageIndex;
             DC.PageSize = pageSize;
@@ -50,29 +47,28 @@ namespace MyDAL.Impls.ImplAsyncs
                 SelectMHandle(columnMapFunc);
             }
             PreExecuteHandle(UiMethodEnum.QueryPaging);
-            return await DSA.ExecuteReaderPagingAsync<M, T>(single, columnMapFunc.Compile());
+            return DSS.ExecuteReaderPaging<M, T>(single, columnMapFunc.Compile());
         }
-
     }
 
-    internal sealed class QueryPagingXAsyncImpl
-        : ImplerAsync
-        , IQueryPagingXAsync
+    internal sealed class SelectPagingXImpl
+        : ImplerSync
+        , ISelectPagingX
     {
-        internal QueryPagingXAsyncImpl(Context dc)
+        internal SelectPagingXImpl(Context dc)
             : base(dc)
         { }
 
-        public async Task<PagingResult<M>> QueryPagingAsync<M>(int pageIndex, int pageSize)
+        public PagingResult<M> SelectPaging<M>(int pageIndex, int pageSize)
             where M : class
         {
             DC.PageIndex = pageIndex;
             DC.PageSize = pageSize;
             SelectMHandle<M>();
             PreExecuteHandle(UiMethodEnum.QueryPaging);
-            return await DSA.ExecuteReaderPagingAsync<None, M>(false, null);
+            return DSS.ExecuteReaderPaging<None, M>(false, null);
         }
-        public async Task<PagingResult<T>> QueryPagingAsync<T>(int pageIndex, int pageSize, Expression<Func<T>> columnMapFunc)
+        public PagingResult<T> SelectPaging<T>(int pageIndex, int pageSize, Expression<Func<T>> columnMapFunc)
         {
             DC.PageIndex = pageIndex;
             DC.PageSize = pageSize;
@@ -86,8 +82,7 @@ namespace MyDAL.Impls.ImplAsyncs
                 SelectMHandle(columnMapFunc);
             }
             PreExecuteHandle(UiMethodEnum.QueryPaging);
-            return await DSA.ExecuteReaderPagingAsync<None, T>(single, null);
+            return DSS.ExecuteReaderPaging<None, T>(single, null);
         }
-
     }
 }

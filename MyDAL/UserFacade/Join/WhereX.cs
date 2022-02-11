@@ -19,7 +19,7 @@ namespace MyDAL.UserFacade.Join
     public sealed class WhereX
         : Operator
         , IOrderByX
-        , IQueryOneXAsync, IQueryOneX
+        , IQueryOneXAsync, ISelectOneX
         , IQueryListXAsync, IQueryListX
         , IQueryPagingXAsync, IQueryPagingX
         , ITopXAsync, ITopX

@@ -13,27 +13,27 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Impls.ImplAsyncs
 {
-    internal sealed class QueryListAsyncImpl<M>
+    internal sealed class SelectListAsyncImpl<M>
         : ImplerAsync
-        , IQueryListAsync<M>
+        , ISelectListAsync<M>
     where M : class
     {
-        internal QueryListAsyncImpl(Context dc)
+        internal SelectListAsyncImpl(Context dc)
             : base(dc) { }
 
-        public async Task<List<M>> QueryListAsync()
+        public async Task<List<M>> SelectListAsync()
         {
             PreExecuteHandle(UiMethodEnum.QueryList);
             return await DSA.ExecuteReaderMultiRowAsync<M>();
         }
-        public async Task<List<VM>> QueryListAsync<VM>()
+        public async Task<List<VM>> SelectListAsync<VM>()
             where VM : class
         {
             SelectMQ<M, VM>();
             PreExecuteHandle(UiMethodEnum.QueryList);
             return await DSA.ExecuteReaderMultiRowAsync<VM>();
         }
-        public async Task<List<T>> QueryListAsync<T>(Expression<Func<M, T>> columnMapFunc)
+        public async Task<List<T>> SelectListAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
             if (typeof(T).IsSingleColumn())
             {
@@ -51,21 +51,21 @@ namespace MyDAL.Impls.ImplAsyncs
 
     }
 
-    internal sealed class QueryListXAsyncImpl
+    internal sealed class SelectListXAsyncImpl
         : ImplerAsync
-        , IQueryListXAsync
+        , ISelectListXAsync
     {
-        internal QueryListXAsyncImpl(Context dc)
+        internal SelectListXAsyncImpl(Context dc)
             : base(dc) { }
 
-        public async Task<List<M>> QueryListAsync<M>()
+        public async Task<List<M>> SelectListAsync<M>()
             where M : class
         {
             SelectMHandle<M>();
             PreExecuteHandle(UiMethodEnum.QueryList);
             return await DSA.ExecuteReaderMultiRowAsync<M>();
         }
-        public async Task<List<T>> QueryListAsync<T>(Expression<Func<T>> columnMapFunc)
+        public async Task<List<T>> SelectListAsync<T>(Expression<Func<T>> columnMapFunc)
         {
             if (typeof(T).IsSingleColumn())
             {
@@ -83,15 +83,15 @@ namespace MyDAL.Impls.ImplAsyncs
 
     }
 
-    internal sealed class QueryListSQLAsyncImpl
+    internal sealed class SelectListSQLAsyncImpl
         : ImplerAsync
-        , IQueryListSQLAsync
+        , ISelectListSQLAsync
     {
-        public QueryListSQLAsyncImpl(Context dc)
+        public SelectListSQLAsyncImpl(Context dc)
             : base(dc)
         { }
 
-        public async Task<List<T>> QueryListAsync<T>()
+        public async Task<List<T>> SelectListAsync<T>()
         {
             DC.Method = UiMethodEnum.QueryList;
             if (typeof(T).IsSingleColumn())

@@ -17,9 +17,9 @@ namespace MyDAL.UserFacade.Query
     /// </summary>
     public sealed class DistinctQ<M>
         : Operator
-        , IQueryOneAsync<M>, IQueryOne<M>
-        , IQueryListAsync<M>, IQueryList<M>
-        , IQueryPagingAsync<M>, IQueryPaging<M>
+        , ISelectOneAsync<M>, ISelectOne<M>
+        , ISelectListAsync<M>, ISelectList<M>
+        , ISelectPagingAsync<M>, ISelectPaging<M>
         , ITopAsync<M>, ITop<M>
         ,ICountAsync<M>,ICount<M>
         where M : class
@@ -31,97 +31,97 @@ namespace MyDAL.UserFacade.Query
         /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
         /// <summary>
-        /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".SelectOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<M> QueryOneAsync()
+        public async Task<M> SelectOneAsync()
         {
-            return await new QueryOneAsyncImpl<M>(DC).QueryOneAsync();
+            return await new SelectOneAsyncImpl<M>(DC).SelectOneAsync();
         }
         /// <summary>
-        /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".SelectOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<VM> QueryOneAsync<VM>()
+        public async Task<VM> SelectOneAsync<VM>()
             where VM : class
         {
-            return await new QueryOneAsyncImpl<M>(DC).QueryOneAsync<VM>();
+            return await new SelectOneAsyncImpl<M>(DC).SelectOneAsync<VM>();
         }
         /// <summary>
-        /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".SelectOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<T> QueryOneAsync<T>(Expression<Func<M, T>> columnMapFunc)
+        public async Task<T> SelectOneAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
-            return await new QueryOneAsyncImpl<M>(DC).QueryOneAsync<T>(columnMapFunc);
+            return await new SelectOneAsyncImpl<M>(DC).SelectOneAsync<T>(columnMapFunc);
         }
 
         /// <summary>
-        /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".SelectOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public M QueryOne()
+        public M SelectOne()
         {
-            return new QueryOneImpl<M>(DC).QueryOne();
+            return new SelectOneImpl<M>(DC).SelectOne();
         }
         /// <summary>
-        /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".SelectOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public VM QueryOne<VM>()
+        public VM SelectOne<VM>()
             where VM : class
         {
-            return new QueryOneImpl<M>(DC).QueryOne<VM>();
+            return new SelectOneImpl<M>(DC).SelectOne<VM>();
         }
         /// <summary>
-        /// 请参阅: <see langword=".QueryOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".SelectOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public T QueryOne<T>(Expression<Func<M, T>> columnMapFunc)
+        public T SelectOne<T>(Expression<Func<M, T>> columnMapFunc)
         {
-            return new QueryOneImpl<M>(DC).QueryOne<T>(columnMapFunc);
+            return new SelectOneImpl<M>(DC).SelectOne<T>(columnMapFunc);
         }
 
         /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 
         /// <summary>
-        /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".SelectListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<List<M>> QueryListAsync()
+        public async Task<List<M>> SelectListAsync()
         {
-            return await new QueryListAsyncImpl<M>(DC).QueryListAsync();
+            return await new SelectListAsyncImpl<M>(DC).SelectListAsync();
         }
         /// <summary>
-        /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".SelectListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<List<VM>> QueryListAsync<VM>()
+        public async Task<List<VM>> SelectListAsync<VM>()
             where VM : class
         {
-            return await new QueryListAsyncImpl<M>(DC).QueryListAsync<VM>();
+            return await new SelectListAsyncImpl<M>(DC).SelectListAsync<VM>();
         }
         /// <summary>
-        /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".SelectListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public async Task<List<T>> QueryListAsync<T>(Expression<Func<M, T>> columnMapFunc)
+        public async Task<List<T>> SelectListAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
-            return await new QueryListAsyncImpl<M>(DC).QueryListAsync(columnMapFunc);
+            return await new SelectListAsyncImpl<M>(DC).SelectListAsync(columnMapFunc);
         }
 
         /// <summary>
-        /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".SelectListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public List<M> QueryList()
+        public List<M> SelectList()
         {
-            return new QueryListImpl<M>(DC).QueryList();
+            return new SelectListImpl<M>(DC).SelectList();
         }
         /// <summary>
-        /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".SelectListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public List<VM> QueryList<VM>()
+        public List<VM> SelectList<VM>()
             where VM : class
         {
-            return new QueryListImpl<M>(DC).QueryList<VM>();
+            return new SelectListImpl<M>(DC).SelectList<VM>();
         }
         /// <summary>
-        /// 请参阅: <see langword=".QueryListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".SelectListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public List<T> QueryList<T>(Expression<Func<M, T>> columnMapFunc)
+        public List<T> SelectList<T>(Expression<Func<M, T>> columnMapFunc)
         {
-            return new QueryListImpl<M>(DC).QueryList(columnMapFunc);
+            return new SelectListImpl<M>(DC).SelectList(columnMapFunc);
         }
 
         /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -131,9 +131,9 @@ namespace MyDAL.UserFacade.Query
         /// </summary>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
-        public async Task<PagingResult<M>> QueryPagingAsync(int pageIndex, int pageSize)
+        public async Task<PagingResult<M>> SelectPagingAsync(int pageIndex, int pageSize)
         {
-            return await new QueryPagingAsyncImpl<M>(DC).QueryPagingAsync(pageIndex, pageSize);
+            return await new SelectPagingAsyncImpl<M>(DC).SelectPagingAsync(pageIndex, pageSize);
         }
         /// <summary>
         /// 单表分页查询
@@ -141,17 +141,17 @@ namespace MyDAL.UserFacade.Query
         /// <typeparam name="VM">ViewModel</typeparam>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
-        public async Task<PagingResult<VM>> QueryPagingAsync<VM>(int pageIndex, int pageSize)
+        public async Task<PagingResult<VM>> SelectPagingAsync<VM>(int pageIndex, int pageSize)
             where VM : class
         {
-            return await new QueryPagingAsyncImpl<M>(DC).QueryPagingAsync<VM>(pageIndex, pageSize);
+            return await new SelectPagingAsyncImpl<M>(DC).SelectPagingAsync<VM>(pageIndex, pageSize);
         }
         /// <summary>
         /// 单表分页查询
         /// </summary>
-        public async Task<PagingResult<T>> QueryPagingAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
+        public async Task<PagingResult<T>> SelectPagingAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
         {
-            return await new QueryPagingAsyncImpl<M>(DC).QueryPagingAsync<T>(pageIndex, pageSize, columnMapFunc);
+            return await new SelectPagingAsyncImpl<M>(DC).SelectPagingAsync<T>(pageIndex, pageSize, columnMapFunc);
         }
 
         /// <summary>
@@ -159,9 +159,9 @@ namespace MyDAL.UserFacade.Query
         /// </summary>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
-        public PagingResult<M> QueryPaging(int pageIndex, int pageSize)
+        public PagingResult<M> SelectPaging(int pageIndex, int pageSize)
         {
-            return new QueryPagingImpl<M>(DC).QueryPaging(pageIndex, pageSize);
+            return new SelectPagingImpl<M>(DC).SelectPaging(pageIndex, pageSize);
         }
         /// <summary>
         /// 单表分页查询
@@ -169,17 +169,17 @@ namespace MyDAL.UserFacade.Query
         /// <typeparam name="VM">ViewModel</typeparam>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页条数</param>
-        public PagingResult<VM> QueryPaging<VM>(int pageIndex, int pageSize)
+        public PagingResult<VM> SelectPaging<VM>(int pageIndex, int pageSize)
             where VM : class
         {
-            return new QueryPagingImpl<M>(DC).QueryPaging<VM>(pageIndex, pageSize);
+            return new SelectPagingImpl<M>(DC).SelectPaging<VM>(pageIndex, pageSize);
         }
         /// <summary>
         /// 单表分页查询
         /// </summary>
-        public PagingResult<T> QueryPaging<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
+        public PagingResult<T> SelectPaging<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
         {
-            return new QueryPagingImpl<M>(DC).QueryPaging<T>(pageIndex, pageSize, columnMapFunc);
+            return new SelectPagingImpl<M>(DC).SelectPaging<T>(pageIndex, pageSize, columnMapFunc);
         }
 
         /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/

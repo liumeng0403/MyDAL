@@ -34,7 +34,7 @@ namespace MyDAL.QueryAPI
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.Name.Contains("陈%"))
                 .CountAsync();
 
@@ -50,7 +50,7 @@ namespace MyDAL.QueryAPI
 
             // count(id)  like "陈%"
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.Name.Contains("陈%"))
                 .CountAsync(it => it.Id);
 
@@ -65,7 +65,7 @@ namespace MyDAL.QueryAPI
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer(out Agent agent3, out AgentInventoryRecord record3)
+                .Selecter(out Agent agent3, out AgentInventoryRecord record3)
                 .From(() => agent3)
                     .InnerJoin(() => record3)
                         .On(() => agent3.Id == record3.AgentId)
@@ -83,7 +83,7 @@ namespace MyDAL.QueryAPI
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer(out Agent agent4, out AgentInventoryRecord record4)
+                .Selecter(out Agent agent4, out AgentInventoryRecord record4)
                 .From(() => agent4)
                     .InnerJoin(() => record4)
                         .On(() => agent4.Id == record4.AgentId)
@@ -101,7 +101,7 @@ namespace MyDAL.QueryAPI
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Distinct()
                 .CountAsync(it => it.AgentLevel);
 
@@ -118,7 +118,7 @@ namespace MyDAL.QueryAPI
             try
             {
                 var res1 = await MyDAL_TestDB
-                    .Queryer(out Agent agent, out AgentInventoryRecord record)
+                    .Selecter(out Agent agent, out AgentInventoryRecord record)
                     .From(() => agent)
                         .InnerJoin(() => record)
                             .On(() => agent.Id == record.AgentId)

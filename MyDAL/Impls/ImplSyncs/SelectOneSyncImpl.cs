@@ -4,64 +4,63 @@ using MyDAL.Core.Extensions;
 using MyDAL.Impls.Base;
 using MyDAL.Interfaces.ISyncs;
 using System;
-using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 
 namespace MyDAL.Impls.ImplSyncs
 {
-    internal sealed class QueryOneImpl<M>
+    internal sealed class SelectOneImpl<M>
         : Impler
-        , IQueryOne<M>
+        , ISelectOne<M>
         where M : class
     {
-        internal QueryOneImpl(Context dc)
+        internal SelectOneImpl(Context dc)
             : base(dc)
         { }
 
-        public M QueryOne()
+        public M SelectOne()
         {
             return new TopImpl<M>(DC).Top(1).FirstOrDefault();
         }
-        public VM QueryOne<VM>()
+        public VM SelectOne<VM>()
             where VM : class
         {
             return new TopImpl<M>(DC).Top<VM>(1).FirstOrDefault();
         }
-        public T QueryOne<T>(Expression<Func<M, T>> columnMapFunc)
+        public T SelectOne<T>(Expression<Func<M, T>> columnMapFunc)
         {
             return new TopImpl<M>(DC).Top(1, columnMapFunc).FirstOrDefault();
         }
     }
 
-    internal sealed class QueryOneXImpl
+    internal sealed class SelectOneXImpl
         : Impler
-        , IQueryOneX
+        , ISelectOneX
     {
-        internal QueryOneXImpl(Context dc)
+        internal SelectOneXImpl(Context dc)
             : base(dc)
         { }
 
-        public M QueryOne<M>()
+        public M SelectOne<M>()
             where M : class
         {
             return new TopXImpl(DC).Top<M>(1).FirstOrDefault();
         }
-        public T QueryOne<T>(Expression<Func<T>> columnMapFunc)
+        public T SelectOne<T>(Expression<Func<T>> columnMapFunc)
         {
             return new TopXImpl(DC).Top(1, columnMapFunc).FirstOrDefault();
         }
     }
 
-    internal sealed class QueryOneSQLImpl
+    internal sealed class SelectOneSQLImpl
         : ImplerSync
-        , IQueryOneSQL
+        , ISelectOneSQL
     {
-        public QueryOneSQLImpl(Context dc)
+        public SelectOneSQLImpl(Context dc)
             : base(dc)
         { }
 
-        public T QueryOne<T>()
+        public T SelectOne<T>()
         {
             DC.Method = UiMethodEnum.QueryOne;
             if (typeof(T).IsSingleColumn())

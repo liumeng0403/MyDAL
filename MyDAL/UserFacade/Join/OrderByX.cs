@@ -17,7 +17,7 @@ namespace MyDAL.UserFacade.Join
     /// </summary>
     public sealed class OrderByX
         : Operator
-        , IQueryOneXAsync, IQueryOneX
+        , IQueryOneXAsync, ISelectOneX
         , IQueryListXAsync, IQueryListX
         , IQueryPagingXAsync, IQueryPagingX
         , ITopXAsync, ITopX

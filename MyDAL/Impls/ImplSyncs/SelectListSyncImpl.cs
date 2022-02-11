@@ -2,35 +2,34 @@
 using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
 using MyDAL.Impls.Base;
-using MyDAL.Interfaces.ISyncs;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq.Expressions;
+using MyDAL.Interfaces.ISyncs;
 
 namespace MyDAL.Impls.ImplSyncs
 {
-    internal sealed class QueryListImpl<M>
+    internal sealed class SelectListImpl<M>
         : ImplerSync
-        , IQueryList<M>
+        , ISelectList<M>
         where M : class
     {
-        internal QueryListImpl(Context dc)
+        internal SelectListImpl(Context dc)
             : base(dc) { }
 
-        public List<M> QueryList()
+        public List<M> SelectList()
         {
             PreExecuteHandle(UiMethodEnum.QueryList);
             return DSS.ExecuteReaderMultiRow<M>();
         }
-        public List<VM> QueryList<VM>()
+        public List<VM> SelectList<VM>()
             where VM : class
         {
             SelectMQ<M, VM>();
             PreExecuteHandle(UiMethodEnum.QueryList);
             return DSS.ExecuteReaderMultiRow<VM>();
         }
-        public List<T> QueryList<T>(Expression<Func<M, T>> columnMapFunc)
+        public List<T> SelectList<T>(Expression<Func<M, T>> columnMapFunc)
         {
             if (typeof(T).IsSingleColumn())
             {
@@ -47,21 +46,21 @@ namespace MyDAL.Impls.ImplSyncs
         }
     }
 
-    internal sealed class QueryListXImpl
+    internal sealed class SelectListXImpl
         : ImplerSync
-        , IQueryListX
+        , ISelectListX
     {
-        internal QueryListXImpl(Context dc)
+        internal SelectListXImpl(Context dc)
             : base(dc) { }
 
-        public List<M> QueryList<M>()
+        public List<M> SelectList<M>()
             where M : class
         {
             SelectMHandle<M>();
             PreExecuteHandle(UiMethodEnum.QueryList);
             return DSS.ExecuteReaderMultiRow<M>();
         }
-        public List<T> QueryList<T>(Expression<Func<T>> columnMapFunc)
+        public List<T> SelectList<T>(Expression<Func<T>> columnMapFunc)
         {
             if (typeof(T).IsSingleColumn())
             {
@@ -78,15 +77,15 @@ namespace MyDAL.Impls.ImplSyncs
         }
     }
 
-    internal sealed class QueryListSQLImpl
+    internal sealed class SelectListSQLImpl
         : ImplerSync
-        , IQueryListSQL
+        , ISelectListSQL
     {
-        public QueryListSQLImpl(Context dc)
+        public SelectListSQLImpl(Context dc)
             : base(dc)
         { }
 
-        public List<T> QueryList<T>()
+        public List<T> SelectList<T>()
         {
             DC.Method = UiMethodEnum.QueryList;
             if (typeof(T).IsSingleColumn())

@@ -11,60 +11,60 @@ using System.Threading.Tasks;
 
 namespace MyDAL.Impls.ImplAsyncs
 {
-    internal sealed class QueryOneAsyncImpl<M>
+    internal sealed class SelectOneAsyncImpl<M>
          : Impler
-         , IQueryOneAsync<M>
+         , ISelectOneAsync<M>
      where M : class
     {
-        internal QueryOneAsyncImpl(Context dc)
+        internal SelectOneAsyncImpl(Context dc)
             : base(dc)
         { }
 
-        public async Task<M> QueryOneAsync()
+        public async Task<M> SelectOneAsync()
         {
             return (await new TopAsyncImpl<M>(DC).TopAsync(1)).FirstOrDefault();
         }
-        public async Task<VM> QueryOneAsync<VM>()
+        public async Task<VM> SelectOneAsync<VM>()
             where VM : class
         {
             return (await new TopAsyncImpl<M>(DC).TopAsync<VM>(1)).FirstOrDefault();
         }
-        public async Task<T> QueryOneAsync<T>(Expression<Func<M, T>> columnMapFunc)
+        public async Task<T> SelectOneAsync<T>(Expression<Func<M, T>> columnMapFunc)
         {
             return (await new TopAsyncImpl<M>(DC).TopAsync(1, columnMapFunc)).FirstOrDefault();
         }
 
     }
 
-    internal sealed class QueryOneXAsyncImpl
+    internal sealed class SelectOneXAsyncImpl
          : Impler
-         , IQueryOneXAsync
+         , ISelectOneXAsync
     {
-        internal QueryOneXAsyncImpl(Context dc)
+        internal SelectOneXAsyncImpl(Context dc)
             : base(dc)
         { }
 
-        public async Task<M> QueryOneAsync<M>()
+        public async Task<M> SelectOneAsync<M>()
             where M : class
         {
             return (await new TopXAsyncImpl(DC).TopAsync<M>(1)).FirstOrDefault();
         }
-        public async Task<T> QueryOneAsync<T>(Expression<Func<T>> columnMapFunc)
+        public async Task<T> SelectOneAsync<T>(Expression<Func<T>> columnMapFunc)
         {
             return (await new TopXAsyncImpl(DC).TopAsync(1, columnMapFunc)).FirstOrDefault();
         }
 
     }
 
-    internal sealed class QueryOneSQLAsyncImpl
+    internal sealed class SelectOneSQLAsyncImpl
         : ImplerAsync
-        , IQueryOneSQLAsync
+        , ISelectOneSQLAsync
     {
-        public QueryOneSQLAsyncImpl(Context dc)
+        public SelectOneSQLAsyncImpl(Context dc)
             : base(dc)
         { }
 
-        public async Task<T> QueryOneAsync<T>()
+        public async Task<T> SelectOneAsync<T>()
         {
             DC.Method = UiMethodEnum.QueryOne;
             if (typeof(T).IsSingleColumn())

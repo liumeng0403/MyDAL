@@ -162,12 +162,12 @@ namespace MyDAL.CsFunc
         }
 
         [Fact]
-        public async Task DateTime_Query_yyyy_MM()
+        public async Task DateTime_Select_yyyy_MM()
         {
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Distinct()
                 .QueryListAsync(it => it.CreatedOn.ToString("yyyy-MM"));
 
@@ -175,12 +175,12 @@ namespace MyDAL.CsFunc
         }
 
         [Fact]
-        public async Task DateTime_Query_yyyy()
+        public async Task DateTime_Select_yyyy()
         {
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Distinct()
                 .QueryListAsync(it => it.CreatedOn.ToString("yyyy"));
 
@@ -195,7 +195,7 @@ namespace MyDAL.CsFunc
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.CreatedOn.ToString("yyyy-MM-dd") == date.ToString("yyyy-MM-dd"))
                 .QueryListAsync();
 
@@ -212,7 +212,7 @@ namespace MyDAL.CsFunc
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.CreatedOn.ToString("yyyy-MM") == date.ToString("yyyy-MM"))
                 .QueryListAsync();
 
@@ -229,7 +229,7 @@ namespace MyDAL.CsFunc
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.CreatedOn.ToString("yyyy") == date.ToString("yyyy"))
                 .QueryListAsync();
 
@@ -244,7 +244,7 @@ namespace MyDAL.CsFunc
             xx = string.Empty;
 
             var res1 = await MyDAL_TestDB
-                .Queryer<Agent>()
+                .Selecter<Agent>()
                 .Where(it => it.ActivedOn != null && it.ActivedOn.Value.ToString("yyyy-MM-dd") == DateTime.Parse("2018-08-19 12:05:45.560984").ToString("yyyy-MM-dd"))
                 .QueryListAsync();
 

@@ -19,7 +19,7 @@ namespace MyDAL.UserFacade.Query
     public sealed class WhereQ<M>
         : Operator
         , IOrderByQ<M>
-        , IQueryOneAsync<M>, IQueryOne<M>
+        , IQueryOneAsync<M>, ISelectOne<M>
         , IQueryListAsync<M>, IQueryList<M>
         , IQueryPagingAsync<M>, IQueryPaging<M>
         , ITopAsync<M>, ITop<M>
