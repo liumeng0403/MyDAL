@@ -1,8 +1,6 @@
 using MyDAL.Core.Bases;
-using MyDAL.Impls;
 using MyDAL.Impls.ImplAsyncs;
 using MyDAL.Impls.ImplSyncs;
-using MyDAL.Interfaces;
 using MyDAL.Interfaces.IAsyncs;
 using MyDAL.Interfaces.ISyncs;
 using MyDAL.Interfaces.Segments;

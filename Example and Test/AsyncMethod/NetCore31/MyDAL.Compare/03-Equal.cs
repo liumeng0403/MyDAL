@@ -42,7 +42,7 @@ namespace MyDAL.Compare
                 .Where(it => !(it.AgentLevel == AgentLevel.DistiAgent))
                 .SelectListAsync();
 
-            Assert.True(res1.Count == 28064);
+            Assert.True(res1.Count == 28064 || res1.Count == 28065);
 
             
 
@@ -56,7 +56,7 @@ namespace MyDAL.Compare
                 .Where(it => it.AgentLevel != AgentLevel.DistiAgent)
                 .SelectListAsync();
 
-            Assert.True(res2.Count == 28064);
+            Assert.True(res2.Count == 28064 || res2.Count == 28065);
 
             
 

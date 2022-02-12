@@ -170,7 +170,7 @@ namespace MyDAL
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Selecter Selecter<M1, M2>(this XConnection conn, out M1 table1, out M2 table2)
+        public static SelecterX Selecter<M1, M2>(this XConnection conn, out M1 table1, out M2 table2)
             where M1 : class, new()
             where M2 : class, new()
         {
@@ -180,12 +180,12 @@ namespace MyDAL
             {
                 Crud = CrudEnum.Join
             };
-            return new Selecter(dc);
+            return new SelecterX(dc);
         }
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Selecter Selecter<M1, M2, M3>(this XConnection conn, out M1 table1, out M2 table2, out M3 table3)
+        public static SelecterX Selecter<M1, M2, M3>(this XConnection conn, out M1 table1, out M2 table2, out M3 table3)
             where M1 : class, new()
             where M2 : class, new()
             where M3 : class, new()
@@ -197,12 +197,12 @@ namespace MyDAL
             {
                 Crud = CrudEnum.Join
             };
-            return new Selecter(dc);
+            return new SelecterX(dc);
         }
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Selecter Selecter<M1, M2, M3, M4>(this XConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4)
+        public static SelecterX Selecter<M1, M2, M3, M4>(this XConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4)
             where M1 : class, new()
             where M2 : class, new()
             where M3 : class, new()
@@ -216,12 +216,12 @@ namespace MyDAL
             {
                 Crud = CrudEnum.Join
             };
-            return new Selecter(dc);
+            return new SelecterX(dc);
         }
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Selecter Selecter<M1, M2, M3, M4, M5>(this XConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4, out M5 table5)
+        public static SelecterX Selecter<M1, M2, M3, M4, M5>(this XConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4, out M5 table5)
             where M1 : class, new()
             where M2 : class, new()
             where M3 : class, new()
@@ -237,12 +237,12 @@ namespace MyDAL
             {
                 Crud = CrudEnum.Join
             };
-            return new Selecter(dc);
+            return new SelecterX(dc);
         }
         /// <summary>
         /// 连接查询 方法簇
         /// </summary>
-        public static Selecter Selecter<M1, M2, M3, M4, M5, M6>(this XConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4, out M5 table5, out M6 table6)
+        public static SelecterX Selecter<M1, M2, M3, M4, M5, M6>(this XConnection conn, out M1 table1, out M2 table2, out M3 table3, out M4 table4, out M5 table5, out M6 table6)
             where M1 : class, new()
             where M2 : class, new()
             where M3 : class, new()
@@ -260,7 +260,7 @@ namespace MyDAL
             {
                 Crud = CrudEnum.Join
             };
-            return new Selecter(dc);
+            return new SelecterX(dc);
         }
 
         #endregion
