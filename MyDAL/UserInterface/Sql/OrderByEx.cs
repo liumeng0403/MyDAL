@@ -20,7 +20,7 @@ namespace MyDAL
             return new OrderByQ<M>(op.DC);
         }
 
-        public static OrderByQ<M> OrderBy<M, F>(this Queryer<M> target, Expression<Func<M, F>> propertyFunc, OrderByEnum orderBy = OrderByEnum.Desc)
+        public static OrderByQ<M> OrderBy<M, F>(this Selecter<M> target, Expression<Func<M, F>> propertyFunc, OrderByEnum orderBy = OrderByEnum.Desc)
             where M : class
         {
             return OrderByQ(target, propertyFunc, orderBy);

@@ -85,7 +85,7 @@ namespace MyDAL
         /// <summary>
         /// 请参阅: <see langword=".Where() &amp; .And() &amp; .Or() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
-        public static WhereQ<M> Where<M>(this Queryer<M> selecter, Expression<Func<M, bool>> compareFunc)
+        public static WhereQ<M> Where<M>(this Selecter<M> selecter, Expression<Func<M, bool>> compareFunc)
             where M : class
         {
             selecter.DC.Action = ActionEnum.Where;

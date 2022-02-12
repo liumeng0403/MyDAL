@@ -8,7 +8,7 @@ namespace MyDAL
     /// </summary>
     public static class DistinctEx
     {
-        public static DistinctQ<M> Distinct<M>(this Queryer<M> selecter)
+        public static DistinctQ<M> Distinct<M>(this Selecter<M> selecter)
             where M : class
         {
             selecter.DistinctHandle();

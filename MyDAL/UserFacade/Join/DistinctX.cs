@@ -34,14 +34,14 @@ namespace MyDAL.UserFacade.Join
         public async Task<M> SelectOneAsync<M>()
             where M : class
         {
-            return await new QueryOneXAsyncImpl(DC).QueryOneAsync<M>();
+            return await new SelectOneXAsyncImpl(DC).SelectOneAsync<M>();
         }
         /// <summary>
         /// 请参阅: <see langword=".SelectOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<T> SelectOneAsync<T>(Expression<Func<T>> columnMapFunc)
         {
-            return await new QueryOneXAsyncImpl(DC).QueryOneAsync(columnMapFunc);
+            return await new SelectOneXAsyncImpl(DC).SelectOneAsync(columnMapFunc);
         }
 
         /// <summary>
@@ -50,14 +50,14 @@ namespace MyDAL.UserFacade.Join
         public M SelectOne<M>()
             where M : class
         {
-            return new QueryOneXImpl(DC).QueryOne<M>();
+            return new SelectOneXImpl(DC).SelectOne<M>();
         }
         /// <summary>
         /// 请参阅: <see langword=".SelectOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public T SelectOne<T>(Expression<Func<T>> columnMapFunc)
         {
-            return new QueryOneXImpl(DC).QueryOne(columnMapFunc);
+            return new SelectOneXImpl(DC).SelectOne(columnMapFunc);
         }
 
         /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -68,14 +68,14 @@ namespace MyDAL.UserFacade.Join
         public async Task<List<M>> SelectListAsync<M>()
             where M : class
         {
-            return await new QueryListXAsyncImpl(DC).QueryListAsync<M>();
+            return await new SelectListXAsyncImpl(DC).SelectListAsync<M>();
         }
         /// <summary>
         /// 请参阅: <see langword=".SelectListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public async Task<List<T>> SelectListAsync<T>(Expression<Func<T>> columnMapFunc)
         {
-            return await new QueryListXAsyncImpl(DC).QueryListAsync(columnMapFunc);
+            return await new SelectListXAsyncImpl(DC).SelectListAsync(columnMapFunc);
         }
 
         /// <summary>
@@ -84,14 +84,14 @@ namespace MyDAL.UserFacade.Join
         public List<M> SelectList<M>()
             where M : class
         {
-            return new QueryListXImpl(DC).QueryList<M>();
+            return new SelectListXImpl(DC).SelectList<M>();
         }
         /// <summary>
         /// 请参阅: <see langword=".SelectListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public List<T> SelectList<T>(Expression<Func<T>> columnMapFunc)
         {
-            return new QueryListXImpl(DC).QueryList(columnMapFunc);
+            return new SelectListXImpl(DC).SelectList(columnMapFunc);
         }
 
         /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -104,14 +104,14 @@ namespace MyDAL.UserFacade.Join
         public async Task<PagingResult<M>> SelectPagingAsync<M>(int pageIndex, int pageSize)
             where M : class
         {
-            return await new QueryPagingXAsyncImpl(DC).QueryPagingAsync<M>(pageIndex, pageSize);
+            return await new SelectPagingXAsyncImpl(DC).SelectPagingAsync<M>(pageIndex, pageSize);
         }
         /// <summary>
         /// 多表分页查询
         /// </summary>
         public async Task<PagingResult<T>> SelectPagingAsync<T>(int pageIndex, int pageSize, Expression<Func<T>> columnMapFunc)
         {
-            return await new QueryPagingXAsyncImpl(DC).QueryPagingAsync(pageIndex, pageSize, columnMapFunc);
+            return await new SelectPagingXAsyncImpl(DC).SelectPagingAsync(pageIndex, pageSize, columnMapFunc);
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace MyDAL.UserFacade.Join
         public PagingResult<M> SelectPaging<M>(int pageIndex, int pageSize)
             where M : class
         {
-            return new QueryPagingXImpl(DC).QueryPaging<M>(pageIndex, pageSize);
+            return new SelectPagingXImpl(DC).SelectPaging<M>(pageIndex, pageSize);
         }
         /// <summary>
         /// 多表分页查询
@@ -131,7 +131,7 @@ namespace MyDAL.UserFacade.Join
         /// <param name="pageSize">每页条数</param>
         public PagingResult<T> SelectPaging<T>(int pageIndex, int pageSize, Expression<Func<T>> columnMapFunc)
         {
-            return new QueryPagingXImpl(DC).QueryPaging(pageIndex, pageSize, columnMapFunc);
+            return new SelectPagingXImpl(DC).SelectPaging(pageIndex, pageSize, columnMapFunc);
         }
 
         /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
