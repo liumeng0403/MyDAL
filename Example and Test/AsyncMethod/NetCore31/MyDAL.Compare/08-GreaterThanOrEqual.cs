@@ -21,7 +21,7 @@ namespace MyDAL.Compare
                     .InnerJoin(() => record1)
                         .On(() => agent1.Id == record1.AgentId)
                 .Where(() => agent1.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-90))
-                .QueryListAsync<AgentInventoryRecord>();
+                .SelectListAsync<AgentInventoryRecord>();
 
             Assert.True(res1.Count == 574);
 
@@ -42,7 +42,7 @@ namespace MyDAL.Compare
                     .InnerJoin(() => record1)
                         .On(() => agent1.Id == record1.AgentId)
                 .Where(() => !(agent1.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-90)))
-                .QueryListAsync<AgentInventoryRecord>();
+                .SelectListAsync<AgentInventoryRecord>();
 
             Assert.True(res1.Count == 0);
 
@@ -58,7 +58,7 @@ namespace MyDAL.Compare
                     .InnerJoin(() => record2)
                         .On(() => agent2.Id == record2.AgentId)
                 .Where(() => agent2.CreatedOn < Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-90))
-                .QueryListAsync<AgentInventoryRecord>();
+                .SelectListAsync<AgentInventoryRecord>();
 
             Assert.True(res2.Count == 0);
 

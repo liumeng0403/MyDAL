@@ -81,7 +81,7 @@ namespace MyDAL.Compare
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
                     .And(it => it.PathId.Contains("~00-d-3-1-"))
-                .QueryPagingAsync(1, 10);
+                .SelectPagingAsync(1, 10);
             Assert.True(res3.TotalCount == 5680);
 
             
@@ -137,7 +137,7 @@ namespace MyDAL.Compare
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
                     .And(it => it.PathId.Contains("~00-d-3-1-"))
-                .QueryPagingAsync(1, 10);
+                .SelectPagingAsync(1, 10);
 
             Assert.True(res1.TotalCount == 5680);
 
@@ -159,7 +159,7 @@ namespace MyDAL.Compare
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => !it.PathId.Contains("~00-d-3-1-"))
-                .QueryPagingAsync(1, 10);
+                .SelectPagingAsync(1, 10);
 
             Assert.True(res1.TotalCount == 22940);
 
@@ -184,7 +184,7 @@ namespace MyDAL.Compare
                     .InnerJoin(() => record1)
                         .On(() => agent1.Id == record1.AgentId)
                 .Where(() => agent1.Name.Contains("陈"))
-                .QueryListAsync<AgentInventoryRecord>();
+                .SelectListAsync<AgentInventoryRecord>();
 
             Assert.True(res1.Count == 24);
 
@@ -209,7 +209,7 @@ namespace MyDAL.Compare
                     .InnerJoin(() => record1)
                         .On(() => agent1.Id == record1.AgentId)
                 .Where(() => !agent1.Name.Contains("陈"))
-                .QueryListAsync<AgentInventoryRecord>();
+                .SelectListAsync<AgentInventoryRecord>();
 
             Assert.True(res1.Count == 550);
 
@@ -242,7 +242,7 @@ namespace MyDAL.Compare
             var res12 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.PathId.StartsWith("~00-d-3-1-"))
-                .QueryPagingAsync(1, 10);
+                .SelectPagingAsync(1, 10);
 
             Assert.True(res12.TotalCount == 5680);
 
@@ -259,7 +259,7 @@ namespace MyDAL.Compare
                     .InnerJoin(() => record13)
                         .On(() => agent13.Id == record13.AgentId)
                 .Where(() => agent13.Name.StartsWith("张"))
-                .QueryListAsync<Agent>();
+                .SelectListAsync<Agent>();
 
             Assert.True(res13.Count == 45);
 
@@ -284,7 +284,7 @@ namespace MyDAL.Compare
             var res21 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => !it.PathId.StartsWith("~00-d-3-1-"))
-                .QueryPagingAsync(1, 10);
+                .SelectPagingAsync(1, 10);
 
             Assert.True(res21.TotalCount == 22940);
 
@@ -301,7 +301,7 @@ namespace MyDAL.Compare
                     .InnerJoin(() => record22)
                         .On(() => agent22.Id == record22.AgentId)
                 .Where(() => !agent22.Name.StartsWith("张"))
-                .QueryListAsync<Agent>();
+                .SelectListAsync<Agent>();
 
             Assert.True(res22.Count == 529);
 
@@ -336,7 +336,7 @@ namespace MyDAL.Compare
             var res12 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.PathId.EndsWith("~00-d-3-1-"))
-                .QueryPagingAsync(1, 10);
+                .SelectPagingAsync(1, 10);
 
             Assert.True(res12.TotalCount == 0);
 
@@ -353,7 +353,7 @@ namespace MyDAL.Compare
                     .InnerJoin(() => record13)
                         .On(() => agent13.Id == record13.AgentId)
                 .Where(() => agent13.Name.EndsWith("华"))
-                .QueryListAsync<Agent>();
+                .SelectListAsync<Agent>();
 
             Assert.True(res13.Count == 22);
 
@@ -378,7 +378,7 @@ namespace MyDAL.Compare
             var res21 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => !it.PathId.EndsWith("~00-d-3-1-"))
-                .QueryPagingAsync(1, 10);
+                .SelectPagingAsync(1, 10);
 
             Assert.True(res21.TotalCount == 28620);
 
@@ -395,7 +395,7 @@ namespace MyDAL.Compare
                     .InnerJoin(() => record22)
                         .On(() => agent22.Id == record22.AgentId)
                 .Where(() => !agent22.Name.EndsWith("华"))
-                .QueryListAsync<Agent>();
+                .SelectListAsync<Agent>();
 
             Assert.True(res22.Count == 552);
 
@@ -453,7 +453,7 @@ namespace MyDAL.Compare
                     .And(it => it.Id == resx4.Id)
                     .And(it => it.Name.Contains("%华"))
                     .And(it => it.Name.Contains("%/%%"))
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res7.Count == 1);
 

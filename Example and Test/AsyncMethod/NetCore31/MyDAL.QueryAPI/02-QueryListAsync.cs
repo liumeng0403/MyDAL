@@ -19,7 +19,7 @@ namespace MyDAL.QueryAPI
             return await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("0ce552c0-2f5e-4c22-b26d-01654443b30e"))
-                .QueryOneAsync();
+                .SelectOneAsync();
         }
 
         [Fact]
@@ -41,7 +41,7 @@ namespace MyDAL.QueryAPI
                     .InnerJoin(() => record2)
                         .On(() => agent2.Id == record2.AgentId)
                 .Where(() => agent2.CreatedOn >= Convert.ToDateTime("2018-08-16 19:20:28.118853"))                      //  const  method  DateTime  >=
-                .QueryListAsync<AgentInventoryRecord>();
+                .SelectListAsync<AgentInventoryRecord>();
 
             Assert.True(res2.Count == 523);
 
@@ -58,7 +58,7 @@ namespace MyDAL.QueryAPI
                     .InnerJoin(() => record3)
                         .On(() => agent3.Id == record3.AgentId)
                 .Where(() => record3.AgentId == Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef"))                  //  const  method  Guid  ==
-                .QueryListAsync<AgentInventoryRecord>();
+                .SelectListAsync<AgentInventoryRecord>();
 
             Assert.True(res3.Count == 1);
             Assert.Equal(res3.First().Id, Guid.Parse("02dbc81c-5c9a-4cdf-8bf0-016551f756c4"));
@@ -76,7 +76,7 @@ namespace MyDAL.QueryAPI
                     .InnerJoin(() => record4)
                         .On(() => agent4.Id == record4.AgentId)
                 .Where(() => agent4.Name == "辛文丽")                                                                                                            //  const  string  ==
-                .QueryListAsync<AgentInventoryRecord>();
+                .SelectListAsync<AgentInventoryRecord>();
 
             Assert.True(res4.Count == 1);
 
@@ -93,7 +93,7 @@ namespace MyDAL.QueryAPI
                     .InnerJoin(() => record5)
                         .On(() => agent5.Id == record5.AgentId)
                 .Where(() => agent5.AgentLevel == AgentLevel.DistiAgent)                                                                           //  const  enum  ==
-                .QueryListAsync<AgentInventoryRecord>();
+                .SelectListAsync<AgentInventoryRecord>();
             Assert.True(res5.Count == 574);
 
             
@@ -109,7 +109,7 @@ namespace MyDAL.QueryAPI
                     .InnerJoin(() => record6)
                         .On(() => agent6.Id == record6.AgentId)
                 .Where(() => agent6.Id == m.Id)                                                                                                                              //  virable  prop  Guid  ==
-                .QueryListAsync<Agent>();
+                .SelectListAsync<Agent>();
 
             Assert.True(res6.Count == 1);
             Assert.Equal(res6.First().Id, Guid.Parse("0ce552c0-2f5e-4c22-b26d-01654443b30e"));
@@ -127,7 +127,7 @@ namespace MyDAL.QueryAPI
                     .InnerJoin(() => record7)
                         .On(() => agent7.Id == record7.AgentId)
                 .Where(() => agent7.Name == name)                                                                                                                 //  virable  string  ==
-                .QueryListAsync<AgentInventoryRecord>();
+                .SelectListAsync<AgentInventoryRecord>();
             Assert.True(res7.Count == 1);
 
             
@@ -143,7 +143,7 @@ namespace MyDAL.QueryAPI
                     .InnerJoin(() => record8)
                         .On(() => agent8.Id == record8.AgentId)
                 .Where(() => agent8.AgentLevel == (AgentLevel)level)                                                                                        //  virable  enum  ==
-                .QueryListAsync<AgentInventoryRecord>();
+                .SelectListAsync<AgentInventoryRecord>();
             Assert.True(res8.Count == 574);
 
             
@@ -159,7 +159,7 @@ namespace MyDAL.QueryAPI
                     .InnerJoin(() => record9)
                         .On(() => agent9.Id == record9.AgentId)
                 .Where(() => agent9.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))                     //  prop prop DateTime  >=
-                .QueryListAsync<AgentInventoryRecord>();
+                .SelectListAsync<AgentInventoryRecord>();
             Assert.True(res9.Count == 574);
 
             
@@ -175,7 +175,7 @@ namespace MyDAL.QueryAPI
                         .On(() => agent10.Id == record10.AgentId)
                 .Where(() => agent10.Id == Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef"))
                     .And(() => record10.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30).AddDays(-60))
-                .QueryListAsync<Agent>();
+                .SelectListAsync<Agent>();
             Assert.True(res10.Count == 1);
 
             
@@ -202,7 +202,7 @@ namespace MyDAL.QueryAPI
                     .InnerJoin(() => role1)
                         .On(() => userRole1.RoleId == role1.Id)
                 .OrderBy(() => user1.UserName)
-                .QueryListAsync<AspnetUsers>();
+                .SelectListAsync<AspnetUsers>();
 
             Assert.True(res1.Count == 29180);
             Assert.True(res1.First().UserName == "45285586990");
@@ -223,7 +223,7 @@ namespace MyDAL.QueryAPI
                 .Where(() => user4.NickName.StartsWith("刘"))
                 .OrderBy(() => user4.UserName)
                     .ThenOrderBy(() => user4.AgentLevel, OrderByEnum.Asc)
-                .QueryListAsync<AspnetUsers>();
+                .SelectListAsync<AspnetUsers>();
             Assert.True(res4.Count == 1480);
 
             
@@ -244,7 +244,7 @@ namespace MyDAL.QueryAPI
                 .From(() => agent1)
                     .InnerJoin(() => record1)
                         .On(() => agent1.Id == record1.AgentId)
-                .QueryListAsync<Agent>();
+                .SelectListAsync<Agent>();
 
             Assert.True(res1.Count == 574);
 
@@ -400,7 +400,7 @@ namespace MyDAL.QueryAPI
 
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
-                .QueryListAsync(it => it.Id);
+                .SelectListAsync(it => it.Id);
 
             Assert.True(res1.Count == 28620);
 
@@ -422,7 +422,7 @@ namespace MyDAL.QueryAPI
 
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res1.Count == 28620);
 
@@ -441,7 +441,7 @@ namespace MyDAL.QueryAPI
 
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
-                .QueryListAsync<AgentVM>();
+                .SelectListAsync<AgentVM>();
 
             Assert.True(res1.Count == 28620);
             Assert.NotNull(res1.First().Name);
@@ -461,7 +461,7 @@ namespace MyDAL.QueryAPI
 
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
-                .QueryListAsync(it => new AgentVM
+                .SelectListAsync(it => new AgentVM
                 {
                     XXXX = it.Name,
                     YYYY = it.PathId
@@ -480,7 +480,7 @@ namespace MyDAL.QueryAPI
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
-                .QueryListAsync(it => it.Name);
+                .SelectListAsync(it => it.Name);
 
             Assert.True(res1.Count == 555);
 
@@ -500,7 +500,7 @@ namespace MyDAL.QueryAPI
             var res4 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res4.Count == 28619);
 
@@ -520,7 +520,7 @@ namespace MyDAL.QueryAPI
             var res5 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
-                .QueryListAsync<AgentVM>();
+                .SelectListAsync<AgentVM>();
 
             Assert.True(res5.Count == 28619);
             Assert.NotNull(res5.First().Name);
@@ -544,7 +544,7 @@ namespace MyDAL.QueryAPI
             var res5 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
-                .QueryListAsync(agent => new AgentVM
+                .SelectListAsync(agent => new AgentVM
                 {
                     XXXX = agent.Name,
                     YYYY = agent.PathId
@@ -570,7 +570,7 @@ namespace MyDAL.QueryAPI
                 .From(() => agent1)
                     .InnerJoin(() => record1)
                         .On(() => agent1.Id == record1.AgentId)
-                .QueryListAsync(() => agent1.Id);
+                .SelectListAsync(() => agent1.Id);
 
             Assert.True(res1.Count == 574);
 
@@ -593,7 +593,7 @@ namespace MyDAL.QueryAPI
                         .On(() => user.Id == userRole.UserId)
                     .InnerJoin(() => role)
                         .On(() => userRole.RoleId == role.Id)
-                .QueryListAsync<AspnetUsers>();
+                .SelectListAsync<AspnetUsers>();
 
             Assert.True(res1.Count == 29180);
 
@@ -613,7 +613,7 @@ namespace MyDAL.QueryAPI
                 .From(() => agent)
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)
-                .QueryListAsync(() => new AgentVM
+                .SelectListAsync(() => new AgentVM
                 {
                     XXXX = agent.Name,
                     YYYY = agent.PathId
@@ -637,7 +637,7 @@ namespace MyDAL.QueryAPI
                     .InnerJoin(() => record1)
                         .On(() => agent1.Id == record1.AgentId)
                 .Where(() => agent1.AgentLevel == AgentLevel.DistiAgent)
-                .QueryListAsync(() => agent1.CreatedOn);
+                .SelectListAsync(() => agent1.CreatedOn);
 
             Assert.True(res1.Count == 574);
 
@@ -658,7 +658,7 @@ namespace MyDAL.QueryAPI
                 .From(() => agent3)
                     .InnerJoin(() => record3)
                         .On(() => agent3.Id == record3.AgentId)
-                .QueryListAsync<Agent>();
+                .SelectListAsync<Agent>();
 
             Assert.True(res3.Count == 574);
 
@@ -681,7 +681,7 @@ namespace MyDAL.QueryAPI
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)
                 .Where(() => record.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
-                .QueryListAsync(() => new AgentVM
+                .SelectListAsync(() => new AgentVM
                 {
                     nn = agent.PathId,
                     yy = record.Id,

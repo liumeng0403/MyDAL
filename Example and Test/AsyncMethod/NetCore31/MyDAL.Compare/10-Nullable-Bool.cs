@@ -27,7 +27,7 @@ namespace MyDAL.Compare
                     .InnerJoin(() => address55)
                         .On(() => address5.Id == address55.Id)
                 .Where(() => address5.IsDefault.Value && address5.UserId == guid5)  //  true
-                .QueryListAsync<AddressInfo>();
+                .SelectListAsync<AddressInfo>();
 
             Assert.True(res5.Count == 1);
             Assert.True(res5.First().IsDefault);
@@ -38,7 +38,7 @@ namespace MyDAL.Compare
                     .InnerJoin(() => address511)
                         .On(() => address51.Id == address511.Id)
                 .Where(() => address51.IsDefault == true && address51.UserId == guid5)  //  true
-                .QueryListAsync<AddressInfo>();
+                .SelectListAsync<AddressInfo>();
             Assert.True(res51.Count == 1);
             Assert.True(res51.First().IsDefault);
 
@@ -49,7 +49,7 @@ namespace MyDAL.Compare
                     .InnerJoin(() => address521)
                         .On(() => address52.Id == address521.Id)
                 .Where(() => address52.IsDefault == false || address52.Id == guid52)  //  false
-                .QueryListAsync<AddressInfo>();
+                .SelectListAsync<AddressInfo>();
             Assert.True(res52.Count == 3);
             Assert.True(res52.First(it => it.Id != guid52).IsDefault == false);
             Assert.True(res52.First(it => it.Id == guid52).IsDefault);
@@ -64,7 +64,7 @@ namespace MyDAL.Compare
             var res61 = await MyDAL_TestDB
                 .Selecter<Product>()
                 .Where(it => it.VipProduct.Value == false)
-                .QueryPagingAsync(1, 10);
+                .SelectPagingAsync(1, 10);
 
             Assert.True(res61.Data.Count == 4);
 
@@ -73,7 +73,7 @@ namespace MyDAL.Compare
             var res62 = await MyDAL_TestDB
                 .Selecter<Product>()
                 .Where(it => it.VipProduct.Value == true)
-                .QueryPagingAsync(1, 10);
+                .SelectPagingAsync(1, 10);
 
             Assert.True(res62.Data.Count == 0);
 
@@ -93,7 +93,7 @@ namespace MyDAL.Compare
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => true) // true 
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res1.Count == 28620);
 
@@ -111,7 +111,7 @@ namespace MyDAL.Compare
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => false) //  false
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res1.Count == 0);
 
@@ -132,7 +132,7 @@ namespace MyDAL.Compare
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)
                 .Where(() => true) // true 
-                .QueryListAsync<Agent>();
+                .SelectListAsync<Agent>();
 
             Assert.True(res1.Count == 574);
 
@@ -152,7 +152,7 @@ namespace MyDAL.Compare
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)
                 .Where(() => false) //  false
-                .QueryListAsync<Agent>();
+                .SelectListAsync<Agent>();
 
             Assert.True(res1.Count == 0);
 
@@ -173,7 +173,7 @@ namespace MyDAL.Compare
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)
                 .Where(() => !true)   // false 
-                .QueryListAsync<Agent>();
+                .SelectListAsync<Agent>();
 
             Assert.True(res1.Count == 0);
 
@@ -193,7 +193,7 @@ namespace MyDAL.Compare
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)
                 .Where(() => !false) //  true
-                .QueryListAsync<Agent>();
+                .SelectListAsync<Agent>();
 
             Assert.True(res1.Count == 574);
 
@@ -210,7 +210,7 @@ namespace MyDAL.Compare
             var res1 = await MyDAL_TestDB
                 .Selecter<AspnetUsers>()
                 .Where(it => it.RootUser)  //  true
-                .QueryPagingAsync(1, 10);
+                .SelectPagingAsync(1, 10);
 
             Assert.True(res1.Data.Count == 1);
 
@@ -227,7 +227,7 @@ namespace MyDAL.Compare
             var res1 = await MyDAL_TestDB
                 .Selecter<AspnetUsers>()
                 .Where(it => it.RootUser == true)  //  true
-                .QueryPagingAsync(1, 10);
+                .SelectPagingAsync(1, 10);
 
             Assert.True(res1.Data.Count == 1);
 
@@ -244,7 +244,7 @@ namespace MyDAL.Compare
             var res1 = await MyDAL_TestDB
                 .Selecter<AspnetUsers>()
                 .Where(it => it.RootUser == false)  //  false
-                .QueryPagingAsync(1, 10);
+                .SelectPagingAsync(1, 10);
 
             Assert.True(res1.Data.Count == 10);
             Assert.True(res1.TotalCount == 28624);
@@ -262,7 +262,7 @@ namespace MyDAL.Compare
             var res1 = await MyDAL_TestDB
                 .Selecter<AspnetUsers>()
                 .Where(it => !it.RootUser)  //  false
-                .QueryPagingAsync(1, 10);
+                .SelectPagingAsync(1, 10);
 
             Assert.True(res1.Data.Count == 10);
             Assert.True(res1.TotalCount == 28624);
@@ -280,7 +280,7 @@ namespace MyDAL.Compare
             var res1 = await MyDAL_TestDB
                 .Selecter<AspnetUsers>()
                 .Where(it => !(it.RootUser == true))  //  false
-                .QueryPagingAsync(1, 10);
+                .SelectPagingAsync(1, 10);
 
             Assert.True(res1.Data.Count == 10);
 
@@ -297,7 +297,7 @@ namespace MyDAL.Compare
             var res1 = await MyDAL_TestDB
                 .Selecter<AspnetUsers>()
                 .Where(it => !(it.RootUser == false))  //  true
-                .QueryPagingAsync(1, 10);
+                .SelectPagingAsync(1, 10);
 
             Assert.True(res1.Data.Count == 1);
 
@@ -314,7 +314,7 @@ namespace MyDAL.Compare
             var res1 = await MyDAL_TestDB
                 .Selecter<AddressInfo>()
                 .Where(it => it.IsDefault.Value)  //  true
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res1.Count == 5);
             Assert.True(res1.First().IsDefault);
@@ -332,7 +332,7 @@ namespace MyDAL.Compare
             var res1 = await MyDAL_TestDB
                 .Selecter<AddressInfo>()
                 .Where(it => it.IsDefault.Value == true)  //  true
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res1.Count == 5);
             Assert.True(res1.First().IsDefault);
@@ -350,7 +350,7 @@ namespace MyDAL.Compare
             var res1 = await MyDAL_TestDB
                 .Selecter<AddressInfo>()
                 .Where(it => it.IsDefault.Value == false)  //  false 
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res1.Count == 2);
             Assert.True(res1.First().IsDefault == false);
@@ -368,7 +368,7 @@ namespace MyDAL.Compare
             var res1 = await MyDAL_TestDB
                 .Selecter<Product>()
                 .Where(it => it.VipProduct == null)  //  is null  <--  nullable<bool>
-                .QueryPagingAsync(1, 10);
+                .SelectPagingAsync(1, 10);
 
             Assert.True(res1.Data.Count == 0);
 
@@ -385,7 +385,7 @@ namespace MyDAL.Compare
             var res1 = await MyDAL_TestDB
                 .Selecter<Product>()
                 .Where(it => it.VipProduct != null)  //  is not null  <--  nullable<bool>
-                .QueryPagingAsync(1, 10);
+                .SelectPagingAsync(1, 10);
 
             Assert.True(res1.Data.Count == 4);
 
@@ -402,7 +402,7 @@ namespace MyDAL.Compare
             var res1 = await MyDAL_TestDB
                 .Selecter<AddressInfo>()
                 .Where(it => !it.IsDefault.Value)  //  false
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res1.Count == 2);
 
@@ -419,7 +419,7 @@ namespace MyDAL.Compare
             var res1 = await MyDAL_TestDB
                 .Selecter<AddressInfo>()
                 .Where(it => !(it.IsDefault.Value == true))  //  false
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res1.Count == 2);
 
@@ -436,7 +436,7 @@ namespace MyDAL.Compare
             var res1 = await MyDAL_TestDB
                 .Selecter<AddressInfo>()
                 .Where(it => !(it.IsDefault.Value == false))  //  true 
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res1.Count == 5);
 
@@ -453,7 +453,7 @@ namespace MyDAL.Compare
             var res1 = await MyDAL_TestDB
                 .Selecter<Product>()
                 .Where(it => !(it.VipProduct == null))  //  is not null  <--  nullable<bool>
-                .QueryPagingAsync(1, 10);
+                .SelectPagingAsync(1, 10);
 
             Assert.True(res1.Data.Count == 4);
 
@@ -470,7 +470,7 @@ namespace MyDAL.Compare
             var res1 = await MyDAL_TestDB
                 .Selecter<Product>()
                 .Where(it => !(it.VipProduct != null))  //  is null  <--  nullable<bool>
-                .QueryPagingAsync(1, 10);
+                .SelectPagingAsync(1, 10);
 
             Assert.True(res1.Data.Count == 0);
 
@@ -490,7 +490,7 @@ namespace MyDAL.Compare
                     .InnerJoin(() => addr2)
                         .On(() => addr.Id == addr2.Id)
                 .Where(() => addr.IsDefault.Value)  //  true
-                .QueryListAsync<AddressInfo>();
+                .SelectListAsync<AddressInfo>();
 
             Assert.True(res1.Count == 5);
             Assert.True(res1.First().IsDefault);
@@ -511,7 +511,7 @@ namespace MyDAL.Compare
                     .InnerJoin(() => addr2)
                         .On(() => addr.Id == addr2.Id)
                 .Where(() => addr.IsDefault.Value == true)  //  true
-                .QueryListAsync<AddressInfo>();
+                .SelectListAsync<AddressInfo>();
 
             Assert.True(res1.Count == 5);
             Assert.True(res1.First().IsDefault);
@@ -532,7 +532,7 @@ namespace MyDAL.Compare
                     .InnerJoin(() => addr2)
                         .On(() => addr.Id == addr2.Id)
                 .Where(() => addr.IsDefault == false)  //  false
-                .QueryListAsync<AddressInfo>();
+                .SelectListAsync<AddressInfo>();
 
             Assert.True(res1.Count == 2);
             Assert.True(res1.First().IsDefault == false);
@@ -553,7 +553,7 @@ namespace MyDAL.Compare
                     .InnerJoin(() => addr2)
                         .On(() => addr.Id == addr2.Id)
                 .Where(() => addr.IsDefault == null)  //  is null <-- nullable<bool>
-                .QueryListAsync<AddressInfo>();
+                .SelectListAsync<AddressInfo>();
 
             Assert.True(res1.Count == 0);
 
@@ -573,7 +573,7 @@ namespace MyDAL.Compare
                     .InnerJoin(() => addr2)
                         .On(() => addr.Id == addr2.Id)
                 .Where(() => addr.IsDefault != null)  //  is not null <-- nullable<bool>
-                .QueryListAsync<AddressInfo>();
+                .SelectListAsync<AddressInfo>();
 
             Assert.True(res1.Count == 7);
 
@@ -593,7 +593,7 @@ namespace MyDAL.Compare
                     .InnerJoin(() => addr2)
                         .On(() => addr.Id == addr2.Id)
                 .Where(() => addr.IsDefault == null && addr.IsDefault.Value)  //  is null && true  <-- nullable<bool>
-                .QueryListAsync<AddressInfo>();
+                .SelectListAsync<AddressInfo>();
 
             Assert.True(res1.Count == 0);
 
@@ -613,7 +613,7 @@ namespace MyDAL.Compare
                     .InnerJoin(() => addr2)
                         .On(() => addr.Id == addr2.Id)
                 .Where(() => addr.IsDefault != null && !addr.IsDefault.Value)  //  is not null && false  <-- nullable<bool>
-                .QueryListAsync<AddressInfo>();
+                .SelectListAsync<AddressInfo>();
 
             Assert.True(res1.Count == 2);
 

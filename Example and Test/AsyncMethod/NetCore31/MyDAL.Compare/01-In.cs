@@ -21,7 +21,7 @@ namespace MyDAL.Compare
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("03f0a7b4-acd3-4003-b686-01654436e906"))
-                .QueryOneAsync();
+                .SelectOneAsync();
 
             var res2 = await MyDAL_TestDB
                 .Updater<Agent>()
@@ -31,7 +31,7 @@ namespace MyDAL.Compare
             var res3 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("03fc18e2-4b1e-4aa2-832b-0165443388bd"))
-                .QueryOneAsync();
+                .SelectOneAsync();
 
             var res4 = await MyDAL_TestDB
                 .Updater<Agent>()
@@ -59,7 +59,7 @@ namespace MyDAL.Compare
             var res3 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => EnumList.Contains(it.AgentLevel))
-                .QueryListAsync();
+                .SelectListAsync();
              
             Assert.True(res3.Count == 555);
 
@@ -76,7 +76,7 @@ namespace MyDAL.Compare
             var res4 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => names.Contains(it.Name))
-                .QueryListAsync();
+                .SelectListAsync();
 
             
 
@@ -89,7 +89,7 @@ namespace MyDAL.Compare
             var res6 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => StringList.Contains(it.Name))
-                .QueryListAsync();
+                .SelectListAsync();
 
             
 
@@ -109,7 +109,7 @@ namespace MyDAL.Compare
             var res7 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => new List<int> { 5, 10 }.Contains(it.DirectorStarCount))
-                .QueryListAsync();
+                .SelectListAsync();
 
             
 
@@ -121,7 +121,7 @@ namespace MyDAL.Compare
             var res8 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => new List<long> { 5, 10 }.Contains(it.DirectorStarCount))
-                .QueryListAsync();
+                .SelectListAsync();
 
             
 
@@ -133,7 +133,7 @@ namespace MyDAL.Compare
             var res9 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => new List<short> { 5, 10 }.Contains((short)(it.DirectorStarCount)))
-                .QueryListAsync();
+                .SelectListAsync();
 
             
 
@@ -149,7 +149,7 @@ namespace MyDAL.Compare
             var res10 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => new List<string> { "黄银凤", "刘建芬" }.Contains(it.Name))
-                .QueryListAsync();
+                .SelectListAsync();
             Assert.True(res10.Count == 2);
 
             
@@ -162,7 +162,7 @@ namespace MyDAL.Compare
             var res11 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => new List<AgentLevel?> { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel))
-                .QueryListAsync();
+                .SelectListAsync();
             Assert.True(res11.Count == 555);
 
             
@@ -180,7 +180,7 @@ namespace MyDAL.Compare
             var res13 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => WhereTest.In_Array_枚举.Contains(it.AgentLevel))
-                .QueryListAsync();
+                .SelectListAsync();
 
             
 
@@ -193,7 +193,7 @@ namespace MyDAL.Compare
             var res14 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => EnumArray.Contains(it.AgentLevel))
-                .QueryListAsync();
+                .SelectListAsync();
 
             
 
@@ -213,7 +213,7 @@ namespace MyDAL.Compare
             var res15 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => nameArray.Contains(it.Name))
-                .QueryListAsync();
+                .SelectListAsync();
 
             
 
@@ -225,7 +225,7 @@ namespace MyDAL.Compare
             var res16 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => WhereTest.In_Array_String.Contains(it.Name))
-                .QueryListAsync();
+                .SelectListAsync();
 
             
 
@@ -238,7 +238,7 @@ namespace MyDAL.Compare
             var res17 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => StringArray.Contains(it.Name))
-                .QueryListAsync();
+                .SelectListAsync();
 
             
 
@@ -258,7 +258,7 @@ namespace MyDAL.Compare
             var res18 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => new int[] { 5, 10 }.Contains(it.DirectorStarCount))
-                .QueryListAsync();
+                .SelectListAsync();
 
             
 
@@ -270,7 +270,7 @@ namespace MyDAL.Compare
             var res19 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => new long[] { 5L, 10L }.Contains(it.DirectorStarCount))
-                .QueryListAsync();
+                .SelectListAsync();
 
             
 
@@ -282,7 +282,7 @@ namespace MyDAL.Compare
             var res20 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => new short[] { 5, 10 }.Contains((short)(it.DirectorStarCount)))
-                .QueryListAsync();
+                .SelectListAsync();
 
             
 
@@ -298,7 +298,7 @@ namespace MyDAL.Compare
             var res21 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => new string[] { "黄银凤", "刘建芬" }.Contains(it.Name))
-                .QueryListAsync();
+                .SelectListAsync();
             Assert.True(res21.Count == 2);
 
             
@@ -311,7 +311,7 @@ namespace MyDAL.Compare
             var res22 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => new AgentLevel?[] { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel))
-                .QueryListAsync();
+                .SelectListAsync();
             Assert.True(res22.Count == 555);
 
             
@@ -324,7 +324,7 @@ namespace MyDAL.Compare
             var res24 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => new string[] { "黄银凤", "刘建芬" }.Contains(it.Name) || new List<Guid> { guid241, guid242 }.Contains(it.Id))
-                .QueryListAsync();
+                .SelectListAsync();
             Assert.True(res24.Count == 4);
 
             
@@ -337,7 +337,7 @@ namespace MyDAL.Compare
             var res25 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => new string[] { "刘建芬" }.Contains(it.Name))
-                .QueryListAsync();
+                .SelectListAsync();
             Assert.True(res25.Count == 1);
 
             
@@ -350,7 +350,7 @@ namespace MyDAL.Compare
             var res26 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => new string[] { "刘建芬" }.Contains(it.Name) || new List<Guid> { guid241 }.Contains(it.Id))
-                .QueryListAsync();
+                .SelectListAsync();
             Assert.True(res26.Count == 2);
 
             
@@ -365,7 +365,7 @@ namespace MyDAL.Compare
                 var res27 = await MyDAL_TestDB
                     .Selecter<Agent>()
                     .Where(it => new List<Guid> { }.Contains(it.Id))
-                    .QueryListAsync();
+                    .SelectListAsync();
             }
             catch (Exception ex)
             {
@@ -423,7 +423,7 @@ namespace MyDAL.Compare
             var res5 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => new List<string> { "黄银凤", "刘建芬" }.Contains(it.Name))
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res5.Count == 2);
 
@@ -443,7 +443,7 @@ namespace MyDAL.Compare
             var res5 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => !new List<string> { "黄银凤", "刘建芬" }.Contains(it.Name))
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res5.Count == 28618);
 
@@ -467,7 +467,7 @@ namespace MyDAL.Compare
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)
                 .Where(() => new AgentLevel?[] { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(agent.AgentLevel))
-                .QueryListAsync<Agent>();
+                .SelectListAsync<Agent>();
 
             Assert.True(res1.Count == 574);
 
@@ -492,7 +492,7 @@ namespace MyDAL.Compare
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)
                 .Where(() => !new AgentLevel?[] { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(agent.AgentLevel))
-                .QueryListAsync<Agent>();
+                .SelectListAsync<Agent>();
 
             Assert.True(res1.Count == 0);
 
@@ -519,7 +519,7 @@ namespace MyDAL.Compare
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => enums.Contains(it.AgentLevel))
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res1.Count == 555);
 
@@ -536,7 +536,7 @@ namespace MyDAL.Compare
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => !new List<AgentLevel?> { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel))
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res1.Count == 28065 || res1.Count == 28064);
 
@@ -562,7 +562,7 @@ namespace MyDAL.Compare
             var res12 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => enumArray.Contains(it.AgentLevel))
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res12.Count == 555);
 
@@ -584,7 +584,7 @@ namespace MyDAL.Compare
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => !new AgentLevel?[] { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel))
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res1.Count == 28065 || res1.Count == 28064);
 
@@ -610,7 +610,7 @@ namespace MyDAL.Compare
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => enums.Contains(it.AgentLevel))
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res1.Count == 555);
 
@@ -632,7 +632,7 @@ namespace MyDAL.Compare
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)
                 .Where(() => arr.Contains(agent.AgentLevel))
-                .QueryListAsync<Agent>();
+                .SelectListAsync<Agent>();
 
             Assert.True(res1.Count == 574);
 

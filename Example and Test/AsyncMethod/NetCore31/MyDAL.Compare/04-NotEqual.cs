@@ -47,7 +47,7 @@ namespace MyDAL.Compare
                 .Selecter<Agent>()
                 .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
                 .OrderBy(it => it.CreatedOn)
-                .QueryListAsync<AgentVM>();
+                .SelectListAsync<AgentVM>();
 
             Assert.True(res2.Count == 555);
 

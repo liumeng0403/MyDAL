@@ -52,7 +52,7 @@ namespace MyDAL.WhereEdge
             }
 
             // 对 WhereSegment 设定的条件 进行 select 动作
-            var res1 = await where.QueryListAsync();
+            var res1 = await where.SelectListAsync();
 
             Assert.True(res1.Count == 1);
 
@@ -94,7 +94,7 @@ namespace MyDAL.WhereEdge
             }
 
             // 对 WhereSegment 设定的条件 进行 select 动作
-            var res1 = await where.QueryPagingAsync<Agent>(pageIndex, pageSize);
+            var res1 = await where.SelectPagingAsync<Agent>(pageIndex, pageSize);
 
             Assert.True(res1.Data.Count == 10);
             Assert.True(res1.TotalCount == 575);

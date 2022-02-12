@@ -82,7 +82,7 @@ namespace MyDAL.Update
             var resx6 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
-                .QueryOneAsync();
+                .SelectOneAsync();
 
             resx6.ActivedOn = null;
 
@@ -112,7 +112,7 @@ namespace MyDAL.Update
             var resx7 = await MyDAL_TestDB
                 .Selecter<Product>()
                 .Where(it => it.Id == guid7)
-                .QueryOneAsync();
+                .SelectOneAsync();
 
             Assert.NotNull(resx7);
             Assert.False(resx7.VipProduct);
@@ -133,7 +133,7 @@ namespace MyDAL.Update
             var resxx7 = await MyDAL_TestDB
                 .Selecter<Product>()
                 .Where(it => it.Id == guid7)
-                .QueryOneAsync();
+                .SelectOneAsync();
 
             Assert.True(resxx7.VipProduct);
 
@@ -150,7 +150,7 @@ namespace MyDAL.Update
             var res81 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("0014f62d-2a96-4b5b-b4bd-01654438e3d4"))
-                .QueryOneAsync();
+                .SelectOneAsync();
 
             Assert.True(res81.AgentLevel == AgentLevel.NewCustomer);
 

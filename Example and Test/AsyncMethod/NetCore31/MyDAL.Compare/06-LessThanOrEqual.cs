@@ -20,7 +20,7 @@ namespace MyDAL.Compare
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn <= DateTime.Parse("2018-08-16 19:20:35.867228"))
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res1.Count == 6842);
 

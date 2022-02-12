@@ -47,14 +47,14 @@ namespace MyDAL.QueryAPI
             var res1 = await MyDAL_TestDB
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.Id == Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"))
-                .QueryOneAsync();
+                .SelectOneAsync();
 
             Assert.NotNull(res1);
 
             var resR1 = await MyDAL_TestDB.OpenDebug()
                 .Selecter<BodyFitRecord>()
                 .Where(it => Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e") == it.Id)
-                .QueryOneAsync();
+                .SelectOneAsync();
 
             Assert.NotNull(resR1);
             Assert.True(res1.Id == resR1.Id);
@@ -67,14 +67,14 @@ namespace MyDAL.QueryAPI
             var res2 = await MyDAL_TestDB
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.CreatedOn == Convert.ToDateTime("2018-08-23 13:36:58"))
-                .QueryOneAsync();
+                .SelectOneAsync();
 
             Assert.NotNull(res2);
 
             var resR2 = await MyDAL_TestDB.OpenDebug()
                 .Selecter<BodyFitRecord>()
                 .Where(it => Convert.ToDateTime("2018-08-23 13:36:58") == it.CreatedOn)
-                .QueryOneAsync();
+                .SelectOneAsync();
 
             Assert.NotNull(resR2);
             Assert.True(res2.Id == resR2.Id);
@@ -87,14 +87,14 @@ namespace MyDAL.QueryAPI
             var res3 = await MyDAL_TestDB
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.BodyMeasureProperty == "xxxx")
-                .QueryOneAsync();
+                .SelectOneAsync();
 
             Assert.NotNull(res3);
 
             var resR3 = await MyDAL_TestDB.OpenDebug()
                 .Selecter<BodyFitRecord>()
                 .Where(it => "xxxx" == it.BodyMeasureProperty)
-                .QueryOneAsync();
+                .SelectOneAsync();
 
             Assert.NotNull(resR3);
             Assert.True(res3.Id == resR3.Id);
@@ -196,7 +196,7 @@ namespace MyDAL.QueryAPI
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn == DateTime.Parse("2018-08-16 19:22:01.716307"))
-                .QueryOneAsync(it => it.Id);
+                .SelectOneAsync(it => it.Id);
 
             Assert.True(res1.Equals(Guid.Parse("000f5f16-5502-4324-b5d6-016544300263")));
 
@@ -216,7 +216,7 @@ namespace MyDAL.QueryAPI
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
                     .And(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
-                .QueryOneAsync();
+                .SelectOneAsync();
 
             Assert.NotNull(res4);
 
@@ -239,7 +239,7 @@ namespace MyDAL.QueryAPI
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
-                .QueryOneAsync<AgentVM>();
+                .SelectOneAsync<AgentVM>();
 
             Assert.NotNull(res1);
             Assert.Null(res1.XXXX);
@@ -261,7 +261,7 @@ namespace MyDAL.QueryAPI
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
-                .QueryOneAsync(it => new AgentVM
+                .SelectOneAsync(it => new AgentVM
                 {
                     XXXX = it.Name,
                     YYYY = it.PathId
@@ -288,7 +288,7 @@ namespace MyDAL.QueryAPI
                     .InnerJoin(() => agentRecord)
                         .On(() => agent.Id == agentRecord.AgentId)
                 .Where(() => agent.AgentLevel == AgentLevel.DistiAgent)
-                .QueryOneAsync(() => agent.Name);
+                .SelectOneAsync(() => agent.Name);
 
             Assert.NotNull(res1);
 
@@ -308,7 +308,7 @@ namespace MyDAL.QueryAPI
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)
                 .Where(() => agent.Id == Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef"))
-                .QueryOneAsync<Agent>();
+                .SelectOneAsync<Agent>();
 
             Assert.NotNull(res1);
             Assert.Equal("夏明君", res1.Name);
@@ -331,7 +331,7 @@ namespace MyDAL.QueryAPI
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)
                 .Where(() => agent.Id == Guid.Parse("544b9053-322e-4857-89a0-0165443dcbef"))
-                .QueryOneAsync(() => new AgentVM
+                .SelectOneAsync(() => new AgentVM
                 {
                     nn = agent.PathId,
                     yy = record.Id,

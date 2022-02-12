@@ -156,7 +156,7 @@ namespace MyDAL.CsFunc
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Distinct()
-                .QueryListAsync(it => it.CreatedOn.ToString("yyyy-MM-dd"));
+                .SelectListAsync(it => it.CreatedOn.ToString("yyyy-MM-dd"));
 
             Assert.True(res1.Count == 2);
         }
@@ -169,7 +169,7 @@ namespace MyDAL.CsFunc
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Distinct()
-                .QueryListAsync(it => it.CreatedOn.ToString("yyyy-MM"));
+                .SelectListAsync(it => it.CreatedOn.ToString("yyyy-MM"));
 
             Assert.True(res1.Count == 2);
         }
@@ -182,7 +182,7 @@ namespace MyDAL.CsFunc
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Distinct()
-                .QueryListAsync(it => it.CreatedOn.ToString("yyyy"));
+                .SelectListAsync(it => it.CreatedOn.ToString("yyyy"));
 
             Assert.True(res1.Count == 2);
         }
@@ -197,7 +197,7 @@ namespace MyDAL.CsFunc
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn.ToString("yyyy-MM-dd") == date.ToString("yyyy-MM-dd"))
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res1.Count == 28619);
 
@@ -214,7 +214,7 @@ namespace MyDAL.CsFunc
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn.ToString("yyyy-MM") == date.ToString("yyyy-MM"))
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res1.Count == 28619);
 
@@ -231,7 +231,7 @@ namespace MyDAL.CsFunc
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn.ToString("yyyy") == date.ToString("yyyy"))
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res1.Count == 28619);
 
@@ -246,7 +246,7 @@ namespace MyDAL.CsFunc
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.ActivedOn != null && it.ActivedOn.Value.ToString("yyyy-MM-dd") == DateTime.Parse("2018-08-19 12:05:45.560984").ToString("yyyy-MM-dd"))
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res1.Count == 554);
 

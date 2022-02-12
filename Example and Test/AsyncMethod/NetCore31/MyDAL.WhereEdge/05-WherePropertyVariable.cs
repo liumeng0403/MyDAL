@@ -21,7 +21,7 @@ namespace MyDAL.WhereEdge
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Id == AgentId)
-                .QueryOneAsync<AgentVM>();
+                .SelectOneAsync<AgentVM>();
 
             Assert.NotNull(res1);
 

@@ -21,14 +21,14 @@ namespace MyDAL.WhereEdge
             var res1 = await MyDAL_TestDB
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
-                .QueryListAsync();
+                .SelectListAsync();
 
             
 
             var resR1 = await MyDAL_TestDB
                 .Selecter<BodyFitRecord>()
                 .Where(it => Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30) <= it.CreatedOn)
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res1.Count == resR1.Count);
 
@@ -44,14 +44,14 @@ namespace MyDAL.WhereEdge
             var res2 = await MyDAL_TestDB
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.CreatedOn >= start)
-                .QueryListAsync();
+                .SelectListAsync();
 
             
 
             var resR2 = await MyDAL_TestDB
                 .Selecter<BodyFitRecord>()
                 .Where(it => start <= it.CreatedOn)
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res2.Count == resR2.Count);
 
@@ -65,14 +65,14 @@ namespace MyDAL.WhereEdge
             var res3 = await MyDAL_TestDB
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.CreatedOn <= DateTime.Now)
-                .QueryListAsync();
+                .SelectListAsync();
 
             
 
             var resR3 = await MyDAL_TestDB
                 .Selecter<BodyFitRecord>()
                 .Where(it => DateTime.Now >= it.CreatedOn)
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res3.Count == resR3.Count);
 

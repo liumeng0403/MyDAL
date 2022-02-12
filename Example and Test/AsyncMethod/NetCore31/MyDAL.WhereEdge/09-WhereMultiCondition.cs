@@ -20,7 +20,7 @@ namespace MyDAL.WhereEdge
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Id == guid1 && it.PathId == pathId1)
-                .QueryListAsync();
+                .SelectListAsync();
             Assert.True(res1.Count == 1);
 
             
@@ -34,7 +34,7 @@ namespace MyDAL.WhereEdge
             var res2 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Id == guid2 || it.PathId == pathId2)
-                .QueryListAsync();
+                .SelectListAsync();
             Assert.True(res2.Count == 2);
 
             
@@ -47,7 +47,7 @@ namespace MyDAL.WhereEdge
             var res3 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= WhereTest.StartTime && it.CreatedOn <= WhereTest.EndTime)
-                .QueryListAsync();
+                .SelectListAsync();
             Assert.True(res3.Count == 28619);
 
             
@@ -62,7 +62,7 @@ namespace MyDAL.WhereEdge
             var res4 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Id == guid4 && it.AgentLevel == level4 && it.PathId == pathId4)
-                .QueryListAsync();
+                .SelectListAsync();
             Assert.True(res4.Count == 1);
 
             
@@ -77,7 +77,7 @@ namespace MyDAL.WhereEdge
             var res5 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Id == guid5 || it.Id == guid51 || it.Id == guid52)
-                .QueryListAsync();
+                .SelectListAsync();
             Assert.True(res5.Count == 3);
 
             
@@ -92,7 +92,7 @@ namespace MyDAL.WhereEdge
             var res6 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Id == guid6 && it.Id == guid61 || it.Id == guid62)
-                .QueryListAsync();
+                .SelectListAsync();
             Assert.True(res6.Count == 1);
             Assert.True(res6.First().Id == guid62);
 
@@ -108,7 +108,7 @@ namespace MyDAL.WhereEdge
             var res7 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Id == guid7 || it.Id == guid71 && it.Id == guid72)
-                .QueryListAsync();
+                .SelectListAsync();
             Assert.True(res7.Count == 1);
             Assert.True(res7.First().Id == guid7);
 
@@ -125,7 +125,7 @@ namespace MyDAL.WhereEdge
             var res8 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => (it.Id == guid8 || it.Id == guid81) && it.Id == guid82 || it.PathId == pathId83)
-                .QueryListAsync();
+                .SelectListAsync();
             Assert.True(res8.Count == 1);
             Assert.True(res8.First().PathId == pathId83);
 

@@ -20,7 +20,7 @@ namespace MyDAL.Compare
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res1.Count == 555);
 
@@ -40,7 +40,7 @@ namespace MyDAL.Compare
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => !(it.AgentLevel == AgentLevel.DistiAgent))
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res1.Count == 28064);
 
@@ -54,7 +54,7 @@ namespace MyDAL.Compare
             var res2 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.AgentLevel != AgentLevel.DistiAgent)
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res2.Count == 28064);
 

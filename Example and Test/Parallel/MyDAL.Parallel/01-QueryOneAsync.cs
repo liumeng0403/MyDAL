@@ -13,7 +13,7 @@ namespace MyDAL.Parallel
                 .Selecter<Agent>()
                 .Where(it => it.Name == "刘中华")
                 .Distinct()
-                .QueryOneAsync()).GetAwaiter().GetResult();
+                .SelectOneAsync()).GetAwaiter().GetResult();
 
             return none;
         }

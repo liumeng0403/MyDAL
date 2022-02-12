@@ -16,7 +16,7 @@ namespace MyDAL.Compare
             var m = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("0001c614-dbef-4335-94b4-01654433a215"))
-                .QueryOneAsync();
+                .SelectOneAsync();
 
             await MyDAL_TestDB
                 .Updater<Agent>()
@@ -46,7 +46,7 @@ namespace MyDAL.Compare
             var res2 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.ActiveOrderId != null)
-                .QueryListAsync();
+                .SelectListAsync();
             Assert.True(res2.Count == 554);
 
             
@@ -62,7 +62,7 @@ namespace MyDAL.Compare
                 var res3 = await MyDAL_TestDB
                     .Selecter<Agent>()
                     .Where(it => it.AgentLevel == WhereTest.AgentLevelNull)
-                    .QueryListAsync();
+                    .SelectListAsync();
             }
             catch (Exception ex)
             {
@@ -81,7 +81,7 @@ namespace MyDAL.Compare
             var res4 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.ActivedOn != null && it.ActiveOrderId != null && it.CrmUserId == null)
-                .QueryListAsync();
+                .SelectListAsync();
             Assert.True(res4.Count == 554);
 
             
@@ -97,7 +97,7 @@ namespace MyDAL.Compare
                     .LeftJoin(() => r5)
                         .On(() => a5.Id == r5.AgentId)
                 .Where(() => a5.ActiveOrderId == null)
-                .QueryListAsync<Agent>();
+                .SelectListAsync<Agent>();
             Assert.True(res5.Count == 28085);
 
             
@@ -136,7 +136,7 @@ namespace MyDAL.Compare
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.ActiveOrderId == null)
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res1.Count == 28066);
 
@@ -158,7 +158,7 @@ namespace MyDAL.Compare
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => !(it.ActiveOrderId == null))
-                .QueryListAsync();
+                .SelectListAsync();
 
             Assert.True(res1.Count == 554);
 
@@ -183,7 +183,7 @@ namespace MyDAL.Compare
                     .LeftJoin(() => r6)
                         .On(() => a6.Id == r6.AgentId)
                 .Where(() => a6.ActiveOrderId != null)
-                .QueryListAsync<Agent>();
+                .SelectListAsync<Agent>();
 
             Assert.True(res6.Count == 554);
 
@@ -208,7 +208,7 @@ namespace MyDAL.Compare
                     .LeftJoin(() => r6)
                         .On(() => a6.Id == r6.AgentId)
                 .Where(() => !(a6.ActiveOrderId != null))
-                .QueryListAsync<Agent>();
+                .SelectListAsync<Agent>();
 
             Assert.True(res6.Count == 28085);
 

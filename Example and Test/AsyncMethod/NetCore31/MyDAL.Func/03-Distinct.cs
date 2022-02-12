@@ -17,7 +17,7 @@ namespace MyDAL.Test.Func
             var res2 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .Distinct()
-                .QueryListAsync(it => it.Name);
+                .SelectListAsync(it => it.Name);
 
             Assert.True(res2.Count == 24444);
              
@@ -29,7 +29,7 @@ namespace MyDAL.Test.Func
                 .Selecter<Agent>()
                 .Where(it => it.Name == "刘中华")
                 .Distinct()
-                .QueryOneAsync();
+                .SelectOneAsync();
 
             Assert.NotNull(res6);
             var res61 = await MyDAL_TestDB.SelectListAsync<Agent>(it => it.Name == "刘中华");
@@ -48,7 +48,7 @@ namespace MyDAL.Test.Func
                         .On(() => agent1.Id == record1.AgentId)
                 .Where(() => agent1.AgentLevel == AgentLevel.DistiAgent)
                 .Distinct()
-                .QueryListAsync(() => agent1.Name);
+                .SelectListAsync(() => agent1.Name);
 
             Assert.True(res7.Count == 543);
 

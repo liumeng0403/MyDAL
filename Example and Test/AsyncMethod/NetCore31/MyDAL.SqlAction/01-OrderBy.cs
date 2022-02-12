@@ -16,7 +16,7 @@ namespace MyDAL.SqlAction
             var res1 = await MyDAL_TestDB
                 .Selecter<Agent>()
                 .OrderBy(it => it.Name, OrderByEnum.Desc)
-                .QueryPagingAsync(1, 10, it => it.Name);
+                .SelectPagingAsync(1, 10, it => it.Name);
 
             Assert.True(res1.Data.Count == 10);
 
@@ -42,7 +42,7 @@ namespace MyDAL.SqlAction
                 .Selecter<Agent>()
                 .Where(it => it.Name.StartsWith("张"))
                 .OrderBy(it => it.Name, OrderByEnum.Desc)
-                .QueryPagingAsync(1, 10, it => it.Name);
+                .SelectPagingAsync(1, 10, it => it.Name);
 
             Assert.True(res1.Data.Count == 10);
 
