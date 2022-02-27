@@ -14,4 +14,6 @@
 
 
 
+// mysql 原生 md5 功能   set/where/select 
+
 
