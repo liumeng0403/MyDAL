@@ -12,14 +12,21 @@ namespace MyDAL.Core.Common
         : DicBase
     {
         /// <summary>
-        /// model type
+        /// 表模型类型
         /// </summary>
         internal Type TbMType { get; set; }
+        /// <summary>
+        /// 表模型属性名
+        /// </summary>
         internal string TbMProp { get; set; }        
+        
+        /// <summary>
+        /// 表别名
+        /// </summary>
         internal string TbAlias { get; set; }
         
         /// <summary>
-        /// table column name 
+        /// 表列名
         /// </summary>
         internal string TbCol { get; set; }
         internal string TbColAlias { get; set; }

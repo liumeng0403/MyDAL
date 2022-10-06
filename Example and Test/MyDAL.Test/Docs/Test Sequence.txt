@@ -15,5 +15,18 @@
 
 
 // mysql 原生 md5 功能   set/where/select 
+// where 后 需要有 where-segment , 单表 && join
+// paging 需要支持 limit start 
+// tool 方法注释
+// paging long total 
+// 兼容 where = where.xxx()  和 自然的 where.xxx().yyy()
 
+
+
+//添加支持   to string 
+                .SelectList(it=>new DicItem
+                {
+                    text = it.description,
+                    value = it.testMathId.ToString()
+                });
 

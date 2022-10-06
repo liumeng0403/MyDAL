@@ -247,4 +247,5 @@ namespace MyDAL.UserFacade.Join
         }
 
     }
+
 }

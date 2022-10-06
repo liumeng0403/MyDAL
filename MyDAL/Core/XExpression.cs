@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using MyDAL.Tools;
 
 namespace MyDAL.Core
 {
@@ -250,6 +251,34 @@ namespace MyDAL.Core
 
             return null;
         }
+
+        private DicParam Equals(MethodCallExpression mcExpr, ExpressionType nodeType, Expression valExpr)
+        {
+            if (mcExpr.IsNull())
+            {
+                return null;
+            }
+            else
+            {
+                var objExpr = mcExpr.Object;
+                var objNodeType = mcExpr.Object.NodeType;
+                if (objNodeType == ExpressionType.MemberAccess)
+                {
+                    var memO = objExpr as MemberExpression;
+                    var cp = GetKey(memO, FuncEnum.None, CompareXEnum.None);
+                    if (nodeType == ExpressionType.MemberAccess)
+                    {
+                        var val = DC.VH.ValueProcess(valExpr, cp.ValType);  
+                        DC.Option = OptionEnum.Compare;
+                        DC.Func = FuncEnum.None; // FuncEnum.In;
+                        DC.Compare = CompareXEnum.Equal; // CompareXEnum.None;
+                        return DC.DPH.CompareDic(cp, val);
+                    }
+                }
+            }
+
+            return null;
+        }
         private DicParam CollectionIn(ExpressionType nodeType, Expression keyExpr, Expression valExpr)
         {
             if (nodeType == ExpressionType.MemberAccess)
@@ -390,6 +419,7 @@ namespace MyDAL.Core
             var clp = DC.CFH.IsContainsLikeFunc(mcExpr);
             var cip = clp.Flag ? new ContainsInParam { Flag = false } : DC.CFH.IsContainsInFunc(mcExpr);
             var tsp = cip.Flag || clp.Flag ? new ToStringParam { Flag = false } : DC.CFH.IsToStringFunc(mcExpr);
+            var ep = tsp.Flag || cip.Flag || clp.Flag ? new EqualsParam {Flag = false} : DC.CFH.IsEqualsFunc(mcExpr);
 
             //
             if (clp.Flag)
@@ -414,6 +444,10 @@ namespace MyDAL.Core
             else if (tsp.Flag)
             {
                 return new CsToStringExpression(DC).SelectFuncToString(mcExpr);
+            }
+            else if(ep.Flag)
+            {
+                return Equals(mcExpr, ep.Type, ep.Val);
             }
 
             throw XConfig.EC.Exception(XConfig.EC._046, $"出现异常 -- [[{mcExpr.ToString()}]] 不能解析!!!");
@@ -664,6 +698,9 @@ namespace MyDAL.Core
 
             return alias;
         }
+        /// <summary>
+        /// 获取列信息
+        /// </summary>
         internal ColumnParam GetKey(Expression bodyL, FuncEnum func, CompareXEnum compareX, string format = "")
         {
             if (bodyL.NodeType == ExpressionType.MemberAccess)

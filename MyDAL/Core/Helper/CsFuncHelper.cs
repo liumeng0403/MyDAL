@@ -1,12 +1,9 @@
 ﻿using MyDAL.Core.Bases;
-using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
 using MyDAL.Core.Models.ExpPara;
-using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
+using MyDAL.Tools;
 
 namespace MyDAL.Core.Helper
 {
@@ -108,6 +105,48 @@ namespace MyDAL.Core.Helper
                 {
                     Flag = false,
                     Like = StringLikeEnum.None
+                };
+            }
+        }
+
+        internal EqualsParam IsEqualsFunc(MethodCallExpression mcExpr)
+        {
+            var exprStr = mcExpr.ToString();
+            if (exprStr.Contains(".Equals("))
+            {
+                if (mcExpr.Object.NonNull())
+                {
+                    var memVal = mcExpr.Arguments[0];
+                    if (memVal.NodeType == ExpressionType.MemberAccess)
+                    {
+                        return new EqualsParam
+                        {
+                            Flag = true,
+                            Type = ExpressionType.MemberAccess,
+                            Val = memVal
+                        };
+                    }
+                    else
+                    {
+                        return new EqualsParam
+                        {
+                            Flag = false
+                        };
+                    }
+                }
+                else
+                {
+                    return new EqualsParam
+                    {
+                        Flag = false
+                    };
+                }
+            }
+            else
+            {
+                return new EqualsParam
+                {
+                    Flag = false
                 };
             }
         }
