@@ -15,15 +15,6 @@ namespace MyDAL
 
         #region SelectOne API
 
-
-        /*-------------------------------------------------------------*/
-
-
-        /*-------------------------------------------------------------*/
-
-
-        /*-------------------------------------------------------------*/
-
         public static bool SelectOne<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, bool>> columnMapFunc)
             where M : class, new()
         {
@@ -203,7 +194,7 @@ namespace MyDAL
         /*-------------------------------------------------------------*/
 
         /// <summary>
-        /// Selecter 便捷-同步 SelectOne 方法
+        /// 请参阅: <see langword=".SelectOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static M SelectOne<M>(this XConnection conn, Expression<Func<M, bool>> compareFunc)
             where M : class, new()
@@ -211,7 +202,7 @@ namespace MyDAL
             return conn.Selecter<M>().Where(compareFunc).SelectOne();
         }
         /// <summary>
-        /// Selecter 便捷-同步 SelectOne 方法
+        /// 请参阅: <see langword=".SelectOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static VM SelectOne<M, VM>(this XConnection conn, Expression<Func<M, bool>> compareFunc)
             where M : class, new()
@@ -220,7 +211,7 @@ namespace MyDAL
             return conn.Selecter<M>().Where(compareFunc).SelectOne<VM>();
         }
         /// <summary>
-        /// Selecter 便捷-同步 SelectOne 方法
+        /// 请参阅: <see langword=".SelectOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static T SelectOne<M, T>(this XConnection conn, Expression<Func<M, bool>> compareFunc, Expression<Func<M, T>> columnMapFunc)
             where M : class, new()

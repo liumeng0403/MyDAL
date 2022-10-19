@@ -492,7 +492,7 @@ namespace MyDAL.QueryAPI
             paging.PageIndex = 1;
             paging.PageSize = 10;
 
-            paging.TotalCount = await MyDAL_TestDB.SelectOneAsync<int>(totalSql, paras);
+            paging.TotalCount = MyDAL_TestDB.SelectOne<int>(totalSql, paras);
             paging.Data = await MyDAL_TestDB.SelectListAsync<Guid>(dataSql, paras);
 
             Assert.True(paging.TotalPage == 58);
@@ -540,7 +540,7 @@ namespace MyDAL.QueryAPI
             paging.PageIndex = 1;
             paging.PageSize = 10;
 
-            paging.TotalCount = await MyDAL_TestDB.SelectOneAsync<int>(totalSql, paras);
+            paging.TotalCount = MyDAL_TestDB.SelectOne<int>(totalSql, paras);
             paging.Data = await MyDAL_TestDB.SelectListAsync<AgentVM>(dataSql, paras);
 
             Assert.True(paging.Data.Count == 10);

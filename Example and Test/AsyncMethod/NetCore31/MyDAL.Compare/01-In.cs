@@ -18,20 +18,20 @@ namespace MyDAL.Compare
         private string[] StringArray { get; set; }
         private async Task PereValue()
         {
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("03f0a7b4-acd3-4003-b686-01654436e906"))
-                .SelectOneAsync();
+                .SelectOne();
 
             var res2 = await MyDAL_TestDB
                 .Updater<Agent>()
                 .Set(it => it.DirectorStarCount, 10)
                 .Where(it => it.Id == res1.Id)
                 .UpdateAsync();
-            var res3 = await MyDAL_TestDB
+            var res3 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("03fc18e2-4b1e-4aa2-832b-0165443388bd"))
-                .SelectOneAsync();
+                .SelectOne();
 
             var res4 = await MyDAL_TestDB
                 .Updater<Agent>()

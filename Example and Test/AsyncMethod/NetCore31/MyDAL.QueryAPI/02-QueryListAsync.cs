@@ -16,10 +16,10 @@ namespace MyDAL.QueryAPI
 
         private async Task<Agent> PreData01()
         {
-            return await MyDAL_TestDB
+            return MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("0ce552c0-2f5e-4c22-b26d-01654443b30e"))
-                .SelectOneAsync();
+                .SelectOne();
         }
 
         [Fact]

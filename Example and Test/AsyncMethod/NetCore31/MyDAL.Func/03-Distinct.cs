@@ -25,11 +25,11 @@ namespace MyDAL.Test.Func
 
             xx = string.Empty;
 
-            var res6 = await MyDAL_TestDB
+            var res6 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Name == "刘中华")
                 .Distinct()
-                .SelectOneAsync();
+                .SelectOne();
 
             Assert.NotNull(res6);
             var res61 = await MyDAL_TestDB.SelectListAsync<Agent>(it => it.Name == "刘中华");

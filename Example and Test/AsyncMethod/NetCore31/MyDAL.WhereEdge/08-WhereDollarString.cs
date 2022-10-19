@@ -14,10 +14,10 @@ namespace MyDAL.WhereEdge
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Name == $"{"樊士芹"}")
-                .SelectOneAsync();
+                .SelectOne();
 
             Assert.NotNull(res1);
 
@@ -28,10 +28,10 @@ namespace MyDAL.WhereEdge
             xx = string.Empty;
 
             var name2 = "樊士芹";
-            var res2 = await MyDAL_TestDB
+            var res2 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Name == $"{name2}")
-                .SelectOneAsync();
+                .SelectOne();
 
             Assert.NotNull(res2);
 

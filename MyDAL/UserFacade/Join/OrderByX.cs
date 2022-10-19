@@ -17,7 +17,7 @@ namespace MyDAL.UserFacade.Join
     /// </summary>
     public sealed class OrderByX
         : Operator
-        , ISelectOneXAsync, ISelectOneX
+        , ISelectOneX
         , ISelectListXAsync, ISelectListX
         , ISelectPagingXAsync, ISelectPagingX
         , ITopXAsync, ITopX
@@ -27,26 +27,10 @@ namespace MyDAL.UserFacade.Join
         {
         }
 
-        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-
+        /*--------------------------------------------------------------------------------------------------------SelectOne------------*/
+        
         /// <summary>
-        /// 请参阅: <see langword=".SelectOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        public async Task<M> SelectOneAsync<M>()
-            where M:class
-        {
-            return await new SelectOneXAsyncImpl(DC).SelectOneAsync<M>();
-        }
-        /// <summary>
-        /// 请参阅: <see langword=".SelectOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        public async Task<T> SelectOneAsync<T>(Expression<Func<T>> columnMapFunc)
-        {
-            return await new SelectOneXAsyncImpl(DC).SelectOneAsync(columnMapFunc);
-        }
-
-        /// <summary>
-        /// 请参阅: <see langword=".SelectOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".SelectOne() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public M SelectOne<M>()
             where M : class
@@ -54,7 +38,7 @@ namespace MyDAL.UserFacade.Join
             return new SelectOneXImpl(DC).SelectOne<M>();
         }
         /// <summary>
-        /// 请参阅: <see langword=".SelectOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".SelectOne() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public T SelectOne<T>(Expression<Func<T>> columnMapFunc)
         {

@@ -9,11 +9,11 @@ namespace MyDAL.Parallel
     {
         public None test(None none)
         {
-            var res5 = (MyDAL_TestDB
+            var res5 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Name == "刘中华")
                 .Distinct()
-                .SelectOneAsync()).GetAwaiter().GetResult();
+                .SelectOne();
 
             return none;
         }

@@ -15,7 +15,7 @@ namespace MyDAL.WhereEdge
         public async Task MethodParam()
         {
             var pk = Guid.Parse("000a9465-8665-40bf-90e3-0165442d9120");
-            var res = await MyDAL_TestDB.SelectOneAsync<Agent>(it => it.Id == pk);
+            var res = MyDAL_TestDB.SelectOne<Agent>(it => it.Id == pk);
 
             Assert.NotNull(res);
 
@@ -28,7 +28,7 @@ namespace MyDAL.WhereEdge
             xx = string.Empty;
 
             // where method parameter 
-            var res1 = await MyDAL_TestDB.SelectOneAsync<Agent>(it => it.Id == id);
+            var res1 = MyDAL_TestDB.SelectOne<Agent>(it => it.Id == id);
 
             Assert.NotNull(res1);
 
@@ -37,7 +37,7 @@ namespace MyDAL.WhereEdge
             xx = string.Empty;
 
             // where method parameter 
-            var resR1 = await MyDAL_TestDB.SelectOneAsync<Agent>(it => id == it.Id);
+            var resR1 = MyDAL_TestDB.SelectOne<Agent>(it => id == it.Id);
 
             Assert.NotNull(resR1);
 

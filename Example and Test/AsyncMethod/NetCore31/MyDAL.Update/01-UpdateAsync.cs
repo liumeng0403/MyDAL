@@ -49,7 +49,7 @@ namespace MyDAL.Update
 
             
 
-            var res21 = await MyDAL_TestDB.SelectOneAsync<AlipayPaymentRecord>(it => it.Id == pk2);
+            var res21 = MyDAL_TestDB.SelectOne<AlipayPaymentRecord>(it => it.Id == pk2);
 
             Assert.True(res21.Description == "xxxxxx");
 
@@ -79,10 +79,10 @@ namespace MyDAL.Update
 
             xx = string.Empty;
 
-            var resx6 = await MyDAL_TestDB
+            var resx6 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("000c1569-a6f7-4140-89a7-0165443b5a4b"))
-                .SelectOneAsync();
+                .SelectOne();
 
             resx6.ActivedOn = null;
 
@@ -109,10 +109,10 @@ namespace MyDAL.Update
                 .Where(it => it.Id == guid7)
                 .UpdateAsync();
 
-            var resx7 = await MyDAL_TestDB
+            var resx7 = MyDAL_TestDB
                 .Selecter<Product>()
                 .Where(it => it.Id == guid7)
-                .SelectOneAsync();
+                .SelectOne();
 
             Assert.NotNull(resx7);
             Assert.False(resx7.VipProduct);
@@ -130,10 +130,10 @@ namespace MyDAL.Update
 
             
 
-            var resxx7 = await MyDAL_TestDB
+            var resxx7 = MyDAL_TestDB
                 .Selecter<Product>()
                 .Where(it => it.Id == guid7)
-                .SelectOneAsync();
+                .SelectOne();
 
             Assert.True(resxx7.VipProduct);
 
@@ -147,10 +147,10 @@ namespace MyDAL.Update
                 .Where(it => it.Id == Guid.Parse("0014f62d-2a96-4b5b-b4bd-01654438e3d4"))
                 .UpdateAsync();
 
-            var res81 = await MyDAL_TestDB
+            var res81 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("0014f62d-2a96-4b5b-b4bd-01654438e3d4"))
-                .SelectOneAsync();
+                .SelectOne();
 
             Assert.True(res81.AgentLevel == AgentLevel.NewCustomer);
 
@@ -167,7 +167,7 @@ namespace MyDAL.Update
 
             xx = string.Empty;
 
-            var agent = await MyDAL_TestDB.SelectOneAsync<Agent>(it => it.Id == Guid.Parse("040afaad-ae07-42fc-9dd0-0165443c847d"));
+            var agent = MyDAL_TestDB.SelectOne<Agent>(it => it.Id == Guid.Parse("040afaad-ae07-42fc-9dd0-0165443c847d"));
             agent.PathId = "yyyyyyy";
             agent.ActiveOrderId = null;
 
@@ -179,7 +179,7 @@ namespace MyDAL.Update
 
 
 
-            var res11 = await MyDAL_TestDB.SelectOneAsync<Agent>(it => it.Id == agent.Id);
+            var res11 = MyDAL_TestDB.SelectOne<Agent>(it => it.Id == agent.Id);
 
             Assert.Equal("yyyyyyy", res11.PathId, true);
             Assert.Null(res11.ActiveOrderId);
@@ -196,7 +196,7 @@ namespace MyDAL.Update
 
             xx = string.Empty;
 
-            var agent = await MyDAL_TestDB.SelectOneAsync<Agent>(it => it.Id == Guid.Parse("040afaad-ae07-42fc-9dd0-0165443c847d"));
+            var agent = MyDAL_TestDB.SelectOne<Agent>(it => it.Id == Guid.Parse("040afaad-ae07-42fc-9dd0-0165443c847d"));
             agent.PathId = "xxxxxxx";
             agent.ActiveOrderId = null;
 
@@ -212,7 +212,7 @@ namespace MyDAL.Update
 
 
 
-            var res11 = await MyDAL_TestDB.SelectOneAsync<Agent>(it => it.Id == agent.Id);
+            var res11 = MyDAL_TestDB.SelectOne<Agent>(it => it.Id == agent.Id);
 
             Assert.Equal("xxxxxxx", res11.PathId, true);
             Assert.Null(res11.ActiveOrderId);
@@ -266,7 +266,7 @@ namespace MyDAL.Update
             
 
             // 查询一条数据: AlipayPaymentRecord
-            var res11 = await MyDAL_TestDB.SelectOneAsync<AlipayPaymentRecord>(it => it.Id == pk1);
+            var res11 = MyDAL_TestDB.SelectOne<AlipayPaymentRecord>(it => it.Id == pk1);
             Assert.True(res11.Description == "new desc");
 
             /****************************************************************************************/
@@ -300,7 +300,7 @@ namespace MyDAL.Update
             
 
             // 查询一条数据: AlipayPaymentRecord
-            var res11 = await MyDAL_TestDB.SelectOneAsync<AlipayPaymentRecord>(it => it.Id == pk1);
+            var res11 = MyDAL_TestDB.SelectOne<AlipayPaymentRecord>(it => it.Id == pk1);
             Assert.True(res11.Description == "new desc");
 
             /****************************************************************************************/
@@ -315,7 +315,7 @@ namespace MyDAL.Update
 
             xx = string.Empty;
 
-            var agent = await MyDAL_TestDB.SelectOneAsync<Agent>(it => it.Id == Guid.Parse("040afaad-ae07-42fc-9dd0-0165443c847d"));
+            var agent = MyDAL_TestDB.SelectOne<Agent>(it => it.Id == Guid.Parse("040afaad-ae07-42fc-9dd0-0165443c847d"));
             agent.PathId = null;
 
             var res1 = await MyDAL_TestDB.UpdateAsync<Agent>(it => it.Id == agent.Id, new
@@ -327,7 +327,7 @@ namespace MyDAL.Update
 
             
 
-            var res11 = await MyDAL_TestDB.SelectOneAsync<Agent>(it => it.Id == agent.Id);
+            var res11 = MyDAL_TestDB.SelectOne<Agent>(it => it.Id == agent.Id);
 
             Assert.Null(res11.PathId);
 
@@ -341,7 +341,7 @@ namespace MyDAL.Update
         {
             xx = string.Empty;
 
-            var agent = await MyDAL_TestDB.SelectOneAsync<Agent>(it => it.Id == Guid.Parse("040afaad-ae07-42fc-9dd0-0165443c847d"));
+            var agent = MyDAL_TestDB.SelectOne<Agent>(it => it.Id == Guid.Parse("040afaad-ae07-42fc-9dd0-0165443c847d"));
             agent.PathId = null;
 
             try
@@ -412,7 +412,7 @@ namespace MyDAL.Update
 
             xx = string.Empty;
 
-            var agent = await MyDAL_TestDB.SelectOneAsync<Agent>(it => it.Id == Guid.Parse("040afaad-ae07-42fc-9dd0-0165443c847d"));
+            var agent = MyDAL_TestDB.SelectOne<Agent>(it => it.Id == Guid.Parse("040afaad-ae07-42fc-9dd0-0165443c847d"));
 
             var res1 = await MyDAL_TestDB
                 .Updater<Agent>()
@@ -420,7 +420,7 @@ namespace MyDAL.Update
                 .Where(it => it.Id == agent.Id)
                 .UpdateAsync();
 
-            var res11 = await MyDAL_TestDB.SelectOneAsync<Agent>(it => it.Id == agent.Id);
+            var res11 = MyDAL_TestDB.SelectOne<Agent>(it => it.Id == agent.Id);
 
             Assert.Null(res11.PathId);
 
@@ -437,7 +437,7 @@ namespace MyDAL.Update
 
             xx = string.Empty;
 
-            var agent = await MyDAL_TestDB.SelectOneAsync<Agent>(it => it.Id == Guid.Parse("040afaad-ae07-42fc-9dd0-0165443c847d"));
+            var agent = MyDAL_TestDB.SelectOne<Agent>(it => it.Id == Guid.Parse("040afaad-ae07-42fc-9dd0-0165443c847d"));
 
             try
             {

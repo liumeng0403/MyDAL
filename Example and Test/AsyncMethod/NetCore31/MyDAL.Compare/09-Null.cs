@@ -13,10 +13,10 @@ namespace MyDAL.Compare
 
         public async Task<Agent> PreData3()
         {
-            var m = await MyDAL_TestDB
+            var m = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("0001c614-dbef-4335-94b4-01654433a215"))
-                .SelectOneAsync();
+                .SelectOne();
 
             await MyDAL_TestDB
                 .Updater<Agent>()

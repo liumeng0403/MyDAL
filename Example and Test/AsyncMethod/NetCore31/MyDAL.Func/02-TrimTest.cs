@@ -42,10 +42,10 @@ namespace MyDAL.Test.Func
             xx = string.Empty;
 
             await PreTrim();
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<Product>()
                 .Where(it => it.Title.Trim() == "演示商品01")
-                .SelectOneAsync();
+                .SelectOne();
 
             Assert.True(res1.Title == "  演示商品01  ");
 
@@ -56,10 +56,10 @@ namespace MyDAL.Test.Func
             xx = string.Empty;
 
             await PreLTrim();
-            var res2 = await MyDAL_TestDB
+            var res2 = MyDAL_TestDB
                 .Selecter<Product>()
                 .Where(it => it.Title.TrimStart() == "演示商品01")
-                .SelectOneAsync();
+                .SelectOne();
 
             Assert.True(res2.Title == "  演示商品01");
 
@@ -70,10 +70,10 @@ namespace MyDAL.Test.Func
             xx=string.Empty;
 
             await PreRTrim();
-            var res3 = await MyDAL_TestDB
+            var res3 = MyDAL_TestDB
                 .Selecter<Product>()
                 .Where(it => it.Title.TrimEnd() == "演示商品01")
-                .SelectOneAsync();
+                .SelectOne();
 
             Assert.True(res3.Title == "演示商品01  ");
 

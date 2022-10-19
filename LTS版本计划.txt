@@ -1,13 +1,8 @@
 
 °ÔMyDAL.NetCore31
-https://dotnet.microsoft.com/download/dotnet-core
-Version			Status	Latest-release	Latest-release-date	End-of-support
-.NET Core 3.1	LTS 	3.1.5			2020-06-09			2022-12-03
 
 °ÔMyDAL.Net6
 
 °ÔMyDAL.Net8
-
-
 
 

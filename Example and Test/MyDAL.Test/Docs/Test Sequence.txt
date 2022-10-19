@@ -13,6 +13,9 @@
 
 
 
+// 固化 where equals 方法 case 
+
+// 设置最佳默认设置项 默认utf8mb4 
 
 // mysql 原生 md5 功能   set/where/select 
 // where 后 需要有 where-segment , 单表 && join

@@ -17,7 +17,7 @@ namespace MyDAL.UserFacade.Query
     /// </summary>
     public sealed class OrderByQ<M>
         : Operator
-        , ISelectOneAsync<M>, ISelectOne<M>
+        , ISelectOne<M>
         , ISelectListAsync<M>, ISelectList<M>
         , ISelectPagingAsync<M>, ISelectPaging<M>
         , ITopAsync<M>, ITop<M>
@@ -27,40 +27,17 @@ namespace MyDAL.UserFacade.Query
             : base(dc)
         { }
 
-        /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-
+        /*--------------------------------------------------------------------------------------------------------SelectOne-----------*/
+        
         /// <summary>
-        /// 请参阅: <see langword=".SelectOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        public async Task<M> SelectOneAsync()
-        {
-            return await new SelectOneAsyncImpl<M>(DC).SelectOneAsync();
-        }
-        /// <summary>
-        /// 请参阅: <see langword=".SelectOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        public async Task<VM> SelectOneAsync<VM>()
-            where VM : class
-        {
-            return await new SelectOneAsyncImpl<M>(DC).SelectOneAsync<VM>();
-        }
-        /// <summary>
-        /// 请参阅: <see langword=".SelectOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        public async Task<T> SelectOneAsync<T>(Expression<Func<M, T>> columnMapFunc)
-        {
-            return await new SelectOneAsyncImpl<M>(DC).SelectOneAsync<T>(columnMapFunc);
-        }
-
-        /// <summary>
-        /// 请参阅: <see langword=".SelectOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".SelectOne() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public M SelectOne()
         {
             return new SelectOneImpl<M>(DC).SelectOne();
         }
         /// <summary>
-        /// 请参阅: <see langword=".SelectOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".SelectOne() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public VM SelectOne<VM>()
             where VM : class
@@ -68,7 +45,7 @@ namespace MyDAL.UserFacade.Query
             return new SelectOneImpl<M>(DC).SelectOne<VM>();
         }
         /// <summary>
-        /// 请参阅: <see langword=".SelectOneAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".SelectOne() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public T SelectOne<T>(Expression<Func<M, T>> columnMapFunc)
         {
