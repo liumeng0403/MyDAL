@@ -14,10 +14,10 @@ namespace MyDAL.CsFunc
     {
 
         [Fact]
-        public async Task SelectOne_SingleColumn_ST()
+        public void SelectOne_SingleColumn_ST()
         {
             var pk = 'A';
-            await MySQL_PreData(pk, 1);
+            MySQL_PreData(pk, 1);
 
             xx = string.Empty;
 
@@ -131,19 +131,19 @@ namespace MyDAL.CsFunc
         }
 
         [Fact]
-        public async Task SelectOne_VmColumn_ST()
+        public void SelectOne_VmColumn_ST()
         {
 
         }
 
         [Fact]
-        public async Task SelectOne_SingleColumn_MT()
+        public void SelectOne_SingleColumn_MT()
         {
 
         }
 
         [Fact]
-        public async Task SelectOne_VmColumn_MT()
+        public void SelectOne_VmColumn_MT()
         {
 
         }

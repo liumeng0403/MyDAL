@@ -11,12 +11,12 @@ namespace MyDAL.Compare
     {
 
         [Fact]
-        public async Task GreaterThan()
+        public void GreaterThan()
         {
             xx = string.Empty;
 
             // > --> >
-            var res1 = await MyDAL_TestDB.SelectListAsync<Agent>(it => it.CreatedOn > Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30));
+            var res1 = MyDAL_TestDB.SelectList<Agent>(it => it.CreatedOn > Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30));
 
             Assert.True(res1.Count == 28619);
 
@@ -26,12 +26,12 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task NotGreaterThan()
+        public void NotGreaterThan()
         {
             xx = string.Empty;
 
             // !(>) --> <=
-            var res1 = await MyDAL_TestDB.SelectListAsync<Agent>(it => !(it.CreatedOn > Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30)));
+            var res1 = MyDAL_TestDB.SelectList<Agent>(it => !(it.CreatedOn > Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30)));
 
             Assert.True(res1.Count == 1);
 
@@ -42,7 +42,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // <= --> <=
-            var res2 = await MyDAL_TestDB.SelectListAsync<Agent>(it => it.CreatedOn <= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30));
+            var res2 = MyDAL_TestDB.SelectList<Agent>(it => it.CreatedOn <= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30));
 
             Assert.True(res2.Count == 1);
 

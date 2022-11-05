@@ -28,7 +28,7 @@ namespace MyDAL.Delete
                 .Where(it => it.Id == m.Id)
                 .DeleteAsync();
 
-            var res0 = await MyDAL_TestDB.InsertAsync(m);
+            var res0 = MyDAL_TestDB.Insert(m);
 
             return m;
         }
@@ -39,7 +39,7 @@ namespace MyDAL.Delete
             xx = string.Empty;
 
             var pk2 = Guid.Parse("72d551bf-d9f4-4817-800f-01655794cf42");
-            var res2 = await MyDAL_TestDB.DeleteAsync<AlipayPaymentRecord>(it => it.Id == pk2);
+            var res2 = MyDAL_TestDB.Delete<AlipayPaymentRecord>(it => it.Id == pk2);
             Assert.True(res2 == 1);
 
             
@@ -103,7 +103,7 @@ namespace MyDAL.Delete
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB.DeleteAsync<WechatUserInfo>(it=>true);   //  WechatUserInfo -- 空表 
+            var res1 = MyDAL_TestDB.Delete<WechatUserInfo>(it=>true);   //  WechatUserInfo -- 空表 
 
             Assert.True(res1 == 0);
 
@@ -118,7 +118,7 @@ namespace MyDAL.Delete
 
             xx = string.Empty;
             
-            var res1 = await MyDAL_TestDB.DeleteAsync<AlipayPaymentRecord>(it => it.Id == Guid.Parse("8f2cbb64-8356-4482-88ee-016558c05b2d"));
+            var res1 = MyDAL_TestDB.Delete<AlipayPaymentRecord>(it => it.Id == Guid.Parse("8f2cbb64-8356-4482-88ee-016558c05b2d"));
 
             Assert.True(res1 == 1);
 

@@ -32,7 +32,7 @@ namespace MyDAL.Test.Func
                 .SelectOne();
 
             Assert.NotNull(res6);
-            var res61 = await MyDAL_TestDB.SelectListAsync<Agent>(it => it.Name == "刘中华");
+            var res61 = MyDAL_TestDB.SelectList<Agent>(it => it.Name == "刘中华");
             Assert.True(res61.Count == 2);
 
             

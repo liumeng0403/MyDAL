@@ -19,8 +19,8 @@ namespace MyDAL.UserFacade.Query
         : Operator
         , ISelectOne<M>
         , ISelectListAsync<M>, ISelectList<M>
-        , ISelectPagingAsync<M>, ISelectPaging<M>
-        , ITopAsync<M>, ITop<M>
+        , ISelectPaging<M>
+        , ITop<M>
             where M : class
     {
         internal OrderByQ(Context dc)
@@ -101,35 +101,7 @@ namespace MyDAL.UserFacade.Query
         }
 
         /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-
-        /// <summary>
-        /// 单表分页查询
-        /// </summary>
-        /// <param name="pageIndex">页码</param>
-        /// <param name="pageSize">每页条数</param>
-        public async Task<PagingResult<M>> SelectPagingAsync(int pageIndex, int pageSize)
-        {
-            return await new SelectPagingAsyncImpl<M>(DC).SelectPagingAsync(pageIndex, pageSize);
-        }
-        /// <summary>
-        /// 单表分页查询
-        /// </summary>
-        /// <typeparam name="VM">ViewModel</typeparam>
-        /// <param name="pageIndex">页码</param>
-        /// <param name="pageSize">每页条数</param>
-        public async Task<PagingResult<VM>> SelectPagingAsync<VM>(int pageIndex, int pageSize)
-            where VM : class
-        {
-            return await new SelectPagingAsyncImpl<M>(DC).SelectPagingAsync<VM>(pageIndex, pageSize);
-        }
-        /// <summary>
-        /// 单表分页查询
-        /// </summary>
-        public async Task<PagingResult<T>> SelectPagingAsync<T>(int pageIndex, int pageSize, Expression<Func<M, T>> columnMapFunc)
-        {
-            return await new SelectPagingAsyncImpl<M>(DC).SelectPagingAsync<T>(pageIndex, pageSize, columnMapFunc);
-        }
-
+        
         /// <summary>
         /// 单表分页查询
         /// </summary>
@@ -159,36 +131,7 @@ namespace MyDAL.UserFacade.Query
         }
 
         /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-
-        /// <summary>
-        /// 单表数据查询
-        /// </summary>
-        /// <param name="count">top count</param>
-        /// <returns>返回 top count 条数据</returns>
-        public async Task<List<M>> TopAsync(int count)
-        {
-            return await new TopAsyncImpl<M>(DC).TopAsync(count);
-        }
-        /// <summary>
-        /// 单表数据查询
-        /// </summary>
-        /// <param name="count">top count</param>
-        /// <returns>返回 top count 条数据</returns>
-        public async Task<List<VM>> TopAsync<VM>(int count)
-            where VM : class
-        {
-            return await new TopAsyncImpl<M>(DC).TopAsync<VM>(count);
-        }
-        /// <summary>
-        /// 单表数据查询
-        /// </summary>
-        /// <param name="count">top count</param>
-        /// <returns>返回 top count 条数据</returns>
-        public async Task<List<T>> TopAsync<T>(int count, Expression<Func<M, T>> columnMapFunc)
-        {
-            return await new TopAsyncImpl<M>(DC).TopAsync<T>(count, columnMapFunc);
-        }
-
+        
         /// <summary>
         /// 单表数据查询
         /// </summary>

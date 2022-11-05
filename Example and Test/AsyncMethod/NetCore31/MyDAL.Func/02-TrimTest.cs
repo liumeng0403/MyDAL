@@ -8,40 +8,40 @@ namespace MyDAL.Test.Func
     public class _02_TrimTest : TestBase
     {
 
-        private async Task PreTrim()
+        private void PreTrim()
         {
             var pk1 = Guid.Parse("b3866d7c-2b51-46ae-85cb-0165c9121e8f");
-            var res1 = await MyDAL_TestDB.UpdateAsync<Product>(it => it.Id == pk1, new
+            var res1 = MyDAL_TestDB.Update<Product>(it => it.Id == pk1, new
             {
                 Title = "  演示商品01  "
             });
         }
-        private async Task PreLTrim()
+        private void PreLTrim()
         {
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Updater<Product>()
                 .Set(it => it.Title, "  演示商品01")
                 .Where(it => it.Id == Guid.Parse("b3866d7c-2b51-46ae-85cb-0165c9121e8f"))
-                .UpdateAsync();
+                .Update();
         }
-        private async Task PreRTrim()
+        private void PreRTrim()
         {
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Updater<Product>()
                 .Set(it => it.Title, "演示商品01  ")
                 .Where(it => it.Id == Guid.Parse("b3866d7c-2b51-46ae-85cb-0165c9121e8f"))
-                .UpdateAsync();
+                .Update();
         }
 
         [Fact]
-        public async Task Test()
+        public void Test()
         {
 
             /******************************************************************************************************************/
 
             xx = string.Empty;
 
-            await PreTrim();
+            PreTrim();
             var res1 = MyDAL_TestDB
                 .Selecter<Product>()
                 .Where(it => it.Title.Trim() == "演示商品01")
@@ -55,7 +55,7 @@ namespace MyDAL.Test.Func
 
             xx = string.Empty;
 
-            await PreLTrim();
+            PreLTrim();
             var res2 = MyDAL_TestDB
                 .Selecter<Product>()
                 .Where(it => it.Title.TrimStart() == "演示商品01")
@@ -69,7 +69,7 @@ namespace MyDAL.Test.Func
 
             xx=string.Empty;
 
-            await PreRTrim();
+            PreRTrim();
             var res3 = MyDAL_TestDB
                 .Selecter<Product>()
                 .Where(it => it.Title.TrimEnd() == "演示商品01")

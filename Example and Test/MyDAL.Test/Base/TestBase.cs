@@ -118,11 +118,11 @@ namespace MyDAL.Test
             return result;
         }
 
-        public async Task MySQL_PreData(char pk, int num)
+        public void MySQL_PreData(char pk, int num)
         {
             xx = string.Empty;
 
-            await MyDAL_TestDB.DeleteAsync<MySQL_EveryType>(it => it.Char == $"{pk}-char");
+            MyDAL_TestDB.Delete<MySQL_EveryType>(it => it.Char == $"{pk}-char");
 
             var flag = num % 2 == 0;
 
@@ -212,7 +212,7 @@ namespace MyDAL.Test
             m.Bit = true;
             m.Bit_Null = flag ? null : (bool?)false;
 
-            await MyDAL_TestDB.InsertAsync(m);
+            MyDAL_TestDB.Insert(m);
 
             xx = string.Empty;
         }

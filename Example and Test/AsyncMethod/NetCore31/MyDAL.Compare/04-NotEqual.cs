@@ -12,12 +12,12 @@ namespace MyDAL.Compare
     {
 
         [Fact]
-        public async Task NotEqual()
+        public void NotEqual()
         {
             xx = string.Empty;
 
             // != --> <>
-            var res1 = await MyDAL_TestDB.SelectListAsync<Agent>(it => it.AgentLevel != AgentLevel.Customer);
+            var res1 = MyDAL_TestDB.SelectList<Agent>(it => it.AgentLevel != AgentLevel.Customer);
 
             Assert.True(res1.Count == 556);
 
@@ -32,7 +32,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // !(!=) --> =
-            var res1 = await MyDAL_TestDB.SelectListAsync<Agent>(it => !(it.AgentLevel != AgentLevel.Customer));
+            var res1 = MyDAL_TestDB.SelectList<Agent>(it => !(it.AgentLevel != AgentLevel.Customer));
 
             Assert.True(res1.Count == 28063 || res1.Count == 28064);   // 此处为test
 

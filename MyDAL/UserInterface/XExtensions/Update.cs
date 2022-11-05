@@ -10,16 +10,8 @@ namespace MyDAL
     public static partial class XExtension
     {
 
-        #region Update API
-
-
-        /*-------------------------------------------------------------*/
-
-
-        /*-------------------------------------------------------------*/
-
         /// <summary>
-        /// Updater 便捷 UpdateAsync update fields 方法
+        /// 请参阅: <see langword=".Update() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public static int Update<M>
             (this XConnection conn, Expression<Func<M, bool>> compareFunc, dynamic filedsObject)
@@ -35,8 +27,6 @@ namespace MyDAL
             CheckUpdate(sql);
             return conn.ExecuteNonQuery(sql, dbParas);
         }
-        
-        #endregion
 
     }
 }

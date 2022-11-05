@@ -8,31 +8,7 @@ namespace MyDAL
     /// </summary>
     public static partial class XExtension
     {
-
-        #region Insert API
-
-        /// <summary>
-        /// Inserter 便捷 InsertAsync 方法
-        /// </summary>
-        public static async Task<int> InsertAsync<M>(this XConnection conn, M m)
-            where M : class, new()
-        {
-            return await conn.Inserter<M>().InsertAsync(m);
-        }
-
-        /*-------------------------------------------------------------*/
-
-        /// <summary>
-        /// Inserter 便捷 InsertAsync 方法 , SQL 语句
-        /// </summary>
-        public static async Task<int> InsertAsync(this XConnection conn, string sql, List<XParam> dbParas = null)
-        {
-            CheckCreate(sql);
-            return await conn.ExecuteNonQueryAsync(sql, dbParas);
-        }
-
-        /*-------------------------------------------------------------*/
-
+        
         /// <summary>
         /// Inserter 便捷 Insert 方法
         /// </summary>
@@ -52,8 +28,6 @@ namespace MyDAL
             CheckCreate(sql);
             return conn.ExecuteNonQuery(sql, dbParas);
         }
-        
-        #endregion
 
     }
 }

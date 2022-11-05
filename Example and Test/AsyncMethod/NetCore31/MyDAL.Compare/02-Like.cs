@@ -10,7 +10,7 @@ namespace MyDAL.Compare
         : TestBase
     {
 
-        private async Task<BodyFitRecord> Pre01()
+        private BodyFitRecord Pre01()
         {
             // 造数据
             var m = new BodyFitRecord
@@ -25,15 +25,15 @@ namespace MyDAL.Compare
             var resx1 = MyDAL_TestDB.SelectOne<BodyFitRecord>(it => it.Id == m.Id);
             if (resx1 != null)
             {
-                var resx2 = await MyDAL_TestDB.DeleteAsync<BodyFitRecord>(it => it.Id == resx1.Id);
+                var resx2 = MyDAL_TestDB.Delete<BodyFitRecord>(it => it.Id == resx1.Id);
             }
 
             // 新建
-            var res0 = await MyDAL_TestDB.InsertAsync(m);
+            var res0 = MyDAL_TestDB.Insert(m);
 
             return m;
         }
-        private async Task<Agent> Pre02()
+        private Agent Pre02()
         {
 
             xx = string.Empty;
@@ -41,13 +41,13 @@ namespace MyDAL.Compare
             // 造数据
             var pk1 = Guid.Parse("014c55c3-b371-433c-abc0-016544491da8");
             var resx1 = MyDAL_TestDB.SelectOne<Agent>(it => it.Id == pk1);
-            var resx2 = await MyDAL_TestDB.UpdateAsync<Agent>(it => it.Id == resx1.Id, new
+            var resx2 = MyDAL_TestDB.Update<Agent>(it => it.Id == resx1.Id, new
             {
                 Name = "刘%华"
             });
             var pk3 = Guid.Parse("018a1855-e238-4fb7-82d6-0165442fd654");
             var resx3 = MyDAL_TestDB.SelectOne<Agent>(it => it.Id == pk3);
-            var resx4 = await MyDAL_TestDB.UpdateAsync<Agent>(it => it.Id == resx3.Id, new
+            var resx4 = MyDAL_TestDB.Update<Agent>(it => it.Id == resx3.Id, new
             {
                 Name = "何_伟"
             });
@@ -62,7 +62,7 @@ namespace MyDAL.Compare
 
             /************************************************************************************************************/
 
-            await Pre01();
+            Pre01();
 
             xx = string.Empty;
 
@@ -77,11 +77,11 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // 默认 "%"+"~00-d-3-1-"+"%"
-            var res3 = await MyDAL_TestDB
+            var res3 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
                     .And(it => it.PathId.Contains("~00-d-3-1-"))
-                .SelectPagingAsync(1, 10);
+                .SelectPaging(1, 10);
             Assert.True(res3.TotalCount == 5680);
 
             
@@ -91,13 +91,13 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task Like_Shortcut()
+        public void Like_Shortcut()
         {
 
             xx = string.Empty;
 
             // like
-            var res1 = await MyDAL_TestDB.SelectListAsync<Agent>(it => it.Name.Contains("陈"));
+            var res1 = MyDAL_TestDB.SelectList<Agent>(it => it.Name.Contains("陈"));
 
             Assert.True(res1.Count == 1431);
 
@@ -110,12 +110,12 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task NotLike_Shortcut()
+        public void NotLike_Shortcut()
         {
             xx = string.Empty;
 
             // not like
-            var res1 = await MyDAL_TestDB.SelectListAsync<Agent>(it => !it.Name.Contains("刘"));
+            var res1 = MyDAL_TestDB.SelectList<Agent>(it => !it.Name.Contains("刘"));
 
             Assert.True(res1.Count == 27159);
 
@@ -133,11 +133,11 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // like 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
                     .And(it => it.PathId.Contains("~00-d-3-1-"))
-                .SelectPagingAsync(1, 10);
+                .SelectPaging(1, 10);
 
             Assert.True(res1.TotalCount == 5680);
 
@@ -156,10 +156,10 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // not like 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => !it.PathId.Contains("~00-d-3-1-"))
-                .SelectPagingAsync(1, 10);
+                .SelectPaging(1, 10);
 
             Assert.True(res1.TotalCount == 22940);
 
@@ -228,7 +228,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // like StartsWith
-            var res1 = await MyDAL_TestDB.SelectListAsync<Agent>(it => it.Name.StartsWith("陈"));
+            var res1 = MyDAL_TestDB.SelectList<Agent>(it => it.Name.StartsWith("陈"));
 
             Assert.True(res1.Count == 1421);
 
@@ -239,10 +239,10 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // like StartsWith
-            var res12 = await MyDAL_TestDB
+            var res12 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.PathId.StartsWith("~00-d-3-1-"))
-                .SelectPagingAsync(1, 10);
+                .SelectPaging(1, 10);
 
             Assert.True(res12.TotalCount == 5680);
 
@@ -270,7 +270,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // not like StartsWith
-            var res2 = await MyDAL_TestDB.SelectListAsync<Agent>(it => !it.Name.StartsWith("刘"));
+            var res2 = MyDAL_TestDB.SelectList<Agent>(it => !it.Name.StartsWith("刘"));
 
             Assert.True(res2.Count == 27163);
 
@@ -281,10 +281,10 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // not like StartsWith
-            var res21 = await MyDAL_TestDB
+            var res21 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => !it.PathId.StartsWith("~00-d-3-1-"))
-                .SelectPagingAsync(1, 10);
+                .SelectPaging(1, 10);
 
             Assert.True(res21.TotalCount == 22940);
 
@@ -322,7 +322,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // like EndsWith
-            var res1 = await MyDAL_TestDB.SelectListAsync<Agent>(it => it.Name.EndsWith("陈"));
+            var res1 = MyDAL_TestDB.SelectList<Agent>(it => it.Name.EndsWith("陈"));
 
             Assert.True(res1.Count == 2);
 
@@ -333,10 +333,10 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // like EndsWith
-            var res12 = await MyDAL_TestDB
+            var res12 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.PathId.EndsWith("~00-d-3-1-"))
-                .SelectPagingAsync(1, 10);
+                .SelectPaging(1, 10);
 
             Assert.True(res12.TotalCount == 0);
 
@@ -364,7 +364,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // not like EndsWith
-            var res2 = await MyDAL_TestDB.SelectListAsync<Agent>(it => !it.Name.EndsWith("刘"));
+            var res2 = MyDAL_TestDB.SelectList<Agent>(it => !it.Name.EndsWith("刘"));
 
             Assert.True(res2.Count == 28620);
 
@@ -375,10 +375,10 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // not like EndsWith
-            var res21 = await MyDAL_TestDB
+            var res21 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => !it.PathId.EndsWith("~00-d-3-1-"))
-                .SelectPagingAsync(1, 10);
+                .SelectPaging(1, 10);
 
             Assert.True(res21.TotalCount == 28620);
 
@@ -408,12 +408,12 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task MySQL_通配符()
+        public void MySQL_通配符()
         {
             xx = string.Empty;
 
             // %(百分号):  "陈%" --> "陈%"
-            var res5 = await MyDAL_TestDB.SelectListAsync<Agent>(it => it.Name.Contains("陈%"));
+            var res5 = MyDAL_TestDB.SelectList<Agent>(it => it.Name.Contains("陈%"));
 
             Assert.True(res5.Count == 1421);
 
@@ -424,7 +424,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // _(下划线):  "王_" --> "王_" 
-            var res6 = await MyDAL_TestDB.SelectListAsync<Agent>(it => it.Name.Contains("王_"));
+            var res6 = MyDAL_TestDB.SelectList<Agent>(it => it.Name.Contains("王_"));
 
             Assert.True(res6.Count == 498);
 
@@ -440,7 +440,7 @@ namespace MyDAL.Compare
         public async Task MySQL_通配符_转义()
         {
 
-            var resx4 = await Pre02();
+            var resx4 = Pre02();
 
             /************************************************************************************************************/
 
@@ -464,7 +464,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // /_(下划线转义):  "何/__" --> "何/__"
-            var res8 = await MyDAL_TestDB.SelectListAsync<Agent>(it => it.Name.Contains("何/__"));
+            var res8 = MyDAL_TestDB.SelectList<Agent>(it => it.Name.Contains("何/__"));
 
             Assert.True(res8.Count == 1);
 

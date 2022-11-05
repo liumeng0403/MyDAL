@@ -16,28 +16,28 @@ namespace MyDAL.Compare
         private AgentLevel?[] EnumArray { get; set; }
         private List<string> StringList { get; set; }
         private string[] StringArray { get; set; }
-        private async Task PereValue()
+        private void PereValue()
         {
             var res1 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("03f0a7b4-acd3-4003-b686-01654436e906"))
                 .SelectOne();
 
-            var res2 = await MyDAL_TestDB
+            var res2 = MyDAL_TestDB
                 .Updater<Agent>()
                 .Set(it => it.DirectorStarCount, 10)
                 .Where(it => it.Id == res1.Id)
-                .UpdateAsync();
+                .Update();
             var res3 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("03fc18e2-4b1e-4aa2-832b-0165443388bd"))
                 .SelectOne();
 
-            var res4 = await MyDAL_TestDB
+            var res4 = MyDAL_TestDB
                 .Updater<Agent>()
                 .Set(it => it.DirectorStarCount, 5)
                 .Where(it => it.Id == res3.Id)
-                .UpdateAsync();
+                .Update();
         }
 
         [Fact]
@@ -99,7 +99,7 @@ namespace MyDAL.Compare
             /*******************************************************************************************************************/
 
 
-            await PereValue();
+            PereValue();
 
             /*******************************************************************************************************************/
 
@@ -248,7 +248,7 @@ namespace MyDAL.Compare
 
             /*******************************************************************************************************************/
 
-            await PereValue();
+            PereValue();
 
             /*******************************************************************************************************************/
 
@@ -379,13 +379,13 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task In_Shortcut()
+        public void In_Shortcut()
         {
 
             xx = string.Empty;
 
             // in
-            var res2 = await MyDAL_TestDB.SelectListAsync<Agent>(it => new List<AgentLevel?> { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel));
+            var res2 = MyDAL_TestDB.SelectList<Agent>(it => new List<AgentLevel?> { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel));
 
             Assert.True(res2.Count == 555);
 
@@ -397,12 +397,12 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task NotIn_Shortcut()
+        public void NotIn_Shortcut()
         {
             xx = string.Empty;
 
             // in
-            var res2 = await MyDAL_TestDB.SelectListAsync<Agent>(it => !new List<AgentLevel?> { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel));
+            var res2 = MyDAL_TestDB.SelectList<Agent>(it => !new List<AgentLevel?> { AgentLevel.CityAgent, AgentLevel.DistiAgent }.Contains(it.AgentLevel));
 
             Assert.True(res2.Count == 28064 || res2.Count == 28065);  // 此处为test
 

@@ -11,7 +11,7 @@ namespace MyDAL
     {
 
         /*
-         *  剔除 sql server 支持, 拥抱开源 , 仅支持 mysql 
+         *  拥抱开源 , 仅支持 mysql 
          *  [EditorBrowsable(EditorBrowsableState.Never)]
          *  [Obsolete("Use Register(Component.For<T>().Lifestyle.Is(lifestyle)) instead.")] 
          */

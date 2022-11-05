@@ -19,11 +19,11 @@ namespace MyDAL.WhereEdge
 
             Assert.NotNull(res);
 
-            await xxx(res.Id);
+            xxx(res.Id);
             var id = Guid.Parse("000a9465-8665-40bf-90e3-0165442d9120");
-            await xxx(id);
+            xxx(id);
         }
-        private async Task xxx(Guid id)
+        private void xxx(Guid id)
         {
             xx = string.Empty;
 

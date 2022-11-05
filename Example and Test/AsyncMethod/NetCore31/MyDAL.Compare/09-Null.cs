@@ -11,28 +11,28 @@ namespace MyDAL.Compare
     {
 
 
-        public async Task<Agent> PreData3()
+        public Agent PreData3()
         {
             var m = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("0001c614-dbef-4335-94b4-01654433a215"))
                 .SelectOne();
 
-            await MyDAL_TestDB
+            MyDAL_TestDB
                 .Updater<Agent>()
                 .Set(it => it.AgentLevel, WhereTest.AgentLevelNull)
                 .Where(it => it.Id == m.Id)
-                .UpdateAsync();
+                .Update();
 
             return m;
         }
-        private async Task ClearData3(Agent m)
+        private void ClearData3(Agent m)
         {
-            await MyDAL_TestDB
+            MyDAL_TestDB
                 .Updater<Agent>()
                 .Set(it => it.AgentLevel, m.AgentLevel)
                 .Where(it => it.Id == m.Id)
-                .UpdateAsync();
+                .Update();
         }
 
         [Fact]
@@ -55,7 +55,7 @@ namespace MyDAL.Compare
 
             xx = string.Empty;
 
-            var m = await PreData3();
+            var m = PreData3();
             // 
             try
             {
@@ -71,7 +71,7 @@ namespace MyDAL.Compare
                 Assert.Equal(errStr, ex.Message, ignoreCase: true);
             }
 
-            await ClearData3(m);
+            ClearData3(m);
 
             /************************************************************************************************************************/
 
@@ -104,7 +104,7 @@ namespace MyDAL.Compare
 
             /************************************************************************************************************************/
 
-            var res7 = await MyDAL_TestDB.SelectListAsync<Agent>(it => it.ActiveOrderId == null);
+            var res7 = MyDAL_TestDB.SelectList<Agent>(it => it.ActiveOrderId == null);
             Assert.True(res7.Count == 28066);
 
             
@@ -114,7 +114,7 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // is not null 
-            var res8 = await MyDAL_TestDB.SelectListAsync<Agent>(it => it.ActiveOrderId != null);
+            var res8 = MyDAL_TestDB.SelectList<Agent>(it => it.ActiveOrderId != null);
             Assert.True(res8.Count == 554);
 
             

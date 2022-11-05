@@ -9,7 +9,7 @@
 
 # Project Introduction 
 
-[![](https://img.shields.io/badge/Download-60.2K-golden.svg)](https://www.nuget.org/packages/MyDAL/)
+[![](https://img.shields.io/badge/Download-60,200次-golden.svg)](https://www.nuget.org/packages/MyDAL/)
 [![](https://img.shields.io/badge/MySQL-5.7.21+-purple.svg)](https://www.cnblogs.com/Meng-NET/p/9831746.html)
 [![](https://img.shields.io/badge/Drivers-MySql.Data/MySqlConnector/Devart.Data.MySql-orange.svg)](https://www.cnblogs.com/Meng-NET/p/9831746.html)
 [![](https://img.shields.io/badge/Apache-2.0-blue.svg)](https://github.com/liumeng0403/MyDAL/blob/master/License)

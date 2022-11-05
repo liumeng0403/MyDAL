@@ -61,6 +61,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Connector", "Example 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyDAL.Devart", "Example and Test\MyDAL.Devart\MyDAL.Devart.csproj", "{A39127E6-14E2-4391-B143-406BB814F440}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Devs", "Devs", "{FED9F2AE-4506-4728-AC33-66E14090E82F}"
+	ProjectSection(SolutionItems) = preProject
+		Example and Test\MyDAL.Test\Docs\AdoNet中DbType--SqlDbType未处理类型列表.txt = Example and Test\MyDAL.Test\Docs\AdoNet中DbType--SqlDbType未处理类型列表.txt
+		Example and Test\MyDAL.Test\Docs\DbDefaultType.cs = Example and Test\MyDAL.Test\Docs\DbDefaultType.cs
+		Example and Test\MyDAL.Test\Docs\DbKeyType.cs = Example and Test\MyDAL.Test\Docs\DbKeyType.cs
+		Example and Test\MyDAL.Test\Docs\mysql 自增主键.txt = Example and Test\MyDAL.Test\Docs\mysql 自增主键.txt
+		Example and Test\MyDAL.Test\Docs\MySQL 连接字符串详解 .txt = Example and Test\MyDAL.Test\Docs\MySQL 连接字符串详解 .txt
+		Example and Test\MyDAL.Test\Docs\SqlServer--一般执行顺序.txt = Example and Test\MyDAL.Test\Docs\SqlServer--一般执行顺序.txt
+		Example and Test\MyDAL.Test\Docs\Test Sequence.txt = Example and Test\MyDAL.Test\Docs\Test Sequence.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -149,6 +160,7 @@ Global
 		{400CE933-B8D9-4BCF-875B-147A478145F8} = {754F34DC-1500-4ED5-8AE4-9FD25F758FA5}
 		{6E3A56EF-9565-41D5-945E-9220753D8A49} = {754F34DC-1500-4ED5-8AE4-9FD25F758FA5}
 		{A39127E6-14E2-4391-B143-406BB814F440} = {754F34DC-1500-4ED5-8AE4-9FD25F758FA5}
+		{FED9F2AE-4506-4728-AC33-66E14090E82F} = {5AA2915B-8D46-40EA-9C10-993571F2C19A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {928A4226-96F3-409A-8A83-9E7444488710}

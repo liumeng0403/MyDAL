@@ -14,7 +14,7 @@ namespace MyDAL.QueryAPI
         : TestBase
     {
 
-        private async Task<Agent> PreData01()
+        private Agent PreData01()
         {
             return MyDAL_TestDB
                 .Selecter<Agent>()
@@ -26,7 +26,7 @@ namespace MyDAL.QueryAPI
         public async Task History_06()
         {
 
-            var m = await PreData01();
+            var m = PreData01();
             var name = "辛文丽";
             var level = 128;
 
@@ -258,7 +258,7 @@ namespace MyDAL.QueryAPI
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB.SelectListAsync<Agent, Guid>(it=>true, it => it.Id);
+            var res1 = MyDAL_TestDB.SelectList<Agent, Guid>(it=>true, it => it.Id);
 
             Assert.True(res1.Count == 28620);
 
@@ -274,7 +274,7 @@ namespace MyDAL.QueryAPI
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB.SelectListAsync<Agent>(it => true);
+            var res1 = MyDAL_TestDB.SelectList<Agent>(it => true);
 
             Assert.True(res1.Count == 28620);
 
@@ -290,7 +290,7 @@ namespace MyDAL.QueryAPI
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB.SelectListAsync<Agent, AgentVM>(it=>true);
+            var res1 = MyDAL_TestDB.SelectList<Agent, AgentVM>(it=>true);
 
             Assert.True(res1.Count == 28620);
 
@@ -306,7 +306,7 @@ namespace MyDAL.QueryAPI
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB.SelectListAsync<Agent, AgentVM>(it=>true, it => new AgentVM
+            var res1 = MyDAL_TestDB.SelectList<Agent, AgentVM>(it=>true, it => new AgentVM
             {
                 XXXX = it.Name,
                 YYYY = it.PathId
@@ -327,7 +327,7 @@ namespace MyDAL.QueryAPI
 
             xx = string.Empty;
 
-            var res7 = await MyDAL_TestDB.SelectListAsync<Agent, string>(it => it.Name.StartsWith("张"), it => it.Name);
+            var res7 = MyDAL_TestDB.SelectList<Agent, string>(it => it.Name.StartsWith("张"), it => it.Name);
 
             Assert.True(res7.Count == 1996);
 
@@ -345,7 +345,7 @@ namespace MyDAL.QueryAPI
 
             xx = string.Empty;
 
-            var res2 = await MyDAL_TestDB.SelectListAsync<AlipayPaymentRecord>(it => it.CreatedOn >= DateTime.Parse("2018-08-20"));
+            var res2 = MyDAL_TestDB.SelectList<AlipayPaymentRecord>(it => it.CreatedOn >= DateTime.Parse("2018-08-20"));
 
             Assert.True(res2.Count == 29);
 
@@ -363,7 +363,7 @@ namespace MyDAL.QueryAPI
 
             xx = string.Empty;
 
-            var res2 = await MyDAL_TestDB.SelectListAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.CreatedOn >= DateTime.Parse("2018-08-20"));
+            var res2 = MyDAL_TestDB.SelectList<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.CreatedOn >= DateTime.Parse("2018-08-20"));
 
             Assert.True(res2.Count == 29);
 
@@ -379,7 +379,7 @@ namespace MyDAL.QueryAPI
 
             xx = string.Empty;
 
-            var res3 = await MyDAL_TestDB.SelectListAsync<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.CreatedOn >= DateTime.Parse("2018-08-20"),
+            var res3 = MyDAL_TestDB.SelectList<AlipayPaymentRecord, AlipayPaymentRecordVM>(it => it.CreatedOn >= DateTime.Parse("2018-08-20"),
             it => new AlipayPaymentRecordVM
             {
                 TotalAmount = it.TotalAmount,
@@ -701,7 +701,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task SelectSingleColumn_SQL()
+        public void SelectSingleColumn_SQL()
         {
             xx = string.Empty;
 
@@ -718,7 +718,7 @@ namespace MyDAL.QueryAPI
                 new XParam{ParamName="AgentLevel",ParamValue=AgentLevel.DistiAgent,ParamType= ParamTypeEnum.Int_MySQL_SqlServer}
             };
 
-            var res1 = await MyDAL_TestDB.SelectListAsync<DateTime>(sql, paras);
+            var res1 = MyDAL_TestDB.SelectList<DateTime>(sql, paras);
 
             Assert.True(res1.Count == 574);
 
@@ -729,7 +729,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task SelectVM_SQL()
+        public void SelectVM_SQL()
         {
             xx = string.Empty;
 
@@ -750,7 +750,7 @@ namespace MyDAL.QueryAPI
                 new XParam{ParamName="@CreatedOn",ParamValue=Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30),ParamType= ParamTypeEnum.DateTime_MySQL_SqlServer}
             };
 
-            var res1 = await MyDAL_TestDB.SelectListAsync<AgentVM>(sql, param);
+            var res1 = MyDAL_TestDB.SelectList<AgentVM>(sql, param);
 
             Assert.True(res1.Count == 574);
             Assert.True("~00-d-3-2-1-c-2-1a-1" == res1.First().nn);

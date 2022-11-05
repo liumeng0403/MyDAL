@@ -21,8 +21,8 @@ namespace MyDAL.UserFacade.Join
         , IWhereX
         , ISelectOneX
         , ISelectListXAsync, ISelectListX
-        , ISelectPagingXAsync, ISelectPagingX
-        , ITopXAsync, ITopX
+        , ISelectPagingX
+        , ITopX
         , IIsExistXAsync, IIsExistX
     {
 
@@ -96,27 +96,7 @@ namespace MyDAL.UserFacade.Join
         }
 
         /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-
-        /// <summary>
-        /// 多表分页查询
-        /// </summary>
-        /// <param name="pageIndex">页码</param>
-        /// <param name="pageSize">每页条数</param>
-        public async Task<PagingResult<M>> SelectPagingAsync<M>(int pageIndex, int pageSize)
-            where M : class
-        {
-            return await new SelectPagingXAsyncImpl(DC).SelectPagingAsync<M>(pageIndex, pageSize);
-        }
-        /// <summary>
-        /// 多表分页查询
-        /// </summary>
-        /// <param name="pageIndex">页码</param>
-        /// <param name="pageSize">每页条数</param>
-        public async Task<PagingResult<T>> SelectPagingAsync<T>(int pageIndex, int pageSize, Expression<Func<T>> columnMapFunc)
-        {
-            return await new SelectPagingXAsyncImpl(DC).SelectPagingAsync(pageIndex, pageSize, columnMapFunc);
-        }
-
+        
         /// <summary>
         /// 多表分页查询
         /// </summary>
@@ -138,23 +118,7 @@ namespace MyDAL.UserFacade.Join
         }
 
         /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-
-        /// <summary>
-        /// 多表多条数据查询
-        /// </summary>
-        public async Task<List<M>> TopAsync<M>(int count)
-            where M : class
-        {
-            return await new TopXAsyncImpl(DC).TopAsync<M>(count);
-        }
-        /// <summary>
-        /// 多表多条数据查询
-        /// </summary>
-        public async Task<List<T>> TopAsync<T>(int count, Expression<Func<T>> columnMapFunc)
-        {
-            return await new TopXAsyncImpl(DC).TopAsync(count, columnMapFunc);
-        }
-
+        
         /// <summary>
         /// 多表多条数据查询
         /// </summary>

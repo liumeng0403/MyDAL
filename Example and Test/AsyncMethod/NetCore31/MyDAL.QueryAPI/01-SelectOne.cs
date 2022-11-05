@@ -25,10 +25,10 @@ namespace MyDAL.QueryAPI
             };
 
             // 清理数据
-            var resd = await MyDAL_TestDB.DeleteAsync<BodyFitRecord>(it => it.Id == m.Id);
+            var resd = MyDAL_TestDB.Delete<BodyFitRecord>(it => it.Id == m.Id);
 
             // 造数据
-            var resc = await MyDAL_TestDB.InsertAsync(m);
+            var resc = MyDAL_TestDB.Insert(m);
 
             return m;
         }
@@ -142,7 +142,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task SelectVM_Shortcut()
+        public void SelectVM_Shortcut()
         {
 
             xx = string.Empty;
@@ -162,7 +162,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task SelectVMColumn_Shortcut()
+        public void SelectVMColumn_Shortcut()
         {
 
             xx = string.Empty;
@@ -189,7 +189,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task SelectSingleColumn_ST()
+        public void SelectSingleColumn_ST()
         {
             xx = string.Empty;
 
@@ -206,7 +206,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task SelectM_ST()
+        public void SelectM_ST()
         {
 
             xx = string.Empty;
@@ -229,7 +229,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task SelectVM_ST()
+        public void SelectVM_ST()
         {
 
             xx = string.Empty;
@@ -253,7 +253,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task SelectVMColumn_ST()
+        public void SelectVMColumn_ST()
         {
 
             xx = string.Empty;
@@ -298,7 +298,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task SelectM_MT()
+        public void SelectM_MT()
         {
             xx = string.Empty;
 
@@ -321,7 +321,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task SelectVMColumn_MT()
+        public void SelectVMColumn_MT()
         {
             xx = string.Empty;
 
@@ -349,7 +349,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task SelectSingleColumn_SQL()
+        public void SelectSingleColumn_SQL()
         {
             xx = string.Empty;
 

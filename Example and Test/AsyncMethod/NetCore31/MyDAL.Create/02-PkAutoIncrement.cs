@@ -25,7 +25,7 @@ namespace MyDAL.Create
 
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB.InsertAsync(m1);
+            var res1 = MyDAL_TestDB.Insert(m1);
 
             Assert.True(m1.id == 1);
             
@@ -41,7 +41,7 @@ namespace MyDAL.Create
 
             xx = string.Empty;
 
-            var res2 = await MyDAL_TestDB.InsertAsync(m2);
+            var res2 = MyDAL_TestDB.Insert(m2);
 
             Assert.True(m2.id == 2);
             
@@ -59,7 +59,7 @@ namespace MyDAL.Create
 
             xx = string.Empty;
 
-            var res5 = await MyDAL_TestDB.InsertAsync(m5);
+            var res5 = MyDAL_TestDB.Insert(m5);
 
             Assert.True(m5.id == 5);
             
@@ -76,7 +76,7 @@ namespace MyDAL.Create
 
             xx = string.Empty;
 
-            var res6 = await MyDAL_TestDB.InsertAsync(m6);
+            var res6 = MyDAL_TestDB.Insert(m6);
 
             Assert.True(m6.id == 6);
             

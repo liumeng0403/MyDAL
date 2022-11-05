@@ -11,14 +11,14 @@ namespace MyDAL.QueryAPI
         : TestBase
     {
         [Fact]
-        public async Task Sum_ST()
+        public void Sum_ST()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<AlipayPaymentRecord>()
                 .Where(it => it.CreatedOn > Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
-                .SumAsync(it => it.TotalAmount);
+                .Sum(it => it.TotalAmount);
 
             Assert.True(res1 == 1527.2600000000000000000000000M);
 
@@ -26,14 +26,14 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task Sum_Nullable_ST()
+        public void Sum_Nullable_ST()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<AgentInventoryRecord>()
                 .Where(it => it.Id != Guid.Parse("df2b788e-6b1a-4a74-ac1d-016551f76dc9"))
-                .SumAsync(it => it.TotalSaleCount);
+                .Sum(it => it.TotalSaleCount);
 
             Assert.True(res1 == 589);
 
@@ -41,17 +41,17 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task Sum_MT()
+        public void Sum_MT()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter(out Agent a, out AgentInventoryRecord air)
                 .From(() => a)
                     .InnerJoin(() => air)
                         .On(() => a.Id == air.AgentId)
                 .Where(() => a.AgentLevel == AgentLevel.DistiAgent)
-                .SumAsync(() => air.LockedCount);
+                .Sum(() => air.LockedCount);
 
             Assert.Equal(0, res1);
 
@@ -59,17 +59,17 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task Sum_Nullable_MT()
+        public void Sum_Nullable_MT()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter(out Agent a, out AgentInventoryRecord air)
                 .From(() => a)
                     .InnerJoin(() => air)
                         .On(() => a.Id == air.AgentId)
                 .Where(() => a.AgentLevel == AgentLevel.DistiAgent)
-                .SumAsync(() => air.TotalSaleCount);
+                .Sum(() => air.TotalSaleCount);
 
             Assert.Equal(589, res1.Value);
 

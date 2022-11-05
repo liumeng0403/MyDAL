@@ -61,19 +61,19 @@ namespace MyDAL.Compare
 
             xx = string.Empty;
 
-            var res61 = await MyDAL_TestDB
+            var res61 = MyDAL_TestDB
                 .Selecter<Product>()
                 .Where(it => it.VipProduct.Value == false)
-                .SelectPagingAsync(1, 10);
+                .SelectPaging(1, 10);
 
             Assert.True(res61.Data.Count == 4);
 
             
 
-            var res62 = await MyDAL_TestDB
+            var res62 = MyDAL_TestDB
                 .Selecter<Product>()
                 .Where(it => it.VipProduct.Value == true)
-                .SelectPagingAsync(1, 10);
+                .SelectPaging(1, 10);
 
             Assert.True(res62.Data.Count == 0);
 
@@ -207,10 +207,10 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<AspnetUsers>()
                 .Where(it => it.RootUser)  //  true
-                .SelectPagingAsync(1, 10);
+                .SelectPaging(1, 10);
 
             Assert.True(res1.Data.Count == 1);
 
@@ -224,10 +224,10 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<AspnetUsers>()
                 .Where(it => it.RootUser == true)  //  true
-                .SelectPagingAsync(1, 10);
+                .SelectPaging(1, 10);
 
             Assert.True(res1.Data.Count == 1);
 
@@ -241,10 +241,10 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<AspnetUsers>()
                 .Where(it => it.RootUser == false)  //  false
-                .SelectPagingAsync(1, 10);
+                .SelectPaging(1, 10);
 
             Assert.True(res1.Data.Count == 10);
             Assert.True(res1.TotalCount == 28624);
@@ -259,10 +259,10 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<AspnetUsers>()
                 .Where(it => !it.RootUser)  //  false
-                .SelectPagingAsync(1, 10);
+                .SelectPaging(1, 10);
 
             Assert.True(res1.Data.Count == 10);
             Assert.True(res1.TotalCount == 28624);
@@ -277,10 +277,10 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<AspnetUsers>()
                 .Where(it => !(it.RootUser == true))  //  false
-                .SelectPagingAsync(1, 10);
+                .SelectPaging(1, 10);
 
             Assert.True(res1.Data.Count == 10);
 
@@ -294,10 +294,10 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<AspnetUsers>()
                 .Where(it => !(it.RootUser == false))  //  true
-                .SelectPagingAsync(1, 10);
+                .SelectPaging(1, 10);
 
             Assert.True(res1.Data.Count == 1);
 
@@ -365,10 +365,10 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<Product>()
                 .Where(it => it.VipProduct == null)  //  is null  <--  nullable<bool>
-                .SelectPagingAsync(1, 10);
+                .SelectPaging(1, 10);
 
             Assert.True(res1.Data.Count == 0);
 
@@ -382,10 +382,10 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<Product>()
                 .Where(it => it.VipProduct != null)  //  is not null  <--  nullable<bool>
-                .SelectPagingAsync(1, 10);
+                .SelectPaging(1, 10);
 
             Assert.True(res1.Data.Count == 4);
 
@@ -450,10 +450,10 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<Product>()
                 .Where(it => !(it.VipProduct == null))  //  is not null  <--  nullable<bool>
-                .SelectPagingAsync(1, 10);
+                .SelectPaging(1, 10);
 
             Assert.True(res1.Data.Count == 4);
 
@@ -467,10 +467,10 @@ namespace MyDAL.Compare
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<Product>()
                 .Where(it => !(it.VipProduct != null))  //  is null  <--  nullable<bool>
-                .SelectPagingAsync(1, 10);
+                .SelectPaging(1, 10);
 
             Assert.True(res1.Data.Count == 0);
 

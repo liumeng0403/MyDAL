@@ -13,7 +13,7 @@ namespace MyDAL.WhereEdge
         public Guid AgentId { get; set; }
 
         [Fact]
-        public async Task Property()
+        public void Property()
         {
             xx = string.Empty;
 

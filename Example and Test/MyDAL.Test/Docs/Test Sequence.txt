@@ -13,9 +13,15 @@
 
 
 
+// Constraints
+
 // 固化 where equals 方法 case 
 
 // 设置最佳默认设置项 默认utf8mb4 
+
+// 支持 mysql 关闭 information-schema 时, 可正常运行
+
+// MAUI entity-auto-generator
 
 // mysql 原生 md5 功能   set/where/select 
 // where 后 需要有 where-segment , 单表 && join

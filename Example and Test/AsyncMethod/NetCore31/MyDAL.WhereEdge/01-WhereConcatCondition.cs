@@ -12,13 +12,13 @@ namespace MyDAL.WhereEdge
         : TestBase
     {
         [Fact]
-        public async Task Concat_None_ST()
+        public void Concat_None_ST()
         {
             xx = string.Empty;
 
             var where = MyDAL_TestDB.Selecter<Agent>().WhereSegment;
 
-            var res1 = await where.TopAsync(1);
+            var res1 = where.Top(1);
 
             Assert.NotNull(res1);
 
@@ -62,7 +62,7 @@ namespace MyDAL.WhereEdge
         }
 
         [Fact]
-        public async Task Concat_Multi_MT()
+        public void Concat_Multi_MT()
         {
             xx = string.Empty;
 
@@ -94,7 +94,7 @@ namespace MyDAL.WhereEdge
             }
 
             // 对 WhereSegment 设定的条件 进行 select 动作
-            var res1 = await where.SelectPagingAsync<Agent>(pageIndex, pageSize);
+            var res1 = where.SelectPaging<Agent>(pageIndex, pageSize);
 
             Assert.True(res1.Data.Count == 10);
             Assert.True(res1.TotalCount == 575);

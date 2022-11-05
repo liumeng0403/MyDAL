@@ -15,7 +15,7 @@ namespace MyDAL.UserFacade.Update
     /// </summary>
     public sealed class WhereU<M>
         : Operator
-        , IUpdateAsync<M>, IUpdate<M>
+        , IUpdate<M>
         where M : class
     {
         internal WhereU(Context dc)
@@ -23,17 +23,9 @@ namespace MyDAL.UserFacade.Update
         { }
 
         /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-
+        
         /// <summary>
-        /// 请参阅: <see langword=".UpdateAsync() 之 .Set() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        public async Task<int> UpdateAsync()
-        {
-            return await new UpdateAsyncImpl<M>(DC).UpdateAsync();
-        }
-
-        /// <summary>
-        /// 请参阅: <see langword=".UpdateAsync() 之 .Set() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".Update() 之 .Set() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public int Update()
         {
