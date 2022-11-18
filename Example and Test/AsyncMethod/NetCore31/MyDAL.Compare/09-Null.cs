@@ -36,17 +36,17 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task WhereTestx()
+        public void WhereTestx()
         {
             xx = string.Empty;
 
             /************************************************************************************************************************/
 
             // is not null 
-            var res2 = await MyDAL_TestDB
+            var res2 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.ActiveOrderId != null)
-                .SelectListAsync();
+                .SelectList();
             Assert.True(res2.Count == 554);
 
             
@@ -59,10 +59,10 @@ namespace MyDAL.Compare
             // 
             try
             {
-                var res3 = await MyDAL_TestDB
+                var res3 = MyDAL_TestDB
                     .Selecter<Agent>()
                     .Where(it => it.AgentLevel == WhereTest.AgentLevelNull)
-                    .SelectListAsync();
+                    .SelectList();
             }
             catch (Exception ex)
             {
@@ -78,10 +78,10 @@ namespace MyDAL.Compare
             var xx4 = string.Empty;
 
             // is not null 
-            var res4 = await MyDAL_TestDB
+            var res4 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.ActivedOn != null && it.ActiveOrderId != null && it.CrmUserId == null)
-                .SelectListAsync();
+                .SelectList();
             Assert.True(res4.Count == 554);
 
             
@@ -91,13 +91,13 @@ namespace MyDAL.Compare
             var xx5 = string.Empty;
 
             // is not null 
-            var res5 = await MyDAL_TestDB
+            var res5 = MyDAL_TestDB
                 .Selecter(out Agent a5, out AgentInventoryRecord r5)
                 .From(() => a5)
                     .LeftJoin(() => r5)
                         .On(() => a5.Id == r5.AgentId)
                 .Where(() => a5.ActiveOrderId == null)
-                .SelectListAsync<Agent>();
+                .SelectList<Agent>();
             Assert.True(res5.Count == 28085);
 
             
@@ -127,16 +127,16 @@ namespace MyDAL.Compare
 
 
         [Fact]
-        public async Task IsNull()
+        public void IsNull()
         {
 
             xx = string.Empty;
 
             // is null 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.ActiveOrderId == null)
-                .SelectListAsync();
+                .SelectList();
 
             Assert.True(res1.Count == 28066);
 
@@ -149,16 +149,16 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task NotIsNull()
+        public void NotIsNull()
         {
 
             xx = string.Empty;
 
             // !(is null) --> is not null 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => !(it.ActiveOrderId == null))
-                .SelectListAsync();
+                .SelectList();
 
             Assert.True(res1.Count == 554);
 
@@ -171,19 +171,19 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task IsNotNull()
+        public void IsNotNull()
         {
 
             xx = string.Empty;
 
             // is not null 
-            var res6 = await MyDAL_TestDB
+            var res6 = MyDAL_TestDB
                 .Selecter(out Agent a6, out AgentInventoryRecord r6)
                 .From(() => a6)
                     .LeftJoin(() => r6)
                         .On(() => a6.Id == r6.AgentId)
                 .Where(() => a6.ActiveOrderId != null)
-                .SelectListAsync<Agent>();
+                .SelectList<Agent>();
 
             Assert.True(res6.Count == 554);
 
@@ -196,19 +196,19 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task NotIsNotNull()
+        public void NotIsNotNull()
         {
 
             xx = string.Empty;
 
             // !(is not null) --> is null 
-            var res6 = await MyDAL_TestDB
+            var res6 = MyDAL_TestDB
                 .Selecter(out Agent a6, out AgentInventoryRecord r6)
                 .From(() => a6)
                     .LeftJoin(() => r6)
                         .On(() => a6.Id == r6.AgentId)
                 .Where(() => !(a6.ActiveOrderId != null))
-                .SelectListAsync<Agent>();
+                .SelectList<Agent>();
 
             Assert.True(res6.Count == 28085);
 

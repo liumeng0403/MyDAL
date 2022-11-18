@@ -12,7 +12,7 @@ namespace MyDAL.WhereEdge
     {
 
         [Fact]
-        public async Task MethodParam()
+        public void MethodParam()
         {
             var pk = Guid.Parse("000a9465-8665-40bf-90e3-0165442d9120");
             var res = MyDAL_TestDB.SelectOne<Agent>(it => it.Id == pk);
@@ -51,35 +51,35 @@ namespace MyDAL.WhereEdge
 
 
         [Fact]
-        public async Task MethodListParam()
+        public void MethodListParam()
         {
             var list = new List<Guid>();
             list.Add(Guid.Parse("00079c84-a511-418b-bd5b-0165442eb30a"));
             list.Add(Guid.Parse("000cecd5-56dc-4085-804b-0165443bdf5d"));
 
-            await yyy(list);
-            await yyy(list.ToArray());
+            yyy(list);
+            yyy(list.ToArray());
         }
-        private async Task yyy(List<Guid> list)
+        private void yyy(List<Guid> list)
         {
             xx=string.Empty;
 
-            var res = await MyDAL_TestDB
+            var res = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => list.Contains(it.Id))
-                .SelectListAsync();
+                .SelectList();
             Assert.True(res.Count == 2);
 
             xx=string.Empty;
         }
-        private async Task yyy(Guid[] arrays)
+        private void yyy(Guid[] arrays)
         {
             xx=string.Empty;
 
-            var res = await MyDAL_TestDB
+            var res = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => arrays.Contains(it.Id))
-                .SelectListAsync();
+                .SelectList();
             Assert.True(res.Count == 2);
 
             xx=string.Empty;

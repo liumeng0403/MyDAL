@@ -27,7 +27,7 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task NotNotEqual()
+        public void NotNotEqual()
         {
             xx = string.Empty;
 
@@ -43,11 +43,11 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // == --> =
-            var res2 = await MyDAL_TestDB
+            var res2 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.AgentLevel == AgentLevel.DistiAgent)
                 .OrderBy(it => it.CreatedOn)
-                .SelectListAsync<AgentVM>();
+                .SelectList<AgentVM>();
 
             Assert.True(res2.Count == 555);
 

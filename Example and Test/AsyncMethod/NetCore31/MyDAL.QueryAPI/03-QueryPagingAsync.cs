@@ -14,7 +14,7 @@ namespace MyDAL.QueryAPI
     {
 
         [Fact]
-        public async Task History_02()
+        public void History_02()
         {
 
             /******************************************************************************************************/
@@ -234,7 +234,7 @@ namespace MyDAL.QueryAPI
         /*********************************************************************************************************************************************************/
 
         [Fact]
-        public async Task SelectSingleColumn_ST()
+        public void SelectSingleColumn_ST()
         {
 
             xx = string.Empty;
@@ -253,7 +253,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task SelectM_ST()
+        public void SelectM_ST()
         {
 
             xx = string.Empty;
@@ -270,7 +270,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task SelectVM_ST()
+        public void SelectVM_ST()
         {
 
             xx = string.Empty;
@@ -300,7 +300,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task SelectVmColumn_ST()
+        public void SelectVmColumn_ST()
         {
 
             xx = string.Empty;
@@ -325,7 +325,7 @@ namespace MyDAL.QueryAPI
         /*********************************************************************************************************************************************************/
 
         [Fact]
-        public async Task Mock_NoneCondition_SelectSingleColumn_MT()
+        public void Mock_NoneCondition_SelectSingleColumn_MT()
         {
             xx = string.Empty;
 
@@ -342,7 +342,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task Mock_NoneCondition_SelectM_MT()
+        public void Mock_NoneCondition_SelectM_MT()
         {
 
             xx = string.Empty;
@@ -363,7 +363,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task Mock_NoneCondition_SelectVmColumn_MT()
+        public void Mock_NoneCondition_SelectVmColumn_MT()
         {
             xx = string.Empty;
 
@@ -388,7 +388,7 @@ namespace MyDAL.QueryAPI
         /*********************************************************************************************************************************************************/
 
         [Fact]
-        public async Task SelectSingleColumn_MT()
+        public void SelectSingleColumn_MT()
         {
 
             xx = string.Empty;
@@ -410,7 +410,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task SelectM_MT()
+        public void SelectM_MT()
         {
 
             xx = string.Empty;
@@ -432,7 +432,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task SelectVmColumn_MT()
+        public void SelectVmColumn_MT()
         {
 
             xx = string.Empty;
@@ -460,7 +460,7 @@ namespace MyDAL.QueryAPI
         /*********************************************************************************************************************************************************/
 
         [Fact]
-        public async Task SelectSingleColumn_SQL()
+        public void SelectSingleColumn_SQL()
         {
 
             xx = string.Empty;

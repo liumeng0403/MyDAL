@@ -11,11 +11,11 @@ namespace MyDAL.QueryAPI
         : TestBase
     {
         [Fact]
-        public async Task Count_Star_Shortcut()
+        public void Count_Star_Shortcut()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB.CountAsync<Agent>(it => it.Name.Length > 3);
+            var res1 = MyDAL_TestDB.Count<Agent>(it => it.Name.Length > 3);
 
             Assert.True(res1 == 116);
 
@@ -23,20 +23,20 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task Count_SpecialColumn_Shortcut()
+        public void Count_SpecialColumn_Shortcut()
         {
 
         }
 
         [Fact]
-        public async Task Count_Star_ST()
+        public void Count_Star_ST()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains("陈%"))
-                .CountAsync();
+                .Count();
 
             Assert.True(res1 == 1421);
 
@@ -44,15 +44,15 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task Count_SpecialColumn_ST()
+        public void Count_SpecialColumn_ST()
         {
             xx = string.Empty;
 
             // count(id)  like "陈%"
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains("陈%"))
-                .CountAsync(it => it.Id);
+                .Count(it => it.Id);
 
             Assert.True(res1 == 1421);
 
@@ -60,17 +60,17 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task Count_Star_MT()
+        public void Count_Star_MT()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter(out Agent agent3, out AgentInventoryRecord record3)
                 .From(() => agent3)
                     .InnerJoin(() => record3)
                         .On(() => agent3.Id == record3.AgentId)
                 .Where(() => agent3.Name.Contains("陈%"))
-                .CountAsync();
+                .Count();
 
             Assert.True(res1 == 24);
 
@@ -78,17 +78,17 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task Count_SpecialColumn_MT()
+        public void Count_SpecialColumn_MT()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter(out Agent agent4, out AgentInventoryRecord record4)
                 .From(() => agent4)
                     .InnerJoin(() => record4)
                         .On(() => agent4.Id == record4.AgentId)
                 .Where(() => agent4.Name.Contains("陈%"))
-                .CountAsync(() => agent4.Id);
+                .Count(() => agent4.Id);
 
             Assert.True(res1 == 24);
 
@@ -96,14 +96,14 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task SqlAction_Distinct_Count_SpecialColumn_ST()
+        public void SqlAction_Distinct_Count_SpecialColumn_ST()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Distinct()
-                .CountAsync(it => it.AgentLevel);
+                .Count(it => it.AgentLevel);
 
             Assert.Equal(3, res1);
 
@@ -111,20 +111,20 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task SqlAction_Where_Distinct_Count_Star_MT()
+        public void SqlAction_Where_Distinct_Count_Star_MT()
         {
             xx = string.Empty;
 
             try
             {
-                var res1 = await MyDAL_TestDB
+                var res1 = MyDAL_TestDB
                     .Selecter(out Agent agent, out AgentInventoryRecord record)
                     .From(() => agent)
                         .InnerJoin(() => record)
                             .On(() => agent.Id == record.AgentId)
                     .Where(() => agent.AgentLevel == AgentLevel.DistiAgent)
                     .Distinct()
-                    .CountAsync();
+                    .Count();
             }
             catch (Exception ex)
             {

@@ -11,7 +11,7 @@ namespace MyDAL.QueryAPI
     {
 
         [Fact]
-        public async Task IsExist_Shortcut()
+        public void IsExist_Shortcut()
         {
             xx = string.Empty;
 
@@ -19,7 +19,7 @@ namespace MyDAL.QueryAPI
             var id = Guid.Parse("89c9407f-7427-4570-92b7-0165590ac07e");
 
             // 判断 AlipayPaymentRecord 表中是否存在符合条件的数据
-            bool res1 = await MyDAL_TestDB.IsExistAsync<AlipayPaymentRecord>(it => it.CreatedOn == date && it.OrderId == id);
+            bool res1 = MyDAL_TestDB.IsExist<AlipayPaymentRecord>(it => it.CreatedOn == date && it.OrderId == id);
 
             Assert.True(res1);
 
@@ -31,14 +31,14 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task Mock_TableIsHavingData_ST()
+        public void Mock_TableIsHavingData_ST()
         {
 
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<Agent>()
-                .IsExistAsync();
+                .IsExist();
 
             Assert.True(res1);
 
@@ -49,16 +49,16 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task IsExist_ST()
+        public void IsExist_ST()
         {
 
             xx = string.Empty;
 
             // 判断 Agent 表 中 是否存在符合条件的数据
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Id == Guid.Parse("002c1ca9-f2df-453a-87e0-0165443dcc31"))
-                .IsExistAsync();
+                .IsExist();
 
             Assert.True(res1);
 
@@ -69,17 +69,17 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task Mock_JoinNoneConditionIsHavingData_MT()
+        public void Mock_JoinNoneConditionIsHavingData_MT()
         {
 
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)
-                .IsExistAsync();
+                .IsExist();
 
             Assert.True(res1);
 
@@ -90,18 +90,18 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task IsExist_MT()
+        public void IsExist_MT()
         {
             xx = string.Empty;
 
             //
-            bool res1 = await MyDAL_TestDB
+            bool res1 = MyDAL_TestDB
                 .Selecter(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)
                 .Where(() => agent.Id == Guid.Parse("002c1ca9-f2df-453a-87e0-0165443dcc31"))
-                .IsExistAsync();
+                .IsExist();
 
             Assert.True(res1);
 

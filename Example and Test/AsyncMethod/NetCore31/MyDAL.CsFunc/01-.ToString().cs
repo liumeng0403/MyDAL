@@ -149,55 +149,55 @@ namespace MyDAL.CsFunc
         }
 
         [Fact]
-        public async Task DateTime_Select_yyyy_MM_dd()
+        public void DateTime_Select_yyyy_MM_dd()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Distinct()
-                .SelectListAsync(it => it.CreatedOn.ToString("yyyy-MM-dd"));
+                .SelectList(it => it.CreatedOn.ToString("yyyy-MM-dd"));
 
             Assert.True(res1.Count == 2);
         }
 
         [Fact]
-        public async Task DateTime_Select_yyyy_MM()
+        public void DateTime_Select_yyyy_MM()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Distinct()
-                .SelectListAsync(it => it.CreatedOn.ToString("yyyy-MM"));
+                .SelectList(it => it.CreatedOn.ToString("yyyy-MM"));
 
             Assert.True(res1.Count == 2);
         }
 
         [Fact]
-        public async Task DateTime_Select_yyyy()
+        public void DateTime_Select_yyyy()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Distinct()
-                .SelectListAsync(it => it.CreatedOn.ToString("yyyy"));
+                .SelectList(it => it.CreatedOn.ToString("yyyy"));
 
             Assert.True(res1.Count == 2);
         }
 
         [Fact]
-        public async Task DateTime_Where_yyyy_MM_dd()
+        public void DateTime_Where_yyyy_MM_dd()
         {
             var date = DateTime.Parse("2018-08-16 12:03:47.225916");
 
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn.ToString("yyyy-MM-dd") == date.ToString("yyyy-MM-dd"))
-                .SelectListAsync();
+                .SelectList();
 
             Assert.True(res1.Count == 28619);
 
@@ -205,16 +205,16 @@ namespace MyDAL.CsFunc
         }
 
         [Fact]
-        public async Task DateTime_Where_yyyy_MM()
+        public void DateTime_Where_yyyy_MM()
         {
             var date = DateTime.Parse("2018-08-16 12:03:47.225916");
 
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn.ToString("yyyy-MM") == date.ToString("yyyy-MM"))
-                .SelectListAsync();
+                .SelectList();
 
             Assert.True(res1.Count == 28619);
 
@@ -222,16 +222,16 @@ namespace MyDAL.CsFunc
         }
 
         [Fact]
-        public async Task DateTime_Where_yyyy()
+        public void DateTime_Where_yyyy()
         {
             var date = DateTime.Parse("2018-08-16 12:03:47.225916");
 
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn.ToString("yyyy") == date.ToString("yyyy"))
-                .SelectListAsync();
+                .SelectList();
 
             Assert.True(res1.Count == 28619);
 
@@ -239,14 +239,14 @@ namespace MyDAL.CsFunc
         }
 
         [Fact]
-        public async Task DateTime_Where_Nullable_yyyy_MM_dd()
+        public void DateTime_Where_Nullable_yyyy_MM_dd()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.ActivedOn != null && it.ActivedOn.Value.ToString("yyyy-MM-dd") == DateTime.Parse("2018-08-19 12:05:45.560984").ToString("yyyy-MM-dd"))
-                .SelectListAsync();
+                .SelectList();
 
             Assert.True(res1.Count == 554);
 

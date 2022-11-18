@@ -131,7 +131,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task SelectVmColumn_MT()
+        public void SelectVmColumn_MT()
         {
             xx = string.Empty;
 

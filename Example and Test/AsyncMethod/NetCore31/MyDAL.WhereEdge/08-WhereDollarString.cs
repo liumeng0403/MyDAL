@@ -10,7 +10,7 @@ namespace MyDAL.WhereEdge
         : TestBase
     {
         [Fact]
-        public async Task test()
+        public void test()
         {
             xx = string.Empty;
 
@@ -41,10 +41,10 @@ namespace MyDAL.WhereEdge
 
             xx = string.Empty;
 
-            var res3 = await MyDAL_TestDB
+            var res3 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn > DateTime.Parse($"{Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30).AddDays(-10)}"))
-                .SelectListAsync();
+                .SelectList();
             Assert.NotNull(res3);
             Assert.True(res3.Count == 28619);
 
@@ -55,10 +55,10 @@ namespace MyDAL.WhereEdge
             xx = string.Empty;
 
             var name4 = "张";
-            var res4 = await MyDAL_TestDB
+            var res4 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains($"{name4}%"))
-                .SelectListAsync();
+                .SelectList();
             Assert.NotNull(res4);
             Assert.True(res4.Count == 1996);
 
@@ -68,10 +68,10 @@ namespace MyDAL.WhereEdge
 
             xx = string.Empty;
 
-            var res5 = await MyDAL_TestDB
+            var res5 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.PathId.Contains($"{WhereTest.ContainStr2}%"))
-                .SelectListAsync();
+                .SelectList();
             Assert.NotNull(res5);
             Assert.True(res5.Count == 20016);
 
@@ -83,18 +83,18 @@ namespace MyDAL.WhereEdge
 
             var like61 = "李";
             var like62 = "张";
-            var res6 = await MyDAL_TestDB
+            var res6 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains($"{like61}%") || it.Name.Contains($"{like62}%"))
-                .SelectListAsync();
-            var res61 = await MyDAL_TestDB
+                .SelectList();
+            var res61 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains($"{like61}%"))
-                .SelectListAsync();
-            var res62 = await MyDAL_TestDB
+                .SelectList();
+            var res62 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains($"{like62}%"))
-                .SelectListAsync();
+                .SelectList();
             Assert.True(res61.Count != 0);
             Assert.True(res62.Count != 0);
             Assert.True(res6.Count == res61.Count + res62.Count);

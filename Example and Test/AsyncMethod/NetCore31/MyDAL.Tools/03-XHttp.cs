@@ -12,7 +12,7 @@ namespace MyDAL.Tools
     {
 
         [Fact]
-        public async Task Timeout_Test()
+        public void Timeout_Test()
         {
             xx = string.Empty;
 

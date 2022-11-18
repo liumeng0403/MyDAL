@@ -1,12 +1,12 @@
 ﻿using MyDAL.Core;
 using MyDAL.Core.Enums;
-using MyDAL.Impls.ImplSyncs;
 using MyDAL.Tools;
 using MyDAL.UserFacade.Delete;
 using MyDAL.UserFacade.Join;
 using MyDAL.UserFacade.Query;
 using MyDAL.UserFacade.Update;
 using System.Collections.Generic;
+using MyDAL.Impls.Implers;
 using MyDAL.UserFacade.Insert;
 
 namespace MyDAL

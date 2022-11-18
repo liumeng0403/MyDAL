@@ -10,18 +10,7 @@ namespace MyDAL
     {
 
         #region InsertBatch API
-
-        /// <summary>
-        /// Inserter 便捷 InsertBatchAsync 方法
-        /// </summary>
-        public static async Task<int> InsertBatchAsync<M>(this XConnection conn, IEnumerable<M> mList)
-            where M : class, new()
-        {
-            return await conn.Inserter<M>().InsertBatchAsync(mList);
-        }
-
-        /*-------------------------------------------------------------*/
-
+        
         /// <summary>
         /// Inserter 便捷 InsertBatch 方法
         /// </summary>

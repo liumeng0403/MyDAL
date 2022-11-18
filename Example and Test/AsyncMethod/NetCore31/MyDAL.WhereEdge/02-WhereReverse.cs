@@ -10,7 +10,7 @@ namespace MyDAL.WhereEdge
         :TestBase
     {
         [Fact]
-        public async Task test()
+        public void test()
         {
 
             /********************************************************************************************************************************/
@@ -18,17 +18,17 @@ namespace MyDAL.WhereEdge
             xx = string.Empty;
 
             // >= obj.DateTime
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.CreatedOn >= Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
-                .SelectListAsync();
+                .SelectList();
 
             
 
-            var resR1 = await MyDAL_TestDB
+            var resR1 = MyDAL_TestDB
                 .Selecter<BodyFitRecord>()
                 .Where(it => Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30) <= it.CreatedOn)
-                .SelectListAsync();
+                .SelectList();
 
             Assert.True(res1.Count == resR1.Count);
 
@@ -41,17 +41,17 @@ namespace MyDAL.WhereEdge
             var start = Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30).AddDays(-10);
 
             // >= variable(DateTime)
-            var res2 = await MyDAL_TestDB
+            var res2 = MyDAL_TestDB
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.CreatedOn >= start)
-                .SelectListAsync();
+                .SelectList();
 
             
 
-            var resR2 = await MyDAL_TestDB
+            var resR2 = MyDAL_TestDB
                 .Selecter<BodyFitRecord>()
                 .Where(it => start <= it.CreatedOn)
-                .SelectListAsync();
+                .SelectList();
 
             Assert.True(res2.Count == resR2.Count);
 
@@ -62,17 +62,17 @@ namespace MyDAL.WhereEdge
             var xx3 = string.Empty;
 
             // <= DateTime
-            var res3 = await MyDAL_TestDB
+            var res3 = MyDAL_TestDB
                 .Selecter<BodyFitRecord>()
                 .Where(it => it.CreatedOn <= DateTime.Now)
-                .SelectListAsync();
+                .SelectList();
 
             
 
-            var resR3 = await MyDAL_TestDB
+            var resR3 = MyDAL_TestDB
                 .Selecter<BodyFitRecord>()
                 .Where(it => DateTime.Now >= it.CreatedOn)
-                .SelectListAsync();
+                .SelectList();
 
             Assert.True(res3.Count == resR3.Count);
 

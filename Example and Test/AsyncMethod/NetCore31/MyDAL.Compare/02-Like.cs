@@ -57,7 +57,7 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task History()
+        public void History()
         {
 
             /************************************************************************************************************/
@@ -127,7 +127,7 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task Like_ST()
+        public void Like_ST()
         {
 
             xx = string.Empty;
@@ -150,7 +150,7 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task NotLike_ST()
+        public void NotLike_ST()
         {
 
             xx = string.Empty;
@@ -172,19 +172,19 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task Like_MT()
+        public void Like_MT()
         {
 
             xx = string.Empty;
 
             // like
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter(out Agent agent1, out AgentInventoryRecord record1)
                 .From(() => agent1)
                     .InnerJoin(() => record1)
                         .On(() => agent1.Id == record1.AgentId)
                 .Where(() => agent1.Name.Contains("陈"))
-                .SelectListAsync<AgentInventoryRecord>();
+                .SelectList<AgentInventoryRecord>();
 
             Assert.True(res1.Count == 24);
 
@@ -197,19 +197,19 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task NotLike_MT()
+        public void NotLike_MT()
         {
 
             xx = string.Empty;
 
             // not like
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter(out Agent agent1, out AgentInventoryRecord record1)
                 .From(() => agent1)
                     .InnerJoin(() => record1)
                         .On(() => agent1.Id == record1.AgentId)
                 .Where(() => !agent1.Name.Contains("陈"))
-                .SelectListAsync<AgentInventoryRecord>();
+                .SelectList<AgentInventoryRecord>();
 
             Assert.True(res1.Count == 550);
 
@@ -222,7 +222,7 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task String_StartsWith()
+        public void String_StartsWith()
         {
 
             xx = string.Empty;
@@ -253,13 +253,13 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // like StartsWith
-            var res13 = await MyDAL_TestDB
+            var res13 = MyDAL_TestDB
                 .Selecter(out Agent agent13, out AgentInventoryRecord record13)
                 .From(() => agent13)
                     .InnerJoin(() => record13)
                         .On(() => agent13.Id == record13.AgentId)
                 .Where(() => agent13.Name.StartsWith("张"))
-                .SelectListAsync<Agent>();
+                .SelectList<Agent>();
 
             Assert.True(res13.Count == 45);
 
@@ -295,13 +295,13 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // not like StartsWith
-            var res22 = await MyDAL_TestDB
+            var res22 = MyDAL_TestDB
                 .Selecter(out Agent agent22, out AgentInventoryRecord record22)
                 .From(() => agent22)
                     .InnerJoin(() => record22)
                         .On(() => agent22.Id == record22.AgentId)
                 .Where(() => !agent22.Name.StartsWith("张"))
-                .SelectListAsync<Agent>();
+                .SelectList<Agent>();
 
             Assert.True(res22.Count == 529);
 
@@ -314,7 +314,7 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task String_EndsWith()
+        public void String_EndsWith()
         {
 
             /***************************************************************************************************************************/
@@ -347,13 +347,13 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // like EndsWith
-            var res13 = await MyDAL_TestDB
+            var res13 = MyDAL_TestDB
                 .Selecter(out Agent agent13, out AgentInventoryRecord record13)
                 .From(() => agent13)
                     .InnerJoin(() => record13)
                         .On(() => agent13.Id == record13.AgentId)
                 .Where(() => agent13.Name.EndsWith("华"))
-                .SelectListAsync<Agent>();
+                .SelectList<Agent>();
 
             Assert.True(res13.Count == 22);
 
@@ -389,13 +389,13 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // not like EndsWith
-            var res22 = await MyDAL_TestDB
+            var res22 = MyDAL_TestDB
                 .Selecter(out Agent agent22, out AgentInventoryRecord record22)
                 .From(() => agent22)
                     .InnerJoin(() => record22)
                         .On(() => agent22.Id == record22.AgentId)
                 .Where(() => !agent22.Name.EndsWith("华"))
-                .SelectListAsync<Agent>();
+                .SelectList<Agent>();
 
             Assert.True(res22.Count == 552);
 
@@ -437,7 +437,7 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task MySQL_通配符_转义()
+        public void MySQL_通配符_转义()
         {
 
             var resx4 = Pre02();
@@ -447,13 +447,13 @@ namespace MyDAL.Compare
             xx = string.Empty;
 
             // /%(百分号转义):  "刘/%_" --> "刘/%_"
-            var res7 = await MyDAL_TestDB
+            var res7 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains("刘/%_"))
                     .And(it => it.Id == resx4.Id)
                     .And(it => it.Name.Contains("%华"))
                     .And(it => it.Name.Contains("%/%%"))
-                .SelectListAsync();
+                .SelectList();
 
             Assert.True(res7.Count == 1);
 

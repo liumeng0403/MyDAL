@@ -11,16 +11,16 @@ namespace MyDAL.Compare
     {
 
         [Fact]
-        public async Task LessThanOrEqual()
+        public void LessThanOrEqual()
         {
 
             xx = string.Empty;
 
             // <= --> <=
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.CreatedOn <= DateTime.Parse("2018-08-16 19:20:35.867228"))
-                .SelectListAsync();
+                .SelectList();
 
             Assert.True(res1.Count == 6842);
 

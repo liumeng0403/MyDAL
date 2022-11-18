@@ -1,13 +1,8 @@
 using System;
-using System.Threading.Tasks;
 using MyDAL.Core.Bases;
-using MyDAL.Impls;
-using MyDAL.Impls.ImplAsyncs;
-using MyDAL.Impls.ImplSyncs;
-using MyDAL.Interfaces;
-using MyDAL.Interfaces.IAsyncs;
-using MyDAL.Interfaces.ISyncs;
-using MyDAL.Interfaces.Segments;
+using MyDAL.Impls.Constraints.Methods;
+using MyDAL.Impls.Constraints.Segments;
+using MyDAL.Impls.Implers;
 
 namespace MyDAL.UserFacade.Delete
 {
@@ -17,7 +12,7 @@ namespace MyDAL.UserFacade.Delete
     public sealed class Deleter<M>
         : Operator
         , IWhereD<M>
-        , IDeleteAsync, IDelete
+        , IDelete
         where M : class
     {
         internal Deleter(Context dc)
@@ -35,15 +30,6 @@ namespace MyDAL.UserFacade.Delete
         }
 
         /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-
-        /// <summary>
-        /// 单表数据删除
-        /// </summary>
-        [Obsolete("警告：此 API 会删除表中所有数据！！！", false)]
-        public async Task<int> DeleteAsync()
-        {
-            return await new DeleteAsyncImpl<M>(DC).DeleteAsync();
-        }
 
         /// <summary>
         /// 单表数据删除

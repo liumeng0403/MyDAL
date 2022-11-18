@@ -12,7 +12,7 @@ namespace MyDAL.Update
     public class _01_UpdateAsync
         : TestBase
     {
-        private async Task<BodyFitRecord> CreateDbData()
+        private BodyFitRecord CreateDbData()
         {
             var m = new BodyFitRecord
             {
@@ -23,10 +23,10 @@ namespace MyDAL.Update
             };
 
             // 删
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Deleter<BodyFitRecord>()
                 .Where(it => it.Id == m.Id)
-                .DeleteAsync();
+                .Delete();
 
             // 建
             var res2 = MyDAL_TestDB.Insert(m);
@@ -36,7 +36,7 @@ namespace MyDAL.Update
         }
 
         [Fact]
-        public async Task History_01()
+        public void History_01()
         {
             xx = string.Empty;
 
@@ -59,7 +59,7 @@ namespace MyDAL.Update
         }
 
         [Fact]
-        public async Task History_02()
+        public void History_02()
         {
             xx = string.Empty;
 
@@ -162,7 +162,7 @@ namespace MyDAL.Update
         }
 
         [Fact]
-        public async Task History_03()
+        public void History_03()
         {
 
             xx = string.Empty;
@@ -191,7 +191,7 @@ namespace MyDAL.Update
         }
 
         [Fact]
-        public async Task History_04()
+        public void History_04()
         {
 
             xx = string.Empty;
@@ -223,7 +223,7 @@ namespace MyDAL.Update
         }
 
         [Fact]
-        public async Task Mock_UpdateAll_Shortcut()
+        public void Mock_UpdateAll_Shortcut()
         {
             xx = string.Empty;
 
@@ -246,7 +246,7 @@ namespace MyDAL.Update
         }
 
         [Fact]
-        public async Task Update_Shortcut()
+        public void Update_Shortcut()
         {
 
             xx = string.Empty;
@@ -276,7 +276,7 @@ namespace MyDAL.Update
         }
 
         [Fact]
-        public async Task Update_Shortcut_02()
+        public void Update_Shortcut_02()
         {
 
             xx = string.Empty;
@@ -310,7 +310,7 @@ namespace MyDAL.Update
         }
 
         [Fact]
-        public async Task Update_SetField_AllowedNull_Shortcut()
+        public void Update_SetField_AllowedNull_Shortcut()
         {
 
             xx = string.Empty;
@@ -337,7 +337,7 @@ namespace MyDAL.Update
         }
 
         [Fact]
-        public async Task Update_SetField_NotAllowedNull_Shortcut()
+        public void Update_SetField_NotAllowedNull_Shortcut()
         {
             xx = string.Empty;
 
@@ -383,11 +383,11 @@ namespace MyDAL.Update
         }
 
         [Fact]
-        public async Task Update_SetField_ST()
+        public void Update_SetField_ST()
         {
             xx = string.Empty;
 
-            var m = await CreateDbData();
+            var m = CreateDbData();
 
             // 多 字段 多 set 用法
             var res1 = MyDAL_TestDB.OpenDebug()
@@ -593,11 +593,11 @@ namespace MyDAL.Update
         }
 
         [Fact]
-        public async Task Update_SetField_Segment_ST()
+        public void Update_SetField_Segment_ST()
         {
             xx = string.Empty;
 
-            var m = await CreateDbData();
+            var m = CreateDbData();
 
             // update 要赋值的变量
             var time = DateTime.Now.ToString();

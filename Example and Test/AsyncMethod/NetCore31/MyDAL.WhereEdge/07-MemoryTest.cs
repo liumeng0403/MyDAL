@@ -12,17 +12,17 @@ namespace MyDAL.WhereEdge
         : TestBase
     {
         [Fact]
-        public async Task Test()
+        public void Test()
         {
             xx = string.Empty;
 
             for (var i = 0; i < 100; i++)
             {
                 var name = "张";
-                var res = await MyDAL_TestDB
+                var res = MyDAL_TestDB
                     .Selecter<Agent>()
                     .Where(it => it.Name.Contains($"{name}%") && it.CreatedOn > Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30) || it.AgentLevel == AgentLevel.DistiAgent)
-                    .SelectListAsync();
+                    .SelectList();
 
                 Assert.True(res.Count == 2506);
 

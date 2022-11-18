@@ -12,7 +12,7 @@ namespace MyDAL.QueryAPI
     public class _01_SelectOne
         : TestBase
     {
-        private async Task<BodyFitRecord> PreQuery()
+        private BodyFitRecord PreQuery()
         {
 
 
@@ -34,10 +34,10 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task History_01()
+        public void History_01()
         {
 
-            await PreQuery();
+            PreQuery();
 
             /****************************************************************************************************************************************/
 
@@ -105,7 +105,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task SelectSingleColumn_Shortcut()
+        public void SelectSingleColumn_Shortcut()
         {
             xx = string.Empty;
 
@@ -122,7 +122,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task SelectM_Shortcut()
+        public void SelectM_Shortcut()
         {
 
             xx = string.Empty;
@@ -278,7 +278,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task SelectSingleColumn_MT()
+        public void SelectSingleColumn_MT()
         {
             xx = string.Empty;
 
@@ -377,7 +377,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task SelectVM_SQL()
+        public void SelectVM_SQL()
         {
             xx = string.Empty;
 
@@ -410,7 +410,7 @@ namespace MyDAL.QueryAPI
         }
 
         [Fact]
-        public async Task SelectVM_SQL_NoneParam()
+        public void SelectVM_SQL_NoneParam()
         {
             xx = string.Empty;
 

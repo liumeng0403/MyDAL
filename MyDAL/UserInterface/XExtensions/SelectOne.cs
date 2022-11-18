@@ -1,9 +1,7 @@
-﻿using MyDAL.Impls.ImplAsyncs;
-using MyDAL.Impls.ImplSyncs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
+using MyDAL.Impls.Implers;
 
 namespace MyDAL
 {

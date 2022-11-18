@@ -1,5 +1,5 @@
 using MyDAL.Core.Bases;
-using MyDAL.Interfaces.Segments;
+using MyDAL.Impls.Constraints.Segments;
 
 namespace MyDAL.UserFacade.Update
 {

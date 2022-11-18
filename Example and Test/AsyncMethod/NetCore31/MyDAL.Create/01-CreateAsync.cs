@@ -16,34 +16,34 @@ namespace MyDAL.Create
         :TestBase
     {
 
-        private async Task PreCreate(BodyFitRecord m)
+        private void PreCreate(BodyFitRecord m)
         {
             // 清除数据
 
             xx = string.Empty;
 
-            var res2 = await MyDAL_TestDB
+            var res2 = MyDAL_TestDB
                 .Deleter<BodyFitRecord>()
                 .Where(it => it.Id == Guid.Parse("1fbd8a41-c75b-45c0-9186-016544284e2e"))
-                .DeleteAsync();
+                .Delete();
         }
-        private async Task ClearData6()
+        private void ClearData6()
         {
-            await MyDAL_TestDB
+            MyDAL_TestDB
                 .Deleter<Agent>()
                 .Where(it => it.Id == Guid.Parse("ea1ad309-56f7-4e3e-af12-0165c9121e9b"))
-                .DeleteAsync();
+                .Delete();
         }
-        private async Task ClearData7()
+        private void ClearData7()
         {
-            await MyDAL_TestDB
+            MyDAL_TestDB
                 .Deleter<Agent>()
                 .Where(it => it.Id == Guid.Parse("08d60369-4fc1-e8e0-44dc-435f31635e6d"))
-                .DeleteAsync();
+                .Delete();
         }
 
         [Fact]
-        public async Task History_01()
+        public void History_01()
         {
 
             /********************************************************************************************************************************/
@@ -98,7 +98,7 @@ namespace MyDAL.Create
 
             xx = string.Empty;
 
-            await ClearData6();
+            ClearData6();
 
             var m6 = new Agent
             {
@@ -127,7 +127,7 @@ namespace MyDAL.Create
 
             xx = string.Empty;
 
-            await ClearData7();
+            ClearData7();
 
             var m7 = new Agent
             {
@@ -158,14 +158,14 @@ namespace MyDAL.Create
         }
 
         [Fact]
-        public async Task History_02()
+        public void History_02()
         {
             
-            var list1 = await new CreateData().PreCreateBatchV2(MyDAL_TestDB);
+            var list1 = new CreateData().PreCreateBatchV2(MyDAL_TestDB);
 
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB.InsertBatchAsync(list1);
+            var res1 = MyDAL_TestDB.InsertBatch(list1);
 
             Assert.True(res1 == 10);
 
@@ -177,7 +177,7 @@ namespace MyDAL.Create
         }
 
         [Fact]
-        public async Task History_03()
+        public void History_03()
         {
             xx = string.Empty;
 
@@ -214,7 +214,7 @@ namespace MyDAL.Create
         }
 
         [Fact]
-        public async Task Create_Shotcut()
+        public void Create_Shotcut()
         {
 
             var m1 = new BodyFitRecord
@@ -224,7 +224,7 @@ namespace MyDAL.Create
                 UserId = Guid.NewGuid(),
                 BodyMeasureProperty = "{xxx:yyy,mmm:nnn}"
             };
-            await PreCreate(m1);
+            PreCreate(m1);
 
             xx = string.Empty;
 
@@ -241,7 +241,7 @@ namespace MyDAL.Create
         }
 
         [Fact]
-        public async Task Create_Batch_Shortcut()
+        public void Create_Batch_Shortcut()
         {
 
             var json = File.ReadAllText(@"D:\GitHub\Me\MyDal\DalTestDB\ProfileData.json");
@@ -261,7 +261,7 @@ namespace MyDAL.Create
             Assert.True(!list.Any(it => it.IsVIP));
             Assert.True(!list.Any(it => it.IsActived));
 
-            var res4 = await MyDAL_TestDB.InsertBatchAsync(list);
+            var res4 = MyDAL_TestDB.InsertBatch(list);
 
             Assert.True(res4 == list.Count);
 
@@ -336,7 +336,7 @@ namespace MyDAL.Create
         }
 
         [Fact]
-        public async Task ExecuteNonQueryAsync_SQL()
+        public void ExecuteNonQueryAsync_SQL()
         {
 
             xx = string.Empty;
@@ -393,7 +393,7 @@ namespace MyDAL.Create
         }
 
         [Fact]
-        public async Task CreateAsync_SQL()
+        public void CreateAsync_SQL()
         {
 
             xx = string.Empty;

@@ -29,7 +29,7 @@ namespace MyDAL.WhereEdge
         }
 
         [Fact]
-        public async Task Concat_Multi_ST()
+        public void Concat_Multi_ST()
         {
             xx = string.Empty;
 
@@ -52,7 +52,7 @@ namespace MyDAL.WhereEdge
             }
 
             // 对 WhereSegment 设定的条件 进行 select 动作
-            var res1 = await where.SelectListAsync();
+            var res1 = where.SelectList();
 
             Assert.True(res1.Count == 1);
 

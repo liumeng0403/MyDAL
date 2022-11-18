@@ -1,12 +1,6 @@
 using MyDAL.Core.Bases;
-using MyDAL.Impls;
-using MyDAL.Impls.ImplAsyncs;
-using MyDAL.Impls.ImplSyncs;
-using MyDAL.Interfaces;
-using MyDAL.Interfaces.IAsyncs;
-using MyDAL.Interfaces.ISyncs;
-using System.Data;
-using System.Threading.Tasks;
+using MyDAL.Impls.Constraints.Methods;
+using MyDAL.Impls.Implers;
 
 namespace MyDAL.UserFacade.Update
 {

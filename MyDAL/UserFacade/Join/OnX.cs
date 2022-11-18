@@ -1,15 +1,10 @@
 using MyDAL.Core.Bases;
-using MyDAL.Impls;
-using MyDAL.Impls.ImplAsyncs;
-using MyDAL.Impls.ImplSyncs;
-using MyDAL.Interfaces;
-using MyDAL.Interfaces.IAsyncs;
-using MyDAL.Interfaces.ISyncs;
-using MyDAL.Interfaces.Segments;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
+using MyDAL.Impls.Constraints.Methods;
+using MyDAL.Impls.Constraints.Segments;
+using MyDAL.Impls.Implers;
 
 namespace MyDAL.UserFacade.Join
 {
@@ -20,10 +15,10 @@ namespace MyDAL.UserFacade.Join
         : Operator
         , IWhereX
         , ISelectOneX
-        , ISelectListXAsync, ISelectListX
+        , ISelectListX
         , ISelectPagingX
         , ITopX
-        , IIsExistXAsync, IIsExistX
+        , IIsExistX
     {
 
         internal OnX(Context dc)
@@ -62,25 +57,9 @@ namespace MyDAL.UserFacade.Join
         }
 
         /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-
+        
         /// <summary>
-        /// 请参阅: <see langword=".SelectListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>        
-        public async Task<List<M>> SelectListAsync<M>()
-            where M : class
-        {
-            return await new SelectListXAsyncImpl(DC).SelectListAsync<M>();
-        }
-        /// <summary>
-        /// 请参阅: <see langword=".SelectListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>        
-        public async Task<List<T>> SelectListAsync<T>(Expression<Func<T>> columnMapFunc)
-        {
-            return await new SelectListXAsyncImpl(DC).SelectListAsync(columnMapFunc);
-        }
-
-        /// <summary>
-        /// 请参阅: <see langword=".SelectListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".SelectList() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>        
         public List<M> SelectList<M>()
             where M : class
@@ -88,7 +67,7 @@ namespace MyDAL.UserFacade.Join
             return new SelectListXImpl(DC).SelectList<M>();
         }
         /// <summary>
-        /// 请参阅: <see langword=".SelectListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".SelectList() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>        
         public List<T> SelectList<T>(Expression<Func<T>> columnMapFunc)
         {
@@ -136,14 +115,6 @@ namespace MyDAL.UserFacade.Join
         }
 
         /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-
-        /// <summary>
-        /// 请参阅: <see langword=".IsExistAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        public async Task<bool> IsExistAsync()
-        {
-            return await new IsExistXAsyncImpl(DC).IsExistAsync();
-        }
 
         /// <summary>
         /// 请参阅: <see langword=".IsExistAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>

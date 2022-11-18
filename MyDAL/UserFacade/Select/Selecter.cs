@@ -1,15 +1,10 @@
 using MyDAL.Core.Bases;
-using MyDAL.Impls;
-using MyDAL.Impls.ImplAsyncs;
-using MyDAL.Impls.ImplSyncs;
-using MyDAL.Interfaces;
-using MyDAL.Interfaces.IAsyncs;
-using MyDAL.Interfaces.ISyncs;
-using MyDAL.Interfaces.Segments;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
+using MyDAL.Impls.Constraints.Methods;
+using MyDAL.Impls.Constraints.Segments;
+using MyDAL.Impls.Implers;
 
 namespace MyDAL.UserFacade.Query
 {
@@ -19,10 +14,10 @@ namespace MyDAL.UserFacade.Query
     public sealed class Selecter<M>
         : Operator
         , IWhereQ<M>
-        , ISelectListAsync<M>, ISelectList<M>
+        , ISelectList<M>
         , ISelectPaging<M>
         , ITop<M>
-        , IIsExistAsync, IIsExist
+        , IIsExist
         where M : class
     {
         internal Selecter(Context dc)
@@ -43,35 +38,9 @@ namespace MyDAL.UserFacade.Query
         }
 
         /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-
+        
         /// <summary>
-        /// 请参阅: <see langword=".SelectListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        [Obsolete("警告：此 API 会查询表中所有数据！！！", false)]
-        public async Task<List<M>> SelectListAsync()
-        {
-            return await new SelectListAsyncImpl<M>(DC).SelectListAsync();
-        }
-        /// <summary>
-        /// 请参阅: <see langword=".SelectListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        [Obsolete("警告：此 API 会查询表中所有数据！！！", false)]
-        public async Task<List<VM>> SelectListAsync<VM>()
-            where VM : class
-        {
-            return await new SelectListAsyncImpl<M>(DC).SelectListAsync<VM>();
-        }
-        /// <summary>
-        /// 请参阅: <see langword=".SelectListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        [Obsolete("警告：此 API 会查询表中所有数据！！！", false)]
-        public async Task<List<T>> SelectListAsync<T>(Expression<Func<M, T>> columnMapFunc)
-        {
-            return await new SelectListAsyncImpl<M>(DC).SelectListAsync(columnMapFunc);
-        }
-
-        /// <summary>
-        /// 请参阅: <see langword=".SelectListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".SelectList() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         [Obsolete("警告：此 API 会查询表中所有数据！！！", false)]
         public List<M> SelectList()
@@ -79,7 +48,7 @@ namespace MyDAL.UserFacade.Query
             return new SelectListImpl<M>(DC).SelectList();
         }
         /// <summary>
-        /// 请参阅: <see langword=".SelectListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".SelectList() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         [Obsolete("警告：此 API 会查询表中所有数据！！！", false)]
         public List<VM> SelectList<VM>()
@@ -88,7 +57,7 @@ namespace MyDAL.UserFacade.Query
             return new SelectListImpl<M>(DC).SelectList<VM>();
         }
         /// <summary>
-        /// 请参阅: <see langword=".SelectListAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".SelectList() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         [Obsolete("警告：此 API 会查询表中所有数据！！！", false)]
         public List<T> SelectList<T>(Expression<Func<M, T>> columnMapFunc)
@@ -158,17 +127,9 @@ namespace MyDAL.UserFacade.Query
         }
 
         /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-
+        
         /// <summary>
-        /// 请参阅: <see langword=".IsExistAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
-        /// </summary>
-        public async Task<bool> IsExistAsync()
-        {
-            return await new IsExistAsyncImpl<M>(DC).IsExistAsync();
-        }
-
-        /// <summary>
-        /// 请参阅: <see langword=".IsExistAsync() 使用 https://www.cnblogs.com/Meng-NET/"/>
+        /// 请参阅: <see langword=".IsExist() 使用 https://www.cnblogs.com/Meng-NET/"/>
         /// </summary>
         public bool IsExist()
         {

@@ -8,7 +8,7 @@ namespace MyDAL.Test.Func
     {
 
         [Fact]
-        public async Task Char_LengthTest()
+        public void Char_LengthTest()
         {
 
             /*
@@ -19,10 +19,10 @@ namespace MyDAL.Test.Func
             xx = string.Empty;
 
             // .Where(a => a.Name.Length > 0)
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => it.Name.Length > 2)
-                .SelectListAsync();
+                .SelectList();
             Assert.True(res1.Count == 22660);
 
             
@@ -30,10 +30,10 @@ namespace MyDAL.Test.Func
             xx = string.Empty;
 
             // .Where(a => a.Name.Length > 0)
-            var resR1 = await MyDAL_TestDB
+            var resR1 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => 2 < it.Name.Length)
-                .SelectListAsync();
+                .SelectList();
             Assert.True(res1.Count == resR1.Count);
             Assert.True(res1.Count == 22660);
 
@@ -44,13 +44,13 @@ namespace MyDAL.Test.Func
             xx = string.Empty;
 
             // .Where(a => a.Name.Length > 0)
-            var res2 = await MyDAL_TestDB
+            var res2 = MyDAL_TestDB
                 .Selecter(out Agent agent2, out AgentInventoryRecord record2)
                 .From(() => agent2)
                     .InnerJoin(() => record2)
                         .On(() => agent2.Id == record2.AgentId)
                 .Where(() => agent2.Name.Length > 2)
-                .SelectListAsync<Agent>();
+                .SelectList<Agent>();
             Assert.True(res2.Count == 457);
 
             
@@ -60,14 +60,14 @@ namespace MyDAL.Test.Func
             xx = string.Empty;
 
             // .Where(a => a.Name.Length > 0)
-            var res3 = await MyDAL_TestDB
+            var res3 = MyDAL_TestDB
                 .Selecter(out Agent agent3, out AgentInventoryRecord record3)
                 .From(() => agent3)
                     .InnerJoin(() => record3)
                         .On(() => agent3.Id == record3.AgentId)
                 .Where(() => agent3.Name.Length > 2)
                 .OrderBy(() => agent3.Name.Length)
-                .SelectListAsync<Agent>();
+                .SelectList<Agent>();
             Assert.True(res3.Count == 457);
 
             

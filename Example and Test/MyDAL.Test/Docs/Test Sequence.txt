@@ -13,6 +13,12 @@
 
 
 
+
+// .AndSql(string sql) 支持 
+// .OrSql(string sql) 支持
+
+//IDGenerator api  名字改进  NewID()
+
 // Constraints
 
 // 固化 where equals 方法 case 

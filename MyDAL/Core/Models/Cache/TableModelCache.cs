@@ -6,7 +6,7 @@ using System.Reflection;
 namespace MyDAL.Core.Models.Cache
 {
     /// <summary>
-    /// db-table & cs-model pre cache 
+    /// db-table、cs-model pre cache 
     /// </summary>
     internal class TableModelCache
     {

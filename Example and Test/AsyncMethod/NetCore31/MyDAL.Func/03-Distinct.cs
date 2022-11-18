@@ -8,16 +8,16 @@ namespace MyDAL.Test.Func
     public class _03_Distinct : TestBase
     {
         [Fact]
-        public async Task test()
+        public void test()
         {
             /*************************************************************************************************************************/
 
             xx = string.Empty;
 
-            var res2 = await MyDAL_TestDB
+            var res2 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Distinct()
-                .SelectListAsync(it => it.Name);
+                .SelectList(it => it.Name);
 
             Assert.True(res2.Count == 24444);
              
@@ -41,14 +41,14 @@ namespace MyDAL.Test.Func
 
             xx = string.Empty;
 
-            var res7 = await MyDAL_TestDB
+            var res7 = MyDAL_TestDB
                 .Selecter(out Agent agent1, out AgentInventoryRecord record1)
                 .From(() => agent1)
                     .InnerJoin(() => record1)
                         .On(() => agent1.Id == record1.AgentId)
                 .Where(() => agent1.AgentLevel == AgentLevel.DistiAgent)
                 .Distinct()
-                .SelectListAsync(() => agent1.Name);
+                .SelectList(() => agent1.Name);
 
             Assert.True(res7.Count == 543);
 

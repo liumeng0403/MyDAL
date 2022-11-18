@@ -1,12 +1,6 @@
 using MyDAL.Core.Bases;
-using MyDAL.Impls;
-using MyDAL.Impls.ImplAsyncs;
-using MyDAL.Impls.ImplSyncs;
-using MyDAL.Interfaces;
-using MyDAL.Interfaces.IAsyncs;
-using MyDAL.Interfaces.ISyncs;
-using System.Data;
-using System.Threading.Tasks;
+using MyDAL.Impls.Constraints.Methods;
+using MyDAL.Impls.Implers;
 
 namespace MyDAL.UserFacade.Delete
 {
@@ -15,7 +9,7 @@ namespace MyDAL.UserFacade.Delete
     /// </summary>
     public sealed class WhereD<M>
         : Operator
-        , IDeleteAsync, IDelete
+        , IDelete
         where M : class
     {
         internal WhereD(Context dc)
@@ -23,15 +17,6 @@ namespace MyDAL.UserFacade.Delete
         { }
 
         /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-
-        /// <summary>
-        /// 单表数据删除
-        /// </summary>
-        /// <returns>删除条目数</returns>
-        public async Task<int> DeleteAsync()
-        {
-            return await new DeleteAsyncImpl<M>(DC).DeleteAsync();
-        }
 
         /// <summary>
         /// 单表数据删除

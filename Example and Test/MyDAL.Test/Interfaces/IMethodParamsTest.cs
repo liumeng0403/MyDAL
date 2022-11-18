@@ -8,6 +8,6 @@ namespace MyDAL.Test.Interfaces
 {
     public interface IMethodParamsTest
     {
-        Task eee(ApplyStockholderAwardAccountingVM vm);
+        void eee(ApplyStockholderAwardAccountingVM vm);
     }
 }

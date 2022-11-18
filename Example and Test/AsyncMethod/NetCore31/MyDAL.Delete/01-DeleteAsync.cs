@@ -10,7 +10,7 @@ namespace MyDAL.Delete
     public class _01_DeleteAsync
         : TestBase
     {
-        private async Task<BodyFitRecord> PreDelete()
+        private BodyFitRecord PreDelete()
         {
             xx = string.Empty;
 
@@ -23,10 +23,10 @@ namespace MyDAL.Delete
                 BodyMeasureProperty = "{xxx:yyy,mmm:nnn}"
             };
 
-            var res = await MyDAL_TestDB
+            var res = MyDAL_TestDB
                 .Deleter<BodyFitRecord>()
                 .Where(it => it.Id == m.Id)
-                .DeleteAsync();
+                .Delete();
 
             var res0 = MyDAL_TestDB.Insert(m);
 
@@ -34,7 +34,7 @@ namespace MyDAL.Delete
         }
 
         [Fact]
-        public async Task History_01()
+        public void History_01()
         {
             xx = string.Empty;
 
@@ -54,18 +54,18 @@ namespace MyDAL.Delete
         }
 
         [Fact]
-        public async Task History_02()
+        public void History_02()
         {
             xx = string.Empty;
 
             var path = "~00-c-1-2-1-1-1-1-1-4-1-1-1-4-1-2-1-7";
             var level = 2;
             // where and
-            var res3 = await MyDAL_TestDB
+            var res3 = MyDAL_TestDB
                 .Deleter<Agent>()
                 .Where(it => it.PathId == path)
                 .And(it => it.AgentLevel == (AgentLevel)level)
-                .DeleteAsync();
+                .Delete();
             Assert.True(res3 == 1);
 
             
@@ -73,11 +73,11 @@ namespace MyDAL.Delete
             xx = string.Empty;
 
             // where or
-            var res2 = await MyDAL_TestDB.OpenDebug()
+            var res2 = MyDAL_TestDB.OpenDebug()
                 .Deleter<Agent>()
                 .Where(it => it.PathId == path)
                 .Or(it => it.AgentLevel == (AgentLevel)level)
-                .DeleteAsync();
+                .Delete();
 
             Assert.True(res2 == 28063);
 
@@ -86,12 +86,12 @@ namespace MyDAL.Delete
             var xx4 = string.Empty;
 
             // where and or
-            var res4 = await MyDAL_TestDB
+            var res4 = MyDAL_TestDB
                 .Deleter<Agent>()
                 .Where(it => it.PathId == path)
                 .And(it => it.AgentLevel == (AgentLevel)level)
                 .Or(it => it.CreatedOn >= WhereTest.StartTime)
-                .DeleteAsync();
+                .Delete();
 
             
 
@@ -99,7 +99,7 @@ namespace MyDAL.Delete
         }
 
         [Fact]
-        public async Task Mock_DeleteAll_Shortcut()
+        public void Mock_DeleteAll_Shortcut()
         {
             xx = string.Empty;
 
@@ -113,7 +113,7 @@ namespace MyDAL.Delete
         }
 
         [Fact]
-        public async Task Delete_Shortcut()
+        public void Delete_Shortcut()
         {
 
             xx = string.Empty;
@@ -134,13 +134,13 @@ namespace MyDAL.Delete
         }
 
         [Fact]
-        public async Task Mock_DeleteAll_ST()
+        public void Mock_DeleteAll_ST()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Deleter<WechatUserInfo>()  //  WechatUserInfo -- 空表 
-                .DeleteAsync();
+                .Delete();
 
             Assert.True(res1 == 0);
 
@@ -150,18 +150,18 @@ namespace MyDAL.Delete
         }
 
         [Fact]
-        public async Task Delete_ST()
+        public void Delete_ST()
         {
 
-            var m = await PreDelete();
+            var m = PreDelete();
 
             xx = string.Empty;
 
             // where 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Deleter<BodyFitRecord>()
                 .Where(it => it.Id == m.Id)
-                .DeleteAsync();
+                .Delete();
 
             Assert.True(res1 == 1);
 

@@ -11,7 +11,7 @@ namespace MyDAL.Compare
         : TestBase
     {
         [Fact]
-        public async Task History_01()
+        public void History_01()
         {
 
             xx = string.Empty;
@@ -21,35 +21,35 @@ namespace MyDAL.Compare
             var xx5 = string.Empty;
 
             var guid5 = Guid.Parse("08d6036c-66c8-7c2c-83b0-725f93ff8137");
-            var res5 = await MyDAL_TestDB
+            var res5 = MyDAL_TestDB
                 .Selecter(out AddressInfo address5, out AddressInfo address55)
                 .From(() => address5)
                     .InnerJoin(() => address55)
                         .On(() => address5.Id == address55.Id)
                 .Where(() => address5.IsDefault.Value && address5.UserId == guid5)  //  true
-                .SelectListAsync<AddressInfo>();
+                .SelectList<AddressInfo>();
 
             Assert.True(res5.Count == 1);
             Assert.True(res5.First().IsDefault);
 
-            var res51 = await MyDAL_TestDB
+            var res51 = MyDAL_TestDB
                 .Selecter(out AddressInfo address51, out AddressInfo address511)
                 .From(() => address51)
                     .InnerJoin(() => address511)
                         .On(() => address51.Id == address511.Id)
                 .Where(() => address51.IsDefault == true && address51.UserId == guid5)  //  true
-                .SelectListAsync<AddressInfo>();
+                .SelectList<AddressInfo>();
             Assert.True(res51.Count == 1);
             Assert.True(res51.First().IsDefault);
 
             var guid52 = Guid.Parse("6f390324-2c07-40cf-90ca-0165569461b1");
-            var res52 = await MyDAL_TestDB
+            var res52 = MyDAL_TestDB
                 .Selecter(out AddressInfo address52, out AddressInfo address521)
                 .From(() => address52)
                     .InnerJoin(() => address521)
                         .On(() => address52.Id == address521.Id)
                 .Where(() => address52.IsDefault == false || address52.Id == guid52)  //  false
-                .SelectListAsync<AddressInfo>();
+                .SelectList<AddressInfo>();
             Assert.True(res52.Count == 3);
             Assert.True(res52.First(it => it.Id != guid52).IsDefault == false);
             Assert.True(res52.First(it => it.Id == guid52).IsDefault);
@@ -86,14 +86,14 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task Ture_ST()
+        public void Ture_ST()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => true) // true 
-                .SelectListAsync();
+                .SelectList();
 
             Assert.True(res1.Count == 28620);
 
@@ -103,15 +103,15 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task False_ST()
+        public void False_ST()
         {
             xx = string.Empty;
 
             // where 1=1
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<Agent>()
                 .Where(it => false) //  false
-                .SelectListAsync();
+                .SelectList();
 
             Assert.True(res1.Count == 0);
 
@@ -121,18 +121,18 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task True_MT()
+        public void True_MT()
         {
             xx = string.Empty;
 
             // where 1=1
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)
                 .Where(() => true) // true 
-                .SelectListAsync<Agent>();
+                .SelectList<Agent>();
 
             Assert.True(res1.Count == 574);
 
@@ -142,17 +142,17 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task False_MT()
+        public void False_MT()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)
                 .Where(() => false) //  false
-                .SelectListAsync<Agent>();
+                .SelectList<Agent>();
 
             Assert.True(res1.Count == 0);
 
@@ -162,18 +162,18 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task Not_True_MT()
+        public void Not_True_MT()
         {
             xx = string.Empty;
 
             // where 1=1
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)
                 .Where(() => !true)   // false 
-                .SelectListAsync<Agent>();
+                .SelectList<Agent>();
 
             Assert.True(res1.Count == 0);
 
@@ -183,17 +183,17 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task Not_False_MT()
+        public void Not_False_MT()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter(out Agent agent, out AgentInventoryRecord record)
                 .From(() => agent)
                     .InnerJoin(() => record)
                         .On(() => agent.Id == record.AgentId)
                 .Where(() => !false) //  true
-                .SelectListAsync<Agent>();
+                .SelectList<Agent>();
 
             Assert.True(res1.Count == 574);
 
@@ -203,7 +203,7 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task Bool_Default()
+        public void Bool_Default()
         {
             xx = string.Empty;
 
@@ -220,7 +220,7 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task Bool_True()
+        public void Bool_True()
         {
             xx = string.Empty;
 
@@ -237,7 +237,7 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task Bool_False()
+        public void Bool_False()
         {
             xx = string.Empty;
 
@@ -255,7 +255,7 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task Not_Bool_Default()
+        public void Not_Bool_Default()
         {
             xx = string.Empty;
 
@@ -273,7 +273,7 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task Not_Bool_True()
+        public void Not_Bool_True()
         {
             xx = string.Empty;
 
@@ -290,7 +290,7 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task Not_Bool_False()
+        public void Not_Bool_False()
         {
             xx = string.Empty;
 
@@ -307,14 +307,14 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task Nullable_Bool_Default_ST()
+        public void Nullable_Bool_Default_ST()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<AddressInfo>()
                 .Where(it => it.IsDefault.Value)  //  true
-                .SelectListAsync();
+                .SelectList();
 
             Assert.True(res1.Count == 5);
             Assert.True(res1.First().IsDefault);
@@ -325,14 +325,14 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task Nullable_Bool_True_ST()
+        public void Nullable_Bool_True_ST()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<AddressInfo>()
                 .Where(it => it.IsDefault.Value == true)  //  true
-                .SelectListAsync();
+                .SelectList();
 
             Assert.True(res1.Count == 5);
             Assert.True(res1.First().IsDefault);
@@ -343,14 +343,14 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task Nullable_Bool_False_ST()
+        public void Nullable_Bool_False_ST()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<AddressInfo>()
                 .Where(it => it.IsDefault.Value == false)  //  false 
-                .SelectListAsync();
+                .SelectList();
 
             Assert.True(res1.Count == 2);
             Assert.True(res1.First().IsDefault == false);
@@ -361,7 +361,7 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task Nullable_Bool_IsNull_ST()
+        public void Nullable_Bool_IsNull_ST()
         {
             xx = string.Empty;
 
@@ -378,7 +378,7 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task Nullable_Bool_IsNotNull_ST()
+        public void Nullable_Bool_IsNotNull_ST()
         {
             xx = string.Empty;
 
@@ -395,14 +395,14 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task Not_Nullable_Bool_Default_ST()
+        public void Not_Nullable_Bool_Default_ST()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<AddressInfo>()
                 .Where(it => !it.IsDefault.Value)  //  false
-                .SelectListAsync();
+                .SelectList();
 
             Assert.True(res1.Count == 2);
 
@@ -412,14 +412,14 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task Not_Nullable_Bool_True_ST()
+        public void Not_Nullable_Bool_True_ST()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<AddressInfo>()
                 .Where(it => !(it.IsDefault.Value == true))  //  false
-                .SelectListAsync();
+                .SelectList();
 
             Assert.True(res1.Count == 2);
 
@@ -429,14 +429,14 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task Not_Nullable_Bool_False_ST()
+        public void Not_Nullable_Bool_False_ST()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter<AddressInfo>()
                 .Where(it => !(it.IsDefault.Value == false))  //  true 
-                .SelectListAsync();
+                .SelectList();
 
             Assert.True(res1.Count == 5);
 
@@ -446,7 +446,7 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task Not_Nullable_Bool_IsNull_ST()
+        public void Not_Nullable_Bool_IsNull_ST()
         {
             xx = string.Empty;
 
@@ -463,7 +463,7 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task Not_Nullable_Bool_IsNotNull_ST()
+        public void Not_Nullable_Bool_IsNotNull_ST()
         {
             xx = string.Empty;
 
@@ -480,17 +480,17 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task Nullable_Bool_Default_MT()
+        public void Nullable_Bool_Default_MT()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter(out AddressInfo addr, out AddressInfo addr2)
                 .From(() => addr)
                     .InnerJoin(() => addr2)
                         .On(() => addr.Id == addr2.Id)
                 .Where(() => addr.IsDefault.Value)  //  true
-                .SelectListAsync<AddressInfo>();
+                .SelectList<AddressInfo>();
 
             Assert.True(res1.Count == 5);
             Assert.True(res1.First().IsDefault);
@@ -501,17 +501,17 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task Nullable_Bool_True_MT()
+        public void Nullable_Bool_True_MT()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter(out AddressInfo addr, out AddressInfo addr2)
                 .From(() => addr)
                     .InnerJoin(() => addr2)
                         .On(() => addr.Id == addr2.Id)
                 .Where(() => addr.IsDefault.Value == true)  //  true
-                .SelectListAsync<AddressInfo>();
+                .SelectList<AddressInfo>();
 
             Assert.True(res1.Count == 5);
             Assert.True(res1.First().IsDefault);
@@ -522,17 +522,17 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task Nullable_Bool_False_MT()
+        public void Nullable_Bool_False_MT()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter(out AddressInfo addr, out AddressInfo addr2)
                 .From(() => addr)
                     .InnerJoin(() => addr2)
                         .On(() => addr.Id == addr2.Id)
                 .Where(() => addr.IsDefault == false)  //  false
-                .SelectListAsync<AddressInfo>();
+                .SelectList<AddressInfo>();
 
             Assert.True(res1.Count == 2);
             Assert.True(res1.First().IsDefault == false);
@@ -543,17 +543,17 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task Nullable_Bool_IsNull_MT()
+        public void Nullable_Bool_IsNull_MT()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter(out AddressInfo addr, out AddressInfo addr2)
                 .From(() => addr)
                     .InnerJoin(() => addr2)
                         .On(() => addr.Id == addr2.Id)
                 .Where(() => addr.IsDefault == null)  //  is null <-- nullable<bool>
-                .SelectListAsync<AddressInfo>();
+                .SelectList<AddressInfo>();
 
             Assert.True(res1.Count == 0);
 
@@ -563,17 +563,17 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task Nullable_Bool_IsNotNull_MT()
+        public void Nullable_Bool_IsNotNull_MT()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter(out AddressInfo addr, out AddressInfo addr2)
                 .From(() => addr)
                     .InnerJoin(() => addr2)
                         .On(() => addr.Id == addr2.Id)
                 .Where(() => addr.IsDefault != null)  //  is not null <-- nullable<bool>
-                .SelectListAsync<AddressInfo>();
+                .SelectList<AddressInfo>();
 
             Assert.True(res1.Count == 7);
 
@@ -583,17 +583,17 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task Nullable_Multi_Default_MT()
+        public void Nullable_Multi_Default_MT()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter(out AddressInfo addr, out AddressInfo addr2)
                 .From(() => addr)
                     .InnerJoin(() => addr2)
                         .On(() => addr.Id == addr2.Id)
                 .Where(() => addr.IsDefault == null && addr.IsDefault.Value)  //  is null && true  <-- nullable<bool>
-                .SelectListAsync<AddressInfo>();
+                .SelectList<AddressInfo>();
 
             Assert.True(res1.Count == 0);
 
@@ -603,17 +603,17 @@ namespace MyDAL.Compare
         }
 
         [Fact]
-        public async Task Not_Nullable_Multi_Default_MT()
+        public void Not_Nullable_Multi_Default_MT()
         {
             xx = string.Empty;
 
-            var res1 = await MyDAL_TestDB
+            var res1 = MyDAL_TestDB
                 .Selecter(out AddressInfo addr, out AddressInfo addr2)
                 .From(() => addr)
                     .InnerJoin(() => addr2)
                         .On(() => addr.Id == addr2.Id)
                 .Where(() => addr.IsDefault != null && !addr.IsDefault.Value)  //  is not null && false  <-- nullable<bool>
-                .SelectListAsync<AddressInfo>();
+                .SelectList<AddressInfo>();
 
             Assert.True(res1.Count == 2);
 

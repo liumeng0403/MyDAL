@@ -14,15 +14,15 @@ namespace MyDAL.WhereEdge
         {
 
             // 在接口注入中使用 勿删!!!
-            public async Task eee(ApplyStockholderAwardAccountingVM vm)
+            public void eee(ApplyStockholderAwardAccountingVM vm)
             {
                 xx = string.Empty;
 
-                if (!await MyDAL_TestDB
+                if (!MyDAL_TestDB
                         .Selecter<PlatformMonthlyPerformance>()
                         .Where(it => it.Year == vm.Year)
                             .And(it => it.Month == vm.Month)
-                        .IsExistAsync())
+                        .IsExist())
                 {
                     Assert.True(true);
                 }
@@ -34,7 +34,7 @@ namespace MyDAL.WhereEdge
         public IMethodParamsTest ExistXTest { get; set; }
 
         [Fact]
-        public async Task test()
+        public void test()
         {
 
             xx = string.Empty;
@@ -44,7 +44,7 @@ namespace MyDAL.WhereEdge
             vm.Month = Month.October;
 
             ExistXTest = new InterfaceDI();
-            await ExistXTest.eee(vm);
+            ExistXTest.eee(vm);
 
             
 
