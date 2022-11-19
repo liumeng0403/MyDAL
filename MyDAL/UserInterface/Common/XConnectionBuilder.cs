@@ -29,13 +29,17 @@ namespace MyDAL
 
             DbPairs.AddOrReplace("Host", "127.0.0.1");
             DbPairs.AddOrReplace("Port", "3306");
-            DbPairs.AddOrReplace("Database", "mysql");
             DbPairs.AddOrReplace("User Id", "root");
             DbPairs.AddOrReplace("Password", "password");
+            
             DbPairs.AddOrReplace("Protocol", "Socket");
-
+            
             DbPairs.AddOrReplace("SslMode", "None");
-
+            
+            DbPairs.AddOrReplace("CharSet", "utf8mb4");
+            
+            DbPairs.AddOrReplace("Database", "mysql");
+            
             DbPairs.AddOrReplace("Pooling", "true");
             DbPairs.AddOrReplace("ConnectionReset", "true");
             DbPairs.AddOrReplace("MaximumPoolsize", "50");
@@ -735,9 +739,9 @@ namespace MyDAL
             return this;
         }
         /// <summary>
-        /// 设置 mysql 驱动: typeof(MySqlConnection)... 支持 MySql.Data/MySqlConnector/Devart.Data.MySql/...
+        /// 设置 mysql 驱动，支持：MySql.Data、MySqlConnector、Devart.Data.MySql
         /// </summary>
-        /// <typeparam name="MC">实现 IDbConnection 的 mysql db 驱动类</typeparam>
+        /// <typeparam name="MC">实现 IDbConnection 的驱动类</typeparam>
         public XConnectionBuilder SetMySqlDriver<MC>()
             where MC : class,IDbConnection
         {
