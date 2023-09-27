@@ -13,6 +13,11 @@
 
 
 
+思路调整：
+1、解析支持原生 mysql 函数
+2、抛弃 .count() 等 api 做法
+3、抛弃 async api 做法 
+
 
 // .AndSql(string sql) 支持 
 // .OrSql(string sql) 支持
