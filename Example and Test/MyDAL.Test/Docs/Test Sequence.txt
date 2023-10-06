@@ -17,6 +17,9 @@
 1、解析支持原生 mysql 函数
 2、抛弃 .count() 等 api 做法
 3、抛弃 async api 做法 
+4、sql 语句做法为小数据量型系统 API
+5、lambda api 做法为大、中数据量型系统 API
+6、lambda join api 只保留两表 join  
 
 
 // .AndSql(string sql) 支持 
