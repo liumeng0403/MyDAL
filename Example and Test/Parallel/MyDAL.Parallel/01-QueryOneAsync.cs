@@ -14,7 +14,7 @@ namespace MyDAL.Parallel
                 .Where(it => it.Name == "刘中华")
                 .Distinct()
                 .SelectOne();
-
+         
             return none;
         }
 
