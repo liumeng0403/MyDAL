@@ -1,4 +1,5 @@
 ﻿using MyDAL.Core;
+using MyDAL.Core.Enums.Conns;
 using MyDAL.Core.Extensions;
 using MyDAL.Tools;
 using System;
@@ -34,20 +35,17 @@ namespace MyDAL
             
             DbPairs.AddOrReplace("Protocol", "Socket");
             
-            DbPairs.AddOrReplace("SslMode", "None");
+            DbPairs.AddOrReplace("SslMode", SslModeTypeEnum.Preferred.ToString());
             
             DbPairs.AddOrReplace("CharSet", "utf8mb4");
             
             DbPairs.AddOrReplace("Database", "mysql");
             
-            DbPairs.AddOrReplace("Pooling", "true");
-            DbPairs.AddOrReplace("ConnectionReset", "true");
-            DbPairs.AddOrReplace("MaximumPoolsize", "50");
-            DbPairs.AddOrReplace("MinimumPoolSize", "10");
+            DbPairs.AddOrReplace("Pooling", "false");
 
             DbPairs.AddOrReplace("ConnectionTimeout", "15");
             DbPairs.AddOrReplace("DefaultCommandTimeout", "30");
-            DbPairs.AddOrReplace("AllowPublicKeyRetrieval", "true");
+            DbPairs.AddOrReplace("AllowPublicKeyRetrieval", "false");
 
         }
 
@@ -58,7 +56,7 @@ namespace MyDAL
         /// </summary>
         public XConnectionBuilder SetServer(string host)
         {
-            if(host.IsNullStr())
+            if(host.IsBlank())
             {
                 throw XConfig.EC.Exception(XConfig.EC._037, "数据库位置 Host 不能为空!");
             }
@@ -70,7 +68,7 @@ namespace MyDAL
         /// </summary>
         public XConnectionBuilder SetHost(string host)
         {
-            if (host.IsNullStr())
+            if (host.IsBlank())
             {
                 throw XConfig.EC.Exception(XConfig.EC._144, "数据库位置 Host 不能为空!");
             }
@@ -82,18 +80,6 @@ namespace MyDAL
         /// </summary>
         public XConnectionBuilder SetPort(int port)
         {
-            DbPairs.AddOrReplace("Port", port.ToString());
-            return this;
-        }
-        /// <summary>
-        /// 端口:Port 默认:3306
-        /// </summary>
-        public XConnectionBuilder SetPort(int? port)
-        {
-            if (port.IsNullStr())
-            {
-                throw XConfig.EC.Exception(XConfig.EC._055, "端口 Port 不能为空!");
-            }
             DbPairs.AddOrReplace("Port", port.ToString());
             return this;
         }
@@ -153,15 +139,22 @@ namespace MyDAL
             DbPairs.AddOrReplace("Pipe", pipe.Trim());
             return this;
         }
-
+        
         // ---------------------------------------------------------------------------------------------
 
         /// <summary>
-        /// 是否启用SSL连接模式:SslMode , Ssl Mode , Ssl-Mode 默认:None 
+        /// 是否启用SSL连接模式:SslMode , mysql 5.7- 设置 false，mysql 8.0+ 设置 true ，默认 依据服务器设置
         /// </summary>
-        public XConnectionBuilder SetSslMode(SslModeTypeEnum sslModeType)
+        public XConnectionBuilder SetSslMode(bool sslModeType)
         {
-            DbPairs.AddOrReplace("SslMode", sslModeType.ToString());
+            if (sslModeType)
+            {
+                DbPairs.AddOrReplace("SslMode", SslModeTypeEnum.Required.ToString());
+            }
+            else
+            {
+                DbPairs.AddOrReplace("SslMode", SslModeTypeEnum.None.ToString());
+            }
             return this;
         }
         /// <summary>
@@ -181,7 +174,7 @@ namespace MyDAL
         /// </summary>
         public XConnectionBuilder SetCertificatePassword(string certificatePassword)
         {
-            if (certificatePassword.IsNullStr())
+            if (certificatePassword.IsBlank())
             {
                 throw XConfig.EC.Exception(XConfig.EC._107, "证书的密码 CertificatePassword 不能为空!");
             }
@@ -193,7 +186,7 @@ namespace MyDAL
         /// </summary>
         public XConnectionBuilder SetCACertificateFile(string cACertificateFile)
         {
-            if (cACertificateFile.IsNullStr())
+            if (cACertificateFile.IsBlank())
             {
                 throw XConfig.EC.Exception(XConfig.EC._091, "CACertificateFile 不能为空!");
             }
@@ -236,7 +229,7 @@ namespace MyDAL
         // ---------------------------------------------------------------------------------------------
 
         /// <summary>
-        /// 是否使用线程池:Pooling 默认:true 
+        /// 是否使用线程池:Pooling 默认:false 
         /// </summary>
         public XConnectionBuilder SetPooling(bool pooling)
         {
@@ -244,19 +237,7 @@ namespace MyDAL
             return this;
         }
         /// <summary>
-        /// 是否使用线程池:Pooling 默认:true 
-        /// </summary>
-        public XConnectionBuilder SetPooling(bool? pooling)
-        {
-            if (pooling.IsNullStr())
-            {
-                throw XConfig.EC.Exception(XConfig.EC._127, "是否使用线程池 Pooling 不能为空!");
-            }
-            DbPairs.AddOrReplace("Pooling", pooling.ToString().ToLower());
-            return this;
-        }
-        /// <summary>
-        /// 连接被销毁前在连接池中保持的最少时间(秒):Connection Lifetime, ConnectionLifeTime 默认:0 
+        /// 连接被销毁前在连接池中保持的最少时间(秒):Connection Lifetime, ConnectionLifeTime 默认:0
         /// </summary>
         public XConnectionBuilder SetConnectionLifeTime(int connectionLifeTime)
         {
@@ -264,74 +245,28 @@ namespace MyDAL
             return this;
         }
         /// <summary>
-        /// 连接被销毁前在连接池中保持的最少时间(秒):Connection Lifetime, ConnectionLifeTime 默认:0
-        /// </summary>
-        public XConnectionBuilder SetConnectionLifeTime(int? connectionLifeTime)
-        {
-            if (connectionLifeTime.IsNullStr())
-            {
-                throw XConfig.EC.Exception(XConfig.EC._126, "连接被销毁前在连接池中保持的最少时间(秒) ConnectionLifeTime 不能为空!");
-            }
-            DbPairs.AddOrReplace("ConnectionLifeTime", connectionLifeTime.ToString());
-            return this;
-        }
-        /// <summary>
-        /// 连接过期后是否自动复位:Connection Reset, ConnectionReset 默认:true	
+        /// 连接过期后是否自动复位:Connection Reset, ConnectionReset
         /// </summary>
         public XConnectionBuilder SetConnectionReset(bool connectionReset)
         {
             DbPairs.AddOrReplace("ConnectionReset", connectionReset.ToString().ToLower());
             return this;
         }
+
         /// <summary>
-        /// 连接过期后是否自动复位:Connection Reset, ConnectionReset 默认:true	
-        /// </summary>
-        public XConnectionBuilder SetConnectionReset(bool? connectionReset)
-        {
-            if (connectionReset.IsNullStr())
-            {
-                throw XConfig.EC.Exception(XConfig.EC._130, "连接过期后是否自动复位 ConnectionReset 不能为空!");
-            }
-            DbPairs.AddOrReplace("ConnectionReset", connectionReset.ToString().ToLower());
-            return this;
-        }
-        /// <summary>
-        /// 线程池中允许最多连接数数:Maximum Pool Size, Max Pool Size, MaximumPoolsize, maxpoolsize 默认:50	
+        /// 线程池中允许最多连接数数:Maximum Pool Size, Max Pool Size, MaximumPoolsize
         /// </summary>
         public XConnectionBuilder SetMaximumPoolSize(int maximumPoolSize)
         {
             DbPairs.AddOrReplace("MaximumPoolsize", maximumPoolSize.ToString());
             return this;
         }
+
         /// <summary>
-        /// 线程池中允许最多连接数数:Maximum Pool Size, Max Pool Size, MaximumPoolsize, maxpoolsize 默认:50	
-        /// </summary>
-        public XConnectionBuilder SetMaximumPoolSize(int? maximumPoolSize)
-        {
-            if (maximumPoolSize.IsNullStr())
-            {
-                throw XConfig.EC.Exception(XConfig.EC._129, "线程池中允许最多连接数数 MaximumPoolsize 不能为空!");
-            }
-            DbPairs.AddOrReplace("MaximumPoolsize", maximumPoolSize.ToString());
-            return this;
-        }
-        /// <summary>
-        /// 线程池中保持最少连接数:Minimum Pool Size, Min Pool Size, MinimumPoolSize, minpoolsize 默认:10 
+        /// 线程池中保持最少连接数:Minimum Pool Size, Min Pool Size, MinimumPoolSize, 
         /// </summary>
         public XConnectionBuilder SetMinimumPoolSize(int minimumPoolSize)
         {
-            DbPairs.AddOrReplace("MinimumPoolSize", minimumPoolSize.ToString());
-            return this;
-        }
-        /// <summary>
-        /// 线程池中保持最少连接数:Minimum Pool Size, Min Pool Size, MinimumPoolSize, minpoolsize 默认:10 
-        /// </summary>
-        public XConnectionBuilder SetMinimumPoolSize(int? minimumPoolSize)
-        {
-            if (minimumPoolSize.IsNullStr())
-            {
-                throw XConfig.EC.Exception(XConfig.EC._128, "线程池中保持最少连接数 MinimumPoolSize 不能为空!");
-            }
             DbPairs.AddOrReplace("MinimumPoolSize", minimumPoolSize.ToString());
             return this;
         }
@@ -346,58 +281,25 @@ namespace MyDAL
             DbPairs.AddOrReplace("AllowLoadLocalInfile", allowLoadLocalInfile.ToString().ToLower());
             return this;
         }
+
         /// <summary>
-        /// AllowLoadLocalInfile, Allow Load Local Infile  默认:false
+        /// 是否许客户端自动从服务器请求公钥 默认:false
         /// </summary>
-        public XConnectionBuilder SetAllowLoadLocalInfile(bool? allowLoadLocalInfile)
-        {
-            if(allowLoadLocalInfile.IsNullStr())
-            {
-                throw XConfig.EC.Exception(XConfig.EC._136, "AllowLoadLocalInfile, Allow Load Local Infile 不能为空!");
-            }
-            DbPairs.AddOrReplace("AllowLoadLocalInfile", allowLoadLocalInfile.ToString().ToLower());
-            return this;
-        }
-        /// <summary>
-        /// AllowPublicKeyRetrieval, Allow Public Key Retrieval 默认:true
-        /// </summary>
-        public XConnectionBuilder SetAllowPublicKeyRetrieval(bool allowPublicKeyRetrieval)
+        public XConnectionBuilder SetAllowPublicKyunxueyRetrieval(bool allowPublicKeyRetrieval)
         {
             DbPairs.AddOrReplace("AllowPublicKeyRetrieval", allowPublicKeyRetrieval.ToString().ToLower());
             return this;
         }
+
         /// <summary>
-        /// AllowPublicKeyRetrieval, Allow Public Key Retrieval 默认:true
-        /// </summary>
-        public XConnectionBuilder SetAllowPublicKeyRetrieval(bool? allowPublicKeyRetrieval)
-        {
-            if(allowPublicKeyRetrieval.IsNullStr())
-            {
-                throw XConfig.EC.Exception(XConfig.EC._137, "AllowPublicKeyRetrieval, Allow Public Key Retrieval 不能为空!");
-            }
-            DbPairs.AddOrReplace("AllowPublicKeyRetrieval", allowPublicKeyRetrieval.ToString().ToLower());
-            return this;
-        }
-        /// <summary>
-        /// 是否允许SQL中出现用户变量:AllowUserVariables, Allow User Variables 默认:false 
+        /// 是否允许SQL中出现用户变量:AllowUserVariables, Allow User Variables 默认:false
         /// </summary>
         public XConnectionBuilder SetAllowUserVariables(bool allowUserVariables)
         {
             DbPairs.AddOrReplace("AllowUserVariables", allowUserVariables.ToString().ToLower());
             return this;
         }
-        /// <summary>
-        /// 是否允许SQL中出现用户变量:AllowUserVariables, Allow User Variables 默认:false 
-        /// </summary>
-        public XConnectionBuilder SetAllowUserVariables(bool? allowUserVariables)
-        {
-            if (allowUserVariables.IsNullStr())
-            {
-                throw XConfig.EC.Exception(XConfig.EC._120, "是否允许SQL中出现用户变量 AllowUserVariables 不能为空!");
-            }
-            DbPairs.AddOrReplace("AllowUserVariables", allowUserVariables.ToString().ToLower());
-            return this;
-        }
+
         /// <summary>
         /// 日期时间能否为零:AllowZeroDateTime, Allow Zero DateTime 默认:false 
         /// </summary>
@@ -406,24 +308,13 @@ namespace MyDAL
             DbPairs.AddOrReplace("AllowZeroDateTime", allowZeroDateTime.ToString().ToLower());
             return this;
         }
-        /// <summary>
-        /// 日期时间能否为零:AllowZeroDateTime, Allow Zero DateTime 默认:false 
-        /// </summary>
-        public XConnectionBuilder SetAllowZeroDateTime(bool? allowZeroDateTime)
-        {
-            if (allowZeroDateTime.IsNullStr())
-            {
-                throw XConfig.EC.Exception(XConfig.EC._110, "日期时间能否为零 AllowZeroDateTime 不能为空!");
-            }
-            DbPairs.AddOrReplace("AllowZeroDateTime", allowZeroDateTime.ToString().ToLower());
-            return this;
-        }
+
         /// <summary>
         /// ApplicationName, Application Name 默认:""
         /// </summary>
         public XConnectionBuilder SetApplicationName(string applicationName)
         {
-            if(applicationName.IsNullStr())
+            if(applicationName.IsBlank())
             {
                 throw XConfig.EC.Exception(XConfig.EC._138, "ApplicationName, Application Name 不能为空!");
             }
@@ -435,7 +326,7 @@ namespace MyDAL
         /// </summary>
         public XConnectionBuilder SetCharset(string charset)
         {
-            if (charset.IsNullStr())
+            if (charset.IsBlank())
             {
                 throw XConfig.EC.Exception(XConfig.EC._131, "连接MySQL所使用的字符集 CharSet 不能为空!");
             }
@@ -450,18 +341,7 @@ namespace MyDAL
             DbPairs.AddOrReplace("Compress", compress.ToString().ToLower());
             return this;
         }
-        /// <summary>
-        /// 是否压缩:Compress, Use Compression, UseCompression 默认:false	 
-        /// </summary>
-        public XConnectionBuilder SetCompress(bool? compress)
-        {
-            if (compress.IsNullStr())
-            {
-                throw XConfig.EC.Exception(XConfig.EC._096, "是否压缩 Compress 不能为空!");
-            }
-            DbPairs.AddOrReplace("Compress", compress.ToString().ToLower());
-            return this;
-        }
+
         /// <summary>
         /// 连接超时等待时间:Connect Timeout, Connection Timeout, ConnectionTimeout 默认:15s	
         /// </summary>
@@ -470,18 +350,7 @@ namespace MyDAL
             DbPairs.AddOrReplace("ConnectionTimeout", connectionTimeout.ToString());
             return this;
         }
-        /// <summary>
-        /// 连接超时等待时间:Connect Timeout, Connection Timeout, ConnectionTimeout 默认:15s	
-        /// </summary>
-        public XConnectionBuilder SetConnectionTimeout(int? connectionTimeout)
-        {
-            if (connectionTimeout.IsNullStr())
-            {
-                throw XConfig.EC.Exception(XConfig.EC._101, "连接超时等待时间 ConnectionTimeout 不能为空!");
-            }
-            DbPairs.AddOrReplace("ConnectionTimeout", connectionTimeout.ToString());
-            return this;
-        }
+
         /// <summary>
         /// 零是否转化为最小日期:Convert Zero Datetime, ConvertZeroDateTime 默认:false
         /// </summary>
@@ -490,18 +359,7 @@ namespace MyDAL
             DbPairs.AddOrReplace("ConvertZeroDateTime", convertZeroDateTime.ToString().ToLower());
             return this;
         }
-        /// <summary>
-        /// 零是否转化为最小日期:Convert Zero Datetime, ConvertZeroDateTime 默认:false
-        /// </summary>
-        public XConnectionBuilder SetConvertZeroDateTime(bool? convertZeroDateTime)
-        {
-            if (convertZeroDateTime.IsNullStr())
-            {
-                throw XConfig.EC.Exception(XConfig.EC._111, "零是否转化为最小日期 ConvertZeroDateTime 不能为空!");
-            }
-            DbPairs.AddOrReplace("ConvertZeroDateTime", convertZeroDateTime.ToString().ToLower());
-            return this;
-        }
+
         /// <summary>
         /// DateTimeKind  默认:Unspecified
         /// </summary>
@@ -530,18 +388,7 @@ namespace MyDAL
             DbPairs.AddOrReplace("DefaultCommandTimeout", defaultCommandTimeout.ToString());
             return this;
         }
-        /// <summary>
-        /// 命令执行超时时间:Default Command Timeout, Command Timeout, DefaultCommandTimeout 默认:30s
-        /// </summary>
-        public XConnectionBuilder SetDefaultCommandTimeout(int? defaultCommandTimeout)
-        {
-            if (defaultCommandTimeout.IsNullStr())
-            {
-                throw XConfig.EC.Exception(XConfig.EC._102, "命令执行超时时间 DefaultCommandTimeout 不能为空!");
-            }
-            DbPairs.AddOrReplace("DefaultCommandTimeout", defaultCommandTimeout.ToString());
-            return this;
-        }
+
         /// <summary>
         /// IgnoreCommandTransaction, Ignore Command Transaction 默认:false
         /// </summary>
@@ -550,18 +397,7 @@ namespace MyDAL
             DbPairs.AddOrReplace("IgnoreCommandTransaction", ignoreCommandTransaction.ToString().ToLower());
             return this;
         }
-        /// <summary>
-        /// IgnoreCommandTransaction, Ignore Command Transaction 默认:false
-        /// </summary>
-        public XConnectionBuilder SetIgnoreCommandTransaction(bool? ignoreCommandTransaction)
-        {
-            if(ignoreCommandTransaction.IsNullStr())
-            {
-                throw XConfig.EC.Exception(XConfig.EC._140, "IgnoreCommandTransaction, Ignore Command Transaction 不能为空!");
-            }
-            DbPairs.AddOrReplace("IgnoreCommandTransaction", ignoreCommandTransaction.ToString().ToLower());
-            return this;
-        }
+
         /// <summary>
         /// 会话是否允许交互:Interactive, Interactive Session, InteractiveSession 默认:false	
         /// </summary>
@@ -571,18 +407,7 @@ namespace MyDAL
             DbPairs.AddOrReplace("Interactive", interactive.ToString().ToLower());
             return this;
         }
-        /// <summary>
-        /// 会话是否允许交互:Interactive, Interactive Session, InteractiveSession 默认:false	
-        /// </summary>
-        public XConnectionBuilder SetInteractive(bool? interactive)
-        {
-            if (interactive.IsNullStr())
-            {
-                throw XConfig.EC.Exception(XConfig.EC._121, "会话是否允许交互 Interactive 不能为空!");
-            }
-            DbPairs.AddOrReplace("Interactive", interactive.ToString().ToLower());
-            return this;
-        }
+
         /// <summary>
         /// 保持TCP连接的秒数:Keep Alive, Keepalive 默认:0-默认操作系统设置
         /// </summary>
@@ -591,18 +416,7 @@ namespace MyDAL
             DbPairs.AddOrReplace("Keepalive", keepalive.ToString());
             return this;
         }
-        /// <summary>
-        /// 保持TCP连接的秒数:Keep Alive, Keepalive 默认:0-默认操作系统设置
-        /// </summary>
-        public XConnectionBuilder SetKeepalive(int? keepalive)
-        {
-            if (keepalive.IsNullStr())
-            {
-                throw XConfig.EC.Exception(XConfig.EC._125, "保持TCP连接的秒数 Keepalive 不能为空!");
-            }
-            DbPairs.AddOrReplace("Keepalive", keepalive.ToString());
-            return this;
-        }
+
         /// <summary>
         /// Load Balance, LoadBalance  默认:RoundRobin
         /// </summary>
@@ -619,18 +433,7 @@ namespace MyDAL
             DbPairs.AddOrReplace("NoBackslashEscapes", noBackslashEscapes.ToString().ToLower());
             return this;
         }
-        /// <summary>
-        /// No Backslash Escapes, NoBackslashEscapes 默认:false
-        /// </summary>
-        public XConnectionBuilder SetNoBackslashEscapes(bool? noBackslashEscapes)
-        {
-            if(noBackslashEscapes.IsNullStr())
-            {
-                throw XConfig.EC.Exception(XConfig.EC._141, "No Backslash Escapes, NoBackslashEscapes 不能为空!");
-            }
-            DbPairs.AddOrReplace("NoBackslashEscapes", noBackslashEscapes.ToString().ToLower());
-            return this;
-        }
+
         /// <summary>
         /// 是否保持敏感信息:Persist Security Info, PersistSecurityInfo 默认:false	
         /// </summary>
@@ -639,18 +442,7 @@ namespace MyDAL
             DbPairs.AddOrReplace("PersistSecurityInfo", persistSecurityInfo.ToString().ToLower());
             return this;
         }
-        /// <summary>
-        /// 是否保持敏感信息:Persist Security Info, PersistSecurityInfo 默认:false	
-        /// </summary>
-        public XConnectionBuilder SetPersistSecurityInfo(bool? persistSecurityInfo)
-        {
-            if (persistSecurityInfo.IsNullStr())
-            {
-                throw XConfig.EC.Exception(XConfig.EC._105, "是否保持敏感信息 PersistSecurityInfo 不能为空!");
-            }
-            DbPairs.AddOrReplace("PersistSecurityInfo", persistSecurityInfo.ToString().ToLower());
-            return this;
-        }
+
         /// <summary>
         /// ServerRSAPublicKeyFile, Server RSA Public Key File
         /// </summary>
@@ -671,35 +463,12 @@ namespace MyDAL
             DbPairs.AddOrReplace("TreatTinyAsBoolean", treatTinyAsBoolean.ToString().ToLower());
             return this;
         }
-        /// <summary>
-        /// 是否将TINYINT(1)列视为布尔型:Treat Tiny As Boolean, TreatTinyAsBoolean 默认:true 
-        /// </summary>
-        public XConnectionBuilder SetTreatTinyAsBoolean(bool? treatTinyAsBoolean)
-        {
-            if (treatTinyAsBoolean.IsNullStr())
-            {
-                throw XConfig.EC.Exception(XConfig.EC._119, "是否将TINYINT(1)列视为布尔型 TreatTinyAsBoolean 不能为空!");
-            }
-            DbPairs.AddOrReplace("TreatTinyAsBoolean", treatTinyAsBoolean.ToString().ToLower());
-            return this;
-        }
+
         /// <summary>
         /// 是否用受影响的行数替代查找到的行数来返回数据:Use Affected Rows, UseAffectedRows 默认:false	
         /// </summary>
         public XConnectionBuilder SetUseAffectedRows(bool useAffectedRows)
         {
-            DbPairs.AddOrReplace("UseAffectedRows", useAffectedRows.ToString().ToLower());
-            return this;
-        }
-        /// <summary>
-        /// 是否用受影响的行数替代查找到的行数来返回数据:Use Affected Rows, UseAffectedRows 默认:false	
-        /// </summary>
-        public XConnectionBuilder SetUseAffectedRows(bool? useAffectedRows)
-        {
-            if (useAffectedRows.IsNullStr())
-            {
-                throw XConfig.EC.Exception(XConfig.EC._123, "是否用受影响的行数替代查找到的行数来返回数据 UseAffectedRows 不能为空!");
-            }
             DbPairs.AddOrReplace("UseAffectedRows", useAffectedRows.ToString().ToLower());
             return this;
         }

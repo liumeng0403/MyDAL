@@ -19,6 +19,7 @@ namespace MyDAL.Test
         // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;"
         // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;"
         // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;allowPublicKeyRetrieval=true;"
+        // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=true;allowPublicKeyRetrieval=false;"
         //
         private static XConnection XConn = XConnection
             .Builder()
@@ -26,8 +27,8 @@ namespace MyDAL.Test
             .SetDatabase("mydal_dev")
             .SetUser("mydal_dll")
             .SetPassword("mydal_TEST__##")
-            .SetSslMode(SslModeTypeEnum.None)
-            .SetAllowPublicKeyRetrieval(true)
+            .SetSslMode(true)
+            //.SetAllowPublicKeyRetrieval(true)
             .SetMySqlDriver<MySqlConnection>()
             .Build();
 

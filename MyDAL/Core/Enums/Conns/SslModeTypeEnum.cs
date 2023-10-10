@@ -1,6 +1,6 @@
-﻿namespace MyDAL
+﻿namespace MyDAL.Core.Enums.Conns
 {
-    public enum SslModeTypeEnum
+    internal enum SslModeTypeEnum
     {
         /// <summary>
         /// Use SSL if the server supports it.
