@@ -76,3 +76,7 @@
 /MyDAL.Net4/obj/
 /MyDAL/.idea/
 /MyDAL.sln.DotSettings.user
+/Function_Count/bin/
+/Function_Count/obj/
+/Mysql.DataNet6/bin/Debug/net6.0
+/Mysql.DataNet6/obj
