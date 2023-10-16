@@ -1,6 +1,6 @@
 ﻿namespace MyDAL
 {
-    public sealed partial class Function
+    public sealed partial class XFunction
     {
         
     }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MyDAL
 {
-    public sealed partial class Function
+    public sealed partial class XFunction
     {
         public static long COUNT(Guid field) { return 0L; }
     }

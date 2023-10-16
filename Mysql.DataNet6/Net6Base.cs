@@ -19,7 +19,7 @@ namespace Mysql.DataNet6
         /// <summary>
         /// MySQL
         /// </summary>
-        protected XConnection MyDAL_TestDB
+        protected XConnection DB_MyDAL_DEV
         {
             get
             {

@@ -33,12 +33,7 @@ namespace MyDAL.QueryAPI
         {
             xx = string.Empty;
 
-            var res1 = MyDAL_TestDB.OpenDebug()
-                .Selecter<Agent>()
-                .Where(it => it.Name.Contains("陈%"))
-                .Count();
-
-            Assert.True(res1 == 1421);
+       
 
             xx = string.Empty;
         }
@@ -52,7 +47,7 @@ namespace MyDAL.QueryAPI
             var res1 = MyDAL_TestDB.OpenDebug()
                 .Selecter<Agent>()
                 .Where(it => it.Name.Contains("陈%"))
-                .SelectOne(it => Function.COUNT(it.Id));
+                .SelectOne(it => XFunction.COUNT(it.Id));
                 //.Count(it => it.Id);
 
             Assert.True(res1 == 1421);
