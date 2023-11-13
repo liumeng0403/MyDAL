@@ -1,0 +1,38 @@
+
+count()函数的概念
+
+count()是MySQL中用来统计表中记录的一个函数，返回条件的行数
+
+
+用法：
+
+count(*)
+返回表中的记录数(包括所有列)，相当于统计表的行数(不会忽略列值为NULL的记录)
+count(1)
+忽略所有列，1表示一个固定值，也可以用count(2)、count(3)代替(不会忽略列值为NULL的记录)
+count(列名)
+返回列名指定列的记录数，在统计结果的时候，会忽略列值为NULL的记录（不包括空字符串和0），即列值为NULL的记录不统计在内
+count(distinct 列名)
+只包括列名指定列，返回指定列的不同值的记录数，在统计结果的时候，在统计结果的时候，会忽略列值为NULL的记录（不包括空字符串和0），即列值为NULL的记录不统计在内。
+
+
+count(*)&count(1)&count(列名)执行效率比较：
+
+如果列为主键，count(列名)效率优于count(1)
+如果列不为主键，count(1)效率优于count(列名)
+如果表中存在主键，count(主键列名)效率最优
+如果表中只有一列，则count(*)效率最优
+如果表有多列，且不存在主键，则count(1)效率优于count(*)
+
+
+统计列值为NULL的记录数的方式
+
+select count(*) from table where is_active is null;
+select count(1) from table where is_active is null;
+
+
+特例：
+
+select count('') from table; 返回表的记录数
+select count(0) from table; 返回表的记录数
+select count(null) from table; 返回0

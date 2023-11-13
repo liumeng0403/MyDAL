@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using MyDAL.Core.Models.MysqlFunctionParam;
 using MyDAL.Tools;
 
 namespace MyDAL.Core
@@ -416,13 +417,23 @@ namespace MyDAL.Core
         }
         private DicParam CallHandle(MethodCallExpression mcExpr)
         {
-            var clp = DC.CFH.IsContainsLikeFunc(mcExpr);
-            var cip = clp.Flag ? new ContainsInParam { Flag = false } : DC.CFH.IsContainsInFunc(mcExpr);
-            var tsp = cip.Flag || clp.Flag ? new ToStringParam { Flag = false } : DC.CFH.IsToStringFunc(mcExpr);
-            var ep = tsp.Flag || cip.Flag || clp.Flag ? new EqualsParam {Flag = false} : DC.CFH.IsEqualsFunc(mcExpr);
+            MydalFunction mf 
+                = DC.CFH.IsMydalMysqlFunction(mcExpr);
+            ContainsLikeParam clp 
+                = mf.Flag ? new ContainsLikeParam{Flag  = false} : DC.CFH.IsContainsLikeFunc(mcExpr);
+            ContainsInParam cip 
+                = clp.Flag || mf.Flag ? new ContainsInParam { Flag = false } : DC.CFH.IsContainsInFunc(mcExpr);
+            ToStringParam tsp 
+                = cip.Flag || clp.Flag || mf.Flag ? new ToStringParam { Flag = false } : DC.CFH.IsToStringFunc(mcExpr);
+            EqualsParam ep 
+                = tsp.Flag || cip.Flag || clp.Flag || mf.Flag ? new EqualsParam {Flag = false} : DC.CFH.IsEqualsFunc(mcExpr);
 
             //
-            if (clp.Flag)
+            if (mf.Flag)
+            {
+                // todo 
+            }
+            else if (clp.Flag)
             {
                 if (clp.Like == StringLikeEnum.Contains
                     || clp.Like == StringLikeEnum.StartsWith

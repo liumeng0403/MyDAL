@@ -3,6 +3,7 @@ using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
 using MyDAL.Core.Models.ExpPara;
 using System.Linq.Expressions;
+using MyDAL.Core.Models.MysqlFunctionParam;
 using MyDAL.Tools;
 
 namespace MyDAL.Core.Helper
@@ -36,6 +37,103 @@ namespace MyDAL.Core.Helper
 
             return false;
         }
+
+        internal MydalFunction IsMydalMysqlFunction(MethodCallExpression mcExpr)
+        {
+            if (typeof(XFunction) == mcExpr.Method.DeclaringType)
+            {
+                return new MydalFunction()
+                {
+                    Flag = true
+                };
+            }
+
+            return new MydalFunction()
+            {
+                Flag = false
+            };
+        }
+        
+        internal CountParam IsCount(MethodCallExpression mcExpr)
+        {
+            var exprStr = mcExpr.ToString();
+            
+            
+            return new CountParam
+            {
+                Flag = false
+            };
+            // if (exprStr.Contains(".Contains("))
+            // {
+            //     if (mcExpr.Object != null)
+            //     {
+            //         var objExpr = mcExpr.Object;
+            //         var objNodeType = mcExpr.Object.NodeType;
+            //         if (objNodeType == ExpressionType.MemberAccess)
+            //         {
+            //             var memType = objExpr.Type;
+            //             if (memType == XConfig.CSTC.String)
+            //             {
+            //                 return new ContainsLikeParam
+            //                 {
+            //                     Flag = true,
+            //                     Like = StringLikeEnum.Contains
+            //                 };
+            //             }
+            //             else
+            //             {
+            //                 return new ContainsLikeParam
+            //                 {
+            //                     Flag = false,
+            //                     Like = StringLikeEnum.None
+            //                 };
+            //             }
+            //         }
+            //         else
+            //         {
+            //             return new ContainsLikeParam
+            //             {
+            //                 Flag = false,
+            //                 Like = StringLikeEnum.None
+            //             };
+            //         }
+            //     }
+            //     else
+            //     {
+            //         return new ContainsLikeParam
+            //         {
+            //             Flag = false,
+            //             Like = StringLikeEnum.None
+            //         };
+            //     }
+            // }
+            // else if (exprStr.Contains(".StartsWith("))
+            // {
+            //     return new ContainsLikeParam
+            //     {
+            //         Flag = true,
+            //         Like = StringLikeEnum.StartsWith
+            //     };
+            // }
+            // else if (exprStr.Contains(".EndsWith("))
+            // {
+            //     return new ContainsLikeParam
+            //     {
+            //         Flag = true,
+            //         Like = StringLikeEnum.EndsWith
+            //     };
+            // }
+            // else
+            // {
+            //     return new ContainsLikeParam
+            //     {
+            //         Flag = false,
+            //         Like = StringLikeEnum.None
+            //     };
+            // }
+
+        }
+        
         internal ContainsLikeParam IsContainsLikeFunc(MethodCallExpression mcExpr)
         {
             var exprStr = mcExpr.ToString();

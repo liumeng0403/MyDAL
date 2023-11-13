@@ -16,7 +16,7 @@ namespace Function_Count
                 var db = DB_MyDAL_DEV;
                 var res1 = db.OpenDebug()
                .Selecter<Agent>()
-               .Where(it => it.Name.Contains("³Â%"))
+               .Where(it => it.Name.Contains("é™ˆ%"))
                .SelectOne(it=> XFunction.COUNT(it.Id));
             }
             catch (Exception ex)

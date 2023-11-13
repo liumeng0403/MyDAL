@@ -66,10 +66,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Devs", "Devs", "{FED9F2AE-4
 		Example and Test\MyDAL.Test\Docs\AdoNet中DbType--SqlDbType未处理类型列表.txt = Example and Test\MyDAL.Test\Docs\AdoNet中DbType--SqlDbType未处理类型列表.txt
 		Example and Test\MyDAL.Test\Docs\DbDefaultType.cs = Example and Test\MyDAL.Test\Docs\DbDefaultType.cs
 		Example and Test\MyDAL.Test\Docs\DbKeyType.cs = Example and Test\MyDAL.Test\Docs\DbKeyType.cs
-		Example and Test\MyDAL.Test\Docs\mysql 自增主键.txt = Example and Test\MyDAL.Test\Docs\mysql 自增主键.txt
 		Example and Test\MyDAL.Test\Docs\MySQL 连接字符串详解 .txt = Example and Test\MyDAL.Test\Docs\MySQL 连接字符串详解 .txt
 		Example and Test\MyDAL.Test\Docs\SqlServer--一般执行顺序.txt = Example and Test\MyDAL.Test\Docs\SqlServer--一般执行顺序.txt
 		Example and Test\MyDAL.Test\Docs\Test Sequence.txt = Example and Test\MyDAL.Test\Docs\Test Sequence.txt
+		Example and Test\MyDAL.Test\Docs\mysql 自增主键.txt = Example and Test\MyDAL.Test\Docs\mysql 自增主键.txt
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Net6", "Net6", "{3EB9C96F-49F6-45AB-940F-B0CC14A2DCB3}"
@@ -77,6 +77,11 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Functions", "Function_Count\Functions.csproj", "{C9983E78-7012-471A-8CFE-83F124AF7C30}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mysql.Data_Net6", "Mysql.DataNet6\Mysql.Data_Net6.csproj", "{03F47AA8-8364-4954-B254-714060A9DD7B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Functions", "Functions", "{0F7E24CB-4FD7-4CF4-B3D8-9806AC033234}"
+	ProjectSection(SolutionItems) = preProject
+		Documents\count.txt = Documents\count.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -178,6 +183,7 @@ Global
 		{3EB9C96F-49F6-45AB-940F-B0CC14A2DCB3} = {8C56055A-CF29-4AF8-947A-F301B0B73673}
 		{C9983E78-7012-471A-8CFE-83F124AF7C30} = {3EB9C96F-49F6-45AB-940F-B0CC14A2DCB3}
 		{03F47AA8-8364-4954-B254-714060A9DD7B} = {3EB9C96F-49F6-45AB-940F-B0CC14A2DCB3}
+		{0F7E24CB-4FD7-4CF4-B3D8-9806AC033234} = {5AA2915B-8D46-40EA-9C10-993571F2C19A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {928A4226-96F3-409A-8A83-9E7444488710}
