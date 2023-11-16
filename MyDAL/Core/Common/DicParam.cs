@@ -2,6 +2,8 @@
 using MyDAL.Core.Bases;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using MyDAL.Core.Enums;
 
 namespace MyDAL.Core.Common
 {
@@ -61,5 +63,51 @@ namespace MyDAL.Core.Common
         /// </summary>
         internal List<DicParam> Inserts { get; set; }
         internal List<DicParam> Columns { get; set; }
+        
+        
+        /// <summary>
+        /// 初始 dic 实例
+        /// </summary>
+        internal void SetDicBase(Context dc)
+        {
+                //
+                this.ID = 0;
+                this.IsDbSet = false;
+                this.Crud = dc.Crud;
+                this.Action = dc.Action;
+                this.Option = dc.Option;
+                this.Compare = dc.Compare;
+                this.Func = dc.Func;
+
+                //
+                this.GroupAction = ActionEnum.None;
+                this.GroupRef = null;
+        }
+        
+        /// <summary>
+        /// 获取列，, 由 属性 得到 列
+        /// </summary>
+        internal string GetCol(Context dc,Type mType, string prop)
+        {
+            //
+            if (mType == null)
+            {
+                return prop;
+            }
+
+            //
+            var tb = dc.XC.GetTableModel(mType);
+
+            //
+            var pc = tb?.PCA?.FirstOrDefault(it => prop.Equals(it.PropName, StringComparison.OrdinalIgnoreCase));
+            if (pc != null)
+            {
+                return pc.ColName;
+            }
+            else
+            {
+                return prop;
+            }
+        }
     }
 }

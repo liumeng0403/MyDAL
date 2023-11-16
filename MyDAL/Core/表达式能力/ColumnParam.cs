@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyDAL.Core.Models.ExpPara
+namespace MyDAL.Core.表达式能力
 {
     /// <summary>
     /// 列信息
@@ -11,7 +11,13 @@ namespace MyDAL.Core.Models.ExpPara
         /// 属性名
         /// </summary>
         internal string Prop { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         internal string Key { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         internal string Alias { get; set; }
         /// <summary>
         /// 属性类型

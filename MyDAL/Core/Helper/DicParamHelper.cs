@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using MyDAL.Core.表达式能力;
 
 namespace MyDAL.Core.Helper
 {
@@ -16,6 +17,7 @@ namespace MyDAL.Core.Helper
     /// </summary>
     internal class DicParamHelper
     {
+        // 后续废掉
         private static DicParam SetDicBase(Context dc)
         {
             return new DicParam
@@ -211,6 +213,8 @@ namespace MyDAL.Core.Helper
             //
             return ds;
         }
+        
+        // 后续废掉 , 由 属性 得到 列
         private string GetCol(Type mType, string prop)
         {
             //
@@ -479,6 +483,7 @@ namespace MyDAL.Core.Helper
             return dic;
         }
 
+        // 后续废掉
         internal DicParam CountDic(Type mType, string key, string alias = "")
         {
             var dic = SetDicBase(DC);
