@@ -450,8 +450,8 @@ namespace MyDAL.Core
                     ? new EqualsParam { Flag = false }
                     : DC.CFH.IsEqualsFunc(mcExpr);
 
-            //
-            if (mf.Flag)
+            
+            if (mf.Flag)  // mydal 原生函数
             {
                 return ProcessMysqlFunction(mcExpr);
             }

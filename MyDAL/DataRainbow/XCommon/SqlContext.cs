@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MyDAL.Core.Models.MysqlFunctionParam.DicParamResolve;
+using MyDAL.DataRainbow.MySQL;
 
 namespace MyDAL.DataRainbow.XCommon
 {
@@ -17,7 +19,7 @@ namespace MyDAL.DataRainbow.XCommon
     {
 
         internal protected Context DC { get; set; }
-        internal protected ISql DbSql { get; set; }
+        internal protected MySql DbSql { get; set; }
         internal protected StringBuilder X { get; set; } = new StringBuilder();
 
         /****************************************************************************************************************************/
@@ -80,7 +82,7 @@ namespace MyDAL.DataRainbow.XCommon
         internal protected static bool IsSelectColumnParam(DicParam param)
         {
             if (param.Action == ActionEnum.Select
-                && (param.Option == OptionEnum.Column || param.Option == OptionEnum.ColumnAs)
+                && (param.Option == OptionEnum.Column || param.Option == OptionEnum.ColumnAs || param.Option == OptionEnum.ColumnForMydalFunc)
                 && param.Columns != null)
             {
                 return true;
@@ -546,6 +548,10 @@ namespace MyDAL.DataRainbow.XCommon
                 else if (dic.Func == FuncEnum.ToString_CS)
                 {
                     SelectSpecialCsToStringCol(dic);
+                }
+                else if(dic.Func == FuncEnum.Count)
+                {
+                    new CountResolve().SelectCountCol(dic);
                 }
                 else
                 {

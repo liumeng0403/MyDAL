@@ -29,10 +29,12 @@
 
         /// <summary>
         /// ""
+        /// ColumnForMydalFunc - MyDAL 原生函数
         /// </summary>
         Column,
         ColumnAs,
         ColumnOther,
+        ColumnForMydalFunc,
         
         /// <summary>
         /// ""

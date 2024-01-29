@@ -20,58 +20,9 @@ namespace MyDAL.Core.Models.MysqlFunctionParam.DicParamResolve
             DC.Compare = CompareXEnum.None;
             var cp = new hql_获取列().GetKey(DC,mcExpr, FuncEnum.Count, CompareXEnum.None);
             DC.Func = FuncEnum.Count;
-            var format = DC.TSH.DateTime(cp.Format);
             CountParam param = CountDic(DC, DC.TbM1, cp.Prop,string.Empty);
             param.FuncName = "COUNT";
             return param;
-            
-            
-            // if (type == XConfig.CSTC.String
-            //     || type.IsEnum)
-            // {
-            //     return DC.XE.MemberAccessHandle(mcExpr.Object as MemberExpression);
-            // }
-            // else if (type.IsSimpleValueType())
-            // {
-            //     return SimpleValueTypeToString(mcExpr);
-            // }
-            // else if (type.IsNullable())
-            // {
-            //     var typeT = Nullable.GetUnderlyingType(type);
-            //     if (typeT.IsEnum)
-            //     {
-            //         return DC.XE.MemberAccessHandle(mcExpr.Object as MemberExpression);
-            //     }
-            //     else if(typeT.IsSimpleValueType())
-            //     {
-            //         return SimpleValueTypeToString(mcExpr);
-            //     }
-            //     else
-            //     {
-            //         return null;
-            //     }
-            // }
-            // else if (type == XConfig.CSTC.ByteArray)
-            // {
-            //     throw XConfig.EC.Exception(XConfig.EC._093, $"【byte[]】对应 DB column 不能使用 C# .ToString() 函数！表达式--【{mcExpr.ToString()}】");
-            // }
-            // else
-            // {
-            //     DC.Option = OptionEnum.ColumnAs;
-            //     DC.Compare = CompareXEnum.None;
-            //     var cp = DC.XE.GetKey(mcExpr, FuncEnum.ToString_CS_DateTime_Format, CompareXEnum.None);
-            //     DC.Func = FuncEnum.ToString_CS_DateTime_Format;
-            //     var format = DC.TSH.DateTime(cp.Format);
-            //     if (DC.Action == ActionEnum.Select)
-            //     {
-            //         return DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.DateFormatDic(cp, null, format) });
-            //     }
-            //     else
-            //     {
-            //         return DC.DPH.DateFormatDic(cp, null, format);
-            //     }
-            // }
-            return null;
         }
         
         /// <summary>
@@ -91,8 +42,25 @@ namespace MyDAL.Core.Models.MysqlFunctionParam.DicParamResolve
             dic.TbCol = dic.GetCol(DC,mType, key);  // key;
             dic.Param = key;
             dic.ParamRaw = key;
+            dic.Columns = new List<DicParam>();
+            dic.Columns.Add(new CountParam()
+            {
+                TbCol = dic.TbCol,
+                Option = OptionEnum.Column,
+                Func = FuncEnum.Count
+            });
 
             return dic;
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dic"></param>
+        internal void SelectCountCol(DicParam dic)
+        {
+        // todo 
+            
         }
     }
 }

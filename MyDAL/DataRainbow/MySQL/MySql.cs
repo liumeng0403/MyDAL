@@ -15,33 +15,30 @@ using System.Text;
 namespace MyDAL.DataRainbow.MySQL
 {
     internal sealed class MySql
-        : XSQL, ISql
+        : XSQL
     {
-
-        private ISql DbSql { get; set; }
+        
         internal MySql()
-        {
-            DbSql = this;
-        }
+        { }
 
         /*************************************************************************************************************************************************************/
 
-        void ISql.ObjLeftSymbol(StringBuilder sb)
+        internal void ObjLeftSymbol(StringBuilder sb)
         {
             sb.Append('`');
         }
-        void ISql.ObjRightSymbol(StringBuilder sb)
+        internal void ObjRightSymbol(StringBuilder sb)
         {
             sb.Append('`');
         }
-        void ISql.ParamSymbol(StringBuilder sb)
+        internal void ParamSymbol(StringBuilder sb)
         {
             sb.Append(QuestionMark);
         }
 
         /*************************************************************************************************************************************************************/
 
-        void ISql.Top(Context dc, StringBuilder sb)
+        internal void Top(Context dc, StringBuilder sb)
         {
             if (dc.PageIndex.HasValue
                 && dc.PageSize.HasValue)
@@ -54,11 +51,11 @@ namespace MyDAL.DataRainbow.MySQL
                 CRLF(sb); sb.Append("limit"); Spacing(sb); sb.Append(start); Comma(sb); sb.Append(dc.PageSize);
             }
         }
-        void ISql.Column(string tbAlias, string colName, StringBuilder sb)
+        internal void Column(string tbAlias, string colName, StringBuilder sb)
         {
             if (!tbAlias.IsNullStr())
             {
-                DbSql.TableXAlias(tbAlias, sb); Dot(sb);
+                TableXAlias(tbAlias, sb); Dot(sb);
             }
 
             if ("*".Equals(colName, StringComparison.OrdinalIgnoreCase))
@@ -67,29 +64,29 @@ namespace MyDAL.DataRainbow.MySQL
             }
             else
             {
-                DbSql.ObjLeftSymbol(sb); sb.Append(colName); DbSql.ObjRightSymbol(sb);
+                ObjLeftSymbol(sb); sb.Append(colName); ObjRightSymbol(sb);
             }
         }
-        void ISql.ColumnAlias(string colAlias, StringBuilder sb)
+        internal void ColumnAlias(string colAlias, StringBuilder sb)
         {
-            DbSql.ObjLeftSymbol(sb); sb.Append(colAlias); DbSql.ObjRightSymbol(sb);
+            ObjLeftSymbol(sb); sb.Append(colAlias); ObjRightSymbol(sb);
         }
-        void ISql.ColumnReplaceNullValueForSum(string tbAlias, string colName, StringBuilder sb)
+        internal void ColumnReplaceNullValueForSum(string tbAlias, string colName, StringBuilder sb)
         {
             sb.Append("ifnull");
             LeftRoundBracket(sb);
-            DbSql.Column(tbAlias, colName, sb); Comma(sb); sb.Append('0');
+            Column(tbAlias, colName, sb); Comma(sb); sb.Append('0');
             RightRoundBracket(sb);
         }
-        void ISql.TableX(string tbName, StringBuilder sb)
+        internal void TableX(string tbName, StringBuilder sb)
         {
-            DbSql.ObjLeftSymbol(sb); sb.Append(tbName); DbSql.ObjRightSymbol(sb);
+            ObjLeftSymbol(sb); sb.Append(tbName); ObjRightSymbol(sb);
         }
-        void ISql.TableXAlias(string tbAlias, StringBuilder sb)
+        internal void TableXAlias(string tbAlias, StringBuilder sb)
         {
-            DbSql.ObjLeftSymbol(sb); sb.Append(tbAlias); DbSql.ObjRightSymbol(sb);
+            ObjLeftSymbol(sb); sb.Append(tbAlias); ObjRightSymbol(sb);
         }
-        void ISql.MultiAction(ActionEnum action, StringBuilder sb, Context dc)
+        internal void MultiAction(ActionEnum action, StringBuilder sb, Context dc)
         {
             if (action == ActionEnum.And)
             {
@@ -104,15 +101,15 @@ namespace MyDAL.DataRainbow.MySQL
                 throw XConfig.EC.Exception(XConfig.EC._010, action.ToString());
             }
         }
-        void ISql.DbParam(string param, StringBuilder sb)
+        internal void DbParam(string param, StringBuilder sb)
         {
-            DbSql.ParamSymbol(sb); sb.Append(param);
+            ParamSymbol(sb); sb.Append(param);
         }
-        void ISql.OneEqualOneProcess(DicParam p, StringBuilder sb)
+        internal void OneEqualOneProcess(DicParam p, StringBuilder sb)
         {
-            Spacing(sb); DbSql.DbParam(p.Param, sb);
+            Spacing(sb); DbParam(p.Param, sb);
         }
-        void ISql.WhereTrueOrFalse(Context dc, bool flag, StringBuilder sb)
+        internal void WhereTrueOrFalse(Context dc, bool flag, StringBuilder sb)
         {
             if (flag)
             {
@@ -123,7 +120,7 @@ namespace MyDAL.DataRainbow.MySQL
                 Action(ActionEnum.Where, sb, dc); Spacing(sb); sb.Append("false");
             }
         }
-        ColumnInfo ISql.GetIndex(List<ColumnInfo> cols)
+        internal ColumnInfo GetIndex(List<ColumnInfo> cols)
         {
             return
                 cols.FirstOrDefault(it => "PRI".Equals(it.KeyType, StringComparison.OrdinalIgnoreCase)) ??
@@ -132,7 +129,7 @@ namespace MyDAL.DataRainbow.MySQL
                 cols.FirstOrDefault(it => "NO".Equals(it.IsNullable, StringComparison.OrdinalIgnoreCase)) ??
                 cols.FirstOrDefault();
         }
-        void ISql.Pager(Context dc, StringBuilder sb)
+        internal void Pager(Context dc, StringBuilder sb)
         {
             if (dc.PageIndex.HasValue
                 && dc.PageSize.HasValue)
