@@ -1,4 +1,4 @@
-﻿/.vs/
+/.vs/
 /MyDAL.Test/bin/
 /MyDAL.Test/obj/
 /MyDAL/bin/
@@ -80,3 +80,4 @@
 /Function_Count/obj/
 /Mysql.DataNet6/bin/
 /Mysql.DataNet6/obj/
+.DS_Store
