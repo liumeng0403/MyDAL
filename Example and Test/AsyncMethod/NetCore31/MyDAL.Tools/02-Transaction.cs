@@ -7,35 +7,16 @@ namespace MyDAL.Tools
     public class _02_Transaction
         : TestBase
     {
-        [Fact]
-        public async Task Tran_Inner_Conn_Manual_Using()
-        {
-            xx = string.Empty;
 
-            using (var conn = MyDAL_TestDB)
-            {
-
-                await conn.OpenAsync();
-
-                conn.BeginTransaction();
-
-                conn.CommitTransaction();
-
-                conn.Close();
-
-            }
-
-            xx = string.Empty;
-        }
 
         [Fact]
-        public async Task Tran_Outer_Conn_Manual_Using()
+        public void Tran_Outer_Conn_Manual_Using()
         {
             xx = string.Empty;
 
             var conn = MyDAL_TestDB;
-
-            await conn.OpenAsync();
+            
+            conn.Open();
 
             using (conn)
             {
@@ -75,16 +56,18 @@ namespace MyDAL.Tools
         {
             xx = string.Empty;
 
-            var conn = MyDAL_TestDB;
+            using (var conn = MyDAL_TestDB)
+            {
+                
+                conn.Open();
 
-            conn.Open();
+                conn.BeginTransaction();
 
-            conn.BeginTransaction();
+                conn.CommitTransaction();
 
-            conn.CommitTransaction();
-
-            conn.Close();
-
+                conn.Close();
+            }
+            
             xx = string.Empty;
         }
 

@@ -496,7 +496,7 @@ namespace MyDAL.Core
             switch (funcName)
             {
                 case "COUNT":
-                    return new CountResolve().Resolve(DC,mcExpr);
+                    return new CountResolve(DC).Resolve(mcExpr);
                     
             }
             throw XConfig.EC.Exception(XConfig.EC._046, $"出现异常 -- [[{mcExpr.ToString()}]] 不能解析!!!");

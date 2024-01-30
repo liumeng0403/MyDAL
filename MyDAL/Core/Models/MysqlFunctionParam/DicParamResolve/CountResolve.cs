@@ -1,30 +1,41 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Text;
 using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
 using MyDAL.Core.Models.MysqlFunctionParam.DicParamModel;
 using MyDAL.Core.表达式能力;
+using MyDAL.DataRainbow.MySQL;
+using MyDAL.DataRainbow.XCommon.Bases;
 
 namespace MyDAL.Core.Models.MysqlFunctionParam.DicParamResolve
 {
     internal class CountResolve
+        : XSQL
     {
-        internal CountParam Resolve(Context DC,MethodCallExpression mcExpr)
+        private Context DC;
+
+        internal CountResolve(Context DC)
+        {
+            this.DC = DC;
+        }
+        
+        internal CountParam Resolve(MethodCallExpression mcExpr)
         {
             var type = mcExpr.Method.DeclaringType;
-            
+
             DC.Option = OptionEnum.ColumnAs;
             DC.Compare = CompareXEnum.None;
-            var cp = new hql_获取列().GetKey(DC,mcExpr, FuncEnum.Count, CompareXEnum.None);
+            var cp = new hql_获取列().GetKey(DC, mcExpr, FuncEnum.Count, CompareXEnum.None);
             DC.Func = FuncEnum.Count;
-            CountParam param = CountDic(DC, DC.TbM1, cp.Prop,string.Empty);
+            CountParam param = CountDic(DC.TbM1, cp.Prop, string.Empty);
             param.FuncName = "COUNT";
             return param;
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -33,13 +44,13 @@ namespace MyDAL.Core.Models.MysqlFunctionParam.DicParamResolve
         /// <param name="key">字段属性名</param>
         /// <param name="alias">表别名</param>
         /// <returns></returns>
-        internal CountParam CountDic(Context DC,Type mType, string key, string alias = "")
+        internal CountParam CountDic(Type mType, string key, string alias = "")
         {
             CountParam dic = new CountParam();
             dic.SetDicBase(DC);
             dic.TbMType = mType;
             dic.TbAlias = alias;
-            dic.TbCol = dic.GetCol(DC,mType, key);  // key;
+            dic.TbCol = dic.GetCol(DC, mType, key); // key;
             dic.Param = key;
             dic.ParamRaw = key;
             dic.Columns = new List<DicParam>();
@@ -47,20 +58,28 @@ namespace MyDAL.Core.Models.MysqlFunctionParam.DicParamResolve
             {
                 TbCol = dic.TbCol,
                 Option = OptionEnum.Column,
-                Func = FuncEnum.Count
+                Func = FuncEnum.Count,
+                Crud = CrudEnum.Query
             });
 
             return dic;
         }
-        
+
         /// <summary>
-        /// 
+        /// 组装 select 片段中的 count()
         /// </summary>
-        /// <param name="dic"></param>
-        internal void SelectCountCol(DicParam dic)
+        internal void SelectCountCol(DicParam dic, StringBuilder X,MySql DbSql)
         {
-        // todo 
-            
+            Function(dic.Func, X); LeftRoundBracket(X);
+            if (dic.Crud == CrudEnum.Query)
+            {
+                DbSql.Column(string.Empty, dic.TbCol, X);
+            }
+            else 
+            {
+                throw XConfig.EC.Exception(XConfig.EC._141, $"函数 SelectCountCol -- {dic.Crud} -- 未解析！");
+            }
+            RightRoundBracket(X);
         }
     }
 }

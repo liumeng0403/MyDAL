@@ -154,7 +154,7 @@ namespace MyDAL.DataRainbow.XCommon
         private void CharLengthProcess(DicParam db)
         {
             Spacing(X);
-            Function(db.Func, X, DC); LeftRoundBracket(X);
+            Function(db.Func, X); LeftRoundBracket(X);
             if (db.Crud == CrudEnum.Join)
             {
                 DbSql.Column(db.TbAlias, db.TbCol, X);
@@ -169,7 +169,7 @@ namespace MyDAL.DataRainbow.XCommon
         private void DateFormatProcess(DicParam db)
         {
             Spacing(X);
-            Function(db.Func, X, DC); LeftRoundBracket(X);
+            Function(db.Func, X); LeftRoundBracket(X);
             if (db.Crud == CrudEnum.Join)
             {
                 DbSql.Column(db.TbAlias, db.TbCol, X);
@@ -185,7 +185,7 @@ namespace MyDAL.DataRainbow.XCommon
         private void TrimProcess(DicParam db)
         {
             Spacing(X);
-            Function(db.Func, X, DC); LeftRoundBracket(X);
+            Function(db.Func, X); LeftRoundBracket(X);
             if (db.Crud == CrudEnum.Join)
             {
                 DbSql.Column(db.TbAlias, db.TbCol, X);
@@ -398,11 +398,11 @@ namespace MyDAL.DataRainbow.XCommon
             {
                 if (dic.Option == OptionEnum.Column)
                 {
-                    Function(dic.Func, X, DC); LeftRoundBracket(X); DbSql.Column(dic.TbAlias, dic.TbCol, X); Comma(X); StringConst(dic.Format, X); RightRoundBracket(X);
+                    Function(dic.Func, X); LeftRoundBracket(X); DbSql.Column(dic.TbAlias, dic.TbCol, X); Comma(X); StringConst(dic.Format, X); RightRoundBracket(X);
                 }
                 else if (dic.Option == OptionEnum.ColumnAs)
                 {
-                    Function(dic.Func, X, DC); LeftRoundBracket(X); DbSql.Column(dic.TbAlias, dic.TbCol, X); Comma(X); StringConst(dic.Format, X); RightRoundBracket(X);
+                    Function(dic.Func, X); LeftRoundBracket(X); DbSql.Column(dic.TbAlias, dic.TbCol, X); Comma(X); StringConst(dic.Format, X); RightRoundBracket(X);
                     As(X); DbSql.ColumnAlias(dic.TbColAlias, X);
                 }
             }
@@ -410,11 +410,11 @@ namespace MyDAL.DataRainbow.XCommon
             {
                 if (dic.Option == OptionEnum.Column)
                 {
-                    Function(dic.Func, X, DC); LeftRoundBracket(X); DbSql.Column(string.Empty, dic.TbCol, X); Comma(X); StringConst(dic.Format, X); RightRoundBracket(X);
+                    Function(dic.Func, X); LeftRoundBracket(X); DbSql.Column(string.Empty, dic.TbCol, X); Comma(X); StringConst(dic.Format, X); RightRoundBracket(X);
                 }
                 else if (dic.Option == OptionEnum.ColumnAs)
                 {
-                    Function(dic.Func, X, DC); LeftRoundBracket(X); DbSql.Column(string.Empty, dic.TbCol, X); Comma(X); StringConst(dic.Format, X); RightRoundBracket(X);
+                    Function(dic.Func, X); LeftRoundBracket(X); DbSql.Column(string.Empty, dic.TbCol, X); Comma(X); StringConst(dic.Format, X); RightRoundBracket(X);
                     As(X); DbSql.ColumnAlias(dic.TbColAlias, X);
                 }
             }
@@ -551,7 +551,7 @@ namespace MyDAL.DataRainbow.XCommon
                 }
                 else if(dic.Func == FuncEnum.Count)
                 {
-                    new CountResolve().SelectCountCol(dic);
+                    new CountResolve(DC).SelectCountCol(dic,X,DbSql);
                 }
                 else
                 {
@@ -574,7 +574,7 @@ namespace MyDAL.DataRainbow.XCommon
                                       : sum.Crud == CrudEnum.Join
                                         ? sum.TbAlias
                                         : string.Empty;
-                Function(sum.Func, X, DC);
+                Function(sum.Func, X);
                 LeftRoundBracket(X);
                 if (sum.Func == FuncEnum.Sum)
                 {
@@ -626,7 +626,7 @@ namespace MyDAL.DataRainbow.XCommon
                     }
                     else
                     {
-                        Function(count.Func, X, DC); LeftRoundBracket(X); DistinctX();
+                        Function(count.Func, X); LeftRoundBracket(X); DistinctX();
                         if (count.Crud == CrudEnum.Query)
                         {
                             DbSql.Column(string.Empty, count.TbCol, X);
@@ -655,7 +655,7 @@ namespace MyDAL.DataRainbow.XCommon
                         }
                         else
                         {
-                            Function(FuncEnum.Count, X, DC); LeftRoundBracket(X); DistinctX();
+                            Function(FuncEnum.Count, X); LeftRoundBracket(X); DistinctX();
                             if (col.Crud == CrudEnum.Query)
                             {
                                 DbSql.Column(string.Empty, col.TbCol, X);
@@ -681,22 +681,22 @@ namespace MyDAL.DataRainbow.XCommon
         internal protected void CountNoneDistinct(List<DicParam> cols)
         {
             if (cols == null
-                    || cols.Count <= 0)
+                    || cols.Count <= 0)  // 没有 select 列
             {
                 X.Append(" count(*) ");
             }
-            else if (cols.Count == 1)
+            else if (cols.Count == 1)  // 有一个 select 列
             {
                 var count = cols.First().Columns?.FirstOrDefault(it => IsCountParam(it));
                 if (count != null)
                 {
                     if ("*".Equals(count.TbCol, StringComparison.OrdinalIgnoreCase))
                     {
-                        Function(count.Func, X, DC); LeftRoundBracket(X); Star(X); RightRoundBracket(X);
+                        Function(count.Func, X); LeftRoundBracket(X); Star(X); RightRoundBracket(X);
                     }
                     else
                     {
-                        Function(count.Func, X, DC); LeftRoundBracket(X);
+                        Function(count.Func, X); LeftRoundBracket(X);
                         if (count.Crud == CrudEnum.Query)
                         {
                             DbSql.Column(string.Empty, count.TbCol, X);
@@ -725,7 +725,7 @@ namespace MyDAL.DataRainbow.XCommon
                         }
                         else
                         {
-                            Function(FuncEnum.Count, X, DC); LeftRoundBracket(X);
+                            Function(FuncEnum.Count, X); LeftRoundBracket(X);
                             if (col.Crud == CrudEnum.Query)
                             {
                                 DbSql.Column(string.Empty, col.TbCol, X);
@@ -743,7 +743,7 @@ namespace MyDAL.DataRainbow.XCommon
                     }
                 }
             }
-            else
+            else  // 有多个 select 列
             {
                 CountSetMulti(false, false);
             }
@@ -759,8 +759,8 @@ namespace MyDAL.DataRainbow.XCommon
              * count(distinct cols) -- CountMulti
              */
             Spacing(X);
-            var cols = DC.Parameters.Where(it => IsSelectColumnParam(it))?.ToList();
-            var isD = DC.Parameters.Any(it => IsDistinctParam(it));
+            var cols = DC.Parameters.Where(it => IsSelectColumnParam(it))?.ToList();  // select 后的列
+            var isD = DC.Parameters.Any(it => IsDistinctParam(it)); // 是否有 distinct 
             if (isD)
             {
                 CountDistinct(cols);
@@ -868,11 +868,11 @@ namespace MyDAL.DataRainbow.XCommon
                 {
                     if (DC.Crud == CrudEnum.Join)
                     {
-                        Function(o.Func, X, DC); LeftRoundBracket(X); DbSql.Column(o.TbAlias, o.TbCol, X); RightRoundBracket(X); Spacing(X); Option(o.Option, X, DC);
+                        Function(o.Func, X); LeftRoundBracket(X); DbSql.Column(o.TbAlias, o.TbCol, X); RightRoundBracket(X); Spacing(X); Option(o.Option, X, DC);
                     }
                     else
                     {
-                        Function(o.Func, X, DC); LeftRoundBracket(X); DbSql.Column(string.Empty, o.TbCol, X); RightRoundBracket(X); Spacing(X); Option(o.Option, X, DC);
+                        Function(o.Func, X); LeftRoundBracket(X); DbSql.Column(string.Empty, o.TbCol, X); RightRoundBracket(X); Spacing(X); Option(o.Option, X, DC);
                     }
                 }
                 else

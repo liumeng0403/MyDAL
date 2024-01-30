@@ -3,13 +3,12 @@ using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.DataRainbow.XCommon;
-using MyDAL.DataRainbow.XCommon.Interfaces;
 using System.Collections.Generic;
 
 namespace MyDAL.DataRainbow.MySQL
 {
     internal sealed class MySqlProvider
-        : SqlContext, ISqlProvider
+        : SqlContext
     {
         private MySqlProvider() { }
         internal MySqlProvider(Context dc)
@@ -21,7 +20,7 @@ namespace MyDAL.DataRainbow.MySQL
 
         /****************************************************************************************************************/
 
-        List<ColumnInfo> ISqlProvider.GetColumnsInfos(string tableName)
+        internal List<ColumnInfo> GetColumnsInfos(string tableName)
         {
             DC.SQL.Clear();
             DC.SQL.Add($@"
@@ -51,7 +50,7 @@ namespace MyDAL.DataRainbow.MySQL
                                   ");
             return new DataSourceSync(DC).ExecuteReaderMultiRowForCols<ColumnInfo>();
         }
-        void ISqlProvider.GetSQL()
+        internal void GetSQL()
         {
             DC.SQL.Clear();
             switch (DC.Method)

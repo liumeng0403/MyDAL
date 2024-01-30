@@ -9,8 +9,17 @@ namespace MyDAL.DataRainbow.XCommon.Bases
     {
 
         internal protected static char At { get; } = '@';
+        /// <summary>
+        /// '?' 符号
+        /// </summary>
         internal protected static char QuestionMark { get; } = '?';
+        /// <summary>
+        /// '/' 符号
+        /// </summary>
         internal protected static char EscapeChar { get; } = '/';
+        /// <summary>
+        /// '%' 符号
+        /// </summary>
         internal protected static char Percent { get; } = '%';
         internal static char CommaChar { get; } = ',';
 
@@ -52,6 +61,9 @@ namespace MyDAL.DataRainbow.XCommon.Bases
         {
             sb.Append("\t");
         }
+        /// <summary>
+        /// 左圆括号 '(' 
+        /// </summary>
         internal protected static void LeftRoundBracket(StringBuilder sb)
         {
             sb.Append('(');
@@ -176,7 +188,10 @@ namespace MyDAL.DataRainbow.XCommon.Bases
                     throw XConfig.EC.Exception(XConfig.EC._023, compare.ToString());
             }
         }
-        internal protected static void Function(FuncEnum func, StringBuilder sb, Context dc)
+        /// <summary>
+        /// 函数
+        /// </summary>
+        internal protected static void Function(FuncEnum func, StringBuilder sb)
         {
             switch (func)
             {
@@ -198,7 +213,7 @@ namespace MyDAL.DataRainbow.XCommon.Bases
                     Spacing(sb); sb.Append("rtrim");
                     return;
                 case FuncEnum.Count:
-                    Spacing(sb); sb.Append("count");
+                    sb.Append("count");
                     return;
                 case FuncEnum.Sum:
                 case FuncEnum.SumNullable:

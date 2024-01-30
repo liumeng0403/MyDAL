@@ -121,7 +121,7 @@ namespace MyDAL.Core.Bases
         /************************************************************************************************************************/
 
         internal XConnection XConn { get; private set; }
-        internal ISqlProvider SqlProvider { get; set; }
+        internal MySqlProvider SqlProvider { get; set; }
         /// <summary>
         /// 元数据 缓存
         /// </summary>
@@ -154,6 +154,9 @@ namespace MyDAL.Core.Bases
             }
             return false;
         }
+        /// <summary>
+        /// 是否 单表操作
+        /// </summary>
         internal bool IsSingleTableOption()
         {
             switch (Crud)

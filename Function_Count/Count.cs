@@ -14,8 +14,7 @@ namespace Function_Count
             try
             {
                 var db = DB_MyDAL_DEV;
-                var res1 = db.OpenDebug()
-               .Selecter<Agent>()
+                var res1 = db.OpenDebug().Selecter<Agent>()
                .Where(it => it.Name.Contains("陈%"))
                .SelectOne(it=> XFunction.COUNT(it.Id));
             }

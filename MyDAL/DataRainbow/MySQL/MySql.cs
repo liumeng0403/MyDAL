@@ -23,14 +23,23 @@ namespace MyDAL.DataRainbow.MySQL
 
         /*************************************************************************************************************************************************************/
 
+        /// <summary>
+        /// 左 符号 '`'
+        /// </summary>
         internal void ObjLeftSymbol(StringBuilder sb)
         {
             sb.Append('`');
         }
+        /// <summary>
+        /// 右 符号 '`'
+        /// </summary>
         internal void ObjRightSymbol(StringBuilder sb)
         {
             sb.Append('`');
         }
+        /// <summary>
+        /// 参数 符号 '?'
+        /// </summary>
         internal void ParamSymbol(StringBuilder sb)
         {
             sb.Append(QuestionMark);
