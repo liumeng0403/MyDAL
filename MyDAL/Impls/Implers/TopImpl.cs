@@ -3,6 +3,7 @@ using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using MyDAL.Impls.Constraints.Methods;
 using MyDAL.Impls.Implers.Base;
@@ -42,7 +43,17 @@ namespace MyDAL.Impls.Implers
             {
                 SingleColumnHandle(columnMapFunc);
                 PreExecuteHandle(UiMethodEnum.Top);
-                return DSS.ExecuteReaderSingleColumn(columnMapFunc.Compile());
+                if (是函数单值())
+                {
+                    return new List<T>()
+                    {
+                        DSS.ExecuteScalar<T>()
+                    };
+                }
+                else
+                {
+                    return DSS.ExecuteReaderSingleColumn(columnMapFunc.Compile()); 
+                }
             }
             else
             {
@@ -50,6 +61,20 @@ namespace MyDAL.Impls.Implers
                 PreExecuteHandle(UiMethodEnum.Top);
                 return DSS.ExecuteReaderMultiRow<T>();
             }
+        }
+
+        /// <summary>
+        /// 1-count(col)<br/>
+        /// 2-
+        /// </summary>
+        private bool 是函数单值()
+        {
+            if (DC.Parameters.Any(it => it.Func.Equals(FuncEnum.Count))) // 1-count(col)
+            {
+                return true;
+            }
+
+            return false;
         }
 
     }

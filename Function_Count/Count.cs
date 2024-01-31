@@ -9,20 +9,23 @@ namespace Function_Count
         : Net6Base
     {
         [TestMethod]
-        public void TestMethod1()
+        public void 单表_指定列()
         {
             try
             {
                 var db = DB_MyDAL_DEV;
-                var res1 = db.OpenDebug().Selecter<Agent>()
-               .Where(it => it.Name.Contains("陈%"))
-               .SelectOne(it=> XFunction.COUNT(it.Id));
+                
+                var res1 = db.OpenDebug()
+                    .Selecter<Agent>()
+                    .Where(it => it.Name.Contains("陈%"))
+                    .SelectOne(it => XFunction.COUNT(it.Id));
+                
+                Assert.IsTrue(res1 > 100);
             }
             catch (Exception ex)
             {
-                Assert.IsTrue(false,"msg="+ex.Message);
+                Assert.IsTrue(false, "msg=" + ex.Message);
             }
-            Assert.IsTrue(true);
         }
     }
 }

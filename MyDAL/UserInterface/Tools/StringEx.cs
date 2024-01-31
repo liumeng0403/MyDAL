@@ -9,7 +9,6 @@ namespace MyDAL.Tools
     /// </summary>
     public static class StringEx
     {
-
         // datetime? tostring 方法
 
         // 自然 sql 命名 , select insert update delete 
@@ -29,8 +28,9 @@ namespace MyDAL.Tools
         /// </summary>
         public static bool IsEmpty(this string str)
         {
-            return null == str || 0==str.Length;
+            return null == str || 0 == str.Length;
         }
+
         /// <summary>
         /// Is null/empty/whitespace ?
         /// </summary>
@@ -55,6 +55,7 @@ namespace MyDAL.Tools
         {
             return !str.IsEmpty();
         }
+
         /// <summary>
         /// Is not null/empty/whitespace ?
         /// </summary>
@@ -65,7 +66,6 @@ namespace MyDAL.Tools
 
         public static bool ToBool(this IReadOnlyCollection<string> str)
         {
-
             /*
              * 如:
              * Microsoft.Extensions.Primitives.StringValues
@@ -76,7 +76,6 @@ namespace MyDAL.Tools
 
         public static bool ToBool(this IReadOnlyCollection<string> str, bool defaultVauleWhenNull)
         {
-
             /*
              * 如:
              * Microsoft.Extensions.Primitives.StringValues
@@ -104,7 +103,7 @@ namespace MyDAL.Tools
                     return false;
                 }
                 else if ("1".Equals(strValue)
-                        || "true".Equals(strValue))
+                         || "true".Equals(strValue))
                 {
                     return true;
                 }
@@ -117,7 +116,6 @@ namespace MyDAL.Tools
 
         public static bool? ToBoolNull(this IReadOnlyCollection<string> str)
         {
-
             /*
              * 如:
              * Microsoft.Extensions.Primitives.StringValues
@@ -170,15 +168,27 @@ namespace MyDAL.Tools
             {
                 if (str.IsNullStr())
                 {
-                    throw XConfig.EC.Exception(XConfig.EC._115, $"DateTime ToDateTime(this object obj) -- 参数 str 为 null !!!");
+                    throw XConfig.EC.Exception(XConfig.EC._115,
+                        $"DateTime ToDateTime(this object obj) -- 参数 str 为 null !!!");
                 }
+
                 return Convert.ToDateTime(str);
             }
             catch (Exception ex)
             {
-                throw XConfig.EC.Exception(XConfig.EC._114, $"DateTime ToDateTime(this object obj) -- {str?.ToString()}，InnerExeception：{ex.Message}");
+                throw XConfig.EC.Exception(XConfig.EC._114,
+                    $"DateTime ToDateTime(this object obj) -- {str?.ToString()}，InnerExeception：{ex.Message}");
             }
         }
 
+        public static bool EqualsIgnoreCase(this string str, string someStr)
+        {
+            if (null == str || null == someStr)
+            {
+                return false;
+            }
+
+            return str.Equals(someStr, StringComparison.OrdinalIgnoreCase);
+        }
     }
 }

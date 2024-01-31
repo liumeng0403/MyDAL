@@ -308,7 +308,6 @@ namespace MyDAL.AdoNet
             return result;
         }
         internal T ExecuteScalar<T>()
-            where T : struct
         {
             var result = default(T);
             var comm = new CommandInfo(SqlOne, Parameter);

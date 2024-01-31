@@ -5,79 +5,34 @@ namespace MyDAL.DataRainbow.XCommon
 {
     internal sealed class SqlParamDefaultType
     {
-        internal ParamTypeEnum BoolProc(DbEnum db)
+        internal ParamTypeEnum BoolProc()
         {
-            switch(db)
-            {
-                case DbEnum.MySQL:
-                case DbEnum.SQLServer:
                     return ParamTypeEnum.Bit_MySQL_SqlServer;
-                default:
-                    return ParamTypeEnum.None;
-            }
         }
 
-        internal ParamTypeEnum ByteProc(DbEnum db)
+        internal ParamTypeEnum ByteProc()
         {
-            switch (db)
-            {
-                case DbEnum.MySQL:
-                case DbEnum.SQLServer:
                     return ParamTypeEnum.TinyInt_MySQL_SqlServer;
-                default:
-                    return ParamTypeEnum.None;
-            }
         }
 
-        internal ParamTypeEnum ByteArrayProc(DbEnum db)
+        internal ParamTypeEnum ByteArrayProc()
         {
-            switch(db)
-            {
-                case DbEnum.MySQL:
                     return ParamTypeEnum.LongBlob_MySQL;
-                case DbEnum.SQLServer:
-                    return ParamTypeEnum.Image_SqlServer;
-                default:
-                    return ParamTypeEnum.None;
-            }
         }
 
-        internal ParamTypeEnum CharProc(DbEnum db)
+        internal ParamTypeEnum CharProc()
         {
-            switch (db)
-            {
-                case DbEnum.MySQL:
                     return ParamTypeEnum.VarChar_MySQL_SqlServer;
-                case DbEnum.SQLServer:
-                    return ParamTypeEnum.NVarChar_SqlServer;
-                default:
-                    return ParamTypeEnum.None;
-            }
         }
 
-        internal ParamTypeEnum DecimalProc(DbEnum db)
+        internal ParamTypeEnum DecimalProc()
         {
-            switch (db)
-            {
-                case DbEnum.MySQL:
-                case DbEnum.SQLServer:
                     return ParamTypeEnum.Decimal_MySQL_SqlServer;
-                default:
-                    return ParamTypeEnum.None;
-            }
         }
 
-        internal ParamTypeEnum DoubleProc(DbEnum db)
+        internal ParamTypeEnum DoubleProc()
         {
-            switch (db)
-            {
-                case DbEnum.MySQL:
                     return ParamTypeEnum.Double_MySQL;
-                case DbEnum.SQLServer:
-                    return ParamTypeEnum.Float_MySQL_SqlServer;
-                default:
-                    return ParamTypeEnum.None;
-            }
         }
 
         internal ParamTypeEnum FloatProc(DbEnum db)

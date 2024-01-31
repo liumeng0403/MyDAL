@@ -4,12 +4,12 @@ using MyDAL.Core.Extensions;
 using MyDAL.Core.Helper;
 using MyDAL.DataRainbow.MySQL;
 using MyDAL.DataRainbow.XCommon.Bases;
-using MyDAL.DataRainbow.XCommon.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using MyDAL.Tools;
 
 namespace MyDAL.Core.Bases
 {
@@ -24,13 +24,9 @@ namespace MyDAL.Core.Bases
         internal void Init(XConnection xConn)
         {
             //
-            if (XConfig.ConnTypes.TryGetValue(xConn.Conn.GetType().FullName, out var db))
+            if (!XConfig.ConnType.EqualsIgnoreCase(xConn.Conn.GetType().Name))
             {
-                DB = db;
-            }
-            else
-            {
-                throw XConfig.EC.Exception(XConfig.EC._043, "MyDAL 只支持【MySQL】.");
+                throw XConfig.EC.Exception(XConfig.EC._043, "MyDAL 只支持【MySQL DB】.");
             }
 
             //
@@ -88,8 +84,6 @@ namespace MyDAL.Core.Bases
         
         
         /************************************************************************************************************************/
-
-        internal DbEnum DB { get; set; } = DbEnum.None;
 
 
         internal CrudEnum Crud { get; set; } = CrudEnum.None;

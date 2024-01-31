@@ -59,7 +59,7 @@ namespace MyDAL.UserFacade.Query
         /// </summary>
         public T SelectOne<T>(Expression<Func<M, T>> columnMapFunc)
         {
-            return new SelectOneImpl<M>(DC).SelectOne<T>(columnMapFunc);
+            return new SelectOneImpl<M>(DC).SelectOne(columnMapFunc);
         }
 
         /*-------------------------------------------------------------------------------------------------------------------------------------------------------------*/

@@ -44,14 +44,11 @@ namespace MyDAL.Core
 
         /************************************************************************************************************/
 
-        internal static ConcurrentDictionary<string, DbEnum> ConnTypes { get; }
-            = new ConcurrentDictionary<string, DbEnum>(
-               new List<KeyValuePair<string, DbEnum>>
-               {
-                   // MySqlConnection 
-                   new KeyValuePair<string, DbEnum>("MySql.Data.MySqlClient.MySqlConnection",DbEnum.MySQL),
-                   new KeyValuePair<string, DbEnum>("Devart.Data.MySql.MySqlConnection",DbEnum.MySQL)
-               });
+        /// <summary>
+        /// 连接类型
+        /// </summary>
+        internal static string ConnType { get; } = "MySqlConnection";
+        
         internal static ConcurrentDictionary<string, Func<DbEnum, ParamTypeEnum>> ColTypes { get; }
             = new ConcurrentDictionary<string, Func<DbEnum, ParamTypeEnum>>(
                 new List<KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>>

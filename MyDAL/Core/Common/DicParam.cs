@@ -37,14 +37,18 @@ namespace MyDAL.Core.Common
         internal string ColumnTwo { get; set; }
 
         /// <summary>
-        /// model property name + dic_id
+        /// 处理后的SQL参数名：原始参数名_编号
         /// </summary>
         internal string Param { get; set; }
+        
         /// <summary>
-        /// model property name
+        /// 原始参数名
         /// </summary>
         internal string ParamRaw { get; set; }
 
+        /// <summary>
+        /// 参数值
+        /// </summary>
         internal object CsValue { get; set; }
         internal string CsValueStr { get; set; }
         internal Type CsType { get; set; }

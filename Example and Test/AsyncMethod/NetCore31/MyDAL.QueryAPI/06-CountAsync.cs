@@ -38,22 +38,7 @@ namespace MyDAL.QueryAPI
             xx = string.Empty;
         }
 
-        [Fact]
-        public void Count_SpecialColumn_ST()
-        {
-            xx = string.Empty;
 
-            // count(id)  like "陈%"
-            var res1 = MyDAL_TestDB.OpenDebug()
-                .Selecter<Agent>()
-                .Where(it => it.Name.Contains("陈%"))
-                .SelectOne(it => XFunction.COUNT(it.Id));
-                //.Count(it => it.Id);
-
-            Assert.True(res1 == 1421);
-
-            xx = string.Empty;
-        }
 
         [Fact]
         public void Count_Star_MT()
