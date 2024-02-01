@@ -8,19 +8,25 @@ namespace MyDAL.DataRainbow.XCommon.Bases
     internal abstract class XSQL
     {
 
+        /// <summary>
+        /// 符号 '@'
+        /// </summary>
         internal protected static char At { get; } = '@';
         /// <summary>
-        /// '?' 符号
+        /// 符号 '?' 
         /// </summary>
         internal protected static char QuestionMark { get; } = '?';
         /// <summary>
-        /// '/' 符号
+        /// 符号 '/' 
         /// </summary>
         internal protected static char EscapeChar { get; } = '/';
         /// <summary>
-        /// '%' 符号
+        /// 符号 '%' 
         /// </summary>
         internal protected static char Percent { get; } = '%';
+        /// <summary>
+        /// 符号 ','
+        /// </summary>
         internal static char CommaChar { get; } = ',';
 
         /****************************************************************************************************************/

@@ -63,9 +63,9 @@ namespace MyDAL.Core.Helper
         }
         private static ParamTypeEnum GetColType(string colType, Context dc)
         {
-            if (XConfig.ColTypes.TryGetValue(colType.ToLower(), out var func))
+            if (XConfig.ColTypes.TryGetValue(colType.ToLower(), out var columnType))
             {
-                return func(dc.DB);
+                return columnType;
             }
             else
             {

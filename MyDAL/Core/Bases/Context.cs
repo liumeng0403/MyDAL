@@ -200,9 +200,9 @@ namespace MyDAL.Core.Bases
                         type = Nullable.GetUnderlyingType(type);
                     }
 
-                    if (XConfig.DefaultParamTypes.TryGetValue(type, out var func))
+                    if (XConfig.DefaultParamTypes.TryGetValue(type, out var colType))
                     {
-                        p.ParamType = func(DB);
+                        p.ParamType = colType;
                     }
                     else
                     {
@@ -262,18 +262,7 @@ namespace MyDAL.Core.Bases
             }
             else
             {
-                if (DB == DbEnum.MySQL)
-                {
                     paramSymbol = XSQL.QuestionMark;
-                }
-                else if (DB == DbEnum.SQLServer)
-                {
-                    paramSymbol = XSQL.At;
-                }
-                else
-                {
-                    throw XConfig.EC.Exception(XConfig.EC._036, "暂时不支持的DB！！！");
-                }
             }
             var flatDics = DPH.FlatDics(Parameters);
 

@@ -6,7 +6,6 @@ using MyDAL.Core.Configs;
 using MyDAL.Core.Enums;
 using MyDAL.DataRainbow.MySQL;
 using MyDAL.DataRainbow.XCommon;
-using MyDAL.DataRainbow.XCommon.Interfaces;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -33,13 +32,11 @@ namespace MyDAL.Core
             .First();
 
         /************************************************************************************************************/
-
-        internal static ColTypeConfig CTC { get; } = new ColTypeConfig();
-        internal static IDbTypeConfig DTC { get; } = new DbTypeConfig();
+        
+        internal static MySqlTypeConfig DTC { get; } = new MySqlTypeConfig();
         internal static ParamInfoConfig PIC { get; } = new ParamInfoConfig();
         internal static ExceptionConfig EC { get; } = new ExceptionConfig();
         internal static CsTypeConfig CSTC { get; } = new CsTypeConfig();
-        internal static SqlParamDefaultType SPDT { get; } = new SqlParamDefaultType();
         internal static RuntimeInfo RI { get; } = new RuntimeInfo();
 
         /************************************************************************************************************/
@@ -49,54 +46,54 @@ namespace MyDAL.Core
         /// </summary>
         internal static string ConnType { get; } = "MySqlConnection";
         
-        internal static ConcurrentDictionary<string, Func<DbEnum, ParamTypeEnum>> ColTypes { get; }
-            = new ConcurrentDictionary<string, Func<DbEnum, ParamTypeEnum>>(
-                new List<KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>>
+        internal static ConcurrentDictionary<string, ParamTypeEnum> ColTypes { get; }
+            = new ConcurrentDictionary<string, ParamTypeEnum>(
+                new List<KeyValuePair<string, ParamTypeEnum>>
                 {
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "bigint",CTC.BigInt),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "binary",CTC.Binary),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "bit",CTC.Bit),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "blob",CTC.Blob),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "char",CTC.Char),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "date",CTC.Date),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "datetime",CTC.DateTime),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "decimal",CTC.Decimal),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "double",CTC.Double),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "enum",CTC.Enum),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "float",CTC.Float),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "int",CTC.Int),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "longblob",CTC.LongBlob),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "longtext",CTC.LongText),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "mediumblob",CTC.MediumBlob),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "mediumint",CTC.MediumInt),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "mediumtext",CTC.MediumText),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "set",CTC.Set),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "smallint",CTC.SmallInt),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "text",CTC.Text),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "time",CTC.Time),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "timestamp",CTC.TimeStamp),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "tinyblob",CTC.TinyBlob),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "tinyint",CTC.TinyInt),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "tinytext",CTC.TinyText),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "varbinary",CTC.VarBinary),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "varchar",CTC.VarChar),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "year",CTC.Year),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "nchar",CTC.NChar),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "nvarchar",CTC.NVarChar),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "ntext",CTC.NText),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "image",CTC.Image),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "numeric",CTC.Numeric),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "smallmoney",CTC.SmallMoney),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "money",CTC.Money),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "real",CTC.Real),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "datetime2",CTC.DateTime2),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "smalldatetime",CTC.SmallDateTime),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "datetimeoffset",CTC.DateTimeOffset),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "sql_variant",CTC.Sql_Variant),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "uniqueidentifier",CTC.UniqueIdentifier),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "xml",CTC.Xml),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "cursor",CTC.Cursor),
-                    new KeyValuePair<string, Func<DbEnum, ParamTypeEnum>>( "table",CTC.Table)
+                    new KeyValuePair<string, ParamTypeEnum>( "bigint",ParamTypeEnum.BigInt_MySQL_SqlServer),
+                    new KeyValuePair<string, ParamTypeEnum>( "binary",ParamTypeEnum.Binary_MySQL_SqlServer),
+                    new KeyValuePair<string, ParamTypeEnum>( "bit",ParamTypeEnum.Bit_MySQL_SqlServer),
+                    new KeyValuePair<string, ParamTypeEnum>( "blob",ParamTypeEnum.Blob_MySQL),
+                    new KeyValuePair<string, ParamTypeEnum>( "char",ParamTypeEnum.Char_MySQL_SqlServer),
+                    new KeyValuePair<string, ParamTypeEnum>( "date",ParamTypeEnum.Date_MySQL_SqlServer),
+                    new KeyValuePair<string, ParamTypeEnum>( "datetime",ParamTypeEnum.DateTime_MySQL_SqlServer),
+                    new KeyValuePair<string, ParamTypeEnum>( "decimal",ParamTypeEnum.Decimal_MySQL_SqlServer),
+                    new KeyValuePair<string, ParamTypeEnum>( "double",ParamTypeEnum.Double_MySQL),
+                    new KeyValuePair<string, ParamTypeEnum>( "enum",ParamTypeEnum.Enum_MySQL),
+                    new KeyValuePair<string, ParamTypeEnum>( "float",ParamTypeEnum.Float_MySQL_SqlServer),
+                    new KeyValuePair<string, ParamTypeEnum>( "int",ParamTypeEnum.Int_MySQL_SqlServer),
+                    new KeyValuePair<string, ParamTypeEnum>( "longblob",ParamTypeEnum.LongBlob_MySQL),
+                    new KeyValuePair<string, ParamTypeEnum>( "longtext",ParamTypeEnum.LongText_MySQL),
+                    new KeyValuePair<string, ParamTypeEnum>( "mediumblob",ParamTypeEnum.MediumBlob_MySQL),
+                    new KeyValuePair<string, ParamTypeEnum>( "mediumint",ParamTypeEnum.MediumInt_MySQL),
+                    new KeyValuePair<string, ParamTypeEnum>( "mediumtext",ParamTypeEnum.MediumText_MySQL),
+                    new KeyValuePair<string, ParamTypeEnum>( "set",ParamTypeEnum.Set_MySQL),
+                    new KeyValuePair<string, ParamTypeEnum>( "smallint",ParamTypeEnum.SmallInt_MySQL_SqlServer),
+                    new KeyValuePair<string, ParamTypeEnum>( "text",ParamTypeEnum.Text_MySQL_SqlServer),
+                    new KeyValuePair<string, ParamTypeEnum>( "time",ParamTypeEnum.Time_MySQL_SqlServer),
+                    new KeyValuePair<string, ParamTypeEnum>( "timestamp",ParamTypeEnum.TimeStamp_MySQL_SqlServer),
+                    new KeyValuePair<string, ParamTypeEnum>( "tinyblob",ParamTypeEnum.TinyBlob_MySQL),
+                    new KeyValuePair<string, ParamTypeEnum>( "tinyint",ParamTypeEnum.TinyInt_MySQL_SqlServer),
+                    new KeyValuePair<string, ParamTypeEnum>( "tinytext",ParamTypeEnum.TinyText_MySQL),
+                    new KeyValuePair<string, ParamTypeEnum>( "varbinary",ParamTypeEnum.VarBinary_MySQL_SqlServer),
+                    new KeyValuePair<string, ParamTypeEnum>( "varchar",ParamTypeEnum.VarChar_MySQL_SqlServer),
+                    new KeyValuePair<string, ParamTypeEnum>( "year",ParamTypeEnum.Year_MySQL),
+                    new KeyValuePair<string, ParamTypeEnum>( "nchar",ParamTypeEnum.None),
+                    new KeyValuePair<string, ParamTypeEnum>( "nvarchar",ParamTypeEnum.None),
+                    new KeyValuePair<string, ParamTypeEnum>( "ntext",ParamTypeEnum.None),
+                    new KeyValuePair<string, ParamTypeEnum>( "image",ParamTypeEnum.None),
+                    new KeyValuePair<string, ParamTypeEnum>( "numeric",ParamTypeEnum.None),
+                    new KeyValuePair<string, ParamTypeEnum>( "smallmoney",ParamTypeEnum.None),
+                    new KeyValuePair<string, ParamTypeEnum>( "money",ParamTypeEnum.None),
+                    new KeyValuePair<string, ParamTypeEnum>( "real",ParamTypeEnum.None),
+                    new KeyValuePair<string, ParamTypeEnum>( "datetime2",ParamTypeEnum.None),
+                    new KeyValuePair<string, ParamTypeEnum>( "smalldatetime",ParamTypeEnum.None),
+                    new KeyValuePair<string, ParamTypeEnum>( "datetimeoffset",ParamTypeEnum.None),
+                    new KeyValuePair<string, ParamTypeEnum>( "sql_variant",ParamTypeEnum.None),
+                    new KeyValuePair<string, ParamTypeEnum>( "uniqueidentifier",ParamTypeEnum.None),
+                    new KeyValuePair<string, ParamTypeEnum>( "xml",ParamTypeEnum.None),
+                    new KeyValuePair<string, ParamTypeEnum>( "cursor",ParamTypeEnum.None),
+                    new KeyValuePair<string, ParamTypeEnum>( "table",ParamTypeEnum.None)
                 });
         internal static ConcurrentDictionary<Type, Func<Context, ParamTypeEnum, DbType>> DbTypeFuncs { get; }
             = new ConcurrentDictionary<Type, Func<Context, ParamTypeEnum, DbType>>(
@@ -148,28 +145,28 @@ namespace MyDAL.Core
                     new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(CSTC.Ushort,PIC.UshortParam),
                     new KeyValuePair<Type, Func<DicParam, Type, Context, ParamInfo>>(CSTC.TimeSpan,PIC.TimeSpanParam)
                 });
-        internal static ConcurrentDictionary<Type, Func<DbEnum, ParamTypeEnum>> DefaultParamTypes { get; }
-            = new ConcurrentDictionary<Type, Func<DbEnum, ParamTypeEnum>>(
-                new List<KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>>
+        internal static ConcurrentDictionary<Type, ParamTypeEnum> DefaultParamTypes { get; }
+            = new ConcurrentDictionary<Type, ParamTypeEnum>(
+                new List<KeyValuePair<Type, ParamTypeEnum>>
                 {
-                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.Bool,SPDT.BoolProc),
-                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.Byte,SPDT.ByteProc),
-                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.ByteArray,SPDT.ByteArrayProc),
-                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.Char,SPDT.CharProc),
-                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.Decimal,SPDT.DecimalProc),
-                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.Double,SPDT.DoubleProc),
-                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.Float,SPDT.FloatProc),
-                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.Int,SPDT.IntProc),
-                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.Long,SPDT.LongProc),
-                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.Sbyte,SPDT.SbyteProc),
-                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.Short,SPDT.ShortProc),
-                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.Uint,SPDT.UintProc),
-                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.Ulong,SPDT.UlongProc),
-                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.Ushort,SPDT.UshortProc),
-                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.String,SPDT.StringProc),
-                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.DateTime,SPDT.DateTimeProc),
-                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.TimeSpan,SPDT.TimeSpanProc),
-                    new KeyValuePair<Type, Func<DbEnum, ParamTypeEnum>>(CSTC.Guid,SPDT.GuidProc)
+                    new KeyValuePair<Type, ParamTypeEnum>(CSTC.Bool,ParamTypeEnum.Bit_MySQL_SqlServer),
+                    new KeyValuePair<Type, ParamTypeEnum>(CSTC.Byte,ParamTypeEnum.TinyInt_MySQL_SqlServer),
+                    new KeyValuePair<Type, ParamTypeEnum>(CSTC.ByteArray,ParamTypeEnum.LongBlob_MySQL),
+                    new KeyValuePair<Type, ParamTypeEnum>(CSTC.Char,ParamTypeEnum.VarChar_MySQL_SqlServer),
+                    new KeyValuePair<Type, ParamTypeEnum>(CSTC.Decimal,ParamTypeEnum.Decimal_MySQL_SqlServer),
+                    new KeyValuePair<Type, ParamTypeEnum>(CSTC.Double,ParamTypeEnum.Double_MySQL),
+                    new KeyValuePair<Type, ParamTypeEnum>(CSTC.Float,ParamTypeEnum.Float_MySQL_SqlServer),
+                    new KeyValuePair<Type, ParamTypeEnum>(CSTC.Int,ParamTypeEnum.Int_MySQL_SqlServer),
+                    new KeyValuePair<Type, ParamTypeEnum>(CSTC.Long,ParamTypeEnum.BigInt_MySQL_SqlServer),
+                    new KeyValuePair<Type, ParamTypeEnum>(CSTC.Sbyte,ParamTypeEnum.TinyInt_MySQL_SqlServer),
+                    new KeyValuePair<Type, ParamTypeEnum>(CSTC.Short,ParamTypeEnum.SmallInt_MySQL_SqlServer),
+                    new KeyValuePair<Type, ParamTypeEnum>(CSTC.Uint,ParamTypeEnum.Int_MySQL_SqlServer),
+                    new KeyValuePair<Type, ParamTypeEnum>(CSTC.Ulong,ParamTypeEnum.BigInt_MySQL_SqlServer),
+                    new KeyValuePair<Type, ParamTypeEnum>(CSTC.Ushort,ParamTypeEnum.SmallInt_MySQL_SqlServer),
+                    new KeyValuePair<Type, ParamTypeEnum>(CSTC.String,ParamTypeEnum.LongText_MySQL),
+                    new KeyValuePair<Type, ParamTypeEnum>(CSTC.DateTime,ParamTypeEnum.DateTime_MySQL_SqlServer),
+                    new KeyValuePair<Type, ParamTypeEnum>(CSTC.TimeSpan,ParamTypeEnum.Time_MySQL_SqlServer),
+                    new KeyValuePair<Type, ParamTypeEnum>(CSTC.Guid,ParamTypeEnum.Char_MySQL_SqlServer)
                 });
 
     }

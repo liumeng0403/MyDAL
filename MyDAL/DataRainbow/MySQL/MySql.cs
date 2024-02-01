@@ -4,7 +4,6 @@ using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Extensions;
 using MyDAL.DataRainbow.XCommon.Bases;
-using MyDAL.DataRainbow.XCommon.Interfaces;
 using MyDAL.ModelTools;
 using MyDAL.Tools;
 using System;

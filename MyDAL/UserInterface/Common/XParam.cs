@@ -16,7 +16,7 @@
         public object ParamValue { get; set; }
 
         /// <summary>
-        /// 参数 -- 类型
+        /// 表的列类型
         /// </summary>
         public ParamTypeEnum ParamType { get; set; }
 
