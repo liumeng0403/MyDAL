@@ -165,14 +165,16 @@ namespace MyDAL.Core
             }
         }
 
-        private DicParam HandBin(BinaryExpression binExpr, List<string> pres)
+        // ------------------------------------------------------------------------------------------------
+        
+        private DicParam HandBin(BinaryExpression binExpr, List<string> pres,ColFuncEnum colFunc)
         {
             var bin = HandBinExpr(pres, binExpr);
             if ((bin.Node == ExpressionType.Equal || bin.Node == ExpressionType.NotEqual)
                 && bin.Right.NodeType == ExpressionType.Constant
                 && (bin.Right as ConstantExpression).Value == null)
             {
-                var cp = new hql_获取列().GetKey(DC,bin.Left, FuncEnum.None, CompareXEnum.None);
+                var cp = new hql_获取列().GetKey(DC,bin.Left, ColFuncEnum.None, CompareXEnum.None);
                 if (bin.Node == ExpressionType.Equal)
                 {
                     DC.Option = OptionEnum.IsNull;
@@ -182,7 +184,7 @@ namespace MyDAL.Core
                     DC.Option = OptionEnum.IsNotNull;
                 }
 
-                return DC.DPH.IsNullDic(cp);
+                return DC.DPH.IsNullDic(cp,colFunc);
             }
             else
             {
@@ -202,40 +204,39 @@ namespace MyDAL.Core
                 var toString = tp.Flag ? false : DC.CFH.IsToStringFunc(leftStr);
                 if (length)
                 {
-                    var cp = new hql_获取列().GetKey(DC,left, FuncEnum.CharLength, CompareXEnum.None);
+                    var cp = new hql_获取列().GetKey(DC,left, ColFuncEnum.CharLength, CompareXEnum.None);
                     var val = DC.VH.ValueProcess(bin.Right, cp.ValType);
                     DC.Option = OptionEnum.Function;
-                    DC.Func = FuncEnum.CharLength;
                     DC.Compare = bin.Compare;
-                    return DC.DPH.CharLengthDic(cp, val);
+                    return DC.DPH.CharLengthDic(cp, val, ColFuncEnum.CharLength);
                 }
                 else if (tp.Flag)
                 {
                     var cp = new hql_获取列().GetKey(DC,left, tp.Trim, CompareXEnum.None);
                     var val = DC.VH.ValueProcess(bin.Right, cp.ValType);
                     DC.Option = OptionEnum.Function;
-                    DC.Func = tp.Trim;
                     DC.Compare = bin.Compare;
-                    return DC.DPH.TrimDic(cp, val);
+                    return DC.DPH.TrimDic(cp, val,tp.Trim);
                 }
                 else if (toString)
                 {
-                    return new CsToStringExpression(DC).WhereFuncToString(left, bin);
+                    return new CsToStringExpression(DC).WhereFuncToString(left, bin,colFunc);
                 }
                 else
                 {
-                    var cp = new hql_获取列().GetKey(DC,left, FuncEnum.None, CompareXEnum.None);
+                    var cp = new hql_获取列().GetKey(DC,left, ColFuncEnum.None, CompareXEnum.None);
                     var val = DC.VH.ValueProcess(bin.Right, cp.ValType);
                     DC.Option = OptionEnum.Compare;
-                    DC.Func = FuncEnum.None;
                     DC.Compare = bin.Compare;
-                    return DC.DPH.CompareDic(cp, val);
+                    return DC.DPH.CompareDic(cp, val,colFunc);
                 }
             }
         }
 
         /********************************************************************************************************************/
 
+        // todo 
+        
         private DicParam StringLike(MethodCallExpression mcExpr, StringLikeEnum type)
         {
             if (mcExpr.Object == null)
@@ -252,13 +253,12 @@ namespace MyDAL.Core
                     var memType = objExpr.Type;
                     if (memType == typeof(string))
                     {
-                        var cp = new hql_获取列().GetKey(DC,memO, FuncEnum.None, CompareXEnum.None);
+                        var cp = new hql_获取列().GetKey(DC,memO, ColFuncEnum.None, CompareXEnum.None);
                         var valExpr = mcExpr.Arguments[0];
                         var val = DC.VH.ValueProcess(valExpr, cp.ValType);
                         val = ValueInfo.LikeVI(val, type, DC);
                         DC.Option = OptionEnum.Compare;
                         DC.Compare = CompareXEnum.Like;
-                        DC.Func = FuncEnum.None;
                         return DC.DPH.LikeDic(cp, val);
                     }
                 }
@@ -280,13 +280,12 @@ namespace MyDAL.Core
                 if (objNodeType == ExpressionType.MemberAccess)
                 {
                     var memO = objExpr as MemberExpression;
-                    var cp = new hql_获取列().GetKey(DC,memO, FuncEnum.None, CompareXEnum.None);
+                    var cp = new hql_获取列().GetKey(DC,memO, ColFuncEnum.None, CompareXEnum.None);
                     if (nodeType == ExpressionType.MemberAccess)
                     {
                         var val = DC.VH.ValueProcess(valExpr, cp.ValType);
                         DC.Option = OptionEnum.Compare;
-                        DC.Func = FuncEnum.None; // FuncEnum.In;
-                        DC.Compare = CompareXEnum.Equal; // CompareXEnum.None;
+                        DC.Compare = CompareXEnum.Equal; 
                         return DC.DPH.CompareDic(cp, val);
                     }
                 }
@@ -299,17 +298,16 @@ namespace MyDAL.Core
         {
             if (nodeType == ExpressionType.MemberAccess)
             {
-                var cp = new hql_获取列().GetKey(DC,keyExpr, FuncEnum.None, CompareXEnum.In);
+                var cp = new hql_获取列().GetKey(DC,keyExpr, ColFuncEnum.None, CompareXEnum.In);
                 var val = DC.VH.ValueProcess(valExpr, cp.ValType);
                 DC.Option = OptionEnum.Compare;
-                DC.Func = FuncEnum.None; // FuncEnum.In;
-                DC.Compare = CompareXEnum.In; // CompareXEnum.None;
+                DC.Compare = CompareXEnum.In; 
                 return DC.DPH.InDic(cp, val);
             }
             else if (nodeType == ExpressionType.NewArrayInit)
             {
                 var naExpr = valExpr as NewArrayExpression;
-                var cp = new hql_获取列().GetKey(DC,keyExpr, FuncEnum.None, CompareXEnum.In);
+                var cp = new hql_获取列().GetKey(DC,keyExpr, ColFuncEnum.None, CompareXEnum.In);
                 var vals = new List<ValueInfo>();
                 foreach (var exp in naExpr.Expressions)
                 {
@@ -322,14 +320,13 @@ namespace MyDAL.Core
                     ValStr = string.Empty
                 };
                 DC.Option = OptionEnum.Compare;
-                DC.Func = FuncEnum.None; // FuncEnum.In;
-                DC.Compare = CompareXEnum.In; // CompareXEnum.None;
+                DC.Compare = CompareXEnum.In; 
                 return DC.DPH.InDic(cp, val);
             }
             else if (nodeType == ExpressionType.ListInit)
             {
                 var liExpr = valExpr as ListInitExpression;
-                var cp = new hql_获取列().GetKey(DC,keyExpr, FuncEnum.None, CompareXEnum.In);
+                var cp = new hql_获取列().GetKey(DC,keyExpr, ColFuncEnum.None, CompareXEnum.In);
                 var vals = new List<ValueInfo>();
                 foreach (var ini in liExpr.Initializers)
                 {
@@ -342,8 +339,7 @@ namespace MyDAL.Core
                     ValStr = string.Empty
                 };
                 DC.Option = OptionEnum.Compare;
-                DC.Func = FuncEnum.None; // FuncEnum.In;
-                DC.Compare = CompareXEnum.In; // CompareXEnum.None;
+                DC.Compare = CompareXEnum.In; 
                 return DC.DPH.InDic(cp, val);
             }
             else if (nodeType == ExpressionType.MemberInit)
@@ -524,7 +520,7 @@ namespace MyDAL.Core
             if (DC.IsSingleTableOption()
                 || DC.Crud == CrudEnum.None)
             {
-                var cp = new hql_获取列().GetKey(DC,memExpr, FuncEnum.None, CompareXEnum.None);
+                var cp = new hql_获取列().GetKey(DC,memExpr, ColFuncEnum.None, CompareXEnum.None);
                 if (string.IsNullOrWhiteSpace(cp.Key))
                 {
                     throw XConfig.EC.Exception(XConfig.EC._047, "无法解析 列名 !!!");
@@ -532,7 +528,10 @@ namespace MyDAL.Core
 
                 if (DC.Action == ActionEnum.Select)
                 {
-                    return DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.ColumnDic(cp) });
+                    return DC.DPH.SelectColumnDic(new List<DicParam>
+                    {
+                        DC.DPH.ColumnDic(cp)
+                    },ColFuncEnum.None);
                 }
                 else if (DC.Action == ActionEnum.Where)
                 {
@@ -555,7 +554,7 @@ namespace MyDAL.Core
             {
                 if (DC.Action == ActionEnum.Where)
                 {
-                    var cp = new hql_获取列().GetKey(DC,memExpr, FuncEnum.None, CompareXEnum.None);
+                    var cp = new hql_获取列().GetKey(DC,memExpr, ColFuncEnum.None, CompareXEnum.None);
                     var dp = BoolDefaultCondition(cp);
                     if (dp != null)
                     {
@@ -578,10 +577,9 @@ namespace MyDAL.Core
                         var leftStr = memExpr.ToString();
                         if (DC.CFH.IsLengthFunc(leftStr))
                         {
-                            var cp = new hql_获取列().GetKey(DC,memExpr, FuncEnum.CharLength, CompareXEnum.None);
-                            DC.Func = FuncEnum.CharLength;
+                            var cp = new hql_获取列().GetKey(DC,memExpr, ColFuncEnum.CharLength, CompareXEnum.None);
                             DC.Compare = CompareXEnum.None;
-                            return DC.DPH.CharLengthDic(cp, null);
+                            return DC.DPH.CharLengthDic(cp, null,ColFuncEnum.CharLength);
                         }
                         else
                         {
@@ -592,7 +590,9 @@ namespace MyDAL.Core
                             if (DC.Action == ActionEnum.Select)
                             {
                                 return DC.DPH.SelectColumnDic(new List<DicParam>
-                                    { DC.DPH.JoinColumnDic(exp2.Type, field, alias, field) });
+                                {
+                                    DC.DPH.JoinColumnDic(exp2.Type, field, alias, field)
+                                },ColFuncEnum.None);
                             }
                             else
                             {
@@ -621,14 +621,14 @@ namespace MyDAL.Core
             var mems = nExpr.Members;
             for (var i = 0; i < args.Count; i++)
             {
-                var cp = new hql_获取列().GetKey(DC,args[i], FuncEnum.None, CompareXEnum.None);
+                var cp = new hql_获取列().GetKey(DC,args[i], ColFuncEnum.None, CompareXEnum.None);
                 var colAlias = mems[i].Name;
                 DC.Option = OptionEnum.None;
                 DC.Compare = CompareXEnum.None;
                 list.Add(DC.DPH.SelectMemberInitDic(cp, colAlias));
             }
 
-            return DC.DPH.SelectColumnDic(list);
+            return DC.DPH.SelectColumnDic(list,ColFuncEnum.None);
         }
 
         private DicParam BinaryHandle(Expression body, ParameterExpression firstParam)
@@ -699,7 +699,7 @@ namespace MyDAL.Core
                 }
                 else
                 {
-                    cp = new hql_获取列().GetKey(DC,mbEx.Expression, FuncEnum.None, CompareXEnum.None);
+                    cp = new hql_获取列().GetKey(DC,mbEx.Expression, ColFuncEnum.None, CompareXEnum.None);
                 }
 
                 var colAlias = mbEx.Member.Name;
@@ -713,8 +713,8 @@ namespace MyDAL.Core
 
         private DicParam HandOnBinary(BinaryExpression binExpr)
         {
-            var cp1 = new hql_获取列().GetKey(DC,binExpr.Left, FuncEnum.None, CompareXEnum.None);
-            var cp2 = new hql_获取列().GetKey(DC,binExpr.Right, FuncEnum.None, CompareXEnum.None);
+            var cp1 = new hql_获取列().GetKey(DC,binExpr.Left, ColFuncEnum.None, CompareXEnum.None);
+            var cp2 = new hql_获取列().GetKey(DC,binExpr.Right, ColFuncEnum.None, CompareXEnum.None);
             DC.Option = OptionEnum.Compare;
             DC.Compare = GetCompareType(binExpr.NodeType, false);
             return DC.DPH.OnDic(cp1, cp2);
@@ -756,7 +756,7 @@ namespace MyDAL.Core
             }
             else if (nodeType == ExpressionType.Convert)
             {
-                var cp = new hql_获取列().GetKey(DC,body, FuncEnum.None, CompareXEnum.None);
+                var cp = new hql_获取列().GetKey(DC,body, ColFuncEnum.None, CompareXEnum.None);
                 if (string.IsNullOrWhiteSpace(cp.Key))
                 {
                     throw XConfig.EC.Exception(XConfig.EC._052, "无法解析 列名2 !!!");
@@ -767,7 +767,7 @@ namespace MyDAL.Core
             else if (nodeType == ExpressionType.MemberInit)
             {
                 var miExpr = body as MemberInitExpression;
-                return DC.DPH.SelectColumnDic(HandSelectMemberInit(miExpr));
+                return DC.DPH.SelectColumnDic(HandSelectMemberInit(miExpr),ColFuncEnum.None);
             }
             else if (nodeType == ExpressionType.New)
             {

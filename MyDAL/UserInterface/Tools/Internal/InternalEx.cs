@@ -39,7 +39,7 @@ namespace MyDAL.Tools
         {
             try
             {
-                if (obj.IsNullStr())
+                if (obj.IsNull())
                 {
                     return null;
                 }

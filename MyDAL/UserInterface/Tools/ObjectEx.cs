@@ -36,7 +36,7 @@ namespace MyDAL.Tools
                 }
                 else if (obj is string)
                 {
-                    if (obj.IsNullStr())
+                    if (obj.IsNull())
                     {
                         return false;
                     }
@@ -236,7 +236,7 @@ namespace MyDAL.Tools
                 else if (obj is string)
                 {
                     var str = ((string)obj);
-                    if (str.IsNullStr())
+                    if (str.IsBlank())
                     {
                         return null;
                     }
@@ -248,7 +248,7 @@ namespace MyDAL.Tools
                 else if (obj is IEnumerable)    //   如 Microsoft.Extensions.Primitives.StringValues
                 {
                     var str = obj.ToString();
-                    if (str.IsNullStr())
+                    if (str.IsBlank())
                     {
                         return null;
                     }

@@ -21,8 +21,10 @@ namespace MyDAL.Impls.Implers
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
             DC.Compare = CompareXEnum.None;
-            DC.Func = FuncEnum.Count;
-            DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(typeof(M), "*") }));
+            DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam>
+            {
+                DC.DPH.CountDic(typeof(M), "*")
+            },ColFuncEnum.Count));
             PreExecuteHandle(UiMethodEnum.IsExist);
             var count = DSS.ExecuteScalar<long>();
             return count > 0;
@@ -41,9 +43,11 @@ namespace MyDAL.Impls.Implers
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
             DC.Compare = CompareXEnum.None;
-            DC.Func = FuncEnum.Count;
             var dic = DC.Parameters.FirstOrDefault(it => it.Action == ActionEnum.From);
-            DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(dic.TbMType, "*") }));
+            DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam>
+            {
+                DC.DPH.CountDic(dic.TbMType, "*")
+            },ColFuncEnum.Count));
             PreExecuteHandle(UiMethodEnum.IsExist);
             var count = DSS.ExecuteScalar<long>();
             return count > 0;

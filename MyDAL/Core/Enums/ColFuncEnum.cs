@@ -1,6 +1,6 @@
 ﻿namespace MyDAL.Core.Enums
 {
-    internal enum FuncEnum
+    internal enum ColFuncEnum
     {
         /// <summary>
         /// ""

@@ -14,7 +14,10 @@ namespace MyDAL.Core.Bases
         internal ActionEnum Action { get; set; }
         internal OptionEnum Option { get; set; }
         internal CompareXEnum Compare { get; set; }
-        internal FuncEnum Func { get; set; }
+        /// <summary>
+        /// 列-函数-类型
+        /// </summary>
+        internal ColFuncEnum Func { get; set; }
 
         //
         internal ActionEnum GroupAction { get; set; }

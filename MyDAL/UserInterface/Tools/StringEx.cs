@@ -14,14 +14,7 @@ namespace MyDAL.Tools
         // 自然 sql 命名 , select insert update delete 
 
         // create 返回 实体 , 支持自增 主键 携带返回      
-        /// <summary>
-        /// Is null/empty/whitespace ?
-        /// </summary>
-        [Obsolete("请使用IsEmpty/IsBlank方法")]
-        public static bool IsNullStr(this string str)
-        {
-            return string.IsNullOrWhiteSpace(str);
-        }
+
 
         /// <summary>
         /// Is null/empty ?
@@ -32,20 +25,11 @@ namespace MyDAL.Tools
         }
 
         /// <summary>
-        /// Is null/empty/whitespace ?
+        /// 是 null/empty/whitespace 字符串
         /// </summary>
         public static bool IsBlank(this string str)
         {
             return string.IsNullOrWhiteSpace(str);
-        }
-
-        /// <summary>
-        /// Is not null/empty/whitespace ?
-        /// </summary>
-        [Obsolete("请使用IsNotEmpty/IsNotBlank方法")]
-        public static bool IsNotNullStr(this string str)
-        {
-            return !str.IsNullStr();
         }
 
         /// <summary>
@@ -57,7 +41,7 @@ namespace MyDAL.Tools
         }
 
         /// <summary>
-        /// Is not null/empty/whitespace ?
+        /// 非 null/empty/whitespace 字符串
         /// </summary>
         public static bool IsNotBlank(this string str)
         {
@@ -139,34 +123,11 @@ namespace MyDAL.Tools
 
         // ----------------------------------------------------------------------------------------------------------------------
 
-        /// <summary>
-        /// Obj is null/empty/whitespace ?
-        /// </summary>
-        public static bool IsNullStr(this object obj)
-        {
-            if (null == obj)
-            {
-                return true;
-            }
-            else
-            {
-                return obj.ToString().IsNullStr();
-            }
-        }
-
-        /// <summary>
-        /// Obj is not null/empty/whitespace ?
-        /// </summary>
-        public static bool IsNotNullStr(this object obj)
-        {
-            return !obj.IsNullStr();
-        }
-
         public static DateTime ToDateTime(this string str)
         {
             try
             {
-                if (str.IsNullStr())
+                if (str.IsBlank())
                 {
                     throw XConfig.EC.Exception(XConfig.EC._115,
                         $"DateTime ToDateTime(this object obj) -- 参数 str 为 null !!!");

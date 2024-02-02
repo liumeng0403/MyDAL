@@ -107,7 +107,7 @@ namespace MyDAL.Core
                      pca.Prop = p;
                      var ca = DC.AH.GetAttribute<XColumnAttribute>(mType, p) as XColumnAttribute;
                      if (ca == null
-                        || ca.Name.IsNullStr())
+                        || ca.Name.IsBlank())
                      {
                          pca.Col = tm.TbCols.FirstOrDefault(it => it.ColumnName.Equals(p.Name, StringComparison.OrdinalIgnoreCase));
                          if (pca.Col == null)

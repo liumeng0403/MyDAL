@@ -77,11 +77,15 @@ namespace MyDAL.Core.Common
                 //
                 this.ID = 0;
                 this.IsDbSet = false;
+                
+                //
                 this.Crud = dc.Crud;
                 this.Action = dc.Action;
                 this.Option = dc.Option;
                 this.Compare = dc.Compare;
-                this.Func = dc.Func;
+                
+                //
+                this.Func = ColFuncEnum.None;
 
                 //
                 this.GroupAction = ActionEnum.None;

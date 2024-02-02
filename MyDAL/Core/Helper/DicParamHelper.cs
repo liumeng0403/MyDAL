@@ -25,12 +25,16 @@ namespace MyDAL.Core.Helper
                 //
                 ID = 0,
                 IsDbSet = false,
+                
+                //
                 Crud = dc.Crud,
                 Action = dc.Action,
                 Option = dc.Option,
                 Compare = dc.Compare,
-                Func = dc.Func,
 
+                //
+                Func = ColFuncEnum.None,
+                
                 //
                 GroupAction = ActionEnum.None,
                 GroupRef = null
@@ -282,7 +286,6 @@ namespace MyDAL.Core.Helper
 
                 //
                 DC.Compare = CompareXEnum.None;
-                DC.Func = FuncEnum.None;
             }
         }
         internal DbParamInfo GetParameters(List<DicParam> list)
@@ -318,7 +321,7 @@ namespace MyDAL.Core.Helper
 
         /*******************************************************************************************************/
 
-        internal DicParam CharLengthDic(ColumnParam cp, ValueInfo v)
+        internal DicParam CharLengthDic(ColumnParam cp, ValueInfo v, ColFuncEnum colFunc)
         {
             var dic = SetDicBase(DC);
             dic.TbMType = cp.TbMType;
@@ -331,10 +334,12 @@ namespace MyDAL.Core.Helper
             dic.CsValueStr = v?.ValStr;
             dic.CsType = cp.ValType;
 
+            dic.Func = colFunc;
+
             return dic;
         }
 
-        internal DicParam TrimDic(ColumnParam cp, ValueInfo v)
+        internal DicParam TrimDic(ColumnParam cp, ValueInfo v, ColFuncEnum colFunc)
         {
             var dic = SetDicBase(DC);
             dic.TbMType = cp.TbMType;
@@ -347,10 +352,12 @@ namespace MyDAL.Core.Helper
             dic.CsValueStr = v?.ValStr;
             dic.CsType = cp.ValType;
 
+            dic.Func = colFunc;
+
             return dic;
         }
 
-        internal DicParam DateFormatDic(ColumnParam cp, ValueInfo v, string format)
+        internal DicParam DateFormatDic(ColumnParam cp, ValueInfo v, string format,ColFuncEnum colFunc)
         {
             var dic = SetDicBase(DC);
             dic.TbMType = cp.TbMType;
@@ -364,6 +371,8 @@ namespace MyDAL.Core.Helper
             dic.CsValueStr = v?.ValStr;
             dic.CsType = cp.ValType;
             dic.Format = format;
+
+            dic.Func = colFunc;
 
             return dic;
         }
@@ -385,7 +394,7 @@ namespace MyDAL.Core.Helper
             return dic;
         }
 
-        internal DicParam CompareDic(ColumnParam cp, ValueInfo v)
+        internal DicParam CompareDic(ColumnParam cp, ValueInfo v,ColFuncEnum colFunc)
         {
             var dic = SetDicBase(DC);
             dic.TbMType = cp.TbMType;
@@ -397,6 +406,8 @@ namespace MyDAL.Core.Helper
             dic.CsType = cp.ValType;
             dic.Param = cp.Key;
             dic.ParamRaw = cp.Key;
+
+            dic.Func = colFunc;
 
             return dic;
         }
@@ -446,7 +457,7 @@ namespace MyDAL.Core.Helper
             return dic;
         }
 
-        internal DicParam IsNullDic(ColumnParam cp)
+        internal DicParam IsNullDic(ColumnParam cp,ColFuncEnum colFunc)
         {
             var dic = SetDicBase(DC);
             dic.TbMType = cp.TbMType;
@@ -458,6 +469,8 @@ namespace MyDAL.Core.Helper
             dic.CsValue = null;
             dic.CsValueStr = string.Empty;
             dic.CsType = cp.ValType;
+
+            dic.Func = colFunc;
 
             return dic;
         }
@@ -613,10 +626,13 @@ namespace MyDAL.Core.Helper
             return dic;
         }
 
-        internal DicParam SelectColumnDic(List<DicParam> cols)
+        internal DicParam SelectColumnDic(List<DicParam> cols,ColFuncEnum colFunc)
         {
             var dic = SetDicBase(DC);
             dic.Columns = cols;
+
+            dic.Func = colFunc;
+            
             return dic;
         }
 

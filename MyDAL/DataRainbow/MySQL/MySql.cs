@@ -61,7 +61,7 @@ namespace MyDAL.DataRainbow.MySQL
         }
         internal void Column(string tbAlias, string colName, StringBuilder sb)
         {
-            if (!tbAlias.IsNullStr())
+            if (tbAlias.IsNotBlank())
             {
                 TableXAlias(tbAlias, sb); Dot(sb);
             }

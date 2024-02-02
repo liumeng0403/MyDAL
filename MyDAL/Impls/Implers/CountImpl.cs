@@ -23,8 +23,10 @@ namespace MyDAL.Impls.Implers
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
             DC.Compare = CompareXEnum.None;
-            DC.Func = FuncEnum.Count;
-            DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(typeof(M), "*") }));
+            DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam>
+            {
+                DC.DPH.CountDic(typeof(M), "*")
+            },ColFuncEnum.Count));
             PreExecuteHandle(UiMethodEnum.Count);
             return DSS.ExecuteScalar<int>();
         }
@@ -33,7 +35,9 @@ namespace MyDAL.Impls.Implers
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
             DC.Compare = CompareXEnum.None;
-            DC.Func = FuncEnum.Count;
+            
+            //DC.Func = FuncEnum.Count;
+            
             var dic = DC.XE.FuncMFExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.Count);
@@ -54,8 +58,10 @@ namespace MyDAL.Impls.Implers
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
             DC.Compare = CompareXEnum.None;
-            DC.Func = FuncEnum.Count;
-            DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.CountDic(default(Type), "*", string.Empty) }));
+            DC.DPH.AddParameter(DC.DPH.SelectColumnDic(new List<DicParam>
+            {
+                DC.DPH.CountDic(default(Type), "*", string.Empty)
+            },ColFuncEnum.Count));
             PreExecuteHandle(UiMethodEnum.Count);
             return DSS.ExecuteScalar<int>();
         }
@@ -63,7 +69,9 @@ namespace MyDAL.Impls.Implers
         {
             DC.Action = ActionEnum.Select;
             DC.Compare = CompareXEnum.None;
-            DC.Func = FuncEnum.Count;
+            
+            //DC.Func = FuncEnum.Count;
+            
             var dic = DC.XE.FuncTExpression(propertyFunc);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.Count);

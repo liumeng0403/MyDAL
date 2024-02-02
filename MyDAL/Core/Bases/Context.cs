@@ -83,7 +83,7 @@ namespace MyDAL.Core.Bases
         
         
         
-        /************************************************************************************************************************/
+        /**************************************** 标识 sql 操作种类 Start *********************************************/
 
 
         internal CrudEnum Crud { get; set; } = CrudEnum.None;
@@ -93,14 +93,13 @@ namespace MyDAL.Core.Bases
         /// </summary>
         internal OptionEnum Option { get; set; } = OptionEnum.None;
         internal CompareXEnum Compare { get; set; } = CompareXEnum.None;
-        internal FuncEnum Func { get; set; } = FuncEnum.None;
 
         /// <summary>
         /// UI-Interface DB 动作
         /// </summary>
         internal UiMethodEnum Method { get; set; } = UiMethodEnum.None;
 
-        /************************************************************************************************************************/
+        /**************************************** 标识 sql 操作种类 End *********************************************/
 
         internal bool NeedSetSingle { get; set; } = true;
         internal Type TbM1 { get; set; }

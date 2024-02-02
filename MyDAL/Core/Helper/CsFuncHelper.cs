@@ -313,7 +313,7 @@ namespace MyDAL.Core.Helper
                 return new TrimParam
                 {
                     Flag = true,
-                    Trim = FuncEnum.Trim
+                    Trim = ColFuncEnum.Trim
                 };
             }
             else if (expStr.Contains(".TrimStart(")
@@ -322,7 +322,7 @@ namespace MyDAL.Core.Helper
                 return new TrimParam
                 {
                     Flag = true,
-                    Trim = FuncEnum.LTrim
+                    Trim = ColFuncEnum.LTrim
                 };
             }
             else if (expStr.Contains(".TrimEnd(")
@@ -331,7 +331,7 @@ namespace MyDAL.Core.Helper
                 return new TrimParam
                 {
                     Flag = true,
-                    Trim = FuncEnum.RTrim
+                    Trim = ColFuncEnum.RTrim
                 };
             }
             else
@@ -339,7 +339,7 @@ namespace MyDAL.Core.Helper
                 return new TrimParam
                 {
                     Flag = false,
-                    Trim = FuncEnum.None
+                    Trim = ColFuncEnum.None
                 };
             }
         }

@@ -13,7 +13,7 @@ namespace MyDAL.Core.表达式能力
         /// <summary>
         /// 获取列信息
         /// </summary>
-        internal ColumnParam GetKey(Context DC,Expression bodyL, FuncEnum func, CompareXEnum compareX, string format = "")
+        internal ColumnParam GetKey(Context DC,Expression bodyL, ColFuncEnum func, CompareXEnum compareX, string format = "")
         {
             if (bodyL.NodeType == ExpressionType.MemberAccess)
             {
@@ -23,8 +23,8 @@ namespace MyDAL.Core.表达式能力
                 //
                 var mType = default(Type);
                 var alias = GetAlias(leftBody);
-                if (func == FuncEnum.CharLength
-                    || func == FuncEnum.ToString_CS_DateTime_Format)
+                if (func == ColFuncEnum.CharLength
+                    || func == ColFuncEnum.ToString_CS_DateTime_Format)
                 {
                     var exp = leftBody.Expression;
                     if (exp is MemberExpression)
@@ -86,9 +86,9 @@ namespace MyDAL.Core.表达式能力
             else if (bodyL.NodeType == ExpressionType.Call)
             {
                 var mcExpr = bodyL as MethodCallExpression;
-                if (func == FuncEnum.Trim
-                    || func == FuncEnum.LTrim
-                    || func == FuncEnum.RTrim)
+                if (func == ColFuncEnum.Trim
+                    || func == ColFuncEnum.LTrim
+                    || func == ColFuncEnum.RTrim)
                 {
                     var mem = mcExpr.Object;
                     return GetKey(DC,mem, func, compareX);
@@ -98,18 +98,18 @@ namespace MyDAL.Core.表达式能力
                     var mem = mcExpr.Arguments[0];
                     return GetKey(DC,mem, func, compareX);
                 }
-                else if (func == FuncEnum.ToString_CS_DateTime_Format)
+                else if (func == ColFuncEnum.ToString_CS_DateTime_Format)
                 {
                     var mem = mcExpr.Object;
                     var val = DC.VH.ValueProcess(mcExpr.Arguments[0], XConfig.CSTC.String);
                     return GetKey(DC,mem, func, compareX, val.Val.ToString());
                 }
-                else if (func == FuncEnum.ToString_CS)
+                else if (func == ColFuncEnum.ToString_CS)
                 {
                     var mem = mcExpr.Object;
                     return GetKey(DC,mem, func, compareX);
                 }
-                else if(func == FuncEnum.Count)
+                else if(func == ColFuncEnum.Count)
                 {
                     var mem = mcExpr.Arguments[0]; // todo debug 
                     return GetKey(DC,mem, func, compareX);

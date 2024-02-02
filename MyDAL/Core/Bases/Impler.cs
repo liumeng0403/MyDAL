@@ -56,7 +56,10 @@ namespace MyDAL.Core.Bases
             {
                 DC.Option = OptionEnum.Column;
                 DC.Compare = CompareXEnum.None;
-                var col = DC.DPH.SelectColumnDic(new List<DicParam> { DC.DPH.ColumnDic("*", dic.TbAlias, mType, dic.TbMProp) });
+                var col = DC.DPH.SelectColumnDic(new List<DicParam>
+                {
+                    DC.DPH.ColumnDic("*", dic.TbAlias, mType, dic.TbMProp)
+                },ColFuncEnum.None);
                 DC.DPH.AddParameter(col);
             }
             else if (DC.Parameters.Count == 0)
@@ -94,7 +97,7 @@ namespace MyDAL.Core.Bases
                     }
                 }
             }
-            DC.DPH.AddParameter(DC.DPH.SelectColumnDic(list));
+            DC.DPH.AddParameter(DC.DPH.SelectColumnDic(list,ColFuncEnum.None));
         }
         protected void SelectMHandle<VM>(Expression<Func<VM>> func)
         {

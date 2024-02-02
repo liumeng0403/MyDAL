@@ -192,7 +192,6 @@ namespace MyDAL.Core.Bases
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.ColumnOther;
             DC.Compare = CompareXEnum.Distinct;
-            DC.Func = FuncEnum.None;
             DC.DPH.AddParameter(DC.DPH.DistinctDic());
         }
 

@@ -49,7 +49,7 @@ namespace MyDAL.AdoNet
             {
                 var xca = new AttributeHelper().GetAttribute<XColumnAttribute>(Type, prop) as XColumnAttribute;
                 if(xca!=null
-                    && !xca.Name.IsNullStr()
+                    && xca.Name.IsNotBlank()
                     && colName.Equals(xca.Name,StringComparison.OrdinalIgnoreCase))
                 {
                     property = prop;

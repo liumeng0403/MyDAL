@@ -91,8 +91,8 @@ namespace MyDAL.DataRainbow.XCommon
         internal protected static bool IsOrderByParam(DicParam param)
         {
             if (param.Action == ActionEnum.OrderBy
-                && (param.Func == FuncEnum.None
-                        || param.Func == FuncEnum.CharLength))
+                && (param.Func == ColFuncEnum.None
+                        || param.Func == ColFuncEnum.CharLength))
             {
                 return true;
             }
@@ -101,7 +101,7 @@ namespace MyDAL.DataRainbow.XCommon
         internal protected static bool IsCountParam(DicParam param)
         {
             if (param.Option == OptionEnum.Column
-                && param.Func == FuncEnum.Count)
+                && param.Func == ColFuncEnum.Count)
             {
                 return true;
             }
@@ -254,15 +254,15 @@ namespace MyDAL.DataRainbow.XCommon
         }
         private void FunctionProcess(DicParam db)
         {
-            if (db.Func == FuncEnum.CharLength)
+            if (db.Func == ColFuncEnum.CharLength)
             {
                 CharLengthProcess(db);
             }
-            else if (db.Func == FuncEnum.ToString_CS_DateTime_Format)
+            else if (db.Func == ColFuncEnum.ToString_CS_DateTime_Format)
             {
                 DateFormatProcess(db);
             }
-            else if (db.Func == FuncEnum.Trim || db.Func == FuncEnum.LTrim || db.Func == FuncEnum.RTrim)
+            else if (db.Func == ColFuncEnum.Trim || db.Func == ColFuncEnum.LTrim || db.Func == ColFuncEnum.RTrim)
             {
                 TrimProcess(db);
             }
@@ -536,19 +536,19 @@ namespace MyDAL.DataRainbow.XCommon
                 i++;
                 if (i != 1) { CRLF(X); }
                 if (items.Count > 1) { Tab(X); }
-                if (dic.Func == FuncEnum.None)
+                if (dic.Func == ColFuncEnum.None)
                 {
                     SelectSpecialNoFuncCol(dic);
                 }
-                else if (dic.Func == FuncEnum.ToString_CS_DateTime_Format)
+                else if (dic.Func == ColFuncEnum.ToString_CS_DateTime_Format)
                 {
                     SelectSpecialDateFormatCol(dic);
                 }
-                else if (dic.Func == FuncEnum.ToString_CS)
+                else if (dic.Func == ColFuncEnum.ToString_CS)
                 {
                     SelectSpecialCsToStringCol(dic);
                 }
-                else if(dic.Func == FuncEnum.Count)
+                else if(dic.Func == ColFuncEnum.Count)
                 {
                     new CountResolve(DC).SelectCountCol(dic,X,DbSql);
                 }
@@ -564,8 +564,8 @@ namespace MyDAL.DataRainbow.XCommon
         {
             Spacing(X);
             var col = DC.Parameters.FirstOrDefault(it => IsSelectColumnParam(it));
-            var sum = col.Columns.FirstOrDefault(it => it.Func == FuncEnum.Sum)
-                              ?? col.Columns.FirstOrDefault(it => it.Func == FuncEnum.SumNullable);
+            var sum = col.Columns.FirstOrDefault(it => it.Func == ColFuncEnum.Sum)
+                              ?? col.Columns.FirstOrDefault(it => it.Func == ColFuncEnum.SumNullable);
             if (sum != null)
             {
                 var tbAlias = sum.Crud == CrudEnum.Query
@@ -575,11 +575,11 @@ namespace MyDAL.DataRainbow.XCommon
                                         : string.Empty;
                 Function(sum.Func, X);
                 LeftRoundBracket(X);
-                if (sum.Func == FuncEnum.Sum)
+                if (sum.Func == ColFuncEnum.Sum)
                 {
                     DbSql.Column(tbAlias, sum.TbCol, X);
                 }
-                else if (sum.Func == FuncEnum.SumNullable)
+                else if (sum.Func == ColFuncEnum.SumNullable)
                 {
                     DbSql.ColumnReplaceNullValueForSum(tbAlias, sum.TbCol, X);
                 }
@@ -654,7 +654,7 @@ namespace MyDAL.DataRainbow.XCommon
                         }
                         else
                         {
-                            Function(FuncEnum.Count, X); LeftRoundBracket(X); DistinctX();
+                            Function(ColFuncEnum.Count, X); LeftRoundBracket(X); DistinctX();
                             if (col.Crud == CrudEnum.Query)
                             {
                                 DbSql.Column(string.Empty, col.TbCol, X);
@@ -724,7 +724,7 @@ namespace MyDAL.DataRainbow.XCommon
                         }
                         else
                         {
-                            Function(FuncEnum.Count, X); LeftRoundBracket(X);
+                            Function(ColFuncEnum.Count, X); LeftRoundBracket(X);
                             if (col.Crud == CrudEnum.Query)
                             {
                                 DbSql.Column(string.Empty, col.TbCol, X);
@@ -852,7 +852,7 @@ namespace MyDAL.DataRainbow.XCommon
             foreach (var o in orders)
             {
                 i++;
-                if (o.Func == FuncEnum.None)
+                if (o.Func == ColFuncEnum.None)
                 {
                     if (DC.Crud == CrudEnum.Join)
                     {
@@ -863,7 +863,7 @@ namespace MyDAL.DataRainbow.XCommon
                         DbSql.Column(string.Empty, o.TbCol, X); Spacing(X); Option(o.Option, X, DC);
                     }
                 }
-                else if (o.Func == FuncEnum.CharLength)
+                else if (o.Func == ColFuncEnum.CharLength)
                 {
                     if (DC.Crud == CrudEnum.Join)
                     {

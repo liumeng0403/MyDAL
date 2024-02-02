@@ -29,9 +29,8 @@ namespace MyDAL.Core.Models.MysqlFunctionParam.DicParamResolve
 
             DC.Option = OptionEnum.ColumnAs;
             DC.Compare = CompareXEnum.None;
-            var cp = new hql_获取列().GetKey(DC, mcExpr, FuncEnum.Count, CompareXEnum.None);
-            DC.Func = FuncEnum.Count;
-            CountParam param = CountDic(DC.TbM1, cp.Prop, string.Empty);
+            var cp = new hql_获取列().GetKey(DC, mcExpr, ColFuncEnum.Count, CompareXEnum.None);
+            CountParam param = CountDic(DC.TbM1, cp.Prop,ColFuncEnum.Count ,string.Empty);
             param.FuncName = "COUNT";
             return param;
         }
@@ -44,7 +43,7 @@ namespace MyDAL.Core.Models.MysqlFunctionParam.DicParamResolve
         /// <param name="key">字段属性名</param>
         /// <param name="alias">表别名</param>
         /// <returns></returns>
-        internal CountParam CountDic(Type mType, string key, string alias = "")
+        internal CountParam CountDic(Type mType, string key,ColFuncEnum colFunc, string alias = "")
         {
             CountParam dic = new CountParam();
             dic.SetDicBase(DC);
@@ -58,9 +57,11 @@ namespace MyDAL.Core.Models.MysqlFunctionParam.DicParamResolve
             {
                 TbCol = dic.TbCol,
                 Option = OptionEnum.Column,
-                Func = FuncEnum.Count,
+                Func = ColFuncEnum.Count,
                 Crud = CrudEnum.Query
             });
+
+            dic.Func = colFunc;
 
             return dic;
         }

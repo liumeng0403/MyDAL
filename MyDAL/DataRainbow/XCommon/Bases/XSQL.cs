@@ -197,32 +197,32 @@ namespace MyDAL.DataRainbow.XCommon.Bases
         /// <summary>
         /// 函数
         /// </summary>
-        internal protected static void Function(FuncEnum func, StringBuilder sb)
+        internal protected static void Function(ColFuncEnum func, StringBuilder sb)
         {
             switch (func)
             {
-                case FuncEnum.None:
+                case ColFuncEnum.None:
                     return;
-                case FuncEnum.CharLength:
+                case ColFuncEnum.CharLength:
                     Spacing(sb); sb.Append("char_length");
                     return;
-                case FuncEnum.ToString_CS_DateTime_Format:
+                case ColFuncEnum.ToString_CS_DateTime_Format:
                     Spacing(sb); sb.Append("date_format");
                     return;
-                case FuncEnum.Trim:
+                case ColFuncEnum.Trim:
                     Spacing(sb); sb.Append("trim");
                     return;
-                case FuncEnum.LTrim:
+                case ColFuncEnum.LTrim:
                     Spacing(sb); sb.Append("ltrim");
                     return;
-                case FuncEnum.RTrim:
+                case ColFuncEnum.RTrim:
                     Spacing(sb); sb.Append("rtrim");
                     return;
-                case FuncEnum.Count:
+                case ColFuncEnum.Count:
                     sb.Append("count");
                     return;
-                case FuncEnum.Sum:
-                case FuncEnum.SumNullable:
+                case ColFuncEnum.Sum:
+                case ColFuncEnum.SumNullable:
                     Spacing(sb); sb.Append("sum");
                     return;
                 default:
