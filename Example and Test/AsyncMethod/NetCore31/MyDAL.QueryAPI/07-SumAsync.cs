@@ -2,7 +2,6 @@ using MyDAL.Test;
 using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.Enums;
 using System;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace MyDAL.QueryAPI
@@ -30,7 +29,7 @@ namespace MyDAL.QueryAPI
         {
             xx = string.Empty;
 
-            var res1 = MyDAL_TestDB
+            var res1 = MyDAL_TestDB.OpenDebug()
                 .Selecter<AgentInventoryRecord>()
                 .Where(it => it.Id != Guid.Parse("df2b788e-6b1a-4a74-ac1d-016551f76dc9"))
                 .Sum(it => it.TotalSaleCount);
@@ -63,7 +62,7 @@ namespace MyDAL.QueryAPI
         {
             xx = string.Empty;
 
-            var res1 = MyDAL_TestDB
+            var res1 = MyDAL_TestDB.OpenDebug()
                 .Selecter(out Agent a, out AgentInventoryRecord air)
                 .From(() => a)
                     .InnerJoin(() => air)

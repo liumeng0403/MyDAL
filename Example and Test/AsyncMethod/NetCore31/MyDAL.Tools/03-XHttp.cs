@@ -1,8 +1,5 @@
 ﻿using MyDAL.Test;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace MyDAL.Tools
@@ -18,7 +15,7 @@ namespace MyDAL.Tools
 
             try
             {
-                var res = new XHttp().GET("http://www.baidu.com");
+                var res = new XHttp().GET("https://www.baidu.com");
             }
             catch (Exception ex)
             {

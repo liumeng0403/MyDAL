@@ -412,7 +412,7 @@ namespace MyDAL.Core.Helper
             return dic;
         }
 
-        internal DicParam InDic(ColumnParam cp, ValueInfo v)
+        internal DicParam InDic(ColumnParam cp, ValueInfo v,ColFuncEnum colFunc)
         {
             var dic = SetDicBase(DC);
             dic.TbMType = cp.TbMType;
@@ -425,10 +425,12 @@ namespace MyDAL.Core.Helper
             dic.Param = cp.Key;
             dic.ParamRaw = cp.Key;
 
+            dic.Func = colFunc;
+
             return dic;
         }
 
-        internal DicParam LikeDic(ColumnParam cp, ValueInfo v)
+        internal DicParam LikeDic(ColumnParam cp, ValueInfo v,ColFuncEnum colFunc)
         {
             var dic = SetDicBase(DC);
             dic.TbMType = cp.TbMType;
@@ -441,10 +443,12 @@ namespace MyDAL.Core.Helper
             dic.Param = cp.Key;
             dic.ParamRaw = cp.Key;
 
+            dic.Func = colFunc;
+
             return dic;
         }
 
-        internal DicParam OneEqualOneDic(ValueInfo v, Type valType)
+        internal DicParam OneEqualOneDic(ValueInfo v, Type valType,ColFuncEnum colFunc)
         {
             var dic = SetDicBase(DC);
             dic.TbCol = "OneEqualOne";
@@ -453,6 +457,8 @@ namespace MyDAL.Core.Helper
             dic.CsValue = v?.Val;
             dic.CsValueStr = v?.ValStr;
             dic.CsType = valType;
+
+            dic.Func = colFunc;
 
             return dic;
         }
@@ -583,7 +589,7 @@ namespace MyDAL.Core.Helper
             return dic;
         }
 
-        internal DicParam ColumnDic(ColumnParam cp)
+        internal DicParam ColumnDic(ColumnParam cp,ColFuncEnum colFunc)
         {
             var dic = SetDicBase(DC);
             dic.TbMType = cp.TbMType;
@@ -592,6 +598,8 @@ namespace MyDAL.Core.Helper
             dic.Param = cp.Key;
             dic.ParamRaw = cp.Key;
             dic.TbMProp = cp.Prop;
+
+            dic.Func = colFunc;
 
             return dic;
         }
@@ -629,6 +637,9 @@ namespace MyDAL.Core.Helper
         internal DicParam SelectColumnDic(List<DicParam> cols,ColFuncEnum colFunc)
         {
             var dic = SetDicBase(DC);
+            
+            cols.ForEach(it=>it.Func = colFunc);
+            
             dic.Columns = cols;
 
             dic.Func = colFunc;

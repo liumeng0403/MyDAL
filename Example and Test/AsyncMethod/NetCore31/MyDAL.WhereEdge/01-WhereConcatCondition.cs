@@ -2,7 +2,6 @@ using MyDAL.Tools;
 using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.Enums;
 using System;
-using System.Threading.Tasks;
 using Xunit;
 using MyDAL.Test;
 

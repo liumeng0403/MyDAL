@@ -35,10 +35,7 @@ namespace MyDAL.Impls.Implers
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
             DC.Compare = CompareXEnum.None;
-            
-            //DC.Func = FuncEnum.Count;
-            
-            var dic = DC.XE.FuncMFExpression(propertyFunc);
+            var dic = DC.XE.FuncMFExpression(propertyFunc,ColFuncEnum.Count);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.Count);
             return DSS.ExecuteScalar<int>();
@@ -69,10 +66,7 @@ namespace MyDAL.Impls.Implers
         {
             DC.Action = ActionEnum.Select;
             DC.Compare = CompareXEnum.None;
-            
-            //DC.Func = FuncEnum.Count;
-            
-            var dic = DC.XE.FuncTExpression(propertyFunc);
+            var dic = DC.XE.FuncTExpression(propertyFunc,ColFuncEnum.Count);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.Count);
             return DSS.ExecuteScalar<int>();

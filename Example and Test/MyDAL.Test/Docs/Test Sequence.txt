@@ -1,15 +1,16 @@
 ﻿
 
-项目: MyDAL.Tools 已通过 (9)	340 毫秒		
-项目: MyDAL.SqlAction 已通过 (6)	346 毫秒		
-项目: MyDAL.WhereEdge 已通过 (11)	10.7 秒		
-项目: MyDAL.QueryAPI 已通过 (86)	7.6 秒		
-项目: MyDAL.Func 已通过 (3)	2 秒	
-项目: MyDAL.CsFunc 已通过 (11)	1.6 秒		
-项目: MyDAL.Compare 已通过 (71)	33.7 秒		
-项目: MyDAL.Update 已通过 (20)	703 毫秒		
-项目: MyDAL.Delete 已通过 (8)	549 毫秒		
-项目: MyDAL.Create 已通过 (11)	7.1 秒		
+项目: MyDAL.Tools 
+项目: MyDAL.SqlAction 
+项目: MyDAL.WhereEdge 
+项目: MyDAL.QueryAPI 
+项目: MyDAL.Func 
+项目: Functions
+项目: MyDAL.CsFunc 	
+项目: MyDAL.Compare 
+项目: MyDAL.Update 
+项目: MyDAL.Delete 
+项目: MyDAL.Create 
 
 
 
@@ -20,6 +21,13 @@
 4、sql 语句做法为小数据量型系统 API
 5、lambda api 做法为大、中数据量型系统 API
 6、lambda join api 只保留两表 join  
+
+
+        // datetime? tostring 方法
+
+        // 自然 sql 命名 , select insert update delete 
+
+        // create 返回 实体 , 支持自增 主键 携带返回      
 
 
 // .AndSql(string sql) 支持 

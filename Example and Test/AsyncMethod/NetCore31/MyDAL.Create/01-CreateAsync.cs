@@ -244,7 +244,7 @@ namespace MyDAL.Create
         public void Create_Batch_Shortcut()
         {
 
-            var json = File.ReadAllText(@"D:\GitHub\Me\MyDal\DalTestDB\ProfileData.json");
+            var json = File.ReadAllText(@"/Users/mydal/Documents/Mydal_devops/DalTestDB/ProfileData.json");
             var list = JsonConvert.DeserializeObject<List<UserInfo>>(json);
             foreach (var item in list)
             {

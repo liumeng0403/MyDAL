@@ -40,13 +40,13 @@ namespace MyDAL.Core.Expressions
             var format = DC.TSH.DateTime(cp.Format);
             return DC.DPH.DateFormatDic(cp, val, format,ColFuncEnum.ToString_CS_DateTime_Format);
         }
-        internal DicParam SelectFuncToString(MethodCallExpression mcExpr)
+        internal DicParam SelectFuncToString(MethodCallExpression mcExpr,ColFuncEnum colFunc)
         {
             var type = mcExpr.Object.Type;
             if (type == XConfig.CSTC.String
                  || type.IsEnum)
             {
-                return DC.XE.MemberAccessHandle(mcExpr.Object as MemberExpression);
+                return DC.XE.MemberAccessHandle(mcExpr.Object as MemberExpression,colFunc);
             }
             else if (type.IsSimpleValueType())
             {
@@ -57,7 +57,7 @@ namespace MyDAL.Core.Expressions
                 var typeT = Nullable.GetUnderlyingType(type);
                 if (typeT.IsEnum)
                 {
-                    return DC.XE.MemberAccessHandle(mcExpr.Object as MemberExpression);
+                    return DC.XE.MemberAccessHandle(mcExpr.Object as MemberExpression,colFunc);
                 }
                 else if(typeT.IsSimpleValueType())
                 {

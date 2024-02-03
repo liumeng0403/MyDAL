@@ -2,7 +2,6 @@
 using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.Enums;
 using MyDAL.Test.ViewModels;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace MyDAL.QueryAPI

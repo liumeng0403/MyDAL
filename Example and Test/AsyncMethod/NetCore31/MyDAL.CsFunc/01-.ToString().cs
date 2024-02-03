@@ -4,7 +4,6 @@ using MyDAL.Test.Entities.MySql;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace MyDAL.CsFunc

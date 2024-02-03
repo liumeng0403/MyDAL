@@ -4,7 +4,6 @@ using MyDAL.Test.Enums;
 using MyDAL.Test.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace MyDAL.QueryAPI

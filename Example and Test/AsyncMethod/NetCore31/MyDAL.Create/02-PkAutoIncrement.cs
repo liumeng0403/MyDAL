@@ -1,8 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
-using MyDAL.Test;
+﻿using MyDAL.Test;
 using MyDAL.Test.Entities.MyDAL_TestDB;
-using MyDAL.Test.Enums;
 using Xunit;
 
 namespace MyDAL.Create

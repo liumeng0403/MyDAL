@@ -1,6 +1,5 @@
 ﻿using MyDAL.Test;
 using MyDAL.Test.Entities.MyDAL_TestDB;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace MyDAL.SqlAction

@@ -22,8 +22,7 @@ namespace MyDAL.Impls.Implers
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
             DC.Compare = CompareXEnum.None;
-            DC.Func = FuncEnum.Sum;
-            var dic = DC.XE.FuncMFExpression(propertyFunc);
+            var dic = DC.XE.FuncMFExpression(propertyFunc,ColFuncEnum.Sum);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.Sum);
             return DSS.ExecuteScalar<F>();
@@ -34,8 +33,7 @@ namespace MyDAL.Impls.Implers
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
             DC.Compare = CompareXEnum.None;
-            DC.Func = FuncEnum.SumNullable;
-            var dic = DC.XE.FuncMFExpression(propertyFunc);
+            var dic = DC.XE.FuncMFExpression(propertyFunc,ColFuncEnum.SumNullable);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.Sum);
             return DSS.ExecuteScalar<F>();
@@ -56,8 +54,7 @@ namespace MyDAL.Impls.Implers
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
             DC.Compare = CompareXEnum.None;
-            DC.Func = FuncEnum.Sum;
-            var dic = DC.XE.FuncTExpression(propertyFunc);
+            var dic = DC.XE.FuncTExpression(propertyFunc,ColFuncEnum.Sum);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.Sum);
             return DSS.ExecuteScalar<F>();
@@ -68,8 +65,7 @@ namespace MyDAL.Impls.Implers
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
             DC.Compare = CompareXEnum.None;
-            DC.Func = FuncEnum.SumNullable;
-            var dic = DC.XE.FuncTExpression(propertyFunc);
+            var dic = DC.XE.FuncTExpression(propertyFunc,ColFuncEnum.SumNullable);
             DC.DPH.AddParameter(dic);
             PreExecuteHandle(UiMethodEnum.Sum);
             return DSS.ExecuteScalar<F>();

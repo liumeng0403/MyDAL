@@ -2,13 +2,11 @@ using MyDAL.Core.Bases;
 using MyDAL.Core.Common;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Expressions;
-using MyDAL.Core.Models.Cache;
 using MyDAL.Core.Models.ExpPara;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using MyDAL.Core.Models.MysqlFunctionParam;
 using MyDAL.Core.Models.MysqlFunctionParam.DicParamResolve;
 using MyDAL.Core.表达式能力;
@@ -228,16 +226,14 @@ namespace MyDAL.Core
                     var val = DC.VH.ValueProcess(bin.Right, cp.ValType);
                     DC.Option = OptionEnum.Compare;
                     DC.Compare = bin.Compare;
-                    return DC.DPH.CompareDic(cp, val,colFunc);
+                    return DC.DPH.CompareDic(cp, val,ColFuncEnum.None);
                 }
             }
         }
 
         /********************************************************************************************************************/
-
-        // todo 
         
-        private DicParam StringLike(MethodCallExpression mcExpr, StringLikeEnum type)
+        private DicParam StringLike(MethodCallExpression mcExpr, StringLikeEnum type,ColFuncEnum colFunc)
         {
             if (mcExpr.Object == null)
             {
@@ -259,7 +255,7 @@ namespace MyDAL.Core
                         val = ValueInfo.LikeVI(val, type, DC);
                         DC.Option = OptionEnum.Compare;
                         DC.Compare = CompareXEnum.Like;
-                        return DC.DPH.LikeDic(cp, val);
+                        return DC.DPH.LikeDic(cp, val,ColFuncEnum.None);
                     }
                 }
             }
@@ -267,7 +263,7 @@ namespace MyDAL.Core
             return null;
         }
 
-        private DicParam Equals(MethodCallExpression mcExpr, ExpressionType nodeType, Expression valExpr)
+        private DicParam Equals(MethodCallExpression mcExpr, ExpressionType nodeType, Expression valExpr,ColFuncEnum colFunc)
         {
             if (mcExpr.IsNull())
             {
@@ -286,7 +282,7 @@ namespace MyDAL.Core
                         var val = DC.VH.ValueProcess(valExpr, cp.ValType);
                         DC.Option = OptionEnum.Compare;
                         DC.Compare = CompareXEnum.Equal; 
-                        return DC.DPH.CompareDic(cp, val);
+                        return DC.DPH.CompareDic(cp, val,ColFuncEnum.None);
                     }
                 }
             }
@@ -294,7 +290,7 @@ namespace MyDAL.Core
             return null;
         }
 
-        private DicParam CollectionIn(ExpressionType nodeType, Expression keyExpr, Expression valExpr)
+        private DicParam CollectionIn(ExpressionType nodeType, Expression keyExpr, Expression valExpr,ColFuncEnum colFunc)
         {
             if (nodeType == ExpressionType.MemberAccess)
             {
@@ -302,7 +298,7 @@ namespace MyDAL.Core
                 var val = DC.VH.ValueProcess(valExpr, cp.ValType);
                 DC.Option = OptionEnum.Compare;
                 DC.Compare = CompareXEnum.In; 
-                return DC.DPH.InDic(cp, val);
+                return DC.DPH.InDic(cp, val,ColFuncEnum.None);
             }
             else if (nodeType == ExpressionType.NewArrayInit)
             {
@@ -321,7 +317,7 @@ namespace MyDAL.Core
                 };
                 DC.Option = OptionEnum.Compare;
                 DC.Compare = CompareXEnum.In; 
-                return DC.DPH.InDic(cp, val);
+                return DC.DPH.InDic(cp, val,ColFuncEnum.None);
             }
             else if (nodeType == ExpressionType.ListInit)
             {
@@ -340,7 +336,7 @@ namespace MyDAL.Core
                 };
                 DC.Option = OptionEnum.Compare;
                 DC.Compare = CompareXEnum.In; 
-                return DC.DPH.InDic(cp, val);
+                return DC.DPH.InDic(cp, val,ColFuncEnum.None);
             }
             else if (nodeType == ExpressionType.MemberInit)
             {
@@ -360,7 +356,7 @@ namespace MyDAL.Core
             }
         }
 
-        private DicParam BoolDefaultCondition(ColumnParam cp)
+        private DicParam BoolDefaultCondition(ColumnParam cp,ColFuncEnum colFunc)
         {
             if (cp.ValType == XConfig.CSTC.Bool
                 || cp.ValType == XConfig.CSTC.BoolNull)
@@ -371,7 +367,7 @@ namespace MyDAL.Core
                 {
                     Val = true.ToString(),
                     ValStr = string.Empty
-                });
+                },colFunc);
             }
 
             return null;
@@ -379,10 +375,10 @@ namespace MyDAL.Core
 
         /********************************************************************************************************************/
 
-        private DicParam NotHandle(Expression body, ParameterExpression firstParam)
+        private DicParam NotHandle(Expression body, ParameterExpression firstParam,ColFuncEnum colFunc)
         {
             var ue = body as UnaryExpression;
-            var result = BodyProcess(ue.Operand, firstParam);
+            var result = BodyProcess(ue.Operand, firstParam,colFunc);
             if (result.Compare == CompareXEnum.Like)
             {
                 result.Compare = CompareXEnum.NotLike;
@@ -431,7 +427,7 @@ namespace MyDAL.Core
             return result;
         }
 
-        private DicParam CallHandle(MethodCallExpression mcExpr)
+        private DicParam CallHandle(MethodCallExpression mcExpr,ColFuncEnum colFunc)
         {
             MydalFunction mf
                 = DC.CFH.IsMydalMysqlFunction(mcExpr);
@@ -457,7 +453,7 @@ namespace MyDAL.Core
                     || clp.Like == StringLikeEnum.StartsWith
                     || clp.Like == StringLikeEnum.EndsWith)
                 {
-                    return StringLike(mcExpr, clp.Like);
+                    return StringLike(mcExpr, clp.Like,colFunc);
                 }
             }
             else if (cip.Flag)
@@ -467,16 +463,16 @@ namespace MyDAL.Core
                     || cip.Type == ExpressionType.ListInit
                     || cip.Type == ExpressionType.MemberInit)
                 {
-                    return CollectionIn(cip.Type, cip.Key, cip.Val);
+                    return CollectionIn(cip.Type, cip.Key, cip.Val,colFunc);
                 }
             }
             else if (tsp.Flag)
             {
-                return new CsToStringExpression(DC).SelectFuncToString(mcExpr);
+                return new CsToStringExpression(DC).SelectFuncToString(mcExpr,colFunc);
             }
             else if (ep.Flag)
             {
-                return Equals(mcExpr, ep.Type, ep.Val);
+                return Equals(mcExpr, ep.Type, ep.Val,colFunc);
             }
 
             // todo 请参考可用的函数 文章
@@ -498,20 +494,20 @@ namespace MyDAL.Core
             throw XConfig.EC.Exception(XConfig.EC._046, $"出现异常 -- [[{mcExpr.ToString()}]] 不能解析!!!");
         }
 
-        private DicParam ConstantHandle(ConstantExpression cExpr, Type valType)
+        private DicParam ConstantHandle(ConstantExpression cExpr, Type valType,ColFuncEnum colFunc)
         {
             var val = DC.VH.ValueProcess(cExpr, valType);
             if (cExpr.Type == typeof(bool))
             {
                 DC.Option = OptionEnum.OneEqualOne;
                 DC.Compare = CompareXEnum.None;
-                return DC.DPH.OneEqualOneDic(val, valType);
+                return DC.DPH.OneEqualOneDic(val, valType,colFunc);
             }
 
             return null;
         }
 
-        internal DicParam MemberAccessHandle(MemberExpression memExpr)
+        internal DicParam MemberAccessHandle(MemberExpression memExpr,ColFuncEnum colFunc)
         {
             // 原
             // query where
@@ -530,12 +526,12 @@ namespace MyDAL.Core
                 {
                     return DC.DPH.SelectColumnDic(new List<DicParam>
                     {
-                        DC.DPH.ColumnDic(cp)
-                    },ColFuncEnum.None);
+                        DC.DPH.ColumnDic(cp,colFunc)
+                    },colFunc);
                 }
                 else if (DC.Action == ActionEnum.Where)
                 {
-                    var dp = BoolDefaultCondition(cp);
+                    var dp = BoolDefaultCondition(cp,colFunc);
                     if (dp != null)
                     {
                         return dp;
@@ -547,7 +543,7 @@ namespace MyDAL.Core
                 }
                 else
                 {
-                    return DC.DPH.ColumnDic(cp);
+                    return DC.DPH.ColumnDic(cp,colFunc);
                 }
             }
             else if (DC.Crud == CrudEnum.Join)
@@ -555,7 +551,7 @@ namespace MyDAL.Core
                 if (DC.Action == ActionEnum.Where)
                 {
                     var cp = new hql_获取列().GetKey(DC,memExpr, ColFuncEnum.None, CompareXEnum.None);
-                    var dp = BoolDefaultCondition(cp);
+                    var dp = BoolDefaultCondition(cp,colFunc);
                     if (dp != null)
                     {
                         return dp;
@@ -592,7 +588,7 @@ namespace MyDAL.Core
                                 return DC.DPH.SelectColumnDic(new List<DicParam>
                                 {
                                     DC.DPH.JoinColumnDic(exp2.Type, field, alias, field)
-                                },ColFuncEnum.None);
+                                },colFunc);
                             }
                             else
                             {
@@ -613,7 +609,7 @@ namespace MyDAL.Core
             }
         }
 
-        private DicParam NewHandle(Expression body)
+        private DicParam NewHandle(Expression body,ColFuncEnum colFunc)
         {
             var list = new List<DicParam>();
             var nExpr = body as NewExpression;
@@ -631,7 +627,7 @@ namespace MyDAL.Core
             return DC.DPH.SelectColumnDic(list,ColFuncEnum.None);
         }
 
-        private DicParam BinaryHandle(Expression body, ParameterExpression firstParam)
+        private DicParam BinaryHandle(Expression body, ParameterExpression firstParam,ColFuncEnum colFunc)
         {
             var result = default(DicParam);
             if (DC.IsSingleTableOption())
@@ -641,7 +637,7 @@ namespace MyDAL.Core
                 {
                     firstParam.Name
                 };
-                result = HandBin(binExpr, pres);
+                result = HandBin(binExpr, pres,colFunc);
             }
             else if (DC.Crud == CrudEnum.Join)
             {
@@ -655,7 +651,7 @@ namespace MyDAL.Core
                          || DC.Action == ActionEnum.Or)
                 {
                     var pres = DC.Parameters.Select(it => it.TbAlias).ToList();
-                    result = HandBin(binExpr, pres);
+                    result = HandBin(binExpr, pres,colFunc);
                 }
                 else
                 {
@@ -670,14 +666,14 @@ namespace MyDAL.Core
             return result;
         }
 
-        private DicParam MultiHandle(Expression body, ParameterExpression firstParam, ExpressionType nodeType)
+        private DicParam MultiHandle(Expression body, ParameterExpression firstParam, ExpressionType nodeType,ColFuncEnum colFunc)
         {
             var result = DC.DPH.GroupDic(GetGroupAction(nodeType));
             var binExpr = body as BinaryExpression;
             var left = binExpr.Left;
-            result.Group.Add(BodyProcess(left, firstParam));
+            result.Group.Add(BodyProcess(left, firstParam,colFunc));
             var right = binExpr.Right;
-            result.Group.Add(BodyProcess(right, firstParam));
+            result.Group.Add(BodyProcess(right, firstParam,colFunc));
             return result;
         }
 
@@ -726,32 +722,32 @@ namespace MyDAL.Core
 
         
 
-        private DicParam BodyProcess(Expression body, ParameterExpression firstParam)
+        private DicParam BodyProcess(Expression body, ParameterExpression firstParam,ColFuncEnum colFunc)
         {
             //
             var nodeType = body.NodeType;
             if (nodeType == ExpressionType.Not)
             {
-                return NotHandle(body, firstParam);
+                return NotHandle(body, firstParam,colFunc);
             }
             else if (nodeType == ExpressionType.Call)
             {
-                return CallHandle(body as MethodCallExpression);
+                return CallHandle(body as MethodCallExpression,colFunc);
             }
             else if (nodeType == ExpressionType.Constant)
             {
                 var cExpr = body as ConstantExpression;
-                return ConstantHandle(cExpr, cExpr.Type);
+                return ConstantHandle(cExpr, cExpr.Type,colFunc);
             }
             else if (nodeType == ExpressionType.MemberAccess)
             {
                 if (IsNullableExpr(body))
                 {
-                    return MemberAccessHandle((body as MemberExpression).Expression as MemberExpression);
+                    return MemberAccessHandle((body as MemberExpression).Expression as MemberExpression,colFunc);
                 }
                 else
                 {
-                    return MemberAccessHandle(body as MemberExpression);
+                    return MemberAccessHandle(body as MemberExpression,colFunc);
                 }
             }
             else if (nodeType == ExpressionType.Convert)
@@ -762,7 +758,7 @@ namespace MyDAL.Core
                     throw XConfig.EC.Exception(XConfig.EC._052, "无法解析 列名2 !!!");
                 }
 
-                return DC.DPH.ColumnDic(cp);
+                return DC.DPH.ColumnDic(cp,colFunc);
             }
             else if (nodeType == ExpressionType.MemberInit)
             {
@@ -771,15 +767,15 @@ namespace MyDAL.Core
             }
             else if (nodeType == ExpressionType.New)
             {
-                return NewHandle(body);
+                return NewHandle(body,colFunc);
             }
             else if (IsBinaryExpr(nodeType))
             {
-                return BinaryHandle(body, firstParam);
+                return BinaryHandle(body, firstParam,colFunc);
             }
             else if (IsMultiExpr(nodeType))
             {
-                return MultiHandle(body, firstParam, nodeType);
+                return MultiHandle(body, firstParam, nodeType,colFunc);
             }
             else
             {
@@ -789,26 +785,26 @@ namespace MyDAL.Core
 
         /********************************************************************************************************************/
 
-        internal DicParam FuncMFExpression<M, F>(Expression<Func<M, F>> func)
+        internal DicParam FuncMFExpression<M, F>(Expression<Func<M, F>> func,ColFuncEnum colFunc)
             where M : class
         {
-            return BodyProcess(func.Body, null);
+            return BodyProcess(func.Body, null,colFunc);
         }
 
-        internal DicParam FuncTExpression<T>(Expression<Func<T>> func)
+        internal DicParam FuncTExpression<T>(Expression<Func<T>> func,ColFuncEnum colFunc)
         {
-            return BodyProcess(func.Body, null);
+            return BodyProcess(func.Body, null,colFunc);
         }
 
-        internal DicParam FuncMBoolExpression<M>(Expression<Func<M, bool>> func)
+        internal DicParam FuncMBoolExpression<M>(Expression<Func<M, bool>> func,ColFuncEnum colFunc)
             where M : class
         {
-            return BodyProcess(func.Body, func.Parameters[0]);
+            return BodyProcess(func.Body, func.Parameters[0],colFunc);
         }
 
-        internal DicParam FuncBoolExpression(Expression<Func<bool>> func)
+        internal DicParam FuncBoolExpression(Expression<Func<bool>> func,ColFuncEnum colFunc)
         {
-            return BodyProcess(func.Body, null);
+            return BodyProcess(func.Body, null,colFunc);
         }
     }
 }

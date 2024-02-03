@@ -16,7 +16,7 @@ namespace MyDAL
         public static JoinX InnerJoin<M>(this FromX from, Expression<Func<M>> modelFunc)
         {
             from.DC.Action = ActionEnum.InnerJoin;
-            var dic = from.DC.XE.FuncTExpression(modelFunc);
+            var dic = from.DC.XE.FuncTExpression(modelFunc,ColFuncEnum.None);
             from.DC.DPH.AddParameter(dic);
             from.DC.SetTbMs<M>(dic.TbAlias);
             return new JoinX(from.DC);
@@ -25,7 +25,7 @@ namespace MyDAL
         public static JoinX LeftJoin<M>(this FromX from, Expression<Func<M>> modelFunc)
         {
             from.DC.Action = ActionEnum.LeftJoin;
-            var dic = from.DC.XE.FuncTExpression(modelFunc);
+            var dic = from.DC.XE.FuncTExpression(modelFunc,ColFuncEnum.None);
             from.DC.DPH.AddParameter(dic);
             from.DC.SetTbMs<M>(dic.TbAlias);
             return new JoinX(from.DC);
@@ -36,7 +36,7 @@ namespace MyDAL
         public static JoinX InnerJoin<M>(this OnX on, Expression<Func<M>> modelFunc)
         {
             on.DC.Action = ActionEnum.InnerJoin;
-            var dic = on.DC.XE.FuncTExpression(modelFunc);
+            var dic = on.DC.XE.FuncTExpression(modelFunc,ColFuncEnum.None);
             on.DC.DPH.AddParameter(dic);
             on.DC.SetTbMs<M>(dic.TbAlias);
             return new JoinX(on.DC);
@@ -45,7 +45,7 @@ namespace MyDAL
         public static JoinX LeftJoin<M>(this OnX on, Expression<Func<M>> modelFunc)
         {
             on.DC.Action = ActionEnum.LeftJoin;
-            var dic = on.DC.XE.FuncTExpression(modelFunc);
+            var dic = on.DC.XE.FuncTExpression(modelFunc,ColFuncEnum.None);
             on.DC.DPH.AddParameter(dic);
             on.DC.SetTbMs<M>(dic.TbAlias);
             return new JoinX(on.DC);

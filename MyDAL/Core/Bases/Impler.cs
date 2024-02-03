@@ -33,14 +33,14 @@ namespace MyDAL.Core.Bases
         {
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
-            var col = DC.XE.FuncMFExpression(propertyFunc);
+            var col = DC.XE.FuncMFExpression(propertyFunc,ColFuncEnum.None);
             DC.DPH.AddParameter(col);
         }
         protected void SingleColumnHandle<T>(Expression<Func<T>> propertyFunc)
         {
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.Column;
-            var col = DC.XE.FuncTExpression(propertyFunc);
+            var col = DC.XE.FuncTExpression(propertyFunc,ColFuncEnum.None);
             DC.DPH.AddParameter(col);
         }
 
@@ -103,7 +103,7 @@ namespace MyDAL.Core.Bases
         {
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.ColumnAs;
-            var col = DC.XE.FuncTExpression(func);
+            var col = DC.XE.FuncTExpression(func,ColFuncEnum.None);
             DC.DPH.AddParameter(col);
         }
         protected void SelectMHandle<M, VM>(Expression<Func<M, VM>> propertyFunc)
@@ -111,7 +111,7 @@ namespace MyDAL.Core.Bases
         {
             DC.Action = ActionEnum.Select;
             DC.Option = OptionEnum.ColumnAs;
-            var col = DC.XE.FuncMFExpression(propertyFunc);
+            var col = DC.XE.FuncMFExpression(propertyFunc,ColFuncEnum.None);
             DC.DPH.AddParameter(col);
         }
 

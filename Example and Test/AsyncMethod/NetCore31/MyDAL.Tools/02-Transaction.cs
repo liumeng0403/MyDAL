@@ -1,5 +1,4 @@
 ﻿using MyDAL.Test;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace MyDAL.Tools

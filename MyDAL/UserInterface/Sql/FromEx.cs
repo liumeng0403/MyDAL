@@ -14,7 +14,7 @@ namespace MyDAL
         public static FromX From<M>(this SelecterX join, Expression<Func<M>> tableModelFunc)
         {
             join.DC.Action = ActionEnum.From;
-            var dic = join.DC.XE.FuncTExpression(tableModelFunc);
+            var dic = join.DC.XE.FuncTExpression(tableModelFunc,ColFuncEnum.None);
             join.DC.DPH.AddParameter(dic);
             join.DC.SetTbMs<M>(dic.TbAlias);
             return new FromX(join.DC);

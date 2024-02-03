@@ -2,7 +2,6 @@
 using MyDAL.Test.Entities.MyDAL_TestDB;
 using MyDAL.Test.ViewModels;
 using System;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace MyDAL.WhereEdge
