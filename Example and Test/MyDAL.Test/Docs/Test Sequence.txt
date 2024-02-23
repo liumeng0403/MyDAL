@@ -1,33 +1,41 @@
 ﻿
 
-项目: MyDAL.Tools 
-项目: MyDAL.SqlAction 
-项目: MyDAL.WhereEdge 
-项目: MyDAL.QueryAPI 
-项目: MyDAL.Func 
-项目: Functions
-项目: MyDAL.CsFunc 	
-项目: MyDAL.Compare 
-项目: MyDAL.Update 
-项目: MyDAL.Delete 
-项目: MyDAL.Create 
+发包测试：
+    项目: MyDAL.Tools 
+    项目: MyDAL.SqlAction 
+    项目: MyDAL.WhereEdge 
+    项目: MyDAL.QueryAPI 
+    项目: MyDAL.Func 
+    项目: Functions
+    项目: MyDAL.CsFunc 	
+    项目: MyDAL.Compare 
+    项目: MyDAL.Update 
+    项目: MyDAL.Delete 
+    项目: MyDAL.Create 
+
+
+
 
 
 
 思路调整：
 1、解析支持原生 mysql 函数
-2、抛弃 .count() 等 api 做法
-3、抛弃 async api 做法 
+2、抛弃 .count() sum() 等 api 做法
+3、select  sum(ifnull(`air`.`TotalSaleCount`,0)) -- 去除 ifnull 函数 ， 在 mysql 中 sum ： null ，1 = 1 
+  from `agent` as `a`
+           inner join `agentinventoryrecord` as `air`
+                      on `a`.`Id`=`air`.`AgentId`
+  where  `a`.`AgentLevel`=128;
 4、sql 语句做法为小数据量型系统 API
 5、lambda api 做法为大、中数据量型系统 API
-6、lambda join api 只保留两表 join  
+6、
 
 
         // datetime? tostring 方法
 
         // 自然 sql 命名 , select insert update delete 
 
-        // create 返回 实体 , 支持自增 主键 携带返回      
+       
 
 
 // .AndSql(string sql) 支持 
