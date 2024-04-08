@@ -46,6 +46,8 @@ namespace MyDAL
             DbPairs.AddOrReplace("ConnectionTimeout", "15");
             DbPairs.AddOrReplace("DefaultCommandTimeout", "30");
             DbPairs.AddOrReplace("AllowPublicKeyRetrieval", "false");
+            
+            DbPairs.AddOrReplace("PersistSecurityInfo","true");
 
         }
 
@@ -435,7 +437,7 @@ namespace MyDAL
         }
 
         /// <summary>
-        /// 是否保持敏感信息:Persist Security Info, PersistSecurityInfo 默认:false	
+        /// 连接下一次 open 是否保持敏感信息:  PersistSecurityInfo 默认:true	
         /// </summary>
         public XConnectionBuilder SetPersistSecurityInfo(bool persistSecurityInfo)
         {
@@ -522,6 +524,10 @@ namespace MyDAL
             this.DriverType = mySqlConnectionType;
             return this;
         }
+        
+        /// <summary>
+        /// 返回：上下文线程安全的 MySQL DB 操作实例
+        /// </summary>
         public XConnection Build()
         {
             if (null == this.DriverType)
@@ -541,7 +547,22 @@ namespace MyDAL
                 sb.Append(v);
             }
             this.ConnStr = sb.ToString();
-            return new XConnection(this);
+            var xConn = new XConnection(this);
+            
+            
+            try
+            {
+                IDbConnection obj = (IDbConnection)Activator.CreateInstance(xConn._Builder.DriverType, xConn._Builder.ConnStr);
+                return new XConnection(obj);
+            }
+            catch (Exception ex)
+            {
+                string errMsg = ex.Message.IsBlank() ? string.Empty : ex.Message;
+                string innerErrMsg = ex.InnerException == null ? 
+                    string.Empty : 
+                    ex.InnerException.Message.IsBlank() ? string.Empty : ex.InnerException.Message;
+                throw XConfig.EC.Exception(XConfig.EC._100, "MySQL 驱动异常: [1]" + errMsg + ". [2]" + innerErrMsg);
+            }
         }
     }
 }

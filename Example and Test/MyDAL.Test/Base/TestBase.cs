@@ -66,7 +66,7 @@ namespace MyDAL.Test
         {
             get
             {
-                return XConn.GetDB();
+                return XConn;
             }
         }
 

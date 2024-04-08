@@ -9,7 +9,7 @@ namespace MyDAL
     public sealed partial class XConnection
         : IDisposable
     {
-        private XConnectionBuilder _Builder { get; }
+        internal XConnectionBuilder _Builder { get; }
         private bool AutoClose { get; set; }
         private void NeedClose()
         {
@@ -34,7 +34,7 @@ namespace MyDAL
 
         // ************************************************************************************
 
-        private XConnection(IDbConnection conn)
+        internal XConnection(IDbConnection conn)
         {
             /*
              * 仅限 组件外 调用。
@@ -50,25 +50,6 @@ namespace MyDAL
         public static XConnectionBuilder Builder()
         {
             return new XConnectionBuilder();
-        }
-        /// <summary>
-        /// 上下文线程安全的 MySQL DB 操作实例
-        /// </summary>
-        public XConnection GetDB()
-        {
-            try
-            {
-                IDbConnection obj = (IDbConnection)Activator.CreateInstance(_Builder.DriverType, _Builder.ConnStr);
-                return new XConnection(obj);
-            }
-            catch (Exception ex)
-            {
-                string errMsg = ex.Message.IsBlank() ? string.Empty : ex.Message;
-                string innerErrMsg = ex.InnerException == null ? 
-                    string.Empty : 
-                    ex.InnerException.Message.IsBlank() ? string.Empty : ex.InnerException.Message;
-                throw XConfig.EC.Exception(XConfig.EC._100, "MySQL 驱动异常: [1]" + errMsg + ". [2]" + innerErrMsg);
-            }
         }
 
         /// <summary>

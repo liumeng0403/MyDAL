@@ -31,8 +31,7 @@ namespace Mysql.DataNet6
                     .SetPassword("mydal_TEST__##")
                     .SetSslMode(true)
                     .SetMySqlDriver<MySqlConnection>()
-                    .Build()
-                    .GetDB();
+                    .Build();
             }
         }
 
