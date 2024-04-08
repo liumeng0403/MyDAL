@@ -52,21 +52,9 @@ namespace MyDAL
         }
 
         // ---------------------------------------------------------------------------------------------
-
+        
         /// <summary>
-        /// 同SetHost()方法 -- 数据库位置:Host, Server, Data Source, DataSource, Address, Addr, Network Address 默认:127.0.0.1 集群','隔开:host01,host02,host03...
-        /// </summary>
-        public XConnectionBuilder SetServer(string host)
-        {
-            if(host.IsBlank())
-            {
-                throw XConfig.EC.Exception(XConfig.EC._037, "数据库位置 Host 不能为空!");
-            }
-            DbPairs.AddOrReplace("Host", host.Trim());
-            return this;
-        }
-        /// <summary>
-        /// 同SetServer()方法 -- 数据库位置:Host, Server, Data Source, DataSource, Address, Addr, Network Address 默认:127.0.0.1 集群','隔开:host01,host02,host03...
+        /// 内网地址最优，服务位置同义词：Host, Server, Data Source, DataSource, Address, Addr, Network Address 默认:127.0.0.1 集群','隔开:host01,host02,host03...
         /// </summary>
         public XConnectionBuilder SetHost(string host)
         {

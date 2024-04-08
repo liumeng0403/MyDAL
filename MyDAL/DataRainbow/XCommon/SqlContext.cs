@@ -552,6 +552,10 @@ namespace MyDAL.DataRainbow.XCommon
                 {
                     new CountResolve(DC).SelectCountCol(dic,X,DbSql);
                 }
+                else if(dic.Func == ColFuncEnum.Sum)
+                {
+                    new SumResolve(DC).SelectSumCol(dic,X,DbSql);
+                }
                 else
                 {
                     throw XConfig.EC.Exception(XConfig.EC._007, $"函数 -- {dic.Func.ToString()} -- 未解析！");

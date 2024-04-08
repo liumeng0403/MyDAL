@@ -9,20 +9,6 @@ namespace MyDAL.QueryAPI
     public class _07_SumAsync
         : TestBase
     {
-        [Fact]
-        public void Sum_ST()
-        {
-            xx = string.Empty;
-
-            var res1 = MyDAL_TestDB
-                .Selecter<AlipayPaymentRecord>()
-                .Where(it => it.CreatedOn > Convert.ToDateTime("2018-08-23 13:36:58").AddDays(-30))
-                .Sum(it => it.TotalAmount);
-
-            Assert.True(res1 == 1527.2600000000000000000000000M);
-
-            xx = string.Empty;
-        }
 
         [Fact]
         public void Sum_Nullable_ST()

@@ -18,7 +18,7 @@ namespace MyDAL.Core.Common
         /// </summary>
         internal Type TbMType { get; set; }
         /// <summary>
-        /// 表模型属性名
+        /// 字段属性名
         /// </summary>
         internal string TbMProp { get; set; }        
         
@@ -28,7 +28,7 @@ namespace MyDAL.Core.Common
         internal string TbAlias { get; set; }
         
         /// <summary>
-        /// 表列名
+        /// 字段列名
         /// </summary>
         internal string TbCol { get; set; }
         internal string TbColAlias { get; set; }
@@ -90,32 +90,6 @@ namespace MyDAL.Core.Common
                 //
                 this.GroupAction = ActionEnum.None;
                 this.GroupRef = null;
-        }
-        
-        /// <summary>
-        /// 获取列，, 由 属性 得到 列
-        /// </summary>
-        internal string GetCol(Context dc,Type mType, string prop)
-        {
-            //
-            if (mType == null)
-            {
-                return prop;
-            }
-
-            //
-            var tb = dc.XC.GetTableModel(mType);
-
-            //
-            var pc = tb?.PCA?.FirstOrDefault(it => prop.Equals(it.PropName, StringComparison.OrdinalIgnoreCase));
-            if (pc != null)
-            {
-                return pc.ColName;
-            }
-            else
-            {
-                return prop;
-            }
         }
     }
 }

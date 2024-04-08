@@ -69,7 +69,11 @@ namespace MyDAL.Impls.Implers
         /// </summary>
         private bool 是函数单值()
         {
-            if (DC.Parameters.Any(it => it.Func.Equals(ColFuncEnum.Count))) // 1-count(col)
+            if (DC.Parameters.Any(it =>
+                {
+                    return it.Func.Equals(ColFuncEnum.Count)       // 1-count(col)
+                           || it.Func.Equals(ColFuncEnum.Sum);     // 2-sum(col)
+                })) 
             {
                 return true;
             }

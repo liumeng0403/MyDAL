@@ -23,7 +23,7 @@ namespace MyDAL.Test
         //
         private static XConnection XConn = XConnection
             .Builder()
-            .SetServer("10.211.55.3")
+            .SetHost("10.211.55.3")
             .SetDatabase("mydal_testdb")
             .SetUser("mydal_dll")
             .SetPassword("mydal_TEST__##")

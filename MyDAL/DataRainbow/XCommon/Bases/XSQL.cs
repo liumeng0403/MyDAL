@@ -1,4 +1,6 @@
-﻿using MyDAL.Core;
+﻿using System;
+using System.Linq;
+using MyDAL.Core;
 using MyDAL.Core.Bases;
 using MyDAL.Core.Enums;
 using System.Text;
@@ -307,6 +309,34 @@ namespace MyDAL.DataRainbow.XCommon.Bases
         internal protected static void Escape(StringBuilder sb)
         {
             sb.Append("escape");
+        }
+        
+        /****************************************************************************************************************/
+        
+        /// <summary>
+        /// 获取列，, 由 属性 得到 列
+        /// </summary>
+        protected string GetCol(Context dc,Type mType, string prop)
+        {
+            //
+            if (mType == null)
+            {
+                return prop;
+            }
+
+            //
+            var tb = dc.XC.GetTableModel(mType);
+
+            //
+            var pc = tb?.PCA?.FirstOrDefault(it => prop.Equals(it.PropName, StringComparison.OrdinalIgnoreCase));
+            if (pc != null)
+            {
+                return pc.ColName;
+            }
+            else
+            {
+                return prop;
+            }
         }
 
     }

@@ -5,6 +5,7 @@ using MyDAL.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using MyDAL.Core.核心能力;
 using MyDAL.Core.表达式能力;
 
 namespace MyDAL.Core.Expressions
@@ -23,7 +24,7 @@ namespace MyDAL.Core.Expressions
         {
             DC.Option = OptionEnum.ColumnAs;
             DC.Compare = CompareXEnum.None;
-            var cp = new hql_获取列().GetKey(DC,mcExpr, ColFuncEnum.ToString_CS, CompareXEnum.None);
+            var cp = new lbds_列表达式().hql_获取列(DC,mcExpr, ColFuncEnum.ToString_CS, CompareXEnum.None);
             return DC.DPH.SelectColumnDic(new List<DicParam>
             {
                 DC.DPH.CsToStringDic(cp, null)
@@ -32,7 +33,7 @@ namespace MyDAL.Core.Expressions
 
         internal DicParam WhereFuncToString(Expression left, BinExprInfo bin,ColFuncEnum colFunc)
         {
-            var cp = new hql_获取列().GetKey(DC,left, ColFuncEnum.ToString_CS_DateTime_Format, CompareXEnum.None);
+            var cp = new lbds_列表达式().hql_获取列(DC,left, ColFuncEnum.ToString_CS_DateTime_Format, CompareXEnum.None);
             var val = DC.VH.ValueProcess(bin.Right, cp.ValType, cp.Format);
             DC.Option = OptionEnum.Function;
             DC.Compare = bin.Compare;
@@ -76,7 +77,7 @@ namespace MyDAL.Core.Expressions
             {
                 DC.Option = OptionEnum.ColumnAs;
                 DC.Compare = CompareXEnum.None;
-                var cp = new hql_获取列().GetKey(DC,mcExpr, ColFuncEnum.ToString_CS_DateTime_Format, CompareXEnum.None);
+                var cp = new lbds_列表达式().hql_获取列(DC,mcExpr, ColFuncEnum.ToString_CS_DateTime_Format, CompareXEnum.None);
                 var format = DC.TSH.DateTime(cp.Format);
                 if (DC.Action == ActionEnum.Select)
                 {

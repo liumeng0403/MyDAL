@@ -5,15 +5,16 @@ using System.Reflection;
 using MyDAL.Core.Bases;
 using MyDAL.Core.Enums;
 using MyDAL.Core.Models.Cache;
+using MyDAL.Core.表达式能力;
 
-namespace MyDAL.Core.表达式能力
+namespace MyDAL.Core.核心能力
 {
-    internal class hql_获取列
+    internal class lbds_列表达式
     {
         /// <summary>
         /// 获取列信息
         /// </summary>
-        internal ColumnParam GetKey(Context DC,Expression bodyL, ColFuncEnum func, CompareXEnum compareX, string format = "")
+        internal ColumnParam hql_获取列(Context DC,Expression bodyL, ColFuncEnum func, CompareXEnum compareX, string format = "")
         {
             if (bodyL.NodeType == ExpressionType.MemberAccess)
             {
@@ -81,7 +82,7 @@ namespace MyDAL.Core.表达式能力
             {
                 var exp = bodyL as UnaryExpression;
                 var opMem = exp.Operand;
-                return GetKey(DC,opMem, func, compareX);
+                return hql_获取列(DC,opMem, func, compareX);
             }
             else if (bodyL.NodeType == ExpressionType.Call)
             {
@@ -91,28 +92,33 @@ namespace MyDAL.Core.表达式能力
                     || func == ColFuncEnum.RTrim)
                 {
                     var mem = mcExpr.Object;
-                    return GetKey(DC,mem, func, compareX);
+                    return hql_获取列(DC,mem, func, compareX);
                 }
                 else if (compareX == CompareXEnum.In)
                 {
                     var mem = mcExpr.Arguments[0];
-                    return GetKey(DC,mem, func, compareX);
+                    return hql_获取列(DC,mem, func, compareX);
                 }
                 else if (func == ColFuncEnum.ToString_CS_DateTime_Format)
                 {
                     var mem = mcExpr.Object;
                     var val = DC.VH.ValueProcess(mcExpr.Arguments[0], XConfig.CSTC.String);
-                    return GetKey(DC,mem, func, compareX, val.Val.ToString());
+                    return hql_获取列(DC,mem, func, compareX, val.Val.ToString());
                 }
                 else if (func == ColFuncEnum.ToString_CS)
                 {
                     var mem = mcExpr.Object;
-                    return GetKey(DC,mem, func, compareX);
+                    return hql_获取列(DC,mem, func, compareX);
                 }
                 else if(func == ColFuncEnum.Count)
                 {
-                    var mem = mcExpr.Arguments[0]; // todo debug 
-                    return GetKey(DC,mem, func, compareX);
+                    var mem = mcExpr.Arguments[0]; 
+                    return hql_获取列(DC,mem, func, compareX);
+                }
+                else if(func == ColFuncEnum.Sum)
+                {
+                    var mem = mcExpr.Arguments[0];
+                    return hql_获取列(DC, mem, func, compareX);
                 }
                 else
                 {
