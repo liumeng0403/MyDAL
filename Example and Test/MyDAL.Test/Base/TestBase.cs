@@ -12,25 +12,6 @@ namespace MyDAL.Test
 {
     public abstract class TestBase
     {
-        //
-        // Nuget : Package : MySql.Data
-        //
-        // 不同版本 mysql 连接字符串一般如下：
-        // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;"
-        // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;"
-        // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;allowPublicKeyRetrieval=true;"
-        // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=true;allowPublicKeyRetrieval=false;"
-        //
-        private static XConnection XConn = XConnection
-            .Builder()
-            .SetHost("10.211.55.3")
-            .SetDatabase("mydal_testdb")
-            .SetUser("mydal_dll")
-            .SetPassword("mydal_TEST__##")
-            .SetSslMode(true)
-            //.SetAllowPublicKeyRetrieval(true)
-            .SetMySqlDriver<MySqlConnection>()
-            .Build();
 
         protected string xx { get; set; }
 
@@ -59,14 +40,29 @@ namespace MyDAL.Test
             }
         }
 
-        /// <summary>
-        /// MySQL
-        /// </summary>
+        //
+        // Nuget : Package : MySql.Data
+        //
+        // 不同版本 mysql 连接字符串一般如下：
+        // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;"
+        // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;"
+        // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=none;allowPublicKeyRetrieval=true;"
+        // "Server=localhost; Database=MyDAL_TestDB; Uid=SkyUser; Pwd=Sky@4321;SslMode=true;allowPublicKeyRetrieval=false;"
+        //
         protected XConnection MyDAL_TestDB
         {
             get
             {
-                return XConn;
+                return XConnection
+                    .Builder()
+                    .SetHost("10.211.55.3")
+                    .SetDatabase("mydal_testdb")
+                    .SetUser("mydal_dll")
+                    .SetPassword("mydal_TEST__##")
+                    .SetSslMode(true)
+                    //.SetAllowPublicKeyRetrieval(true)
+                    .SetMySqlDriver<MySqlConnection>()
+                    .Build();
             }
         }
 

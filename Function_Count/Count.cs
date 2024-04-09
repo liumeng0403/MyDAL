@@ -9,7 +9,7 @@ namespace Function_Count
         : Net6Base
     {
         [TestMethod]
-        public void 单表_指定列()
+        public void 单表_指定列_单列()
         {
             try
             {

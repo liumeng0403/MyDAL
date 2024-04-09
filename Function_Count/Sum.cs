@@ -9,7 +9,7 @@ public class Sum
     : Net6Base
 {
     [TestMethod]
-    public void 单表_指定列()
+    public void 单表_指定列_单列()
     {
         
         var res1 = DB_MyDAL_DEV.OpenDebug()

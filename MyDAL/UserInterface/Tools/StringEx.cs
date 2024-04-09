@@ -11,7 +11,7 @@ namespace MyDAL.Tools
     {
         
         /// <summary>
-        /// Is null/empty ?
+        /// 是 null 或 "" 字符串 ?
         /// </summary>
         public static bool IsEmpty(this string str)
         {
@@ -19,15 +19,7 @@ namespace MyDAL.Tools
         }
 
         /// <summary>
-        /// 是 null/empty/whitespace 字符串
-        /// </summary>
-        public static bool IsBlank(this string str)
-        {
-            return string.IsNullOrWhiteSpace(str);
-        }
-
-        /// <summary>
-        /// Is not null/empty/whitespace ?
+        /// 不是 null 或 "" 字符串 ?
         /// </summary>
         public static bool IsNotEmpty(this string str)
         {
@@ -35,7 +27,15 @@ namespace MyDAL.Tools
         }
 
         /// <summary>
-        /// 非 null/empty/whitespace 字符串
+        /// 是 null 或 "" 或 空白 字符串？
+        /// </summary>
+        public static bool IsBlank(this string str)
+        {
+            return string.IsNullOrWhiteSpace(str);
+        }
+
+        /// <summary>
+        /// 不是 null 或 "" 或 空白 字符串？
         /// </summary>
         public static bool IsNotBlank(this string str)
         {
@@ -136,6 +136,9 @@ namespace MyDAL.Tools
             }
         }
 
+        /// <summary>
+        /// 是否相同(不区分大小写)？
+        /// </summary>
         public static bool EqualsIgnoreCase(this string str, string someStr)
         {
             if (null == str || null == someStr)
