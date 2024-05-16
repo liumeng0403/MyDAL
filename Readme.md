@@ -4,6 +4,10 @@
     The fastest and best ORM lite on C# for MySQL ! 
     <br/>
        -- 友好, 轻量, 极致性能, 无任何第三方依赖, 持续演进~~
+  </p>
+  <p align="center">
+    <a href="https://gitee.com/lm-mydal/MyDAL" target="_blank">此项目已迁移至 Gitee !!!</a>
+  </p>
 </p>
 
 # Project Introduction 
