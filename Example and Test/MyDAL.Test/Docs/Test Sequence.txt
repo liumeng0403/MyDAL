@@ -19,6 +19,16 @@
 
 
 思路调整：
+
+首要一：  
+//添加支持   to string   同时 XFunction 
+                .SelectList(it=>new DicItem
+                {
+                    text = it.description,
+                    value = it.testMathId.ToString()
+                });
+
+
 1、解析支持原生 mysql 函数
 2、抛弃 .count() sum() 等 api 做法
 3、select  sum(ifnull(`air`.`TotalSaleCount`,0)) -- 去除 ifnull 函数 ， 在 mysql 中 sum ： null ，1 = 1 
@@ -60,10 +70,5 @@
 
 
 
-//添加支持   to string 
-                .SelectList(it=>new DicItem
-                {
-                    text = it.description,
-                    value = it.testMathId.ToString()
-                });
+
 
